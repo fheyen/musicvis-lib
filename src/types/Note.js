@@ -14,7 +14,7 @@ export default class Note {
      * @param {number} end end time in seconds
      */
     constructor(
-        pitch,
+        pitch = 0,
         start = 0,
         velocity = 127,
         channel = 0,
@@ -34,16 +34,12 @@ export default class Note {
      */
     static from(object) {
         const {
-            pitch,
+            pitch = 0,
             start = 0,
             velocity = 127,
             channel = 0,
             end = null
         } = object;
-        if (pitch === undefined) {
-            console.error('Cannot create Note with undefined pitch');
-            return null;
-        }
         return new Note(pitch, start, velocity, channel, end);
     }
 
@@ -135,7 +131,7 @@ export default class Note {
      * @returns {boolen} true if equal
      */
     equals(otherNote) {
-        if (!otherNote instanceof Note) {
+        if (!(otherNote instanceof Note)) {
             return false;
         }
         return (

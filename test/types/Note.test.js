@@ -1,15 +1,18 @@
-import { TestScheduler } from 'jest';
 import Note from '../../src/types/Note';
 
 const note1 = new Note(0, 0.0, 127, 0, 3.0);
 
-test('note is euqal to itself', () => {
+test('note is equal to itself', () => {
     expect(note1.equals(note1)).toBe(true);
 });
 
 test('note\'s clone is equal', () => {
     const note2 = note1.clone();
     expect(note1.equals(note2)).toBe(true);
+});
+
+test('note is unequal if other object is not of type Note', () => {
+    expect(note1.equals({})).toBe(false);
 });
 
 test('note overlaps itself', () => {
@@ -51,4 +54,22 @@ test('note name', () => {
 test('note octave', () => {
     const note = new Note(0, 1.0, 127, 0, 3.0);
     expect(note.getOctave()).toBe(-1);
+});
+
+test('Note.from with pitch', () => {
+    const note1 = new Note(0, 1.0, 127, 0, 3.0);
+    const note2 = Note.from({
+        pitch: 0,
+        start: 1.0,
+        velocity: 127,
+        channel: 0,
+        end: 3.0
+    });
+    expect(note1.equals(note2)).toBe(true);
+});
+
+test('Note() shold be equal to Note.from with empty object', () => {
+    const note1 = new Note();
+    const note2 = Note.from({});
+    expect(note1.equals(note2)).toBe(true);
 });
