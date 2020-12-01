@@ -1,0 +1,5 @@
+DO NOT USE LICENSE
+
+Do not use this software yet, as it is not ready for production or anything else yet.
+
+There is no warranty and support, you will be responsible for everything.
