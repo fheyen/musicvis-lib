@@ -19,6 +19,20 @@ test('note overlaps itself', () => {
     expect(note1.overlapsInTime(note1)).toBe(true);
 });
 
+test('notes do overlap', () => {
+    const note1 = new Note(0, 1.0, 127, 0, 4.0);
+    const note2 = new Note(0, 3.0, 127, 0, 5.0);
+    const note3 = new Note(0, 0.0, 127, 0, 1.0);
+    expect(note1.overlapsInTime(note2)).toBe(true);
+    expect(note1.overlapsInTime(note3)).toBe(true);
+});
+
+test('notes do not overlap', () => {
+    const note1 = new Note(0, 0.0, 127, 0, 3.0);
+    const note2 = new Note(0, 4.0, 127, 0, 5.0);
+    expect(note1.overlapsInTime(note2)).toBe(false);
+});
+
 test('note duration is end - start', () => {
     expect(note1.getDuration()).toBe(3.0);
 });
@@ -33,12 +47,22 @@ test('note duration does not change when shifting in time', () => {
     expect(note.getDuration()).toBe(3.0);
 });
 
+test('note duration does not change when shifting in time (end:null)', () => {
+    const note = new Note(0, 0.0, 127, 0).shiftTime(12);
+    expect(note.getDuration()).toBe(0);
+});
+
 test('note duration is factor*oldDuration after scaling', () => {
     const note = new Note(0, 1.0, 127, 0, 3.0);
     const oldDuration = note.getDuration();
     const factor = 2.5;
     const note2 = note.scaleTime(factor);
     expect(note2.getDuration()).toBe(oldDuration * factor);
+});
+
+test('note duration is still 0 after scaling (end:null)', () => {
+    const note = new Note(0, 1.0, 127, 0).scaleTime(2);
+    expect(note.getDuration()).toBe(0);
 });
 
 test('note letter', () => {

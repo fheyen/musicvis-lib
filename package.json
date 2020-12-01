@@ -8,14 +8,15 @@
     "test": "jest",
     "testcov": "jest --coverage",
     "predeploy": "jest && webpack",
-    "deploypatch": "npm version patch && npm publish",
     "deploy": "npm publish"
   },
   "author": "Frank Heyen",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.7",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "eslint": "^7.14.0",
     "eslint-config-standard": "^16.0.2",

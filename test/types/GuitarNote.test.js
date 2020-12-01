@@ -23,3 +23,9 @@ test('from note to note should be equal', () => {
     const note2 = gtNote.toNote();
     expect(note.equals(note2)).toBe(true);
 });
+
+test('Note() shold be equal to Note.from with empty object', () => {
+    const note1 = new GuitarNote();
+    const note2 = GuitarNote.from({});
+    expect(note1.equals(note2)).toBe(true);
+});
