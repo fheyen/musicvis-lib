@@ -8,6 +8,7 @@
     "test": "jest",
     "testcov": "jest --coverage",
     "predeploy": "jest && webpack",
+    "deploypatch": "npm version patch && npm publish",
     "deploy": "npm publish"
   },
   "author": "Frank Heyen",
