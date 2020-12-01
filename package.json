@@ -5,7 +5,9 @@
   "main": "dist/index_bundle.js",
   "scripts": {
     "build": "webpack",
-    "test": "jest"
+    "test": "jest",
+    "predeploy": "jest && webpack",
+    "deploy": "npm publish"
   },
   "author": "Frank Heyen",
   "license": "ISC",
