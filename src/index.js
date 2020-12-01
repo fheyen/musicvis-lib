@@ -1,3 +1,3 @@
-import test from './test';
+import Note from './types/Note';
 
-export { test };
+export { Note };
