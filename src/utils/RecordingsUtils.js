@@ -1,5 +1,5 @@
 import { scaleLinear, extent, group, max } from "d3";
-import Note from "../../types/Note";
+import Note from "../types/Note";
 import { bpmToSecondsPerBeat } from "./MiscUtils";
 import { kernelDensityEstimator, kernelEpanechnikov } from "./StatisticsUtils";
 import { findLocalMaxima } from "./MathUtils";

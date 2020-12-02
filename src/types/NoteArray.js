@@ -299,7 +299,7 @@ export default class NoteArray {
     }
 
     /**
-    * Returns true if this note and otherNote have equal attributes.
+    * Returns true if this NoteArray and otherNoteArray have equal attributes.
     * @param {NoteArray} otherNoteArray another NoteArray
     * @returns {boolen} true if equal
     */
@@ -320,7 +320,7 @@ export default class NoteArray {
     }
 
     /**
-     * Deep clone, all contained notes are cloned ass well.
+     * Deep clone, all contained notes are cloned as well.
      * @returns {NoteArray} clone
      */
     clone() {

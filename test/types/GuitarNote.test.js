@@ -1,4 +1,4 @@
-import { Note } from '../../src';
+import Note from '../../src/types/Note';
 import GuitarNote from '../../src/types/GuitarNote';
 
 

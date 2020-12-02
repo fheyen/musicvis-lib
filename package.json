@@ -28,6 +28,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "d3": "^6.2.0"
+    "d3": "^6.2.0",
+    "soundfont-player": "^0.12.0"
   }
 }
