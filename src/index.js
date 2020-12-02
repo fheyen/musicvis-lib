@@ -13,7 +13,7 @@ import { preprocessMusicXmlData } from './fileFormats/MusicXmlParser';
 import { recordAudio } from './input/AudioRecorder';
 import { recordMidi } from './input/MidiRecorder';
 import MidiInputManager from './input/MidiInputManager';
-// intruments
+// instruments
 import * as Drums from './instruments/Drums';
 import * as Guitar from './instruments/Guitar';
 import * as Piano from './instruments/Piano';

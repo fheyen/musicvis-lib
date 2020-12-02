@@ -81,7 +81,7 @@ export default class PitchBend extends Note {
      * @returns {boolen} true if equal
      */
     equals(otherNote) {
-        if (!otherNote instanceof PitchBend) {
+        if (!(otherNote instanceof PitchBend)) {
             return false;
         }
         return (
@@ -89,7 +89,7 @@ export default class PitchBend extends Note {
             this.start === otherNote.start &&
             this.velocity === otherNote.velocity &&
             this.channel === otherNote.channel &&
-            this.end === otherNote.end &&
+            this.end === otherNote.end
             // This is different to the base Note class
         );
     }
