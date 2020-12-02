@@ -15,11 +15,16 @@ const rec = new Recording('test', new Date(), notes);
 
 describe.skip('Recording', () => {
 
-    test('Recording is equal to itself', () => {
-        expect(rec.equals(rec)).toBe(true);
+
+    test('Recording does clone', () => {
+        expect(rec.clone() instanceof Recording).toBe(true);
     });
 
-    test('Recording is equal to clone', () => {
-        expect(rec.equals(rec.clone())).toBe(true);
-    });
+    // test('Recording is equal to itself', () => {
+    //     expect(rec.equals(rec)).toBe(true);
+    // });
+
+    // test('Recording is equal to clone', () => {
+    //     expect(rec.equals(rec.clone())).toBe(true);
+    // });
 });

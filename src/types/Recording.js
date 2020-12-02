@@ -10,7 +10,7 @@ import { arrayShallowEquals } from "../utils/ArrayUtils";
  */
 export default class Recording extends NoteArray {
 
-    #notes;
+    #notes = [];
 
     /**
      * Creates a new Recording
