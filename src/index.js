@@ -18,12 +18,12 @@ import * as Drums from './instruments/Drums';
 import * as Guitar from './instruments/Guitar';
 import * as Piano from './instruments/Piano';
 import * as StringedFingering from './instruments/StringedFingering';
-
-
 // libraries
 import * as Midi from './Midi';
 import * as Utils from './utils';
 import * as Chords from './Chords';
+import * as Alignment from './Alignment';
+import * as Similarity from './Similarity';
 
 export {
     // types
@@ -50,4 +50,6 @@ export {
     Midi,
     Utils,
     Chords,
+    Alignment,
+    Similarity,
 };

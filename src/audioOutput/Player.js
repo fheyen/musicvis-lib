@@ -149,7 +149,7 @@ export default class Player {
         console.log(`[Player] Playing ${notes.length} notes with '${sound}', speed ${speed}, and volume ${this.#volume}`);
         if (this.#audioCtx.state === 'suspended') {
             this.#audioCtx.resume();
-        };
+        }
         this.#sound = sound;
         this.#startAt = startAt;
         this.#endAt = endAt;
