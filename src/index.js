@@ -23,6 +23,7 @@ import * as StringedFingering from './instruments/StringedFingering';
 // libraries
 import * as Midi from './Midi';
 import * as Utils from './utils';
+import * as Chords from './Chords';
 
 export {
     // types
@@ -47,5 +48,6 @@ export {
     StringedFingering,
     // libraries
     Midi,
-    Utils
+    Utils,
+    Chords,
 };

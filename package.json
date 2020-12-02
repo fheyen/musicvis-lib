@@ -29,6 +29,7 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
+    "@tonaljs/tonal": "^4.6.0",
     "d3": "^6.2.0",
     "soundfont-player": "^0.12.0"
   }
