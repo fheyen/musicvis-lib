@@ -1,6 +1,6 @@
 import * as Alignment from '../src/Alignment';
 
-// test('alignment1', () => {
-//     Alignment.alignNoteArrays3();
-//     expect()
-// });
+test.skip('alignment1', () => {
+    Alignment.alignNoteArrays3();
+    expect()
+});
