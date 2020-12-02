@@ -24,6 +24,7 @@ import * as Utils from './utils';
 import * as Chords from './Chords';
 import * as Alignment from './Alignment';
 import * as Similarity from './Similarity';
+import * as Matching from './Matching';
 
 export {
     // types
@@ -52,4 +53,5 @@ export {
     Chords,
     Alignment,
     Similarity,
+    Matching,
 };
