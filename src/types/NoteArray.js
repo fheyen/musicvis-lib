@@ -1,6 +1,6 @@
 import Note from "./Note";
 import GuitarNote from "./GuitarNote";
-import { clipValue } from "../lib/utils/MathUtils";
+import { clipValue } from "../utils/MathUtils";
 import { min } from "d3";
 
 /**
@@ -303,7 +303,7 @@ export default class NoteArray {
     * @param {NoteArray} otherNoteArray another NoteArray
     * @returns {boolen} true if equal
     */
-    euqals(otherNoteArray) {
+    equals(otherNoteArray) {
         if (!(otherNoteArray instanceof NoteArray)) {
             return false;
         }
@@ -312,7 +312,7 @@ export default class NoteArray {
             return false;
         }
         for (let i = 0; i < notes.length; i++) {
-            if (!this.#notes[i].euqals(notes[i])) {
+            if (!this.#notes[i].equals(notes[i])) {
                 return false;
             }
         }

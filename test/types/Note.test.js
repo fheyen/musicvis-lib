@@ -15,6 +15,22 @@ test('note is unequal if other object is not of type Note', () => {
     expect(note1.equals({})).toBe(false);
 });
 
+test('note is unequal if other note is different', () => {
+    const note1 = new Note(0, 0.0, 127, 0, 3.0);
+    const otherNotes = [
+        new Note(1, 0.0, 127, 0, 3.0),
+        new Note(0, 1.0, 127, 0, 3.0),
+        new Note(0, 0.0, 64, 0, 3.0),
+        new Note(0, 0.0, 127, 1, 3.0),
+        new Note(0, 0.0, 127, 0, 2.0),
+        new Note(1, 1.0, 64, 1, 2.0),
+    ];
+    for (let n of otherNotes) {
+
+        expect(note1.equals(n)).toBe(false);
+    }
+});
+
 test('note overlaps itself', () => {
     expect(note1.overlapsInTime(note1)).toBe(true);
 });
@@ -52,12 +68,31 @@ test('note duration does not change when shifting in time (end:null)', () => {
     expect(note.getDuration()).toBe(0);
 });
 
+test('note is shifted in time', () => {
+    const note = new Note(0, 0.0, 127, 0).shiftTime(12);
+    expect(note.start).toBe(12);
+    const note2 = new Note(0, 0.0, 127, 0).shiftTime(-12);
+    expect(note2.start).toBe(-12);
+    const note3 = new Note(0, 3.0, 127, 0).shiftTime(4);
+    expect(note3.start).toBe(7.0);
+    const note4 = new Note(0, 3.0, 127, 0).shiftTime(-4);
+    expect(note4.start).toBe(-1.0);
+});
+
 test('note duration is factor*oldDuration after scaling', () => {
     const note = new Note(0, 1.0, 127, 0, 3.0);
     const oldDuration = note.getDuration();
     const factor = 2.5;
     const note2 = note.scaleTime(factor);
     expect(note2.getDuration()).toBe(oldDuration * factor);
+});
+
+test('note start is factor*oldStart after scaling', () => {
+    const note = new Note(0, 1.5, 127, 0, 3.0);
+    const oldStart = note.start;
+    const factor = 2.5;
+    const note2 = note.scaleTime(factor);
+    expect(note2.start).toBe(oldStart * factor);
 });
 
 test('note duration is still 0 after scaling (end:null)', () => {
