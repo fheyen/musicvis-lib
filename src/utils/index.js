@@ -1,4 +1,4 @@
-import { arrayShallowEquals, removeDuplicates, arrayContainsArray, flattenArray, getMatrixMax, printMatrix } from './ArrayUtils';
+import { arrayShallowEquals, removeDuplicates, arrayContainsArray, arrayHasSameElements, flattenArray, getMatrixMax, printMatrix } from './ArrayUtils';
 import { formatDate, formatTime, formatSongTitle } from './FormattingUtils';
 import { storeObjectInLocalStorage, getObjectFromLocalStorage } from './LocalStorageUtils';
 import { randFloat, choose, clipValue, swapSoSmallerFirst, findLocalMaxima } from './MathUtils';
@@ -13,6 +13,7 @@ export {
     arrayShallowEquals,
     removeDuplicates,
     arrayContainsArray,
+    arrayHasSameElements,
     flattenArray,
     getMatrixMax,
     printMatrix,
