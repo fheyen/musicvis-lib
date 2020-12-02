@@ -31,6 +31,7 @@
   "dependencies": {
     "@tonaljs/tonal": "^4.6.0",
     "d3": "^6.2.0",
+    "dynamic-time-warping-2": "^1.1.0",
     "soundfont-player": "^0.12.0"
   }
 }
