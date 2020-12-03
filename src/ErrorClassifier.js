@@ -4,7 +4,7 @@
  */
 
 import { group } from "d3";
-import { Utils } from "musicvis-lib";
+import * as Utils from "../src/utils";
 
 
 
@@ -12,8 +12,8 @@ import { Utils } from "musicvis-lib";
  * Compares a single recording to a ground truth and labels notes as missing,
  * extra, early/late, or short/long
  * TODO: generalize to channel/pitch instead of string and fret?
- * @param {GuitarNote[]} gtNotes
- * @param {GuitarNote[]} recNotes
+ * @param {Note[]|GuitarNote[]} gtNotes
+ * @param {Note[]|GuitarNote[]} recNotes
  * @param {string} groupBy
  * @param {number} threshold
  * @returns {NoteWithState[]} classified notes
@@ -24,6 +24,8 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
         accessor = d => d.pitch;
     } else if (groupBy === 'channel') {
         accessor = d => d.channel;
+    } else if (groupBy === 'string') {
+        accessor = d => d.string;
     } else {
         console.warn(`Invalid groupBy '${groupBy}'`);
         return;
@@ -33,7 +35,9 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
     const recGrouped = group(recNotes, accessor);
 
     // Get all pitches / channels
-    const allKeys = Utils.removeDuplicates(gtGrouped.keys().concat(recGrouped.keys()));
+    const gtKeys = Array.from(gtGrouped.keys());
+    const recKeys = Array.from(recGrouped.keys());
+    const allKeys = Utils.removeDuplicates(gtKeys.concat(recKeys));
 
     let classifiedNotes = [];
     for (const key of allKeys) {
@@ -87,6 +91,11 @@ export const NoteState = {
 }
 
 class NoteWithState {
+    /**
+     *
+     * @param {Note} note
+     * @param {NoteState} state
+     */
     constructor(note, state) {
         this.note = note;
         this.state = state;
