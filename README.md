@@ -12,9 +12,10 @@ NPM: https://www.npmjs.com/package/musicvis-lib
    1. [Mission](#mission)
    2. [Setup](#setup)
    3. [How to use](#how-to-use)
-   4. [Contribution](#contribution)
-   5. [Structure and Dependencies](#structure-and-dependencies)
-   6. [TODO](#todo)
+   4. [Examples](#examples)
+   5. [Contribution](#contribution)
+   6. [Structure and Dependencies](#structure-and-dependencies)
+   7. [TODO](#todo)
 
 ## Mission
 
@@ -38,6 +39,14 @@ const note = Note.from({
   channel: 0
 });
 ```
+
+## Examples
+
+- [fheyen.github.io/midi-live-vis](https://fheyen.github.io/midi-live-vis/)
+- [fheyen.github.io/midi-pianoroll](https://fheyen.github.io/midi-pianoroll/)
+- [fheyen.github.io/webmidi-logger](https://fheyen.github.io/webmidi-logger/)
+- [fheyen.github.io/midi-chords](https://fheyen.github.io/midi-chords/)
+- [fheyen.github.io/midi-recorder](https://fheyen.github.io/midi-recorder/)
 
 ## Contribution
 
