@@ -302,13 +302,38 @@ export const SHARPS = new Map([
 ]);
 
 /**
- * TODO:
+ * MIDI commands with code, name, and parameters
+ * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
  * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
  */
-export const commands = new Map([
-
+export const MIDI_COMMANDS = new Map([
+    [0x80, { name: 'Note-off', params: ['key', 'velocity'] }],
+    [0x90, { name: 'Note-on', params: ['key', 'velocity'] }],
+    [0xA0, { name: 'Aftertouch', params: ['key', 'touch'] }],
+    [0xB0, { name: 'Continuous controller', params: ['controller #', 'controller value'] }],
+    [0xC0, { name: 'Patch change', params: ['instrument number', 'instrument number'] }],
+    [0xD0, { name: 'Channel Pressure', params: ['pressure'] }],
+    [0xE0, { name: 'Pitch bend', params: ['lsb(7 bits)', 'msb(7 bits)'] }],
+    [0xF0, { name: 'start of system exclusive message' }],
+    [0xF1, { name: 'MIDI Time Code Quarter Frame(Sys Common)' }],
+    [0xF2, { name: 'Song Position Pointer(Sys Common)' }],
+    [0xF3, { name: 'Song Select(Sys Common)' }],
+    [0xF4, { name: '???' }],
+    [0xF5, { name: '???' }],
+    [0xF6, { name: 'Tune Request(Sys Common)' }],
+    [0xF7, { name: 'end of system exclusive message 0' }],
+    [0xF8, { name: 'Timing Clock(Sys Realtime)' }],
+    [0xFA, { name: 'Start(Sys Realtime)' }],
+    [0xFB, { name: 'Continue(Sys Realtime)' }],
+    [0xFC, { name: 'Stop(Sys Realtime)' }],
+    [0xFD, { name: '???' }],
+    [0xFE, { name: 'Active Sensing(Sys Realtime)' }],
+    [0xFF, { name: 'System Reset(Sys Realtime)' }],
 ]);
 
+/**
+ * MIDI instruments with number, group, and label
+ */
 const MIDI_INSTRUMENTS = [
     { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' },
     { number: 1, group: 'Piano', label: 'Bright Acoustic Piano' },
