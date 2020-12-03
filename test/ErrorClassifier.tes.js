@@ -3,7 +3,7 @@ import * as ErrorClassifer from '../src/ErrorClassifier';
 
 const NoteState = ErrorClassifer.NoteState;
 
-test('every note on point', () => {
+test.skip('every note on point', () => {
     const gt = [
         GuitarNote.from({ start: 0, end: 1, string: 3, fret: 0 }),
         GuitarNote.from({ start: 1, end: 2, string: 4, fret: 0 }),
