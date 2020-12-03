@@ -25,6 +25,7 @@ import * as Chords from './Chords';
 import * as Alignment from './Alignment';
 import * as Similarity from './Similarity';
 import * as Matching from './Matching';
+import * as StringBased from './stringBased';
 
 export {
     // types
@@ -54,4 +55,5 @@ export {
     Alignment,
     Similarity,
     Matching,
+    StringBased,
 };

@@ -55,14 +55,17 @@ If you like to contribute, feel free to create pull requests or issues.
 
 ## Structure and Dependencies
 
-In VSCode you can generate a dependcy graph via this plugin:
-
-https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser
+In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser).
 
 ## TODO
 
 - Move all library code here
+- Documentation
 - Create tests
   - Unit tests
   - Visual tests, e.g. show piano roll with algo results
-- Implement type/PitchBend.js
+- Add
+  - type/PitchBend.js
+  - FOGSAA algorithm for string matching / distance
+    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/
+    - https://github.com/kjenova/fogsaa
