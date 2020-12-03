@@ -101,7 +101,7 @@ export function pitchSequenceWithoutOctaves(pitchSequence) {
 export function pitchSequenceToInvervals(pitchSequence) {
     const result = new Array(pitchSequence.length - 1);
     for (let i = 1; i < pitchSequence.length; i++) {
-        result.push(pitchSequence[i] - pitchSequence[i - 1]);
+        result[i - 1] = pitchSequence[i] - pitchSequence[i - 1];
     }
     return result;
 }

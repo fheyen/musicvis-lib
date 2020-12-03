@@ -115,4 +115,12 @@ describe('gotoh', () => {
         const result = gotoh(a, b, matchMissmatchSimilarity, -10, -1);
         expect(result).toBe(-8);
     });
+
+    test('default parameters', () => {
+        const a = [1, 2, 3, 4, 5];
+        const b = [1, 2, 3, 0, 0, 0, 0, 4, 5];
+        const result = gotoh(a, b, matchMissmatchSimilarity, -1, -0.1);
+        const result2 = gotoh(a, b);
+        expect(result).toBe(result2);
+    });
 });

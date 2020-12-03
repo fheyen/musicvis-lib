@@ -6,7 +6,7 @@ import { randomInt } from "d3";
  * @param {number} max maximum
  * @returns {number} random float
  */
-export function randFloat(min, max) {
+export function randFloat(min = 0, max = 1) {
     return Math.random() * (max - min) + min;
 }
 
@@ -50,8 +50,9 @@ export function swapSoSmallerFirst(x, y) {
  * boundary.
  * IMPORTANT: does not find plateaus
  * @param {number[]} arr
+ * @returns {number[]} array with indices of maxima
  */
-export function findLocalMaxima(arr, takeMean = false) {
+export function findLocalMaxima(arr) {
     if (arr.length <= 1) { return []; }
     if (arr.length === 2) {
         if (arr[0] > arr[1]) { return [0]; }
@@ -59,51 +60,23 @@ export function findLocalMaxima(arr, takeMean = false) {
         return [];
     }
     // General case with 3 or more
-    const maxima = [];
+    const maximaIndices = [];
     if (arr[0] > arr[1]) {
-        maxima.push(0);
+        maximaIndices.push(0);
     }
     let last = arr[0];
     let curr = arr[1];
     for (let i = 1; i < arr.length - 1; i++) {
         let next = arr[i + 1];
         if (curr > last && curr > next) {
-            maxima.push(i);
+            maximaIndices.push(i);
         }
         last = curr;
         curr = next;
     }
     const lastIndex = arr.length - 1;
     if (arr[lastIndex] > arr[lastIndex - 1]) {
-        maxima.push(arr.length - 1);
+        maximaIndices.push(arr.length - 1);
     }
-    return maxima;
+    return maximaIndices;
 }
-
-// function testFindLocalMaxima() {
-//     const cases = [
-//         { arr: [], result: [] },
-//         { arr: [1], result: [] },
-//         { arr: [1, 2], result: [1] },
-//         { arr: [1, 1], result: [] },
-//         { arr: [1, 1, 1], result: [] },
-//         { arr: [2, 1, 1], result: [0] },
-//         { arr: [1, 2, 1], result: [1] },
-//         { arr: [1, 1, 2], result: [2] },
-//         { arr: [0, 1, 2, 3, 2, 3, 1, 2], result: [3, 5, 7] },
-//     ];
-//     for (const c of cases) {
-//         const { arr, result } = c;
-//         const actual = findLocalMaxima(arr);
-//         if (!arrayShallowEquals(actual, result)) {
-//             console.error(
-//                 `Failed test for findLocalMaxima
-//                 input ${arr.join(', ')}
-//                 actual ${actual.join(', ')}
-//                 expected ${result.join(', ')}
-//                 `
-//             );
-//         }
-//     }
-// }
-// testFindLocalMaxima();
