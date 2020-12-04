@@ -17,7 +17,6 @@ export function arrayShallowEquals(a, b) {
     return true;
 }
 
-
 // TODO: use https://github.com/d3/d3-array/blob/master/README.md#intersection etc
 
 /**

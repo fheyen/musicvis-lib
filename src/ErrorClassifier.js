@@ -4,6 +4,8 @@
  */
 
 import { group } from "d3";
+import { GuitarNote } from "../src/types/GuitarNote";
+import { Note } from "../src/types/Note";
 import * as Utils from "../src/utils";
 
 
@@ -58,13 +60,24 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
         if (gt && rec) {
             // There can by overlaps, handle this in other function
             const { classified, overlapping } = getGtRecOverlaps(gt, rec);
-            const classifiedOverlaps = handleOverlappingNotes(overlapping);
+            const classifiedOverlaps = handleOverlappingNotes(overlapping, threshold);
             classifiedNotes = classifiedNotes.concat(classified);
             classifiedNotes = classifiedNotes.concat(classifiedOverlaps);
         }
     }
     classifiedNotes.sort((a, b) => a.start - b.start);
     return classifiedNotes;
+}
+
+/**
+ * Separates classified GT and rec notes
+ */
+export function separateMissed(classifiedNotes) {
+    const grouped = group(classifiedNotes, d => d.state === NoteState.MISSED);
+    return {
+        missed: grouped.get(true),
+        notMissed: grouped.get(false)
+    };
 }
 
 /**
@@ -90,7 +103,7 @@ export const NoteState = {
     UNKNOWN: "NoteState.UNKNOWN",
 }
 
-class NoteWithState {
+export class NoteWithState {
     /**
      *
      * @param {Note} note
@@ -154,9 +167,10 @@ function getGtRecOverlaps(gtNotes, recNotes) {
 /**
  * Handles overlapping notes by finding best matches and classifying them.
  * @param {Overlap[]} overlapping pairs of GT and rec notes
+ * @param {number} threshold threshold for 'same-ness' in seconds
  * @returns {NoteWithState[]} classified notes
  */
-function handleOverlappingNotes(overlapping) {
+function handleOverlappingNotes(overlapping, threshold) {
     // Create a map gt  to all rec
     //              rec to all gt
     const gtRecMap = new Map();
@@ -252,7 +266,7 @@ function handleOverlappingNotes(overlapping) {
         const { gt, rec } = value;
         possiblyMissedGt.delete(gt);
         possiblyExtraRec.delete(rec);
-        const state = compareNotes(gt, rec);
+        const state = compareNotes(gt, rec, threshold);
         resultingMatchedNotes.push(new NoteWithState(rec, state));
     });
     // certainly missed
@@ -271,10 +285,10 @@ function handleOverlappingNotes(overlapping) {
  * notes that were played on the same fret. If there are none, others will be
  * considered instead.
  * @param {GuitarNote} baseNote
- * @param {GuitarNote} candidates
+ * @param {Set<GuitarNote>} candidates
  * @returns {GuitarNote} best matching note
  */
-function findBestMatch(baseNote, candidates) {
+export function findBestMatch(baseNote, candidates) {
     if (candidates.size === 0) {
         return;
     }
@@ -282,7 +296,9 @@ function findBestMatch(baseNote, candidates) {
     const otherNotes = [];
     // first check if its the same note
     for (const [note] of candidates.entries()) {
+        // TODO: replace by pitch to generalize?
         if (baseNote.fret === note.fret) {
+            // if (baseNote.pitch === note.pitch) {
             sameNotes.push(note);
         } else {
             otherNotes.push(note);
@@ -296,33 +312,36 @@ function findBestMatch(baseNote, candidates) {
 /**
  * Returns the candidate with the least absolute time difference (in the note
  * start) to the baseNote.
- * @param {GuitarNote} baseNote
- * @param {GuitarNote[]} candidates
- * @returns {GuitarNote}
+ * @param {Note} baseNote
+ * @param {Set<Note>} candidates
+ * @returns {Note} best matching note
  */
-function findBestMatchBasedOnTime(baseNote, candidates) {
-    const deltas = candidates.map((value) => Math.abs(baseNote.start - value.start));
+export function findBestMatchBasedOnTime(baseNote, candidates) {
+    const candArr = Array.from(candidates);
+    const deltas = candArr.map((value) => Math.abs(baseNote.start - value.start));
     let minimum = Infinity;
     let bestMatch = 0;
-    deltas.forEach((value, i) => {
+    for (let i = 0; i < deltas.length; i++) {
+        const value = deltas[i];
         if (value < minimum) {
             bestMatch = i;
             minimum = value;
         }
-    });
-    return candidates[bestMatch];
+    }
+    return candArr[bestMatch];
 }
 
 /**
  * Compares two matched notes to determine the state of the actual note
  * A delta of 50 ms is indistinguishable for human hearing
- * @param {*} expectedNote
- * @param {*} actualNote
- * @param {*} threshold
- * @returns {NoteState}
+ * @param {GuitarNote} expectedNote
+ * @param {GuitarNote} actualNote
+ * @param {number} threshold threshold for 'same-ness' in seconds
+ * @returns {NoteState} note state
  */
-function compareNotes(expectedNote, actualNote, threshold = 50) {
+export function compareNotes(expectedNote, actualNote, threshold = 0.05) {
     if (
+        // TODO: replace by pitch to generalize?
         expectedNote.fret !== actualNote.fret ||
         expectedNote.string !== actualNote.string
     ) {
@@ -343,7 +362,7 @@ function compareNotes(expectedNote, actualNote, threshold = 50) {
         // we expect notes to be shorter than noted,
         // as the player needs time to play the next one perfectly
         // educated guess: 100ms should be enough to change to the next note
-        return endDelta > 100 ? NoteState.SHORT : NoteState.SAME;
+        return endDelta > 0.1 ? NoteState.SHORT : NoteState.SAME;
     }
     return startDelta < 0 ? NoteState.LATE : NoteState.EARLY;
 }
