@@ -8,6 +8,7 @@
     "test": "jest",
     "testcov": "jest --coverage",
     "testchanged": "jest --coverage --changedFilesWithAncestor",
+    "testclear": "jest --clearCache",
     "predeploy": "jest && webpack",
     "deploy": "npm publish"
   },

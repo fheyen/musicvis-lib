@@ -57,7 +57,6 @@ export const drumPitchReplacementMapMPS850 = new Map([
     // Bass drum
     [35, { repPitch: 36, zone: 1, order: 110, line: 8, shape: 'o', label: 'BD', name: 'Bass Drum' }],
     [36, { repPitch: 36, zone: 2, order: 111, line: 8, shape: 'o', label: 'BD', name: 'Bass Drum' }],
-    [58, { repPitch: 36, zone: 3, order: 112, line: 8, shape: 'o', label: 'BD', name: 'Bass Drum' }],
 ]);
 
 /**
@@ -80,36 +79,32 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
     const randTime = randomNormal(0, deviation);
     const variation = [];
     for (let note of data) {
-        try {
-            // Add and remove notes at random
-            if (randFloat(0, 1) < pAdd) {
-                // Add another note
-                const start = note.start + randFloat(0, 1);
-                const end = start + randFloat(0, 1);
-                const velocity = randVelocity();
-                const pitch = choose(pitches);
-                variation.push(new Note(
-                    pitch,
-                    start,
-                    velocity,
-                    0,
-                    end
-                ));
-            }
-            if (randFloat(0, 1) < pRemove) {
-                // Remove note (just add nothing to varation)
-            } else {
-                // Shift timings at random
-                const start = note.start + randTime();
-                const end = note.end + randTime();
-                // Get new note
-                const newNote = Note.from(note);
-                newNote.start = Math.min(start, end);
-                newNote.end = Math.max(start, end);
-                variation.push(newNote);
-            }
-        } catch (e) {
-            console.warn(e);
+        // Add and remove notes at random
+        if (randFloat(0, 1) < pAdd) {
+            // Add another note
+            const start = note.start + randFloat(0, 1);
+            const end = start + randFloat(0, 1);
+            const velocity = randVelocity();
+            const pitch = choose(pitches);
+            variation.push(new Note(
+                pitch,
+                start,
+                velocity,
+                0,
+                end
+            ));
+        }
+        if (randFloat(0, 1) < pRemove) {
+            // Remove note (just add nothing to varation)
+        } else {
+            // Shift timings at random
+            const start = note.start + randTime();
+            const end = note.end + randTime();
+            // Get new note
+            const newNote = Note.from(note);
+            newNote.start = Math.min(start, end);
+            newNote.end = Math.max(start, end);
+            variation.push(newNote);
         }
     }
     // Sort notes by start just in case
@@ -125,8 +120,7 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
  */
 export function simplifyDrumPitches(notes, replacementMap) {
     if (!replacementMap) {
-        console.error('Data.simplifyDrumPitches: No replacement map given!');
-        return notes;
+        throw 'No replacement map given!';
     }
     const errors = new Set();
     const simplified = notes.map(note => {

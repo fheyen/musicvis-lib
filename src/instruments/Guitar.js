@@ -90,18 +90,18 @@ export const stringedTunings = new Map([
 ]);
 
 /**
- *
- * @param {Note[]} note a Note that has the guitar string stored in its channel
+ * For Notes that have a guitar string encoded in their channel, this function
+ * allows to convert them to a GuitarNote.
+ * @param {Note} note a Note that has the guitar string stored in its channel
  *      e.g. 0 to 5 for a six string
  * @param {StringedTuning} tuning
  * @returns {GuitarNote} a GuitarNote
  */
 export function guitarNoteFromNote(note, tuning) {
     const string = note.channel;
-    const pitch = note.pitch;
-    const fret = pitch - tuning.pitches[string];
-    const gn = GuitarNote.fromNote(note, string, fret);
-    return gn;
+    const reversedString = tuning.stringCount - string - 1;
+    const fret = note.pitch - tuning.pitches[reversedString];
+    return GuitarNote.fromNote(note, string, fret);
 }
 
 /**
@@ -111,20 +111,17 @@ export function guitarNoteFromNote(note, tuning) {
  * @returns {StringedTuning|null} the found tuning or null
  */
 export function getTuningFromPitches(pitches) {
-    console.log('getting tuning for pitches', pitches);
     const stringCount = pitches.length;
-    stringedTunings.forEach((tuningsByStringCount, instrument) => {
-        if (tuningsByStringCount.has(stringCount)) {
-            const tunings = tuningsByStringCount.get(stringCount);
+    for (let stringCountMap of stringedTunings.values()) {
+        if (stringCountMap.has(stringCount)) {
+            const tunings = stringCountMap.get(stringCount);
             for (let t of tunings) {
-                console.log(t.pitches);
                 if (arrayShallowEquals(t.pitches, pitches)) {
-                    console.log('found', t);
                     return t;
                 }
             }
         }
-    });
+    }
     return null;
 }
 
@@ -135,8 +132,10 @@ export function getTuningFromPitches(pitches) {
  * @returns {number[]} [minPitch, maxPitch]
  */
 export function getTuningPitchRange(tuning, fretCount = 24) {
-    const openExtent = extent(tuning.pitches);
-    return [openExtent[0], openExtent[1] + fretCount];
+    // const openExtent = extent(tuning.pitches);
+    const openMax = tuning.pitches[tuning.stringCount - 1];
+    const openMin = tuning.pitches[0];
+    return [openMin, openMax + fretCount];
 }
 
 /**
@@ -216,8 +215,9 @@ export function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
  * @param {StringedTuning} tuning
  * @param {number} fretCount number of frets the instrument has
  */
-export function getFretboardPositionsFromNoteName(name, tuning, fretCount) {
+export function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) {
     const n = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    if (!n.includes(name)) { return null; }
     const positions = [];
     const lowestPitch = n.indexOf(name);
     const stringCount = tuning.stringCount;
@@ -245,16 +245,17 @@ export function getFretboardPositionsFromNoteName(name, tuning, fretCount) {
  * Generates example MIDI-like data (preprocessed MIDI).
  * @param {number} startTime start tick
  * @param {number} count number of notes to generate
+ * @param {StringedTuning} tuning
  * @returns {GuitarNote[]} notes
  */
-export function generateExampleData(startTime = 0, count = 50) {
+export function generateExampleData(startTime = 0, count = 50, tuning) {
     let currentTime = startTime;
     return new Array(count).fill(0).map((d, i) => {
         const start = currentTime + randFloat(0, 1);
         currentTime = start + randFloat(0, 1);
         const string = randomInt(1, 7);
         const fret = randomInt(0, 25);
-        const pitch = getPitchFromFretboardPos(string, fret);
+        const pitch = getPitchFromFretboardPos(string, fret, tuning);
         const velocity = randomInt(15, 127);
         return new GuitarNote(
             pitch,
@@ -277,7 +278,7 @@ export function generateExampleData(startTime = 0, count = 50) {
  * @returns {GuitarNote[]} GuitarNotes with fretboard positions
  */
 export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
-    if (!notes || notes.length === 0) { return []; };
+    if (!notes || notes.length === 0) { return []; }
     if (!tuning || !tuning.pitches) {
         console.warn('Invalid tuning parameter!');
         return [];
@@ -329,32 +330,11 @@ export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
 }
 
 /**
- * Converts Notes to GuitarNotes, requires the channel attribute to equal the
- * instrument's string number
- * TODO: not used yet, test when we have new recordings
- * @param {Note[]} notes notes with channel == string
- * @returns {GuitarNote[]} GuitarNotes with fretboard positions
- */
-export function fretboardPosititionsFromMidiChannel(notes) {
-    const tuning = stringedTunings.get('guitar').get(6)[0];
-    const openPitches = tuning.pitches;
-    return notes.map(note => {
-        const string = note.channel;
-        // TODO: might be wrong index
-        const fret = note.pitch - openPitches[string];
-        return GuitarNote.fromNote(note, string, fret);
-    });
-}
-
-
-
-
-/**
  * TODO: chords always? use 4-fret-blocks
  * @param {GuitarNote[]} notes notes with fretboard positions
  * @returns {?} fingering information
  */
-export function fingeringFromFretboardPositions(notes) {
+// export function fingeringFromFretboardPositions(notes) {
     // TODO: detect chords first?
     // TODO: then lookup chords' fingerings from a lookup table
 
@@ -366,4 +346,4 @@ export function fingeringFromFretboardPositions(notes) {
 
 
 
-}
+// }
