@@ -2,9 +2,8 @@
 
 1. [Types](#types)
    1. [Overview](#overview)
-   2. [Note](#note)
-   3. [NoteArray](#notearray)
-   4. [Examples](#examples)
+   2. [Track](#track)
+   3. [Measure](#measure)
 
 The types are roughly based on the MusicXML format.
 
@@ -13,6 +12,26 @@ The types are roughly based on the MusicXML format.
 Overview of the type definitions (classes).
 
 ```
+    +-------------------+
+    | Track             |
+    +-------------------+
+    | - parts:Part[]    |
+    | - title:string    |
+    +-------------------+
+          |
+          | contains multiple
+          V
+    +-------------------+
+    | Measure           |
+    +-------------------+
+    | - notes:NoteArray |
+    | - bpm:number      |
+    | - beats:number    |
+    | - beatType:number |
+    +-------------------+
+          |
+          | contains one
+          V
     +-------------------+             +---------------------+
     | NoteArray         |             | Recording           |
     +-------------------+             +---------------------+
@@ -33,37 +52,12 @@ Overview of the type definitions (classes).
     +-------------------+
 ```
 
-## Note
+## Track
 
-- Simple representation of a note
-- Uses absolute time in seconds
+- Serves to represent an entire piece of music with one instrument.
+- Consists of multiple Parts
 
+## Measure
 
-## NoteArray
-
-
-This class serves to simplify handling a collection of Note objects.
-
-- Allows for easy manipulations of Note objects, such as sorting, time changes, ...
-- Is agnostic to tempo etc.
-- Contains multiple Notes
-
-## Examples
-
-```js
-const notes = [
-    // Some Note objects
-];
-const noteArr = new NoteArray(notes)
-    // Add more notes (all notes will be sorted by time by default after this)
-    .addNotes([])
-    // Scale all note's sart and end time to make a track slower or faster
-    .scaleTime(0.5)
-    // Do more ...
-    // This class also mirrors many functions from the Array class
-    .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
-
-// Get Note objects back in a simple Array
-const transformedNotes = noteArr.getNotes();
-// [Note, Note, Note, ...]
-```
+- Has fixed tempo (BPM) and beat type
+- Contains one NoteArray
