@@ -31,9 +31,12 @@ describe('NeedlemanWunsch', () => {
 
     // TODO: more tests
 
-    // test('insert end', () => {
-    //     expect(levenshtein('1234', '12345')).toBe(1);
-    // });
+    test.skip('insert end', () => {
+        const nw = new NeedlemanWunsch('1234', '12345');
+        const tb = nw.alignmentTraceback();
+        expect(tb).toStrictEqual([{ seq1: '-4321', seq2: '54321' }]);
+        expect(nw.score).toBe(3);
+    });
 
     // test('insert begin', () => {
     //     expect(levenshtein('1234', '01234')).toBe(1);

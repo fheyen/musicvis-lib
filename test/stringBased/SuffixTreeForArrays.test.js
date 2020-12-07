@@ -4,12 +4,12 @@ import SuffixTree from '../../src/stringBased/SuffixTree';
 describe('SuffixTreeForArrays', () => {
     test('undefined', () => {
         expect(new SuffixTreeForArrays().toJson()).toEqual(
-            JSON.stringify({ "value": "", "leaves": [], "nodes": [] })
+            JSON.stringify({ "value": [], "leaves": [], "nodes": [] })
         );
     });
     test('empty', () => {
         expect(new SuffixTreeForArrays([]).toJson()).toEqual(
-            JSON.stringify({ "value": "", "leaves": [], "nodes": [] })
+            JSON.stringify({ "value": [], "leaves": [], "nodes": [] })
         );
     });
 
