@@ -151,5 +151,13 @@ describe('normalizedGotoh', () => {
         expect(normalizedGotoh('1234', '1234', matchMissmatchSimilarity, -1, -1)).toBe(1);
     });
 
+    test('default parameters', () => {
+        const a = [1, 2, 3, 4, 5];
+        const b = [1, 2, 3, 0, 0, 0, 0, 4, 5];
+        const result = normalizedGotoh(a, b, matchMissmatchSimilarity, -1, -0.1);
+        const result2 = normalizedGotoh(a, b);
+        expect(result).toBe(result2);
+    });
+
     // TODO: more tests?
 });

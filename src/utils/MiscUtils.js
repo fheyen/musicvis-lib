@@ -110,6 +110,7 @@ export function pitchSequenceToInvervals(pitchSequence) {
  * Given some notes and a target note, finds
  * the note that has its start time closest to
  * the one of targetNote
+ * TODO: move to matching, replace by d3 argmin or sth?
  * @param {Note[]} notes
  * @param {Note} targetNote
  * @returns {Note} closest note to targetNote
