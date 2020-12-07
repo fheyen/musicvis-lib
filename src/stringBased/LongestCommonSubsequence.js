@@ -1,17 +1,17 @@
 /**
  * Calculates the longest common subsequence.
  * From https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
- * @param {string|Array} x a string
- * @param {string|Array} y another string
+ * @param {string|Array} a a string
+ * @param {string|Array} b another string
  * @returns {string|Array} the longest common subsequence
  */
-export function lcs(x, y) {
+export function lcs(a, b) {
     // Make sure shorter string is the column string
-    const m = x.length;
-    const n = y.length;
+    const m = a.length;
+    const n = b.length;
     // Return now if one (or both) empty
-    if (x.length === 0) { return x; }
-    if (y.length === 0) { return y; }
+    if (a.length === 0) { return a; }
+    if (b.length === 0) { return b; }
     let i, j, lcs = [], row = [], c = [], left, diag, latch;
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
@@ -19,7 +19,7 @@ export function lcs(x, y) {
         c[i] = row = row.slice();
         for (diag = 0, j = 0; j < n; j++, diag = latch) {
             latch = row[j];
-            if (x[i] === y[j]) {
+            if (a[i] === b[j]) {
                 row[j] = diag + 1;
             } else {
                 left = row[j - 1] || 0;
@@ -37,7 +37,7 @@ export function lcs(x, y) {
         switch (c[i][j]) {
             default:
                 j--;
-                lcs.unshift(x[i]);
+                lcs.unshift(a[i]);
             // eslint-disable-next-line
             case (i && c[i - 1][j]):
                 i--;
@@ -47,7 +47,7 @@ export function lcs(x, y) {
         }
     }
     // Only join when x and y are strings
-    if ((x instanceof Array) || (y instanceof Array)) {
+    if ((a instanceof Array) || (b instanceof Array)) {
         return lcs;
     } else {
         return lcs.join('');
@@ -58,17 +58,17 @@ export function lcs(x, y) {
  * Calculates the *length* of the longest common subsequence.
  * Also works with arrays.
  * From https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
- * @param {string|Array} x a string
- * @param {string|Array} y another string
+ * @param {string|Array} a a string
+ * @param {string|Array} b another string
  * @returns {number} the length of longest common subsequence
  */
-export function lcsLength(x, y) {
+export function lcsLength(a, b) {
     // Make sure shorter string is the column string
-    const m = x.length;
-    const n = y.length;
+    const m = a.length;
+    const n = b.length;
     // Return now if one (or both) empty
-    if (x.length === 0) { return 0; }
-    if (y.length === 0) { return 0; }
+    if (a.length === 0) { return 0; }
+    if (b.length === 0) { return 0; }
     let i, j, row = [], c = [], left, diag, latch;
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
@@ -76,7 +76,7 @@ export function lcsLength(x, y) {
         c[i] = row = row.slice();
         for (diag = 0, j = 0; j < n; j++, diag = latch) {
             latch = row[j];
-            if (x[i] === y[j]) {
+            if (a[i] === b[j]) {
                 row[j] = diag + 1;
             } else {
                 left = row[j - 1] || 0;
@@ -90,4 +90,20 @@ export function lcsLength(x, y) {
     j--;
     // row[j] now contains the length of the lcs
     return row[j];
+}
+
+
+/**
+ * Normalizes the result of lcsLength() by dividing by the longer string's
+ * length.
+ * @param {string|Array} a a string
+ * @param {string|Array} b another string
+ * @returns {number} normalized length of longest common subsequence
+ */
+export function normalizedLcsLength(a, b) {
+    const longerLength = Math.max(a.length, b.length);
+    if (longerLength === 0) {
+        return 0;
+    }
+    return lcsLength(a, b) / longerLength;
 }

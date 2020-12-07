@@ -1,4 +1,4 @@
-import { lcs, lcsLength } from '../../src/stringBased/LongestCommonSubsequence';
+import { lcs, lcsLength, normalizedLcsLength } from '../../src/stringBased/LongestCommonSubsequence';
 
 describe('lcsLength', () => {
     test('both empty: 0', () => {
@@ -11,6 +11,10 @@ describe('lcsLength', () => {
 
     test('right empty: 0', () => {
         expect(lcsLength('1234', '')).toBe(0);
+    });
+
+    test('same', () => {
+        expect(lcsLength('12345', '12345')).toBe(5);
     });
 
     test('insert end', () => {
@@ -56,6 +60,38 @@ describe('lcsLength', () => {
     });
 });
 
+describe('normalizedLcsLength', () => {
+    test('both empty: 0', () => {
+        expect(normalizedLcsLength('', '')).toBe(0);
+    });
+
+    test('left empty: 0', () => {
+        expect(normalizedLcsLength('', '123')).toBe(0);
+    });
+
+    test('right empty: 0', () => {
+        expect(normalizedLcsLength('1234', '')).toBe(0);
+    });
+
+    test('same', () => {
+        expect(normalizedLcsLength('12345', '12345')).toBe(1);
+    });
+
+    test('insert end', () => {
+        expect(normalizedLcsLength('1234', '12345')).toBe(0.8);
+    });
+
+    test('numbers', () => {
+        const a = [1, 2, 3, 4];
+        const b = [1, 2, 3, 3, 4, 5];
+        expect(normalizedLcsLength(a, b)).toBe(4 / 6);
+    });
+
+    test('example2', () => {
+        expect(normalizedLcsLength('thisisatest', 'testing123testing')).toBe(7 / 17);
+    });
+});
+
 describe('lcs', () => {
     test('both empty: 0', () => {
         expect(lcs('', '')).toBe('');
@@ -67,6 +103,10 @@ describe('lcs', () => {
 
     test('right empty: 0', () => {
         expect(lcs('1234', '')).toBe('');
+    });
+
+    test('same', () => {
+        expect(lcs('12345', '12345')).toBe('12345');
     });
 
     test('insert end', () => {

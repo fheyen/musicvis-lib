@@ -1,4 +1,4 @@
-import { gotoh, matchMissmatchSimilarity, differenceSimilarity } from '../../src/stringBased/Gotoh';
+import { gotoh, normalizedGotoh, matchMissmatchSimilarity, differenceSimilarity } from '../../src/stringBased/Gotoh';
 
 describe('matchMissmatchSimilarity', () => {
     test('equal', () => {
@@ -44,6 +44,15 @@ describe('gotoh', () => {
     test('same', () => {
         expect(gotoh('1234', '1234', matchMissmatchSimilarity, -1, -1)).toBe(4);
     });
+
+    test('double', () => {
+        expect(gotoh('1234', '12341234', matchMissmatchSimilarity, -1, -1)).toBe(0);
+    });
+
+    test('half', () => {
+        expect(gotoh('12341234', '1234', matchMissmatchSimilarity, -1, -1)).toBe(0);
+    });
+
 
     test('insert end', () => {
         expect(gotoh('1234', '12345', matchMissmatchSimilarity, -1, -1)).toBe(3);
@@ -123,4 +132,24 @@ describe('gotoh', () => {
         const result2 = gotoh(a, b);
         expect(result).toBe(result2);
     });
+});
+
+describe('normalizedGotoh', () => {
+    test('both empty: 0', () => {
+        expect(normalizedGotoh('', '', matchMissmatchSimilarity)).toBe(0);
+    });
+
+    test('left empty', () => {
+        expect(normalizedGotoh('', '123', matchMissmatchSimilarity, -1, -1)).toBe(-1);
+    });
+
+    test('right empty', () => {
+        expect(normalizedGotoh('1234', '', matchMissmatchSimilarity, -1, -1)).toBe(-1);
+    });
+
+    test('same', () => {
+        expect(normalizedGotoh('1234', '1234', matchMissmatchSimilarity, -1, -1)).toBe(1);
+    });
+
+    // TODO: more tests?
 });

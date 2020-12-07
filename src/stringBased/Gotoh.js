@@ -20,6 +20,8 @@ export function gotoh(
     gapPenaltyStart = -1,
     gapPenaltyExtend = -0.1
 ) {
+    // check if strings are empty
+    if (seqA.length === 0 && seqB.length === 0) { return 0; }
     // gap penalty function
     const gap = (index) => gapPenaltyStart + (index - 1) * gapPenaltyExtend;
     // maximum of 3 values
@@ -64,6 +66,35 @@ export function gotoh(
         b[lenA][lenB],
         c[lenA][lenB]
     );
+}
+
+/**
+ * Idea: what would the max. similarity value be? the string with itself!
+ * So just compare the longer string to itself and use that similarity to
+ * normalize
+ * TODO: does this work with negative costs and/or results?
+ * TODO: can this be optimized since only the similarityFunction is needed?
+ * @param {*} seqA
+ * @param {*} seqB
+ * @param {*} similarityFunction
+ * @param {*} gapPenaltyStart
+ * @param {*} gapPenaltyExtend
+ */
+export function normalizedGotoh(
+    seqA,
+    seqB,
+    similarityFunction = matchMissmatchSimilarity,
+    gapPenaltyStart = -1,
+    gapPenaltyExtend = -0.1
+) {
+    const similarity = gotoh(seqA, seqB, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
+    const longer = seqA.length >= seqB.length ? seqA : seqB;
+    const maxSimilarity = gotoh(longer, longer, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
+    if (maxSimilarity === 0) {
+        // TODO: can this happen? what would be reasonable here?
+        return similarity;
+    }
+    return similarity / maxSimilarity;
 }
 
 /**

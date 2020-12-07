@@ -49,3 +49,19 @@ export function levenshtein(a, b) {
     }
     return row[a.length];
 }
+
+
+/**
+ * Normalizes the result of levenshtein() by dividing by the longer string's
+ * length.
+ * @param {string|Array} a a string
+ * @param {string|Array} b another string
+ * @returns {number} Levenshtein distance
+ */
+export function normalizedLevenshtein(a, b) {
+    const longerLength = Math.max(a.length, b.length);
+    if (longerLength === 0) {
+        return 0;
+    }
+    return levenshtein(a, b) / longerLength;
+}
