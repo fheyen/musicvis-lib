@@ -4,9 +4,9 @@
  */
 
 import { group } from "d3";
-import { GuitarNote } from "../src/types/GuitarNote";
-import { Note } from "../src/types/Note";
-import * as Utils from "../src/utils";
+import { GuitarNote } from "../types/GuitarNote";
+import { Note } from "../types/Note";
+import * as Utils from "../utils";
 
 
 

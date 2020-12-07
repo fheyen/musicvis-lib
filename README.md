@@ -48,6 +48,19 @@ const note = Note.from({
 - [fheyen.github.io/midi-chords](https://fheyen.github.io/midi-chords/)
 - [fheyen.github.io/midi-recorder](https://fheyen.github.io/midi-recorder/)
 
+## Documentation (unfinished)
+
+- musicvis-lib/
+  - [audioOutput/](./src/audioOutput/)
+  - [fileFormats/](./src/fileFormats/)
+  - [input/](./src/input/)
+  - [instruments/](./src/instruments/)
+  - [stringBased/](./src/stringBased/)
+  - [types/](./src/types/)
+  - [utils/](./src/utils/)
+  - [Alignment/](./src/utils/)
+  -
+
 ## Contribution
 
 If you like to contribute, feel free to create pull requests or issues.

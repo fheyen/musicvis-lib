@@ -1,5 +1,5 @@
 import { group } from 'd3';
-import *as Utils from './utils';
+import * as Utils from '../utils';
 
 /**
  * For one recording, separately for each pitch,

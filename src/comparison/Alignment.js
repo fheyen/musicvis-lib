@@ -1,8 +1,8 @@
 import { matchGtAndRecordingNotes } from './Matching';
 import { randomInt, randomLcg, randomUniform, median } from 'd3';
-import * as Drums from './instruments/Drums';
-import Note from './types/Note';
-import NoteArray from './types/NoteArray';
+import * as Drums from '../instruments/Drums';
+import Note from '../types/Note';
+import NoteArray from '../types/NoteArray';
 
 /**
  * Given two NoteArrays, shift the second one in time such that they are aligned

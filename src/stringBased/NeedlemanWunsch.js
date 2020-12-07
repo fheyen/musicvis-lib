@@ -6,8 +6,8 @@
  */
 export default class NeedlemanWunsch {
     /**
-     * @param {string} seq1 a string
-     * @param {string} seq2 another string
+     * @param {string|Array} seq1 a string
+     * @param {string|Array} seq2 another string
      * @param {number} match_score score for matching characters
      * @param {number} mismatch_penalty penalty for mismatching characters
      * @param {number} gap_penalty penalty for a gap
@@ -87,13 +87,16 @@ export default class NeedlemanWunsch {
         const [i, j] = pos;
         const children = [];
         const traceback_type_status = this.T[i][j];
-        if (traceback_type_status[0]) { // insert
+        if (traceback_type_status[0]) {
+            // insert
             children.push({ pos: [i, j - 1], tracebackType: 0 });
         }
-        if (traceback_type_status[1]) { // match
+        if (traceback_type_status[1]) {
+            // match
             children.push({ pos: [i - 1, j - 1], tracebackType: 1 });
         }
-        if (traceback_type_status[2]) { // delete
+        if (traceback_type_status[2]) {
+            // delete
             children.push({ pos: [i - 1, j], tracebackType: 2 });
         }
         return children;
@@ -101,7 +104,7 @@ export default class NeedlemanWunsch {
 
     /**
      * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
-     * @returns {Array}
+     * @returns {Object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
      */
     alignmentTraceback() {
         let final_alignments = [];
@@ -109,8 +112,9 @@ export default class NeedlemanWunsch {
             next: null,
             pos: [this.seq1.length, this.seq2.length],
             alignment: {
-                seq1: "",
-                seq2: ""
+                seq1: '',
+                seq2: '',
+                // score: this.score,
             }
         };
         let current, child, children, len, alignment, pos, t;
@@ -129,9 +133,10 @@ export default class NeedlemanWunsch {
                 child = children[t];
                 child.alignment = {
                     // -1 refers to offset between  scoring matrix and the sequence
-                    seq1: alignment.seq1.concat(child.tracebackType === 0 ? "-" : this.seq1[pos[0] - 1]),
-                    seq2: alignment.seq2.concat(child.tracebackType === 2 ? "-" : this.seq2[pos[1] - 1])
-
+                    seq1: alignment.seq1.concat(child.tracebackType === 0 ? '-' : this.seq1[pos[0] - 1]),
+                    seq2: alignment.seq2.concat(child.tracebackType === 2 ? '-' : this.seq2[pos[1] - 1]),
+                    // TODO: add score for this alignment
+                    // score: alignment.score - this.S[pos[0]][pos[1]]
                 };
                 // Move down a layer
                 child.next = current;

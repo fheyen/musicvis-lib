@@ -18,13 +18,14 @@ import * as Drums from './instruments/Drums';
 import * as Guitar from './instruments/Guitar';
 import * as Piano from './instruments/Piano';
 import * as StringedFingering from './instruments/StringedFingering';
+// comparison
+import * as Alignment from './comparison/Alignment';
+import * as Similarity from './comparison/Similarity';
+import * as Matching from './comparison/Matching';
 // libraries
 import * as Midi from './Midi';
 import * as Utils from './utils';
 import * as Chords from './Chords';
-import * as Alignment from './Alignment';
-import * as Similarity from './Similarity';
-import * as Matching from './Matching';
 import * as StringBased from './stringBased';
 
 export {
@@ -48,12 +49,13 @@ export {
     Guitar,
     Piano,
     StringedFingering,
+    // comparison
+    Alignment,
+    Similarity,
+    Matching,
     // libraries
     Midi,
     Utils,
     Chords,
-    Alignment,
-    Similarity,
-    Matching,
     StringBased,
 };

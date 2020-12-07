@@ -1,6 +1,6 @@
-import GuitarNote from '../src/types/GuitarNote';
-import Note from '../src/types/Note';
-import * as ErrorClassifier from '../src/ErrorClassifier';
+import GuitarNote from '../../src/types/GuitarNote';
+import Note from '../../src/types/Note';
+import * as ErrorClassifier from '../../src/comparison/ErrorClassifier';
 
 const NoteState = ErrorClassifier.NoteState;
 
