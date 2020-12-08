@@ -45,7 +45,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
         const recNotes = groupedByPitchRec.get(pitch);
         for (let r of recNotes) {
             // Match each recorded note to the closest ground truth note
-            const nearest = Utils.findNearest(gtNotes, r);
+            const nearest = findNearest(gtNotes, r);
             const currentEntry = gtRecMap.get(nearest.start);
             if (currentEntry === null) {
                 // If empty, take
@@ -125,7 +125,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
         const recNotes = groupedByPitchRec.get(pitch);
         for (let r of recNotes) {
             // Match each recorded note to the closest ground truth note
-            const nearest = Utils.findNearest(gtNotes, r);
+            const nearest = findNearest(gtNotes, r);
             const currentEntry = gtRecMap.get(nearest.start);
             currentEntry.push(r);
             gtRecMap.set(nearest.start, currentEntry);
