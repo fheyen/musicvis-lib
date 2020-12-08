@@ -13,9 +13,10 @@ NPM: https://www.npmjs.com/package/musicvis-lib
    2. [Setup](#setup)
    3. [How to use](#how-to-use)
    4. [Examples](#examples)
-   5. [Contribution](#contribution)
-   6. [Structure and Dependencies](#structure-and-dependencies)
-   7. [TODO](#todo)
+   5. [Documentation (unfinished)](#documentation-unfinished)
+   6. [Contribution](#contribution)
+   7. [Structure and Dependencies](#structure-and-dependencies)
+   8. [TODO](#todo)
 
 ## Mission
 
@@ -52,14 +53,15 @@ const note = Note.from({
 
 - musicvis-lib/
   - [audioOutput/](./src/audioOutput/)
+  - [comparison/](./src/comparison/)
   - [fileFormats/](./src/fileFormats/)
   - [input/](./src/input/)
   - [instruments/](./src/instruments/)
   - [stringBased/](./src/stringBased/)
   - [types/](./src/types/)
   - [utils/](./src/utils/)
-  - [Alignment/](./src/utils/)
-  -
+  - Midi
+  - Chords
 
 ## Contribution
 

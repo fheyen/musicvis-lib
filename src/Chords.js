@@ -228,6 +228,6 @@ export function testGetChordType() {
  * TODO: use tonaljs
  * TODO: use this https://github.com/greird/chordictionaryjs
  */
-export function getNotesFromChordName(name, length = 1, start = 0) {
-    console.error('NIY');
-}
+// export function getNotesFromChordName(name, length = 1, start = 0) {
+//     console.error('NIY');
+// }
