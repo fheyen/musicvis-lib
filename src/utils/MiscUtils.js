@@ -41,11 +41,11 @@ export function groupNotesByPitch(tracks) {
  * @param {Note[]} notes array with Note objects
  * @returns {Note[]} notes array with filtered Note objects
  */
-export function keepOnlyHighestConcurrentNotes(notes) {
-    const grp = Array.from(group(notes, d => d.start));
-    grp.sort((a, b) => a.start - b.start);
+// export function keepOnlyHighestConcurrentNotes(notes) {
+//     const grp = Array.from(group(notes, d => d.start));
+//     grp.sort((a, b) => a.start - b.start);
 
-}
+// }
 
 /**
  * Sorts notes by time and pitch, then maps them to an array of their pitches.
@@ -104,27 +104,4 @@ export function pitchSequenceToInvervals(pitchSequence) {
         result[i - 1] = pitchSequence[i] - pitchSequence[i - 1];
     }
     return result;
-}
-
-/**
- * Given some notes and a target note, finds
- * the note that has its start time closest to
- * the one of targetNote
- * TODO: move to matching, replace by d3 argmin or sth?
- * @param {Note[]} notes
- * @param {Note} targetNote
- * @returns {Note} closest note to targetNote
- */
-export function findNearest(notes, targetNote) {
-    let nearest = null;
-    let dist = Infinity;
-    const targetStart = targetNote.start;
-    for (let n of notes) {
-        const newDist = Math.abs(n.start - targetStart);
-        if (newDist < dist) {
-            dist = newDist;
-            nearest = n;
-        }
-    }
-    return nearest;
 }

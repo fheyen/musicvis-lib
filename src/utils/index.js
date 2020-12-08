@@ -1,8 +1,8 @@
-import { arrayShallowEquals, removeDuplicates, arrayContainsArray, arrayHasSameElements, flattenArray, getMatrixMax, printMatrix } from './ArrayUtils';
+import { arrayShallowEquals, removeDuplicates, arrayContainsArray, arrayHasSameElements, flattenArray, getMatrixMax, formatMatrix } from './ArrayUtils';
 import { formatDate, formatTime, formatSongTitle } from './FormattingUtils';
 import { storeObjectInLocalStorage, getObjectFromLocalStorage } from './LocalStorageUtils';
 import { randFloat, choose, clipValue, swapSoSmallerFirst, findLocalMaxima } from './MathUtils';
-import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, keepOnlyHighestConcurrentNotes, noteArrayToPitchSequence, noteArrayToString, reverseString, pitchSequenceToInvervals, findNearest } from './MiscUtils';
+import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, noteArrayToPitchSequence, noteArrayToString, reverseString, pitchSequenceToInvervals } from './MiscUtils';
 import { noteColorFromPitch } from './NoteColorUtils';
 import { filterRecordingNoise, clipRecordingsPitchesToGtRange, recordingsHeatmap, averageRecordings, averageRecordings2, differenceMap, differenceMapErrorAreas, alignNotesToBpm } from './RecordingsUtils';
 import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from './StatisticsUtils';
@@ -16,7 +16,7 @@ export {
     arrayHasSameElements,
     flattenArray,
     getMatrixMax,
-    printMatrix,
+    formatMatrix,
     // Formatting
     formatDate,
     formatTime,
@@ -34,12 +34,10 @@ export {
     bpmToSecondsPerBeat,
     deepCloneFlatObjectMap,
     groupNotesByPitch,
-    keepOnlyHighestConcurrentNotes,
     noteArrayToPitchSequence,
     noteArrayToString,
     reverseString,
     pitchSequenceToInvervals,
-    findNearest,
     // NoteColor
     noteColorFromPitch,
     // Recordings

@@ -92,24 +92,28 @@ export function flattenArray(array) {
 export function getMatrixMax(matrix) {
     let maximum = -Infinity;
     for (let row of matrix) {
-        const value = Math.max(...row);
-        if (value > maximum) {
-            maximum = value;
+        for (let value of row) {
+            if (isNaN(+value)) { continue; }
+            if (value > maximum) {
+                maximum = value;
+            }
         }
     }
     return maximum;
 }
 
 /**
- * Prints a 2D array / matrix onto the console.
+ * Stringifies a 2D array / matrix for logging onto the console.
  * @param {any[][]} matrix the matrix
  * @param {string} colSep column separator
  * @param {string} rowSep row separator
  * @param {Function} formatter formatting for each element
+ * @returns {string} stringified matrix
  */
-export function printMatrix(matrix, colSep = ', ', rowSep = '\n', formatter) {
+export function formatMatrix(matrix, colSep = ', ', rowSep = '\n', formatter) {
+    if (!matrix || !matrix.length) { return ''; }
     if (formatter) {
         matrix = matrix.map(row => row.map(value => formatter(value)));
     }
-    console.log(matrix.map(row => row.join(colSep)).join(rowSep));
+    return matrix.map(row => row.join(colSep)).join(rowSep);
 }

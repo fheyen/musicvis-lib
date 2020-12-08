@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, flattenArray } from '../../src/utils/ArrayUtils';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, flattenArray, getMatrixMax, formatMatrix } from '../../src/utils/ArrayUtils';
 
 
 describe('arrayContainsArray', () => {
@@ -169,5 +169,80 @@ describe('flattenArray', () => {
             [7, 8, 9]
         ];
         expect(flattenArray(matrix)).toStrictEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+});
+
+describe('getMatrixMax', () => {
+    test('empty', () => {
+        expect(getMatrixMax([])).toBe(-Infinity);
+    });
+
+    test('1x1 matrix', () => {
+        const matrix = [[1]];
+        expect(getMatrixMax(matrix)).toBe(1);
+    });
+
+    test('sorted matrix', () => {
+        const matrix = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ];
+        expect(getMatrixMax(matrix)).toBe(9);
+    });
+
+    test('invalid value', () => {
+        const matrix = [
+            [1, 2, 3],
+            [4, null, 6]
+        ];
+        expect(getMatrixMax(matrix)).toBe(6);
+    });
+
+    test('invalid value 2', () => {
+        const matrix = [
+            [1, 2, 3],
+            [4, 'hello', 6]
+        ];
+        expect(getMatrixMax(matrix)).toBe(6);
+    });
+
+    test('negative matrix', () => {
+        const matrix = [
+            [-4, 5, -6],
+            [-1, -2, -3],
+            [7, -8, -9]
+        ];
+        expect(getMatrixMax(matrix)).toBe(7);
+    });
+});
+
+describe('printMatrix', () => {
+    test('empty', () => {
+        expect(formatMatrix([])).toBe('');
+    });
+
+    test('1x1 matrix', () => {
+        const matrix = [[1]];
+        expect(formatMatrix(matrix)).toBe('1');
+    });
+
+    test('sorted matrix', () => {
+        const matrix = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ];
+        expect(formatMatrix(matrix, ', ', '-')).toBe('1, 2, 3-4, 5, 6-7, 8, 9');
+    });
+
+    test('formatter', () => {
+        const matrix = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ];
+        const formatter = value => 2 * value;
+        expect(formatMatrix(matrix, ', ', '-', formatter)).toBe('2, 4, 6-8, 10, 12-14, 16, 18');
     });
 });
