@@ -20,6 +20,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
     "@babel/preset-env": "^7.12.7",
+    "@types/jest": "^26.0.18",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "eslint": "^7.15.0",
@@ -35,7 +36,7 @@
     "@tonaljs/tonal": "^4.6.0",
     "d3": "^6.3.0",
     "dynamic-time-warping-2": "^1.1.2",
-    "soundfont-player": "^0.12.0",
-    "npm-check-updates": "^10.2.3"
+    "npm-check-updates": "^10.2.3",
+    "soundfont-player": "^0.12.0"
   }
 }
