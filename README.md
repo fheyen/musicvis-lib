@@ -1,18 +1,17 @@
 # musicvis-lib
 
-![npm](https://img.shields.io/npm/v/musicvis-lib)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/fheyen/musicvis-lib?label=GitHub%20version)
-![GitHub issues](https://img.shields.io/github/issues-raw/fheyen/musicvis-lib)
-![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/npm/musicvis-lib)
+![npm](https://img.shields.io/badge/-alpha%20version-orange)
+&nbsp;
+[![npm](https://img.shields.io/npm/v/musicvis-lib)](https://www.npmjs.com/package/musicvis-lib)
+[![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/npm/musicvis-lib)](https://www.npmjs.com/package/musicvis-lib?activeTab=dependents)
+&nbsp;
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/fheyen/musicvis-lib?label=GitHub)](https://github.com/fheyen/musicvis-lib)
+[![GitHub issues](https://img.shields.io/github/issues-raw/fheyen/musicvis-lib)](https://github.com/fheyen/musicvis-lib/issues)
 
 
 This library is still in early and active development.
 
 **Do not use this for anything yet.**
-
-GitHub: https://github.com/fheyen/musicvis-lib
-
-NPM: https://www.npmjs.com/package/musicvis-lib
 
 1. [musicvis-lib](#musicvis-lib)
    1. [Mission](#mission)
@@ -57,7 +56,7 @@ const note = Note.from({
 
 ## Documentation (unfinished)
 
-- musicvis-lib/
+- [musicvis-lib/](https://github.com/fheyen/musicvis-lib)
   - [audioOutput/](./src/audioOutput/)
   - [comparison/](./src/comparison/)
   - [fileFormats/](./src/fileFormats/)
