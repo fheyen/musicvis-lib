@@ -1,4 +1,4 @@
-# musicvis-lib
+# musicvis-lib &#9835;
 
 ![npm](https://img.shields.io/badge/-alpha%20version-orange)
 &nbsp;
@@ -13,7 +13,7 @@ This library is still in early and active development.
 
 **Do not use this for anything yet.**
 
-1. [musicvis-lib](#musicvis-lib)
+1. [musicvis-lib &#9835;](#musicvis-lib-)
    1. [Mission](#mission)
    2. [Setup](#setup)
    3. [How to use](#how-to-use)

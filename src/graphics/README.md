@@ -1,5 +1,3 @@
 # Graphics
 
 ## Canvas
-
-## Svg

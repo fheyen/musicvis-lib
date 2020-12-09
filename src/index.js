@@ -11,7 +11,6 @@ import { preprocessMidiFileData } from './fileFormats/MidiParser';
 import { preprocessMusicXmlData } from './fileFormats/MusicXmlParser';
 // graphics
 import * as Canvas from './graphics/Canvas';
-import * as Svg from './graphics/Svg';
 // input
 import { recordAudio } from './input/AudioRecorder';
 import { recordMidi } from './input/MidiRecorder';
@@ -45,7 +44,6 @@ export {
     preprocessMusicXmlData,
     // graphics
     Canvas,
-    Svg,
     // input
     recordAudio,
     recordMidi,
