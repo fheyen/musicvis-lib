@@ -45,7 +45,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
         const recNotes = groupedByPitchRec.get(pitch);
         for (let r of recNotes) {
             // Match each recorded note to the closest ground truth note
-            const nearest = findNearest(gtNotes, r);
+            const nearest = Utils.findNearest(gtNotes, r);
             const currentEntry = gtRecMap.get(nearest.start);
             if (currentEntry === null) {
                 // If empty, take
@@ -125,7 +125,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
         const recNotes = groupedByPitchRec.get(pitch);
         for (let r of recNotes) {
             // Match each recorded note to the closest ground truth note
-            const nearest = findNearest(gtNotes, r);
+            const nearest = Utils.findNearest(gtNotes, r);
             const currentEntry = gtRecMap.get(nearest.start);
             currentEntry.push(r);
             gtRecMap.set(nearest.start, currentEntry);
@@ -280,27 +280,4 @@ export function getMatchingSliceError(matching, start, end, addPenalty, missPena
     const section = getMatchingSection(matching, start, end);
     const error = getMatchingError(section, addPenalty, missPenalty, timingPenalty);
     return error;
-}
-
-/**
- * Given some notes and a target note, finds
- * the note that has its start time closest to
- * the one of targetNote
- * TODO: move to matching, replace by d3 argmin or sth?
- * @param {Note[]} notes
- * @param {Note} targetNote
- * @returns {Note} closest note to targetNote
- */
-export function findNearest(notes, targetNote) {
-    let nearest = null;
-    let dist = Infinity;
-    const targetStart = targetNote.start;
-    for (let n of notes) {
-        const newDist = Math.abs(n.start - targetStart);
-        if (newDist < dist) {
-            dist = newDist;
-            nearest = n;
-        }
-    }
-    return nearest;
 }
