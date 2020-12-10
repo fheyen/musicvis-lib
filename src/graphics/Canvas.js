@@ -1,6 +1,5 @@
 /**
  * Sets up a canvas rescaled to device pixel ratio
- * From https://www.html5rocks.com/en/tutorials/canvas/hidpi/
  * @param {HTMLCanvasElement} canvas canvas element
  * @returns {CanvasRenderingContext2D} canvas rendering context
  */
@@ -10,16 +9,14 @@ export function setupCanvas(canvas) {
     // Get the size of the canvas in CSS pixels.
     const rect = canvas.getBoundingClientRect();
     // Give the canvas pixel dimensions of their CSS
-    // Size times the device pixel ratio.
+    // sizes times the device pixel ratio.
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
     const ctx = canvas.getContext('2d');
-    // Scale all drawing operations by the dpr, so you
-    // don't have to worry about the difference.
+    // Scale all drawing operations by the dpr
     ctx.scale(dpr, dpr);
     return ctx;
 }
-
 
 /**
  * Draws a stroked circle.
