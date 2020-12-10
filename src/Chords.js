@@ -1,6 +1,25 @@
 import { group } from "d3";
 import * as Utils from "./utils";
 import { Chord } from "@tonaljs/tonal";
+import Note from '../src/types/Note';
+
+/**
+ * Detects chords as those notes that have the exact same start time, only works
+ * for ground truth (since recordings are not exact)
+ * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
+ * @param {Note[]} notes
+ * @returns {Note[][]} array of chord arrays
+ */
+export function detectChordsByExactStart(notes) {
+    const grouped = group(notes, d => d.start);
+    const chords = Array.from(grouped)
+        .map(d => d[1])
+        // Sort chords by time
+        .sort((a, b) => a[0].start - b[0].start)
+        // Sort notes in each chord by pitch
+        .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
+    return chords;
+}
 
 /**
  * Detects chords, by simply looking for notes that overlap each other in time.
@@ -18,58 +37,73 @@ import { Chord } from "@tonaljs/tonal";
  * @returns {Note[][]} array of chord arrays
  */
 export function detectChordsByOverlap(notes, sortByPitch = true) {
-    if (notes.length < 2) {
-        return [];
-    }
+    if (!notes || !notes.length) { return []; }
+    if (notes.length === 1) { return [[notes[0]]]; }
     const chords = [];
-    let currentChord = [];
-    for (let i = 1; i < notes.length; i++) {
-        const note = notes[i];
-        const previousNote = notes[i - 1];
-        // Check for overlap
-        // TODO: also check the distance from the first note of the chord!
-        if (note.start < previousNote.end) {
-            // If they overlap, add current note to chord
-            // But add previous note first if chord is yet empty!
-            if (currentChord.length === 0) {
-                currentChord.push(previousNote);
-            }
-            currentChord.push(note);
-            // TODO:jump ahead to not count the cord multiple times (partially)
-        } else {
-            // If not, the previous chord is finished
-            if (currentChord.length > 0) {
-                // Sort chord by pitch?
-                if (sortByPitch) {
-                    currentChord = currentChord.sort((a, b) => a.pitch - b.pitch);
-                }
-                chords.push(currentChord);
-                currentChord = [];
+    const notesTodo = new Set(notes);
+    // Find all overlaps with brute force
+    while (notesTodo.size > 0) {
+        // Take a new note and make a new chord
+        const note1 = notesTodo.values().next().value;
+        notesTodo.delete(note1);
+        let chord = [note1];
+        // Add all notes that overap note1
+        for (const note2 of notesTodo.values()) {
+            if (note1.overlapInSeconds(note2) >= 0.5 * note1.getDuration()) {
+                chord.push(note2);
+                notesTodo.delete(note2);
             }
         }
+        if (sortByPitch) {
+            chord = chord.sort((a, b) => a.pitch - b.pitch);
+        }
+        chords.push(chord);
     }
     return chords;
 }
+// export function detectChordsByOverlap(notes, sortByPitch = true) {
+//     if (!notes || !notes.length) { return []; }
+//     if (notes.length === 1) { return [[notes[0]]]; }
+//     const chords = [];
+//     let currentChord = [notes[0]];
+//     for (let i = 1; i < notes.length; i++) {
+//         const note = notes[i];
+//         console.log(i);
+//         console.log(currentChord);
+//         console.log(note);
 
-/**
- * Detects chords as those notes that have the exact same start time, only works
- * for ground truth (since recordings are not exact)
- * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
- * @param {Note[]} notes
- * @returns {Note[][]} array of chord arrays
- */
-export function detectChordsByExactStart(notes) {
-    const grouped = group(notes, d => d.start);
-    const chords = Array.from(grouped)
-        .map(d => d[1])
-        // Remove single notes
-        .filter(d => d.length > 1)
-        // Sort chords by time
-        .sort((a, b) => a[0].start - b[0].start)
-        // Sort notes in each chord by pitch
-        .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
-    return chords;
-}
+//         // Check for overlap with current chord
+//         let overlaps = false;
+//         for (let note2 of currentChord) {
+//             if (note.overlapsInTime(note2)) {
+//                 overlaps = true;
+//                 break;
+//             }
+//         }
+//         console.log(overlaps);
+//         if (overlaps) {
+//             currentChord.push(note);
+//             // TODO: also check the distance from the first note of the chord!
+//             // TODO:jump ahead to not count the cord multiple times (partially)
+//         } else {
+//             // If not, the previous chord is finished
+//             // Sort chord by pitch?
+//             if (sortByPitch) {
+//                 currentChord = currentChord.sort((a, b) => a.pitch - b.pitch);
+//             }
+//             chords.push(currentChord);
+//             // Start new chord
+//             if (i < notes.length - 1) {
+//                 currentChord = [notes[i + 1]];
+//                 i++;
+//             }
+//         }
+//     }
+//     // finish last chord
+//     chords.push(currentChord);
+//     return chords;
+// }
+
 
 /**
  * TODO:
@@ -151,7 +185,7 @@ const chordTypes = new Map([
  * @returns {string} chord type
  */
 export function getChordType(notes) {
-    if (notes.length === 0) { return { name: 'No note' }; }
+    if (!notes || !notes.length) { return { name: 'No note' }; }
     if (notes.length === 1) { return { name: 'Single note' }; }
     // Get distances in semitones
     let steps = [];

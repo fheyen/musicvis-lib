@@ -1,6 +1,6 @@
 # musicvis-lib &#9835;
 
-![npm](https://img.shields.io/badge/-alpha%20version-orange)
+![alpha version](https://img.shields.io/badge/-alpha%20version-orange)
 &nbsp;
 [![npm](https://img.shields.io/npm/v/musicvis-lib)](https://www.npmjs.com/package/musicvis-lib)
 [![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/npm/musicvis-lib)](https://www.npmjs.com/package/musicvis-lib?activeTab=dependents)

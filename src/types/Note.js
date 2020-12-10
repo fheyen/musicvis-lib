@@ -119,10 +119,25 @@ export default class Note {
     /**
      * Returns true, if this Note and otherNote overlap in time.
      * @param {Note} otherNote another Note
+     * @returns {boolean} true if they overlap
      */
     overlapsInTime(otherNote) {
         return (this.start >= otherNote.start && this.start <= otherNote.end) ||
             (this.end >= otherNote.start && this.end <= otherNote.end);
+    }
+
+    /**
+     * Returns the amount of seconds this Note and otherNote overlap in time.
+     * @param {Note} otherNote another Note
+     * @returns {number} seconds of overlap
+     */
+    overlapInSeconds(otherNote) {
+        if (!this.overlapsInTime(otherNote)) {
+            return 0;
+        }
+        const laterStart = Math.max(this.start, otherNote.start);
+        const earlierEnd = Math.min(this.end, otherNote.end);
+        return earlierEnd - laterStart;
     }
 
     /**
