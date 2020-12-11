@@ -28,7 +28,7 @@ export function detectChordsByExactStart(notes) {
  *       =========
  *         ========
  * Important: Notes must be sorted by start time for this to work correctly.
- * TODO: not tested or shown to work at all yet
+ * TODO: not used yet
  * TODO: optional minimum overlap ratio
  * TODO: new definition of chord? i.e. notes have to start 'together'
  * @param {Note[]} notes array of Note objects
