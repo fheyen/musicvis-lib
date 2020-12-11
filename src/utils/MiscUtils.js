@@ -69,9 +69,25 @@ export function noteArrayToPitchSequence(notes) {
  * @param {Note[]} notes array with Note objects
  * @returns {string} string representation of note pitches
  */
+export function pitchSequenceToString(sequence) {
+    if (!sequence || !sequence.length) { return ''; }
+    return String.fromCharCode(...sequence);
+}
+
+export function pitchSequenceFromString(string) {
+    if (!string || !string.length) { return []; }
+    return string.split('').map((d, i) => string.charCodeAt(i));
+}
+
+/**
+ * Sorts notes by time and pitch, then turns them into a string by turning each
+ * note's pitch into a character (based on Unicode index).
+ * @param {Note[]} notes array with Note objects
+ * @returns {string} string representation of note pitches
+ */
 export function noteArrayToString(notes) {
     const sequence = noteArrayToPitchSequence(notes);
-    return String.fromCharCode(...sequence);
+    return pitchSequenceToString(sequence);
 }
 
 /**
@@ -99,6 +115,9 @@ export function pitchSequenceWithoutOctaves(pitchSequence) {
  * @returns {number[]} intervals
  */
 export function pitchSequenceToInvervals(pitchSequence) {
+    if (!pitchSequence || !pitchSequence.length || pitchSequence.length < 2) {
+        return [];
+    }
     const result = new Array(pitchSequence.length - 1);
     for (let i = 1; i < pitchSequence.length; i++) {
         result[i - 1] = pitchSequence[i] - pitchSequence[i - 1];
@@ -116,6 +135,9 @@ export function pitchSequenceToInvervals(pitchSequence) {
  * @returns {Note} closest note to targetNote
  */
 export function findNearest(notes, targetNote) {
+    if (!notes || !notes.length || notes.length === 0 || !targetNote) {
+        return null;
+    }
     let nearest = null;
     let dist = Infinity;
     const targetStart = targetNote.start;

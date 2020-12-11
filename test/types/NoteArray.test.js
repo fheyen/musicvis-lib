@@ -81,3 +81,13 @@ test('NoteArray transposed transitively', () => {
     const transp2 = na.clone().transpose(12);
     expect(transp1.equals(transp2)).toBe(true);
 });
+
+test('NoteArray filterPitches', () => {
+    const rev = na.clone().;
+    expect(rev).toStrictEqual(na);
+});
+
+test('NoteArray can be reversed back and forth', () => {
+    const rev = na.clone().reverse().reverse();
+    expect(rev).toStrictEqual(na);
+});
