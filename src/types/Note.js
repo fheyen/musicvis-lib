@@ -157,4 +157,16 @@ export default class Note {
             this.end === otherNote.end
         );
     }
+
+    /**
+     * Human-readable string representation of this Note
+     * @param {boolen} short if true, attribute names will be shortened
+     * @returns {string}
+     */
+    toString(short = false) {
+        if (short) {
+            return `Note(p:${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}`;
+        }
+        return `Note(pitch:${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}`;
+    }
 }

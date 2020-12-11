@@ -219,7 +219,8 @@ export default class NoteArray {
     }
 
     /**
-     * Slices the notes by time
+     * Slices the notes by time.
+     * The modes end and contained will remove all notes with end === null!
      * @param {number} start start of the filter range in seconds
      * @param {number} end end of the filter range in seconds (exclusive)
      * @param {string} mode controls which note time to consider, one of:
@@ -236,15 +237,10 @@ export default class NoteArray {
             this.#notes = this.#notes.filter(n => n.start >= s && n.start < e);
         }
         if (mode === 'end') {
-            this.#notes = this.#notes.filter(n => n.end >= s && n.end < e);
+            this.#notes = this.#notes.filter(n => n.end !== null && n.end >= s && n.end < e);
         }
         if (mode === 'contained') {
-            this.#notes = this.#notes.filter(n => {
-                if (n.end === null) {
-                    return n => n.start >= s && n.start < e;
-                }
-                return n => n.start >= s && n.end < e;
-            });
+            this.#notes = this.#notes.filter(n => n.end !== null && n.start >= s && n.end < e);
         }
         return this;
     }
