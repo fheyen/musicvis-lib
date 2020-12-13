@@ -89,7 +89,7 @@ export default class GuitarNote extends Note {
     /**
      * Returns true if this note and otherNote have equal attributes.
      * @param {GuitarNote} otherNote another GuitarNote
-     * @returns {boolen} true if equal
+     * @returns {boolean} true if equal
      */
     equals(otherNote) {
         if (!(otherNote instanceof GuitarNote)) {
@@ -114,8 +114,8 @@ export default class GuitarNote extends Note {
      */
     toString(short = false) {
         if (short) {
-            return `Note(p:${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret}`;
+            return `GuitarNote(p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret})`;
         }
-        return `Note(pitch:${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret}`;
+        return `GuitarNote(pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
     }
 }

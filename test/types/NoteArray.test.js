@@ -1,5 +1,6 @@
 import NoteArray from '../../src/types/NoteArray';
 import Note from '../../src/types/Note';
+import GuitarNote from '../../src/types/GuitarNote';
 
 const na = new NoteArray([
     new Note(69, 0.0, 127, 0, 1.0),
@@ -9,11 +10,139 @@ const na = new NoteArray([
 ]);
 
 describe('NoteArray', () => {
+    test('preserves guitar notes', () => {
+        const notes = [
+            GuitarNote.from({ string: 1, fret: 0 }),
+            GuitarNote.from({ string: 2, fret: 0 }),
+            GuitarNote.from({ string: 2, fret: 1 }),
+            GuitarNote.from({ string: 3, fret: 2 }),
+        ];
+        const na = new NoteArray(notes);
+        expect(na.getNotes()).toStrictEqual(notes);
+    });
+
     test('is equal to itself', () => {
         expect(na.equals(na)).toBe(true);
     });
 
-    test('NoteArray\'s clone is equal', () => {
+    test('add notes', () => {
+        const na = new NoteArray([
+            Note.from({ start: 1 }),
+            Note.from({ start: 2 }),
+            Note.from({ start: 3 }),
+        ]);
+        const na2 = new NoteArray([
+            Note.from({ start: 1 }),
+            Note.from({ start: 2 }),
+            Note.from({ start: 3 }),
+            Note.from({ start: 1.5 }),
+        ]);
+        const na3 = new NoteArray([
+            Note.from({ start: 1 }),
+            Note.from({ start: 1.5 }),
+            Note.from({ start: 2 }),
+            Note.from({ start: 3 }),
+        ]);
+
+        expect(
+            na.clone().addNotes([Note.from({ start: 1.5 })], false).getNotes()
+        ).toStrictEqual(
+            na2.getNotes()
+        );
+        expect(
+            na.clone().addNotes([Note.from({ start: 1.5 })], true).getNotes()
+        ).toStrictEqual(
+            na3.getNotes()
+        );
+        expect(
+            na.clone().addNotes([Note.from({ start: 1.5 })]).getNotes()
+        ).toStrictEqual(
+            na3.getNotes()
+        );
+    });
+
+    test('concat', () => {
+        const na = new NoteArray([
+            new Note(69, 0.0, 127, 0, 1.0),
+            new Note(69, 1.0, 127, 0, 2.0),
+        ]);
+        const na2 = new NoteArray([
+            new Note(69, 0.0, 127, 0, 1.0),
+            new Note(69, 1.0, 127, 0, 2.0),
+            new Note(69, 0.0, 127, 0, 1.0),
+            new Note(69, 1.0, 127, 0, 2.0),
+        ]);
+        expect(na.clone().concat(na).getNotes()).toStrictEqual(na2.getNotes());
+    });
+
+    describe('append', () => {
+        test('no gap', () => {
+            const na = new NoteArray([
+                new Note(69, 0.0, 127, 0, 1.0),
+                new Note(69, 1.0, 127, 0, 2.0),
+            ]);
+            const na2 = new NoteArray([
+                new Note(69, 0.0, 127, 0, 1.0),
+                new Note(69, 1.0, 127, 0, 2.0),
+                new Note(69, 2.0, 127, 0, 3.0),
+                new Note(69, 3.0, 127, 0, 4.0),
+            ]);
+            const newNa = na.clone().append(na);
+            expect(newNa.getDuration()).toBe(na2.getDuration());
+            expect(newNa.getNotes()).toStrictEqual(na2.getNotes());
+        });
+        test('gap', () => {
+            const na = new NoteArray([
+                new Note(69, 0.0, 127, 0, 1.0),
+                new Note(69, 1.0, 127, 0, 2.0),
+            ]);
+            const na2 = new NoteArray([
+                new Note(69, 0.0, 127, 0, 1.0),
+                new Note(69, 1.0, 127, 0, 2.0),
+                new Note(69, 4.0, 127, 0, 5.0),
+                new Note(69, 5.0, 127, 0, 6.0),
+            ]);
+            const gap = 2.0;
+            const newNa = na.clone().append(na, gap);
+            expect(newNa.getDuration()).toBe(na2.getDuration());
+            expect(newNa.getNotes()).toStrictEqual(na2.getNotes());
+        });
+    });
+
+    describe('repeat', () => {
+        const na = new NoteArray([
+            new Note(69, 1.0, 127, 0, 2.0),
+            new Note(69, 2.0, 127, 0, 3.0),
+        ]);
+        const na2 = new NoteArray([
+            new Note(69, 1.0, 127, 0, 2.0),
+            new Note(69, 2.0, 127, 0, 3.0),
+            new Note(69, 4.0, 127, 0, 5.0),
+            new Note(69, 5.0, 127, 0, 6.0),
+        ]);
+        const na3 = new NoteArray([
+            new Note(69, 1.0, 127, 0, 2.0),
+            new Note(69, 2.0, 127, 0, 3.0),
+            new Note(69, 4.0, 127, 0, 5.0),
+            new Note(69, 5.0, 127, 0, 6.0),
+            new Note(69, 7.0, 127, 0, 8.0),
+            new Note(69, 8.0, 127, 0, 9.0),
+        ]);
+        test('< 1 time', () => {
+            expect(na.clone().repeat(0).getNotes()).toStrictEqual([]);
+        });
+        test('1 time', () => {
+            expect(na.clone().repeat(1).getNotes()).toStrictEqual(na.getNotes());
+        });
+        test('2 times', () => {
+            expect(na.clone().repeat(2).getNotes()).toStrictEqual(na2.getNotes());
+        });
+        test('3 times', () => {
+            expect(na.clone().repeat(3).getNotes()).toStrictEqual(na3.getNotes());
+        });
+    });
+
+    test('clone is equal', () => {
         const na2 = na.clone();
         expect(na.equals(na2)).toBe(true);
     });
@@ -47,6 +176,16 @@ describe('NoteArray', () => {
         expect(na.getDuration()).toBe(3.0);
     });
 
+    test('has correct duration with note.end == null', () => {
+        const na = new NoteArray([
+            new Note(69, 0.0, 127, 0, 1.0),
+            new Note(69, 1.0, 127, 0),
+            new Note(71, 1.0, 127, 0, 2.0),
+            new Note(67, 3.0, 127, 0),
+        ]);
+        expect(na.getDuration()).toBe(3.0);
+    });
+
     test('has correct duration when shifted', () => {
         expect(na.clone().shiftTime(2.0).getDuration()).toBe(5.0);
     });
@@ -62,7 +201,20 @@ describe('NoteArray', () => {
 
     test('has correct start time when shifted to startAt', () => {
         expect(na.clone().shiftToStartAt(2.0).getStartTime()).toBe(2.0);
-        expect(na.clone().shiftToStartAt(3.0).getStartTime()).toBe(3.0);
+        expect(na.clone().shiftToStartAt(3.5).getStartTime()).toBe(3.5);
+        expect(na.clone().shiftToStartAt(-1.0).getStartTime()).toBe(-1.0);
+        expect(na.clone().shiftToStartAt(0).getStartTime()).toBe(0);
+    });
+
+    test('has correct start time when shifted to startAt, note.end == null', () => {
+        const na = new NoteArray([
+            new Note(69, 0.0, 127, 0, 1.0),
+            new Note(69, 1.0, 127, 0),
+            new Note(71, 1.0, 127, 0, 2.0),
+            new Note(67, 3.0, 127, 0),
+        ]);
+        expect(na.clone().shiftToStartAt(2.0).getStartTime()).toBe(2.0);
+        expect(na.clone().shiftToStartAt(3.5).getStartTime()).toBe(3.5);
         expect(na.clone().shiftToStartAt(-1.0).getStartTime()).toBe(-1.0);
         expect(na.clone().shiftToStartAt(0).getStartTime()).toBe(0);
     });
@@ -81,6 +233,51 @@ describe('NoteArray', () => {
         const transp1 = na.clone().transpose(6).transpose(6);
         const transp2 = na.clone().transpose(12);
         expect(transp1.equals(transp2)).toBe(true);
+    });
+
+    test('forEach', () => {
+        const na = new NoteArray([
+            Note.from({ channel: 1 }),
+            Note.from({ channel: 2 }),
+            Note.from({ channel: 3 }),
+            Note.from({ channel: 4 }),
+        ]);
+        const expected = new NoteArray([
+            Note.from({ channel: 0 }),
+            Note.from({ channel: 1 }),
+            Note.from({ channel: 2 }),
+            Note.from({ channel: 3 }),
+        ]);
+        const processed = new NoteArray();
+        na.forEach(n => processed.addNotes([
+            Note.from({ ...n, channel: n.channel - 1 })
+        ]));
+        expect(processed.getNotes()).toStrictEqual(expected.getNotes());
+    });
+
+    test('sort', () => {
+        const na = new NoteArray([
+            Note.from({ channel: 3 }),
+            Note.from({ channel: 2 }),
+            Note.from({ channel: 7 }),
+            Note.from({ channel: 5 }),
+            Note.from({ channel: 4 }),
+            Note.from({ channel: 8 }),
+            Note.from({ channel: 1 }),
+            Note.from({ channel: 6 }),
+        ]);
+        const expected = new NoteArray([
+            Note.from({ channel: 1 }),
+            Note.from({ channel: 2 }),
+            Note.from({ channel: 3 }),
+            Note.from({ channel: 4 }),
+            Note.from({ channel: 5 }),
+            Note.from({ channel: 6 }),
+            Note.from({ channel: 7 }),
+            Note.from({ channel: 8 }),
+        ]);
+        const sorted = na.clone().sort((a, b) => a.channel - b.channel);
+        expect(sorted.getNotes()).toStrictEqual(expected.getNotes());
     });
 
     test('sortByTime', () => {
@@ -236,8 +433,34 @@ describe('NoteArray', () => {
         expect(filtered.getNotes()).toStrictEqual(na2.getNotes());
     });
 
-    test.skip('can be reversed back and forth', () => {
-        const rev = na.clone().reverse().reverse();
-        expect(rev.getNotes()).toStrictEqual(na.getNotes());
+    describe('reverse', () => {
+        test('same when reversed', () => {
+            const na = new NoteArray([
+                Note.from({ start: 0, end: 1 }),
+                Note.from({ start: 1, end: 2 }),
+                Note.from({ start: 2, end: 3 }),
+                Note.from({ start: 3, end: 4 }),
+            ]);
+            const rev = na.clone().reverse();
+            expect(rev.getNotes()).toStrictEqual(na.getNotes());
+            const rev2times = na.clone().reverse().reverse();
+            expect(rev2times.getNotes()).toStrictEqual(na.getNotes());
+        });
+
+        test('can be reversed back and forth', () => {
+            const na = new NoteArray([
+                // TODO: make work with negative?
+                // Note.from({ start: -1, end: 1 }),
+                Note.from({ start: 0, end: 2 }),
+                Note.from({ start: 1, end: 3 }),
+                Note.from({ start: 2.0, end: 2.5 }),
+                Note.from({ start: 3, end: 4 }),
+                Note.from({ start: 3.5, end: 4 }),
+                Note.from({ start: 3.75, end: 5 }),
+                Note.from({ start: 4.1, end: 6 }),
+            ]);
+            const rev = na.clone().reverse().reverse();
+            expect(rev.getNotes()).toStrictEqual(na.getNotes());
+        });
     });
 });

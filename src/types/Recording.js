@@ -54,7 +54,7 @@ export default class Recording extends NoteArray {
     /**
      * Returns true if this Recording and otherRecording have equal attributes.
      * @param {Recording} otherRecording another Recording
-     * @returns {boolen} true if equal
+     * @returns {boolean} true if equal
      */
     equals(otherRecording) {
         if (!(otherRecording instanceof Recording)) { return false; }

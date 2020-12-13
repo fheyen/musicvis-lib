@@ -78,7 +78,7 @@ export default class PitchBend extends Note {
     /**
      * Returns true if this note and otherNote have equal attributes.
      * @param {PitchBend} otherNote another GuitarNote
-     * @returns {boolen} true if equal
+     * @returns {boolean} true if equal
      */
     equals(otherNote) {
         if (!(otherNote instanceof PitchBend)) {

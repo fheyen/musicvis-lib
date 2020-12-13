@@ -135,6 +135,7 @@ export function simplifyDrumPitches(notes, replacementMap) {
         newNote.pitch = newPitch;
         return newNote;
     });
+    // TODO: return errors, do not log! also easier to test
     if (errors.size > 0) {
         console.warn(`Cannot replace all pitches, replacementMap misses entry for these pitches:`);
         console.log(Array.from(errors));

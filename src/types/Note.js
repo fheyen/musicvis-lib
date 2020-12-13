@@ -143,7 +143,7 @@ export default class Note {
     /**
      * Returns true if this note and otherNote have equal attributes.
      * @param {Note} otherNote another Note
-     * @returns {boolen} true if equal
+     * @returns {boolean} true if equal
      */
     equals(otherNote) {
         if (!(otherNote instanceof Note)) {
@@ -165,8 +165,8 @@ export default class Note {
      */
     toString(short = false) {
         if (short) {
-            return `Note(p:${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}`;
+            return `Note(p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel})`;
         }
-        return `Note(pitch:${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}`;
+        return `Note(pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel})`;
     }
 }

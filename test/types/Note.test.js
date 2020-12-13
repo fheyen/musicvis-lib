@@ -178,4 +178,14 @@ describe('Note', () => {
         const note2 = Note.from({});
         expect(note1.equals(note2)).toBe(true);
     });
+
+    test('toString', () => {
+        const note = new Note(12, 1.25, 120, 0, 3.0);
+        expect(note.toString()).toBe(
+            `Note(pitch: 12, start: 1.25, end: 3, velocity: 120, channel: 0)`
+        );
+        expect(note.toString(true)).toBe(
+            `Note(p: 12, s: 1.25, e: 3, v: 120, c: 0)`
+        );
+    });
 });

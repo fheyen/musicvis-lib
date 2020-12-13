@@ -52,7 +52,7 @@ export default class NoteArray {
     /**
      * Adds the notes from another NoteArray to this NoteArray
      * IMPORTANT: this does not change the notes or sort them!
-     * Take a look at NoteArry.append() if you want to extend
+     * Take a look at NoteArray.append() if you want to extend
      * a track at its end.
      * @param {NoteArray} noteArray another NoteArray
      * @returns {NoteArray} itself
@@ -85,11 +85,14 @@ export default class NoteArray {
      */
     repeat(times) {
         const result = this.clone();
-        const copy = this.clone();
-        const duration = this.getDuration();
-        if (times < 2) {
+        if (times < 1) {
+            return new NoteArray();
+        }
+        if (times === 1) {
             return result;
         }
+        const copy = this.clone();
+        const duration = this.getDuration();
         for (let i = 1; i < times; i++) {
             // Shift notes in time
             copy.shiftTime(duration);
@@ -285,20 +288,26 @@ export default class NoteArray {
     reverse() {
         // Update note start and end times
         const duration = this.getDuration();
-        for (let n of this.#notes) {
-            n.start = duration - n.end;
-            n.end = duration - n.start;
-        }
+        // for (let n of this.#notes) {
+        //     n.start = duration - n.end;
+        //     n.end = duration - n.start;
+        // }
+        this.#notes = this.#notes.map(n => {
+            const newNote = n.clone();
+            newNote.start = duration - n.end;
+            newNote.end = newNote.start + n.getDuration();
+            return newNote;
+        });
         // Sort by time
         this.sortByTime();
         return this;
     }
 
     /**
-    * Returns true if this NoteArray and otherNoteArray have equal attributes.
-    * @param {NoteArray} otherNoteArray another NoteArray
-    * @returns {boolen} true if equal
-    */
+     * Returns true if this NoteArray and otherNoteArray have equal attributes.
+     * @param {NoteArray} otherNoteArray another NoteArray
+     * @returns {boolean} true if equal
+     */
     equals(otherNoteArray) {
         if (!(otherNoteArray instanceof NoteArray)) {
             return false;
