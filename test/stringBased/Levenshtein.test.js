@@ -1,4 +1,4 @@
-import { levenshtein, normalizedLevenshtein } from '../../src/stringBased/Levenshtein';
+import { levenshtein, damerauLevenshtein, normalizedLevenshtein } from '../../src/stringBased/Levenshtein';
 
 describe('levenshtein', () => {
     test('both empty: 0', () => {
@@ -51,6 +51,74 @@ describe('levenshtein', () => {
         expect(levenshtein(a, b)).toBe(2);
     });
 });
+
+describe('damerauLevenshtein', () => {
+    test('both empty: 0', () => {
+        expect(damerauLevenshtein('', '')).toBe(0);
+    });
+
+    test('left empty: right.lengh', () => {
+        expect(damerauLevenshtein('', '123')).toBe(3);
+    });
+
+    test('right empty: left.lengh', () => {
+        expect(damerauLevenshtein('1234', '')).toBe(4);
+    });
+
+    test('same', () => {
+        expect(damerauLevenshtein('12345', '12345')).toBe(0);
+    });
+
+    test('insert end', () => {
+        expect(damerauLevenshtein('1234', '12345')).toBe(1);
+    });
+
+    test('insert begin', () => {
+        expect(damerauLevenshtein('1234', '01234')).toBe(1);
+    });
+
+    test('insert middle', () => {
+        expect(damerauLevenshtein('1234', '12304')).toBe(1);
+    });
+
+    test('delete end', () => {
+        expect(damerauLevenshtein('12345', '1234')).toBe(1);
+    });
+
+    test('delete begin', () => {
+        expect(damerauLevenshtein('01234', '1234')).toBe(1);
+    });
+
+    test('delete middle', () => {
+        expect(damerauLevenshtein('12304', '1234')).toBe(1);
+    });
+
+    test('add one, delete one', () => {
+        expect(damerauLevenshtein('1234', '2345')).toBe(2);
+    });
+
+    test('numbers', () => {
+        const a = [1, 2, 3, 4];
+        const b = [1, 2, 3, 3, 4, 5];
+        expect(damerauLevenshtein(a, b)).toBe(2);
+    });
+
+    // different from levenshtein
+    test('transposition', () => {
+        expect(damerauLevenshtein('1234', '1324')).toBe(1);
+    });
+    test('transposition 2 times', () => {
+        expect(damerauLevenshtein('12345678', '13245687')).toBe(2);
+    });
+    test('transposition numbers', () => {
+        const a = [1, 2, 3, 4, 5, 6];
+        const b = [1, 2, 4, 3, 5, 6];
+        expect(damerauLevenshtein(a, b)).toBe(1);
+    });
+
+});
+
+
 
 describe('normalized levenshtein', () => {
     test('both empty: 0', () => {

@@ -7,7 +7,6 @@
 
 /**
  * Computes the Levenshtein distance of two strings or arrays.
- * TODO: add transposition for damerau levenshtein?
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {number} Levenshtein distance
@@ -15,10 +14,10 @@
 export function levenshtein(a, b) {
     if (a.length === 0) { return b.length; }
     if (b.length === 0) { return a.length; }
-    let tmp, i, j, prev, val, row;
+    let i, j, prev, val, row;
     // swap to save some memory O(min(a,b)) instead of O(a)
     if (a.length > b.length) {
-        tmp = a;
+        const tmp = a;
         a = b;
         b = tmp;
     }
@@ -48,6 +47,46 @@ export function levenshtein(a, b) {
         row[a.length] = prev;
     }
     return row[a.length];
+}
+
+
+/**
+ * Computes the Damerau-Levenshtein distance of two strings or arrays.
+ * See https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
+ * @param {string|Array} a a string
+ * @param {string|Array} b another string
+ * @returns {number} Levenshtein distance
+ */
+export function damerauLevenshtein(a, b) {
+    if (a.length === 0) { return b.length; }
+    if (b.length === 0) { return a.length; }
+    const d = new Array(a.length + 1).fill(0).map(() => new Array(b.length));
+    for (let i = 0; i <= a.length; i++) {
+        d[i][0] = i;
+    }
+    for (let j = 0; j <= b.length; j++) {
+        d[0][j] = j;
+    }
+    let cost;
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            if (a[i - 1] === b[j - 1]) {
+                cost = 0;
+            } else {
+                cost = 1;
+            }
+            d[i][j] = Math.min(
+                d[i - 1][j] + 1,        // deletion
+                d[i][j - 1] + 1,        // insertion
+                d[i - 1][j - 1] + cost  // substitution
+            );
+            if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+                // transposition
+                d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+            }
+        }
+    }
+    return d[a.length][b.length];
 }
 
 
