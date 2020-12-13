@@ -169,4 +169,17 @@ describe('PitchSequence', () => {
         expect(ps.equals(psDifferentSameLength)).toBe(false);
         expect(ps.equals([0, 1, 4, 7, 6, 4, 4, 4])).toBe(false);
     });
+
+    test('toNoteNameString', () => {
+        expect(
+            new PitchSequence().toNoteNameString()
+        ).toBe('');
+
+        const seq = [0, 12, 24, 25, 42];
+        expect(
+            new PitchSequence(seq).toNoteNameString()
+        ).toBe(
+            'C-1 C0 C1 C#1 F#2'
+        );
+    });
 });

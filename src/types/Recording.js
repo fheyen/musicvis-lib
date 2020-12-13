@@ -66,15 +66,19 @@ export default class Recording extends NoteArray {
             if (this.timeSelection === null || otherRecording.timeSelection === null) {
                 return false;
             }
-            return arrayShallowEquals(this.timeSelection, otherRecording.timeSelection);
+            if (!arrayShallowEquals(this.timeSelection, otherRecording.timeSelection)) {
+                return false;
+            }
         }
         // Below is the same as NoteArray
-        const notes = otherRecording.getNotes();
-        if (this.#notes.length !== notes.length) {
+        const notes1 = this.getNotes();
+        const notes2 = otherRecording.getNotes();
+        if (notes1.length !== notes2.length) {
+            console.log('notes');
             return false;
         }
-        for (let i = 0; i < notes.length; i++) {
-            if (!this.#notes[i].equals(notes[i])) {
+        for (let i = 0; i < notes1.length; i++) {
+            if (!notes1[i].equals(notes2[i])) {
                 return false;
             }
         }

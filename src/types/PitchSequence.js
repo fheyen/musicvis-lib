@@ -1,3 +1,5 @@
+import { getMidiNoteByNr } from '../Midi';
+
 /**
  * Stores a sequence of pitches and provides some methods to simplify and
  * manipulate it.
@@ -52,6 +54,10 @@ export default class PitchSequence {
             return '';
         }
         return String.fromCharCode(...this.#pitches);
+    }
+
+    toNoteNameString() {
+        return this.#pitches.map(p => getMidiNoteByNr(p).label).join(' ');
     }
 
     reverse() {
