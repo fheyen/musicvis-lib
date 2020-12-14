@@ -23,8 +23,9 @@ import * as Piano from './instruments/Piano';
 import * as StringedFingering from './instruments/StringedFingering';
 // comparison
 import * as Alignment from './comparison/Alignment';
-import * as Similarity from './comparison/Similarity';
 import * as Matching from './comparison/Matching';
+import * as Similarity from './comparison/Similarity';
+import * as SimilarSections from './comparison/SimilarSections';
 // libraries
 import * as Midi from './Midi';
 import * as Utils from './utils';
@@ -57,8 +58,9 @@ export {
     StringedFingering,
     // comparison
     Alignment,
-    Similarity,
     Matching,
+    Similarity,
+    SimilarSections,
     // libraries
     Midi,
     Utils,
