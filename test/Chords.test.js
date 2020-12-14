@@ -254,6 +254,16 @@ describe('Chords', () => {
             expect(Chords.getChordType([Note.from({ pitch: 63 })])).toStrictEqual({ name: 'Single note' });
         });
 
+        test('unknown', () => {
+            const notes = [
+                Note.from({ pitch: 0 }),
+                Note.from({ pitch: 1 }),
+            ];
+            expect(Chords.getChordType(notes)).toStrictEqual(
+                { name: 'Unknown chord type' }
+            );
+        });
+
         test('octave', () => {
             const notes = [
                 Note.from({ pitch: 12 }),
@@ -301,7 +311,7 @@ describe('Chords', () => {
 
     });
 
-    describe.skip('getChordName', () => {
+    describe('getChordName', () => {
         test('CEG', () => {
             const notes = [
                 Note.from({ pitch: 0 }),
@@ -309,7 +319,47 @@ describe('Chords', () => {
                 Note.from({ pitch: 7 }),
             ];
             expect(Chords.getChordName(notes)).toStrictEqual(
-                ['M']
+                ['CM', 'Em#5/C']
+            );
+        });
+
+        // example from https://github.com/tonaljs/tonal/tree/master/packages/chord#chorddetectnotes-string--string
+        // Chord.detect(["D", "F#", "A", "C"]); // => ["D7"]
+        test('["D", "F#", "A", "C"]', () => {
+            const notes = [
+                Note.from({ pitch: 2 }),
+                Note.from({ pitch: 6 }),
+                Note.from({ pitch: 9 }),
+                Note.from({ pitch: 12 }),
+            ];
+            expect(Chords.getChordName(notes)).toStrictEqual(
+                ['D7']
+            );
+        });
+
+        // example from https://github.com/tonaljs/tonal/tree/master/packages/chord#chorddetectnotes-string--string
+        // Chord.detect(["F#", "A", "C", "D"]); // => ["D7/F#"]
+        test('["F#", "A", "C", "D"]', () => {
+            const notes = [
+                Note.from({ pitch: 6 }),
+                Note.from({ pitch: 9 }),
+                Note.from({ pitch: 12 }),
+                Note.from({ pitch: 14 }),
+            ];
+            expect(Chords.getChordName(notes)).toStrictEqual(
+                ['D7/F#']
+            );
+        });
+
+        test('["F#", "A", "C", "D"] wrong order', () => {
+            const notes = [
+                Note.from({ pitch: 14 }),
+                Note.from({ pitch: 6 }),
+                Note.from({ pitch: 12 }),
+                Note.from({ pitch: 9 }),
+            ];
+            expect(Chords.getChordName(notes)).toStrictEqual(
+                ['D7/F#']
             );
         });
     });

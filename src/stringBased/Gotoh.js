@@ -9,6 +9,7 @@
  * @param {string|Array} seqB a sequence
  * @param {Function} similarityFunction a function that takes two elements and
  *      returns their similarity score (higher => more similar)
+ *      (a:any, b:any):number
  * @param {number} gapPenaltyStart cost for starting a new gap (negative)
  * @param {number} gapPenaltyExtend cost for continuing a gap (negative)
  * @returns {number} similarity score
@@ -98,7 +99,7 @@ export function normalizedGotoh(
 }
 
 /**
- * Cost function that simply checks whether two values are equal or not
+ * Cost function that simply checks whether two values are equal or not with ===
  * @param {any} a some value
  * @param {any} b some value
  * @returns {number} 1 if equal, -1 otherwise

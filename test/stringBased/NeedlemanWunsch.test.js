@@ -38,12 +38,14 @@ describe('NeedlemanWunsch', () => {
         expect(nw.score).toBe(3);
     });
 
-    // TODO: more tests
 
-    test.skip('insert end', () => {
+    test('insert end', () => {
         const nw = new NeedlemanWunsch('1234', '12345');
         const tb = nw.alignmentTraceback();
         expect(tb).toStrictEqual([{ seq1: '-4321', seq2: '54321' }]);
         expect(nw.score).toBe(3);
     });
+
+    // TODO: more tests
+    // TODO: test with tuples
 });

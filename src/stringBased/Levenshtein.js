@@ -1,12 +1,8 @@
 /**
+ * Computes the Levenshtein distance of two strings or arrays.
  * Adapted from https://gist.github.com/andrei-m/982927#gistcomment-1931258
  * By https://github.com/kigiri
  * MIT License
- */
-
-
-/**
- * Computes the Levenshtein distance of two strings or arrays.
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {number} Levenshtein distance

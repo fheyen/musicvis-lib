@@ -1,5 +1,5 @@
 import { group } from "d3";
-import * as Utils from "./utils";
+import { arrayShallowEquals } from "./utils/ArrayUtils";
 import { Chord } from "@tonaljs/tonal";
 import Note from '../src/types/Note';
 
@@ -39,8 +39,9 @@ export function detectChordsByExactStart(notes) {
 export function detectChordsByOverlap(notes, sortByPitch = true) {
     if (!notes || !notes.length) { return []; }
     if (notes.length === 1) { return [[notes[0]]]; }
+    const sorted = notes.slice().sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch });
+    const notesTodo = new Set(sorted);
     const chords = [];
-    const notesTodo = new Set(notes);
     // Find all overlaps with brute force
     while (notesTodo.size > 0) {
         // Take a new note and make a new chord
@@ -205,7 +206,7 @@ export function getChordType(notes) {
     // Now get the chord type
     const candidates = chordTypes.get(steps.length);
     for (const cand of candidates) {
-        if (Utils.arrayShallowEquals(steps, cand.steps)) {
+        if (arrayShallowEquals(steps, cand.steps)) {
             return cand;
         }
     }
@@ -219,8 +220,11 @@ export function getChordType(notes) {
  * @returns {String[]} possible chord types
  */
 export function getChordName(notes) {
-    const noteLetters = notes.map(d => d.getLetter);
-    return Chord.detect(noteLetters);
+    const noteLetters = notes
+        .sort((a, b) => a.pitch - b.pitch)
+        .map(d => d.getLetter());
+    const chords = Chord.detect(noteLetters);
+    return chords;
 }
 
 /**

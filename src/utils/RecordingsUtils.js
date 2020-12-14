@@ -3,6 +3,7 @@ import Note from "../types/Note";
 import { bpmToSecondsPerBeat } from "./MiscUtils";
 import { kernelDensityEstimator, kernelEpanechnikov } from "./StatisticsUtils";
 import { findLocalMaxima } from "./MathUtils";
+import Recording from "../types/Recording";
 
 /**
  * Filters notes of a recording to remove noise from the MIDI device or pickup
@@ -14,17 +15,19 @@ import { findLocalMaxima } from "./MathUtils";
  *      are removed (value in seconds)
  * @returns {Recording} clone of the recording with filtered notes
  */
-export function filterRecordingNoise(recording, velocityThreshold = 127, durationThreshold = 0) {
-    const result = recording.clone().filter(note => {
-        if (note.velocity < velocityThreshold) {
-            return false;
-        }
-        if (note.getDuration() < durationThreshold) {
-            return false;
-        }
-        return true;
-    });
-    console.log(`Filtered recording, ${result.length()} of ${recording.length()} notes left`);
+export function filterRecordingNoise(recording, velocityThreshold = 0, durationThreshold = 0) {
+    const result = recording
+        .clone()
+        .filter(note => {
+            if (note.velocity < velocityThreshold) {
+                return false;
+            }
+            if (note.getDuration() < durationThreshold) {
+                return false;
+            }
+            return true;
+        });
+    // console.log(`Filtered recording, ${result.length()} of ${recording.length()} notes left`);
     return result;
 }
 
@@ -285,8 +288,6 @@ export function differenceMapErrorAreas(differenceMap) {
         correct: correctBins / totalArea
     };
 }
-
-
 
 
 /**

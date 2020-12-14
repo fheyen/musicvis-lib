@@ -27,7 +27,7 @@ export default class NeedlemanWunsch {
         // Traceback matrix (boolean values for [`insert`, `match`, `delete`] positions)
         this.T = [];
         // Alignments
-        this.final_alignments = [];
+        this.finalAlignments = [];
 
         // Calculate scores and tracebacks
         this.calcScoresAndTracebacks();
@@ -57,6 +57,7 @@ export default class NeedlemanWunsch {
                 const insert = this.S[i][j - 1] + this.gap_penalty;
                 const del = this.S[i - 1][j] + this.gap_penalty;
                 // similarity
+                // TODO: support function here
                 let sim_score;
                 if (this.seq1[i - 1] === this.seq2[j - 1]) {
                     sim_score = this.match_score;
@@ -107,7 +108,7 @@ export default class NeedlemanWunsch {
      * @returns {Object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
      */
     alignmentTraceback() {
-        let final_alignments = [];
+        let finalAlignments = [];
         let root = {
             next: null,
             pos: [this.seq1.length, this.seq2.length],
@@ -126,7 +127,7 @@ export default class NeedlemanWunsch {
             children = this.alignmentChildren(current.pos);
             // Store completed alignments
             if (!children.length) {
-                final_alignments.push(alignment);
+                finalAlignments.push(alignment);
             }
             current = current.next;
             for (t = 0, len = children.length; t < len; t++) {
@@ -143,6 +144,6 @@ export default class NeedlemanWunsch {
                 current = child;
             }
         }
-        return final_alignments;
+        return finalAlignments;
     }
 }

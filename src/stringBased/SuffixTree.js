@@ -1,26 +1,45 @@
-// Based on https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
+import { arrayShallowEquals } from "../utils/ArrayUtils";
 
-import { arrayContainsArray } from "../utils";
+// Adapted from https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
 
 export default class SuffixTree {
-    constructor(str) {
-        this.string = str;
+    /**
+     * SuffixTree for strings or Arrays
+     * @param {string|Array} arr string or Array to process
+     */
+    constructor(arr) {
+        // Split string to array
+        if (typeof arr === 'string') {
+            arr = arr.split('');
+        }
         this.node = new TreeNode();
-        if (str && str.length) {
-            for (let i = 0; i < str.length; i++) {
-                this.node.addSuffix(str.slice(i));
+        if (arr && arr.length) {
+            for (let i = 0; i < arr.length; i++) {
+                this.node.addSuffix(arr.slice(i));
             }
         }
     }
 
+    /**
+     * Returns the longest repeated substring
+     * @returns {Array} longest repeated substring
+     */
+    getLongestRepeatedSubString() {
+        return this.node.getLongestRepeatedSubString();
+    }
+
+    /**
+     * Returns a readable string format of this tree
+     * @returns {string} string
+     */
     toString() {
         return this.node.toString();
     }
 
-    // toArray() {
-    //     return this.node.toArray();
-    // }
-
+    /**
+     * Returns a JSON representation of this tree
+     * @returns {string} JSON
+     */
     toJson() {
         return JSON.stringify(this.node);
     }
@@ -28,7 +47,7 @@ export default class SuffixTree {
 
 class TreeNode {
     constructor() {
-        this.value = "";
+        this.value = [];
         this.leaves = [];
         this.nodes = [];
     }
@@ -37,7 +56,7 @@ class TreeNode {
         let node;
         for (let i = 0; i < this.nodes.length; i++) {
             node = this.nodes[i];
-            if (node.value === suf[0]) {
+            if (arrayShallowEquals(node.value, [suf[0]])) {
                 node.addSuffix(suf.slice(1));
                 return true;
             }
@@ -51,7 +70,7 @@ class TreeNode {
             leaf = this.leaves[i];
             if (leaf[0] === suf[0]) {
                 node = new TreeNode();
-                node.value = leaf[0];
+                node.value = [leaf[0]];
                 node.addSuffix(suf.slice(1));
                 node.addSuffix(leaf.slice(1));
                 this.nodes.push(node);
@@ -65,46 +84,29 @@ class TreeNode {
     addSuffix(suf) {
         if (!suf.length) {
             return
-        }
+        };
         if (!this.checkNodes(suf)) {
             this.checkLeaves(suf);
         }
     }
 
     getLongestRepeatedSubString() {
-        let str = "";
-        let temp = "";
+        let arr = [];
+        let temp = [];
         for (let i = 0; i < this.nodes.length; i++) {
             temp = this.nodes[i].getLongestRepeatedSubString();
-            if (temp.length > str.length) {
-                str = temp;
+            if (temp.length > arr.length) {
+                arr = temp;
             }
         }
-        return this.value + str;
+        return this.value.concat(arr);
     }
 
-    toHTML() {
-        let html = "<div class=node>";
-        if (this.value.length) {
-            html += "<h3>" + this.value + "</h3>";
-        }
-        if (this.nodes.length) {
-            html += "<h4>nodes</h4><ul>";
-            for (let i = 0; i < this.nodes.length; i++) {
-                html += "<li>" + this.nodes[i].toHTML() + "</li>";
-            }
-            html += "</ul>";
-        }
-        if (this.leaves.length) {
-            html += "<h4>leaves</h4><ul>";
-            for (let i = 0; i < this.leaves.length; i++) {
-                html += "<li>" + this.leaves[i] + "</li>";
-            }
-            html += "</ul>";
-        }
-        return html;
-    }
-
+    /**
+     * Readable string representation of this node and its children
+     * @param {number} indent
+     * @returns {string}
+     */
     toString(indent = 1) {
         const ind = ' |'.repeat(indent);
         let str = '';
@@ -125,24 +127,4 @@ class TreeNode {
         }
         return str;
     }
-
-    // toArray() {
-    //     let arr = [];
-    //     if (this.value.length) {
-    //         arr.push(this.value);
-    //     } else {
-    //         arr.push('root');
-    //     }
-    //     if (this.nodes.length) {
-    //         for (let i = 0; i < this.nodes.length; i++) {
-    //             arr.push(this.nodes[i].toArray());
-    //         }
-    //     }
-    //     if (this.leaves.length) {
-    //         for (let i = 0; i < this.leaves.length; i++) {
-    //             str += `\n${ind}-L ` + this.leaves[i];
-    //         }
-    //     }
-    //     return arr;
-    // }
 }
