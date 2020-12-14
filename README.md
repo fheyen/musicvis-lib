@@ -48,11 +48,11 @@ const note = Note.from({
 
 ## Examples
 
-- [fheyen.github.io/midi-live-vis](https://fheyen.github.io/midi-live-vis/)
-- [fheyen.github.io/midi-pianoroll](https://fheyen.github.io/midi-pianoroll/)
-- [fheyen.github.io/webmidi-logger](https://fheyen.github.io/webmidi-logger/)
-- [fheyen.github.io/midi-chords](https://fheyen.github.io/midi-chords/)
-- [fheyen.github.io/midi-recorder](https://fheyen.github.io/midi-recorder/)
+- [fheyen.github.io/midi-live-vis](https://fheyen.github.io/midi-live-vis/) ([code](https://github.com/fheyen/midi-live-vis))
+- [fheyen.github.io/midi-pianoroll](https://fheyen.github.io/midi-pianoroll/) ([code](https://github.com/fheyen/midi-pianoroll))
+- [fheyen.github.io/webmidi-logger](https://fheyen.github.io/webmidi-logger/) ([code](https://github.com/fheyen/webmidi-logger))
+- [fheyen.github.io/midi-chords](https://fheyen.github.io/midi-chords/) ([code](https://github.com/fheyen/midi-chords))
+- [fheyen.github.io/midi-recorder](https://fheyen.github.io/midi-recorder/) ([code](https://github.com/fheyen/midi-recorder))
 
 ## Documentation (unfinished)
 
