@@ -33,8 +33,8 @@ Provide tools for web-based music visualization.
 
 ## How to use
 
+With modules
 ```javascript
-// TODO: show an example
 import Note from 'musicvis-lib';
 
 const note = Note.from({
@@ -44,6 +44,16 @@ const note = Note.from({
   velocity: 127,
   channel: 0
 });
+```
+
+In HTML
+```html
+<script src="musicvislib.min.js"></script>
+<script>
+    console.log(musicvislib);
+    console.log(musicvislib.Midi);
+    console.log(musicvislib.Midi.getMidiNoteByNr(0));
+</script>
 ```
 
 ## Examples
@@ -79,10 +89,9 @@ In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.v
 
 ## TODO
 
-- Move all library code here
 - Documentation
 - Create tests
-  - Unit tests
+  - 100% unit test coverage
   - Visual tests, e.g. show piano roll with algo results
 - Add
   - type/PitchBend.js
