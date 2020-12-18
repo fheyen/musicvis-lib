@@ -84,7 +84,7 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
     for (const [attr, notes] of groupedByAttribute.entries()) {
         // Calculate heatmap
         const maxTime = max(notes, d => d.end);
-        const nBins = Math.ceil((maxTime * 1000) / binSize);
+        const nBins = Math.ceil((maxTime * 1000) / binSize) + 1;
         const heatmap = new Array(nBins).fill(0);
         for (let note of notes) {
             const start = Math.round(note.start * 1000 / binSize);
@@ -107,6 +107,7 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
  * the ground truth.
  * TODO: use velocity?
  * @param {Map} heatmapByPitch haetmap from recordingsHeatmap()
+ * @param {number} binSize size of time bins in milliseconds
  * @param {number} threshold note is regarded as true when this ratio of
  *      recordings has a note there
  * @returns {Note[]} approximated ground truth notes
@@ -261,6 +262,7 @@ export function differenceMap(gtNotes, recNotes, binSize) {
  * The area is simply the number of bins with each value, total area is max.
  * number of bins in all pitches * the number of pitches.
  * TODO: not used or tested yet
+ * TODO: add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
  * @param {Map} differenceMap differenceMap from differenceMap()
  * @returns {Object} {missing, additional, correct} area ratio
  */

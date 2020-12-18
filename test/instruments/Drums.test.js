@@ -43,22 +43,29 @@ describe('simplifyDrumPitches', () => {
         ).toStrictEqual(notes2);
     });
 
-    test.skip('cannot handle some pitches', () => {
+    test('cannot handle some pitches', () => {
         const notes = [
             Note.from({ pitch: 0 }),
+            Note.from({ pitch: 36 }),
+            Note.from({ pitch: 35 }),
+            Note.from({ pitch: 1 }),
         ];
         expect(
             Drums.simplifyDrumPitches(notes, Drums.drumPitchReplacementMapMPS850)
         ).toStrictEqual(
             [
                 Note.from({ pitch: 0 }),
+                Note.from({ pitch: 36 }),
+                Note.from({ pitch: 36 }),
+                Note.from({ pitch: 1 }),
             ]
         );
     });
 
     test('no map given', () => {
         const notes = [
-            Note.from({ pitch: 35 }),
+            Note.from({ pitch: 0 }),
+            Note.from({ pitch: 36 }),
         ];
         expect(
             () => Drums.simplifyDrumPitches(notes)

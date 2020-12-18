@@ -1,5 +1,7 @@
 import { hsl, interpolateRgb } from "d3";
 
+// TODO: move to colors/ folder?
+
 /**
  * Maps each note to a color
  * Colors from https://www.svpwiki.com/music+note+or+sound+colors
@@ -58,7 +60,10 @@ const noteColormapAccessible = [
     '#66ff99',
     '#0000cc',
 ];
-// Gradient color map from black to steelblue
+
+/**
+ * Gradient color map from black to steelblue
+ */
 const colorInterpolator = interpolateRgb('black', 'steelblue');
 const noteColormapGradientArray = new Array(12).fill(0).map((d, i) => colorInterpolator(i / 11));
 

@@ -144,7 +144,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
  * GT notes that have no matched recorded notes will have an error of 0.
  *
  * @param {Map} multiMatching matching with a GT and multiple recordings
- * @param {number} errorThreshold number seocnds of deviation above which
+ * @param {number} errorThreshold number seconds of deviation above which
  *      to exclude an error
  * @returns {Map} error summary Map:pitch->{gtErrorMap, maxError},
  *      gtErrorMap is Map:gtStart->error (error is average over all time
