@@ -2,6 +2,24 @@
   "name": "musicvis-lib",
   "version": "0.26.3",
   "description": "Music visualization library",
+  "author": "Frank Heyen",
+  "license": "ISC",
+  "homepage": "https://github.com/fheyen/musicvis-lib",
+  "repository": {
+    "url": "https://github.com/fheyen/musicvis-lib",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/fheyen/musicvis-lib/issues"
+  },
+  "keywords": [
+    "music visualization",
+    "visual analytics",
+    "JavaScript",
+    "web-based",
+    "MIDI",
+    "music"
+  ],
   "main": "dist/index_bundle.js",
   "scripts": {
     "build": "webpack --config webpack.dev.js",
@@ -14,8 +32,13 @@
     "deploy": "npm publish && git add . && git commit -m 'new version build'; git push",
     "checkupdates": "npm-check-updates -u"
   },
-  "author": "Frank Heyen",
-  "license": "ISC",
+  "dependencies": {
+    "@tonaljs/tonal": "^4.6.0",
+    "d3": "^6.3.1",
+    "dynamic-time-warping-2": "^1.1.2",
+    "npm-check-updates": "^10.2.5",
+    "soundfont-player": "^0.12.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -32,12 +55,5 @@
     "jest": "^26.6.3",
     "webpack": "^5.11.0",
     "webpack-cli": "^4.2.0"
-  },
-  "dependencies": {
-    "@tonaljs/tonal": "^4.6.0",
-    "d3": "^6.3.1",
-    "dynamic-time-warping-2": "^1.1.2",
-    "npm-check-updates": "^10.2.5",
-    "soundfont-player": "^0.12.0"
   }
 }
