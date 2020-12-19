@@ -7,7 +7,7 @@ import { arrayShallowEquals } from "../utils/ArrayUtils";
 /**
  * Represents a tuning of a fretted string instrument.
  */
-class StringedTuning {
+export class StringedTuning {
     /**
      * Represents a tuning of a fretted string instrument.
      * @param {string} name name

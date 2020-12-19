@@ -74,7 +74,6 @@ export default class Recording extends NoteArray {
         const notes1 = this.getNotes();
         const notes2 = otherRecording.getNotes();
         if (notes1.length !== notes2.length) {
-            console.log('notes');
             return false;
         }
         for (let i = 0; i < notes1.length; i++) {
@@ -112,8 +111,7 @@ export default class Recording extends NoteArray {
         const names = ['name', 'date', 'notes'];
         for (let i = 0; i < values.length; i++) {
             if (values[i] === undefined || values[i] === null) {
-                console.error(`Cannot create Recording with undefined ${names[i]}`);
-                return null;
+                throw new Error(`Cannot create Recording with undefined ${names[i]}`);
             }
         }
         // Parse date if it is a string

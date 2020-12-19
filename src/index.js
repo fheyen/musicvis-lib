@@ -19,6 +19,7 @@ import MidiInputManager from './input/MidiInputManager';
 // instruments
 import * as Drums from './instruments/Drums';
 import * as Guitar from './instruments/Guitar';
+import * as Lamellophone from './instruments/Lamellophone';
 import * as Piano from './instruments/Piano';
 import * as StringedFingering from './instruments/StringedFingering';
 // comparison
@@ -54,6 +55,7 @@ export {
     // instruments
     Drums,
     Guitar,
+    Lamellophone,
     Piano,
     StringedFingering,
     // comparison

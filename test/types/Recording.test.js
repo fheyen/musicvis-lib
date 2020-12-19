@@ -111,11 +111,11 @@ describe('Recording', () => {
 
         test('fromSimpleObject fails', () => {
             const noName = { ...obj, name: undefined };
-            expect(Recording.from(noName)).toBeNull();
+            expect(() => Recording.from(noName)).toThrowError('Cannot create Recording with undefined name');
             const noDate = { ...obj, date: undefined };
-            expect(Recording.from(noDate)).toBeNull();
+            expect(() => Recording.from(noDate)).toThrowError('Cannot create Recording with undefined date');
             const noNotes = { ...obj, notes: undefined };
-            expect(Recording.from(noNotes)).toBeNull();
+            expect(() => Recording.from(noNotes)).toThrowError('Cannot create Recording with undefined notes');
         });
 
         test('fromSimpleObject equals', () => {
@@ -129,7 +129,7 @@ describe('Recording', () => {
             const str = date.toISOString();
             const objWithDateString = { ...obj, date: str };
             const dateObj = new Date(Date.parse(str));
-            console.log(dateObj);
+            // console.log(dateObj);
 
             expect(
                 Recording.from(objWithDateString).equals(rec)

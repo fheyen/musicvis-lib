@@ -10,8 +10,8 @@
     "testcov": "jest --coverage",
     "testchanged": "jest --coverage --changedFilesWithAncestor",
     "testclear": "jest --clearCache",
-    "predeploy": "jest && webpack --config webpack.dev.js && webpack --config webpack.prod.js",
-    "deploy": "npm publish",
+    "predeploy": "jest --silent && webpack --config webpack.dev.js && webpack --config webpack.prod.js",
+    "deploy": "npm publish && git push",
     "checkupdates": "npm-check-updates -u"
   },
   "author": "Frank Heyen",
