@@ -1,3 +1,4 @@
+import { getMidiNoteByLabel } from "../Midi";
 import Note from "./Note";
 
 /**
@@ -32,12 +33,21 @@ export default class GuitarNote extends Note {
     }
 
     /**
-    * Creates a GuitarNote object from an object via destructuring
-    * @param {Object} object object with at least {pitch}
-    * @returns {GuitarNote} new note
-    */
+     * Creates a GuitarNote object from an object via destructuring
+     * @param {Object} object object with at least {pitch}
+     *  {
+     *      pitch: number|string    e.g. 12 or C#4
+     *      start: number           start time in seconds
+     *      end: number             end time in seconds
+     *      velocity: number        MIDI velocity
+     *      channel: number         MIDI channel
+     *      string: number          guitar string
+     *      fret: number            guitar fret
+     *  }
+     * @returns {GuitarNote} new note
+     */
     static from(object) {
-        const {
+        let {
             pitch = 0,
             start = 0,
             velocity = 127,
@@ -47,6 +57,13 @@ export default class GuitarNote extends Note {
             string = null,
             fret = null,
         } = object;
+        if (typeof pitch === 'string' && isNaN(+pitch)) {
+            const note = getMidiNoteByLabel(pitch);
+            if (note === null || note === undefined) {
+                throw new Error(`Invalid pitch for GuitarNote.from()`);
+            }
+            pitch = note.pitch;
+        }
         return new GuitarNote(pitch, start, velocity, channel, end, string, fret);
     }
 

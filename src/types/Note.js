@@ -1,4 +1,4 @@
-import { getMidiNoteByNr } from "../Midi";
+import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
 
 /**
  * Note class that reflects MIDI properties but has
@@ -30,16 +30,30 @@ export default class Note {
     /**
      * Creates a Note object from an object via destructuring
      * @param {Object} object object with at least {pitch}
+     *  {
+     *      pitch: number|string    e.g. 12 or C#4
+     *      start: number           start time in seconds
+     *      end: number             end time in seconds
+     *      velocity: number        MIDI velocity
+     *      channel: number         MIDI channel
+     *  }
      * @returns {Note} new note
      */
     static from(object) {
-        const {
+        let {
             pitch = 0,
             start = 0,
             velocity = 127,
             channel = 0,
             end = null
         } = object;
+        if (typeof pitch === 'string' && isNaN(+pitch)) {
+            const note = getMidiNoteByLabel(pitch);
+            if (note === null || note === undefined) {
+                throw new Error(`Invalid pitch for Note.from()`);
+            }
+            pitch = note.pitch;
+        }
         return new Note(pitch, start, velocity, channel, end);
     }
 

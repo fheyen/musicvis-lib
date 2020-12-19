@@ -1,4 +1,5 @@
 import Note from '../../src/types/Note';
+import NoteArray from '../../src/types/NoteArray';
 
 const note1 = new Note(0, 0.0, 127, 0, 3.0);
 
@@ -27,10 +28,63 @@ describe('Note', () => {
             new Note(1, 1.0, 64, 1, 2.0),
         ];
         for (let n of otherNotes) {
-
             expect(note1.equals(n)).toBe(false);
         }
     });
+
+    describe('Note.from()', () => {
+        test('defaults', () => {
+            expect(Note.from({})).toStrictEqual(new Note());
+            expect(Note.from({}).equals(new Note())).toBe(true);
+        });
+
+        test('simple', () => {
+            expect(Note.from({
+                pitch: 12,
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            })).toStrictEqual(new Note(12, 0.5, 50, 0, 1.5));
+        });
+
+        test('note name correct', () => {
+            expect(Note.from({
+                pitch: 'C0',
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            })).toStrictEqual(Note.from({
+                pitch: 12,
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            }));
+        });
+
+        test('note name incorrect', () => {
+            expect(() => Note.from({
+                pitch: 'invalid',
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            })).toThrowError(`Invalid pitch for Note.from()`);
+        });
+
+        test('note name lowercase', () => {
+            expect(() => Note.from({
+                pitch: 'c4',
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            })).toThrowError(`Invalid pitch for Note.from()`);
+        });
+    });
+
 
     describe('overlaps in time', () => {
         test('note overlaps itself', () => {
