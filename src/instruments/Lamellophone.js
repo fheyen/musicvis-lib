@@ -1,6 +1,8 @@
 import { difference, extent, intersection, max } from "d3";
 import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
 import { detectChordsByExactStart } from "../Chords";
+import Note from "../types/Note";
+import { bpmToSecondsPerBeat } from "../utils/MiscUtils";
 
 export class LamellophoneTuning {
     /**
@@ -80,12 +82,77 @@ export const lamellophoneTunings = new Map([
 
 
 /**
+ * Parses a tab into notes
+ * @param {string} tab in letter format
+ * @param {LamellophoneTuning} tuning tuning
+ * @param {*} tempo tempo in bpm
+ * @returns {Note[]} notes
+ */
+export function convertTabToNotes(tab, tuning, tempo = 120) {
+    // Create a mapping symbol->pitch
+    const symbolToPitchMap = new Map();
+    const symbols = tuning.getLetters();
+    for (let i = 0; i < tuning.keyCount; i++) {
+        symbolToPitchMap.set(symbols[i], tuning.pitches[i]);
+    }
+    // Parse tab to notes
+    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNamesSet = new Set(noteNames);
+    const startOct = getMidiNoteByNr(tuning.pitches[0]).octave;
+    const secondsPerBeat = bpmToSecondsPerBeat(tempo);
+    let insideChord = false;
+    let insideNote = false;
+    let currentTime = 0;
+    let currentPitch = 0;
+    let currentOctOffset = 0;
+    const notes = [];
+    tab = `${tab} `;
+    for (let char of tab) {
+        if (char === '(') {
+            insideChord = true;
+        } else if (noteNamesSet.has(char)) {
+            insideNote = true;
+            currentPitch = noteNames.indexOf(char);
+        } else if (char === '#') {
+            currentPitch++;
+        } else if (char === '°') {
+            currentOctOffset++;
+        } else if (char === ' ' || char === '\n' || char === ')') {
+            if (char === ')') {
+                insideChord = false;
+            }
+            if (char === '\n') {
+                currentTime += secondsPerBeat;
+            }
+            if (insideNote) {
+                try {
+                    notes.push(Note.from({
+                        pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
+                        start: currentTime,
+                        end: currentTime + secondsPerBeat
+                    }));
+                    currentOctOffset = 0;
+                    if (!insideChord) {
+                        currentTime += secondsPerBeat;
+                    }
+                } catch (e) {
+                    console.log(currentPitch);
+                }
+            }
+            insideNote = false;
+        }
+    }
+    return notes;
+}
+
+/**
  * Converts an array of notes into a text tab
  * @param {Note[]} notes
  * @param {LamellophoneTuning} tuning
  * @param {'letter'|'number'} mode
  * @param {number} restSize number of seconds for a gap between chords to insert
  *     a line break
+ * @returns {string} text tab
  */
 export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1) {
     // Create a mapping pitch->symbol
@@ -96,7 +163,6 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
     }
     // Get chords
     const chords = detectChordsByExactStart(notes);
-
     // Create tab
     let tab = '';
     let prevEnd = 0;
@@ -114,6 +180,59 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
             tab = `${tab}\n${chordString}`;
         } else {
             tab = `${tab} ${chordString}`;
+        }
+        // Update last end time of chord
+        prevEnd = max(chord, n => n.end);
+    }
+    // Remove leading space
+    return tab.slice(1);
+}
+
+/**
+ * Converts an array of notes into an HTML tab with colored notes
+ * @param {Note[]} notes
+ * @param {LamellophoneTuning} tuning
+ * @param {'letter'|'number'} mode
+ * @param {number} restSize number of seconds for a gap between chords to insert
+ *     a line break
+ * @returns {string} HTML tab
+ */
+export function convertNotesToHtmlTab(
+    notes,
+    tuning,
+    mode = 'letter',
+    restSize = 0.1,
+    colormap = () => 'black'
+) {
+    // Create a mapping pitch->symbol
+    const pitchToSymbolMap = new Map();
+    const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
+    for (let i = 0; i < tuning.keyCount; i++) {
+        pitchToSymbolMap.set(tuning.pitches[i], symbols[i]);
+    }
+    // Get chords
+    const chords = detectChordsByExactStart(notes);
+    // Create tab
+    let tab = '';
+    let prevEnd = 0;
+    for (let chord of chords) {
+        // Format chord's notes
+        let chordString = chord
+            .map(note => {
+                const str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`
+                const color = colormap(note.pitch);
+                return `<span class='note' style='background-color: ${color}'>\n  ${str}\n</span>`;
+            })
+            .join('\n');
+        if (chord.length > 1) {
+            // Mark chords with backets (for multiple notes)
+            chordString = `<span class='chord'>\n(\n${chordString}\n)\n</span>`;
+        }
+        if (chord[0].start - prevEnd > restSize) {
+            // Add new line
+            tab = `${tab}\n<br/>\n${chordString}`;
+        } else {
+            tab = `${tab}\n${chordString}`;
         }
         // Update last end time of chord
         prevEnd = max(chord, n => n.end);

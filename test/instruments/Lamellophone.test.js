@@ -1,5 +1,6 @@
 import * as Lamellophone from '../../src/instruments/Lamellophone';
 import Note from '../../src/types/Note';
+import { noteColorFromPitch } from '../../src/utils/NoteColorUtils';
 
 const tuning = Lamellophone.lamellophoneTunings?.get('Kalimba')?.get('17 C Major');
 
@@ -31,8 +32,97 @@ describe('Kalimba', () => {
                 ['C', "D", "E", "F", "G", "A", "B", "C°", "D°", "E°", "F°", "G°", "A°", "B°", "C°°", "D°°", "E°°"]
             );
         });
+    });
 
+    describe('convertTabToNotes', () => {
+        test('empty', () => {
+            const notes = [];
+            expect(
+                Lamellophone.convertTabToNotes(``, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
 
+        test('only one note', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
+        test('only one note with #', () => {
+            const notes = [
+                Note.from({ pitch: 'C#4', start: 0, end: 1 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C#`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
+        test('two notes', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C D`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
+        test('one note after another', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 2, end: 3 }),
+                Note.from({ pitch: 'F#4', start: 3, end: 4 }),
+                Note.from({ pitch: 'D5', start: 4, end: 5 }),
+                Note.from({ pitch: 'C6', start: 5, end: 6 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C D E F# D° C°°`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
+        test('chords', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'D5', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 2, end: 3 }),
+                Note.from({ pitch: 'F5', start: 3, end: 4 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C (D D°) E F°`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
+        test('gaps', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'D5', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 3, end: 4 }),
+                Note.from({ pitch: 'F4', start: 4, end: 5 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C (D D°)\nE F`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
     });
 
     describe('convertNotesToTab', () => {
@@ -94,6 +184,42 @@ describe('Kalimba', () => {
                 Lamellophone.convertNotesToTab(notes, tuning, 'number', 0.1)
             ).toBe(
                 `1 (2 2°)\n3 4`
+            );
+        });
+    });
+
+    describe('convertNotesToHtmlTab', () => {
+        test('chords, gaps', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'D5', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 3, end: 4 }),
+                Note.from({ pitch: 'F4', start: 4, end: 5 }),
+            ];
+            expect(
+                Lamellophone.convertNotesToHtmlTab(notes, tuning, 'letter', 0.1, noteColorFromPitch)
+            ).toBe(
+                `<span class='note' style='background-color: rgb(191, 64, 64)'>
+  C
+</span>
+<span class='chord'>
+(
+<span class='note' style='background-color: rgb(164, 116, 55)'>
+  D
+</span>
+<span class='note' style='background-color: rgb(164, 116, 55)'>
+  D°
+</span>
+)
+</span>
+<br/>
+<span class='note' style='background-color: rgb(173, 178, 59)'>
+  E
+</span>
+<span class='note' style='background-color: rgb(118, 161, 54)'>
+  F
+</span>`
             );
         });
     });
