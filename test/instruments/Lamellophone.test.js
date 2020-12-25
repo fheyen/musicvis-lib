@@ -256,7 +256,7 @@ describe('Kalimba', () => {
             );
         });
 
-        test('gap', () => {
+        test.skip('gap', () => {
             const notes = [
                 Note.from({ pitch: 'C4', start: 0, end: 1 }),
                 Note.from({ pitch: 'D4', start: 1, end: 2 }),
