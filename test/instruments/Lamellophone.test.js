@@ -42,6 +42,11 @@ describe('Kalimba', () => {
             ).toStrictEqual(
                 notes
             );
+            expect(
+                Lamellophone.convertTabToNotes()
+            ).toStrictEqual(
+                notes
+            );
         });
 
         test('only one note', () => {

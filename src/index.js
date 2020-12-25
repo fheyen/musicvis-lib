@@ -4,9 +4,6 @@ import GuitarNote from './types/GuitarNote';
 import NoteArray from './types/NoteArray';
 import Recording from './types/Recording';
 import PitchSequence from './types/PitchSequence';
-// audio output
-import Metronome from './audioOutput/Metronome';
-import Player from './audioOutput/Player';
 // file formats
 import { preprocessMidiFileData } from './fileFormats/MidiParser';
 import { preprocessMusicXmlData } from './fileFormats/MusicXmlParser';
@@ -40,9 +37,6 @@ export {
     NoteArray,
     Recording,
     PitchSequence,
-    // audio output
-    Metronome,
-    Player,
     // file formats
     preprocessMidiFileData,
     preprocessMusicXmlData,

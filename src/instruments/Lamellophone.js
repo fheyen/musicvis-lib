@@ -89,6 +89,7 @@ export const lamellophoneTunings = new Map([
  * @returns {Note[]} notes
  */
 export function convertTabToNotes(tab, tuning, tempo = 120) {
+    if (!tab || !tab.length) { return []; }
     // Create a mapping symbol->pitch
     const symbolToPitchMap = new Map();
     const symbols = tuning.getLetters();
@@ -155,6 +156,7 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
  * @returns {string} text tab
  */
 export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1) {
+    if (!notes || !notes.length) { return []; }
     // Create a mapping pitch->symbol
     const pitchToSymbolMap = new Map();
     const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
@@ -204,6 +206,7 @@ export function convertNotesToHtmlTab(
     restSize = 0.1,
     colormap = () => 'black'
 ) {
+    if (!notes || !notes.length) { return []; }
     // Create a mapping pitch->symbol
     const pitchToSymbolMap = new Map();
     const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
@@ -247,6 +250,7 @@ export function convertNotesToHtmlTab(
  * @param {Map<number, string>} numberLetterMap maps numbers to letters
  */
 export function convertNumbersToLetters(numberTab, numberLetterMap) {
+    if (!numberTab || !numberTab.length) { return ''; }
     // Normalize to °
     numberTab = numberTab.replaceAll(`'`, '°');
     numberTab = numberTab.replaceAll(`’`, '°');

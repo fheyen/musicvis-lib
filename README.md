@@ -67,7 +67,6 @@ In HTML
 ## Documentation (unfinished)
 
 - [musicvis-lib/](https://github.com/fheyen/musicvis-lib)
-  - [audioOutput/](./src/audioOutput/)
   - [comparison/](./src/comparison/)
   - [fileFormats/](./src/fileFormats/)
   - [input/](./src/input/)
