@@ -123,6 +123,22 @@ describe('Kalimba', () => {
                 notes
             );
         });
+
+        test('octaves', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'D5', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 3, end: 4 }),
+                Note.from({ pitch: 'F6', start: 4, end: 5 }),
+                Note.from({ pitch: 'D6', start: 5, end: 6 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C (D D°)\nE F°° D°°`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
     });
 
     describe('convertNotesToTab', () => {
@@ -204,14 +220,12 @@ describe('Kalimba', () => {
   C
 </span>
 <span class='chord'>
-(
 <span class='note' style='background-color: rgb(164, 116, 55)'>
   D
 </span>
 <span class='note' style='background-color: rgb(164, 116, 55)'>
   D°
 </span>
-)
 </span>
 <br/>
 <span class='note' style='background-color: rgb(173, 178, 59)'>
@@ -220,6 +234,42 @@ describe('Kalimba', () => {
 <span class='note' style='background-color: rgb(118, 161, 54)'>
   F
 </span>`
+            );
+        });
+    });
+
+    describe('convertNotesToTab convertTabToNotes', () => {
+        test('simple', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 2, end: 3 }),
+                Note.from({ pitch: 'F4', start: 3, end: 4 }),
+                Note.from({ pitch: 'D5', start: 4, end: 5 }),
+                Note.from({ pitch: 'C6', start: 5, end: 6 }),
+            ];
+            const tab = Lamellophone.convertNotesToTab(notes, tuning, 'letter', 0.1)
+            expect(
+                Lamellophone.convertTabToNotes(tab, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
+        test('gap', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 2, end: 3 }),
+                // gap
+                Note.from({ pitch: 'D5', start: 4, end: 5 }),
+                Note.from({ pitch: 'C6', start: 5, end: 6 }),
+            ];
+            const tab = Lamellophone.convertNotesToTab(notes, tuning, 'letter', 0.1)
+            expect(
+                Lamellophone.convertTabToNotes(tab, tuning, 60)
+            ).toStrictEqual(
+                notes
             );
         });
     });

@@ -20,7 +20,7 @@
     "MIDI",
     "music"
   ],
-  "main": "dist/index_bundle.js",
+  "main": "dist/musicvislib.js",
   "scripts": {
     "build": "webpack --config webpack.dev.js",
     "buildprod": "webpack --config webpack.prod.js",

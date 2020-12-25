@@ -226,7 +226,7 @@ export function convertNotesToHtmlTab(
             .join('\n');
         if (chord.length > 1) {
             // Mark chords with backets (for multiple notes)
-            chordString = `<span class='chord'>\n(\n${chordString}\n)\n</span>`;
+            chordString = `<span class='chord'>\n${chordString}\n</span>`;
         }
         if (chord[0].start - prevEnd > restSize) {
             // Add new line
@@ -252,6 +252,7 @@ export function convertNumbersToLetters(numberTab, numberLetterMap) {
     numberTab = numberTab.replaceAll(`’`, '°');
     numberTab = numberTab.replaceAll(`*`, '°');
     numberTab = numberTab.replaceAll(`º`, '°');
+    numberTab = numberTab.replaceAll(`^`, '°');
     for (let [key, value] of numberLetterMap.entries()) {
         numberTab = numberTab.replaceAll(key, value);
     }
