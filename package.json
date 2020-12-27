@@ -35,8 +35,7 @@
   "dependencies": {
     "@tonaljs/tonal": "^4.6.0",
     "d3": "^6.3.1",
-    "dynamic-time-warping-2": "^1.1.2",
-    "soundfont-player": "^0.12.0"
+    "dynamic-time-warping-2": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -54,6 +53,6 @@
     "jest": "^26.6.3",
     "npm-check-updates": "^10.2.5",
     "webpack": "^5.11.0",
-    "webpack-cli": "^4.2.0"
+    "webpack-cli": "^4.3.0"
   }
 }

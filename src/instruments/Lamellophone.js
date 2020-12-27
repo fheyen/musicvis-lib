@@ -65,6 +65,27 @@ export class LamellophoneTuning {
         }
         return Array.from(numbers.values()).map(d => d.letterString);
     }
+
+    /**
+     * Returns note pitches or letters in the order that they appear on the
+     * instrument
+     * @param {boolean} returnPitches true: returns pitches, false: returns
+     *      note letters
+     * @returns {number[]|string[]}
+     */
+    getNotesInInstrumentOrder(returnPitches = true) {
+        const notes = returnPitches ? this.pitches : this.notes;
+        const result = [];
+        for (let i = 0; i < notes.length; i++) {
+            const p = notes[i];
+            if (i % 2 === 0) {
+                result.push(p);
+            } else {
+                result.unshift(p);
+            }
+        }
+        return result;
+    }
 }
 
 export const lamellophoneTunings = new Map([
@@ -74,8 +95,8 @@ export const lamellophoneTunings = new Map([
             new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
         ],
         [
-            '21 F Major',
-            new LamellophoneTuning('21 F Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
+            '21 C Major',
+            new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
         ],
     ])]
 ]);
@@ -224,24 +245,23 @@ export function convertNotesToHtmlTab(
             .map(note => {
                 const str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`
                 const color = colormap(note.pitch);
-                return `<span class='note' style='background-color: ${color}'>\n  ${str}\n</span>`;
+                return `<span class='note' style='background-color: ${color}'>${str}</span>`;
             })
             .join('\n');
         if (chord.length > 1) {
             // Mark chords with backets (for multiple notes)
-            chordString = `<span class='chord'>\n${chordString}\n</span>`;
+            chordString = `<span class='chord'>${chordString}</span>`;
         }
         if (chord[0].start - prevEnd > restSize) {
             // Add new line
-            tab = `${tab}\n<br/>\n${chordString}`;
+            tab = `${tab}<br/>${chordString}`;
         } else {
-            tab = `${tab}\n${chordString}`;
+            tab = `${tab}${chordString}`;
         }
         // Update last end time of chord
         prevEnd = max(chord, n => n.end);
     }
-    // Remove leading space
-    return tab.slice(1);
+    return tab;
 }
 
 /**
