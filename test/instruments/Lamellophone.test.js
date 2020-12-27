@@ -160,6 +160,22 @@ describe('Kalimba', () => {
                 notes
             );
         });
+
+        test('one note immediately after another', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0, end: 1 }),
+                Note.from({ pitch: 'D4', start: 1, end: 2 }),
+                Note.from({ pitch: 'E4', start: 2, end: 3 }),
+                Note.from({ pitch: 'F#4', start: 3, end: 4 }),
+                Note.from({ pitch: 'D5', start: 4, end: 5 }),
+                Note.from({ pitch: 'C6', start: 5, end: 6 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`CD E F#D° C°°`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
     });
 
     describe('convertNotesToTab', () => {

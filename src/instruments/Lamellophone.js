@@ -129,12 +129,32 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
     let currentOctOffset = 0;
     const notes = [];
     tab = `${tab} `;
+    const finishNote = () => {
+        try {
+            notes.push(Note.from({
+                pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
+                start: currentTime,
+                end: currentTime + secondsPerBeat
+            }));
+            currentOctOffset = 0;
+            if (!insideChord) {
+                currentTime += secondsPerBeat;
+            }
+        } catch (e) {
+            console.log(currentPitch);
+        }
+        insideNote = false;
+    };
     for (let char of tab) {
         if (char === '(') {
             insideChord = true;
         } else if (noteNamesSet.has(char)) {
+            if (insideNote) {
+                finishNote();
+            }
             insideNote = true;
             currentPitch = noteNames.indexOf(char);
+            // TODO: if already inside note, finish the old one
         } else if (char === '#') {
             currentPitch++;
         } else if (char === '°') {
@@ -147,21 +167,8 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
                 currentTime += secondsPerBeat;
             }
             if (insideNote) {
-                try {
-                    notes.push(Note.from({
-                        pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
-                        start: currentTime,
-                        end: currentTime + secondsPerBeat
-                    }));
-                    currentOctOffset = 0;
-                    if (!insideChord) {
-                        currentTime += secondsPerBeat;
-                    }
-                } catch (e) {
-                    console.log(currentPitch);
-                }
+                finishNote();
             }
-            insideNote = false;
         }
     }
     return notes;

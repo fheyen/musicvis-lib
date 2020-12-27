@@ -139,16 +139,15 @@ export function drawNoteTrapezoidUpwards(ctx, x, y, width, height, width2) {
 }
 
 /**
- * Draws a rectangle with rounded corners
+ * Draws a rectangle with rounded corners, does not fill or stroke by itself
  * @param {CanvasRenderingContext2D} ctx
  * @param {number} x
  * @param {number} y
  * @param {number} width
  * @param {number} height
  * @param {number} radius
- * @param {string | CanvasGradient | CanvasPattern} fill
  */
-export function drawRoundedRect(ctx, x, y, width, height, radius, fill = null) {
+export function drawRoundedRect(ctx, x, y, width, height, radius) {
     if (width < 0) { return; }
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -161,9 +160,4 @@ export function drawRoundedRect(ctx, x, y, width, height, radius, fill = null) {
     ctx.lineTo(x, y + radius);
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
-    if (fill) {
-        ctx.fillStyle = fill;
-        ctx.fill();
-    }
-    ctx.stroke();
 }
