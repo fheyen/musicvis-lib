@@ -1,6 +1,6 @@
 # musicvis-lib &#9835;
 
-![alpha version](https://img.shields.io/badge/-alpha%20version-orange)
+[![alpha version](https://img.shields.io/badge/-alpha%20version-orange)](https://github.com/fheyen/musicvis-lib)
 &nbsp;
 [![npm](https://img.shields.io/npm/v/musicvis-lib)](https://www.npmjs.com/package/musicvis-lib)
 [![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/npm/musicvis-lib)](https://www.npmjs.com/package/musicvis-lib?activeTab=dependents)
@@ -58,11 +58,16 @@ In HTML
 
 ## Examples
 
+Here are some examples that show for what `musicvis-lib` can be used:
+
 - [fheyen.github.io/midi-live-vis](https://fheyen.github.io/midi-live-vis/) ([code](https://github.com/fheyen/midi-live-vis))
 - [fheyen.github.io/midi-pianoroll](https://fheyen.github.io/midi-pianoroll/) ([code](https://github.com/fheyen/midi-pianoroll))
 - [fheyen.github.io/webmidi-logger](https://fheyen.github.io/webmidi-logger/) ([code](https://github.com/fheyen/webmidi-logger))
 - [fheyen.github.io/midi-chords](https://fheyen.github.io/midi-chords/) ([code](https://github.com/fheyen/midi-chords))
 - [fheyen.github.io/midi-recorder](https://fheyen.github.io/midi-recorder/) ([code](https://github.com/fheyen/midi-recorder))
+- [fheyen.github.io/kalimba](https://fheyen.github.io/kalimba/) ([code](https://github.com/fheyen/kalimba))
+
+[More dependents](https://github.com/fheyen/musicvis-lib/network/dependents)
 
 ## Documentation (unfinished)
 
@@ -80,7 +85,6 @@ In HTML
 ## Contribution
 
 If you like to contribute, feel free to create pull requests or issues.
-
 
 ## Structure and Dependencies
 

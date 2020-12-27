@@ -154,7 +154,6 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
             }
             insideNote = true;
             currentPitch = noteNames.indexOf(char);
-            // TODO: if already inside note, finish the old one
         } else if (char === '#') {
             currentPitch++;
         } else if (char === '°') {
