@@ -5,6 +5,7 @@
 
 /**
  * Sets up a canvas rescaled to device pixel ratio
+ *
  * @param {HTMLCanvasElement} canvas canvas element
  * @returns {CanvasRenderingContext2D} canvas rendering context
  */
@@ -25,6 +26,7 @@ export function setupCanvas(canvas) {
 
 /**
  * Draws a stroked circle.
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
@@ -39,6 +41,7 @@ export function drawCircle(ctx, x, y, radius) {
 
 /**
  * Draws a filled circle.
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
@@ -56,6 +59,7 @@ export function drawFilledCircle(ctx, x, y, radius) {
 
 /**
  * Draws a filled triangle like this: /\
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
@@ -73,6 +77,7 @@ export function drawTriangle(ctx, x, y, halfSize) {
 
 /**
  * Draws a diamond like this: <>
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
@@ -91,6 +96,7 @@ export function drawDiamond(ctx, x, y, halfSize) {
 
 /**
  * Draws an X
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
@@ -111,6 +117,7 @@ export function drawX(ctx, x, y, halfSize) {
 /**
  * Draws a trapezoid that looks like a rectangle but gets narrower at the right
  * end, so better show where one ends and the next begins.
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of top left
  * @param {number} y y coordinate of top left
@@ -132,6 +139,7 @@ export function drawNoteTrapezoid(ctx, x, y, width, height, height2) {
 /**
  * Draws a trapezoid that looks like a rectangle but gets narrower at the top
  * end, so better show where one ends and the next begins.
+ *
  * @param {CanvasRenderingContext2D} ctx canvas rendering context
  * @param {number} x x coordinate of bounding rect's top left
  * @param {number} y y coordinate of bounding rect's top left
@@ -152,12 +160,13 @@ export function drawNoteTrapezoidUpwards(ctx, x, y, width, height, width2) {
 
 /**
  * Draws a rectangle with rounded corners, does not fill or stroke by itself
- * @param {CanvasRenderingContext2D} ctx
- * @param {number} x
- * @param {number} y
- * @param {number} width
- * @param {number} height
- * @param {number} radius
+ *
+ * @param {CanvasRenderingContext2D} ctx canvas rendering context
+ * @param {number} x x coordinate of bounding rect's top left
+ * @param {number} y y coordinate of bounding rect's top left
+ * @param {number} width width
+ * @param {number} height height
+ * @param {number} radius rounding radius
  * @returns {void}
  */
 export function drawRoundedRect(ctx, x, y, width, height, radius) {
