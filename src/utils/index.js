@@ -9,7 +9,7 @@ import { filterRecordingNoise, clipRecordingsPitchesToGtRange, recordingsHeatmap
 import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from './StatisticsUtils';
 import { pingMidiDevice } from './WebMidiUtils';
 
-const Utils = {
+export {
     // Array
     arrayShallowEquals,
     removeDuplicates,
@@ -60,5 +60,3 @@ const Utils = {
     // WebMidi
     pingMidiDevice
 };
-
-export default Utils;
