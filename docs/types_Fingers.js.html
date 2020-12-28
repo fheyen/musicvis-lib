@@ -26,7 +26,7 @@
     
 
 
-    <title>types/PitchBend.js</title>
+    <title>types/Fingers.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -63,7 +63,7 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">types/PitchBend.js</h1>
+    <h1 id='page-title' class="page-title">types/Fingers.js</h1>
     
 
     
@@ -73,105 +73,25 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Note from "./Note";
-
-/**
- * @todo NYI
- * TODO: not used yet
- * TODO: nothing other than in note.js implemented yet
- * Class that allows to represent pitch-bends from a MIDI file
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents all fingers of both hands
  */
-class PitchBend extends Note {
-    /**
-     * Creates a new Note
-     * @param {number} pitch pitch
-     * @param {number} start start time in seconds
-     * @param {number} velocity velocity
-     * @param {number} channel MIDI channel
-     * @param {number} end end time in seconds
-     */
-    constructor(
-        pitch,
-        start = 0,
-        velocity = 127,
-        channel = 0,
-        end = null,
-        // This is different to the base Note class
+const FINGERS = {
+    // Left
+    LEFT_THUMB: 'FINGERS.LEFT_THUMB',
+    LEFT_INDEX: 'FINGERS.LEFT_INDEX',
+    LEFT_MIDDLE: 'FINGERS.LEFT_MIDDLE',
+    LEFT_RING: 'FINGERS.LEFT_RING',
+    LEFT_LITTLE: 'FINGERS.LEFT_LITTLE',
+    // Right
+    RIGHT_THUMB: 'FINGERS.RIGHT_THUMB',
+    RIGHT_INDEX: 'FINGERS.RIGHT_INDEX',
+    RIGHT_MIDDLE: 'FINGERS.RIGHT_MIDDLE',
+    RIGHT_RING: 'FINGERS.RIGHT_RING',
+    RIGHT_LITTLE: 'FINGERS.RIGHT_LITTLE',
+};
 
-    ) {
-        super(pitch, start, velocity, channel, end);
-
-    }
-
-    /**
-    * Creates a GuitarNote object from an object via destructuring
-    * @param {Object} object object with at least {pitch}
-    * @returns {PitchBend} new note
-    */
-    static from(object) {
-        const {
-            pitch,
-            start = 0,
-            velocity = 127,
-            channel = 0,
-            end = null,
-            // This is different to the base Note class
-
-        } = object;
-        if (pitch === undefined) {
-            console.error('Cannot create Note with undefined pitch');
-            return null;
-        }
-        return new PitchBend(pitch, start, velocity, channel, end);
-    }
-
-    /**
-     * Converts a Note to a GuitarNote
-     * @param {Note} note note
-     * @param {number} string string
-     * @param {number} fret fret
-     * @returns {PitchBend} guitar note
-     */
-    static fromNote(note) {
-        return new PitchBend(note.pitch, note.start, note.velocity, note.channel, note.end);
-    }
-
-    /**
-     * Returns a copy of the Note object
-     * @returns {PitchBend} new note
-     */
-    clone() {
-        return new PitchBend(
-            this.pitch,
-            this.start,
-            this.velocity,
-            this.channel,
-            this.end,
-            // This is different to the base Note class
-        );
-    }
-
-    /**
-     * Returns true if this note and otherNote have equal attributes.
-     * @param {PitchBend} otherNote another GuitarNote
-     * @returns {boolean} true if equal
-     */
-    equals(otherNote) {
-        if (!(otherNote instanceof PitchBend)) {
-            return false;
-        }
-        return (
-            this.pitch === otherNote.pitch &amp;&amp;
-            this.start === otherNote.start &amp;&amp;
-            this.velocity === otherNote.velocity &amp;&amp;
-            this.channel === otherNote.channel &amp;&amp;
-            this.end === otherNote.end
-            // This is different to the base Note class
-        );
-    }
-}
-
-export default PitchBend;
+export default FINGERS;
 </code></pre>
         </article>
     </section>
