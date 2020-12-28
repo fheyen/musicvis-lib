@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>fileFormats/MidiParser.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GuitarNote.html">GuitarNote</a><ul class='methods'><li data-type='method'><a href="GuitarNote.html#.from">from</a></li><li data-type='method'><a href="GuitarNote.html#.fromNote">fromNote</a></li><li data-type='method'><a href="GuitarNote.html#clone">clone</a></li><li data-type='method'><a href="GuitarNote.html#equals">equals</a></li><li data-type='method'><a href="GuitarNote.html#getDuration">getDuration</a></li><li data-type='method'><a href="GuitarNote.html#getLetter">getLetter</a></li><li data-type='method'><a href="GuitarNote.html#getName">getName</a></li><li data-type='method'><a href="GuitarNote.html#getOctave">getOctave</a></li><li data-type='method'><a href="GuitarNote.html#overlapInSeconds">overlapInSeconds</a></li><li data-type='method'><a href="GuitarNote.html#overlapsInTime">overlapsInTime</a></li><li data-type='method'><a href="GuitarNote.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="GuitarNote.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="GuitarNote.html#toNote">toNote</a></li><li data-type='method'><a href="GuitarNote.html#toString">toString</a></li></ul></li><li><a href="Measure.html">Measure</a><ul class='methods'><li data-type='method'><a href="Measure.html#clone">clone</a></li></ul></li><li><a href="MidiInputManager.html">MidiInputManager</a></li><li><a href="module-instruments_Guitar.StringedTuning.html">StringedTuning</a></li><li><a href="module-instruments_Lamellophone.LamellophoneTuning.html">LamellophoneTuning</a><ul class='methods'><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getLetters">getLetters</a></li><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getNotesInInstrumentOrder">getNotesInInstrumentOrder</a></li><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getNumbers">getNumbers</a></li></ul></li><li><a href="module-instruments_StringedFingering-FretboardPosition.html">FretboardPosition</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#difference">difference</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#equals">equals</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#isValid">isValid</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#moveBy">moveBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#toString">toString</a></li></ul></li><li><a href="module-instruments_StringedFingering-HandPose.html">HandPose</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#difference">difference</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#euqals">euqals</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#isValid">isValid</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#liftFinger">liftFinger</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveFingerBy">moveFingerBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveFingerTo">moveFingerTo</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveHandBy">moveHandBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#toString">toString</a></li></ul></li><li><a href="NeedlemanWunsch.html">NeedlemanWunsch</a><ul class='methods'><li data-type='method'><a href="NeedlemanWunsch.html#alignmentChildren">alignmentChildren</a></li><li data-type='method'><a href="NeedlemanWunsch.html#alignmentTraceback">alignmentTraceback</a></li><li data-type='method'><a href="NeedlemanWunsch.html#calcScoresAndTracebacks">calcScoresAndTracebacks</a></li></ul></li><li><a href="Note.html">Note</a><ul class='methods'><li data-type='method'><a href="Note.html#.from">from</a></li><li data-type='method'><a href="Note.html#clone">clone</a></li><li data-type='method'><a href="Note.html#equals">equals</a></li><li data-type='method'><a href="Note.html#getDuration">getDuration</a></li><li data-type='method'><a href="Note.html#getLetter">getLetter</a></li><li data-type='method'><a href="Note.html#getName">getName</a></li><li data-type='method'><a href="Note.html#getOctave">getOctave</a></li><li data-type='method'><a href="Note.html#overlapInSeconds">overlapInSeconds</a></li><li data-type='method'><a href="Note.html#overlapsInTime">overlapsInTime</a></li><li data-type='method'><a href="Note.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="Note.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="Note.html#toString">toString</a></li></ul></li><li><a href="NoteArray.html">NoteArray</a><ul class='methods'><li data-type='method'><a href="NoteArray.html#addNotes">addNotes</a></li><li data-type='method'><a href="NoteArray.html#append">append</a></li><li data-type='method'><a href="NoteArray.html#clone">clone</a></li><li data-type='method'><a href="NoteArray.html#concat">concat</a></li><li data-type='method'><a href="NoteArray.html#equals">equals</a></li><li data-type='method'><a href="NoteArray.html#filter">filter</a></li><li data-type='method'><a href="NoteArray.html#filterPitches">filterPitches</a></li><li data-type='method'><a href="NoteArray.html#forEach">forEach</a></li><li data-type='method'><a href="NoteArray.html#getDuration">getDuration</a></li><li data-type='method'><a href="NoteArray.html#getNotes">getNotes</a></li><li data-type='method'><a href="NoteArray.html#getStartTime">getStartTime</a></li><li data-type='method'><a href="NoteArray.html#length">length</a></li><li data-type='method'><a href="NoteArray.html#map">map</a></li><li data-type='method'><a href="NoteArray.html#repeat">repeat</a></li><li data-type='method'><a href="NoteArray.html#reverse">reverse</a></li><li data-type='method'><a href="NoteArray.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="NoteArray.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="NoteArray.html#shiftToStartAt">shiftToStartAt</a></li><li data-type='method'><a href="NoteArray.html#slice">slice</a></li><li data-type='method'><a href="NoteArray.html#sliceTime">sliceTime</a></li><li data-type='method'><a href="NoteArray.html#sort">sort</a></li><li data-type='method'><a href="NoteArray.html#sortByTime">sortByTime</a></li><li data-type='method'><a href="NoteArray.html#transpose">transpose</a></li></ul></li><li><a href="PitchBend.html">PitchBend</a><ul class='methods'><li data-type='method'><a href="PitchBend.html#.from">from</a></li><li data-type='method'><a href="PitchBend.html#.fromNote">fromNote</a></li><li data-type='method'><a href="PitchBend.html#clone">clone</a></li><li data-type='method'><a href="PitchBend.html#equals">equals</a></li></ul></li><li><a href="PitchSequence.html">PitchSequence</a><ul class='methods'><li data-type='method'><a href="PitchSequence.html#.fromNotes">fromNotes</a></li><li data-type='method'><a href="PitchSequence.html#equals">equals</a></li><li data-type='method'><a href="PitchSequence.html#removeOctaves">removeOctaves</a></li><li data-type='method'><a href="PitchSequence.html#toCharString">toCharString</a></li><li data-type='method'><a href="PitchSequence.html#toIntervals">toIntervals</a></li></ul></li><li><a href="Recording.html">Recording</a><ul class='methods'><li data-type='method'><a href="Recording.html#.from">from</a></li><li data-type='method'><a href="Recording.html#clone">clone</a></li><li data-type='method'><a href="Recording.html#equals">equals</a></li><li data-type='method'><a href="Recording.html#toSimpleObject">toSimpleObject</a></li></ul></li><li><a href="SuffixTree.html">SuffixTree</a><ul class='methods'><li data-type='method'><a href="SuffixTree.html#getLongestRepeatedSubString">getLongestRepeatedSubString</a></li><li data-type='method'><a href="SuffixTree.html#toJson">toJson</a></li><li data-type='method'><a href="SuffixTree.html#toString">toString</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Chords.html">Chords</a><ul class='methods'><li data-type='method'><a href="module-Chords.html#.detectChordsByExactStart">detectChordsByExactStart</a></li><li data-type='method'><a href="module-Chords.html#.detectChordsByOverlap">detectChordsByOverlap</a></li><li data-type='method'><a href="module-Chords.html#.getChordName">getChordName</a></li><li data-type='method'><a href="module-Chords.html#.getChordType">getChordType</a></li></ul></li><li><a href="module-comparison_Alignment.html">comparison/Alignment</a><ul class='methods'><li data-type='method'><a href="module-comparison_Alignment.html#.alignmentBenchmark">alignmentBenchmark</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays">alignNoteArrays</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays2">alignNoteArrays2</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays3">alignNoteArrays3</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.testAlignment">testAlignment</a></li><li data-type='method'><a href="module-comparison_Alignment.html#~alignmentForce">alignmentForce</a></li></ul></li><li><a href="module-comparison_ErrorClassifier;.html">comparison/ErrorClassifier;</a><ul class='methods'><li data-type='method'><a href="module-comparison_ErrorClassifier;.html#.classifyErrors">classifyErrors</a></li><li data-type='method'><a href="module-comparison_ErrorClassifier;.html#.separateMissed">separateMissed</a></li></ul></li><li><a href="module-comparison_Matching.html">comparison/Matching</a><ul class='methods'><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingError">getMatchingError</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingSection">getMatchingSection</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingSliceError">getMatchingSliceError</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMultiMatchingErrorPerNote">getMultiMatchingErrorPerNote</a></li><li data-type='method'><a href="module-comparison_Matching.html#.matchGtAndMultipleRecordings">matchGtAndMultipleRecordings</a></li><li data-type='method'><a href="module-comparison_Matching.html#.matchGtAndRecordingNotes">matchGtAndRecordingNotes</a></li></ul></li><li><a href="module-comparison_Similarity.html">comparison/Similarity</a><ul class='methods'><li data-type='method'><a href="module-comparison_Similarity.html#.discretizeTime">discretizeTime</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getSimilarParts">getSimilarParts</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getSimilarPartsViaMatching">getSimilarPartsViaMatching</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getTrackSimilarity">getTrackSimilarity</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~countActiveNoteBins">countActiveNoteBins</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~euclideanDistanceSquared">euclideanDistanceSquared</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~neirestNeighborDistance">neirestNeighborDistance</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~sliceDiscretizedTrack">sliceDiscretizedTrack</a></li></ul></li><li><a href="module-comparison_SimilarSections.html">comparison/SimilarSections</a><ul class='methods'><li data-type='method'><a href="module-comparison_SimilarSections.html#.findSimilarNoteSections">findSimilarNoteSections</a></li><li data-type='method'><a href="module-comparison_SimilarSections.html#.findSimilarStringSections">findSimilarStringSections</a></li></ul></li><li><a href="module-fileFormats_MidiParser.html">fileFormats/MidiParser</a><ul class='methods'><li data-type='method'><a href="module-fileFormats_MidiParser.html#.preprocessMidiFileData">preprocessMidiFileData</a></li></ul></li><li><a href="module-fileFormats_MusicXmlParser.html">fileFormats/MusicXmlParser</a><ul class='methods'><li data-type='method'><a href="module-fileFormats_MusicXmlParser.html#.preprocessMusicXmlData">preprocessMusicXmlData</a></li></ul></li><li><a href="module-graphics_Canvas.html">graphics/Canvas</a><ul class='methods'><li data-type='method'><a href="module-graphics_Canvas.html#.drawCircle">drawCircle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawDiamond">drawDiamond</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawFilledCircle">drawFilledCircle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawNoteTrapezoid">drawNoteTrapezoid</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawNoteTrapezoidUpwards">drawNoteTrapezoidUpwards</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawRoundedRect">drawRoundedRect</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawTriangle">drawTriangle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawX">drawX</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.setupCanvas">setupCanvas</a></li></ul></li><li><a href="module-instruments_Drums.html">instruments/Drums</a><ul class='methods'><li data-type='method'><a href="module-instruments_Drums.html#.generateDrumVariation">generateDrumVariation</a></li><li data-type='method'><a href="module-instruments_Drums.html#.getPitch2PositionMap">getPitch2PositionMap</a></li><li data-type='method'><a href="module-instruments_Drums.html#.simplifyDrumPitches">simplifyDrumPitches</a></li></ul></li><li><a href="module-instruments_Guitar.html">instruments/Guitar</a><ul class='methods'><li data-type='method'><a href="module-instruments_Guitar.html#.fretboardPositionsFromMidi">fretboardPositionsFromMidi</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.generateExampleData">generateExampleData</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getFretboardPositionsFromNoteName">getFretboardPositionsFromNoteName</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getFretboardPositionsFromPitch">getFretboardPositionsFromPitch</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getNoteInfoFromFretboardPos">getNoteInfoFromFretboardPos</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getPitchFromFretboardPos">getPitchFromFretboardPos</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getTuningFromPitches">getTuningFromPitches</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getTuningPitchRange">getTuningPitchRange</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.guitarNoteFromNote">guitarNoteFromNote</a></li></ul></li><li><a href="module-instruments_Lamellophone.html">instruments/Lamellophone</a><ul class='methods'><li data-type='method'><a href="module-instruments_Lamellophone.html#.bestTransposition">bestTransposition</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNotesToHtmlTab">convertNotesToHtmlTab</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNotesToTab">convertNotesToTab</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNumbersToLetters">convertNumbersToLetters</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertTabToNotes">convertTabToNotes</a></li></ul></li><li><a href="module-instruments_Piano.html">instruments/Piano</a></li><li><a href="module-instruments_StringedFingering.html">instruments/StringedFingering</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering.html#.getOptimalHandPoseSequence">getOptimalHandPoseSequence</a></li></ul></li><li><a href="module-Midi.html">Midi</a><ul class='methods'><li data-type='method'><a href="module-Midi.html#.getMidiDrumNoteByNr">getMidiDrumNoteByNr</a></li><li data-type='method'><a href="module-Midi.html#.getMidiInstrumentByNr">getMidiInstrumentByNr</a></li><li data-type='method'><a href="module-Midi.html#.getMidiInstrumentByNrL2">getMidiInstrumentByNrL2</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByLabel">getMidiNoteByLabel</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByNameAndOctave">getMidiNoteByNameAndOctave</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByNr">getMidiNoteByNr</a></li><li data-type='method'><a href="module-Midi.html#.getNoteNameFromNoteNr">getNoteNameFromNoteNr</a></li><li data-type='method'><a href="module-Midi.html#.isSharp">isSharp</a></li></ul></li><li><a href="module-utils_ArrayUtils.html">utils/ArrayUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayContainsArray">arrayContainsArray</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayHasSameElements">arrayHasSameElements</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayShallowEquals">arrayShallowEquals</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.flattenArray">flattenArray</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.formatMatrix">formatMatrix</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.getMatrixMax">getMatrixMax</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.removeDuplicates">removeDuplicates</a></li></ul></li><li><a href="module-utils_BlobUtils.html">utils/BlobUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_BlobUtils.html#.blobToBase64">blobToBase64</a></li><li data-type='method'><a href="module-utils_BlobUtils.html#.blobToFileExtension">blobToFileExtension</a></li></ul></li><li><a href="module-utils_FormattingUtils.html">utils/FormattingUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatDate">formatDate</a></li><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatSongTitle">formatSongTitle</a></li><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatTime">formatTime</a></li></ul></li><li><a href="module-utils_LocalStorageUtils.html">utils/LocalStorageUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_LocalStorageUtils.html#.getObjectFromLocalStorage">getObjectFromLocalStorage</a></li><li data-type='method'><a href="module-utils_LocalStorageUtils.html#.storeObjectInLocalStorage">storeObjectInLocalStorage</a></li></ul></li><li><a href="module-utils_MathUtils.html">utils/MathUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_MathUtils.html#.choose">choose</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.clipValue">clipValue</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.findLocalMaxima">findLocalMaxima</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.randFloat">randFloat</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.swapSoSmallerFirst">swapSoSmallerFirst</a></li></ul></li><li><a href="module-utils_MiscUtils.html">utils/MiscUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_MiscUtils.html#.bpmToSecondsPerBeat">bpmToSecondsPerBeat</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.deepCloneFlatObjectMap">deepCloneFlatObjectMap</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.findNearest">findNearest</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.groupNotesByPitch">groupNotesByPitch</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.reverseString">reverseString</a></li></ul></li><li><a href="module-utils_NoteColorUtils.html">utils/NoteColorUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_NoteColorUtils.html#.noteColorFromPitch">noteColorFromPitch</a></li></ul></li><li><a href="module-utils_RecordingsUtils.html">utils/RecordingsUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_RecordingsUtils.html#.alignNotesToBpm">alignNotesToBpm</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.averageRecordings">averageRecordings</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.averageRecordings2">averageRecordings2</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.clipRecordingsPitchesToGtRange">clipRecordingsPitchesToGtRange</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.differenceMap">differenceMap</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.differenceMapErrorAreas">differenceMapErrorAreas</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.filterRecordingNoise">filterRecordingNoise</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.recordingsHeatmap">recordingsHeatmap</a></li></ul></li><li><a href="module-utils_StatisticsUtils.html">utils/StatisticsUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_StatisticsUtils.html#.confidenceInterval">confidenceInterval</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.getBoxplotCharacteristics">getBoxplotCharacteristics</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelDensityEstimator">kernelDensityEstimator</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelEpanechnikov">kernelEpanechnikov</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelGauss">kernelGauss</a></li></ul></li><li><a href="module-utils_WebMidiUtils.html">utils/WebMidiUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_WebMidiUtils.html#.pingMidiDevice">pingMidiDevice</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#damerauLevenshtein">damerauLevenshtein</a></li><li><a href="global.html#differenceSimilarity">differenceSimilarity</a></li><li><a href="global.html#gotoh">gotoh</a></li><li><a href="global.html#lcs">lcs</a></li><li><a href="global.html#lcsLength">lcsLength</a></li><li><a href="global.html#levenshtein">levenshtein</a></li><li><a href="global.html#matchMissmatchSimilarity">matchMissmatchSimilarity</a></li><li><a href="global.html#normalizedGotoh">normalizedGotoh</a></li><li><a href="global.html#normalizedLcsLength">normalizedLcsLength</a></li><li><a href="global.html#normalizedLevenshtein">normalizedLevenshtein</a></li><li><a href="global.html#recordAudio">recordAudio</a></li><li><a href="global.html#recordMidi">recordMidi</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">fileFormats/MidiParser.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Note from '../types/Note';
+import { group, max } from 'd3';
+import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
+
+/**
+ * @module fileFormats/MidiParser
+ */
+
+/**
+ * Parses a MIDI JSON file to get Note objects with absolute time in seconds.
+ * See https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+ * @param {Object} data MIDI data in JSON format
+ * @param {boolean} splitFormat0IntoTracks split MIDI format 0 data into tracks
+ *      instead of using channels?
+ * @returns {Objec} including an array of note objects and meta information
+ */
+export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
+    if (data === null || data === undefined) {
+        console.warn('[MidiParser] MIDI data is null');
+        return;
+    }
+    if (!data.track) {
+        console.error('[MidiParser] MIDI data has no track');
+        return;
+    }
+    console.groupCollapsed('[MidiParser] Preprocessing MIDI file data');
+    // Parse notes
+    let parsedTracks = [];
+    const partNames = [];
+    const { tempoChanges, beatTypeChanges } = getMidiTempoAndBeatChanges(data.track);
+    for (let i = 0; i &lt; data.track.length; i++) {
+        const track = data.track[i];
+        const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges);
+        if (t !== null) {
+            parsedTracks.push(t);
+            // Get part name
+            let name = getPartName(track.event);
+            partNames.push(name ? name : `Track ${i}`);
+        }
+    }
+    // Split MIDI format 0 data into tracks instead of having channels
+    if (data.formatType === 0 &amp;&amp; splitFormat0IntoTracks &amp;&amp; parsedTracks.length > 0) {
+        parsedTracks = splitFormat0(parsedTracks);
+    }
+    // Return similar format as MusicXmlParser
+    const result = {
+        parts: parsedTracks,
+        partNames,
+        instruments: null,
+        totalTime: max(parsedTracks, d => d.totalTime),
+        // This is the first tempo etc., changes are stored in each part
+        bpm: parsedTracks[0].bpm,
+        beats: parsedTracks[0].beats,
+        beatType: parsedTracks[0].beatType,
+    };
+    console.log(`Got ${parsedTracks.length} MIDI tracks`, result);
+    console.groupEnd();
+    return result;
+}
+
+/**
+ * Parses a single MIDI track and pushes it to parsedTracks if it contains notes
+ * @private
+ * @param {Object} track a MIDI track
+ * @param {number} timeDivision MIDI time division
+ * @param {Object[]} tempoChanges array with tempo change events
+ * @param {Object[]} beatTypeChanges array with beat type change events
+ */
+function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
+    const notes = [];
+    let tempo = tempoChanges.length > 0 ? tempoChanges[0].tempo : 120;
+    let currentTick = 0;
+    let currentTime;
+    let milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
+    let tickOfLastTempoChange = 0;
+    let timeOfLastTempoChange = 0;
+    for (let event of track.event) {
+        currentTick += event.deltaTime;
+        let mostRecentTempoChange;
+        // Update beat type change times
+        for (let btc of beatTypeChanges) {
+            if (btc.time === undefined &amp;&amp; btc.tick &lt;= currentTick) {
+                btc.time = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+            }
+        }
+        // Handle last tempo change in track differently
+        if (tempoChanges.length > 0 &amp;&amp; currentTick > tempoChanges[tempoChanges.length - 1].tick) {
+            mostRecentTempoChange = tempoChanges[tempoChanges.length - 1];
+        }
+        // Get current tempo, as soon as we are too far, 1 step back
+        for (let i = 1; i &lt; tempoChanges.length; i++) {
+            const tick = tempoChanges[i].tick;
+            if (tick > currentTick) {
+                const change = tempoChanges[i - 1];
+                mostRecentTempoChange = change;
+                break;
+            }
+        }
+        // React to tempo changes
+        if (mostRecentTempoChange &amp;&amp; mostRecentTempoChange.tempo !== tempo) {
+            const tick = mostRecentTempoChange.tick;
+            timeOfLastTempoChange = (tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+            tickOfLastTempoChange = tick;
+            mostRecentTempoChange.time = timeOfLastTempoChange;
+            tempo = mostRecentTempoChange.tempo;
+            milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
+        }
+        // Update current time in seconds
+        currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+        // Skip events that are neither note-on nor note-off
+        const type = event.type;
+        if (type !== 8 &amp;&amp; type !== 9) {
+            continue;
+        }
+        const [pitch, velocity] = event.data;
+        const channel = event.channel;
+        // Avoid numerical precision errors
+        currentTime = +(currentTime).toFixed(10);
+        if (event.type === 8 || velocity === 0) {
+            // This might happen for empty or corrupted files
+            if (notes.length === 0) {
+                continue;
+            }
+            // Handle note-off
+            // Go back to latest note with the same pitch and add the end time
+            // If more than one channel, check also the channel!
+            let i = notes.length - 1;
+            while (notes[i].pitch !== pitch || notes[i].channel !== channel || notes[i].end !== -1) {
+                i--;
+                if (i &lt; 0) {
+                    console.warn('Did not find note-on event for note-off event!');
+                    break;
+                }
+            }
+            if (i >= 0) {
+                notes[i].end = currentTime;
+            }
+        } else {
+            // TODO: What about pitch-bend (14) etc?
+            // Handle note-on
+            notes.push(new Note(
+                pitch,
+                currentTime,
+                velocity,
+                channel,
+                -1
+            ));
+        }
+    }
+    // Fix missing note ends
+    for (let note of notes) {
+        if (note.end === -1) {
+            note.end = currentTime;
+        }
+    }
+    // Generate measure lines from tempo and beat type changes
+    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, currentTime);
+    // Save parsed track with meta information
+    if (notes.length > 0) {
+        const parsedTrack = {
+            noteObjs: notes,
+            totalTime: currentTime,
+            tempoChanges,
+            beatTypeChanges,
+            measureLinePositions,
+            // Initial values
+            bpm: tempoChanges[0]?.tempo || 120,
+            beats: beatTypeChanges[0]?.beats || 4,
+            beatType: beatTypeChanges[0]?.beatType || 4,
+        };
+        console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
+        return parsedTrack;
+    } else {
+        // console.log('Empty track');
+        return null;
+    }
+}
+
+/**
+ * Extracts part name strings from MIDI tracks
+ * @private
+ * @param {Object[]} track MIDI tracks
+ * @returns {string[]} part names
+ */
+function getPartName(track) {
+    for (let event of track) {
+        if (event.type === 255 &amp;&amp; event.metaType === 3) {
+            return event.data;
+        }
+    }
+    return null;
+}
+
+/**
+ * Caclulates the time positions of measure lines by looking at tempo and beat
+ * type change events
+ * TODO: probably does not handle complex meters correctly
+ * TODO: does not handle tempo change yet, do this as in parsing notes
+ * @private
+ * @param {Object[]} tempoChanges tempo change events
+ * @param {Object[]} beatTypeChanges beat type change events
+ * @param {number} totalTime
+ * @returns {number[]} measure line times in seconds
+ */
+function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
+    const measureLines = [];
+    // Generate measure lines from tempo and beat type changes
+    let tempo = 120;
+    let beats = 4;
+    let secondsPerBeat = bpmToSecondsPerBeat(tempo);
+    // let beatType = 4;
+    let currentTime = 0;
+    let currentBeatsInMeasure = 0;
+    let timeOfLastTempoChange = 0;
+    let timeSinceLastTempoChange = 0;
+    while (currentTime &lt; totalTime) {
+        // Get current tempo and beat type
+        let mostRecentTempoChange;
+        for (const t of tempoChanges) {
+            if (t.time &lt;= currentTime) {
+                mostRecentTempoChange = t.tempo;
+            }
+        }
+        if (mostRecentTempoChange &amp;&amp; mostRecentTempoChange !== tempo) {
+            timeOfLastTempoChange = currentTime;
+            timeSinceLastTempoChange = 0;
+            tempo = mostRecentTempoChange;
+            secondsPerBeat = bpmToSecondsPerBeat(tempo);
+        }
+        for (const b of beatTypeChanges) {
+            if (b.time &lt;= currentTime) {
+                beats = b.beats;
+                // beatType = b.beatType;
+            }
+        }
+        // Update time and beats
+        currentBeatsInMeasure++;
+        timeSinceLastTempoChange += secondsPerBeat;
+        currentTime = timeOfLastTempoChange + timeSinceLastTempoChange;
+        if (currentBeatsInMeasure >= beats) {
+            // Measure is full
+            currentBeatsInMeasure = 0;
+            measureLines.push(currentTime);
+        }
+    }
+    return measureLines;
+}
+
+/**
+ * Split MIDI format 0 data into tracks instead of having channels,
+ * creates one track for each channel
+ * @private
+ * @param {Note[][]} tracks parsed MIDI tracks
+ * @returns {Note[][]} splitted tracks
+ */
+function splitFormat0(tracks) {
+    if (tracks.length > 1) {
+        console.warn(`Splitting a format 0 file with more than 1 track will result in all but the first beeing lost!`);
+    }
+    console.log('Splitting format 0 file into tracks based on channel');
+    const grouped = group(tracks[0].noteObjs, d => d.channel);
+    // All tracks will share the meta infomation of the 0th track
+    // Assign the splitted-by-channel notes to their new tracks
+    const splittedTracks = [];
+    grouped.forEach((notes, channelId) => {
+        splittedTracks[channelId] = {
+            ...tracks[0],
+            noteObjs: notes
+        };
+    });
+    return splittedTracks;
+}
+
+/**
+ * Given the tempo and time division, returns the number of milliseconds
+ * each MIDI time tick corresponds to
+ * @private
+ * @param {number} tempo
+ * @param {number} timeDivision
+ * @returns {number} milli seconds per tick
+ */
+function getMillisecondsPerTick(tempo, timeDivision) {
+    const milliSecondsPerBeat = 1 / tempo * 60000;
+    const milliSecondsPerTick = milliSecondsPerBeat / timeDivision;
+    return milliSecondsPerTick;
+}
+
+/**
+ * Retrieves all tempo and beat type changes from a MIDI file's tracks.
+ * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+ * @private
+ * @param {Array} tracks MIDI JSON file tracks
+ * @returns {Object} {tempoChanges, beatTypeChanges} as arrays of objects, which
+ *      contain the MIDI tick and the new information
+ */
+function getMidiTempoAndBeatChanges(tracks) {
+    const tempoChanges = [];
+    const beatTypeChanges = [];
+    let currentTick = 0;
+    for (let track of tracks) {
+        for (let event of track.event) {
+            // Get timing of events
+            currentTick += event.deltaTime;
+            // Tempo change
+            if (event.type === 255 &amp;&amp; event.metaType === 81) {
+                const milliSecondsPerQuarter = event.data / 1000;
+                const tempo = Math.round(1 / (milliSecondsPerQuarter / 60000));
+                tempoChanges.push({
+                    tick: currentTick,
+                    tempo
+                });
+            }
+            // Beat type change
+            if (event.type === 255 &amp;&amp; event.metaType === 88) {
+                const d = event.data;
+                const beats = d[0];
+                const beatType = Math.pow(2, d[1]);
+                beatTypeChanges.push({
+                    tick: currentTick,
+                    beats,
+                    beatType
+                });
+                // console.log(`Metro: ${d[2]}`);
+                // console.log(`32nds: ${d[3]}`);
+            }
+        }
+    }
+    // Default values
+    if (tempoChanges.length === 0) {
+        tempoChanges.push({ tempo: 120, time: 0 });
+    }
+    if (beatTypeChanges.length === 0) {
+        beatTypeChanges.push({ beats: 4, beatType: 4, time: 0 });
+    }
+    return { tempoChanges, beatTypeChanges };
+}
+
+/**
+ * TODO: test
+ *  - convert something to MIDI and back with above function to see if result is the same as the original
+ *  - and the other way round
+ * @private
+ * @param {Note[]} notes notes
+ * @param {number} bpm tempo in beats per minute
+ */
+// export function convertNoteArrayToMIDIJSON(notes, bpm) {
+//     const timeDivision = 96;
+//     const milliSecondsPerBeat = 1 / bpm * 60_000;
+//     const ticksPerMillisecond = timeDivision / milliSecondsPerBeat;
+//     const track = [];
+//     let currentTime = 0;
+//     // For each note create a note on and note off event
+//     // duplicate each note and set the start of the second copy to the note's end
+//     // sort notes by the new start times
+//     const noteOns = notes.slice();
+//     const noteOffs = notes.map(n => n.clone());
+//     noteOffs.forEach(n => n.start = n.end);
+//     const notesNew = noteOns.concat(noteOffs).sort((a, b) => a.start - b.start);
+//     // Go through all notes, and remember which ones are currently 'on'
+//     // If a note appears and is currently 'off': note_on event, and vice versa
+//     const currentlyOn = Array(128).fill(false);
+//     for (let note of notesNew) {
+//         let eventType;
+//         if (!currentlyOn[note.pitch]) {
+//             // note_on event
+//             eventType = 9;
+//         } else if (currentlyOn[note.pitch]) {
+//             // note_off event
+//             eventType = 8;
+//         }
+//         currentlyOn[note.pitch] = !currentlyOn[note.pitch];
+//         // Convert to ticks
+//         const deltaTime = (note.start - currentTime) * 1000 * ticksPerMillisecond;
+//         currentTime = note.start;
+//         track.push({
+//             deltaTime,
+//             type: eventType,
+//             channel: 0,
+//             data: [
+//                 note.pitch,
+//                 note.velocity
+//             ]
+//         });
+//     }
+//     const result = {
+//         formatType: 0,
+//         tracks: 1,
+//         timeDivision,
+//         bpm: bpm,
+//         track: [
+//             { event: track }
+//         ]
+//     };
+//     console.log('[MidiParser] Converted note array to MIDI JSON', result);
+//     return JSON.stringify(result);
+// }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 15:31:36 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

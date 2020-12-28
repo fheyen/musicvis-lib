@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>instruments/Lamellophone.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GuitarNote.html">GuitarNote</a><ul class='methods'><li data-type='method'><a href="GuitarNote.html#.from">from</a></li><li data-type='method'><a href="GuitarNote.html#.fromNote">fromNote</a></li><li data-type='method'><a href="GuitarNote.html#clone">clone</a></li><li data-type='method'><a href="GuitarNote.html#equals">equals</a></li><li data-type='method'><a href="GuitarNote.html#getDuration">getDuration</a></li><li data-type='method'><a href="GuitarNote.html#getLetter">getLetter</a></li><li data-type='method'><a href="GuitarNote.html#getName">getName</a></li><li data-type='method'><a href="GuitarNote.html#getOctave">getOctave</a></li><li data-type='method'><a href="GuitarNote.html#overlapInSeconds">overlapInSeconds</a></li><li data-type='method'><a href="GuitarNote.html#overlapsInTime">overlapsInTime</a></li><li data-type='method'><a href="GuitarNote.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="GuitarNote.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="GuitarNote.html#toNote">toNote</a></li><li data-type='method'><a href="GuitarNote.html#toString">toString</a></li></ul></li><li><a href="Measure.html">Measure</a><ul class='methods'><li data-type='method'><a href="Measure.html#clone">clone</a></li></ul></li><li><a href="MidiInputManager.html">MidiInputManager</a></li><li><a href="module-instruments_Guitar.StringedTuning.html">StringedTuning</a></li><li><a href="module-instruments_Lamellophone.LamellophoneTuning.html">LamellophoneTuning</a><ul class='methods'><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getLetters">getLetters</a></li><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getNotesInInstrumentOrder">getNotesInInstrumentOrder</a></li><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getNumbers">getNumbers</a></li></ul></li><li><a href="module-instruments_StringedFingering-FretboardPosition.html">FretboardPosition</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#difference">difference</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#equals">equals</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#isValid">isValid</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#moveBy">moveBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#toString">toString</a></li></ul></li><li><a href="module-instruments_StringedFingering-HandPose.html">HandPose</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#difference">difference</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#euqals">euqals</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#isValid">isValid</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#liftFinger">liftFinger</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveFingerBy">moveFingerBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveFingerTo">moveFingerTo</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveHandBy">moveHandBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#toString">toString</a></li></ul></li><li><a href="NeedlemanWunsch.html">NeedlemanWunsch</a><ul class='methods'><li data-type='method'><a href="NeedlemanWunsch.html#alignmentChildren">alignmentChildren</a></li><li data-type='method'><a href="NeedlemanWunsch.html#alignmentTraceback">alignmentTraceback</a></li><li data-type='method'><a href="NeedlemanWunsch.html#calcScoresAndTracebacks">calcScoresAndTracebacks</a></li></ul></li><li><a href="Note.html">Note</a><ul class='methods'><li data-type='method'><a href="Note.html#.from">from</a></li><li data-type='method'><a href="Note.html#clone">clone</a></li><li data-type='method'><a href="Note.html#equals">equals</a></li><li data-type='method'><a href="Note.html#getDuration">getDuration</a></li><li data-type='method'><a href="Note.html#getLetter">getLetter</a></li><li data-type='method'><a href="Note.html#getName">getName</a></li><li data-type='method'><a href="Note.html#getOctave">getOctave</a></li><li data-type='method'><a href="Note.html#overlapInSeconds">overlapInSeconds</a></li><li data-type='method'><a href="Note.html#overlapsInTime">overlapsInTime</a></li><li data-type='method'><a href="Note.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="Note.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="Note.html#toString">toString</a></li></ul></li><li><a href="NoteArray.html">NoteArray</a><ul class='methods'><li data-type='method'><a href="NoteArray.html#addNotes">addNotes</a></li><li data-type='method'><a href="NoteArray.html#append">append</a></li><li data-type='method'><a href="NoteArray.html#clone">clone</a></li><li data-type='method'><a href="NoteArray.html#concat">concat</a></li><li data-type='method'><a href="NoteArray.html#equals">equals</a></li><li data-type='method'><a href="NoteArray.html#filter">filter</a></li><li data-type='method'><a href="NoteArray.html#filterPitches">filterPitches</a></li><li data-type='method'><a href="NoteArray.html#forEach">forEach</a></li><li data-type='method'><a href="NoteArray.html#getDuration">getDuration</a></li><li data-type='method'><a href="NoteArray.html#getNotes">getNotes</a></li><li data-type='method'><a href="NoteArray.html#getStartTime">getStartTime</a></li><li data-type='method'><a href="NoteArray.html#length">length</a></li><li data-type='method'><a href="NoteArray.html#map">map</a></li><li data-type='method'><a href="NoteArray.html#repeat">repeat</a></li><li data-type='method'><a href="NoteArray.html#reverse">reverse</a></li><li data-type='method'><a href="NoteArray.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="NoteArray.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="NoteArray.html#shiftToStartAt">shiftToStartAt</a></li><li data-type='method'><a href="NoteArray.html#slice">slice</a></li><li data-type='method'><a href="NoteArray.html#sliceTime">sliceTime</a></li><li data-type='method'><a href="NoteArray.html#sort">sort</a></li><li data-type='method'><a href="NoteArray.html#sortByTime">sortByTime</a></li><li data-type='method'><a href="NoteArray.html#transpose">transpose</a></li></ul></li><li><a href="PitchBend.html">PitchBend</a><ul class='methods'><li data-type='method'><a href="PitchBend.html#.from">from</a></li><li data-type='method'><a href="PitchBend.html#.fromNote">fromNote</a></li><li data-type='method'><a href="PitchBend.html#clone">clone</a></li><li data-type='method'><a href="PitchBend.html#equals">equals</a></li></ul></li><li><a href="PitchSequence.html">PitchSequence</a><ul class='methods'><li data-type='method'><a href="PitchSequence.html#.fromNotes">fromNotes</a></li><li data-type='method'><a href="PitchSequence.html#equals">equals</a></li><li data-type='method'><a href="PitchSequence.html#removeOctaves">removeOctaves</a></li><li data-type='method'><a href="PitchSequence.html#toCharString">toCharString</a></li><li data-type='method'><a href="PitchSequence.html#toIntervals">toIntervals</a></li></ul></li><li><a href="Recording.html">Recording</a><ul class='methods'><li data-type='method'><a href="Recording.html#.from">from</a></li><li data-type='method'><a href="Recording.html#clone">clone</a></li><li data-type='method'><a href="Recording.html#equals">equals</a></li><li data-type='method'><a href="Recording.html#toSimpleObject">toSimpleObject</a></li></ul></li><li><a href="SuffixTree.html">SuffixTree</a><ul class='methods'><li data-type='method'><a href="SuffixTree.html#getLongestRepeatedSubString">getLongestRepeatedSubString</a></li><li data-type='method'><a href="SuffixTree.html#toJson">toJson</a></li><li data-type='method'><a href="SuffixTree.html#toString">toString</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Chords.html">Chords</a><ul class='methods'><li data-type='method'><a href="module-Chords.html#.detectChordsByExactStart">detectChordsByExactStart</a></li><li data-type='method'><a href="module-Chords.html#.detectChordsByOverlap">detectChordsByOverlap</a></li><li data-type='method'><a href="module-Chords.html#.getChordName">getChordName</a></li><li data-type='method'><a href="module-Chords.html#.getChordType">getChordType</a></li></ul></li><li><a href="module-comparison_Alignment.html">comparison/Alignment</a><ul class='methods'><li data-type='method'><a href="module-comparison_Alignment.html#.alignmentBenchmark">alignmentBenchmark</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays">alignNoteArrays</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays2">alignNoteArrays2</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays3">alignNoteArrays3</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.testAlignment">testAlignment</a></li><li data-type='method'><a href="module-comparison_Alignment.html#~alignmentForce">alignmentForce</a></li></ul></li><li><a href="module-comparison_ErrorClassifier;.html">comparison/ErrorClassifier;</a><ul class='methods'><li data-type='method'><a href="module-comparison_ErrorClassifier;.html#.classifyErrors">classifyErrors</a></li><li data-type='method'><a href="module-comparison_ErrorClassifier;.html#.separateMissed">separateMissed</a></li></ul></li><li><a href="module-comparison_Matching.html">comparison/Matching</a><ul class='methods'><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingError">getMatchingError</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingSection">getMatchingSection</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingSliceError">getMatchingSliceError</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMultiMatchingErrorPerNote">getMultiMatchingErrorPerNote</a></li><li data-type='method'><a href="module-comparison_Matching.html#.matchGtAndMultipleRecordings">matchGtAndMultipleRecordings</a></li><li data-type='method'><a href="module-comparison_Matching.html#.matchGtAndRecordingNotes">matchGtAndRecordingNotes</a></li></ul></li><li><a href="module-comparison_Similarity.html">comparison/Similarity</a><ul class='methods'><li data-type='method'><a href="module-comparison_Similarity.html#.discretizeTime">discretizeTime</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getSimilarParts">getSimilarParts</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getSimilarPartsViaMatching">getSimilarPartsViaMatching</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getTrackSimilarity">getTrackSimilarity</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~countActiveNoteBins">countActiveNoteBins</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~euclideanDistanceSquared">euclideanDistanceSquared</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~neirestNeighborDistance">neirestNeighborDistance</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~sliceDiscretizedTrack">sliceDiscretizedTrack</a></li></ul></li><li><a href="module-comparison_SimilarSections.html">comparison/SimilarSections</a><ul class='methods'><li data-type='method'><a href="module-comparison_SimilarSections.html#.findSimilarNoteSections">findSimilarNoteSections</a></li><li data-type='method'><a href="module-comparison_SimilarSections.html#.findSimilarStringSections">findSimilarStringSections</a></li></ul></li><li><a href="module-fileFormats_MidiParser.html">fileFormats/MidiParser</a><ul class='methods'><li data-type='method'><a href="module-fileFormats_MidiParser.html#.preprocessMidiFileData">preprocessMidiFileData</a></li></ul></li><li><a href="module-fileFormats_MusicXmlParser.html">fileFormats/MusicXmlParser</a><ul class='methods'><li data-type='method'><a href="module-fileFormats_MusicXmlParser.html#.preprocessMusicXmlData">preprocessMusicXmlData</a></li></ul></li><li><a href="module-graphics_Canvas.html">graphics/Canvas</a><ul class='methods'><li data-type='method'><a href="module-graphics_Canvas.html#.drawCircle">drawCircle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawDiamond">drawDiamond</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawFilledCircle">drawFilledCircle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawNoteTrapezoid">drawNoteTrapezoid</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawNoteTrapezoidUpwards">drawNoteTrapezoidUpwards</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawRoundedRect">drawRoundedRect</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawTriangle">drawTriangle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawX">drawX</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.setupCanvas">setupCanvas</a></li></ul></li><li><a href="module-instruments_Drums.html">instruments/Drums</a><ul class='methods'><li data-type='method'><a href="module-instruments_Drums.html#.generateDrumVariation">generateDrumVariation</a></li><li data-type='method'><a href="module-instruments_Drums.html#.getPitch2PositionMap">getPitch2PositionMap</a></li><li data-type='method'><a href="module-instruments_Drums.html#.simplifyDrumPitches">simplifyDrumPitches</a></li></ul></li><li><a href="module-instruments_Guitar.html">instruments/Guitar</a><ul class='methods'><li data-type='method'><a href="module-instruments_Guitar.html#.fretboardPositionsFromMidi">fretboardPositionsFromMidi</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.generateExampleData">generateExampleData</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getFretboardPositionsFromNoteName">getFretboardPositionsFromNoteName</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getFretboardPositionsFromPitch">getFretboardPositionsFromPitch</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getNoteInfoFromFretboardPos">getNoteInfoFromFretboardPos</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getPitchFromFretboardPos">getPitchFromFretboardPos</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getTuningFromPitches">getTuningFromPitches</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getTuningPitchRange">getTuningPitchRange</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.guitarNoteFromNote">guitarNoteFromNote</a></li></ul></li><li><a href="module-instruments_Lamellophone.html">instruments/Lamellophone</a><ul class='methods'><li data-type='method'><a href="module-instruments_Lamellophone.html#.bestTransposition">bestTransposition</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNotesToHtmlTab">convertNotesToHtmlTab</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNotesToTab">convertNotesToTab</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNumbersToLetters">convertNumbersToLetters</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertTabToNotes">convertTabToNotes</a></li></ul></li><li><a href="module-instruments_Piano.html">instruments/Piano</a></li><li><a href="module-instruments_StringedFingering.html">instruments/StringedFingering</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering.html#.getOptimalHandPoseSequence">getOptimalHandPoseSequence</a></li></ul></li><li><a href="module-Midi.html">Midi</a><ul class='methods'><li data-type='method'><a href="module-Midi.html#.getMidiDrumNoteByNr">getMidiDrumNoteByNr</a></li><li data-type='method'><a href="module-Midi.html#.getMidiInstrumentByNr">getMidiInstrumentByNr</a></li><li data-type='method'><a href="module-Midi.html#.getMidiInstrumentByNrL2">getMidiInstrumentByNrL2</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByLabel">getMidiNoteByLabel</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByNameAndOctave">getMidiNoteByNameAndOctave</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByNr">getMidiNoteByNr</a></li><li data-type='method'><a href="module-Midi.html#.getNoteNameFromNoteNr">getNoteNameFromNoteNr</a></li><li data-type='method'><a href="module-Midi.html#.isSharp">isSharp</a></li></ul></li><li><a href="module-utils_ArrayUtils.html">utils/ArrayUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayContainsArray">arrayContainsArray</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayHasSameElements">arrayHasSameElements</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayShallowEquals">arrayShallowEquals</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.flattenArray">flattenArray</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.formatMatrix">formatMatrix</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.getMatrixMax">getMatrixMax</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.removeDuplicates">removeDuplicates</a></li></ul></li><li><a href="module-utils_BlobUtils.html">utils/BlobUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_BlobUtils.html#.blobToBase64">blobToBase64</a></li><li data-type='method'><a href="module-utils_BlobUtils.html#.blobToFileExtension">blobToFileExtension</a></li></ul></li><li><a href="module-utils_FormattingUtils.html">utils/FormattingUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatDate">formatDate</a></li><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatSongTitle">formatSongTitle</a></li><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatTime">formatTime</a></li></ul></li><li><a href="module-utils_LocalStorageUtils.html">utils/LocalStorageUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_LocalStorageUtils.html#.getObjectFromLocalStorage">getObjectFromLocalStorage</a></li><li data-type='method'><a href="module-utils_LocalStorageUtils.html#.storeObjectInLocalStorage">storeObjectInLocalStorage</a></li></ul></li><li><a href="module-utils_MathUtils.html">utils/MathUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_MathUtils.html#.choose">choose</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.clipValue">clipValue</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.findLocalMaxima">findLocalMaxima</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.randFloat">randFloat</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.swapSoSmallerFirst">swapSoSmallerFirst</a></li></ul></li><li><a href="module-utils_MiscUtils.html">utils/MiscUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_MiscUtils.html#.bpmToSecondsPerBeat">bpmToSecondsPerBeat</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.deepCloneFlatObjectMap">deepCloneFlatObjectMap</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.findNearest">findNearest</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.groupNotesByPitch">groupNotesByPitch</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.reverseString">reverseString</a></li></ul></li><li><a href="module-utils_NoteColorUtils.html">utils/NoteColorUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_NoteColorUtils.html#.noteColorFromPitch">noteColorFromPitch</a></li></ul></li><li><a href="module-utils_RecordingsUtils.html">utils/RecordingsUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_RecordingsUtils.html#.alignNotesToBpm">alignNotesToBpm</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.averageRecordings">averageRecordings</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.averageRecordings2">averageRecordings2</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.clipRecordingsPitchesToGtRange">clipRecordingsPitchesToGtRange</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.differenceMap">differenceMap</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.differenceMapErrorAreas">differenceMapErrorAreas</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.filterRecordingNoise">filterRecordingNoise</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.recordingsHeatmap">recordingsHeatmap</a></li></ul></li><li><a href="module-utils_StatisticsUtils.html">utils/StatisticsUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_StatisticsUtils.html#.confidenceInterval">confidenceInterval</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.getBoxplotCharacteristics">getBoxplotCharacteristics</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelDensityEstimator">kernelDensityEstimator</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelEpanechnikov">kernelEpanechnikov</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelGauss">kernelGauss</a></li></ul></li><li><a href="module-utils_WebMidiUtils.html">utils/WebMidiUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_WebMidiUtils.html#.pingMidiDevice">pingMidiDevice</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#damerauLevenshtein">damerauLevenshtein</a></li><li><a href="global.html#differenceSimilarity">differenceSimilarity</a></li><li><a href="global.html#gotoh">gotoh</a></li><li><a href="global.html#lcs">lcs</a></li><li><a href="global.html#lcsLength">lcsLength</a></li><li><a href="global.html#levenshtein">levenshtein</a></li><li><a href="global.html#matchMissmatchSimilarity">matchMissmatchSimilarity</a></li><li><a href="global.html#normalizedGotoh">normalizedGotoh</a></li><li><a href="global.html#normalizedLcsLength">normalizedLcsLength</a></li><li><a href="global.html#normalizedLevenshtein">normalizedLevenshtein</a></li><li><a href="global.html#recordAudio">recordAudio</a></li><li><a href="global.html#recordMidi">recordMidi</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">instruments/Lamellophone.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { difference, extent, intersection, max } from "d3";
+import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
+import { detectChordsByExactStart } from "../Chords";
+import Note from "../types/Note";
+import { bpmToSecondsPerBeat } from "../utils/MiscUtils";
+
+/**
+ * @module instruments/Lamellophone
+ */
+
+/**
+ * Represents Lamellophone tunings
+ */
+export class LamellophoneTuning {
+    /**
+     * Represents a tuning of lamellophone.
+     * @param {string} name name
+     * @param {string[]} notes array of notes, low to high
+     *      e.g. ['C4', 'D4', 'F#4', ...]
+     */
+    constructor(name, notes) {
+        this.name = name;
+        this.notes = notes;
+        this.short = notes.join(' ');
+        this.pitches = notes.map(note => getMidiNoteByLabel(note).pitch);
+        this.keyCount = notes.length;
+    }
+
+    /**
+     * Returns an array of the tuning's notes as number representation:
+     * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+     * Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
+     * @returns {string[]} array with tuning notes in number representation
+     */
+    getNumbers() {
+        const numbers = new Map();
+        for (let i = 0; i &lt; this.pitches.length; i++) {
+            const pitch = this.pitches[i];
+            let number = i + 1;
+            let ending = '';
+            let lowerOctave = pitch - 12;
+            while (lowerOctave > 0 &amp;&amp; numbers.has(lowerOctave)) {
+                number = numbers.get(lowerOctave).number;
+                ending += '°';
+                lowerOctave -= 12;
+            }
+            numbers.set(pitch, { number, numberString: `${number}${ending}` });
+        }
+        return Array.from(numbers.values()).map(d => d.numberString);
+    }
+
+    /**
+     * Returns an array of the tuning's notes as letter representation:
+     * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+     * Number format: C,  D,  ... C°, D°, ... C°°, D°°
+     * @returns {string[]} array with tuning notes in letter representation
+     */
+    getLetters() {
+        const numbers = new Map();
+        for (let i = 0; i &lt; this.pitches.length; i++) {
+            const pitch = this.pitches[i];
+            let number = i + 1;
+            let ending = '';
+            let lowerOctave = pitch - 12;
+            while (lowerOctave > 0 &amp;&amp; numbers.has(lowerOctave)) {
+                number = numbers.get(lowerOctave).number;
+                ending += '°';
+                lowerOctave -= 12;
+            }
+            const letter = getMidiNoteByNr(pitch).name;
+            numbers.set(pitch, { number, letterString: `${letter}${ending}` });
+        }
+        return Array.from(numbers.values()).map(d => d.letterString);
+    }
+
+    /**
+     * Returns note pitches or letters in the order that they appear on the
+     * instrument
+     * @param {boolean} returnPitches true: returns pitches, false: returns
+     *      note letters
+     * @returns {number[]|string[]}
+     */
+    getNotesInInstrumentOrder(returnPitches = true) {
+        const notes = returnPitches ? this.pitches : this.notes;
+        const result = [];
+        for (let i = 0; i &lt; notes.length; i++) {
+            const p = notes[i];
+            if (i % 2 === 0) {
+                result.push(p);
+            } else {
+                result.unshift(p);
+            }
+        }
+        return result;
+    }
+}
+
+
+export const lamellophoneTunings = new Map([
+    ['Kalimba', new Map([
+        [
+            '17 C Major',
+            new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
+        ],
+        [
+            '21 C Major',
+            new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
+        ],
+    ])]
+]);
+
+
+/**
+ * Parses a tab into notes
+ * @param {string} tab in letter format
+ * @param {LamellophoneTuning} tuning tuning
+ * @param {*} tempo tempo in bpm
+ * @returns {Note[]} notes
+ */
+export function convertTabToNotes(tab, tuning, tempo = 120) {
+    if (!tab || !tab.length) { return []; }
+    // Create a mapping symbol->pitch
+    const symbolToPitchMap = new Map();
+    const symbols = tuning.getLetters();
+    for (let i = 0; i &lt; tuning.keyCount; i++) {
+        symbolToPitchMap.set(symbols[i], tuning.pitches[i]);
+    }
+    // Parse tab to notes
+    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteNamesSet = new Set(noteNames);
+    const startOct = getMidiNoteByNr(tuning.pitches[0]).octave;
+    const secondsPerBeat = bpmToSecondsPerBeat(tempo);
+    let insideChord = false;
+    let insideNote = false;
+    let currentTime = 0;
+    let currentPitch = 0;
+    let currentOctOffset = 0;
+    const notes = [];
+    tab = `${tab} `;
+    const finishNote = () => {
+        try {
+            notes.push(Note.from({
+                pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
+                start: currentTime,
+                end: currentTime + secondsPerBeat
+            }));
+            currentOctOffset = 0;
+            if (!insideChord) {
+                currentTime += secondsPerBeat;
+            }
+        } catch (e) {
+            console.log(currentPitch);
+        }
+        insideNote = false;
+    };
+    for (let char of tab) {
+        if (char === '(') {
+            insideChord = true;
+        } else if (noteNamesSet.has(char)) {
+            if (insideNote) {
+                finishNote();
+            }
+            insideNote = true;
+            currentPitch = noteNames.indexOf(char);
+        } else if (char === '#') {
+            currentPitch++;
+        } else if (char === '°') {
+            currentOctOffset++;
+        } else if (char === ' ' || char === '\n' || char === ')') {
+            if (char === ')') {
+                insideChord = false;
+            }
+            if (char === '\n') {
+                currentTime += secondsPerBeat;
+            }
+            if (insideNote) {
+                finishNote();
+            }
+        }
+    }
+    return notes;
+}
+
+/**
+ * Converts an array of notes into a text tab
+ * @param {Note[]} notes
+ * @param {LamellophoneTuning} tuning
+ * @param {'letter'|'number'} mode
+ * @param {number} restSize number of seconds for a gap between chords to insert
+ *     a line break
+ * @returns {string} text tab
+ */
+export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1) {
+    if (!notes || !notes.length) { return []; }
+    // Create a mapping pitch->symbol
+    const pitchToSymbolMap = new Map();
+    const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
+    for (let i = 0; i &lt; tuning.keyCount; i++) {
+        pitchToSymbolMap.set(tuning.pitches[i], symbols[i]);
+    }
+    // Get chords
+    const chords = detectChordsByExactStart(notes);
+    // Create tab
+    let tab = '';
+    let prevEnd = 0;
+    for (let chord of chords) {
+        // Format chord's notes
+        let chordString = chord
+            .map(note => pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`)
+            .join(' ');
+        if (chord.length > 1) {
+            // Mark chords with backets (for multiple notes)
+            chordString = `(${chordString})`;
+        }
+        if (chord[0].start - prevEnd > restSize) {
+            // Add new line
+            tab = `${tab}\n${chordString}`;
+        } else {
+            tab = `${tab} ${chordString}`;
+        }
+        // Update last end time of chord
+        prevEnd = max(chord, n => n.end);
+    }
+    // Remove leading space
+    return tab.slice(1);
+}
+
+/**
+ * Converts an array of notes into an HTML tab with colored notes
+ * @param {Note[]} notes
+ * @param {LamellophoneTuning} tuning
+ * @param {'letter'|'number'} mode
+ * @param {number} restSize number of seconds for a gap between chords to insert
+ *     a line break
+ * @returns {string} HTML tab
+ */
+export function convertNotesToHtmlTab(
+    notes,
+    tuning,
+    mode = 'letter',
+    restSize = 0.1,
+    colormap = () => 'black'
+) {
+    if (!notes || !notes.length) { return []; }
+    // Create a mapping pitch->symbol
+    const pitchToSymbolMap = new Map();
+    const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
+    for (let i = 0; i &lt; tuning.keyCount; i++) {
+        pitchToSymbolMap.set(tuning.pitches[i], symbols[i]);
+    }
+    // Get chords
+    const chords = detectChordsByExactStart(notes);
+    // Create tab
+    let tab = '';
+    let prevEnd = 0;
+    for (let chord of chords) {
+        // Format chord's notes
+        let chordString = chord
+            .map(note => {
+                const str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`
+                const color = colormap(note.pitch);
+                return `&lt;span class='note' style='background-color: ${color}'>${str}&lt;/span>`;
+            })
+            .join('\n');
+        if (chord.length > 1) {
+            // Mark chords with backets (for multiple notes)
+            chordString = `&lt;span class='chord'>${chordString}&lt;/span>`;
+        }
+        if (chord[0].start - prevEnd > restSize) {
+            // Add new line
+            tab = `${tab}&lt;br/>${chordString}`;
+        } else {
+            tab = `${tab}${chordString}`;
+        }
+        // Update last end time of chord
+        prevEnd = max(chord, n => n.end);
+    }
+    return tab;
+}
+
+/**
+ * Converts a number-based tab to note letter format
+ * @param {string} numberTab tab text with number format
+ * @param {Map&lt;number, string>} numberLetterMap maps numbers to letters
+ */
+export function convertNumbersToLetters(numberTab, numberLetterMap) {
+    if (!numberTab || !numberTab.length) { return ''; }
+    // Normalize to °
+    numberTab = numberTab.replaceAll(`'`, '°');
+    numberTab = numberTab.replaceAll(`’`, '°');
+    numberTab = numberTab.replaceAll(`*`, '°');
+    numberTab = numberTab.replaceAll(`º`, '°');
+    numberTab = numberTab.replaceAll(`^`, '°');
+    for (let [key, value] of numberLetterMap.entries()) {
+        numberTab = numberTab.replaceAll(key, value);
+    }
+    return numberTab;
+}
+
+/**
+ * Tries to find a transposition s.t. the tuning is able to play all notes.
+ * If not not possible, return the transposition that requires the least keys to
+ * be retuned.
+ * TODO: tests fail
+ * @param {Note[]} notes
+ * @param {LamellophoneTuning} tuning
+ * @returns {Object} {transpose: number, retune: Map}
+ */
+export function bestTransposition(notes, tuning) {
+    if (!notes || !notes.length) {
+        return { transpose: 0, retune: new Map() };
+    }
+
+    const occuringPitches = new Set(notes.map(n => n.pitch));
+    if (occuringPitches.size > tuning.keyCount) {
+        // Cannot play all notes, no matter the transp. and tuning
+        // TODO:
+        // just choose best approx?
+
+    }
+    const notePitches = Array.from(occuringPitches);
+
+    // Already perfect? return now
+    if (difference(notePitches, tuning.pitches).size === 0) {
+        return { transpose: 0, retune: new Map() };
+    }
+
+    const [minPitch, maxPitch] = extent(notePitches);
+    const transpose = (arr, steps) => arr.map(d => d + steps);
+
+    // Just brute force through all transpositions
+    let bestSteps = 0;
+    let bestTransposed;
+    let commonPitches;
+    for (let steps = -minPitch; steps &lt;= 127 - maxPitch; steps++) {
+        const transposed = transpose(notePitches, steps);
+        const common = intersection(transposed, tuning.pitches);
+        if (!commonPitches || common.size > commonPitches.size) {
+            bestSteps = steps;
+            bestTransposed = transposed;
+        }
+    }
+    bestTransposed = new Set(bestTransposed);
+
+    // Get pitches in tuning but not in notes and other way round
+    const uncommon = difference(bestTransposed, tuning.pitches);
+    console.log(uncommon);
+
+    const freePitches = new Set();
+    const neededPitches = [];
+    for (let p of uncommon) {
+        if (bestTransposed.has(p)) {
+            neededPitches.push(p);
+        } else {
+            freePitches.add(p);
+        }
+    }
+    console.log(neededPitches);
+    console.log(freePitches);
+
+    if (neededPitches.length === 0) {
+        // Everything is fine!
+        return {
+            transpose: bestSteps,
+            retune: new Map()
+        }
+    }
+    if (freePitches.size === 0) {
+        // Cannot solve this!
+        return {
+            transpose: bestSteps,
+            retune: new Map()
+        }
+    }
+
+
+    // Get closest free pitch for each needed one
+    const retune = new Map();
+    for (let neededPitch of neededPitches) {
+        let bestMatch = null;
+        let bestDiff = Infinity;
+        let freePitch;
+        for (freePitch of freePitches) {
+            const diff = Math.abs(neededPitch - freePitch);
+            if (diff &lt; bestDiff) {
+                bestMatch = freePitch;
+            }
+        }
+        freePitches.delete(bestMatch);
+        retune.set(freePitch, neededPitch);
+    }
+
+    return {
+        transpose: bestSteps,
+        retune
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 15:31:36 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
     "source": {
         "include": [
             "src/",
-            "package.json",
+            // "package.json", // Would create new folder for each version
             "README.md"
         ],
         "includePattern": ".+\\.js(doc|x)?$",

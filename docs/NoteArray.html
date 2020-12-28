@@ -1,0 +1,3689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>NoteArray - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GuitarNote.html">GuitarNote</a><ul class='methods'><li data-type='method'><a href="GuitarNote.html#.from">from</a></li><li data-type='method'><a href="GuitarNote.html#.fromNote">fromNote</a></li><li data-type='method'><a href="GuitarNote.html#clone">clone</a></li><li data-type='method'><a href="GuitarNote.html#equals">equals</a></li><li data-type='method'><a href="GuitarNote.html#getDuration">getDuration</a></li><li data-type='method'><a href="GuitarNote.html#getLetter">getLetter</a></li><li data-type='method'><a href="GuitarNote.html#getName">getName</a></li><li data-type='method'><a href="GuitarNote.html#getOctave">getOctave</a></li><li data-type='method'><a href="GuitarNote.html#overlapInSeconds">overlapInSeconds</a></li><li data-type='method'><a href="GuitarNote.html#overlapsInTime">overlapsInTime</a></li><li data-type='method'><a href="GuitarNote.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="GuitarNote.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="GuitarNote.html#toNote">toNote</a></li><li data-type='method'><a href="GuitarNote.html#toString">toString</a></li></ul></li><li><a href="Measure.html">Measure</a><ul class='methods'><li data-type='method'><a href="Measure.html#clone">clone</a></li></ul></li><li><a href="MidiInputManager.html">MidiInputManager</a></li><li><a href="module-instruments_Guitar.StringedTuning.html">StringedTuning</a></li><li><a href="module-instruments_Lamellophone.LamellophoneTuning.html">LamellophoneTuning</a><ul class='methods'><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getLetters">getLetters</a></li><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getNotesInInstrumentOrder">getNotesInInstrumentOrder</a></li><li data-type='method'><a href="module-instruments_Lamellophone.LamellophoneTuning.html#getNumbers">getNumbers</a></li></ul></li><li><a href="module-instruments_StringedFingering-FretboardPosition.html">FretboardPosition</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#difference">difference</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#equals">equals</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#isValid">isValid</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#moveBy">moveBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-FretboardPosition.html#toString">toString</a></li></ul></li><li><a href="module-instruments_StringedFingering-HandPose.html">HandPose</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#difference">difference</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#euqals">euqals</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#isValid">isValid</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#liftFinger">liftFinger</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveFingerBy">moveFingerBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveFingerTo">moveFingerTo</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#moveHandBy">moveHandBy</a></li><li data-type='method'><a href="module-instruments_StringedFingering-HandPose.html#toString">toString</a></li></ul></li><li><a href="NeedlemanWunsch.html">NeedlemanWunsch</a><ul class='methods'><li data-type='method'><a href="NeedlemanWunsch.html#alignmentChildren">alignmentChildren</a></li><li data-type='method'><a href="NeedlemanWunsch.html#alignmentTraceback">alignmentTraceback</a></li><li data-type='method'><a href="NeedlemanWunsch.html#calcScoresAndTracebacks">calcScoresAndTracebacks</a></li></ul></li><li><a href="Note.html">Note</a><ul class='methods'><li data-type='method'><a href="Note.html#.from">from</a></li><li data-type='method'><a href="Note.html#clone">clone</a></li><li data-type='method'><a href="Note.html#equals">equals</a></li><li data-type='method'><a href="Note.html#getDuration">getDuration</a></li><li data-type='method'><a href="Note.html#getLetter">getLetter</a></li><li data-type='method'><a href="Note.html#getName">getName</a></li><li data-type='method'><a href="Note.html#getOctave">getOctave</a></li><li data-type='method'><a href="Note.html#overlapInSeconds">overlapInSeconds</a></li><li data-type='method'><a href="Note.html#overlapsInTime">overlapsInTime</a></li><li data-type='method'><a href="Note.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="Note.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="Note.html#toString">toString</a></li></ul></li><li><a href="NoteArray.html">NoteArray</a><ul class='methods'><li data-type='method'><a href="NoteArray.html#addNotes">addNotes</a></li><li data-type='method'><a href="NoteArray.html#append">append</a></li><li data-type='method'><a href="NoteArray.html#clone">clone</a></li><li data-type='method'><a href="NoteArray.html#concat">concat</a></li><li data-type='method'><a href="NoteArray.html#equals">equals</a></li><li data-type='method'><a href="NoteArray.html#filter">filter</a></li><li data-type='method'><a href="NoteArray.html#filterPitches">filterPitches</a></li><li data-type='method'><a href="NoteArray.html#forEach">forEach</a></li><li data-type='method'><a href="NoteArray.html#getDuration">getDuration</a></li><li data-type='method'><a href="NoteArray.html#getNotes">getNotes</a></li><li data-type='method'><a href="NoteArray.html#getStartTime">getStartTime</a></li><li data-type='method'><a href="NoteArray.html#length">length</a></li><li data-type='method'><a href="NoteArray.html#map">map</a></li><li data-type='method'><a href="NoteArray.html#repeat">repeat</a></li><li data-type='method'><a href="NoteArray.html#reverse">reverse</a></li><li data-type='method'><a href="NoteArray.html#scaleTime">scaleTime</a></li><li data-type='method'><a href="NoteArray.html#shiftTime">shiftTime</a></li><li data-type='method'><a href="NoteArray.html#shiftToStartAt">shiftToStartAt</a></li><li data-type='method'><a href="NoteArray.html#slice">slice</a></li><li data-type='method'><a href="NoteArray.html#sliceTime">sliceTime</a></li><li data-type='method'><a href="NoteArray.html#sort">sort</a></li><li data-type='method'><a href="NoteArray.html#sortByTime">sortByTime</a></li><li data-type='method'><a href="NoteArray.html#transpose">transpose</a></li></ul></li><li><a href="PitchBend.html">PitchBend</a><ul class='methods'><li data-type='method'><a href="PitchBend.html#.from">from</a></li><li data-type='method'><a href="PitchBend.html#.fromNote">fromNote</a></li><li data-type='method'><a href="PitchBend.html#clone">clone</a></li><li data-type='method'><a href="PitchBend.html#equals">equals</a></li></ul></li><li><a href="PitchSequence.html">PitchSequence</a><ul class='methods'><li data-type='method'><a href="PitchSequence.html#.fromNotes">fromNotes</a></li><li data-type='method'><a href="PitchSequence.html#equals">equals</a></li><li data-type='method'><a href="PitchSequence.html#removeOctaves">removeOctaves</a></li><li data-type='method'><a href="PitchSequence.html#toCharString">toCharString</a></li><li data-type='method'><a href="PitchSequence.html#toIntervals">toIntervals</a></li></ul></li><li><a href="Recording.html">Recording</a><ul class='methods'><li data-type='method'><a href="Recording.html#.from">from</a></li><li data-type='method'><a href="Recording.html#clone">clone</a></li><li data-type='method'><a href="Recording.html#equals">equals</a></li><li data-type='method'><a href="Recording.html#toSimpleObject">toSimpleObject</a></li></ul></li><li><a href="SuffixTree.html">SuffixTree</a><ul class='methods'><li data-type='method'><a href="SuffixTree.html#getLongestRepeatedSubString">getLongestRepeatedSubString</a></li><li data-type='method'><a href="SuffixTree.html#toJson">toJson</a></li><li data-type='method'><a href="SuffixTree.html#toString">toString</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Chords.html">Chords</a><ul class='methods'><li data-type='method'><a href="module-Chords.html#.detectChordsByExactStart">detectChordsByExactStart</a></li><li data-type='method'><a href="module-Chords.html#.detectChordsByOverlap">detectChordsByOverlap</a></li><li data-type='method'><a href="module-Chords.html#.getChordName">getChordName</a></li><li data-type='method'><a href="module-Chords.html#.getChordType">getChordType</a></li></ul></li><li><a href="module-comparison_Alignment.html">comparison/Alignment</a><ul class='methods'><li data-type='method'><a href="module-comparison_Alignment.html#.alignmentBenchmark">alignmentBenchmark</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays">alignNoteArrays</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays2">alignNoteArrays2</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.alignNoteArrays3">alignNoteArrays3</a></li><li data-type='method'><a href="module-comparison_Alignment.html#.testAlignment">testAlignment</a></li><li data-type='method'><a href="module-comparison_Alignment.html#~alignmentForce">alignmentForce</a></li></ul></li><li><a href="module-comparison_ErrorClassifier;.html">comparison/ErrorClassifier;</a><ul class='methods'><li data-type='method'><a href="module-comparison_ErrorClassifier;.html#.classifyErrors">classifyErrors</a></li><li data-type='method'><a href="module-comparison_ErrorClassifier;.html#.separateMissed">separateMissed</a></li></ul></li><li><a href="module-comparison_Matching.html">comparison/Matching</a><ul class='methods'><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingError">getMatchingError</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingSection">getMatchingSection</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMatchingSliceError">getMatchingSliceError</a></li><li data-type='method'><a href="module-comparison_Matching.html#.getMultiMatchingErrorPerNote">getMultiMatchingErrorPerNote</a></li><li data-type='method'><a href="module-comparison_Matching.html#.matchGtAndMultipleRecordings">matchGtAndMultipleRecordings</a></li><li data-type='method'><a href="module-comparison_Matching.html#.matchGtAndRecordingNotes">matchGtAndRecordingNotes</a></li></ul></li><li><a href="module-comparison_Similarity.html">comparison/Similarity</a><ul class='methods'><li data-type='method'><a href="module-comparison_Similarity.html#.discretizeTime">discretizeTime</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getSimilarParts">getSimilarParts</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getSimilarPartsViaMatching">getSimilarPartsViaMatching</a></li><li data-type='method'><a href="module-comparison_Similarity.html#.getTrackSimilarity">getTrackSimilarity</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~countActiveNoteBins">countActiveNoteBins</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~euclideanDistanceSquared">euclideanDistanceSquared</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~neirestNeighborDistance">neirestNeighborDistance</a></li><li data-type='method'><a href="module-comparison_Similarity.html#~sliceDiscretizedTrack">sliceDiscretizedTrack</a></li></ul></li><li><a href="module-comparison_SimilarSections.html">comparison/SimilarSections</a><ul class='methods'><li data-type='method'><a href="module-comparison_SimilarSections.html#.findSimilarNoteSections">findSimilarNoteSections</a></li><li data-type='method'><a href="module-comparison_SimilarSections.html#.findSimilarStringSections">findSimilarStringSections</a></li></ul></li><li><a href="module-fileFormats_MidiParser.html">fileFormats/MidiParser</a><ul class='methods'><li data-type='method'><a href="module-fileFormats_MidiParser.html#.preprocessMidiFileData">preprocessMidiFileData</a></li></ul></li><li><a href="module-fileFormats_MusicXmlParser.html">fileFormats/MusicXmlParser</a><ul class='methods'><li data-type='method'><a href="module-fileFormats_MusicXmlParser.html#.preprocessMusicXmlData">preprocessMusicXmlData</a></li></ul></li><li><a href="module-graphics_Canvas.html">graphics/Canvas</a><ul class='methods'><li data-type='method'><a href="module-graphics_Canvas.html#.drawCircle">drawCircle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawDiamond">drawDiamond</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawFilledCircle">drawFilledCircle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawNoteTrapezoid">drawNoteTrapezoid</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawNoteTrapezoidUpwards">drawNoteTrapezoidUpwards</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawRoundedRect">drawRoundedRect</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawTriangle">drawTriangle</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.drawX">drawX</a></li><li data-type='method'><a href="module-graphics_Canvas.html#.setupCanvas">setupCanvas</a></li></ul></li><li><a href="module-instruments_Drums.html">instruments/Drums</a><ul class='methods'><li data-type='method'><a href="module-instruments_Drums.html#.generateDrumVariation">generateDrumVariation</a></li><li data-type='method'><a href="module-instruments_Drums.html#.getPitch2PositionMap">getPitch2PositionMap</a></li><li data-type='method'><a href="module-instruments_Drums.html#.simplifyDrumPitches">simplifyDrumPitches</a></li></ul></li><li><a href="module-instruments_Guitar.html">instruments/Guitar</a><ul class='methods'><li data-type='method'><a href="module-instruments_Guitar.html#.fretboardPositionsFromMidi">fretboardPositionsFromMidi</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.generateExampleData">generateExampleData</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getFretboardPositionsFromNoteName">getFretboardPositionsFromNoteName</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getFretboardPositionsFromPitch">getFretboardPositionsFromPitch</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getNoteInfoFromFretboardPos">getNoteInfoFromFretboardPos</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getPitchFromFretboardPos">getPitchFromFretboardPos</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getTuningFromPitches">getTuningFromPitches</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.getTuningPitchRange">getTuningPitchRange</a></li><li data-type='method'><a href="module-instruments_Guitar.html#.guitarNoteFromNote">guitarNoteFromNote</a></li></ul></li><li><a href="module-instruments_Lamellophone.html">instruments/Lamellophone</a><ul class='methods'><li data-type='method'><a href="module-instruments_Lamellophone.html#.bestTransposition">bestTransposition</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNotesToHtmlTab">convertNotesToHtmlTab</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNotesToTab">convertNotesToTab</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertNumbersToLetters">convertNumbersToLetters</a></li><li data-type='method'><a href="module-instruments_Lamellophone.html#.convertTabToNotes">convertTabToNotes</a></li></ul></li><li><a href="module-instruments_Piano.html">instruments/Piano</a></li><li><a href="module-instruments_StringedFingering.html">instruments/StringedFingering</a><ul class='methods'><li data-type='method'><a href="module-instruments_StringedFingering.html#.getOptimalHandPoseSequence">getOptimalHandPoseSequence</a></li></ul></li><li><a href="module-Midi.html">Midi</a><ul class='methods'><li data-type='method'><a href="module-Midi.html#.getMidiDrumNoteByNr">getMidiDrumNoteByNr</a></li><li data-type='method'><a href="module-Midi.html#.getMidiInstrumentByNr">getMidiInstrumentByNr</a></li><li data-type='method'><a href="module-Midi.html#.getMidiInstrumentByNrL2">getMidiInstrumentByNrL2</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByLabel">getMidiNoteByLabel</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByNameAndOctave">getMidiNoteByNameAndOctave</a></li><li data-type='method'><a href="module-Midi.html#.getMidiNoteByNr">getMidiNoteByNr</a></li><li data-type='method'><a href="module-Midi.html#.getNoteNameFromNoteNr">getNoteNameFromNoteNr</a></li><li data-type='method'><a href="module-Midi.html#.isSharp">isSharp</a></li></ul></li><li><a href="module-utils_ArrayUtils.html">utils/ArrayUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayContainsArray">arrayContainsArray</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayHasSameElements">arrayHasSameElements</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.arrayShallowEquals">arrayShallowEquals</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.flattenArray">flattenArray</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.formatMatrix">formatMatrix</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.getMatrixMax">getMatrixMax</a></li><li data-type='method'><a href="module-utils_ArrayUtils.html#.removeDuplicates">removeDuplicates</a></li></ul></li><li><a href="module-utils_BlobUtils.html">utils/BlobUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_BlobUtils.html#.blobToBase64">blobToBase64</a></li><li data-type='method'><a href="module-utils_BlobUtils.html#.blobToFileExtension">blobToFileExtension</a></li></ul></li><li><a href="module-utils_FormattingUtils.html">utils/FormattingUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatDate">formatDate</a></li><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatSongTitle">formatSongTitle</a></li><li data-type='method'><a href="module-utils_FormattingUtils.html#.formatTime">formatTime</a></li></ul></li><li><a href="module-utils_LocalStorageUtils.html">utils/LocalStorageUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_LocalStorageUtils.html#.getObjectFromLocalStorage">getObjectFromLocalStorage</a></li><li data-type='method'><a href="module-utils_LocalStorageUtils.html#.storeObjectInLocalStorage">storeObjectInLocalStorage</a></li></ul></li><li><a href="module-utils_MathUtils.html">utils/MathUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_MathUtils.html#.choose">choose</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.clipValue">clipValue</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.findLocalMaxima">findLocalMaxima</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.randFloat">randFloat</a></li><li data-type='method'><a href="module-utils_MathUtils.html#.swapSoSmallerFirst">swapSoSmallerFirst</a></li></ul></li><li><a href="module-utils_MiscUtils.html">utils/MiscUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_MiscUtils.html#.bpmToSecondsPerBeat">bpmToSecondsPerBeat</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.deepCloneFlatObjectMap">deepCloneFlatObjectMap</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.findNearest">findNearest</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.groupNotesByPitch">groupNotesByPitch</a></li><li data-type='method'><a href="module-utils_MiscUtils.html#.reverseString">reverseString</a></li></ul></li><li><a href="module-utils_NoteColorUtils.html">utils/NoteColorUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_NoteColorUtils.html#.noteColorFromPitch">noteColorFromPitch</a></li></ul></li><li><a href="module-utils_RecordingsUtils.html">utils/RecordingsUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_RecordingsUtils.html#.alignNotesToBpm">alignNotesToBpm</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.averageRecordings">averageRecordings</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.averageRecordings2">averageRecordings2</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.clipRecordingsPitchesToGtRange">clipRecordingsPitchesToGtRange</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.differenceMap">differenceMap</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.differenceMapErrorAreas">differenceMapErrorAreas</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.filterRecordingNoise">filterRecordingNoise</a></li><li data-type='method'><a href="module-utils_RecordingsUtils.html#.recordingsHeatmap">recordingsHeatmap</a></li></ul></li><li><a href="module-utils_StatisticsUtils.html">utils/StatisticsUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_StatisticsUtils.html#.confidenceInterval">confidenceInterval</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.getBoxplotCharacteristics">getBoxplotCharacteristics</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelDensityEstimator">kernelDensityEstimator</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelEpanechnikov">kernelEpanechnikov</a></li><li data-type='method'><a href="module-utils_StatisticsUtils.html#.kernelGauss">kernelGauss</a></li></ul></li><li><a href="module-utils_WebMidiUtils.html">utils/WebMidiUtils</a><ul class='methods'><li data-type='method'><a href="module-utils_WebMidiUtils.html#.pingMidiDevice">pingMidiDevice</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#damerauLevenshtein">damerauLevenshtein</a></li><li><a href="global.html#differenceSimilarity">differenceSimilarity</a></li><li><a href="global.html#gotoh">gotoh</a></li><li><a href="global.html#lcs">lcs</a></li><li><a href="global.html#lcsLength">lcsLength</a></li><li><a href="global.html#levenshtein">levenshtein</a></li><li><a href="global.html#matchMissmatchSimilarity">matchMissmatchSimilarity</a></li><li><a href="global.html#normalizedGotoh">normalizedGotoh</a></li><li><a href="global.html#normalizedLcsLength">normalizedLcsLength</a></li><li><a href="global.html#normalizedLevenshtein">normalizedLevenshtein</a></li><li><a href="global.html#recordAudio">recordAudio</a></li><li><a href="global.html#recordMidi">recordMidi</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">NoteArray</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        NoteArray
+        </h2>
+        
+            <div class="class-description usertext">This class represents an array of note objects.
+This can be used to simplify operations on a track.</div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="NoteArray"><span class="type-signature"></span>new NoteArray<span class="signature">(notes)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Creates a new NoteArray,
+will make a copy of the passed array and cast all notes
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const notes = [
+      // Some Note objects
+  ];
+  const noteArr = new NoteArray(notes)
+      // Add more notes (all notes will be sorted by time by default after this)
+      .addNotes([])
+      // Scale all note's sart and end time to make a track slower or faster
+      .scaleTime(0.5)
+      // Do more ...
+      // This class also mirrors many functions from the Array class
+      .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
+  // Get Note objects back in a simple Array
+  const transformedNotes = noteArr.getNotes();
+  // [Note, Note, Note, ...]</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">notes, default: []</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="addNotes"><span class="type-signature"></span>addNotes<span class="signature">(notes, sort)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line59">line 59</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Appends notes to this note array
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>notes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sort</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">iff ture, sorts notes by start timeafter adding
+     the new ones (default:true)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="append"><span class="type-signature"></span>append<span class="signature">(noteArray, gap)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Appends notes to the end of this NoteArray, after shifting them by its
+duration. Set gap to something != 0 to create a gap or overlap.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>noteArray</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">another NoteArray</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>gap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last">in seconds between the two parts</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="clone"><span class="type-signature"></span>clone<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line346">line 346</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Deep clone, all contained notes are cloned as well.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    clone
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="concat"><span class="type-signature"></span>concat<span class="signature">(noteArray)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Adds the notes from another NoteArray to this NoteArray
+IMPORTANT: this does not change the notes or sort them!
+Take a look at NoteArray.append() if you want to extend
+a track at its end.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>noteArray</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another NoteArray</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="equals"><span class="type-signature"></span>equals<span class="signature">(otherNoteArray)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line326">line 326</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Returns true if this NoteArray and otherNoteArray have equal attributes.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>otherNoteArray</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another NoteArray</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if equal
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="filter"><span class="type-signature"></span>filter<span class="signature">(filterFunction)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line272">line 272</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Filters the NoteArray like you would filter via Array.filter().
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filterFunction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">filter function, same signature as
+     Array.filter()</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="filterPitches"><span class="type-signature"></span>filterPitches<span class="signature">(pitches)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line282">line 282</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Filters by pitch, keeping only pitches specified in <pitches>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pitches</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array of pitches to keep</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="forEach"><span class="type-signature"></span>forEach<span class="signature">(fn)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line193">line 193</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Similar to Array.forEach
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getDuration"><span class="type-signature"></span>getDuration<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line139">line 139</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Returns the duration of this note array in seconds
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    duration
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getNotes"><span class="type-signature"></span>getNotes<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Note.html">Note</a>>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Returns a simple array with all Note objects.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    array with Note objects
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getStartTime"><span class="type-signature"></span>getStartTime<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line131">line 131</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Returns the start time of the earliest note in this NoteArray
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    start time
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="length"><span class="type-signature"></span>length<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Returns the number of Note objects in this NoteArray
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    note count
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="map"><span class="type-signature"></span>map<span class="signature">(mapFunction)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line223">line 223</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Maps the notes using some mapping function
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mapFunction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">mapping function with same signature as
+     Array.map()</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="repeat"><span class="type-signature"></span>repeat<span class="signature">(times)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Repeats the notes of this array by concatenating a time-shifted copy
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>times</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">number of times to repeat it</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    a new NoteArray with the repeated note sequence
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="reverse"><span class="type-signature"></span>reverse<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line303">line 303</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Reverses the note array, such that it can be played backwards.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="scaleTime"><span class="type-signature"></span>scaleTime<span class="signature">(factor)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Scales the time of each note by factor
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">factor</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="shiftTime"><span class="type-signature"></span>shiftTime<span class="signature">(addedSeconds)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line165">line 165</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Adds the speicifed number of seconds to each note
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>addedSeconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">time to add in seconds</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="shiftToStartAt"><span class="type-signature"></span>shiftToStartAt<span class="signature">(startTime)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line176">line 176</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Moves all notes s.t. the first starts at <start>
+Will sort the notes by start time.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>startTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the new start time for the earliest note</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="slice"><span class="type-signature"></span>slice<span class="signature">(start, end)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line234">line 234</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Slices the notes by index, like Array.slice()
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">start index</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">end index</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="sliceTime"><span class="type-signature"></span>sliceTime<span class="signature">(start, end, mode)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line251">line 251</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Slices the notes by time.
+The modes end and contained will remove all notes with end === null!
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">start of the filter range in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">end of the filter range in seconds (exclusive)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">controls which note time to consider, one of:
+     - start (note.start must be inside range),
+     - end (note.end ''),
+     - contained (both note.start and note.end must be inside range)
+     (contained is default)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="sort"><span class="type-signature"></span>sort<span class="signature">(sortFunction)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line203">line 203</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Sorts the notes
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sortFunction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">sort function, e.g. (a, b)=>a.start-b.start</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="sortByTime"><span class="type-signature"></span>sortByTime<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line212">line 212</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Sorts the notes by start time
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="signature">(steps)</span><span class="type-signature"> &rarr; {<a href="NoteArray.html">NoteArray</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_NoteArray.js.html">types/NoteArray.js</a>, <a href="types_NoteArray.js.html#line292">line 292</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Transposes each note by <steps> semitones, will clip pitches to [0, 127]
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>steps</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">number of semitones to transpose, can be negative</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    itself
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="NoteArray.html">NoteArray</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 15:31:36 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
