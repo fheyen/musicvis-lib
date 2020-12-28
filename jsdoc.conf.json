@@ -22,15 +22,33 @@
         "cleverLinks": false,
         "monospaceLinks": true,
         "useLongnameInNav": false,
-        "showInheritedInNav": true
+        "showInheritedInNav": true,
+        "default": {
+            "includeDate": false
+        }
     },
     "opts": {
         "destination": "./docs/",
         "encoding": "utf8",
         "private": false,
         "recurse": true,
-        // "template": "./node_modules/minami",
-        "template": "./node_modules/docdash/",
-        "verbose": true
+        "template": "./node_modules/clean-jsdoc-theme",
+        "verbose": true,
+        "theme_opts": {
+            "theme": "dark",
+            "title": "musicvis-lib",
+            "menu": [
+                {
+                    "title": "Website",
+                    "link": "https://fheyen.github.io/musicvis-lib",
+                    "target": "_blank"
+                },
+                {
+                    "title": "Github",
+                    "link": "https://github.com/fheyen/musicvis-lib",
+                    "target": "_blank"
+                }
+            ]
+        }
     }
 }

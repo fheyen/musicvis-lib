@@ -8,28 +8,28 @@
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/fheyen/musicvis-lib?label=GitHub)](https://github.com/fheyen/musicvis-lib)
 [![GitHub issues](https://img.shields.io/github/issues-raw/fheyen/musicvis-lib)](https://github.com/fheyen/musicvis-lib/issues)
 
+Goal: Provide tools for web-based music visualization.
 
 This library is still in early and active development.
 
 **Do not use this for anything yet.**
 
 1. [musicvis-lib &#9835;](#musicvis-lib-)
-   1. [Mission](#mission)
-   2. [Setup](#setup)
+   1. [Setup](#setup)
+   2. [Documentation](#documentation)
    3. [How to use](#how-to-use)
    4. [Examples](#examples)
-   5. [Documentation (unfinished)](#documentation-unfinished)
-   6. [Contribution](#contribution)
-   7. [Structure and Dependencies](#structure-and-dependencies)
-   8. [TODO](#todo)
-
-## Mission
-
-Provide tools for web-based music visualization.
+   5. [Contribution](#contribution)
+      1. [Structure and Dependencies](#structure-and-dependencies)
+      2. [TODO](#todo)
 
 ## Setup
 
 `npm install --save musicvis-lib`
+
+## Documentation
+
+[See here](https://fheyen.github.io/musicvis-lib/)
 
 ## How to use
 
@@ -69,24 +69,16 @@ Here are some examples that show for what `musicvis-lib` can be used:
 
 [More dependents](https://github.com/fheyen/musicvis-lib/network/dependents)
 
-## Documentation (unfinished)
-
-[See here](https://fheyen.github.io/musicvis-lib/)
-
 ## Contribution
 
-If you like to contribute, feel free to create pull requests or issues.
+If you like to contribute, feel free to create pull requests or [issues](https://github.com/fheyen/musicvis-lib/issues).
 
-## Structure and Dependencies
+### Structure and Dependencies
 
 In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser).
 
-## TODO
+### TODO
 
-- Documentation
-- Create tests
-  - 100% unit test coverage
-  - Visual tests, e.g. show piano roll with algo results
 - Add
   - type/PitchBend.js
   - FOGSAA algorithm for string matching / distance
