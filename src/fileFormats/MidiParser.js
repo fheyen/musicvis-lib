@@ -3,6 +3,10 @@ import { group, max } from 'd3';
 import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
 
 /**
+ * @module fileFormats/MidiParser
+ */
+
+/**
  * Parses a MIDI JSON file to get Note objects with absolute time in seconds.
  * See https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
  * @param {Object} data MIDI data in JSON format
@@ -56,6 +60,7 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
 
 /**
  * Parses a single MIDI track and pushes it to parsedTracks if it contains notes
+ * @private
  * @param {Object} track a MIDI track
  * @param {number} timeDivision MIDI time division
  * @param {Object[]} tempoChanges array with tempo change events
@@ -173,6 +178,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
 
 /**
  * Extracts part name strings from MIDI tracks
+ * @private
  * @param {Object[]} track MIDI tracks
  * @returns {string[]} part names
  */
@@ -190,6 +196,7 @@ function getPartName(track) {
  * type change events
  * TODO: probably does not handle complex meters correctly
  * TODO: does not handle tempo change yet, do this as in parsing notes
+ * @private
  * @param {Object[]} tempoChanges tempo change events
  * @param {Object[]} beatTypeChanges beat type change events
  * @param {number} totalTime
@@ -242,6 +249,7 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
 /**
  * Split MIDI format 0 data into tracks instead of having channels,
  * creates one track for each channel
+ * @private
  * @param {Note[][]} tracks parsed MIDI tracks
  * @returns {Note[][]} splitted tracks
  */
@@ -266,6 +274,7 @@ function splitFormat0(tracks) {
 /**
  * Given the tempo and time division, returns the number of milliseconds
  * each MIDI time tick corresponds to
+ * @private
  * @param {number} tempo
  * @param {number} timeDivision
  * @returns {number} milli seconds per tick
@@ -278,7 +287,8 @@ function getMillisecondsPerTick(tempo, timeDivision) {
 
 /**
  * Retrieves all tempo and beat type changes from a MIDI file's tracks.
- * See https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+ * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+ * @private
  * @param {Array} tracks MIDI JSON file tracks
  * @returns {Object} {tempoChanges, beatTypeChanges} as arrays of objects, which
  *      contain the MIDI tick and the new information
@@ -329,6 +339,7 @@ function getMidiTempoAndBeatChanges(tracks) {
  * TODO: test
  *  - convert something to MIDI and back with above function to see if result is the same as the original
  *  - and the other way round
+ * @private
  * @param {Note[]} notes notes
  * @param {number} bpm tempo in beats per minute
  */

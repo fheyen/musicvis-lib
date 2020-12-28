@@ -1,6 +1,11 @@
 import { max, min } from "d3";
 import DynamicTimeWarping from 'dynamic-time-warping-2';
 
+
+/**
+ * @module comparison/Similarity
+ */
+
 /**
  * Given a track, a selected time interval and a threshold,
  * this function searches for parts in the track that are

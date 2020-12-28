@@ -5,8 +5,9 @@ import Note from "./Note";
  * Guitar note class that reflects MIDI properties but has
  * absolute start and end times in seconds and
  * information on how to play it.
+ * @extends Note
  */
-export default class GuitarNote extends Note {
+class GuitarNote extends Note {
     /**
      * Creates a new Note
      * @param {number} pitch pitch
@@ -136,3 +137,5 @@ export default class GuitarNote extends Note {
         return `GuitarNote(pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
     }
 }
+
+export default GuitarNote;

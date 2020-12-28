@@ -1,4 +1,9 @@
 /**
+ * @module graphics/Canvas
+ * @todo save canvas as file https://www.digitalocean.com/community/tutorials/js-canvas-toblob
+ */
+
+/**
  * Sets up a canvas rescaled to device pixel ratio
  * @param {HTMLCanvasElement} canvas canvas element
  * @returns {CanvasRenderingContext2D} canvas rendering context
@@ -24,6 +29,7 @@ export function setupCanvas(canvas) {
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
  * @param {number} radius radius
+ * @returns {void}
  */
 export function drawCircle(ctx, x, y, radius) {
     ctx.beginPath();
@@ -37,6 +43,7 @@ export function drawCircle(ctx, x, y, radius) {
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
  * @param {number} radius radius
+ * @returns {void}
  */
 export function drawFilledCircle(ctx, x, y, radius) {
     if (radius < 0) {
@@ -53,6 +60,7 @@ export function drawFilledCircle(ctx, x, y, radius) {
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
  * @param {number} halfSize half of the size
+ * @returns {void}
  */
 export function drawTriangle(ctx, x, y, halfSize) {
     ctx.beginPath();
@@ -69,6 +77,7 @@ export function drawTriangle(ctx, x, y, halfSize) {
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
  * @param {number} halfSize half of the size
+ * @returns {void}
  */
 export function drawDiamond(ctx, x, y, halfSize) {
     ctx.beginPath();
@@ -86,6 +95,7 @@ export function drawDiamond(ctx, x, y, halfSize) {
  * @param {number} x x coordinate of center
  * @param {number} y y coordinate of center
  * @param {number} halfSize half of the size
+ * @returns {void}
  */
 export function drawX(ctx, x, y, halfSize) {
     ctx.lineWidth = 2;
@@ -107,6 +117,7 @@ export function drawX(ctx, x, y, halfSize) {
  * @param {number} width width
  * @param {number} height height (of left side)
  * @param {number} height2 height (of right side)
+ * @returns {void}
  */
 export function drawNoteTrapezoid(ctx, x, y, width, height, height2) {
     ctx.beginPath();
@@ -127,6 +138,7 @@ export function drawNoteTrapezoid(ctx, x, y, width, height, height2) {
  * @param {number} width width (of bounding rect / bottom side)
  * @param {number} height height
  * @param {number} width2 width (of top side)
+ * @returns {void}
  */
 export function drawNoteTrapezoidUpwards(ctx, x, y, width, height, width2) {
     ctx.beginPath();
@@ -146,6 +158,7 @@ export function drawNoteTrapezoidUpwards(ctx, x, y, width, height, width2) {
  * @param {number} width
  * @param {number} height
  * @param {number} radius
+ * @returns {void}
  */
 export function drawRoundedRect(ctx, x, y, width, height, radius) {
     if (width < 0) { return; }

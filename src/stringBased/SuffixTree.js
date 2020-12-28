@@ -2,7 +2,7 @@ import { arrayShallowEquals } from "../utils/ArrayUtils";
 
 // Adapted from https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
 
-export default class SuffixTree {
+class SuffixTree {
     /**
      * SuffixTree for strings or Arrays
      * @param {string|Array} arr string or Array to process
@@ -128,3 +128,5 @@ class TreeNode {
         return str;
     }
 }
+
+export default SuffixTree;

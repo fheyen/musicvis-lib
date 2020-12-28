@@ -3,6 +3,10 @@ import Note from "../types/Note";
 import { randomNormal, randomInt, group } from "d3";
 
 /**
+ * @module instruments/Drums
+ */
+
+/**
  * Pitches that are mapped onto themselves are included for other information.
  * Millenium MPS-850 https://www.thomann.de/de/millenium_mps_850_e_drum_set.htm
  *

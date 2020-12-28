@@ -1,4 +1,8 @@
 /**
+ * @module utils/BlobUtils
+ */
+
+/**
  * Converts a Blob to a base64 string
  * @param {Blob} blob Blob
  * @returns {string} base64 string

@@ -5,6 +5,10 @@ import { randomInt, extent } from "d3";
 import { arrayShallowEquals } from "../utils/ArrayUtils";
 
 /**
+ * @module instruments/Guitar
+ */
+
+/**
  * Represents a tuning of a fretted string instrument.
  */
 export class StringedTuning {

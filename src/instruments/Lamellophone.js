@@ -4,6 +4,13 @@ import { detectChordsByExactStart } from "../Chords";
 import Note from "../types/Note";
 import { bpmToSecondsPerBeat } from "../utils/MiscUtils";
 
+/**
+ * @module instruments/Lamellophone
+ */
+
+/**
+ * Represents Lamellophone tunings
+ */
 export class LamellophoneTuning {
     /**
      * Represents a tuning of lamellophone.
@@ -87,6 +94,7 @@ export class LamellophoneTuning {
         return result;
     }
 }
+
 
 export const lamellophoneTunings = new Map([
     ['Kalimba', new Map([

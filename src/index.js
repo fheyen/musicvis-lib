@@ -27,7 +27,7 @@ import * as Similarity from './comparison/Similarity';
 import * as SimilarSections from './comparison/SimilarSections';
 // libraries
 import * as Midi from './Midi';
-import * as Utils from './utils';
+import Utils from './utils';
 import * as Chords from './Chords';
 import * as StringBased from './stringBased';
 

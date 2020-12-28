@@ -6,8 +6,23 @@ import { min } from "d3";
 /**
  * This class represents an array of note objects.
  * This can be used to simplify operations on a track.
+ * @example
+ *   const notes = [
+ *       // Some Note objects
+ *   ];
+ *   const noteArr = new NoteArray(notes)
+ *       // Add more notes (all notes will be sorted by time by default after this)
+ *       .addNotes([])
+ *       // Scale all note's sart and end time to make a track slower or faster
+ *       .scaleTime(0.5)
+ *       // Do more ...
+ *       // This class also mirrors many functions from the Array class
+ *       .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
+ *   // Get Note objects back in a simple Array
+ *   const transformedNotes = noteArr.getNotes();
+ *   // [Note, Note, Note, ...]
  */
-export default class NoteArray {
+class NoteArray {
 
     #notes;
 
@@ -332,3 +347,5 @@ export default class NoteArray {
         return new NoteArray(this.#notes);
     }
 }
+
+export default NoteArray;

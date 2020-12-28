@@ -1,3 +1,6 @@
+/**
+ * @module utils/ArrayUtils
+ */
 
 /**
  * Shallow compares two arrays

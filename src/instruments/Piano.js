@@ -1,4 +1,8 @@
 /**
+ * @module instruments/Piano
+ */
+
+/**
  * Map:keyCount->pitchRange
  * pitchRange is {minPitch:number, maxPitch:number}
  */

@@ -1,7 +1,0 @@
-# Instruments
-
-## Drums
-
-## Guitar
-
-## Piano

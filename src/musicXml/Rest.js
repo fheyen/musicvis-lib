@@ -1,7 +1,12 @@
 import Symbol from './Symbol';
 
-export default class Rest extends Symbol {
-    constructor() {
+/**
+ * @ignore
+ */
+class Rest extends Symbol {
+    // constructor() {
 
-    }
+    // }
 }
+
+export default Rest;

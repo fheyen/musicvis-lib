@@ -1,7 +1,12 @@
 import Symbol from './Symbol';
 
-export default class NoteSymbol extends Symbol {
-    constructor() {
+/**
+ * @ignore
+ */
+class NoteSymbol extends Symbol {
+    // constructor() {
 
-    }
+    // }
 }
+
+export default NoteSymbol;

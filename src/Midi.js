@@ -1,6 +1,7 @@
 /**
  * Lookup for many MIDI specifications.
  * Information from: https://soundprogramming.net/file-formats/
+ * @module Midi
  */
 
 
@@ -789,6 +790,7 @@ const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([
 ]);
 
 // TODO: This might be useful, e.g. to check which notes Player can play
+// TODO: add instrument numbers
 export const MIDI_NOTE_RANGES = [
     // Strings
     { instrNr: 40, nrL2: -1, subNrL2: -1, label: 'Violin', min: 55, max: 103 },
@@ -831,6 +833,7 @@ export const MIDI_NOTE_RANGES = [
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Tubular Bells', min: 60, max: 77 },
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Timpani', min: 40, max: 55 },
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Harpsichord', min: 29, max: 89 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Kalimba', min: 60, max: 88 },
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Harp', min: 24, max: 103 }
 ];
 

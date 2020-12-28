@@ -9,6 +9,10 @@ import { Note } from "../types/Note";
 import * as Utils from "../utils";
 
 
+/**
+ * @module comparison/ErrorClassifier;
+ */
+
 
 /**
  * Compares a single recording to a ground truth and labels notes as missing,
@@ -81,16 +85,24 @@ export function separateMissed(classifiedNotes) {
 }
 
 /**
- * TODO: use everywhere
+ * @todo: use everywhere
+ * @ignore
  */
 class Overlap {
+    /**
+     *
+     * @param {*} gtNote
+     * @param {*} recNote
+     */
     constructor(gtNote, recNote) {
         this.gtNote = gtNote;
         this.recNote = recNote;
     }
 }
 
-
+/**
+ * @todo use everywhere
+ */
 export const NoteState = {
     SAME: "NoteState.SAME",
     DIFFERENT: "NoteState.WRONG",
@@ -103,6 +115,10 @@ export const NoteState = {
     UNKNOWN: "NoteState.UNKNOWN",
 }
 
+/**
+ * @ignore
+ * @todo use everywhere
+ */
 export class NoteWithState {
     /**
      *
@@ -136,6 +152,8 @@ function hasAtLeastOne(map, key) {
 
 /**
  * Classifies notes by overlap into missing / extra and overlapping rec notes
+ * @ignore
+ * @todo Move somewhere else to make it shared?
  * @param {Note[]} gtNotes
  * @param {Note[]} recNotes
  */
@@ -166,6 +184,7 @@ function getGtRecOverlaps(gtNotes, recNotes) {
 
 /**
  * Handles overlapping notes by finding best matches and classifying them.
+ * @ignore
  * @param {Overlap[]} overlapping pairs of GT and rec notes
  * @param {number} threshold threshold for 'same-ness' in seconds
  * @returns {NoteWithState[]} classified notes
@@ -284,6 +303,7 @@ function handleOverlappingNotes(overlapping, threshold) {
  * Finds the best match of a baseNote with some candidates, and using only the
  * notes that were played on the same fret. If there are none, others will be
  * considered instead.
+ * @ignore
  * @param {GuitarNote} baseNote
  * @param {Set<GuitarNote>} candidates
  * @returns {GuitarNote} best matching note
@@ -312,6 +332,7 @@ export function findBestMatch(baseNote, candidates) {
 /**
  * Returns the candidate with the least absolute time difference (in the note
  * start) to the baseNote.
+ * @ignore
  * @param {Note} baseNote
  * @param {Set<Note>} candidates
  * @returns {Note} best matching note
@@ -334,6 +355,7 @@ export function findBestMatchBasedOnTime(baseNote, candidates) {
 /**
  * Compares two matched notes to determine the state of the actual note
  * A delta of 50 ms is indistinguishable for human hearing
+ * @ignore
  * @param {GuitarNote} expectedNote
  * @param {GuitarNote} actualNote
  * @param {number} threshold threshold for 'same-ness' in seconds

@@ -1,6 +1,11 @@
 import { levenshtein } from "../stringBased/Levenshtein";
 import PitchSequence from "../types/PitchSequence";
 
+
+/**
+ * @module comparison/SimilarSections
+ */
+
 /**
  * Turns an array of notes into a string to perform pattern matching search for similar
  * patterns.

@@ -4,7 +4,7 @@ import { getMidiNoteByNr } from '../Midi';
  * Stores a sequence of pitches and provides some methods to simplify and
  * manipulate it.
  */
-export default class PitchSequence {
+class PitchSequence {
 
     #pitches = [];
 
@@ -13,7 +13,7 @@ export default class PitchSequence {
     }
 
     /**
-     * TODO: implement keepOnlyHighestConcurrentNotes
+     * @todo implement keepOnlyHighestConcurrentNotes
      * @param {*} notes
      * @param {*} keepOnlyHighestConcurrentNotes
      */
@@ -116,3 +116,5 @@ export default class PitchSequence {
         return true;
     }
 }
+
+export default PitchSequence;

@@ -4,7 +4,6 @@
    1. [Overview](#overview)
    2. [Note](#note)
    3. [NoteArray](#notearray)
-   4. [Examples](#examples)
 
 The types are roughly based on the MusicXML format.
 
@@ -47,23 +46,3 @@ This class serves to simplify handling a collection of Note objects.
 - Allows for easy manipulations of Note objects, such as sorting, time changes, ...
 - Is agnostic to tempo etc.
 - Contains multiple Notes
-
-## Examples
-
-```js
-const notes = [
-    // Some Note objects
-];
-const noteArr = new NoteArray(notes)
-    // Add more notes (all notes will be sorted by time by default after this)
-    .addNotes([])
-    // Scale all note's sart and end time to make a track slower or faster
-    .scaleTime(0.5)
-    // Do more ...
-    // This class also mirrors many functions from the Array class
-    .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
-
-// Get Note objects back in a simple Array
-const transformedNotes = noteArr.getNotes();
-// [Note, Note, Note, ...]
-```

@@ -6,6 +6,10 @@ import { findLocalMaxima } from "./MathUtils";
 import Recording from "../types/Recording";
 
 /**
+ * @module utils/RecordingsUtils
+ */
+
+/**
  * Filters notes of a recording to remove noise from the MIDI device or pickup
  * TODO: detect gaps and fill them
  * @param {Recording} recording a recording

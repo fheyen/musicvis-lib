@@ -3,6 +3,11 @@ import { arrayShallowEquals } from "./utils/ArrayUtils";
 import { Chord } from "@tonaljs/tonal";
 import Note from '../src/types/Note';
 
+
+/**
+ * @module Chords
+ */
+
 /**
  * Detects chords as those notes that have the exact same start time, only works
  * for ground truth (since recordings are not exact)

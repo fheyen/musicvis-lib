@@ -1,4 +1,8 @@
 /**
+ * @module utils/FormattingUtils
+ */
+
+/**
  * Formats a time in seconds to <minutes>:<seconds>.<milliseconds>
  * @param {number|null} seconds in seconds
  * @param {boolean} includeMillis include milli seconds in string?

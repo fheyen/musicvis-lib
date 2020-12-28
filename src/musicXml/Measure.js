@@ -3,7 +3,7 @@
  * A Measure is a part of a Track with *constant* tempo (bpm) and beat type.
  * This class should allow to do abstract music theretical stuff with a track of notes.
  */
-export default class Measure {
+class Measure {
     #notes = [];
     #bpm = 120;
     #beats = 4;
@@ -15,10 +15,10 @@ export default class Measure {
      * @param {number} beat e.g. 3 for 3/4
      * @param {number} beatType e.g. 4 for 3/4
      */
-    constructor(notes, bpm = 120, beat = 4, beatType = 4) {
+    constructor(notes, bpm = 120, beats = 4, beatType = 4) {
         this.#notes = notes;
         this.#bpm = bpm;
-        this.#beat = beat;
+        this.#beats = beats;
         this.#beatType = beatType;
     }
 
@@ -45,3 +45,5 @@ export default class Measure {
         return new Measure(this.#notes, this.#bpm, this.#beats, this.#beatType);
     }
 }
+
+export default Measure;

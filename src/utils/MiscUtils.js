@@ -1,6 +1,9 @@
 import { group } from "d3";
 import { flattenArray } from "./ArrayUtils";
 
+/**
+ * @module utils/MiscUtils
+ */
 
 /**
  * Converts beats per minute to seconds per beat

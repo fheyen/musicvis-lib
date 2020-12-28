@@ -1,3 +1,7 @@
+/**
+ * @module instruments/StringedFingering
+ */
+
 
 
 /**

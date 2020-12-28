@@ -1,6 +1,9 @@
 /**
  * Calculates the longest common subsequence.
- * From https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
+ * @see https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
+ * @example
+ * const lcs = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
+ * // world
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {string|Array} the longest common subsequence
@@ -58,6 +61,9 @@ export function lcs(a, b) {
  * Calculates the *length* of the longest common subsequence.
  * Also works with arrays.
  * From https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
+ * @example
+ * const lcsLength = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
+ * // 5
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {number} the length of longest common subsequence

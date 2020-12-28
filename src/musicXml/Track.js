@@ -4,9 +4,9 @@
  * Since each Part can only have fixed tempo and beat type, tracks may be used
  * to represent music pieces where those attributes change.
  * This class should allow to do abstract music theretical stuff with a track of notes.
+ * @ignore
  */
-
-export default class Track {
+class Track {
     measures = [];
     #title = '';
 
@@ -63,3 +63,5 @@ export default class Track {
         return new Track(this.#title, this.measures);
     }
 }
+
+export default Track;

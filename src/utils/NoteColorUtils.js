@@ -1,5 +1,9 @@
 import { hsl, interpolateRgb } from "d3";
 
+/**
+ * @module utils/NoteColorUtils
+ */
+
 // TODO: move to colors/ folder?
 
 /**

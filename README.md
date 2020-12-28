@@ -71,16 +71,7 @@ Here are some examples that show for what `musicvis-lib` can be used:
 
 ## Documentation (unfinished)
 
-- [musicvis-lib/](https://github.com/fheyen/musicvis-lib)
-  - [comparison/](./src/comparison/)
-  - [fileFormats/](./src/fileFormats/)
-  - [input/](./src/input/)
-  - [instruments/](./src/instruments/)
-  - [stringBased/](./src/stringBased/)
-  - [types/](./src/types/)
-  - [utils/](./src/utils/)
-  - Midi
-  - Chords
+[See here](https://fheyen.github.io/musicvis-lib/)
 
 ## Contribution
 

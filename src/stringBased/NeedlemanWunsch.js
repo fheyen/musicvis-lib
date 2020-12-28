@@ -4,7 +4,7 @@
  * TODO: does not support cost matrix
  * TODO: extend by matchMismathFunction
  */
-export default class NeedlemanWunsch {
+class NeedlemanWunsch {
     /**
      * @param {string|Array} seq1 a string
      * @param {string|Array} seq2 another string
@@ -147,3 +147,5 @@ export default class NeedlemanWunsch {
         return finalAlignments;
     }
 }
+
+export default NeedlemanWunsch;

@@ -1,4 +1,8 @@
 /**
+ * @module utils/WebMidiUtils
+ */
+
+/**
  * Allows to ping a MIDI device that loops back to measure latency.
  * Example: pingMidiDevice('loopMIDI Port', 10);
  * The tool loopMIDI does exactly this:

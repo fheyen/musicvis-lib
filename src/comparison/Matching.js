@@ -1,6 +1,11 @@
 import { group } from 'd3';
 import * as Utils from '../utils';
 
+
+/**
+ * @module comparison/Matching
+ */
+
 /**
  * For one recording, separately for each pitch,
  * matches each recorded note to its closest ground truth note.

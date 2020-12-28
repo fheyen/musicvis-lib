@@ -1,11 +1,12 @@
 import Note from "./Note";
 
 /**
+ * @todo NYI
  * TODO: not used yet
  * TODO: nothing other than in note.js implemented yet
  * Class that allows to represent pitch-bends from a MIDI file
  */
-export default class PitchBend extends Note {
+class PitchBend extends Note {
     /**
      * Creates a new Note
      * @param {number} pitch pitch
@@ -94,3 +95,5 @@ export default class PitchBend extends Note {
         );
     }
 }
+
+export default PitchBend;

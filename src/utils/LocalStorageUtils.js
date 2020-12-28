@@ -1,4 +1,8 @@
 /**
+ * @module utils/LocalStorageUtils
+ */
+
+/**
  * Stringifies an object and stores it in the localStorage
  * @param {string} key key
  * @param {Object} obj JSON compatible object

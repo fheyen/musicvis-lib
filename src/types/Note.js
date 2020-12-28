@@ -4,7 +4,7 @@ import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
  * Note class that reflects MIDI properties but has
  * absolute start and end times in seconds.
  */
-export default class Note {
+class Note {
     /**
      * Creates a new Note
      * @param {number} pitch pitch
@@ -184,3 +184,5 @@ export default class Note {
         return `Note(pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel})`;
     }
 }
+
+export default Note;

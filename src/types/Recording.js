@@ -8,7 +8,7 @@ import { arrayShallowEquals } from "../utils/ArrayUtils";
 /**
  * Class for storing recorded notes alongside meta information.
  */
-export default class Recording extends NoteArray {
+class Recording extends NoteArray {
 
     #notes = [];
 
@@ -128,3 +128,5 @@ export default class Recording extends NoteArray {
         );
     }
 }
+
+export default Recording;

@@ -1,6 +1,10 @@
 import { quantile, mean, deviation } from 'd3';
 
 /**
+ * @module utils/StatisticsUtils
+ */
+
+/**
  * https://www.alchemer.com/resources/blog/how-to-calculate-confidence-intervals/
  * @param {numnber[]} values
  * @returns {Object} {mean, low, high}

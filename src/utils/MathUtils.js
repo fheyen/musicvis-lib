@@ -1,6 +1,10 @@
 import { randomInt } from "d3";
 
 /**
+ * @module utils/MathUtils
+ */
+
+/**
  * Generates a random float in [min, max)
  * @param {number} min minimum
  * @param {number} max maximum

@@ -3,7 +3,7 @@ import Note from '../types/Note';
 /**
  * Handles incoming MIDI messages from a MIDI device.
  */
-export default class MidiInputManager {
+class MidiInputManager {
 
     #getMidiLiveData;
     #setMidiLiveData;
@@ -62,6 +62,7 @@ export default class MidiInputManager {
 
     /**
      * Handles a successful MIDI access request
+     * @private
      * @param {*} midiAccess MIDI access
      */
     _onMIDISuccess = (midiAccess) => {
@@ -81,6 +82,7 @@ export default class MidiInputManager {
 
     /**
      * Handles MIDI access errors
+     * @private
      * @param {*} error
      */
     _onMIDIFailure(error) {
@@ -89,6 +91,7 @@ export default class MidiInputManager {
 
     /**
      * Handles incoming MIDI messages
+     * @private
      * @param {*} message MIDI message
      */
     _handleMIDIMessage = (message) => {
@@ -122,6 +125,7 @@ export default class MidiInputManager {
 
     /**
      * Handles note-on messages
+     * @private
      * @param {string} device device name
      * @param {number} time time stamp of the message
      * @param {number} pitch MIDI pitch in [0, 127]
@@ -145,6 +149,7 @@ export default class MidiInputManager {
     /**
      * Handles note-off messages by updating the end time of the corresponding
      * note
+     * @private
      * @param {string} device device name
      * @param {number} time time stamp of the message
      * @param {number} pitch MIDI pitch in [0, 127]
@@ -174,3 +179,5 @@ export default class MidiInputManager {
         }
     }
 }
+
+export default MidiInputManager;

@@ -5,6 +5,10 @@ import Note from '../types/Note';
 import NoteArray from '../types/NoteArray';
 
 /**
+ * @module comparison/Alignment
+ */
+
+/**
  * Given two NoteArrays, shift the second one in time such that they are aligned
  * TODO: use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
  *      to find note alignment, then only use those for force calculation

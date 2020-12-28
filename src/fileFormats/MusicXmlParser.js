@@ -3,6 +3,9 @@ import GuitarNote from '../types/GuitarNote';
 import { getMidiNoteByNameAndOctave } from '../Midi';
 import { max } from 'd3';
 
+/**
+ * @module fileFormats/MusicXmlParser
+ */
 
 /**
  * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
@@ -49,6 +52,7 @@ export function preprocessMusicXmlData(xml) {
 /**
  * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
  * Also calculates the position of measure lines and the total time in seconds.
+ * @private
  * @param {HTMLCollection} measures collection of measures with notes
  * @returns {Object} parsed measures
  */
@@ -200,9 +204,10 @@ function preprocessMusicXmlMeasures(measures) {
 
 /**
  * Resolves repetitions by simply duplicating repeated measures.
- * https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
  * TODO: handle 3x etc
  * TODO: handle different endings
+ * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
+ * @private
  * @param {HTMLCollection} measures measures
  * @returns {*} processed measures
  */
@@ -257,6 +262,7 @@ function duplicateRepeatedMeasures(measures) {
 
 /**
  * Gets the tuning for a MusicXML part
+ * @private
  * @param {HTMLCollection} measures the measures of the parts
  * @returns {number[]} pitches of the tuning or [] if none is found
  */

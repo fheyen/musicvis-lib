@@ -1,8 +1,11 @@
 /**
  * Superclass for nots and rests
+ * @ignore
  */
-export default class Symbol {
+class Symbol {
     constructor(duration) {
         this.duration = duration;
     }
 }
+
+export default Symbol;
