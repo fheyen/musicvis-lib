@@ -1,15 +1,18 @@
 import { getMidiNoteByLabel } from "../Midi";
 import Note from "./Note";
 
+
 /**
  * Guitar note class that reflects MIDI properties but has
  * absolute start and end times in seconds and
  * information on how to play it.
- * @extends Note
+ *
+ * @augments Note
  */
 class GuitarNote extends Note {
     /**
      * Creates a new Note
+     *
      * @param {number} pitch pitch
      * @param {number} start start time in seconds
      * @param {number} velocity velocity
@@ -35,7 +38,8 @@ class GuitarNote extends Note {
 
     /**
      * Creates a GuitarNote object from an object via destructuring
-     * @param {Object} object object with at least {pitch}
+     *
+     * @param {object} object object with at least {pitch}
      *  {
      *      pitch: number|string    e.g. 12 or C#4
      *      start: number           start time in seconds
@@ -70,6 +74,7 @@ class GuitarNote extends Note {
 
     /**
      * Converts a Note to a GuitarNote
+     *
      * @param {Note} note note
      * @param {number} string string
      * @param {number} fret fret
@@ -81,6 +86,7 @@ class GuitarNote extends Note {
 
     /**
      * Simplifies the GuitarNote to a Note
+     *
      * @returns {Note} note
      */
     toNote() {
@@ -89,6 +95,7 @@ class GuitarNote extends Note {
 
     /**
      * Returns a copy of the Note object
+     *
      * @returns {GuitarNote} new note
      */
     clone() {
@@ -106,6 +113,7 @@ class GuitarNote extends Note {
 
     /**
      * Returns true if this note and otherNote have equal attributes.
+     *
      * @param {GuitarNote} otherNote another GuitarNote
      * @returns {boolean} true if equal
      */
@@ -127,8 +135,9 @@ class GuitarNote extends Note {
 
     /**
      * Human-readable string representation of this GuitarNote
-     * @param {boolen} short if true, attribute names will be shortened
-     * @returns {string}
+     *
+     * @param {boolean} short if true, attribute names will be shortened
+     * @returns {string} string representation
      */
     toString(short = false) {
         if (short) {

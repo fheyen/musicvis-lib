@@ -14,8 +14,10 @@ class PitchSequence {
 
     /**
      * @todo implement keepOnlyHighestConcurrentNotes
-     * @param {*} notes
-     * @param {*} keepOnlyHighestConcurrentNotes
+     *
+     * @param {Note[]} notes notes
+     * @param {boolean} keepOnlyHighestConcurrentNotes only keep highest notes if some overlap
+     * @returns {PitchSequence} pitch sequence
      */
     static fromNotes(notes = [], keepOnlyHighestConcurrentNotes = false) {
         const pitches = notes
@@ -47,6 +49,7 @@ class PitchSequence {
     /**
      * Turns pitch sequence into a string by turning each  pitch into a character
      * (based on Unicode index)
+     *
      * @returns {string} string representation of note pitches
      */
     toCharString() {
@@ -67,6 +70,8 @@ class PitchSequence {
 
     /**
      * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
+     *
+     * @returns {PitchSequence} this
      */
     removeOctaves() {
         this.#pitches = this.#pitches.map(d => d % 12);
@@ -76,7 +81,7 @@ class PitchSequence {
     /**
      * Transforms note pitches to intervals, i.e. diffrences between to subsequent
      * notes: C, C#, C, D => 1, -1, 2
-     * @param {number[]} pitchSequence array with MIDI pitches
+     *
      * @returns {number[]} intervals
      */
     toIntervals() {
@@ -97,6 +102,7 @@ class PitchSequence {
 
     /**
      * Returns true if this NoteArray and otherNoteArray have equal attributes.
+     *
      * @param {NoteArray} otherPitchSequence another NoteArray
      * @returns {boolean} true if equal
      */

@@ -7,6 +7,7 @@ import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
 class Note {
     /**
      * Creates a new Note
+     *
      * @param {number} pitch pitch
      * @param {number} start start time in seconds
      * @param {number} velocity velocity
@@ -29,7 +30,16 @@ class Note {
 
     /**
      * Creates a Note object from an object via destructuring
-     * @param {Object} object object with at least {pitch}
+     *
+     * @example
+     *  const n = Note.from({
+     *      pitch: 'C#4'     // e.g. 12 or C#4
+     *      start: 0.5       // start time in seconds
+     *      end: 1.5         // end time in seconds
+     *      velocity: 127    // MIDI velocity
+     *      channel: 0       // MIDI channel
+     *  });
+     * @param {object} object object with at least {pitch}
      *  {
      *      pitch: number|string    e.g. 12 or C#4
      *      start: number           start time in seconds
@@ -59,6 +69,7 @@ class Note {
 
     /**
      * Returns a copy of the Note object
+     *
      * @returns {Note} new note
      */
     clone() {
@@ -73,6 +84,7 @@ class Note {
 
     /**
      * Returns the duration of this note in seconds
+     *
      * @returns {number} note duration
      */
     getDuration() {
@@ -84,6 +96,7 @@ class Note {
 
     /**
      * Returns the note's name and octave, e.g. 'C#3'
+     *
      * @returns {string} note name as string
      */
     getName() {
@@ -92,6 +105,7 @@ class Note {
 
     /**
      * Returns the note's name WITHOUT the octave, e.g. 'C#'
+     *
      * @returns {string} note name as string
      */
     getLetter() {
@@ -99,7 +113,8 @@ class Note {
     }
 
     /**
-     * Returns the note's octave.
+     * Returns the note's octave
+     *
      * @returns {number} the note's octave
      */
     getOctave() {
@@ -108,6 +123,7 @@ class Note {
 
     /**
      * Returns a new Note where start and end are multiplied by factor
+     *
      * @param {number} addedSeconds seconds to be added to start and end
      * @returns {Note} new note
      */
@@ -120,6 +136,7 @@ class Note {
 
     /**
      * Returns a new Note where start and end are multiplied by factor
+     *
      * @param {number} factor factor to scale start and end with
      * @returns {Note} new note
      */
@@ -132,6 +149,7 @@ class Note {
 
     /**
      * Returns true, if this Note and otherNote overlap in time.
+     *
      * @param {Note} otherNote another Note
      * @returns {boolean} true if they overlap
      */
@@ -142,6 +160,7 @@ class Note {
 
     /**
      * Returns the amount of seconds this Note and otherNote overlap in time.
+     *
      * @param {Note} otherNote another Note
      * @returns {number} seconds of overlap
      */
@@ -156,6 +175,7 @@ class Note {
 
     /**
      * Returns true if this note and otherNote have equal attributes.
+     *
      * @param {Note} otherNote another Note
      * @returns {boolean} true if equal
      */
@@ -174,8 +194,9 @@ class Note {
 
     /**
      * Human-readable string representation of this Note
-     * @param {boolen} short if true, attribute names will be shortened
-     * @returns {string}
+     *
+     * @param {boolean} short if true, attribute names will be shortened
+     * @returns {string} string representation
      */
     toString(short = false) {
         if (short) {

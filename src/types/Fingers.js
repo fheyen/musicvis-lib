@@ -1,3 +1,6 @@
+/**
+ * Represents all fingers of both hands
+ */
 const FINGERS = {
     // Left
     LEFT_THUMB: 'FINGERS.LEFT_THUMB',

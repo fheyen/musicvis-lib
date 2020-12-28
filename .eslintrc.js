@@ -6,7 +6,11 @@ module.exports = {
     jest: true
   },
   extends: [
-    'eslint:recommended'
+    'eslint:recommended',
+    'plugin:jsdoc/recommended'
+  ],
+  plugins: [
+    "jsdoc"
   ],
   parser: "babel-eslint",
   parserOptions: {
@@ -14,5 +18,6 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    "jsdoc/no-undefined-types": 0
   }
 }

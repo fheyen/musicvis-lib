@@ -6,6 +6,7 @@ import { min } from "d3";
 /**
  * This class represents an array of note objects.
  * This can be used to simplify operations on a track.
+ *
  * @example
  *   const notes = [
  *       // Some Note objects
@@ -29,6 +30,7 @@ class NoteArray {
     /**
      * Creates a new NoteArray,
      * will make a copy of the passed array and cast all notes
+     *
      * @param {Note[]} notes notes, default: []
      */
     constructor(notes = []) {
@@ -43,6 +45,7 @@ class NoteArray {
 
     /**
      * Returns a simple array with all Note objects.
+     *
      * @returns {Note[]} array with Note objects
      */
     getNotes() {
@@ -51,7 +54,8 @@ class NoteArray {
 
     /**
      * Appends notes to this note array
-     * @param {Note[]} notes
+     *
+     * @param {Note[]} notes notes
      * @param {boolean} sort iff ture, sorts notes by start timeafter adding
      *      the new ones (default:true)
      * @returns {NoteArray} itself
@@ -69,6 +73,7 @@ class NoteArray {
      * IMPORTANT: this does not change the notes or sort them!
      * Take a look at NoteArray.append() if you want to extend
      * a track at its end.
+     *
      * @param {NoteArray} noteArray another NoteArray
      * @returns {NoteArray} itself
      */
@@ -80,6 +85,7 @@ class NoteArray {
     /**
      * Appends notes to the end of this NoteArray, after shifting them by its
      * duration. Set gap to something != 0 to create a gap or overlap.
+     *
      * @param {NoteArray} noteArray another NoteArray
      * @param {number} gap in seconds between the two parts
      * @returns {NoteArray} itself
@@ -95,6 +101,7 @@ class NoteArray {
 
     /**
      * Repeats the notes of this array by concatenating a time-shifted copy
+     *
      * @param {number} times number of times to repeat it
      * @returns {NoteArray} a new NoteArray with the repeated note sequence
      */
@@ -118,6 +125,7 @@ class NoteArray {
 
     /**
      * Returns the number of Note objects in this NoteArray
+     *
      * @returns {number} note count
      */
     length() {
@@ -126,6 +134,7 @@ class NoteArray {
 
     /**
      * Returns the start time of the earliest note in this NoteArray
+     *
      * @returns {number} start time
      */
     getStartTime() {
@@ -134,6 +143,7 @@ class NoteArray {
 
     /**
      * Returns the duration of this note array in seconds
+     *
      * @returns {number} duration
      */
     getDuration() {
@@ -149,6 +159,7 @@ class NoteArray {
 
     /**
      * Scales the time of each note by factor
+     *
      * @param {number} factor factor
      * @returns {NoteArray} itself
      */
@@ -159,6 +170,7 @@ class NoteArray {
 
     /**
      * Adds the speicifed number of seconds to each note
+     *
      * @param {number} addedSeconds time to add in seconds
      * @returns {NoteArray} itself
      */
@@ -170,6 +182,7 @@ class NoteArray {
     /**
      * Moves all notes s.t. the first starts at <start>
      * Will sort the notes by start time.
+     *
      * @param {number} startTime the new start time for the earliest note
      * @returns {NoteArray} itself
      */
@@ -188,7 +201,9 @@ class NoteArray {
 
     /**
      * Similar to Array.forEach
-     * @param {*} fn
+     *
+     * @param {*} fn a function
+     * @returns {NoteArray} this
      */
     forEach(fn) {
         this.#notes.forEach(fn);
@@ -197,6 +212,7 @@ class NoteArray {
 
     /**
      * Sorts the notes
+     *
      * @param {Function} sortFunction sort function, e.g. (a, b)=>a.start-b.start
      * @returns {NoteArray} itself
      */
@@ -207,6 +223,7 @@ class NoteArray {
 
     /**
      * Sorts the notes by start time
+     *
      * @returns {NoteArray} itself
      */
     sortByTime() {
@@ -216,6 +233,7 @@ class NoteArray {
 
     /**
      * Maps the notes using some mapping function
+     *
      * @param {Function} mapFunction mapping function with same signature as
      *      Array.map()
      * @returns {NoteArray} itself
@@ -227,6 +245,7 @@ class NoteArray {
 
     /**
      * Slices the notes by index, like Array.slice()
+     *
      * @param {number} start start index
      * @param {number} end end index
      * @returns {NoteArray} itself
@@ -239,8 +258,9 @@ class NoteArray {
     /**
      * Slices the notes by time.
      * The modes end and contained will remove all notes with end === null!
-     * @param {number} start start of the filter range in seconds
-     * @param {number} end end of the filter range in seconds (exclusive)
+     *
+     * @param {number} startTime start of the filter range in seconds
+     * @param {number} endTime end of the filter range in seconds (exclusive)
      * @param {string} mode controls which note time to consider, one of:
      *      - start (note.start must be inside range),
      *      - end (note.end ''),
@@ -265,6 +285,7 @@ class NoteArray {
 
     /**
      * Filters the NoteArray like you would filter via Array.filter().
+     *
      * @param {Function} filterFunction filter function, same signature as
      *      Array.filter()
      * @returns {NoteArray} itself
@@ -276,6 +297,7 @@ class NoteArray {
 
     /**
      * Filters by pitch, keeping only pitches specified in <pitches>
+     *
      * @param {number[]} pitches array of pitches to keep
      * @returns {NoteArray} itself
      */
@@ -286,6 +308,7 @@ class NoteArray {
 
     /**
      * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
+     *
      * @param {number} steps number of semitones to transpose, can be negative
      * @returns {NoteArray} itself
      */
@@ -298,6 +321,7 @@ class NoteArray {
 
     /**
      * Reverses the note array, such that it can be played backwards.
+     *
      * @returns {NoteArray} itself
      */
     reverse() {
@@ -320,6 +344,7 @@ class NoteArray {
 
     /**
      * Returns true if this NoteArray and otherNoteArray have equal attributes.
+     *
      * @param {NoteArray} otherNoteArray another NoteArray
      * @returns {boolean} true if equal
      */
@@ -341,6 +366,7 @@ class NoteArray {
 
     /**
      * Deep clone, all contained notes are cloned as well.
+     *
      * @returns {NoteArray} clone
      */
     clone() {

@@ -12,6 +12,7 @@ import Recording from "../types/Recording";
 /**
  * Filters notes of a recording to remove noise from the MIDI device or pickup
  * TODO: detect gaps and fill them
+ *
  * @param {Recording} recording a recording
  * @param {number} velocityThreshold notes with velocity < velocityThreshold
  *      are removed
@@ -40,6 +41,7 @@ export function filterRecordingNoise(recording, velocityThreshold = 0, durationT
  * truth and therefore likely noise.
  * Looks up the pitch range from the track of the GT that the recording was made
  * for.
+ *
  * @param {Recording[]} recordings
  * @param {Note[][]} groundTruth
  * @returns {Recording[]} filtered recordings
@@ -68,6 +70,7 @@ export function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
  * Calculates a heatmap of multiple recordings, to see the note density in the
  * channel-time-space. Channel could be a guitar string or left and right hand
  * for example.
+ *
  * @param {Note[]} recNotes recordings
  * @param {number} nRecs number of recordings
  * @param {number} binSize time bin size in milliseconds
@@ -110,6 +113,7 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
  * 'Averages' multiple recordings of the same piece to get an approximation of
  * the ground truth.
  * TODO: use velocity?
+ *
  * @param {Map} heatmapByPitch haetmap from recordingsHeatmap()
  * @param {number} binSize size of time bins in milliseconds
  * @param {number} threshold note is regarded as true when this ratio of
@@ -150,6 +154,7 @@ export function averageRecordings(heatmapByPitch, binSize, threshold = 0.8) {
  * Extracts a probable ground truth from multiple recordings. Uses one KDE for
  * each note starts and ends, detects maxima in the KDE and thresholds them.
  * Then uses alternating start end end candidates to create notes.
+ *
  * @param {Note[]} recNotes
  * @param {number} bandwidth
  * @param {number} ticksPerSecond
