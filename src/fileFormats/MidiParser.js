@@ -17,11 +17,11 @@ import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
  */
 export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
     if (data === null || data === undefined) {
-        console.warn('[MidiParser] MIDI data is null');
+        // console.warn('[MidiParser] MIDI data is null');
         return;
     }
     if (!data.track) {
-        console.error('[MidiParser] MIDI data has no track');
+        console.warn('[MidiParser] MIDI data has no track');
         return;
     }
     console.groupCollapsed('[MidiParser] Preprocessing MIDI file data');

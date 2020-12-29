@@ -6,7 +6,7 @@
  * Converts a Blob to a base64 string
  *
  * @param {Blob} blob Blob
- * @returns {string} base64 string
+ * @returns {Promise<string,undefined>} base64 string
  */
 export function blobToBase64(blob) {
     return new Promise((resolve) => {

@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, flattenArray, getMatrixMax, formatMatrix } from '../../src/utils/ArrayUtils';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix } from '../../src/utils/ArrayUtils';
 
 
 describe('arrayContainsArray', () => {
@@ -142,33 +142,6 @@ describe('removeDuplicates', () => {
         const arr = [1, 2, 3, 4, 5];
         const arr2 = [1, 2, 3, 4, 5, 3, 4];
         expect(removeDuplicates(arr2)).toStrictEqual(arr);
-    });
-});
-
-describe('flattenArray', () => {
-    test('empty', () => {
-        expect(flattenArray([])).toStrictEqual([]);
-    });
-
-    test('already flat', () => {
-        expect(flattenArray([1, 2, 3])).toStrictEqual([1, 2, 3]);
-    });
-
-    test('1 level', () => {
-        expect(flattenArray([1, [20, 21], 3])).toStrictEqual([1, 20, 21, 3]);
-    });
-
-    test('2 levels', () => {
-        expect(flattenArray([1, [20, [210, 211]], 3])).toStrictEqual([1, 20, [210, 211], 3]);
-    });
-
-    test('matrix', () => {
-        const matrix = [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]
-        ];
-        expect(flattenArray(matrix)).toStrictEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     });
 });
 

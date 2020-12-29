@@ -101,6 +101,7 @@ export function drawDiamond(ctx, x, y, halfSize) {
  * @returns {void}
  */
 export function drawX(ctx, x, y, halfSize) {
+    ctx.save();
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(x - halfSize, y - halfSize);
@@ -108,7 +109,7 @@ export function drawX(ctx, x, y, halfSize) {
     ctx.moveTo(x - halfSize, y + halfSize);
     ctx.lineTo(x + halfSize, y - halfSize);
     ctx.stroke();
-    ctx.lineWidth = 1;
+    ctx.restore();
 }
 
 /**

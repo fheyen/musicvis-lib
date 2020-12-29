@@ -1,4 +1,4 @@
-import { arrayShallowEquals, removeDuplicates, arrayContainsArray, arrayHasSameElements, flattenArray, getMatrixMax, formatMatrix } from './ArrayUtils';
+import { arrayShallowEquals, removeDuplicates, arrayContainsArray, arrayHasSameElements, getMatrixMax, formatMatrix } from './ArrayUtils';
 import { blobToBase64, blobToFileExtension } from './BlobUtils';
 import { formatDate, formatTime, formatSongTitle } from './FormattingUtils';
 import { storeObjectInLocalStorage, getObjectFromLocalStorage } from './LocalStorageUtils';
@@ -15,7 +15,6 @@ export {
     removeDuplicates,
     arrayContainsArray,
     arrayHasSameElements,
-    flattenArray,
     getMatrixMax,
     formatMatrix,
     // Blob

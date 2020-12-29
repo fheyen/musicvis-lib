@@ -82,17 +82,6 @@ export function arrayContainsArray(a, b) {
 }
 
 /**
- * Turns an array of array into a flat array by concatenating all arrays
- * @todo use Array.flat()? https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
- * @deprecated
- * @param {any[][]} array array of arrays
- * @returns {any[]} flattened array
- */
-export function flattenArray(array) {
-    return [].concat(...array);
-}
-
-/**
  * Returns the maximum numerical value from an array of arrays
  *
  * @param {number[][]} matrix matrix

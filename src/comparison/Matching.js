@@ -109,10 +109,10 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
  *
  * @param {Recording[]} recordings recordings
  * @param {Note[]} gtNotes ground truth notes
- *
+ * @returns {Map} matching
  */
 export function matchGtAndMultipleRecordings(recordings, gtNotes) {
-    const allRecNotes = Utils.flattenArray(recordings.map(d => d.notes));
+    const allRecNotes = recordings.map(d => d.notes).flat();
     const groupedByPitch = group(gtNotes, d => d.pitch);
     const groupedByPitchRec = group(allRecNotes, d => d.pitch);
     const result = new Map();

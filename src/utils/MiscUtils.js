@@ -1,5 +1,4 @@
 import { group } from "d3";
-import { flattenArray } from "./ArrayUtils";
 
 /**
  * @module utils/MiscUtils
@@ -37,7 +36,7 @@ export function deepCloneFlatObjectMap(map) {
  * @returns {Map} grouping
  */
 export function groupNotesByPitch(tracks) {
-    let allNotes = flattenArray(tracks);
+    let allNotes = tracks.flat();
     return group(allNotes, d => d.pitch);
 }
 
