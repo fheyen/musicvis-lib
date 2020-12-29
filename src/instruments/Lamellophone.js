@@ -112,9 +112,10 @@ export const lamellophoneTunings = new Map([
 
 /**
  * Parses a tab into notes
+ *
  * @param {string} tab in letter format
  * @param {LamellophoneTuning} tuning tuning
- * @param {*} tempo tempo in bpm
+ * @param {number} tempo tempo in bpm
  * @returns {Note[]} notes
  */
 export function convertTabToNotes(tab, tuning, tempo = 120) {
@@ -183,9 +184,10 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
 
 /**
  * Converts an array of notes into a text tab
- * @param {Note[]} notes
- * @param {LamellophoneTuning} tuning
- * @param {'letter'|'number'} mode
+ *
+ * @param {Note[]} notes notes
+ * @param {LamellophoneTuning} tuning tuning
+ * @param {'letter'|'number'} mode mode
  * @param {number} restSize number of seconds for a gap between chords to insert
  *     a line break
  * @returns {string} text tab
@@ -227,11 +229,13 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
 
 /**
  * Converts an array of notes into an HTML tab with colored notes
- * @param {Note[]} notes
- * @param {LamellophoneTuning} tuning
- * @param {'letter'|'number'} mode
+ *
+ * @param {Note[]} notes notes
+ * @param {LamellophoneTuning} tuning tuning
+ * @param {'letter'|'number'} mode mode
  * @param {number} restSize number of seconds for a gap between chords to insert
  *     a line break
+ * @param {Function} colormap color map function: pitch to color
  * @returns {string} HTML tab
  */
 export function convertNotesToHtmlTab(
@@ -280,8 +284,10 @@ export function convertNotesToHtmlTab(
 
 /**
  * Converts a number-based tab to note letter format
+ *
  * @param {string} numberTab tab text with number format
  * @param {Map<number, string>} numberLetterMap maps numbers to letters
+ * @returns {string} tab in letter format
  */
 export function convertNumbersToLetters(numberTab, numberLetterMap) {
     if (!numberTab || !numberTab.length) { return ''; }
@@ -301,10 +307,11 @@ export function convertNumbersToLetters(numberTab, numberLetterMap) {
  * Tries to find a transposition s.t. the tuning is able to play all notes.
  * If not not possible, return the transposition that requires the least keys to
  * be retuned.
- * TODO: tests fail
- * @param {Note[]} notes
- * @param {LamellophoneTuning} tuning
- * @returns {Object} {transpose: number, retune: Map}
+ *
+ * @todo tests fail
+ * @param {Note[]} notes notes
+ * @param {LamellophoneTuning} tuning tuning
+ * @returns {object} {transpose: number, retune: Map}
  */
 export function bestTransposition(notes, tuning) {
     if (!notes || !notes.length) {

@@ -1,14 +1,14 @@
 import Note from "./Note";
 
 /**
- * @todo NYI
- * TODO: not used yet
- * TODO: nothing other than in note.js implemented yet
  * Class that allows to represent pitch-bends from a MIDI file
+ *
+ * @todo nothing other than in note.js implemented yet
+ * @todo NYI
+ * @todo not used yet
  */
 class PitchBend extends Note {
     /**
-     * Creates a new Note
      * @param {number} pitch pitch
      * @param {number} start start time in seconds
      * @param {number} velocity velocity
@@ -30,6 +30,7 @@ class PitchBend extends Note {
 
     /**
     * Creates a GuitarNote object from an object via destructuring
+    *
     * @param {Object} object object with at least {pitch}
     * @returns {PitchBend} new note
     */
@@ -52,6 +53,7 @@ class PitchBend extends Note {
 
     /**
      * Converts a Note to a GuitarNote
+     *
      * @param {Note} note note
      * @param {number} string string
      * @param {number} fret fret
@@ -63,6 +65,7 @@ class PitchBend extends Note {
 
     /**
      * Returns a copy of the Note object
+     *
      * @returns {PitchBend} new note
      */
     clone() {
@@ -78,6 +81,7 @@ class PitchBend extends Note {
 
     /**
      * Returns true if this note and otherNote have equal attributes.
+     *
      * @param {PitchBend} otherNote another GuitarNote
      * @returns {boolean} true if equal
      */

@@ -4,6 +4,7 @@
 
 /**
  * Formats a time in seconds to <minutes>:<seconds>.<milliseconds>
+ *
  * @param {number|null} seconds in seconds
  * @param {boolean} includeMillis include milli seconds in string?
  * @returns {string} 0-padded time string <minutes>:<seconds>.<milliseconds>
@@ -34,7 +35,10 @@ export function formatTime(seconds, includeMillis = true) {
  *      YYYY-mm-DDTHH:MM:SS
  * or when replaceT == true
  *      YYYY-mm-DD HH:MM:SS
- * @param {Date} date
+ *
+ * @param {Date} date date
+ * @param {boolean} replaceT replace the 'T'?
+ * @param {boolean} keepMillis keep milliseconds?
  * @returns {string} formatted date
  */
 export function formatDate(date, replaceT = false, keepMillis = true) {
@@ -51,6 +55,7 @@ export function formatDate(date, replaceT = false, keepMillis = true) {
 
 /**
  * Formats the song title (e.g. remove file extension and shorten)
+ *
  * @param {string} title song title
  * @param {number} maxLength shorten to this length
  * @returns {string} formatted song title

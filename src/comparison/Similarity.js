@@ -12,6 +12,7 @@ import DynamicTimeWarping from 'dynamic-time-warping-2';
  * similar to the selection.
  * It uses a sliding window with the size of the selection
  * and a stride given as argument.
+ *
  * @param {Note[]} track array of Note objects
  * @param {number[]} selectedInterval [startTime, endTime] in seconds
  * @param {number} stride stride for the sliding window in number of bins
@@ -71,6 +72,7 @@ export function getSimilarParts(track, selectedInterval, stride, threshold, seco
  * Pitch-wise distances are averaged and a penalty if added to the distance
  * for pithces that are not occuring in both tracks
  * https://github.com/GordonLesti/dynamic-time-warping
+ *
  * @param {Map} discrA discretized track
  * @param {Map} discrB discretized track
  * @param {string} distance one of: 'dtw', 'euclidean', 'nearest'
@@ -124,6 +126,7 @@ export function getTrackSimilarity(discrA, discrB, distance) {
  * the closest time bin (beat) and
  * - Creates one array for each pitch, where each entry contains
  * either a 0 (no note at that time bin) or a 1 (note at that time bin)
+ *
  * @param {Note[]} track an array of Note objects
  * @param {number} secondsPerBin time bin size in seconds
  */
@@ -153,6 +156,7 @@ export function discretizeTime(track, secondsPerBin) {
 
 /**
  * Counts the occurence of 1 in an array
+ *
  * @param {number[]} binArray
  */
 function countActiveNoteBins(binArray) {
@@ -168,6 +172,7 @@ function countActiveNoteBins(binArray) {
 /**
  * Slices bins out of a discretices track.
  * This is done for each pitch separately
+ *
  * @param {Map} trackMap Map pitch->binArray
  * @param {number} startBin index of first bin
  * @param {number} endBin index of last bin
@@ -184,6 +189,7 @@ function sliceDiscretizedTrack(trackMap, startBin, endBin) {
 /**
  * Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},
  * i.e. Euclidean distance but without square root
+ *
  * @param {number[]} A
  * @param {number[]} B
  */
@@ -254,8 +260,8 @@ function neirestNeighborDistance(A, B) {
 
 
 /**
- * TODO: abandones for now
- * TODO: use a greedy approach:
+ * @todo abandones for now
+ * @todo use a greedy approach:
  * Start at the first notes start and take the first 2 notes
  */
 export function getSimilarPartsViaMatching(notes) {

@@ -1,5 +1,6 @@
 /**
  * Superclass for nots and rests
+ *
  * @ignore
  */
 class Symbol {

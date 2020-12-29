@@ -3,14 +3,13 @@
  */
 
 
-
 /**
  * Represents a positon as {string, fret}
  */
 class FretboardPosition {
     /**
-     * @param {number} string
-     * @param {number} fret
+     * @param {number} string string
+     * @param {number} fret fret
      */
     constructor(string, fret) {
         this.string = string;
@@ -19,8 +18,9 @@ class FretboardPosition {
 
     /**
      * Moves the positon by string and fret
-     * @param {number} string
-     * @param {number} fret
+     *
+     * @param {number} string string
+     * @param {number} fret fret
      */
     moveBy(string, fret) {
         this.string += string;
@@ -29,8 +29,10 @@ class FretboardPosition {
 
     /**
      * Checks whether this position is valid
-     * @param {number} maxString
-     * @param {number} maxFret
+     *
+     * @param {number} maxString number of strings -1
+     * @param {number} maxFret number of frets
+     * @returns {boolean} true iff valid
      */
     isValid(maxString, maxFret) {
         return this.string <= maxString && this.fret <= maxFret;
@@ -38,7 +40,9 @@ class FretboardPosition {
 
     /**
      * Returns true iff this and another FretboardPosition are equal
-     * @param {FretboardPosition} otherFretboardPosition
+     *
+     * @param {FretboardPosition} otherFretboardPosition another FretboardPosition
+     * @returns {boolean} true iff equal
      */
     equals(otherFretboardPosition) {
         return this.string === otherFretboardPosition.string &&
@@ -46,19 +50,26 @@ class FretboardPosition {
     }
 
     /**
-     * @returns {string}
+     * String representation
+     *
+     * @returns {string} string representation
      */
     toString() {
         return `(${this.string}, ${this.fret})`;
     }
 
+    /**
+     * @returns {FretboardPosition} clone
+     */
     clone() {
         return new FretboardPosition(this.string, this.fret);
     }
 
     /**
      * Returns (other - this), i.e. how you need to move this to get to other
-     * @param {FretboardPosition} otherFretboardPosition
+     *
+     * @param {FretboardPosition} otherFretboardPosition another FretboardPosition
+     * @returns {object} difference in {string, fret}
      */
     difference(otherFretboardPosition) {
         return {
@@ -89,6 +100,7 @@ class HandPose {
 
     /**
      * Move a single finger
+     *
      * @param {number} index finger index in [0, 9]
      * @param {FretboardPosition} newPosition new position
      */
@@ -97,6 +109,7 @@ class HandPose {
     }
 
     /**
+     *
      * Lift a single finger
      * @param {number} index finger index in [0, 9]
      */
@@ -106,9 +119,10 @@ class HandPose {
 
     /**
      * Moves the finger by string and fret
+     *
      * @param {number} index finger index in [0, 9]
-     * @param {number} maxString
-     * @param {number} maxFret
+     * @param {number} string string
+     * @param {number} fret fret
      */
     moveFingerBy(index, string, fret) {
         const finger = this.fingerPositions[index];
@@ -118,6 +132,9 @@ class HandPose {
 
     /**
      * Move the whole hand, fingers keep relative positions
+     *
+     * @param {number} string string
+     * @param {number} fret fret
      */
     moveHandBy(string, fret) {
         for (const finger of this.fingerPositions) {
@@ -129,8 +146,10 @@ class HandPose {
 
     /**
      * Checks whether this position is valid
-     * @param {number} maxString
-     * @param {number} maxFret
+     *
+     * @param {number} maxString max string
+     * @param {number} maxFret max fret
+     * @returns {boolean} true iff valid
      */
     isValid(maxString, maxFret) {
         for (const finger of this.fingerPositions) {
@@ -145,7 +164,9 @@ class HandPose {
 
     /**
      * Returns true iff this and another FretboardPosition are equal
-     * @param {HandPose} otherHandPose
+     *
+     * @param {HandPose} otherHandPose another hand pose
+     * @returns {boolean} ture iff equal
      */
     euqals(otherHandPose) {
         const fingers1 = this.fingerPositions;
@@ -164,7 +185,7 @@ class HandPose {
     }
 
     /**
-     * @returns {string}
+     * @returns {string} string representation
      */
     toString() {
         let str = 'HandPose ';
@@ -175,6 +196,7 @@ class HandPose {
                 str = `${str} ${names[i]} ${finger.toString()}`;
             }
         }
+        return str;
     }
 
     clone() {
@@ -183,7 +205,9 @@ class HandPose {
 
     /**
      * Returns (other - this), i.e. how you need to move this to get to other
-     * @param {FretboardPosition} otherFretboardPosition
+     *
+     * @param {HandPose} otherHandPose another HandPose
+     * @returns {object[]} difference
      */
     difference(otherHandPose) {
         const diff = [];
@@ -264,45 +288,45 @@ class HandPose {
     }
 }
 
-export function getHandPoseForChord(positions) {
-    // Sort by string from DEscending and fret Ascending
-    positions.sort((a, b) => {
-        if (a.string !== b.string) {
-            return b.string - a.string;
-        }
-        return a.fret - b.fret;
-    });
-    console.log(positions.map(d => d.toString()));
+// export function getHandPoseForChord(positions) {
+//     // Sort by string DESCENDING and fret ASCENDING
+//     positions.sort((a, b) => {
+//         if (a.string !== b.string) {
+//             return b.string - a.string;
+//         }
+//         return a.fret - b.fret;
+//     });
+//     console.log(positions.map(d => d.toString()));
 
-    const empty = new Array(10).fill(null);
-    if (positions.length === 0) {
-        return new HandPose();
-    }
-    if (notes.length === 1) {
-        empty[1] = new FretboardPosition(string, fret);
-        return new HandPose(empty);
-    }
-    if (notes.length === 1) {
-        empty[1] = new FretboardPosition(string, fret);
-        return new HandPose(empty);
-    }
-
-
-}
+//     const empty = new Array(10).fill(null);
+//     if (positions.length === 0) {
+//         return new HandPose();
+//     }
+//     if (notes.length === 1) {
+//         empty[1] = new FretboardPosition(string, fret);
+//         return new HandPose(empty);
+//     }
+//     if (notes.length === 1) {
+//         empty[1] = new FretboardPosition(string, fret);
+//         return new HandPose(empty);
+//     }
 
 
-/**
- * TODO: try beam search, i.e. look ahead into the tree of possible
- * continuations, always with a certain number of branches and depth
- * @param {Note[]} notes
- */
-export function getOptimalHandPoseSequence(notes, branches, depth) {
-    // Segment track into chords?
-    // Pro: easier to solve?
-    // Contra:
+// }
 
-    // Get list of possible FretboardPosition for all notes
 
-    // Choose first pose
+// /**
+//  * @todo try beam search, i.e. look ahead into the tree of possible
+//  * continuations, always with a certain number of branches and depth
+//  * @param {Note[]} notes
+//  */
+// export function getOptimalHandPoseSequence(notes, branches, depth) {
+//     // Segment track into chords?
+//     // Pro: easier to solve?
+//     // Contra:
 
-}
+//     // Get list of possible FretboardPosition for all notes
+
+//     // Choose first pose
+
+// }

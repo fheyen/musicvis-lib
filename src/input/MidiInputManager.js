@@ -12,6 +12,7 @@ class MidiInputManager {
 
     /**
      * Constructor with callback functions
+     *
      * @param {Function} getMidiLiveData a function called by this object to get
      *      the currently recorded MIDI notes from App.js, where the
      *      MidiInputManager instance should be created
@@ -62,6 +63,7 @@ class MidiInputManager {
 
     /**
      * Handles a successful MIDI access request
+     *
      * @private
      * @param {*} midiAccess MIDI access
      */
@@ -82,8 +84,9 @@ class MidiInputManager {
 
     /**
      * Handles MIDI access errors
+     *
      * @private
-     * @param {*} error
+     * @param {*} error error
      */
     _onMIDIFailure(error) {
         console.error('[MidiInput] Cannot access MIDI devices.', error);
@@ -91,6 +94,7 @@ class MidiInputManager {
 
     /**
      * Handles incoming MIDI messages
+     *
      * @private
      * @param {*} message MIDI message
      */
@@ -125,6 +129,7 @@ class MidiInputManager {
 
     /**
      * Handles note-on messages
+     *
      * @private
      * @param {string} device device name
      * @param {number} time time stamp of the message
@@ -149,6 +154,7 @@ class MidiInputManager {
     /**
      * Handles note-off messages by updating the end time of the corresponding
      * note
+     *
      * @private
      * @param {string} device device name
      * @param {number} time time stamp of the message

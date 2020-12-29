@@ -65,11 +65,12 @@ export const drumPitchReplacementMapMPS850 = new Map([
 
 /**
  * Generates a variation of an array of notes by adding, removing or changing notes
+ *
  * @param {Note[]} data array of notes
  * @param {number} deviation width of the Gauss kernel
  * @param {number} pAdd probability of adding a note after each note
  * @param {number} pRemove probability of removing each note
- * @return {Note[]} variated Note array
+ * @returns {Note[]} variated Note array
  */
 export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove = 0.1) {
     // Only use pitches that occur in the GT data
@@ -118,6 +119,7 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
 
 /**
  * Replaces pitches based on replacementMap
+ *
  * @param {Note[]} notes notes
  * @param {Map} replacementMap a map pitch->replacementPitch
  * @returns {Notes[]} notes with replaced pitches
@@ -151,6 +153,7 @@ export function simplifyDrumPitches(notes, replacementMap) {
 /**
  * Returns a Map:pitch->yPosIndex for views to lookup which row
  * a pitch has to be drawn in
+ *
  * @param {Map} replacementMap a pitch replacement map
  * @returns {Map} Map:pitch->yPosIndex
  */

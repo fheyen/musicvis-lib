@@ -18,6 +18,8 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    "jsdoc/no-undefined-types": 0
+    "jsdoc/no-undefined-types": 0,
+    "jsdoc/check-tag-names": 0,
+
   }
 }

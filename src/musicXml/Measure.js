@@ -1,7 +1,9 @@
 /**
-* TODO: Not used yet
  * A Measure is a part of a Track with *constant* tempo (bpm) and beat type.
  * This class should allow to do abstract music theretical stuff with a track of notes.
+ *
+ * @todo Not used yet
+ * @ignore
  */
 class Measure {
     #notes = [];
@@ -12,7 +14,7 @@ class Measure {
     /**
      * @param {NoteArray} notes notes
      * @param {number} bpm tempo in beats per minute, e.g. 120
-     * @param {number} beat e.g. 3 for 3/4
+     * @param {number} beats e.g. 3 for 3/4
      * @param {number} beatType e.g. 4 for 3/4
      */
     constructor(notes, bpm = 120, beats = 4, beatType = 4) {

@@ -4,9 +4,10 @@
 
 /**
  * Allows to ping a MIDI device that loops back to measure latency.
- * Example: pingMidiDevice('loopMIDI Port', 10);
  * The tool loopMIDI does exactly this:
- * https://www.tobias-erichsen.de/software/loopmidi.html.
+ *
+ * @see https://www.tobias-erichsen.de/software/loopmidi.html.
+ * @example pingMidiDevice('loopMIDI Port', 10);
  * @param {string} deviceName name of the MIDI device
  * @param {number} howOften how many times to ping the device
  */

@@ -2,11 +2,13 @@ import Note from '../types/Note';
 
 /**
  * Records incoming MIDI messages from a MIDI device.
+ *
  * @example
  * Usage (only in async functions):
  *     const recorder = await recordMidi();
  *     recorder.start();
  *     const notes = recorder.stop();
+ * @returns {Promise} MIDI recorder
  */
 export const recordMidi = () => {
     return new Promise(async resolve => {
@@ -47,6 +49,7 @@ export const recordMidi = () => {
 
 /**
  * Parses MIDI messages to Notes
+ *
  * @private
  * @param {Oject[]} messages MIDI messages as they come from the WebMidi API
  * @returns {Note[]} notes
@@ -92,6 +95,7 @@ function processMidiMessagesToNotes(messages) {
 
 /**
  * Handles note-on messages
+ *
  * @private
  * @param {Map} currentNotes Map with started but not yet ended notes
  * @param {string} device device name
@@ -108,6 +112,7 @@ function noteOn(currentNotes, device, time, pitch, channel, velocity) {
 
 /**
  * Handles note-off messages
+ *
  * @private
  * @param {Note[]} notes finished notes
  * @param {Map} currentNotes Map with started but not yet ended notes

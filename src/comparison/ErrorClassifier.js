@@ -17,7 +17,9 @@ import * as Utils from "../utils";
 /**
  * Compares a single recording to a ground truth and labels notes as missing,
  * extra, early/late, or short/long
- * TODO: generalize to channel/pitch instead of string and fret?
+ *
+ * @todo generalize to channel/pitch instead of string and fret?
+ *
  * @param {Note[]|GuitarNote[]} gtNotes
  * @param {Note[]|GuitarNote[]} recNotes
  * @param {string} groupBy
@@ -152,6 +154,7 @@ function hasAtLeastOne(map, key) {
 
 /**
  * Classifies notes by overlap into missing / extra and overlapping rec notes
+ *
  * @ignore
  * @todo Move somewhere else to make it shared?
  * @param {Note[]} gtNotes
@@ -184,6 +187,7 @@ function getGtRecOverlaps(gtNotes, recNotes) {
 
 /**
  * Handles overlapping notes by finding best matches and classifying them.
+ *
  * @ignore
  * @param {Overlap[]} overlapping pairs of GT and rec notes
  * @param {number} threshold threshold for 'same-ness' in seconds
@@ -303,6 +307,7 @@ function handleOverlappingNotes(overlapping, threshold) {
  * Finds the best match of a baseNote with some candidates, and using only the
  * notes that were played on the same fret. If there are none, others will be
  * considered instead.
+ *
  * @ignore
  * @param {GuitarNote} baseNote
  * @param {Set<GuitarNote>} candidates
@@ -332,6 +337,7 @@ export function findBestMatch(baseNote, candidates) {
 /**
  * Returns the candidate with the least absolute time difference (in the note
  * start) to the baseNote.
+ *
  * @ignore
  * @param {Note} baseNote
  * @param {Set<Note>} candidates
@@ -355,6 +361,7 @@ export function findBestMatchBasedOnTime(baseNote, candidates) {
 /**
  * Compares two matched notes to determine the state of the actual note
  * A delta of 50 ms is indistinguishable for human hearing
+ *
  * @ignore
  * @param {GuitarNote} expectedNote
  * @param {GuitarNote} actualNote

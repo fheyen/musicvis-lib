@@ -6,6 +6,7 @@ import { randomInt } from "d3";
 
 /**
  * Generates a random float in [min, max)
+ *
  * @param {number} min minimum
  * @param {number} max maximum
  * @returns {number} random float
@@ -16,6 +17,7 @@ export function randFloat(min = 0, max = 1) {
 
 /**
  * Returns a random element from the given array.
+ *
  * @param {Array} array an array
  * @returns {any} random element from the array
  */
@@ -26,6 +28,7 @@ export function choose(array) {
 
 /**
  * Shortcut for Math.max(minValue, Math.min(maxValue, value))
+ *
  * @param {number} value value
  * @param {number} minValue lower limit
  * @param {number} maxValue upper limit
@@ -37,6 +40,7 @@ export function clipValue(value, minValue, maxValue) {
 
 /**
  * Swaps two numbers if the first is larger than the second
+ *
  * @param {number} x a number
  * @param {number} y a number
  * @returns {number[]} array with the smaller number first
@@ -53,7 +57,8 @@ export function swapSoSmallerFirst(x, y) {
  * and right neighbor, or higher than their only neighbor if they are at the
  * boundary.
  * IMPORTANT: does not find plateaus
- * @param {number[]} arr
+ *
+ * @param {number[]} arr array
  * @returns {number[]} array with indices of maxima
  */
 export function findLocalMaxima(arr) {

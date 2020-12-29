@@ -1,5 +1,6 @@
 /**
  * Allows to record audio blobs.
+ *
  * @example
  * Usage (only in async functions):
  *     const recorder = await recordAudio();
@@ -9,6 +10,7 @@
  * stop() returns a Blob with audio data
  * @see https://medium.com/@bryanjenningz/how-to-record-and-play-audio-in-javascript-faa1b2b3e49b
  * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
+ * @returns {Promise} audio recorder
  */
 export const recordAudio = () => {
     return new Promise(async resolve => {

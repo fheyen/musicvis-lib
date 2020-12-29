@@ -5,9 +5,11 @@ import { quantile, mean, deviation } from 'd3';
  */
 
 /**
- * https://www.alchemer.com/resources/blog/how-to-calculate-confidence-intervals/
- * @param {numnber[]} values
- * @returns {Object} {mean, low, high}
+ * Calculates a confidence interval
+ *
+ * @see https://www.alchemer.com/resources/blog/how-to-calculate-confidence-intervals/
+ * @param {numnber[]} values values
+ * @returns {object} {mean, low, high}
  */
 export function confidenceInterval(values) {
     const n = values.length;
@@ -24,8 +26,9 @@ export function confidenceInterval(values) {
 /**
  * Given an array of Note objects, returns the numbers
  * that are drawn in a box plot (of the Note.start property)
+ *
  * @param {number[]} values values
- * @returns {Object} { q1, q2, q3, r0, r1 }
+ * @returns {object} { q1, q2, q3, r0, r1 }
  */
 export function getBoxplotCharacteristics(values) {
     values.sort((a, b) => a - b);
@@ -42,8 +45,9 @@ export function getBoxplotCharacteristics(values) {
 
 /**
  * Returns a kernel desity estimator function.
- * https://www.d3-graph-gallery.com/graph/violin_basicDens.html
- * Example:
+ *
+ * @see https://www.d3-graph-gallery.com/graph/violin_basicDens.html
+ * @example
  * const kde = kernelDensityEstimator(kernelEpanechnikov(0.2), x.ticks(50));
  * const estimate = kde(data);
  * @param {Function} kernel kernel function
@@ -61,6 +65,7 @@ export function kernelDensityEstimator(kernel, X) {
 
 /**
  * Epanechnikov kernel
+ *
  * @param {number} k kernel size
  * @returns {Function} kernel function
  */
@@ -70,6 +75,7 @@ export function kernelEpanechnikov(k) {
 
 /**
  * Gauss kernel
+ *
  * @param {number} k kernel size
  * @returns {Function} kernel function
  */

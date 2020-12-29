@@ -1,10 +1,12 @@
 import { arrayShallowEquals } from "../utils/ArrayUtils";
 
-// Adapted from https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
-
+/**
+ * @see https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
+ */
 class SuffixTree {
     /**
      * SuffixTree for strings or Arrays
+     *
      * @param {string|Array} arr string or Array to process
      */
     constructor(arr) {
@@ -22,6 +24,7 @@ class SuffixTree {
 
     /**
      * Returns the longest repeated substring
+     *
      * @returns {Array} longest repeated substring
      */
     getLongestRepeatedSubString() {
@@ -30,6 +33,7 @@ class SuffixTree {
 
     /**
      * Returns a readable string format of this tree
+     *
      * @returns {string} string
      */
     toString() {
@@ -38,6 +42,7 @@ class SuffixTree {
 
     /**
      * Returns a JSON representation of this tree
+     *
      * @returns {string} JSON
      */
     toJson() {
@@ -104,8 +109,9 @@ class TreeNode {
 
     /**
      * Readable string representation of this node and its children
-     * @param {number} indent
-     * @returns {string}
+     *
+     * @param {number} indent indentation
+     * @returns {string} string representation
      */
     toString(indent = 1) {
         const ind = ' |'.repeat(indent);

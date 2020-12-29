@@ -21,7 +21,7 @@ import * as Utils from '../utils';
  *    gtNotes:           all GT notes
  * }
  *
- * TODO: add max distance?
+ * @todo add max distance?
  * @param {Note[]} recNotes recorded notes of a single recording
  * @param {Note[]} gtNotes ground truth notes
  */
@@ -187,12 +187,13 @@ export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) 
 
 /**
  * Calculates the error of a matching by applying penalties and summing up
+ *
  * @param {Map} matching a matching created by matchGtAndRecordingNotes
  * @param {number} addPenalty penalty for each additonal note
  * @param {number} missPenalty penalty for each missing note
  * @param {number} timingPenalty penalty for note timing differences in seconds
  * @param {number} timeThreshold timing errors below it (absolute) are ignored
- * @returns {Object}
+ * @returns {object}
  */
 export function getMatchingError(matching, addPenalty, missPenalty, timingPenalty, timeThreshold = 0) {
     const result = {
@@ -243,6 +244,7 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
 /**
  * Cuts a section from a matching by filtering on the start times
  * of ground truth, missing, and additonal notes
+ *
  * @param {Map} matching matching
  * @param {number} start start time (inclusive)
  * @param {number} end end time (exclusive)
@@ -274,6 +276,7 @@ export function getMatchingSection(matching, start, end) {
 /**
  * Shortcut for getMatchingSection and getMatchingError,
  * see them for parameter details.
+ *
  * @param {Map} matching matching
  * @param {number} start start time (inclusive)
  * @param {number} end end time (exclusive)

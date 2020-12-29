@@ -1,9 +1,10 @@
 /**
- * TODO: Not used yet
  * A Track is a collection of measures.
  * Since each Part can only have fixed tempo and beat type, tracks may be used
  * to represent music pieces where those attributes change.
  * This class should allow to do abstract music theretical stuff with a track of notes.
+ *
+ * @todo Not used yet
  * @ignore
  */
 class Track {
@@ -16,23 +17,23 @@ class Track {
     }
 
     /**
-     * TODO: Reads attributes and notes from MIDI and create a JavaScript
+     * @todo Reads attributes and notes from MIDI and create a JavaScript
      * representation.
      * @param {Object} midiJson MIDI data parsed to JSON by midi-parser-js
      * @returns {Track} a track parsed from the given MIDI data
      */
     static fromMidi(midiJson) {
-
+        return null;
     }
 
     /**
-     * TODO: Reads attributes and notes from MusicXML and create a JavaScript
+     * @todo Reads attributes and notes from MusicXML and create a JavaScript
      * representation.
      * @param {XMLDocument} musicXml MusicXML document
      * @returns {Track} a track parsed from the given MIDI data
      */
     static fromMusicXml(musicXml) {
-
+        return null;
     }
 
     /**
@@ -49,10 +50,11 @@ class Track {
 
     /**
      * Returns the notes of all measures of this track sorted by start time.
-     * @return {Note[]} notes of this track
+     *
+     * @returns {Note[]} notes of this track
      */
     getAllNotes() {
-        const notes = [];
+        let notes = [];
         for (let p of this.measures) {
             notes = notes.concat(p.notes());
         }

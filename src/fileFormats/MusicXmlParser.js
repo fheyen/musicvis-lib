@@ -10,9 +10,10 @@ import { max } from 'd3';
 /**
  * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
  * Also calculates the position of measure lines and the total time in seconds.
+ *
+ * @todo use https://github.com/jnetterf/musicxml-interfaces ?
  * @param {XMLDocument} xml MusicXML document
- * @returns {Object} parsed document
- * TODO: use https://github.com/jnetterf/musicxml-interfaces ?
+ * @returns {object} parsed document
  */
 export function preprocessMusicXmlData(xml) {
     console.groupCollapsed('[MusicXmlParser] Parsing MusicXML');
@@ -52,9 +53,10 @@ export function preprocessMusicXmlData(xml) {
 /**
  * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
  * Also calculates the position of measure lines and the total time in seconds.
+ *
  * @private
  * @param {HTMLCollection} measures collection of measures with notes
- * @returns {Object} parsed measures
+ * @returns {object} parsed measures
  */
 function preprocessMusicXmlMeasures(measures) {
     // Handle repetitions by duplicating measures
@@ -86,10 +88,10 @@ function preprocessMusicXmlMeasures(measures) {
                 }
                 break;
             }
-        } catch (e) { }
+        } catch { }
         try {
             divisions = +measure.getElementsByTagName('divisions')[0].innerHTML;
-        } catch (e) { }
+        } catch { }
         try {
             beats = +measure.getElementsByTagName('beats')[0].innerHTML;
             beatType = +measure.getElementsByTagName('beat-type')[0].innerHTML;
@@ -204,8 +206,9 @@ function preprocessMusicXmlMeasures(measures) {
 
 /**
  * Resolves repetitions by simply duplicating repeated measures.
- * TODO: handle 3x etc
- * TODO: handle different endings
+ *
+ * @todo handle 3x etc
+ * @todo handle different endings
  * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
  * @private
  * @param {HTMLCollection} measures measures
@@ -262,6 +265,7 @@ function duplicateRepeatedMeasures(measures) {
 
 /**
  * Gets the tuning for a MusicXML part
+ *
  * @private
  * @param {HTMLCollection} measures the measures of the parts
  * @returns {number[]} pitches of the tuning or [] if none is found

@@ -74,6 +74,7 @@ const noteColormapGradientArray = new Array(12).fill(0).map((d, i) => colorInter
 /**
  * Returns the note color depending on the given pitch.
  * (Simplifies note color lookup by looking up the color for pitch%12.)
+ *
  * @param {number} pitch MIDI pitch in [0, 127]
  * @param {string} colormap one of 'default', 'accessible', 'gradient'
  * @returns {string} color code

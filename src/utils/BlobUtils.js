@@ -4,6 +4,7 @@
 
 /**
  * Converts a Blob to a base64 string
+ *
  * @param {Blob} blob Blob
  * @returns {string} base64 string
  */
@@ -18,6 +19,7 @@ export function blobToBase64(blob) {
 /**
  * Extracts the file extension from a Blob, so it can be saved as a file with
  * an appropriate extension.
+ *
  * @param {Blob} blob Blob
  * @returns {string} file extension
  */

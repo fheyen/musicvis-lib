@@ -10,7 +10,8 @@ import NoteArray from '../types/NoteArray';
 
 /**
  * Given two NoteArrays, shift the second one in time such that they are aligned
- * TODO: use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
+ *
+ * @todo use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
  *      to find note alignment, then only use those for force calculation
  * @param {NoteArray} gt a NoteArray, e.g. the ground truth
  * @param {NoteArray} rec a NoteArray to align to a
@@ -29,6 +30,7 @@ export function alignNoteArrays(gt, rec) {
 
 /**
  * Given two NoteArrays, shift the second one in time such that they are aligned
+ *
  * @param {NoteArray} gt a NoteArray, e.g. the ground truth
  * @param {NoteArray} rec a NoteArray to align to a
  * @returns {NoteArray} an aligned copy of b
@@ -71,7 +73,8 @@ export function alignNoteArrays2(gt, rec) {
 
 /**
  * Given two NoteArrays, shift the second one in time such that they are aligned
- * // TODO: use median instead of average?
+ *
+ * @todo use median instead of average?
  * @param {NoteArray} gt a NoteArray, e.g. the ground truth
  * @param {NoteArray} rec a NoteArray to align to a
  * @returns {NoteArray} an aligned copy of b
@@ -114,6 +117,7 @@ export function alignNoteArrays3(gt, rec) {
 /**
  * Calculates the mean difference between all notes in a and the nearest same-
  * pitched notes in b
+ *
  * @param {Note[]} a array with notes
  * @param {Note[]} b array with notes
  * @returns {number} mean time difference
@@ -151,7 +155,7 @@ function alignmentForce(a, b) {
  * Test function
  */
 export function testAlignment() {
-    function test(a, b, title) {
+    const test = (a, b, title) => {
         console.log(title);
         console.log(b.getNotes().map(n => n.start));
         const aligned = alignNoteArrays(a, b);
@@ -185,7 +189,7 @@ export function testAlignment() {
 
 
 /**
- * TODO: Benchmark different aligment functions on a randomly generated test set
+ * @todo Benchmark different aligment functions on a randomly generated test set
  * This allows to check the calculated alignment against a known ground truth
  */
 export function alignmentBenchmark() {

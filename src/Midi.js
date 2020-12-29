@@ -1,6 +1,7 @@
 /**
  * Lookup for many MIDI specifications.
- * Information from: https://soundprogramming.net/file-formats/
+ *
+ * @see https://soundprogramming.net/file-formats/
  * @module Midi
  */
 
@@ -12,8 +13,9 @@ const MidiInstrumentByNumberLev2 = new Map();
 
 /**
  * Returns information on the MIDI note with the specified number.
+ *
  * @param {number} nr MIDI note number in [0, 127]
- * @returns {Object} note info, e.g.
+ * @returns {object} note info, e.g.
  *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
  */
 export function getMidiNoteByNr(nr) {
@@ -22,9 +24,10 @@ export function getMidiNoteByNr(nr) {
 
 /**
  * Returns information on the MIDI note with the specified label.
+ *
  * @param {string} label note label, e.g. 'D#0'
  *      (upper-case and sharp notation necessary)
- * @returns {Object} note info, e.g.
+ * @returns {object} note info, e.g.
  *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
  */
 export function getMidiNoteByLabel(label) {
@@ -33,10 +36,11 @@ export function getMidiNoteByLabel(label) {
 
 /**
  * Returns information on the MIDI note with the specified name and octave.
+ *
  * @param {string} name note name, e.g. 'D#'
  *      (upper-case and sharp notation necessary)
  * @param {number} octave octave in [-1, 9]
- * @returns {Object} note info, e.g.
+ * @returns {object} note info, e.g.
  *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
  */
 export function getMidiNoteByNameAndOctave(name, octave) {
@@ -45,8 +49,9 @@ export function getMidiNoteByNameAndOctave(name, octave) {
 
 /**
  * Returns information on the MIDI instrument with the specified number.
+ *
  * @param {number} nr MIDI instrument number in [0, 127]
- * @returns {Object} note info, e.g.
+ * @returns {object} note info, e.g.
  *      { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
  */
 export function getMidiInstrumentByNr(nr) {
@@ -56,9 +61,10 @@ export function getMidiInstrumentByNr(nr) {
 /**
  * Returns information on the MIDI instrument (MIDI level 2) with the
  * specified number.
+ *
  * @param {number} nr MIDI instrument number in [0, 127]
- * @param {number} nr MIDI instrument number in [0, 127]
- * @returns {Object} note info, e.g.
+ * @param {number} subNr MIDI instrument sub number in [0, 127]
+ * @returns {object} note info, e.g.
  *      { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
  */
 export function getMidiInstrumentByNrL2(nr, subNr) {
@@ -68,6 +74,7 @@ export function getMidiInstrumentByNrL2(nr, subNr) {
 
 /**
  * Returns information on the MIDI instrument with the specified number.
+ *
  * @param {number} nr MIDI drum note number in [27, 87]
  * @returns {string} note name, e.g. 'Bass Drum 1
  */
@@ -77,6 +84,7 @@ export function getMidiDrumNoteByNr(nr) {
 
 /**
  * Returns true if a given MIDI pitch refers to a sharp note.
+ *
  * @param {number} nr MIDI note number in [0, 127]
  * @returns {boolean} true if sharp, false otherwise
  */
@@ -87,6 +95,7 @@ export function isSharp(nr) {
 /**
  * Returns a note name such as 'C#' (without octave) for a given MIDI
  * note number.
+ *
  * @param {number} nr MIDI note number in [0, 127]
  * @returns {string} note name such as 'C#'
  */

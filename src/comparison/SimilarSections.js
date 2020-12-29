@@ -9,11 +9,12 @@ import PitchSequence from "../types/PitchSequence";
 /**
  * Turns an array of notes into a string to perform pattern matching search for similar
  * patterns.
+ *
  * @param {Note[]} notes notes, must be sorted by Note.start
  * @param {number} startTime start time of the section to search
  * @param {number} endTime end time for the section to search
  * @param {number} threshold threshold for normalized Levenshtein distance in [0, 1]
- * @returns {Object[]} {index, distance, startTime, endTime}
+ * @returns {object[]} {index, distance, startTime, endTime}
  */
 export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0.5) {
     const selectedNotes = notes.filter(d => d.start >= startTime && d.end <= endTime);
@@ -41,10 +42,11 @@ export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0
 
 /**
  * Finds similar sections in a string via Levenshtein distance
+ *
  * @param {stringArray} dataString they string to search in
  * @param {stringArray} searchString the string to search for
  * @param {number} threshold threshold for normalized Levenshtein distance in [0, 1]
- * @returns {Object[]} {index, distance}
+ * @returns {object[]} {index, distance}
  */
 export function findSimilarStringSections(dataString, searchString, threshold = 0.5) {
     const len = searchString.length;

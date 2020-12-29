@@ -11,8 +11,8 @@ import Recording from "../types/Recording";
 
 /**
  * Filters notes of a recording to remove noise from the MIDI device or pickup
- * TODO: detect gaps and fill them
  *
+ * @todo detect gaps and fill them
  * @param {Recording} recording a recording
  * @param {number} velocityThreshold notes with velocity < velocityThreshold
  *      are removed
@@ -42,8 +42,8 @@ export function filterRecordingNoise(recording, velocityThreshold = 0, durationT
  * Looks up the pitch range from the track of the GT that the recording was made
  * for.
  *
- * @param {Recording[]} recordings
- * @param {Note[][]} groundTruth
+ * @param {Recording[]} recordings recordings
+ * @param {Note[][]} groundTruth ground truth
  * @returns {Recording[]} filtered recordings
  */
 export function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
@@ -112,8 +112,8 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
 /**
  * 'Averages' multiple recordings of the same piece to get an approximation of
  * the ground truth.
- * TODO: use velocity?
  *
+ * @todo use velocity?
  * @param {Map} heatmapByPitch haetmap from recordingsHeatmap()
  * @param {number} binSize size of time bins in milliseconds
  * @param {number} threshold note is regarded as true when this ratio of
@@ -158,7 +158,8 @@ export function averageRecordings(heatmapByPitch, binSize, threshold = 0.8) {
  * @param {Note[]} recNotes
  * @param {number} bandwidth
  * @param {number} ticksPerSecond
- * @param {number} threshold
+ * @param {number} threshold threshold
+ * @returns {Note[]} new notes
  */
 export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, threshold) {
     const groupedByPitch = group(recNotes, d => d.pitch);
@@ -211,6 +212,7 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
  *      1 (missing, only GT has a note here)
  *      2 (additional, only rec has a note here)
  *      3 (both, both have a note here)
+ *
  * @param {Note[]} gtNotes
  * @param {Note[]} recNotes
  * @param {number} binSize
@@ -270,10 +272,12 @@ export function differenceMap(gtNotes, recNotes, binSize) {
  * Computes the 'area' of error from a differenceMap normalized by total area.
  * The area is simply the number of bins with each value, total area is max.
  * number of bins in all pitches * the number of pitches.
- * TODO: not used or tested yet
- * TODO: add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
+ *
+ * @todo not used or tested yet
+ * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
+ *
  * @param {Map} differenceMap differenceMap from differenceMap()
- * @returns {Object} {missing, additional, correct} area ratio
+ * @returns {object} {missing, additional, correct} area ratio
  */
 export function differenceMapErrorAreas(differenceMap) {
     // Count bins for each error type
@@ -303,10 +307,12 @@ export function differenceMapErrorAreas(differenceMap) {
 
 /**
  * Aligns notes to a rhythmic pattern
- * TODO: not used or tested
+ *
+ * @todo not used or tested
  * @param {Note[]} notes notes
  * @param {number} bpm e.g. 120 for tempo 120
  * @param {number} timeDivision e.g. 16 for 16th note steps
+ * @returns {Note[]} aligned notes
  */
 export function alignNotesToBpm(notes, bpm, timeDivision = 16) {
     const secondsPerBeat = bpmToSecondsPerBeat(bpm);

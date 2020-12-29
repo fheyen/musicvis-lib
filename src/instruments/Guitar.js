@@ -14,6 +14,7 @@ import { arrayShallowEquals } from "../utils/ArrayUtils";
 export class StringedTuning {
     /**
      * Represents a tuning of a fretted string instrument.
+     *
      * @param {string} name name
      * @param {string[]} notes array of notes, e.g. ['E2', 'A2', 'D3', ...]
      */
@@ -29,9 +30,10 @@ export class StringedTuning {
 /**
  * Maps from instrument to string number to list of tunings.
  * Defaults are at the top.
- * Example: stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
- * TODO: add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
- * TODO: replace arrays by maps?
+ *
+ * @example stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
+ * @todo add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
+ * @todo replace arrays by maps?
  */
 export const stringedTunings = new Map([
     ['Guitar', new Map([
@@ -96,9 +98,10 @@ export const stringedTunings = new Map([
 /**
  * For Notes that have a guitar string encoded in their channel, this function
  * allows to convert them to a GuitarNote.
+ *
  * @param {Note} note a Note that has the guitar string stored in its channel
  *      e.g. 0 to 5 for a six string
- * @param {StringedTuning} tuning
+ * @param {StringedTuning} tuning tuning
  * @returns {GuitarNote} a GuitarNote
  */
 export function guitarNoteFromNote(note, tuning) {
@@ -110,6 +113,7 @@ export function guitarNoteFromNote(note, tuning) {
 
 /**
  * Returns a tuning with the specified pitches or null if none found.
+ *
  * @param {number[]} pitches pitches of the tuning, same order as in
  *      Guitar.js' stringedTunings, i.e. low to high notes
  * @returns {StringedTuning|null} the found tuning or null
@@ -131,7 +135,8 @@ export function getTuningFromPitches(pitches) {
 
 /**
  * Returns the pitch range of a tuning, given the number of frets.
- * @param {StringedTuning} tuning
+ *
+ * @param {StringedTuning} tuning tuning
  * @param {number} fretCount number of frets the instrument has (defaul: 24)
  * @returns {number[]} [minPitch, maxPitch]
  */
@@ -160,9 +165,10 @@ export const stringColors = [
 
 /**
  * Returns the pitch of a note at a given fretboard position.
+ *
  * @param {number} string string
  * @param {number} fret fret
- * @param {StringedTuning} tuning
+ * @param {StringedTuning} tuning tuning
  * @returns {number} pitch
  */
 export function getPitchFromFretboardPos(string, fret, tuning) {
@@ -175,10 +181,11 @@ export function getPitchFromFretboardPos(string, fret, tuning) {
 
 /**
  * Returns MIDI attributes of a note at a given fretboard position, e.g. C#
+ *
  * @param {number} string string
  * @param {number} fret fret
- * @param {StringedTuning} tuning
- * @returns {Object} note info, e.g. { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+ * @param {StringedTuning} tuning tuning
+ * @returns {object} note info, e.g. { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
  */
 export function getNoteInfoFromFretboardPos(string, fret, tuning) {
     const pitch = getPitchFromFretboardPos(string, fret, tuning);
@@ -187,9 +194,11 @@ export function getNoteInfoFromFretboardPos(string, fret, tuning) {
 
 /**
  * Finds all fretboard positions with this exact pitch.
+ *
  * @param {number} pitch MIDI pitch
- * @param {StringedTuning} tuning
+ * @param {StringedTuning} tuning tuning
  * @param {number} fretCount number of frets the instrument has
+ * @returns {object[]} positions
  */
 export function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
     const positions = [];
@@ -215,9 +224,11 @@ export function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
 
 /**
  * Finds all fretboard positions with this note in all octaves.
+ *
  * @param {string} name note name, e.g. 'C#'
- * @param {StringedTuning} tuning
+ * @param {StringedTuning} tuning tuning
  * @param {number} fretCount number of frets the instrument has
+ * @returns {object[]} positions
  */
 export function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) {
     const n = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -247,14 +258,15 @@ export function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) 
 
 /**
  * Generates example MIDI-like data (preprocessed MIDI).
+ *
  * @param {number} startTime start tick
  * @param {number} count number of notes to generate
- * @param {StringedTuning} tuning
+ * @param {StringedTuning} tuning tuning
  * @returns {GuitarNote[]} notes
  */
 export function generateExampleData(startTime = 0, count = 50, tuning) {
     let currentTime = startTime;
-    return new Array(count).fill(0).map((d, i) => {
+    return new Array(count).fill(0).map(() => {
         const start = currentTime + randFloat(0, 1);
         currentTime = start + randFloat(0, 1);
         const string = randomInt(1, 7);
@@ -275,9 +287,10 @@ export function generateExampleData(startTime = 0, count = 50, tuning) {
 
 /**
  * Estimates the fretboard position from MIDI notes
- * TODO: does not work well yet
+ *
+ * @todo does not work well yet
  * @param {Note[]} notes notes with only MIDI information
- * @param {StringedTuning} tuning
+ * @param {StringedTuning} tuning tuning
  * @param {number} fretCount number of frets the instrument has
  * @returns {GuitarNote[]} GuitarNotes with fretboard positions
  */
@@ -286,7 +299,7 @@ export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
     if (!tuning || !tuning.pitches) {
         console.warn('Invalid tuning parameter!');
         return [];
-    };
+    }
     // Sort notes that cannot be played out in advance for better performance
     const [minPitch, maxPitch] = getTuningPitchRange(tuning, fretCount);
     const possibleNotes = [];
@@ -333,21 +346,19 @@ export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
     return result;
 }
 
-/**
- * TODO: chords always? use 4-fret-blocks
- * @param {GuitarNote[]} notes notes with fretboard positions
- * @returns {?} fingering information
- */
+// /**
+//  * @todo chords always? use 4-fret-blocks
+//  * @param {GuitarNote[]} notes notes with fretboard positions
+//  * @returns {?} fingering information
+//  */
 // export function fingeringFromFretboardPositions(notes) {
-    // TODO: detect chords first?
-    // TODO: then lookup chords' fingerings from a lookup table
+//     // TODO: detect chords first?
+//     // TODO: then lookup chords' fingerings from a lookup table
 
-    // TODO: alternatively (as fallback) use heuristics
+//     // TODO: alternatively (as fallback) use heuristics
 
-    // TODO: or try to do it like humans do when playing
+//     // TODO: or try to do it like humans do when playing
 
-    // TODO: consider prior and following notes/chords!
-
-
+//     // TODO: consider prior and following notes/chords!
 
 // }

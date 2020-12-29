@@ -12,6 +12,7 @@ import Note from '../src/types/Note';
  * Detects chords as those notes that have the exact same start time, only works
  * for ground truth (since recordings are not exact)
  * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
+ *
  * @param {Note[]} notes
  * @returns {Note[][]} array of chord arrays
  */
@@ -33,9 +34,10 @@ export function detectChordsByExactStart(notes) {
  *       =========
  *         ========
  * Important: Notes must be sorted by start time for this to work correctly.
- * TODO: not used yet
- * TODO: optional minimum overlap ratio
- * TODO: new definition of chord? i.e. notes have to start 'together'
+ *
+ * @todo not used yet
+ * @todo optional minimum overlap ratio
+ * @todo new definition of chord? i.e. notes have to start 'together'
  * @param {Note[]} notes array of Note objects
  * @param {boolean} sortByPitch sort chords by pitch? (otherwise sorted
  *      by note start time)
@@ -112,8 +114,9 @@ export function detectChordsByOverlap(notes, sortByPitch = true) {
 
 
 /**
- * TODO:
  * Maps number of steps (number of notes -1) to possible chord types
+ *
+ * @todo
  */
 const chordTypes = new Map([
     [
@@ -186,7 +189,8 @@ const chordTypes = new Map([
 /**
  * Returns chord type, e.g. 'Major', 'Diminished', ...
  * Important: Notes must be sorted by pitch ascending
- * TODO: some chords might be multiple types
+ *
+ * @todo some chords might be multiple types
  * @param {Note[]} notes notes (sorted by pitch asc.)
  * @returns {string} chord type
  */
@@ -221,8 +225,9 @@ export function getChordType(notes) {
 /**
  * https://github.com/tonaljs/tonal/tree/master/packages/chord
  * Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
- * @param {Note[]} notes
- * @returns {String[]} possible chord types
+ *
+ * @param {Note[]} notes notes
+ * @returns {string[]} possible chord types
  */
 export function getChordName(notes) {
     const noteLetters = notes
@@ -232,13 +237,14 @@ export function getChordName(notes) {
     return chords;
 }
 
-/**
- * Estimates the name of a given chord of notes
- * @param {string} chord name
- * @return {Note[]} notes array of Note objects
- * TODO: use tonaljs
- * TODO: use this https://github.com/greird/chordictionaryjs
- */
+// /**
+//  * Estimates the name of a given chord of notes
+//  *
+//  * @param {string} chord name
+//  * @return {Note[]} notes array of Note objects
+//  * @todo use tonaljs
+//  * @todo use this https://github.com/greird/chordictionaryjs
+//  */
 // export function getNotesFromChordName(name, length = 1, start = 0) {
 //     console.error('NIY');
 // }

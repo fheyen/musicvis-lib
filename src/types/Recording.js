@@ -1,10 +1,6 @@
 import NoteArray from "./NoteArray";
 import { arrayShallowEquals } from "../utils/ArrayUtils";
 
-// export function newRecording(name, date, notes, speed, selectedTrack, timeSelection) {
-//     return new Recording(name, date, notes, speed, selectedTrack, timeSelection);
-// }
-
 /**
  * Class for storing recorded notes alongside meta information.
  */
@@ -14,6 +10,7 @@ class Recording extends NoteArray {
 
     /**
      * Creates a new Recording
+     *
      * @param {string} name name if the song
      * @param {Date} date date of the recording
      * @param {Note[]} notes array of Note objects
@@ -38,6 +35,7 @@ class Recording extends NoteArray {
 
     /**
      * Returns a copy of the Note object
+     *
      * @returns {Recording} new recording
      */
     clone() {
@@ -53,6 +51,7 @@ class Recording extends NoteArray {
 
     /**
      * Returns true if this Recording and otherRecording have equal attributes.
+     *
      * @param {Recording} otherRecording another Recording
      * @returns {boolean} true if equal
      */
@@ -86,7 +85,8 @@ class Recording extends NoteArray {
 
     /**
      * Turns the recoring into a simple object with the same properties
-     * @returns {Object} simple object representation of the recording
+     *
+     * @returns {object} simple object representation of the recording
      */
     toSimpleObject() {
         return {
@@ -101,7 +101,8 @@ class Recording extends NoteArray {
 
     /**
      * Creates a Note object from an object via destructuring
-     * @param {Object} obj object with at least {name, data, notes, speed}
+     *
+     * @param {object} obj object with at least {name, data, notes, speed}
      * @returns {Recording} new note
      */
     static from(obj) {

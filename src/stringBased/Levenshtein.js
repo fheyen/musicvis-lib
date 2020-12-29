@@ -3,6 +3,7 @@
  * Adapted from https://gist.github.com/andrei-m/982927#gistcomment-1931258
  * By https://github.com/kigiri
  * MIT License
+ *
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {number} Levenshtein distance
@@ -48,7 +49,8 @@ export function levenshtein(a, b) {
 
 /**
  * Computes the Damerau-Levenshtein distance of two strings or arrays.
- * See https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
+ *
+ * @see https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {number} Levenshtein distance
@@ -89,6 +91,7 @@ export function damerauLevenshtein(a, b) {
 /**
  * Normalizes the result of levenshtein() by dividing by the longer string's
  * length.
+ *
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @returns {number} Levenshtein distance

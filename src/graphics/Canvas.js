@@ -49,9 +49,6 @@ export function drawCircle(ctx, x, y, radius) {
  * @returns {void}
  */
 export function drawFilledCircle(ctx, x, y, radius) {
-    if (radius < 0) {
-        console.error(`Cannot draw circle with negative radius of ${radius}`);
-    }
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fill();

@@ -1,8 +1,8 @@
 /**
  * Needleman-Wunsch algorithm
- * From https://github.com/blievrouw/needleman-wunsch/blob/master/src/needleman_wunsch.js
- * TODO: does not support cost matrix
- * TODO: extend by matchMismathFunction
+ * @see https://github.com/blievrouw/needleman-wunsch/blob/master/src/needleman_wunsch.js
+ * @todo does not support cost matrix
+ * @todo extend by matchMismathFunction
  */
 class NeedlemanWunsch {
     /**
@@ -81,8 +81,9 @@ class NeedlemanWunsch {
 
     /**
      * Finds next alignment locations (children) from a position in scoring matrix
+     *
      * @param {number[]} pos m- Position in scoring matrix
-     * @return {Object[]} children - Children positions and alignment types
+     * @returns {Object[]} children - Children positions and alignment types
      */
     alignmentChildren(pos) {
         const [i, j] = pos;
@@ -105,7 +106,8 @@ class NeedlemanWunsch {
 
     /**
      * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
-     * @returns {Object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
+     *
+     * @returns {object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
      */
     alignmentTraceback() {
         let finalAlignments = [];

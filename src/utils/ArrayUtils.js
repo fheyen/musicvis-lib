@@ -4,6 +4,7 @@
 
 /**
  * Shallow compares two arrays
+ *
  * @param {Array} a an array
  * @param {Array} b another array
  * @returns {boolean} true iff equal
@@ -25,6 +26,7 @@ export function arrayShallowEquals(a, b) {
 /**
  * Checks if two arrays contain the same elements,
  * ignoring their ordering in each array.
+ *
  * @param {Array} a an array
  * @param {Array} b another array
  * @param {boolean} checkLength also checks if arrays have the same length
@@ -61,7 +63,8 @@ export function removeDuplicates(array) {
 /**
  * Checks whether the array a contains the array b, i.e. whether the first
  * b.length elements are the same.
- * TODO: rename to arrayStartsWithArray
+ *
+ * @todo rename to arrayStartsWithArray
  * @param {Array} a an array
  * @param {Array} b a shorter array
  * @returns {boolean} true iff a contains b
@@ -80,7 +83,8 @@ export function arrayContainsArray(a, b) {
 
 /**
  * Turns an array of array into a flat array by concatenating all arrays
- * TODO: use Array.flat()? https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+ * @todo use Array.flat()? https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+ * @deprecated
  * @param {any[][]} array array of arrays
  * @returns {any[]} flattened array
  */
@@ -90,7 +94,8 @@ export function flattenArray(array) {
 
 /**
  * Returns the maximum numerical value from an array of arrays
- * @param {number[][]} matrix
+ *
+ * @param {number[][]} matrix matrix
  * @returns {number} maximum value
  */
 export function getMatrixMax(matrix) {
@@ -108,6 +113,7 @@ export function getMatrixMax(matrix) {
 
 /**
  * Stringifies a 2D array / matrix for logging onto the console.
+ *
  * @param {any[][]} matrix the matrix
  * @param {string} colSep column separator
  * @param {string} rowSep row separator

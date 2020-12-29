@@ -8,11 +8,12 @@ import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
 
 /**
  * Parses a MIDI JSON file to get Note objects with absolute time in seconds.
- * See https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
- * @param {Object} data MIDI data in JSON format
+ *
+ * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+ * @param {object} data MIDI data in JSON format
  * @param {boolean} splitFormat0IntoTracks split MIDI format 0 data into tracks
  *      instead of using channels?
- * @returns {Objec} including an array of note objects and meta information
+ * @returns {object} including an array of note objects and meta information
  */
 export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
     if (data === null || data === undefined) {
@@ -60,11 +61,13 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
 
 /**
  * Parses a single MIDI track and pushes it to parsedTracks if it contains notes
+ *
  * @private
- * @param {Object} track a MIDI track
+ * @param {object} track a MIDI track
  * @param {number} timeDivision MIDI time division
- * @param {Object[]} tempoChanges array with tempo change events
- * @param {Object[]} beatTypeChanges array with beat type change events
+ * @param {object[]} tempoChanges array with tempo change events
+ * @param {object[]} beatTypeChanges array with beat type change events
+ * @returns {object} parsed track
  */
 function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
     const notes = [];
@@ -178,8 +181,9 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
 
 /**
  * Extracts part name strings from MIDI tracks
+ *
  * @private
- * @param {Object[]} track MIDI tracks
+ * @param {object[]} track MIDI tracks
  * @returns {string[]} part names
  */
 function getPartName(track) {
@@ -194,12 +198,14 @@ function getPartName(track) {
 /**
  * Caclulates the time positions of measure lines by looking at tempo and beat
  * type change events
- * TODO: probably does not handle complex meters correctly
- * TODO: does not handle tempo change yet, do this as in parsing notes
+ *
+ * @todo probably does not handle complex meters correctly
+ * @todo does not handle tempo change yet, do this as in parsing notes
+ *
  * @private
- * @param {Object[]} tempoChanges tempo change events
- * @param {Object[]} beatTypeChanges beat type change events
- * @param {number} totalTime
+ * @param {object[]} tempoChanges tempo change events
+ * @param {object[]} beatTypeChanges beat type change events
+ * @param {number} totalTime total time
  * @returns {number[]} measure line times in seconds
  */
 function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
@@ -249,6 +255,7 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
 /**
  * Split MIDI format 0 data into tracks instead of having channels,
  * creates one track for each channel
+ *
  * @private
  * @param {Note[][]} tracks parsed MIDI tracks
  * @returns {Note[][]} splitted tracks
@@ -274,6 +281,7 @@ function splitFormat0(tracks) {
 /**
  * Given the tempo and time division, returns the number of milliseconds
  * each MIDI time tick corresponds to
+ *
  * @private
  * @param {number} tempo
  * @param {number} timeDivision
@@ -287,10 +295,11 @@ function getMillisecondsPerTick(tempo, timeDivision) {
 
 /**
  * Retrieves all tempo and beat type changes from a MIDI file's tracks.
+ *
  * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
  * @private
  * @param {Array} tracks MIDI JSON file tracks
- * @returns {Object} {tempoChanges, beatTypeChanges} as arrays of objects, which
+ * @returns {object} {tempoChanges, beatTypeChanges} as arrays of objects, which
  *      contain the MIDI tick and the new information
  */
 function getMidiTempoAndBeatChanges(tracks) {
@@ -339,6 +348,7 @@ function getMidiTempoAndBeatChanges(tracks) {
  * TODO: test
  *  - convert something to MIDI and back with above function to see if result is the same as the original
  *  - and the other way round
+ *
  * @private
  * @param {Note[]} notes notes
  * @param {number} bpm tempo in beats per minute
