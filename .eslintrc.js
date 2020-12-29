@@ -19,7 +19,6 @@ module.exports = {
   },
   rules: {
     "jsdoc/no-undefined-types": 0,
-    "jsdoc/check-tag-names": 0,
-
+    "jsdoc/check-tag-names": 1,
   }
 }

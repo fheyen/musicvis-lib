@@ -19,7 +19,7 @@ class Track {
     /**
      * @todo Reads attributes and notes from MIDI and create a JavaScript
      * representation.
-     * @param {Object} midiJson MIDI data parsed to JSON by midi-parser-js
+     * @param {object} midiJson MIDI data parsed to JSON by midi-parser-js
      * @returns {Track} a track parsed from the given MIDI data
      */
     static fromMidi(midiJson) {

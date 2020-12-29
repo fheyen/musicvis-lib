@@ -31,7 +31,7 @@ class PitchBend extends Note {
     /**
     * Creates a GuitarNote object from an object via destructuring
     *
-    * @param {Object} object object with at least {pitch}
+    * @param {object} object object with at least {pitch}
     * @returns {PitchBend} new note
     */
     static from(object) {
