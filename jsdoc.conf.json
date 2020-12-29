@@ -48,7 +48,8 @@
                     "link": "https://github.com/fheyen/musicvis-lib",
                     "target": "_blank"
                 }
-            ]
+            ],
+            "create_style": "h1.page-title::after, article h1::after{background: none} body, section, article{background: #282828} span.pun {color: #fff} span.lit {color: #cfe} span.com {color: #080} span.kwd {color:marine} span.pln {color: #8df} span.typ {color: #0c8} span.str{color: #c96}"
         }
     }
 }
