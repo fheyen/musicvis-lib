@@ -7,6 +7,8 @@
 &nbsp;
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/fheyen/musicvis-lib?label=GitHub)](https://github.com/fheyen/musicvis-lib)
 [![GitHub issues](https://img.shields.io/github/issues-raw/fheyen/musicvis-lib)](https://github.com/fheyen/musicvis-lib/issues)
+[![GitHub issues](https://img.shields.io/github/contributors/fheyen/musicvis-lib?color=%234dc71f)](https://github.com/fheyen/musicvis-lib/graphs/contributors)
+
 
 Goal: Provide tools for web-based music visualization.
 

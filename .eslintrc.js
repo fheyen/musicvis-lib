@@ -3,7 +3,7 @@ module.exports = {
         browser: true,
         node: true,
         es2021: true,
-        jest: true
+        jest: true,
     },
     extends: [
         'eslint:recommended',
@@ -17,6 +17,7 @@ module.exports = {
         ecmaVersion: 12,
         sourceType: 'module',
     },
+    ignorePatterns: ['**/docs/*.js', '**/dist/*.js', '**/.test.js'],
     rules: {
         // The Error level should be `error`, `warn`, or `off` (or 2, 1, or 0)
         'eqeqeq': 1,

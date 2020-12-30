@@ -25,9 +25,8 @@ Using Jest.
 
 `npm run lint`
 
-Using [eslint](https://eslint.org/)
-
-For jsDoc see here: https://github.com/gajus/eslint-plugin-jsdoc
+- JavaScript: Using [eslint](https://eslint.org/), for jsDoc see [here](https://github.com/gajus/eslint-plugin-jsdoc)
+- Markdown: Using [remark-link](https://github.com/remarkjs/remark-lint)
 
 ## Building
 
@@ -52,5 +51,5 @@ In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.v
 - Add
   - type/PitchBend.js
   - FOGSAA algorithm for string matching / distance
-    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/
-    - https://github.com/kjenova/fogsaa
+    - [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/)
+    - [https://github.com/kjenova/fogsaa](https://github.com/kjenova/fogsaa)

@@ -29,8 +29,8 @@
     "testch": "jest --coverage --changedFilesWithAncestor",
     "testclear": "jest --clearCache",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "lint": "eslint -c .eslintrc.js --fix src",
-    "predeploy": "jest --silent && eslint -c .eslintrc.js --fix src && webpack -c webpack.dev.js && webpack -c webpack.prod.js && jsdoc -c jsdoc.conf.json",
+    "lint": "eslint --fix src && remark .",
+    "predeploy": "jest --silent && eslint --fix src && webpack -c webpack.dev.js && webpack -c webpack.prod.js && jsdoc -c jsdoc.conf.json",
     "deploy": "npm publish && git add . && git commit -m 'new version build'; git push; git push origin --tags"
   },
   "dependencies": {
@@ -57,6 +57,9 @@
     "jest-canvas-mock": "^2.3.0",
     "jsdoc": "^3.6.6",
     "npm-check-updates": "^10.2.5",
+    "remark-cli": "^9.0.0",
+    "remark-lint": "^8.0.0",
+    "remark-preset-lint-recommended": "^5.0.0",
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.0"
   }
