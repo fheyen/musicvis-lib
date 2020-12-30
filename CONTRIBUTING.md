@@ -27,7 +27,7 @@ Using Jest.
 
 Using [eslint](https://eslint.org/)
 
-For jsDoc see here: https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc
+For jsDoc see here: https://github.com/gajus/eslint-plugin-jsdoc
 
 ## Building
 
