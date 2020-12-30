@@ -1,4 +1,4 @@
-import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
+import { getMidiNoteByLabel, getMidiNoteByNr } from '../Midi';
 
 /**
  * Note class that reflects MIDI properties but has
@@ -48,6 +48,7 @@ class Note {
      *      channel: number         MIDI channel
      *  }
      * @returns {Note} new note
+     * @throws {Error} when pitch is invalid
      */
     static from(object) {
         let {
@@ -60,7 +61,7 @@ class Note {
         if (typeof pitch === 'string' && isNaN(+pitch)) {
             const note = getMidiNoteByLabel(pitch);
             if (note === null || note === undefined) {
-                throw new Error(`Invalid pitch for Note.from()`);
+                throw new Error('Invalid pitch for Note.from()');
             }
             pitch = note.pitch;
         }

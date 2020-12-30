@@ -53,7 +53,7 @@ export function pingMidiDevice(deviceName, howOften = 1) {
             };
             setTimeout(pingFunction, 1000);
         },
-            () => console.error('Cannot get MIDI access')
+        () => console.error('Cannot get MIDI access')
         );
     }
 }

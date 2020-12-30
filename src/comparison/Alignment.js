@@ -160,7 +160,7 @@ export function testAlignment() {
         console.log(b.getNotes().map(n => n.start));
         const aligned = alignNoteArrays(a, b);
         console.log(aligned.getNotes().map(n => n.start));
-    }
+    };
     const a = new NoteArray([
         new Note(69, 0, 127, 0, 1),
         new Note(70, 1, 127, 0, 2),

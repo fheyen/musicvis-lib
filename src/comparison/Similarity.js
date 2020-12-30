@@ -1,4 +1,4 @@
-import { max, min } from "d3";
+import { max, min } from 'd3';
 import DynamicTimeWarping from 'dynamic-time-warping-2';
 
 
@@ -260,6 +260,7 @@ function neirestNeighborDistance(A, B) {
 
 
 /**
+ * @param notes
  * @todo abandones for now
  * @todo use a greedy approach:
  * Start at the first notes start and take the first 2 notes

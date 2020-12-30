@@ -1,7 +1,7 @@
-import Note from "./Note";
-import GuitarNote from "./GuitarNote";
-import { clipValue } from "../utils/MathUtils";
-import { min } from "d3";
+import Note from './Note';
+import GuitarNote from './GuitarNote';
+import { clipValue } from '../utils/MathUtils';
+import { min } from 'd3';
 
 /**
  * This class represents an array of note objects.

@@ -29,7 +29,8 @@
     "testch": "jest --coverage --changedFilesWithAncestor",
     "testclear": "jest --clearCache",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "predeploy": "jest --silent && webpack -c webpack.dev.js && webpack -c webpack.prod.js && jsdoc -c jsdoc.conf.json",
+    "lint": "eslint -c .eslintrc.js --fix src",
+    "predeploy": "jest --silent && eslint -c .eslintrc.js --fix src && webpack -c webpack.dev.js && webpack -c webpack.prod.js && jsdoc -c jsdoc.conf.json",
     "deploy": "npm publish && git add . && git commit -m 'new version build'; git push; git push origin --tags"
   },
   "dependencies": {

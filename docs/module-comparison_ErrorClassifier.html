@@ -26,7 +26,7 @@
     
 
 
-    <title>graphics/Canvas.js</title>
+    <title>comparison/ErrorClassifier</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,202 +67,1001 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">graphics/Canvas.js</h1>
+    <h1 id='page-title' class="page-title">comparison/ErrorClassifier</h1>
     
 
     
 
 
 
+
+<section>
+
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module graphics/Canvas
- * @todo save canvas as file https://www.digitalocean.com/community/tutorials/js-canvas-toblob
- */
+        
+    
+</header>
 
-/**
- * Sets up a canvas rescaled to device pixel ratio
- *
- * @param {HTMLCanvasElement} canvas canvas element
- * @returns {CanvasRenderingContext2D} canvas rendering context
- */
-export function setupCanvas(canvas) {
-    // Get the device pixel ratio, falling back to 1.
-    const dpr = window.devicePixelRatio || 1;
-    // Get the size of the canvas in CSS pixels.
-    const rect = canvas.getBoundingClientRect();
-    // Give the canvas pixel dimensions of their CSS
-    // sizes times the device pixel ratio.
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    const ctx = canvas.getContext('2d');
-    // Scale all drawing operations by the dpr
-    ctx.scale(dpr, dpr);
-    return ctx;
-}
 
-/**
- * Draws a stroked circle.
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of center
- * @param {number} y y coordinate of center
- * @param {number} radius radius
- * @returns {void}
- */
-export function drawCircle(ctx, x, y, radius) {
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.stroke();
-}
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * Draws a filled circle.
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of center
- * @param {number} y y coordinate of center
- * @param {number} radius radius
- * @returns {void}
- */
-export function drawFilledCircle(ctx, x, y, radius) {
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fill();
-}
+        
+    
+    </div>
 
-/**
- * Draws a filled triangle like this: /\
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of center
- * @param {number} y y coordinate of center
- * @param {number} halfSize half of the size
- * @returns {void}
- */
-export function drawTriangle(ctx, x, y, halfSize) {
-    ctx.beginPath();
-    ctx.moveTo(x - halfSize, y + halfSize);
-    ctx.lineTo(x + halfSize, y + halfSize);
-    ctx.lineTo(x, y - halfSize);
-    ctx.closePath();
-    ctx.fill();
-}
+    
 
-/**
- * Draws a diamond like this: &lt;>
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of center
- * @param {number} y y coordinate of center
- * @param {number} halfSize half of the size
- * @returns {void}
- */
-export function drawDiamond(ctx, x, y, halfSize) {
-    ctx.beginPath();
-    ctx.moveTo(x - halfSize, y);
-    ctx.lineTo(x, y - halfSize);
-    ctx.lineTo(x + halfSize, y);
-    ctx.lineTo(x, y + halfSize);
-    ctx.closePath();
-    ctx.fill();
-}
+    
 
-/**
- * Draws an X
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of center
- * @param {number} y y coordinate of center
- * @param {number} halfSize half of the size
- * @returns {void}
- */
-export function drawX(ctx, x, y, halfSize) {
-    ctx.save();
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(x - halfSize, y - halfSize);
-    ctx.lineTo(x + halfSize, y + halfSize);
-    ctx.moveTo(x - halfSize, y + halfSize);
-    ctx.lineTo(x + halfSize, y - halfSize);
-    ctx.stroke();
-    ctx.restore();
-}
+    
 
-/**
- * Draws a trapezoid that looks like a rectangle but gets narrower at the right
- * end, so better show where one ends and the next begins.
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of top left
- * @param {number} y y coordinate of top left
- * @param {number} width width
- * @param {number} height height (of left side)
- * @param {number} height2 height (of right side)
- * @returns {void}
- */
-export function drawNoteTrapezoid(ctx, x, y, width, height, height2) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y + height);
-    ctx.lineTo(x + width, y + (height / 2 + height2 / 2));
-    ctx.lineTo(x + width, y + (height / 2 - height2 / 2));
-    ctx.closePath();
-    ctx.fill();
-}
+     
 
-/**
- * Draws a trapezoid that looks like a rectangle but gets narrower at the top
- * end, so better show where one ends and the next begins.
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of bounding rect's top left
- * @param {number} y y coordinate of bounding rect's top left
- * @param {number} width width (of bounding rect / bottom side)
- * @param {number} height height
- * @param {number} width2 width (of top side)
- * @returns {void}
- */
-export function drawNoteTrapezoidUpwards(ctx, x, y, width, height, width2) {
-    ctx.beginPath();
-    ctx.lineTo(x, y + height);
-    ctx.lineTo(x + width, y + height);
-    ctx.lineTo(x + (width / 2 + width2 / 2), y);
-    ctx.lineTo(x + (width / 2 - width2 / 2), y);
-    ctx.closePath();
-    ctx.fill();
-}
+    
 
-/**
- * Draws a rectangle with rounded corners, does not fill or stroke by itself
- *
- * @param {CanvasRenderingContext2D} ctx canvas rendering context
- * @param {number} x x coordinate of bounding rect's top left
- * @param {number} y y coordinate of bounding rect's top left
- * @param {number} width width
- * @param {number} height height
- * @param {number} radius rounding radius
- * @returns {void}
- */
-export function drawRoundedRect(ctx, x, y, width, height, radius) {
-    if (width &lt; 0) { return; }
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-}
-</code></pre>
-        </article>
-    </section>
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".NoteState">
+    <a href="#.NoteState">#</a>
+    <span class="type-signature">(static, constant) </span>NoteState<span class="type-signature"></span>
+</h4>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="comparison_ErrorClassifier.js.html">comparison/ErrorClassifier.js</a>, <a href="comparison_ErrorClassifier.js.html#line111">line 111</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-todo">To Do:</dt>
+            <dd class="tag-todo">
+                <ul>
+                    <li>use everywhere</li>
+                </ul>
+            </dd>
+        </div>
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".classifyErrors">
+        <a href="#.classifyErrors">#</a>
+        <span class="type-signature">(static) </span>classifyErrors<span class="signature">(gtNotes, recNotes, groupBy, threshold)</span><span class="type-signature"> &rarr; {Array.&lt;NoteWithState>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Compares a single recording to a ground truth and labels notes as missing,
+extra, early/late, or short/long
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gtNotes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
+|
+
+<span class="param-type">Array.&lt;<a href="GuitarNote.html">GuitarNote</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ground truth notes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>recNotes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
+|
+
+<span class="param-type">Array.&lt;<a href="GuitarNote.html">GuitarNote</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">recordings notes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>groupBy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">attribute to group notes by</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">time threshold for same-ness</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="comparison_ErrorClassifier.js.html">comparison/ErrorClassifier.js</a>, <a href="comparison_ErrorClassifier.js.html#line29">line 29</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-todo">To Do:</dt>
+            <dd class="tag-todo">
+                <ul>
+                    <li>generalize to channel/pitch instead of string and fret?</li>
+                </ul>
+            </dd>
+        </div>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    classified notes
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;NoteWithState></span>
+
+
+    </dd>
+</dl>
+
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".separateMissed">
+        <a href="#.separateMissed">#</a>
+        <span class="type-signature">(static) </span>separateMissed<span class="signature">(classifiedNotes)</span><span class="type-signature"> &rarr; {Object}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Separates classified GT and rec notes
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>classifiedNotes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;NoteWithState></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">classified notes</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="comparison_ErrorClassifier.js.html">comparison/ErrorClassifier.js</a>, <a href="comparison_ErrorClassifier.js.html#line84">line 84</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    separated notes
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~hasAtLeastOne">
+        <a href="#~hasAtLeastOne">#</a>
+        <span class="type-signature">(inner) </span>hasAtLeastOne<span class="signature">(map, key)</span><span class="type-signature"></span>
+    </h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="comparison_ErrorClassifier.js.html">comparison/ErrorClassifier.js</a>, <a href="comparison_ErrorClassifier.js.html#line167">line 167</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~setOrAdd">
+        <a href="#~setOrAdd">#</a>
+        <span class="type-signature">(inner) </span>setOrAdd<span class="signature">(map, key, value)</span><span class="type-signature"></span>
+    </h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="comparison_ErrorClassifier.js.html">comparison/ErrorClassifier.js</a>, <a href="comparison_ErrorClassifier.js.html#line155">line 155</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~sortByStartAndEnd">
+        <a href="#~sortByStartAndEnd">#</a>
+        <span class="type-signature">(inner) </span>sortByStartAndEnd<span class="signature">(a, b)</span><span class="type-signature"></span>
+    </h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>a</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>b</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="comparison_ErrorClassifier.js.html">comparison/ErrorClassifier.js</a>, <a href="comparison_ErrorClassifier.js.html#line143">line 143</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

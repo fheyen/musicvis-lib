@@ -27,7 +27,7 @@ export const recordAudio = () => {
         const mediaRecorder = new MediaRecorder(stream, options);
         let audioChunks = [];
         // Add new data when it arrives
-        mediaRecorder.addEventListener("dataavailable", event => {
+        mediaRecorder.addEventListener('dataavailable', event => {
             audioChunks.push(event.data);
         });
         // Starts recording
@@ -39,14 +39,14 @@ export const recordAudio = () => {
             if (mediaRecorder.state === 'recording') { return; }
             console.log(`[AudioInput] Recording @ ${mediaRecorder.audioBitsPerSecond} b/s`);
             audioChunks = [];
-            mediaRecorder.start()
+            mediaRecorder.start();
         };
         // Stops recording
         const stop = () =>
             new Promise(resolve => {
                 if (!mediaRecorder) { return; }
                 console.log('[AudioInput] Stopping audio recording');
-                mediaRecorder.addEventListener("stop", () => {
+                mediaRecorder.addEventListener('stop', () => {
                     // Audio blob contains the data to store on the server
                     const blobOptions = { type: mediaRecorder.mimeType };
                     const audioBlob = new Blob(audioChunks, blobOptions);

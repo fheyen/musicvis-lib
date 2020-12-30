@@ -1,5 +1,5 @@
-import { getMidiNoteByLabel } from "../Midi";
-import Note from "./Note";
+import { getMidiNoteByLabel } from '../Midi';
+import Note from './Note';
 
 
 /**
@@ -50,6 +50,7 @@ class GuitarNote extends Note {
      *      fret: number            guitar fret
      *  }
      * @returns {GuitarNote} new note
+     * @throws {Error} when pitch is invalid
      */
     static from(object) {
         let {
@@ -65,7 +66,7 @@ class GuitarNote extends Note {
         if (typeof pitch === 'string' && isNaN(+pitch)) {
             const note = getMidiNoteByLabel(pitch);
             if (note === null || note === undefined) {
-                throw new Error(`Invalid pitch for GuitarNote.from()`);
+                throw new Error('Invalid pitch for GuitarNote.from()');
             }
             pitch = note.pitch;
         }

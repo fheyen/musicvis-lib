@@ -1,4 +1,4 @@
-import { group } from "d3";
+import { group } from 'd3';
 
 /**
  * @module utils/MiscUtils

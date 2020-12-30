@@ -1,5 +1,6 @@
 /**
  * Needleman-Wunsch algorithm
+ *
  * @see https://github.com/blievrouw/needleman-wunsch/blob/master/src/needleman_wunsch.js
  * @todo does not support cost matrix
  * @todo extend by matchMismathFunction
@@ -83,7 +84,7 @@ class NeedlemanWunsch {
      * Finds next alignment locations (children) from a position in scoring matrix
      *
      * @param {number[]} pos m- Position in scoring matrix
-     * @returns {Object[]} children - Children positions and alignment types
+     * @returns {object[]} children - Children positions and alignment types
      */
     alignmentChildren(pos) {
         const [i, j] = pos;

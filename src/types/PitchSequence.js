@@ -8,6 +8,9 @@ class PitchSequence {
 
     #pitches = [];
 
+    /**
+     * @param pitches
+     */
     constructor(pitches = []) {
         this.#pitches = pitches;
     }
@@ -32,16 +35,25 @@ class PitchSequence {
         return new PitchSequence(pitches);
     }
 
+    /**
+     * @param string
+     */
     static fromCharString(string) {
         if (!string || !string.length) { return new PitchSequence(); }
         const pitches = string.split('').map((d, i) => string.charCodeAt(i));
         return new PitchSequence(pitches);
     }
 
+    /**
+     *
+     */
     getPitches() {
         return this.#pitches;
     }
 
+    /**
+     *
+     */
     length() {
         return this.#pitches.length;
     }
@@ -59,10 +71,16 @@ class PitchSequence {
         return String.fromCharCode(...this.#pitches);
     }
 
+    /**
+     *
+     */
     toNoteNameString() {
         return this.#pitches.map(p => getMidiNoteByNr(p).label).join(' ');
     }
 
+    /**
+     *
+     */
     reverse() {
         this.#pitches = this.#pitches.reverse();
         return this;
@@ -96,6 +114,9 @@ class PitchSequence {
         return result;
     }
 
+    /**
+     *
+     */
     clone() {
         return new PitchSequence(this.#pitches);
     }

@@ -1,6 +1,6 @@
-import { choose, randFloat } from "../utils/MathUtils";
-import Note from "../types/Note";
-import { randomNormal, randomInt, group } from "d3";
+import { choose, randFloat } from '../utils/MathUtils';
+import Note from '../types/Note';
+import { randomNormal, randomInt, group } from 'd3';
 
 /**
  * @module instruments/Drums
@@ -123,9 +123,10 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
  * @param {Note[]} notes notes
  * @param {Map} replacementMap a map pitch->replacementPitch
  * @returns {Notes[]} notes with replaced pitches
+ * @throws {Error} when replacementMap is missing
  */
 export function simplifyDrumPitches(notes, replacementMap) {
-    if (!replacementMap) {
+    if (!replacementMap || !(replacementMap instanceof Map)) {
         throw 'No replacement map given!';
     }
     const errors = new Set();

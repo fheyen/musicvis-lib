@@ -1,5 +1,5 @@
-import NoteArray from "./NoteArray";
-import { arrayShallowEquals } from "../utils/ArrayUtils";
+import NoteArray from './NoteArray';
+import { arrayShallowEquals } from '../utils/ArrayUtils';
 
 /**
  * Class for storing recorded notes alongside meta information.
@@ -96,14 +96,15 @@ class Recording extends NoteArray {
             speed: this.speed,
             selectedTrack: this.selectedTrack,
             timeSelection: this.timeSelection
-        }
+        };
     }
 
     /**
      * Creates a Note object from an object via destructuring
      *
-     * @param {object} obj object with at least {name, data, notes, speed}
+     * @param {object} obj object with at least {name, date, notes, speed}
      * @returns {Recording} new note
+     * @throws {Error} when name, date, or notes are missing
      */
     static from(obj) {
         let { name, date, notes } = obj;

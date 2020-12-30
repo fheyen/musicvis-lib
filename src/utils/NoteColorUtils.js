@@ -1,4 +1,4 @@
-import { hsl, interpolateRgb } from "d3";
+import { hsl, interpolateRgb } from 'd3';
 
 /**
  * @module utils/NoteColorUtils
@@ -81,11 +81,11 @@ const noteColormapGradientArray = new Array(12).fill(0).map((d, i) => colorInter
  */
 export function noteColorFromPitch(pitch, colormap = 'default') {
     switch (colormap) {
-        case 'accessible':
-            return noteColormapAccessible[pitch % 12];
-        case 'gradient':
-            return noteColormapGradientArray[pitch % 12];
-        default:
-            return noteColormap[pitch % 12];
+    case 'accessible':
+        return noteColormapAccessible[pitch % 12];
+    case 'gradient':
+        return noteColormapGradientArray[pitch % 12];
+    default:
+        return noteColormap[pitch % 12];
     }
 }

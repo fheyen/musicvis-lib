@@ -1,4 +1,4 @@
-import { arrayShallowEquals } from "../utils/ArrayUtils";
+import { arrayShallowEquals } from '../utils/ArrayUtils';
 
 /**
  * @see https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
@@ -50,13 +50,22 @@ class SuffixTree {
     }
 }
 
+/**
+ *
+ */
 class TreeNode {
+    /**
+     *
+     */
     constructor() {
         this.value = [];
         this.leaves = [];
         this.nodes = [];
     }
 
+    /**
+     * @param suf
+     */
     checkNodes(suf) {
         let node;
         for (let i = 0; i < this.nodes.length; i++) {
@@ -69,6 +78,9 @@ class TreeNode {
         return false;
     }
 
+    /**
+     * @param suf
+     */
     checkLeaves(suf) {
         let node, leaf;
         for (let i = 0; i < this.leaves.length; i++) {
@@ -86,15 +98,21 @@ class TreeNode {
         this.leaves.push(suf);
     }
 
+    /**
+     * @param suf
+     */
     addSuffix(suf) {
         if (!suf.length) {
-            return
-        };
+            return;
+        }
         if (!this.checkNodes(suf)) {
             this.checkLeaves(suf);
         }
     }
 
+    /**
+     *
+     */
     getLongestRepeatedSubString() {
         let arr = [];
         let temp = [];
@@ -119,7 +137,7 @@ class TreeNode {
         if (this.value.length) {
             str += `-N '${this.value}'`;
         } else {
-            str += 'root'
+            str += 'root';
         }
         if (this.nodes.length) {
             for (let i = 0; i < this.nodes.length; i++) {

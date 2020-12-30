@@ -3,14 +3,14 @@
  * Jakub Krawczuk - Real-Time and Post-Hoc Visualizations of Guitar Perfomances as a Support for Music Education
  */
 
-import { group } from "d3";
-import { GuitarNote } from "../types/GuitarNote";
-import { Note } from "../types/Note";
-import * as Utils from "../utils";
+import { group } from 'd3';
+import { GuitarNote } from '../types/GuitarNote';
+import { Note } from '../types/Note';
+import * as Utils from '../utils';
 
 
 /**
- * @module comparison/ErrorClassifier;
+ * @module comparison/ErrorClassifier
  */
 
 
@@ -20,10 +20,10 @@ import * as Utils from "../utils";
  *
  * @todo generalize to channel/pitch instead of string and fret?
  *
- * @param {Note[]|GuitarNote[]} gtNotes
- * @param {Note[]|GuitarNote[]} recNotes
- * @param {string} groupBy
- * @param {number} threshold
+ * @param {Note[]|GuitarNote[]} gtNotes ground truth notes
+ * @param {Note[]|GuitarNote[]} recNotes recordings notes
+ * @param {string} groupBy attribute to group notes by
+ * @param {number} threshold time threshold for same-ness
  * @returns {NoteWithState[]} classified notes
  */
 export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold = 0.05) {
@@ -77,6 +77,9 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
 
 /**
  * Separates classified GT and rec notes
+ *
+ * @param {NoteWithState[]} classifiedNotes classified notes
+ * @returns {{missed:NoteWithState[], notMissed:NoteWithState[]}} separated notes
  */
 export function separateMissed(classifiedNotes) {
     const grouped = group(classifiedNotes, d => d.state === NoteState.MISSED);
@@ -87,7 +90,7 @@ export function separateMissed(classifiedNotes) {
 }
 
 /**
- * @todo: use everywhere
+ * @todo use everywhere
  * @ignore
  */
 class Overlap {
@@ -106,16 +109,16 @@ class Overlap {
  * @todo use everywhere
  */
 export const NoteState = {
-    SAME: "NoteState.SAME",
-    DIFFERENT: "NoteState.WRONG",
-    EARLY: "NoteState.EARLY",
-    LATE: "NoteState.LATE",
-    SHORT: "NoteState.SHORT",
-    LONG: "NoteState.LONG",
-    MISSED: "NoteState.MISSED",
-    EXTRA: "NoteState.EXTRA",
-    UNKNOWN: "NoteState.UNKNOWN",
-}
+    SAME: 'NoteState.SAME',
+    DIFFERENT: 'NoteState.WRONG',
+    EARLY: 'NoteState.EARLY',
+    LATE: 'NoteState.LATE',
+    SHORT: 'NoteState.SHORT',
+    LONG: 'NoteState.LONG',
+    MISSED: 'NoteState.MISSED',
+    EXTRA: 'NoteState.EXTRA',
+    UNKNOWN: 'NoteState.UNKNOWN',
+};
 
 /**
  * @ignore
@@ -133,6 +136,10 @@ export class NoteWithState {
     }
 }
 
+/**
+ * @param a
+ * @param b
+ */
 function sortByStartAndEnd(a, b) {
     if (a.end === b.end) {
         return a.start - b.start;
@@ -140,17 +147,26 @@ function sortByStartAndEnd(a, b) {
     return a.end - b.end;
 }
 
+/**
+ * @param map
+ * @param key
+ * @param value
+ */
 function setOrAdd(map, key, value) {
     if (map.has(key)) {
         map.get(key).add(value);
     } else {
         map.set(key, new Set([value]));
     }
-};
+}
 
+/**
+ * @param map
+ * @param key
+ */
 function hasAtLeastOne(map, key) {
     return map.has(key) && map.get(key)?.size > 0;
-};
+}
 
 /**
  * Classifies notes by overlap into missing / extra and overlapping rec notes
@@ -217,13 +233,13 @@ function handleOverlappingNotes(overlapping, threshold) {
             //for the best matching Gt note, get all other matching recordings
             const recMatchContender = gtRecMap.get(gtMatchCandidate);
             if (!recMatchContender) {
-                console.log("Should Not happen");
+                console.log('Should Not happen');
                 return;
             }
             // check the other recordings, this match is either the same note or a better match
             const recActualBestMatch = findBestMatch(gtMatchCandidate, recMatchContender);
             if (!recActualBestMatch) {
-                console.log("Should Not happen");
+                console.log('Should Not happen');
                 return;
             }
             // remove the matched recordedNote from the Set
@@ -257,13 +273,13 @@ function handleOverlappingNotes(overlapping, threshold) {
         if (recMatchCandidate && hasAtLeastOne(recGtMap, recMatchCandidate)) {
             const gtMatchContender = recGtMap.get(recMatchCandidate);
             if (!gtMatchContender) {
-                console.log("Should Not happen");
+                console.log('Should Not happen');
                 return;
             }
             // check the other groundtruth Notes, this match is either the same note or a better match
             const gtActualBestMatch = findBestMatch(recMatchCandidate, gtMatchContender);
             if (!gtActualBestMatch) {
-                console.log("Should Not happen");
+                console.log('Should Not happen');
                 return;
             }
             // the same procedure as during recording

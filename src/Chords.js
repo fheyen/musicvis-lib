@@ -1,6 +1,6 @@
-import { group } from "d3";
-import { arrayShallowEquals } from "./utils/ArrayUtils";
-import { Chord } from "@tonaljs/tonal";
+import { group } from 'd3';
+import { arrayShallowEquals } from './utils/ArrayUtils';
+import { Chord } from '@tonaljs/tonal';
 import Note from '../src/types/Note';
 
 
@@ -13,7 +13,7 @@ import Note from '../src/types/Note';
  * for ground truth (since recordings are not exact)
  * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
  *
- * @param {Note[]} notes
+ * @param {Note[]} notes notes
  * @returns {Note[][]} array of chord arrays
  */
 export function detectChordsByExactStart(notes) {
@@ -46,7 +46,7 @@ export function detectChordsByExactStart(notes) {
 export function detectChordsByOverlap(notes, sortByPitch = true) {
     if (!notes || !notes.length) { return []; }
     if (notes.length === 1) { return [[notes[0]]]; }
-    const sorted = notes.slice().sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch });
+    const sorted = notes.slice().sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch; });
     const notesTodo = new Set(sorted);
     const chords = [];
     // Find all overlaps with brute force
@@ -121,65 +121,65 @@ const chordTypes = new Map([
         1,
         [
             // TODO: how to handle inversions?
-            { steps: [5], name: "Inverted power chord", suffix: "?" },
-            { steps: [7], name: "Power chord", suffix: "5" },
+            { steps: [5], name: 'Inverted power chord', suffix: '?' },
+            { steps: [7], name: 'Power chord', suffix: '5' },
         ]
     ],
     [
         2,
         [
-            { steps: [2, 7], name: "Suspended second", suffix: "sus2" },
-            { steps: [3, 6], name: "Diminished", suffix: "dim" },
-            { steps: [3, 7], name: "Minor", suffix: "min" },
-            { steps: [4, 10], name: "Seventh", suffix: "7" },
-            { steps: [4, 7], name: "Major", suffix: "" },
-            { steps: [4, 8], name: "Augmented", suffix: "aug" },
-            { steps: [4, 9], name: "Sixth", suffix: "6" },
-            { steps: [5, 7], name: "Suspended fourth", suffix: "sus4" },
+            { steps: [2, 7], name: 'Suspended second', suffix: 'sus2' },
+            { steps: [3, 6], name: 'Diminished', suffix: 'dim' },
+            { steps: [3, 7], name: 'Minor', suffix: 'min' },
+            { steps: [4, 10], name: 'Seventh', suffix: '7' },
+            { steps: [4, 7], name: 'Major', suffix: '' },
+            { steps: [4, 8], name: 'Augmented', suffix: 'aug' },
+            { steps: [4, 9], name: 'Sixth', suffix: '6' },
+            { steps: [5, 7], name: 'Suspended fourth', suffix: 'sus4' },
         ]
     ],
     [
         3,
         [
-            { steps: [2, 3, 7], name: "Minor, added ninth", suffix: "m(add9)" },
-            { steps: [2, 4, 7], name: "Added ninth", suffix: "add9" },
-            { steps: [3, 6, 10], name: "Minor seventh, flat fifth", suffix: "m7b5" },
-            { steps: [3, 7, 10], name: "Minor seventh", suffix: "m7" },
-            { steps: [3, 7, 11], name: "Minor, major seventh", suffix: "m(Maj7)" },
-            { steps: [3, 7, 8], name: "Minor, flat sixth", suffix: "mb6" },
-            { steps: [3, 7, 9], name: "Minor sixth", suffix: "m6" },
-            { steps: [4, 5, 11], name: "Major eleventh (no fifth, no ninth)", suffix: "Maj11" },
-            { steps: [4, 5, 7], name: "Added fourth", suffix: "add4" },
-            { steps: [4, 7, 10], name: "Dominant seventh", suffix: "7" },
-            { steps: [4, 7, 11], name: "Major seventh", suffix: "Maj7" },
-            { steps: [4, 7, 9], name: "Major Sixth", suffix: "Maj6" },
+            { steps: [2, 3, 7], name: 'Minor, added ninth', suffix: 'm(add9)' },
+            { steps: [2, 4, 7], name: 'Added ninth', suffix: 'add9' },
+            { steps: [3, 6, 10], name: 'Minor seventh, flat fifth', suffix: 'm7b5' },
+            { steps: [3, 7, 10], name: 'Minor seventh', suffix: 'm7' },
+            { steps: [3, 7, 11], name: 'Minor, major seventh', suffix: 'm(Maj7)' },
+            { steps: [3, 7, 8], name: 'Minor, flat sixth', suffix: 'mb6' },
+            { steps: [3, 7, 9], name: 'Minor sixth', suffix: 'm6' },
+            { steps: [4, 5, 11], name: 'Major eleventh (no fifth, no ninth)', suffix: 'Maj11' },
+            { steps: [4, 5, 7], name: 'Added fourth', suffix: 'add4' },
+            { steps: [4, 7, 10], name: 'Dominant seventh', suffix: '7' },
+            { steps: [4, 7, 11], name: 'Major seventh', suffix: 'Maj7' },
+            { steps: [4, 7, 9], name: 'Major Sixth', suffix: 'Maj6' },
         ]
     ],
     [
         4,
         [
-            { steps: [2, 3, 6, 10], name: "Minor ninth flat fifth", suffix: "m9b5" },
-            { steps: [2, 3, 7, 10], name: "Minor ninth", suffix: "m9" },
-            { steps: [2, 3, 7, 11], name: "Minor ninth, major seventh", suffix: "m9(Maj7)" },
-            { steps: [2, 3, 7, 9], name: "Minor sixth, added ninth", suffix: "m6/9" },
-            { steps: [2, 4, 7, 11], name: "Major ninth", suffix: "Maj9" },
-            { steps: [2, 4, 7, 9], name: "Sixth, added ninth", suffix: "6/9" },
-            { steps: [4, 5, 7, 11], name: "Major eleventh (no ninth)", suffix: "Maj11" },
-            { steps: [4, 6, 7, 10], name: "Seventh, sharp eleventh", suffix: "7#11" },
-            { steps: [4, 6, 7, 11], name: "Major seventh, sharp eleventh", suffix: "Maj7#11" },
+            { steps: [2, 3, 6, 10], name: 'Minor ninth flat fifth', suffix: 'm9b5' },
+            { steps: [2, 3, 7, 10], name: 'Minor ninth', suffix: 'm9' },
+            { steps: [2, 3, 7, 11], name: 'Minor ninth, major seventh', suffix: 'm9(Maj7)' },
+            { steps: [2, 3, 7, 9], name: 'Minor sixth, added ninth', suffix: 'm6/9' },
+            { steps: [2, 4, 7, 11], name: 'Major ninth', suffix: 'Maj9' },
+            { steps: [2, 4, 7, 9], name: 'Sixth, added ninth', suffix: '6/9' },
+            { steps: [4, 5, 7, 11], name: 'Major eleventh (no ninth)', suffix: 'Maj11' },
+            { steps: [4, 6, 7, 10], name: 'Seventh, sharp eleventh', suffix: '7#11' },
+            { steps: [4, 6, 7, 11], name: 'Major seventh, sharp eleventh', suffix: 'Maj7#11' },
         ]
     ],
     [
         5,
         [
-            { steps: [2, 4, 5, 7, 11], name: "Major eleventh", suffix: "Maj11" },
-            { steps: [2, 4, 7, 9, 11], name: "Major thirteen", suffix: "Maj13" },
+            { steps: [2, 4, 5, 7, 11], name: 'Major eleventh', suffix: 'Maj11' },
+            { steps: [2, 4, 7, 9, 11], name: 'Major thirteen', suffix: 'Maj13' },
         ]
     ],
     [
         6,
         [
-            { steps: [2, 3, 4, 6, 7, 10], name: "Minor thirteen", suffix: "m13" },
+            { steps: [2, 3, 4, 6, 7, 10], name: 'Minor thirteen', suffix: 'm13' },
         ]
     ]
 ]);

@@ -1,9 +1,9 @@
-import { scaleLinear, extent, group, max } from "d3";
-import Note from "../types/Note";
-import { bpmToSecondsPerBeat } from "./MiscUtils";
-import { kernelDensityEstimator, kernelEpanechnikov } from "./StatisticsUtils";
-import { findLocalMaxima } from "./MathUtils";
-import Recording from "../types/Recording";
+import { scaleLinear, extent, group, max } from 'd3';
+import Note from '../types/Note';
+import { bpmToSecondsPerBeat } from './MiscUtils';
+import { kernelDensityEstimator, kernelEpanechnikov } from './StatisticsUtils';
+import { findLocalMaxima } from './MathUtils';
+import Recording from '../types/Recording';
 
 /**
  * @module utils/RecordingsUtils
@@ -155,9 +155,9 @@ export function averageRecordings(heatmapByPitch, binSize, threshold = 0.8) {
  * each note starts and ends, detects maxima in the KDE and thresholds them.
  * Then uses alternating start end end candidates to create notes.
  *
- * @param {Note[]} recNotes
- * @param {number} bandwidth
- * @param {number} ticksPerSecond
+ * @param {Note[]} recNotes recordings notes
+ * @param {number} bandwidth kernel bandwidth
+ * @param {number} ticksPerSecond number of ticks per second
  * @param {number} threshold threshold
  * @returns {Note[]} new notes
  */
@@ -213,9 +213,9 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
  *      2 (additional, only rec has a note here)
  *      3 (both, both have a note here)
  *
- * @param {Note[]} gtNotes
- * @param {Note[]} recNotes
- * @param {number} binSize
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Note[]} recNotes recrodings notes
+ * @param {number} binSize size of a time bin
  * @returns {Map} pitch->differenceMap; differenceMap is number[] for all time slices
  */
 export function differenceMap(gtNotes, recNotes, binSize) {

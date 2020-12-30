@@ -1,8 +1,8 @@
-import { difference, extent, intersection, max } from "d3";
-import { getMidiNoteByLabel, getMidiNoteByNr } from "../Midi";
-import { detectChordsByExactStart } from "../Chords";
-import Note from "../types/Note";
-import { bpmToSecondsPerBeat } from "../utils/MiscUtils";
+import { difference, extent, intersection, max } from 'd3';
+import { getMidiNoteByLabel, getMidiNoteByNr } from '../Midi';
+import { detectChordsByExactStart } from '../Chords';
+import Note from '../types/Note';
+import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
 
 /**
  * @module instruments/Lamellophone
@@ -14,6 +14,7 @@ import { bpmToSecondsPerBeat } from "../utils/MiscUtils";
 export class LamellophoneTuning {
     /**
      * Represents a tuning of lamellophone.
+     *
      * @param {string} name name
      * @param {string[]} notes array of notes, low to high
      *      e.g. ['C4', 'D4', 'F#4', ...]
@@ -30,6 +31,7 @@ export class LamellophoneTuning {
      * Returns an array of the tuning's notes as number representation:
      * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
      * Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
+     *
      * @returns {string[]} array with tuning notes in number representation
      */
     getNumbers() {
@@ -53,6 +55,7 @@ export class LamellophoneTuning {
      * Returns an array of the tuning's notes as letter representation:
      * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
      * Number format: C,  D,  ... C°, D°, ... C°°, D°°
+     *
      * @returns {string[]} array with tuning notes in letter representation
      */
     getLetters() {
@@ -76,9 +79,10 @@ export class LamellophoneTuning {
     /**
      * Returns note pitches or letters in the order that they appear on the
      * instrument
+     *
      * @param {boolean} returnPitches true: returns pitches, false: returns
      *      note letters
-     * @returns {number[]|string[]}
+     * @returns {number[]|string[]} notes in the instuments' order
      */
     getNotesInInstrumentOrder(returnPitches = true) {
         const notes = returnPitches ? this.pitches : this.notes;
@@ -261,7 +265,7 @@ export function convertNotesToHtmlTab(
         // Format chord's notes
         let chordString = chord
             .map(note => {
-                const str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`
+                const str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
                 const color = colormap(note.pitch);
                 return `<span class='note' style='background-color: ${color}'>${str}</span>`;
             })
@@ -292,11 +296,11 @@ export function convertNotesToHtmlTab(
 export function convertNumbersToLetters(numberTab, numberLetterMap) {
     if (!numberTab || !numberTab.length) { return ''; }
     // Normalize to °
-    numberTab = numberTab.replaceAll(`'`, '°');
-    numberTab = numberTab.replaceAll(`’`, '°');
-    numberTab = numberTab.replaceAll(`*`, '°');
-    numberTab = numberTab.replaceAll(`º`, '°');
-    numberTab = numberTab.replaceAll(`^`, '°');
+    numberTab = numberTab.replaceAll('\'', '°');
+    numberTab = numberTab.replaceAll('’', '°');
+    numberTab = numberTab.replaceAll('*', '°');
+    numberTab = numberTab.replaceAll('º', '°');
+    numberTab = numberTab.replaceAll('^', '°');
     for (let [key, value] of numberLetterMap.entries()) {
         numberTab = numberTab.replaceAll(key, value);
     }
@@ -370,14 +374,14 @@ export function bestTransposition(notes, tuning) {
         return {
             transpose: bestSteps,
             retune: new Map()
-        }
+        };
     }
     if (freePitches.size === 0) {
         // Cannot solve this!
         return {
             transpose: bestSteps,
             retune: new Map()
-        }
+        };
     }
 
 
@@ -400,5 +404,5 @@ export function bestTransposition(notes, tuning) {
     return {
         transpose: bestSteps,
         retune
-    }
+    };
 }

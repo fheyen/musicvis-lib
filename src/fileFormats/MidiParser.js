@@ -262,7 +262,7 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
  */
 function splitFormat0(tracks) {
     if (tracks.length > 1) {
-        console.warn(`Splitting a format 0 file with more than 1 track will result in all but the first beeing lost!`);
+        console.warn('Splitting a format 0 file with more than 1 track will result in all but the first beeing lost!');
     }
     console.log('Splitting format 0 file into tracks based on channel');
     const grouped = group(tracks[0].noteObjs, d => d.channel);
@@ -283,8 +283,8 @@ function splitFormat0(tracks) {
  * each MIDI time tick corresponds to
  *
  * @private
- * @param {number} tempo
- * @param {number} timeDivision
+ * @param {number} tempo tempo
+ * @param {number} timeDivision time division
  * @returns {number} milli seconds per tick
  */
 function getMillisecondsPerTick(tempo, timeDivision) {
@@ -323,7 +323,7 @@ function getMidiTempoAndBeatChanges(tracks) {
             if (event.type === 255 && event.metaType === 88) {
                 const d = event.data;
                 const beats = d[0];
-                const beatType = Math.pow(2, d[1]);
+                const beatType = 2 ** d[1];
                 beatTypeChanges.push({
                     tick: currentTick,
                     beats,
@@ -345,7 +345,7 @@ function getMidiTempoAndBeatChanges(tracks) {
 }
 
 /**
- * @todotest
+ * @todo test
  *  - convert something to MIDI and back with above function to see if result is the same as the original
  *  - and the other way round
  *

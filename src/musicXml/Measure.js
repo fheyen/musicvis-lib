@@ -24,12 +24,24 @@ class Measure {
         this.#beatType = beatType;
     }
 
+    /**
+     *
+     */
     get notes() { return this.#notes; }
 
+    /**
+     *
+     */
     get bpm() { return this.#bpm; }
 
+    /**
+     *
+     */
     get beats() { return this.#beats; }
 
+    /**
+     *
+     */
     get beatType() { return this.#beatType; }
 
     /**

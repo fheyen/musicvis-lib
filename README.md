@@ -19,9 +19,7 @@ This library is still in early and active development.
    2. [Documentation](#documentation)
    3. [How to use](#how-to-use)
    4. [Examples](#examples)
-   5. [Contribution](#contribution)
-      1. [Structure and Dependencies](#structure-and-dependencies)
-      2. [TODO](#todo)
+   5. [Contributing](#contributing)
 
 ## Setup
 
@@ -69,18 +67,8 @@ Here are some examples that show for what `musicvis-lib` can be used:
 
 [More dependents](https://github.com/fheyen/musicvis-lib/network/dependents)
 
-## Contribution
+## Contributing
 
 If you like to contribute, feel free to create pull requests or [issues](https://github.com/fheyen/musicvis-lib/issues).
 
-### Structure and Dependencies
-
-In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser).
-
-### TODO
-
-- Add
-  - type/PitchBend.js
-  - FOGSAA algorithm for string matching / distance
-    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/
-    - https://github.com/kjenova/fogsaa
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more.

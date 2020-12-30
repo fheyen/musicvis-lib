@@ -4,6 +4,9 @@
  * @ignore
  */
 class Symbol {
+    /**
+     * @param duration
+     */
     constructor(duration) {
         this.duration = duration;
     }

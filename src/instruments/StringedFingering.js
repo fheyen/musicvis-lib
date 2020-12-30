@@ -111,6 +111,7 @@ class HandPose {
     /**
      *
      * Lift a single finger
+     *
      * @param {number} index finger index in [0, 9]
      */
     liftFinger(index) {
@@ -199,6 +200,9 @@ class HandPose {
         return str;
     }
 
+    /**
+     *
+     */
     clone() {
         return new HandPose(this.fingerPositions.map(d => d.clone()));
     }
@@ -225,6 +229,9 @@ class HandPose {
         return diff;
     }
 
+    /**
+     * @param otherHandPose
+     */
     costOfMovement(otherHandPose) {
         // Naive: move every finger alone
         // TODO:

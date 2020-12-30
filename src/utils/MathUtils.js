@@ -1,4 +1,4 @@
-import { randomInt } from "d3";
+import { randomInt } from 'd3';
 
 /**
  * @module utils/MathUtils

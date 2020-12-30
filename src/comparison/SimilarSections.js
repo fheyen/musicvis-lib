@@ -1,5 +1,5 @@
-import { levenshtein } from "../stringBased/Levenshtein";
-import PitchSequence from "../types/PitchSequence";
+import { levenshtein } from '../stringBased/Levenshtein';
+import PitchSequence from '../types/PitchSequence';
 
 
 /**

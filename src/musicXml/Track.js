@@ -11,6 +11,10 @@ class Track {
     measures = [];
     #title = '';
 
+    /**
+     * @param title
+     * @param measures
+     */
     constructor(title, measures = []) {
         this.#title = title;
         this.measures = measures;
@@ -38,12 +42,16 @@ class Track {
 
     /**
      * Returns all measures of this track.
+     *
      * @returns {Measure[]} measures
      */
     get measures() {
         return this.measures;
     }
 
+    /**
+     *
+     */
     get title() {
         return this.#title;
     }
@@ -61,6 +69,9 @@ class Track {
         return notes.sort((a, b) => a.start - b.start);
     }
 
+    /**
+     *
+     */
     clone() {
         return new Track(this.#title, this.measures);
     }

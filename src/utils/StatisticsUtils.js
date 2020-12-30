@@ -80,5 +80,5 @@ export function kernelEpanechnikov(k) {
  * @returns {Function} kernel function
  */
 export function kernelGauss(k) {
-    return v => Math.abs(v / k) <= 1 ? ((1 / Math.sqrt(2 * Math.PI)) * Math.pow(Math.E, (-1 / 2) * v * v)) : 0;
+    return v => Math.abs(v / k) <= 1 ? ((1 / Math.sqrt(2 * Math.PI)) * Math.E**((-1 / 2) * v * v)) : 0;
 }

@@ -39,15 +39,15 @@ export function lcs(a, b) {
     // Recover the lcs from the table
     while (i > -1 && j > -1) {
         switch (c[i][j]) {
-            default:
-                j--;
-                lcs.unshift(a[i]);
+        default:
+            j--;
+            lcs.unshift(a[i]);
             // eslint-disable-next-line
             case (i && c[i - 1][j]):
-                i--;
-                continue;
-            case (j && c[i][j - 1]):
-                j--;
+            i--;
+            continue;
+        case (j && c[i][j - 1]):
+            j--;
         }
     }
     // Only join when x and y are strings

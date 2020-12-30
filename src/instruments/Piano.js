@@ -18,12 +18,12 @@ export const pianoPitchRange = new Map([
  * @returns {?} notes with fingering information
  */
 // export function fingeringFromMidi(notes) {
-    // TODO: detect chords first?
-    // TODO: then lookup chords' fingerings from a lookup table
+// TODO: detect chords first?
+// TODO: then lookup chords' fingerings from a lookup table
 
-    // TODO: alternatively (as fallback) use heuristics
+// TODO: alternatively (as fallback) use heuristics
 
-    // TODO: or try to do it like humans do when playing
+// TODO: or try to do it like humans do when playing
 
 
 

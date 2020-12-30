@@ -1,4 +1,4 @@
-import Note from "./Note";
+import Note from './Note';
 
 /**
  * Class that allows to represent pitch-bends from a MIDI file
@@ -29,11 +29,11 @@ class PitchBend extends Note {
     }
 
     /**
-    * Creates a GuitarNote object from an object via destructuring
-    *
-    * @param {object} object object with at least {pitch}
-    * @returns {PitchBend} new note
-    */
+     * Creates a GuitarNote object from an object via destructuring
+     *
+     * @param {object} object object with at least {pitch}
+     * @returns {PitchBend} new note
+     */
     static from(object) {
         const {
             pitch,
@@ -55,8 +55,6 @@ class PitchBend extends Note {
      * Converts a Note to a GuitarNote
      *
      * @param {Note} note note
-     * @param {number} string string
-     * @param {number} fret fret
      * @returns {PitchBend} guitar note
      */
     static fromNote(note) {

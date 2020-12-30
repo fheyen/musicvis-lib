@@ -53,6 +53,7 @@ export function arrayHasSameElements(a, b, checkLength = true) {
 
 /**
  * Removes duplicates from an Array by converting to a Set and back
+ *
  * @param {Array} array an array
  * @returns {Array} array without duplicates
  */
