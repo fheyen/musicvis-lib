@@ -46,7 +46,7 @@ class MidiInputManager {
         getMidiLiveData,
         setMidiLiveData,
         addCurrentNote = () => { },
-        removeCurrentNote = () => { }
+        removeCurrentNote = () => { },
     ) {
         this.#getMidiLiveData = getMidiLiveData;
         this.#setMidiLiveData = setMidiLiveData;

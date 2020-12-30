@@ -308,7 +308,7 @@ export const SHARPS = new Map([
     [118, null],
     [121, null],
     [123, null],
-    [126, null]
+    [126, null],
 ]);
 
 /**
@@ -731,7 +731,7 @@ const MIDI_INSTRUMENTS_Lev2 = [
     { number: 128, subnumber: 0, group: 'Sound Effects', label: 'Gun Shot' },
     { number: 128, subnumber: 1, group: 'Sound Effects', label: 'Machine Gun' },
     { number: 128, subnumber: 2, group: 'Sound Effects', label: 'Lasergun' },
-    { number: 128, subnumber: 3, group: 'Sound Effects', label: 'Explosion' }
+    { number: 128, subnumber: 3, group: 'Sound Effects', label: 'Explosion' },
 ];
 
 const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([
@@ -795,7 +795,7 @@ const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([
     [84, 'Belltree(GM2)'],
     [85, 'Castanets(GM2)'],
     [86, 'Mute Surdo(GM2)'],
-    [87, 'Open Surdo(GM2)']
+    [87, 'Open Surdo(GM2)'],
 ]);
 
 // TODO: This might be useful, e.g. to check which notes Player can play
@@ -843,7 +843,7 @@ export const MIDI_NOTE_RANGES = [
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Timpani', min: 40, max: 55 },
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Harpsichord', min: 29, max: 89 },
     { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Kalimba', min: 60, max: 88 },
-    { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Harp', min: 24, max: 103 }
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: 'Harp', min: 24, max: 103 },
 ];
 
 // Build lookup maps

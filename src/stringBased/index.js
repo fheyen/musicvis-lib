@@ -10,5 +10,5 @@ export {
     LongestCommonSubsequence,
     Gotoh,
     NeedlemanWunsch,
-    SuffixTree
+    SuffixTree,
 };

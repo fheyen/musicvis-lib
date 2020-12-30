@@ -43,7 +43,8 @@ export function formatTime(seconds, includeMillis = true) {
  */
 export function formatDate(date, replaceT = false, keepMillis = true) {
     let str = date.toISOString()
-        .split(':').join('-');
+        .split(':')
+        .join('-');
     if (!keepMillis) {
         str = str.slice(0, str.indexOf('.'));
     }

@@ -170,7 +170,9 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
         // Create KDE
         const duration = max(ends);
         const ticks = Math.ceil(ticksPerSecond * duration);
-        const x = scaleLinear().domain([0, duration]).range([0, duration]);
+        const x = scaleLinear()
+            .domain([0, duration])
+            .range([0, duration]);
         const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), x.ticks(ticks));
         const estimateStarts = kde(starts);
         const estimateEnds = kde(ends);
@@ -223,8 +225,8 @@ export function differenceMap(gtNotes, recNotes, binSize) {
     const gtHeatmap = recordingsHeatmap(gtNotes, 1, binSize);
     const allPitches = Array.from(
         new Set(
-            Array.from(recHeatmap.keys()).concat(Array.from(gtHeatmap.keys()))
-        )
+            Array.from(recHeatmap.keys()).concat(Array.from(gtHeatmap.keys())),
+        ),
     );
     const resultMap = new Map();
     for (const pitch of allPitches) {
@@ -300,7 +302,7 @@ export function differenceMapErrorAreas(differenceMap) {
     return {
         missing: missingBins / totalArea,
         additional: additionalBins / totalArea,
-        correct: correctBins / totalArea
+        correct: correctBins / totalArea,
     };
 }
 

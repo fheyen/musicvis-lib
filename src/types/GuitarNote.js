@@ -108,7 +108,7 @@ class GuitarNote extends Note {
             this.end,
             // This is different to the base Note class
             this.string,
-            this.fret
+            this.fret,
         );
     }
 

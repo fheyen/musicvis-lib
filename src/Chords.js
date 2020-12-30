@@ -123,7 +123,7 @@ const chordTypes = new Map([
             // TODO: how to handle inversions?
             { steps: [5], name: 'Inverted power chord', suffix: '?' },
             { steps: [7], name: 'Power chord', suffix: '5' },
-        ]
+        ],
     ],
     [
         2,
@@ -136,7 +136,7 @@ const chordTypes = new Map([
             { steps: [4, 8], name: 'Augmented', suffix: 'aug' },
             { steps: [4, 9], name: 'Sixth', suffix: '6' },
             { steps: [5, 7], name: 'Suspended fourth', suffix: 'sus4' },
-        ]
+        ],
     ],
     [
         3,
@@ -153,7 +153,7 @@ const chordTypes = new Map([
             { steps: [4, 7, 10], name: 'Dominant seventh', suffix: '7' },
             { steps: [4, 7, 11], name: 'Major seventh', suffix: 'Maj7' },
             { steps: [4, 7, 9], name: 'Major Sixth', suffix: 'Maj6' },
-        ]
+        ],
     ],
     [
         4,
@@ -167,21 +167,21 @@ const chordTypes = new Map([
             { steps: [4, 5, 7, 11], name: 'Major eleventh (no ninth)', suffix: 'Maj11' },
             { steps: [4, 6, 7, 10], name: 'Seventh, sharp eleventh', suffix: '7#11' },
             { steps: [4, 6, 7, 11], name: 'Major seventh, sharp eleventh', suffix: 'Maj7#11' },
-        ]
+        ],
     ],
     [
         5,
         [
             { steps: [2, 4, 5, 7, 11], name: 'Major eleventh', suffix: 'Maj11' },
             { steps: [2, 4, 7, 9, 11], name: 'Major thirteen', suffix: 'Maj13' },
-        ]
+        ],
     ],
     [
         6,
         [
             { steps: [2, 3, 4, 6, 7, 10], name: 'Minor thirteen', suffix: 'm13' },
-        ]
-    ]
+        ],
+    ],
 ]);
 
 /**

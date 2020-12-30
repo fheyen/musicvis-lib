@@ -104,13 +104,13 @@ export const lamellophoneTunings = new Map([
     ['Kalimba', new Map([
         [
             '17 C Major',
-            new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
+            new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
         ],
         [
             '21 C Major',
-            new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6'])
+            new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
         ],
-    ])]
+    ])],
 ]);
 
 
@@ -147,7 +147,7 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
             notes.push(Note.from({
                 pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
                 start: currentTime,
-                end: currentTime + secondsPerBeat
+                end: currentTime + secondsPerBeat,
             }));
             currentOctOffset = 0;
             if (!insideChord) {
@@ -247,7 +247,7 @@ export function convertNotesToHtmlTab(
     tuning,
     mode = 'letter',
     restSize = 0.1,
-    colormap = () => 'black'
+    colormap = () => 'black',
 ) {
     if (!notes || !notes.length) { return []; }
     // Create a mapping pitch->symbol
@@ -373,14 +373,14 @@ export function bestTransposition(notes, tuning) {
         // Everything is fine!
         return {
             transpose: bestSteps,
-            retune: new Map()
+            retune: new Map(),
         };
     }
     if (freePitches.size === 0) {
         // Cannot solve this!
         return {
             transpose: bestSteps,
-            retune: new Map()
+            retune: new Map(),
         };
     }
 
@@ -403,6 +403,6 @@ export function bestTransposition(notes, tuning) {
 
     return {
         transpose: bestSteps,
-        retune
+        retune,
     };
 }

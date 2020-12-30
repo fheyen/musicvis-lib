@@ -19,7 +19,7 @@ class Note {
         start = 0,
         velocity = 127,
         channel = 0,
-        end = null
+        end = null,
     ) {
         this.pitch = pitch;
         this.start = start;
@@ -56,7 +56,7 @@ class Note {
             start = 0,
             velocity = 127,
             channel = 0,
-            end = null
+            end = null,
         } = object;
         if (typeof pitch === 'string' && isNaN(+pitch)) {
             const note = getMidiNoteByLabel(pitch);
@@ -79,7 +79,7 @@ class Note {
             this.start,
             this.velocity,
             this.channel,
-            this.end
+            this.end,
         );
     }
 

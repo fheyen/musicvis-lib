@@ -35,8 +35,8 @@ export function levenshtein(a, b) {
                     row[j - 1] + 1, // substitution
                     Math.min(
                         prev + 1,   // insertion
-                        row[j] + 1  // deletion
-                    )
+                        row[j] + 1,  // deletion
+                    ),
                 );
             }
             row[j - 1] = prev;
@@ -59,7 +59,9 @@ export function levenshtein(a, b) {
 export function damerauLevenshtein(a, b) {
     if (a.length === 0) { return b.length; }
     if (b.length === 0) { return a.length; }
-    const d = new Array(a.length + 1).fill(0).map(() => new Array(b.length));
+    const d = new Array(a.length + 1)
+        .fill(0)
+        .map(() => new Array(b.length));
     for (let i = 0; i <= a.length; i++) {
         d[i][0] = i;
     }
@@ -77,7 +79,7 @@ export function damerauLevenshtein(a, b) {
             d[i][j] = Math.min(
                 d[i - 1][j] + 1,        // deletion
                 d[i][j - 1] + 1,        // insertion
-                d[i - 1][j - 1] + cost  // substitution
+                d[i - 1][j - 1] + cost,  // substitution
             );
             if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
                 // transposition

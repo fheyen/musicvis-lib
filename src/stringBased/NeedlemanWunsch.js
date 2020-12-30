@@ -119,7 +119,7 @@ class NeedlemanWunsch {
                 seq1: '',
                 seq2: '',
                 // score: this.score,
-            }
+            },
         };
         let current, child, children, len, alignment, pos, t;
         current = root;

@@ -85,7 +85,7 @@ export function separateMissed(classifiedNotes) {
     const grouped = group(classifiedNotes, d => d.state === NoteState.MISSED);
     return {
         missed: grouped.get(true),
-        notMissed: grouped.get(false)
+        notMissed: grouped.get(false),
     };
 }
 
@@ -199,7 +199,7 @@ function getGtRecOverlaps(gtNotes, recNotes) {
     const extra = Array.from(extraRecNotes).map(d => new NoteWithState(d, NoteState.MISSED));
     return {
         classified: missed.concat(extra),
-        overlapping: overlaps
+        overlapping: overlaps,
     };
 }
 
@@ -232,7 +232,7 @@ function handleOverlappingNotes(overlapping, threshold) {
     recGtMap.forEach((gtCandidates, recNote) => {
         const gtMatchCandidate = findBestMatch(recNote, gtCandidates);
         if (gtMatchCandidate && hasAtLeastOne(gtRecMap, gtMatchCandidate)) {
-            //for the best matching Gt note, get all other matching recordings
+            // for the best matching Gt note, get all other matching recordings
             const recMatchContender = gtRecMap.get(gtMatchCandidate);
             if (!recMatchContender) {
                 console.log('Should Not happen');
@@ -248,7 +248,7 @@ function handleOverlappingNotes(overlapping, threshold) {
             recMatchContender.delete(recActualBestMatch);
             // mark all unmatched notes as possibly extra
             recMatchContender.forEach((recordedNote) =>
-                possiblyExtraRec.add(recordedNote)
+                possiblyExtraRec.add(recordedNote),
             );
             // remove this groundTruthNote as it was handled
             gtRecMap.delete(gtMatchCandidate);

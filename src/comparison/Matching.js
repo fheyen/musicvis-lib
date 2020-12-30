@@ -44,7 +44,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
                 gtRecMap: new Map(),
                 additionalNotes: [],
                 missingNotes: gtNotes,
-                gtNotes: gtNotes
+                gtNotes: gtNotes,
             });
             return;
         }
@@ -79,7 +79,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
             gtRecMap,
             additionalNotes,
             missingNotes,
-            gtNotes: gtNotes
+            gtNotes: gtNotes,
         });
     });
     // If a recording has a pitch that GT has not, all those notes are additional notes
@@ -89,9 +89,9 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
                 gtRecMap: new Map(),
                 additionalNotes: recNotes,
                 missingNotes: [],
-                gtNotes: []
+                gtNotes: [],
             });
-            return;
+            
         }
     });
     // console.log(result);
@@ -180,7 +180,7 @@ export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) 
         });
         result.set(pitch, {
             gtErrorMap,
-            maxError
+            maxError,
         });
     });
     return result;
@@ -229,7 +229,7 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
             missError,
             correct,
             timeError,
-            numberOfGtNotes: gtNotes.length
+            numberOfGtNotes: gtNotes.length,
         });
         // Update total
         result.totalAdd += addError;

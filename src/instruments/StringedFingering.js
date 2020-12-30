@@ -74,7 +74,7 @@ class FretboardPosition {
     difference(otherFretboardPosition) {
         return {
             string: otherFretboardPosition.string - this.string,
-            fret: otherFretboardPosition.fret - this.fret
+            fret: otherFretboardPosition.fret - this.fret,
         };
     }
 }

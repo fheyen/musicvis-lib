@@ -20,7 +20,7 @@ export function gotoh(
     seqB,
     similarityFunction = matchMissmatchSimilarity,
     gapPenaltyStart = -1,
-    gapPenaltyExtend = -0.1
+    gapPenaltyExtend = -0.1,
 ) {
     // check if strings are empty
     if (seqA.length === 0 && seqB.length === 0) { return 0; }
@@ -66,7 +66,7 @@ export function gotoh(
     return max(
         a[lenA][lenB],
         b[lenA][lenB],
-        c[lenA][lenB]
+        c[lenA][lenB],
     );
 }
 
@@ -91,7 +91,7 @@ export function normalizedGotoh(
     seqB,
     similarityFunction = matchMissmatchSimilarity,
     gapPenaltyStart = -1,
-    gapPenaltyExtend = -0.1
+    gapPenaltyExtend = -0.1,
 ) {
     const similarity = gotoh(seqA, seqB, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
     const longer = seqA.length >= seqB.length ? seqA : seqB;

@@ -26,7 +26,9 @@ class Recording extends NoteArray {
         this.name = name;
         this.date = date;
         // Save formatted date for faster access
-        this.dateString = date.toISOString().substring(0, 19).replace('T', ' ');
+        this.dateString = date.toISOString()
+            .substring(0, 19)
+            .replace('T', ' ');
         this.speed = +speed;
         this.selectedTrack = +selectedTrack;
         this.timeSelection = timeSelection;
@@ -45,7 +47,7 @@ class Recording extends NoteArray {
             this.getNotes().map(d => d.clone()),
             this.speed,
             this.selectedTrack,
-            this.timeSelection === null ? null : [...this.timeSelection]
+            this.timeSelection === null ? null : [...this.timeSelection],
         );
     }
 
@@ -95,7 +97,7 @@ class Recording extends NoteArray {
             notes: this.getNotes(),
             speed: this.speed,
             selectedTrack: this.selectedTrack,
-            timeSelection: this.timeSelection
+            timeSelection: this.timeSelection,
         };
     }
 
@@ -126,7 +128,7 @@ class Recording extends NoteArray {
             notes,
             obj.speed,
             obj.selectedTrack,
-            obj.timeSelection
+            obj.timeSelection,
         );
     }
 }

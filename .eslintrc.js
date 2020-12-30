@@ -7,42 +7,26 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
-        'plugin:jsdoc/recommended'
+        'plugin:jsdoc/recommended',
     ],
     plugins: [
-        'jsdoc'
+        'jsdoc',
     ],
     parser: 'babel-eslint',
     parserOptions: {
         ecmaVersion: 12,
-        sourceType: 'module'
+        sourceType: 'module',
     },
     rules: {
         // The Error level should be `error`, `warn`, or `off` (or 2, 1, or 0)
-        'no-unused-vars': 1,
-        'no-empty': 0, // TODO:
         'eqeqeq': 1,
         'indent': ['error', 4],
-        // 'no-use-before-define': ['error', { 'functions': true, 'classes': true }],
-        'new-parens': 'error',
-        'no-async-promise-executor': 'off', // TODO:
-        'prefer-exponentiation-operator': 'error',
-        'prefer-object-spread': 'error',
-        'semi': 'error',
-        'quotes': ['error', 'single'],
-        'linebreak-style': ['warn', 'unix'],
-        'prefer-template': 'error',
-        'prefer-rest-params': 'error',
-        'no-var': 'error',
-        'no-useless-constructor': 'error',
-        'no-duplicate-imports': 'error',
-        'no-new-object': 'error',
-        'no-bitwise': 'warn',
-        'prefer-const': 'off', // TODO:
-        'jsdoc/no-undefined-types': 0,
-        'jsdoc/check-tag-names': 1,
+        'comma-dangle': ['warn', 'always-multiline'],
+        'comma-style': ['warn', 'last'],
+        'eol-last': ['warn', 'always'],
         'jsdoc/check-syntax': 1,
-        'jsdoc/require-throws': 'error',
+        'jsdoc/check-tag-names': 1,
+        'jsdoc/no-undefined-types': 0,
         'jsdoc/require-hyphen-before-param-description': ['warn', 'never'],
         'jsdoc/require-jsdoc': [
             'error', {
@@ -52,8 +36,37 @@ module.exports = {
                     ClassDeclaration: true,
                     ClassExpression: true,
                     FunctionExpression: true,
-                }
-            }
-        ]
-    }
+                },
+            },
+        ],
+        'jsdoc/require-throws': 'error',
+        'linebreak-style': ['warn', 'unix'],
+        'multiline-comment-style': ['off', 'starred-block'],
+        'newline-per-chained-call': ['warn', { 'ignoreChainWithDepth': 3 }],
+        'new-parens': 'error',
+        'new-cap': 'error',
+        'no-async-promise-executor': 'off', // TODO:
+        'no-bitwise': 'warn',
+        'no-duplicate-imports': 'error',
+        'no-empty': 0, // TODO:
+        'no-floating-decimal': 'warn',
+        'no-implicit-coercion': 'off', // TODO:
+        'no-trailing-spaces': 'warn',
+        'no-new-object': 'error',
+        'no-unused-vars': 1,
+        'no-use-before-define': ['off', { 'functions': true, 'classes': true }],
+        'no-useless-constructor': 'error',
+        'no-useless-return': 'warn',
+        'no-var': 'error',
+        'no-void': 'error',
+        'prefer-const': 'off', // TODO:
+        'prefer-exponentiation-operator': 'error',
+        'prefer-object-spread': 'error',
+        'prefer-rest-params': 'error',
+        'prefer-template': 'error',
+        'quotes': ['error', 'single'],
+        'semi': 'error',
+        'spaced-comment': ['warn', 'always'],
+        'yoda': 'warn',
+    },
 };

@@ -46,7 +46,7 @@ export function preprocessMusicXmlData(xml) {
         // This is the first tempo etc., changes are stored in each part
         bpm: parsedParts[0].bpm,
         beats: parsedParts[0].beats,
-        beatType: parsedParts[0].beatType
+        beatType: parsedParts[0].beatType,
     };
 }
 
@@ -83,7 +83,7 @@ function preprocessMusicXmlMeasures(measures) {
                     tempo = +tempoValue;
                     tempoChanges.push({
                         time: currentTime,
-                        tempo
+                        tempo,
                     });
                 }
                 break;
@@ -98,7 +98,7 @@ function preprocessMusicXmlMeasures(measures) {
             beatTypeChanges.push({
                 time: currentTime,
                 beats,
-                beatType
+                beatType,
             });
         } catch (e) { }
         const secondsPerBeat = 1 / (tempo / 60);
@@ -158,7 +158,7 @@ function preprocessMusicXmlMeasures(measures) {
                             string,
                             currentTime + durationInSeconds,
                             string,
-                            fret
+                            fret,
                         ));
                     } else {
                         noteObjs.push(new Note(
@@ -166,7 +166,7 @@ function preprocessMusicXmlMeasures(measures) {
                             currentTime,
                             127,
                             string,
-                            currentTime + durationInSeconds
+                            currentTime + durationInSeconds,
                         ));
                     }
                 }
@@ -198,7 +198,7 @@ function preprocessMusicXmlMeasures(measures) {
         bpm: tempoChanges[0]?.tempo || 120,
         beats: beatTypeChanges[0].beats,
         beatType: beatTypeChanges[0].beatType,
-        tuning: getTuningPitches(measures)
+        tuning: getTuningPitches(measures),
     };
     console.log('[MusicXmlParser] Parsed part: ', result);
     return result;

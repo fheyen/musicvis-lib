@@ -35,7 +35,7 @@ export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0
         return {
             ...m,
             startTime: note1.start,
-            endTime: note2.end
+            endTime: note2.end,
         };
     });
 }

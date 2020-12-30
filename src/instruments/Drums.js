@@ -96,7 +96,7 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
                 start,
                 velocity,
                 0,
-                end
+                end,
             ));
         }
         if (randFloat(0, 1) < pRemove) {

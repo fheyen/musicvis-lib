@@ -59,7 +59,7 @@ export const stringedTunings = new Map([
             new StringedTuning('1/2 down', ['F1', 'A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']),
             new StringedTuning('1 down', ['E1', 'A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']),
             new StringedTuning('2 down', ['D1', 'G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']),
-        ]]
+        ]],
     ])],
     ['Bass', new Map([
         [4, [
@@ -216,7 +216,7 @@ export function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
         positions.push({
             // Convert so string 1 is treble
             string: stringCount - string,
-            fret: pitch - openPitch
+            fret: pitch - openPitch,
         });
     }
     return positions;
@@ -247,7 +247,7 @@ export function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) 
             positions.push({
                 // Convert so string 1 is treble
                 string: stringCount - string,
-                fret
+                fret,
             });
             // Go to next octave
             fret += 12;
@@ -280,7 +280,7 @@ export function generateExampleData(startTime = 0, count = 50, tuning) {
             string,
             currentTime,
             string,
-            fret
+            fret,
         );
     });
 }
@@ -340,7 +340,7 @@ export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
             errorPitches,
             `\nCurrent tuning's pitch range is ${minPitch} - ${maxPitch}`,
             `\ndata pitch range is ${minDataPitch} - ${maxDataPitch}\n`,
-            advice
+            advice,
         );
     }
     return result;

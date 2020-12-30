@@ -24,7 +24,7 @@ export function alignNoteArrays(gt, rec) {
     // console.log(`Aligned recording via shifting by ${f.toFixed(3)} seconds`);
     return {
         aligned: rec,
-        timeDifference: f
+        timeDifference: f,
     };
 }
 
@@ -67,7 +67,7 @@ export function alignNoteArrays2(gt, rec) {
     }
     return {
         aligned: rec,
-        timeDifference
+        timeDifference,
     };
 }
 
@@ -108,7 +108,7 @@ export function alignNoteArrays3(gt, rec) {
     }
     return {
         aligned: rec,
-        timeDifference
+        timeDifference,
     };
 }
 
@@ -153,6 +153,8 @@ function alignmentForce(a, b) {
 
 /**
  * Test function
+ *
+ * @todo move to test
  */
 export function testAlignment() {
     const test = (a, b, title) => {
@@ -164,7 +166,7 @@ export function testAlignment() {
     const a = new NoteArray([
         new Note(69, 0, 127, 0, 1),
         new Note(70, 1, 127, 0, 2),
-        new Note(71, 2, 127, 0, 3)
+        new Note(71, 2, 127, 0, 3),
     ]);
     console.log(a.getNotes().map(n => n.start));
 
@@ -176,13 +178,17 @@ export function testAlignment() {
     b = a.clone().shiftTime(-2);
     test(a, b, 'shifted by -2');
 
-    b = a.clone().shiftTime(3).addNotes([new Note(72, 2, 127, 0, 3)]);
+    b = a.clone()
+        .shiftTime(3)
+        .addNotes([new Note(72, 2, 127, 0, 3)]);
     test(a, b, 'shifted by 3, added note');
 
     b = a.clone().repeat(2);
     test(a, b, 'repeated');
 
-    b = a.clone().repeat(2).shiftTime(3);
+    b = a.clone()
+        .repeat(2)
+        .shiftTime(3);
     test(a, b, 'repeated, shifted by 3');
 }
 
@@ -208,7 +214,7 @@ export function alignmentBenchmark() {
             start,
             127,
             0,
-            start + randDuration()
+            start + randDuration(),
         );
     });
     const notes = new NoteArray(randomNotes).sortByTime();

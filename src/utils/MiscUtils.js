@@ -47,7 +47,9 @@ export function groupNotesByPitch(tracks) {
  * @returns {string} reversed string
  */
 export function reverseString(s) {
-    return s.split('').reverse().join('');
+    return s.split('')
+        .reverse()
+        .join('');
 }
 
 /**

@@ -51,7 +51,7 @@ export function getSimilarParts(track, selectedInterval, stride, threshold, seco
                     endBin: pos2,
                     startTime: minTime + pos * secondsPerBin,
                     endTime: minTime + pos2 * secondsPerBin,
-                    dist
+                    dist,
                 });
             }
         }
@@ -63,7 +63,7 @@ export function getSimilarParts(track, selectedInterval, stride, threshold, seco
             startTime: minTime + startBin * secondsPerBin,
             endTime: minTime + endBin * secondsPerBin,
         },
-        similarParts
+        similarParts,
     };
 }
 
@@ -302,7 +302,7 @@ export function getSimilarPartsViaMatching(notes) {
             if (n.pitch === startNote.pitch) {
                 candidateSequences.push({
                     startIndex: i,
-                    length: 1
+                    length: 1,
                 });
             }
         }

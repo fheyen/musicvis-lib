@@ -146,7 +146,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
                 currentTime,
                 velocity,
                 channel,
-                -1
+                -1,
             ));
         }
     }
@@ -272,7 +272,7 @@ function splitFormat0(tracks) {
     grouped.forEach((notes, channelId) => {
         splittedTracks[channelId] = {
             ...tracks[0],
-            noteObjs: notes
+            noteObjs: notes,
         };
     });
     return splittedTracks;
@@ -316,7 +316,7 @@ function getMidiTempoAndBeatChanges(tracks) {
                 const tempo = Math.round(1 / (milliSecondsPerQuarter / 60000));
                 tempoChanges.push({
                     tick: currentTick,
-                    tempo
+                    tempo,
                 });
             }
             // Beat type change
@@ -327,7 +327,7 @@ function getMidiTempoAndBeatChanges(tracks) {
                 beatTypeChanges.push({
                     tick: currentTick,
                     beats,
-                    beatType
+                    beatType,
                 });
                 // console.log(`Metro: ${d[2]}`);
                 // console.log(`32nds: ${d[3]}`);
