@@ -1,6 +1,6 @@
 import { max, min } from 'd3';
 import DynamicTimeWarping from 'dynamic-time-warping-2';
-
+import { Note } from '../types/Note'; /* eslint-disable-line no-unused-vars */
 
 /**
  * @module comparison/Similarity
@@ -19,6 +19,7 @@ import DynamicTimeWarping from 'dynamic-time-warping-2';
  * @param {number} threshold distance threshold below which parts are considered similar
  * @param {number} secondsPerBin time bin size in seconds
  * @param {string} distance one of: 'dtw', 'euclidean', 'nearest'
+ * @returns {object} similar parts
  */
 export function getSimilarParts(track, selectedInterval, stride, threshold, secondsPerBin = 1 / 16, distance = 'euclidean') {
     console.log(`Searching for similar parts based on selection, using ${distance}`);
@@ -70,17 +71,19 @@ export function getSimilarParts(track, selectedInterval, stride, threshold, seco
  * Uses dynamic time warping (DTW) to calculate the distance between
  * two discretized tracks, for each pitch separately.
  * Pitch-wise distances are averaged and a penalty if added to the distance
- * for pithces that are not occuring in both tracks
- * https://github.com/GordonLesti/dynamic-time-warping
+ * for pitches that are not occuring in both tracks
+ *
+ * @see https://github.com/GordonLesti/dynamic-time-warping
  *
  * @param {Map} discrA discretized track
  * @param {Map} discrB discretized track
  * @param {string} distance one of: 'dtw', 'euclidean', 'nearest'
+ * @returns {number} distance
  */
 export function getTrackSimilarity(discrA, discrB, distance) {
     // Get common pitches
     const common = [];
-    for (let key of discrA.keys()) {
+    for (const key of discrA.keys()) {
         if (discrB.has(key)) {
             common.push(key);
         }
@@ -88,7 +91,7 @@ export function getTrackSimilarity(discrA, discrB, distance) {
     // Get distance for each pitch and add to weighted average
     let totalDist = 0;
     // Get DTW distance for each common pitch
-    for (let pitch of common) {
+    for (const pitch of common) {
         const binsA = discrA.get(pitch);
         const binsB = discrB.get(pitch);
         let dist;
@@ -110,8 +113,8 @@ export function getTrackSimilarity(discrA, discrB, distance) {
     // TODO: add penalty for uncommon pitches
     // Depending on number of 1s?
     let penaltyWeight = 0;
-    for (let discr of [discrA, discrB]) {
-        for (let key of discr.keys()) {
+    for (const discr of [discrA, discrB]) {
+        for (const key of discr.keys()) {
             if (!common.includes(key)) {
                 penaltyWeight += countActiveNoteBins(discr.get(key));
             }
@@ -129,6 +132,7 @@ export function getTrackSimilarity(discrA, discrB, distance) {
  *
  * @param {Note[]} track an array of Note objects
  * @param {number} secondsPerBin time bin size in seconds
+ * @returns {Map} pitch to binArray
  */
 export function discretizeTime(track, secondsPerBin) {
     const minTime = min(track, d => d.start);
@@ -136,7 +140,7 @@ export function discretizeTime(track, secondsPerBin) {
     const binCount = Math.ceil((maxTime - minTime) / secondsPerBin);
     // Map pitch->timeBinArray
     const result = new Map();
-    for (let note of track) {
+    for (const note of track) {
         const startBin = Math.round((note.start - minTime) / secondsPerBin);
         const endBin = Math.round((note.end - minTime) / secondsPerBin);
         const pitch = note.pitch;
@@ -157,11 +161,12 @@ export function discretizeTime(track, secondsPerBin) {
 /**
  * Counts the occurence of 1 in an array
  *
- * @param {number[]} binArray
+ * @param {number[]} binArray array
+ * @returns {number} occurence of 1
  */
 function countActiveNoteBins(binArray) {
     let count = 0;
-    for (let bin of binArray) {
+    for (const bin of binArray) {
         if (bin === 1) {
             count++;
         }
@@ -176,6 +181,7 @@ function countActiveNoteBins(binArray) {
  * @param {Map} trackMap Map pitch->binArray
  * @param {number} startBin index of first bin
  * @param {number} endBin index of last bin
+ * @returns {Map} map with sliced arrays
  */
 function sliceDiscretizedTrack(trackMap, startBin, endBin) {
     const slice = new Map();
@@ -190,8 +196,9 @@ function sliceDiscretizedTrack(trackMap, startBin, endBin) {
  * Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},
  * i.e. Euclidean distance but without square root
  *
- * @param {number[]} A
- * @param {number[]} B
+ * @param {number[]} A an array
+ * @param {number[]} B  another array
+ * @returns {number} Euclidean distance
  */
 function euclideanDistanceSquared(A, B) {
     const maxBins = Math.max(A.length, B.length);
@@ -214,8 +221,9 @@ function euclideanDistanceSquared(A, B) {
  * next to the 0.
  * The distance is then added to the global distance.
  *
- * @param {number[]} A
- * @param {number[]} B
+ * @param {number[]} A an array
+ * @param {number[]} B  another array
+ * @returns {number} nearest neighbor distance
  */
 function neirestNeighborDistance(A, B) {
     const maxBins = Math.max(A.length, B.length);
@@ -260,10 +268,12 @@ function neirestNeighborDistance(A, B) {
 
 
 /**
- * @param notes
+ * @param {Note[]} notes notes
  * @todo abandones for now
  * @todo use a greedy approach:
  * Start at the first notes start and take the first 2 notes
+ *
+ * @returns {void}
  */
 export function getSimilarPartsViaMatching(notes) {
     // TODO: Sort notes by time AND pitch to make sure chords are in the same order?
@@ -283,7 +293,7 @@ export function getSimilarPartsViaMatching(notes) {
     for (let sequenceStart = 0; sequenceStart < notes.length - 3; sequenceStart++) {
         // Take first note
         let currentIndex = sequenceStart;
-        let startNote = notes[currentIndex];
+        const startNote = notes[currentIndex];
 
         // Get all notes with same pitch
         let candidateSequences = [];
@@ -300,7 +310,7 @@ export function getSimilarPartsViaMatching(notes) {
 
         // For each of those start notes, see if the following notes are the same
         while (currentIndex < notes.length && candidateSequences.length > 1) {
-            let nextPitch = notes[currentIndex].pitch;
+            const nextPitch = notes[currentIndex].pitch;
             // Only keep best candidates
             // eslint-disable-next-line
             candidateSequences = candidateSequences.filter(cs => {

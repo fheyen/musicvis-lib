@@ -3,26 +3,27 @@ import { getMidiNoteByNr } from '../Midi';
 /**
  * Stores a sequence of pitches and provides some methods to simplify and
  * manipulate it.
+ *
+ * @todo implement keepOnlyHighestConcurrentNotes
  */
 class PitchSequence {
 
     #pitches = [];
 
     /**
-     * @param pitches
+     * @param {number[]} pitches pitches
      */
     constructor(pitches = []) {
         this.#pitches = pitches;
     }
 
     /**
-     * @todo implement keepOnlyHighestConcurrentNotes
+     * Creates a pitch sequence from an array of Notes
      *
      * @param {Note[]} notes notes
-     * @param {boolean} keepOnlyHighestConcurrentNotes only keep highest notes if some overlap
      * @returns {PitchSequence} pitch sequence
      */
-    static fromNotes(notes = [], keepOnlyHighestConcurrentNotes = false) {
+    static fromNotes(notes = []) {
         const pitches = notes
             .slice()
             .sort((a, b) => {
@@ -36,7 +37,8 @@ class PitchSequence {
     }
 
     /**
-     * @param string
+     * @param {string} string a string of Unicode characters
+     * @returns {PitchSequence} pitch sequence
      */
     static fromCharString(string) {
         if (!string || !string.length) { return new PitchSequence(); }
@@ -45,14 +47,14 @@ class PitchSequence {
     }
 
     /**
-     *
+     * @returns {number[]} pitches
      */
     getPitches() {
         return this.#pitches;
     }
 
     /**
-     *
+     * @returns {number} number of pitches
      */
     length() {
         return this.#pitches.length;
@@ -72,14 +74,16 @@ class PitchSequence {
     }
 
     /**
-     *
+     * @returns {string} a string with the notes' names
      */
     toNoteNameString() {
         return this.#pitches.map(p => getMidiNoteByNr(p).label).join(' ');
     }
 
     /**
+     * Reverses the order of pitches in this PitchSequence
      *
+     * @returns {PitchSequence} this
      */
     reverse() {
         this.#pitches = this.#pitches.reverse();
@@ -115,7 +119,7 @@ class PitchSequence {
     }
 
     /**
-     *
+     * @returns {PitchSequence} clone
      */
     clone() {
         return new PitchSequence(this.#pitches);

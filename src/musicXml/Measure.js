@@ -24,25 +24,25 @@ class Measure {
         this.#beatType = beatType;
     }
 
-    /**
-     *
-     */
-    get notes() { return this.#notes; }
+    // /**
+    //  *
+    //  */
+    // get notes() { return this.#notes; }
 
-    /**
-     *
-     */
-    get bpm() { return this.#bpm; }
+    // /**
+    //  *
+    //  */
+    // get bpm() { return this.#bpm; }
 
-    /**
-     *
-     */
-    get beats() { return this.#beats; }
+    // /**
+    //  *
+    //  */
+    // get beats() { return this.#beats; }
 
-    /**
-     *
-     */
-    get beatType() { return this.#beatType; }
+    // /**
+    //  *
+    //  */
+    // get beatType() { return this.#beatType; }
 
     /**
      *
@@ -55,6 +55,9 @@ class Measure {
     // return this;
     // }
 
+    /**
+     *  @returns {Measure} clone
+     */
     clone() {
         return new Measure(this.#notes, this.#bpm, this.#beats, this.#beatType);
     }

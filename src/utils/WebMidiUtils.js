@@ -26,14 +26,14 @@ export function pingMidiDevice(deviceName, howOften = 1) {
                 const avg = totalTime / sentCount;
                 console.log(`Received MIDI from ${deviceName} after ${ping} ms (avg: ${avg})`);
             };
-            for (let input of midiAccess.inputs.values()) {
+            for (const input of midiAccess.inputs.values()) {
                 if (deviceName === input.name) {
                     input.onmidimessage = receiveFunction;
                 }
             }
             // Get output device
             let outputDevice = null;
-            for (let output of midiAccess.outputs.values()) {
+            for (const output of midiAccess.outputs.values()) {
                 if (deviceName === output.name) {
                     outputDevice = output;
                 }

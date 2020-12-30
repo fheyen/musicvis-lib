@@ -70,7 +70,7 @@ class MidiInputManager {
     _onMIDISuccess = (midiAccess) => {
         // console.log(midiAccess);
         console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} input devices`);
-        for (let input of midiAccess.inputs.values()) {
+        for (const input of midiAccess.inputs.values()) {
             console.log(` - ${input.name}`);
             input.onmidimessage = this._handleMIDIMessage;
         }

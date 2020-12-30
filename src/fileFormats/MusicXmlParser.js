@@ -24,15 +24,15 @@ export function preprocessMusicXmlData(xml) {
     const instruments = xml.getElementsByTagName('score-instrument');
     const partNames = [];
     const instrumentNames = [];
-    for (let p of partNameElements) {
+    for (const p of partNameElements) {
         partNames.push(p.innerHTML);
     }
-    for (let i of instruments) {
+    for (const i of instruments) {
         instrumentNames.push(i.children[0].innerHTML);
     }
     // Preprocess notes
     const parts = xml.getElementsByTagName('part');
-    let parsedParts = [];
+    const parsedParts = [];
     for (let p = 0; p < parts.length; p++) {
         const measures = parts[p].children;
         parsedParts.push(preprocessMusicXmlMeasures(measures));
@@ -73,11 +73,11 @@ function preprocessMusicXmlMeasures(measures) {
     const noteObjs = [];
     const measureLinePositions = [];
     // const directions = [];
-    for (let measure of measures) {
+    for (const measure of measures) {
         // Try to update metrics (if they are not set, keep the old ones)
         try {
             const soundElements = measure.getElementsByTagName('sound');
-            for (let el of soundElements) {
+            for (const el of soundElements) {
                 const tempoValue = el.getAttribute('tempo');
                 if (tempoValue !== null) {
                     tempo = +tempoValue;
@@ -106,7 +106,7 @@ function preprocessMusicXmlMeasures(measures) {
         // Read notes
         const notes = measure.getElementsByTagName('note');
         let lastNoteDuration = 0;
-        for (let note of notes) {
+        for (const note of notes) {
             try {
                 // TODO: Ignore non-tab staff when there is a tab staff
                 // Get note duration in seconds
@@ -131,7 +131,7 @@ function preprocessMusicXmlMeasures(measures) {
                 // Is this note tied?
                 const tieEl = note.getElementsByTagName('tie')[0];
                 if (tieEl && tieEl.getAttribute('type') === 'stop') {
-                    let noteEnd = currentTime + durationInSeconds;
+                    const noteEnd = currentTime + durationInSeconds;
                     // Find last note with this pitch and update end
                     for (let i = noteObjs.length - 1; i > 0; i--) {
                         const n = noteObjs[i];
@@ -271,13 +271,13 @@ function duplicateRepeatedMeasures(measures) {
  * @returns {number[]} pitches of the tuning or [] if none is found
  */
 function getTuningPitches(measures) {
-    for (let measure of measures) {
+    for (const measure of measures) {
         try {
-            let tuningPitches = [];
+            const tuningPitches = [];
             const staffTunings = measure.getElementsByTagName('staff-tuning');
-            for (let st of staffTunings) {
-                let tuningNote = st.getElementsByTagName('tuning-step')[0].innerHTML;
-                let tuningOctave = +st.getElementsByTagName('tuning-octave')[0].innerHTML;
+            for (const st of staffTunings) {
+                const tuningNote = st.getElementsByTagName('tuning-step')[0].innerHTML;
+                const tuningOctave = +st.getElementsByTagName('tuning-octave')[0].innerHTML;
                 // let line = +st.getAttribute('line');
                 // console.log(`String ${line} is tuned to ${tuningNote}${tuningOctave}`);
                 tuningPitches.push(getMidiNoteByNameAndOctave(tuningNote, tuningOctave).pitch);

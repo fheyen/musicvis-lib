@@ -148,7 +148,7 @@ class NoteArray {
      */
     getDuration() {
         let duration = 0;
-        for (let note of this.#notes) {
+        for (const note of this.#notes) {
             const noteEnd = note.end === null ? note.start : note.end;
             if (noteEnd > duration) {
                 duration = noteEnd;
@@ -313,7 +313,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     transpose(steps) {
-        for (let n of this.#notes) {
+        for (const n of this.#notes) {
             n.pitch = clipValue(n.pitch + steps, 0, 127);
         }
         return this;

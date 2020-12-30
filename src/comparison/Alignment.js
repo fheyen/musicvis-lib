@@ -19,7 +19,7 @@ import NoteArray from '../types/NoteArray';
  */
 export function alignNoteArrays(gt, rec) {
     rec = rec.clone();
-    let f = alignmentForce(gt.getNotes(), rec.getNotes());
+    const f = alignmentForce(gt.getNotes(), rec.getNotes());
     rec = rec.shiftTime(f);
     // console.log(`Aligned recording via shifting by ${f.toFixed(3)} seconds`);
     return {
@@ -45,9 +45,9 @@ export function alignNoteArrays2(gt, rec) {
         // Get average time difference between matched notes
         let timeDiff = 0;
         let count = 0;
-        for (let m of matching.values()) {
+        for (const m of matching.values()) {
             const { gtRecMap } = m;
-            for (let [gtStart, matchedRecNote] of gtRecMap.entries()) {
+            for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
                 if (matchedRecNote !== null) {
                     count++;
                     timeDiff += gtStart - matchedRecNote.start;
@@ -87,9 +87,9 @@ export function alignNoteArrays3(gt, rec) {
         // Get a 1-to-1 matching between gt and rec notes so noise has less impact
         const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes());
         // Get time differences
-        let timeDiffs = [];
-        for (let m of matching.values()) {
-            for (let [gtStart, matchedRecNote] of m.gtRecMap.entries()) {
+        const timeDiffs = [];
+        for (const m of matching.values()) {
+            for (const [gtStart, matchedRecNote] of m.gtRecMap.entries()) {
                 if (matchedRecNote !== null) {
                     timeDiffs.push(gtStart - matchedRecNote.start);
                 }
@@ -126,10 +126,10 @@ function alignmentForce(a, b) {
     let difference = 0;
     let count = 0;
     // For each note in a, search the closest note in b with the same pitch and calculate the distance
-    for (let noteA of a) {
+    for (const noteA of a) {
         let distance = Infinity;
         let diff = Infinity;
-        for (let noteB of b) {
+        for (const noteB of b) {
             if (noteA.pitch === noteB.pitch) {
                 const dist = Math.abs(noteA.start - noteB.start);
                 if (dist < distance) {
@@ -234,14 +234,14 @@ export function alignmentBenchmark() {
     console.log(`True time shift: ${shift} seconds`);
 
     console.log('Only shifted');
-    for (let f of funcs) {
+    for (const f of funcs) {
         const { timeDifference } = f(notes, shifted);
         const error = Math.abs(timeDifference - -shift);
         console.log(`${f.name}\nshift: ${timeDifference.toFixed(3)} \nError ${error.toFixed(3)}`);
     }
 
     console.log('Shifted & variation');
-    for (let f of funcs) {
+    for (const f of funcs) {
         const { timeDifference } = f(notes, variation);
         const error = Math.abs(timeDifference - -shift);
         console.log(`${f.name}\nshift: ${timeDifference.toFixed(3)} \nError ${error.toFixed(3)}`);

@@ -1,6 +1,6 @@
 import { group } from 'd3';
 import * as Utils from '../utils';
-
+import { Note } from '../types/Note'; /* eslint-disable-line no-unused-vars */
 
 /**
  * @module comparison/Matching
@@ -24,6 +24,7 @@ import * as Utils from '../utils';
  * @todo add max distance?
  * @param {Note[]} recNotes recorded notes of a single recording
  * @param {Note[]} gtNotes ground truth notes
+ * @returns {Map} result
  */
 export function matchGtAndRecordingNotes(recNotes, gtNotes) {
     const groupedByPitch = group(gtNotes, d => d.pitch);
@@ -34,7 +35,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
         const gtRecMap = new Map();
         const additionalNotes = [];
         const missingNotes = [];
-        for (let n of gtNotes) {
+        for (const n of gtNotes) {
             gtRecMap.set(n.start, null);
         }
         // Recording might be missing this pitch, then all notes are missing
@@ -48,7 +49,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
             return;
         }
         const recNotes = groupedByPitchRec.get(pitch);
-        for (let r of recNotes) {
+        for (const r of recNotes) {
             // Match each recorded note to the closest ground truth note
             const nearest = Utils.findNearest(gtNotes, r);
             const currentEntry = gtRecMap.get(nearest.start);
@@ -68,7 +69,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
             }
         }
         // Go trough all GT notes, those that have no recording assigned to it are missing notes
-        for (let n of gtNotes) {
+        for (const n of gtNotes) {
             if (gtRecMap.get(n.start) === null) {
                 missingNotes.push(n);
             }
@@ -119,7 +120,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
     // For each pitch, map recorded notes to GT notes and keep track of misses
     groupedByPitch.forEach((gtNotes, pitch) => {
         const gtRecMap = new Map();
-        for (let n of gtNotes) {
+        for (const n of gtNotes) {
             gtRecMap.set(n.start, []);
         }
         // Recording might be missing this pitch, then match is empty
@@ -128,7 +129,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
             return;
         }
         const recNotes = groupedByPitchRec.get(pitch);
-        for (let r of recNotes) {
+        for (const r of recNotes) {
             // Match each recorded note to the closest ground truth note
             const nearest = Utils.findNearest(gtNotes, r);
             const currentEntry = gtRecMap.get(nearest.start);
@@ -164,7 +165,7 @@ export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) 
         gtRecMap.forEach((matchedRecNotes, gtStart) => {
             let error = 0;
             if (matchedRecNotes.length > 0) {
-                for (let note of matchedRecNotes) {
+                for (const note of matchedRecNotes) {
                     const err = Math.abs(note.start - gtStart);
                     if (err <= errorThreshold) {
                         error += err;
@@ -193,7 +194,7 @@ export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) 
  * @param {number} missPenalty penalty for each missing note
  * @param {number} timingPenalty penalty for note timing differences in seconds
  * @param {number} timeThreshold timing errors below it (absolute) are ignored
- * @returns {object}
+ * @returns {object} errors by category
  */
 export function getMatchingError(matching, addPenalty, missPenalty, timingPenalty, timeThreshold = 0) {
     const result = {
@@ -283,6 +284,7 @@ export function getMatchingSection(matching, start, end) {
  * @param {number} addPenalty penalty for each additonal note
  * @param {number} missPenalty penalty for each missing note
  * @param {number} timingPenalty penalty for note timing differences in seconds
+ * @returns {object} error by category
  */
 export function getMatchingSliceError(matching, start, end, addPenalty, missPenalty, timingPenalty) {
     const section = getMatchingSection(matching, start, end);

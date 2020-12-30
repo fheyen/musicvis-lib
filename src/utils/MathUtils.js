@@ -76,7 +76,7 @@ export function findLocalMaxima(arr) {
     let last = arr[0];
     let curr = arr[1];
     for (let i = 1; i < arr.length - 1; i++) {
-        let next = arr[i + 1];
+        const next = arr[i + 1];
         if (curr > last && curr > next) {
             maximaIndices.push(i);
         }

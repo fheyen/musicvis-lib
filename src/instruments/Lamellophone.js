@@ -158,7 +158,7 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
         }
         insideNote = false;
     };
-    for (let char of tab) {
+    for (const char of tab) {
         if (char === '(') {
             insideChord = true;
         } else if (noteNamesSet.has(char)) {
@@ -209,7 +209,7 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
     // Create tab
     let tab = '';
     let prevEnd = 0;
-    for (let chord of chords) {
+    for (const chord of chords) {
         // Format chord's notes
         let chordString = chord
             .map(note => pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`)
@@ -261,7 +261,7 @@ export function convertNotesToHtmlTab(
     // Create tab
     let tab = '';
     let prevEnd = 0;
-    for (let chord of chords) {
+    for (const chord of chords) {
         // Format chord's notes
         let chordString = chord
             .map(note => {
@@ -301,7 +301,7 @@ export function convertNumbersToLetters(numberTab, numberLetterMap) {
     numberTab = numberTab.replaceAll('*', '°');
     numberTab = numberTab.replaceAll('º', '°');
     numberTab = numberTab.replaceAll('^', '°');
-    for (let [key, value] of numberLetterMap.entries()) {
+    for (const [key, value] of numberLetterMap.entries()) {
         numberTab = numberTab.replaceAll(key, value);
     }
     return numberTab;
@@ -359,7 +359,7 @@ export function bestTransposition(notes, tuning) {
 
     const freePitches = new Set();
     const neededPitches = [];
-    for (let p of uncommon) {
+    for (const p of uncommon) {
         if (bestTransposed.has(p)) {
             neededPitches.push(p);
         } else {
@@ -387,9 +387,9 @@ export function bestTransposition(notes, tuning) {
 
     // Get closest free pitch for each needed one
     const retune = new Map();
-    for (let neededPitch of neededPitches) {
+    for (const neededPitch of neededPitches) {
         let bestMatch = null;
-        let bestDiff = Infinity;
+        const bestDiff = Infinity;
         let freePitch;
         for (freePitch of freePitches) {
             const diff = Math.abs(neededPitch - freePitch);

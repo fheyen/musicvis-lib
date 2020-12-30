@@ -1,8 +1,9 @@
 /**
  * Computes the Levenshtein distance of two strings or arrays.
- * Adapted from https://gist.github.com/andrei-m/982927#gistcomment-1931258
- * By https://github.com/kigiri
- * MIT License
+ *
+ * @see https://gist.github.com/andrei-m/982927#gistcomment-1931258
+ * @author https://github.com/kigiri
+ * @license MIT
  *
  * @param {string|Array} a a string
  * @param {string|Array} b another string
@@ -11,7 +12,7 @@
 export function levenshtein(a, b) {
     if (a.length === 0) { return b.length; }
     if (b.length === 0) { return a.length; }
-    let i, j, prev, val, row;
+    let i, j, prev, val;
     // swap to save some memory O(min(a,b)) instead of O(a)
     if (a.length > b.length) {
         const tmp = a;
@@ -19,7 +20,7 @@ export function levenshtein(a, b) {
         b = tmp;
     }
     // init the row
-    row = Array(a.length + 1);
+    const row = Array(a.length + 1);
     for (i = 0; i <= a.length; i++) {
         row[i] = i;
     }

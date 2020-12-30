@@ -12,33 +12,33 @@ class Track {
     #title = '';
 
     /**
-     * @param title
-     * @param measures
+     * @param {string} title title
+     * @param {Measure[]} measures measures
      */
     constructor(title, measures = []) {
         this.#title = title;
         this.measures = measures;
     }
 
-    /**
-     * @todo Reads attributes and notes from MIDI and create a JavaScript
-     * representation.
-     * @param {object} midiJson MIDI data parsed to JSON by midi-parser-js
-     * @returns {Track} a track parsed from the given MIDI data
-     */
-    static fromMidi(midiJson) {
-        return null;
-    }
+    // /**
+    //  * @todo Reads attributes and notes from MIDI and create a JavaScript
+    //  * representation.
+    //  * @param {object} midiJson MIDI data parsed to JSON by midi-parser-js
+    //  * @returns {Track} a track parsed from the given MIDI data
+    //  */
+    // static fromMidi(midiJson) {
+    //     return null;
+    // }
 
-    /**
-     * @todo Reads attributes and notes from MusicXML and create a JavaScript
-     * representation.
-     * @param {XMLDocument} musicXml MusicXML document
-     * @returns {Track} a track parsed from the given MIDI data
-     */
-    static fromMusicXml(musicXml) {
-        return null;
-    }
+    // /**
+    //  * @todo Reads attributes and notes from MusicXML and create a JavaScript
+    //  * representation.
+    //  * @param {XMLDocument} musicXml MusicXML document
+    //  * @returns {Track} a track parsed from the given MIDI data
+    //  */
+    // static fromMusicXml(musicXml) {
+    //     return null;
+    // }
 
     /**
      * Returns all measures of this track.
@@ -50,7 +50,7 @@ class Track {
     }
 
     /**
-     *
+     * @returns {string} title
      */
     get title() {
         return this.#title;
@@ -63,14 +63,14 @@ class Track {
      */
     getAllNotes() {
         let notes = [];
-        for (let p of this.measures) {
+        for (const p of this.measures) {
             notes = notes.concat(p.notes());
         }
         return notes.sort((a, b) => a.start - b.start);
     }
 
     /**
-     *
+     * @returns {Track} clone
      */
     clone() {
         return new Track(this.#title, this.measures);

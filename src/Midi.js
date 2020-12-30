@@ -847,14 +847,14 @@ export const MIDI_NOTE_RANGES = [
 ];
 
 // Build lookup maps
-for (let note of MIDI_NOTES) {
+for (const note of MIDI_NOTES) {
     MidiNoteByPitch.set(note.pitch, note);
     MidiNoteByLabel.set(note.label, note);
 }
-for (let instrument of MIDI_INSTRUMENTS) {
+for (const instrument of MIDI_INSTRUMENTS) {
     MidiInstrumentByNumber.set(instrument.number, instrument);
 }
-for (let instrument of MIDI_INSTRUMENTS_Lev2) {
+for (const instrument of MIDI_INSTRUMENTS_Lev2) {
     const key = `${instrument.number}-${instrument.subnumber}`;
     MidiInstrumentByNumberLev2.set(key, instrument);
 }

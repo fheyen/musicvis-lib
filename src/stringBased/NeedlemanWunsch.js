@@ -111,8 +111,8 @@ class NeedlemanWunsch {
      * @returns {object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
      */
     alignmentTraceback() {
-        let finalAlignments = [];
-        let root = {
+        const finalAlignments = [];
+        const root = {
             next: null,
             pos: [this.seq1.length, this.seq2.length],
             alignment: {

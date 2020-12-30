@@ -36,7 +36,7 @@ export function deepCloneFlatObjectMap(map) {
  * @returns {Map} grouping
  */
 export function groupNotesByPitch(tracks) {
-    let allNotes = tracks.flat();
+    const allNotes = tracks.flat();
     return group(allNotes, d => d.pitch);
 }
 
@@ -67,7 +67,7 @@ export function findNearest(notes, targetNote) {
     let nearest = null;
     let dist = Infinity;
     const targetStart = targetNote.start;
-    for (let n of notes) {
+    for (const n of notes) {
         const newDist = Math.abs(n.start - targetStart);
         if (newDist < dist) {
             dist = newDist;

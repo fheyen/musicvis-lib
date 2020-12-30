@@ -35,7 +35,7 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
         if (t !== null) {
             parsedTracks.push(t);
             // Get part name
-            let name = getPartName(track.event);
+            const name = getPartName(track.event);
             partNames.push(name ? name : `Track ${i}`);
         }
     }
@@ -77,11 +77,11 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
     let milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
     let tickOfLastTempoChange = 0;
     let timeOfLastTempoChange = 0;
-    for (let event of track.event) {
+    for (const event of track.event) {
         currentTick += event.deltaTime;
         let mostRecentTempoChange;
         // Update beat type change times
-        for (let btc of beatTypeChanges) {
+        for (const btc of beatTypeChanges) {
             if (btc.time === undefined && btc.tick <= currentTick) {
                 btc.time = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
             }
@@ -151,7 +151,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
         }
     }
     // Fix missing note ends
-    for (let note of notes) {
+    for (const note of notes) {
         if (note.end === -1) {
             note.end = currentTime;
         }
@@ -187,7 +187,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
  * @returns {string[]} part names
  */
 function getPartName(track) {
-    for (let event of track) {
+    for (const event of track) {
         if (event.type === 255 && event.metaType === 3) {
             return event.data;
         }
@@ -306,8 +306,8 @@ function getMidiTempoAndBeatChanges(tracks) {
     const tempoChanges = [];
     const beatTypeChanges = [];
     let currentTick = 0;
-    for (let track of tracks) {
-        for (let event of track.event) {
+    for (const track of tracks) {
+        for (const event of track.event) {
             // Get timing of events
             currentTick += event.deltaTime;
             // Tempo change

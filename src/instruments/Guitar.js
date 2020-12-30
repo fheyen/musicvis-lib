@@ -120,10 +120,10 @@ export function guitarNoteFromNote(note, tuning) {
  */
 export function getTuningFromPitches(pitches) {
     const stringCount = pitches.length;
-    for (let stringCountMap of stringedTunings.values()) {
+    for (const stringCountMap of stringedTunings.values()) {
         if (stringCountMap.has(stringCount)) {
             const tunings = stringCountMap.get(stringCount);
-            for (let t of tunings) {
+            for (const t of tunings) {
                 if (arrayShallowEquals(t.pitches, pitches)) {
                     return t;
                 }
@@ -304,7 +304,7 @@ export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
     const [minPitch, maxPitch] = getTuningPitchRange(tuning, fretCount);
     const possibleNotes = [];
     const errorPitches = [];
-    for (let note of notes) {
+    for (const note of notes) {
         if (note.pitch < minPitch || note.pitch > maxPitch) {
             errorPitches.push(note.pitch);
         } else {
@@ -312,12 +312,12 @@ export function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
         }
     }
     const result = [];
-    for (let note of possibleNotes) {
+    for (const note of possibleNotes) {
         const positions = getFretboardPositionsFromPitch(note.pitch, tuning, 24);
         // Choose best position
         // TODO: improve this to make it easier to play, take closest postion to prior one
         let bestPos = positions[0];
-        for (let pos of positions) {
+        for (const pos of positions) {
             if (pos.fret < bestPos.fret) {
                 bestPos = pos;
             }

@@ -64,7 +64,7 @@ export function findSimilarStringSections(dataString, searchString, threshold = 
     matches.sort((a, b) => a.distance - b.distance);
     // Speed up hit detection by keeping track of indices that are already occupied
     const occupied = new Array(dataString.length).fill(false);
-    for (let m of matches) {
+    for (const m of matches) {
         const { index } = m;
         // Check if occupied
         let occ = false;

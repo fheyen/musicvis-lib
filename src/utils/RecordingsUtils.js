@@ -3,7 +3,7 @@ import Note from '../types/Note';
 import { bpmToSecondsPerBeat } from './MiscUtils';
 import { kernelDensityEstimator, kernelEpanechnikov } from './StatisticsUtils';
 import { findLocalMaxima } from './MathUtils';
-import Recording from '../types/Recording';
+import Recording from '../types/Recording'; /* eslint-disable-line no-unused-vars */
 
 /**
  * @module utils/RecordingsUtils
@@ -93,7 +93,7 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
         const maxTime = max(notes, d => d.end);
         const nBins = Math.ceil((maxTime * 1000) / binSize) + 1;
         const heatmap = new Array(nBins).fill(0);
-        for (let note of notes) {
+        for (const note of notes) {
             const start = Math.round(note.start * 1000 / binSize);
             const end = Math.round(note.end * 1000 / binSize);
             for (let bin = start; bin <= end; bin++) {

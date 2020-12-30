@@ -75,7 +75,7 @@ export const drumPitchReplacementMapMPS850 = new Map([
 export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove = 0.1) {
     // Only use pitches that occur in the GT data
     const usedPitches = new Set();
-    for (let note of data) {
+    for (const note of data) {
         usedPitches.add(note.pitch);
     }
     const pitches = Array.from(usedPitches);
@@ -83,7 +83,7 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
     const randVelocity = randomInt(15, 128);
     const randTime = randomNormal(0, deviation);
     const variation = [];
-    for (let note of data) {
+    for (const note of data) {
         // Add and remove notes at random
         if (randFloat(0, 1) < pAdd) {
             // Add another note

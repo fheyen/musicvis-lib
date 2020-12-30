@@ -29,7 +29,7 @@ export const recordMidi = () => {
                 return;
             }
             // Do this here, in case devices changed
-            for (let input of midiAccess.inputs.values()) {
+            for (const input of midiAccess.inputs.values()) {
                 input.onmidimessage = addMessage;
             }
             console.log('[MidiInput] Starting recording');
@@ -58,7 +58,7 @@ function processMidiMessagesToNotes(messages) {
     // Keep track of currently sounding notes
     const currentNotes = new Map();
     const notes = [];
-    for (let message of messages) {
+    for (const message of messages) {
         const device = message.target.name;
         const time = message.timeStamp;
         const commandAndChannel = message.data[0];

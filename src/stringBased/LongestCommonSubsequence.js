@@ -16,7 +16,9 @@ export function lcs(a, b) {
     // Return now if one (or both) empty
     if (a.length === 0) { return a; }
     if (b.length === 0) { return b; }
-    let i, j, lcs = [], row = [], c = [], left, diag, latch;
+    let i, j, row = [], left, diag, latch;
+    const lcs = [];
+    const c = [];
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
     for (i = 0; i < m; i++) {
@@ -42,8 +44,7 @@ export function lcs(a, b) {
         default:
             j--;
             lcs.unshift(a[i]);
-            // eslint-disable-next-line
-            case (i && c[i - 1][j]):
+        case (i && c[i - 1][j]): // eslint-disable-line no-fallthrough
             i--;
             continue;
         case (j && c[i][j - 1]):
@@ -77,7 +78,8 @@ export function lcsLength(a, b) {
     // Return now if one (or both) empty
     if (a.length === 0) { return 0; }
     if (b.length === 0) { return 0; }
-    let i, j, row = [], c = [], left, diag, latch;
+    let i, j, row = [], left, diag, latch;
+    const c = [];
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
     for (i = 0; i < m; i++) {

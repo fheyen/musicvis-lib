@@ -201,7 +201,7 @@ class HandPose {
     }
 
     /**
-     *
+     * @returns {HandPose} clone
      */
     clone() {
         return new HandPose(this.fingerPositions.map(d => d.clone()));
@@ -230,7 +230,10 @@ class HandPose {
     }
 
     /**
-     * @param otherHandPose
+     * Calculates movement costs
+     *
+     * @param {HandPose} otherHandPose another HandPose
+     * @returns {number} cost
      */
     costOfMovement(otherHandPose) {
         // Naive: move every finger alone

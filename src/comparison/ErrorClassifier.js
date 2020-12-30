@@ -1,11 +1,11 @@
 /**
- * Build on the concept of the algorithm instrudced in
+ * Build on the concept of the algorithm introduced in
  * Jakub Krawczuk - Real-Time and Post-Hoc Visualizations of Guitar Perfomances as a Support for Music Education
  */
 
 import { group } from 'd3';
-import { GuitarNote } from '../types/GuitarNote';
-import { Note } from '../types/Note';
+import { GuitarNote } from '../types/GuitarNote'; /* eslint-disable-line no-unused-vars */
+import { Note } from '../types/Note'; /* eslint-disable-line no-unused-vars */
 import * as Utils from '../utils';
 
 
@@ -96,8 +96,8 @@ export function separateMissed(classifiedNotes) {
 class Overlap {
     /**
      *
-     * @param {*} gtNote
-     * @param {*} recNote
+     * @param {Note} gtNote ground truth note
+     * @param {Note} recNote recorded note
      */
     constructor(gtNote, recNote) {
         this.gtNote = gtNote;
@@ -127,8 +127,8 @@ export const NoteState = {
 export class NoteWithState {
     /**
      *
-     * @param {Note} note
-     * @param {NoteState} state
+     * @param {Note} note note
+     * @param {NoteState} state state
      */
     constructor(note, state) {
         this.note = note;
@@ -136,21 +136,21 @@ export class NoteWithState {
     }
 }
 
-/**
- * @param a
- * @param b
- */
-function sortByStartAndEnd(a, b) {
-    if (a.end === b.end) {
-        return a.start - b.start;
-    }
-    return a.end - b.end;
-}
+// /**
+//  * @param a
+//  * @param b
+//  */
+// function sortByStartAndEnd(a, b) {
+//     if (a.end === b.end) {
+//         return a.start - b.start;
+//     }
+//     return a.end - b.end;
+// }
 
 /**
- * @param map
- * @param key
- * @param value
+ * @param {Map} map map
+ * @param {*} key key
+ * @param {*} value value
  */
 function setOrAdd(map, key, value) {
     if (map.has(key)) {
@@ -161,8 +161,9 @@ function setOrAdd(map, key, value) {
 }
 
 /**
- * @param map
- * @param key
+ * @param {Map} map map
+ * @param {*} key key
+ * @returns {boolean} true if map.get(key).size > 0
  */
 function hasAtLeastOne(map, key) {
     return map.has(key) && map.get(key)?.size > 0;
@@ -173,8 +174,9 @@ function hasAtLeastOne(map, key) {
  *
  * @ignore
  * @todo Move somewhere else to make it shared?
- * @param {Note[]} gtNotes
- * @param {Note[]} recNotes
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Note[]} recNotes recorded notes
+ * @returns {{classified:NoteWithState[], overlapping:Array}} overlaps and classified notes
  */
 function getGtRecOverlaps(gtNotes, recNotes) {
     const missedGtNotes = [];
@@ -325,8 +327,8 @@ function handleOverlappingNotes(overlapping, threshold) {
  * considered instead.
  *
  * @ignore
- * @param {GuitarNote} baseNote
- * @param {Set<GuitarNote>} candidates
+ * @param {GuitarNote} baseNote base notes
+ * @param {Set<GuitarNote>} candidates matching candidates
  * @returns {GuitarNote} best matching note
  */
 export function findBestMatch(baseNote, candidates) {
@@ -355,8 +357,8 @@ export function findBestMatch(baseNote, candidates) {
  * start) to the baseNote.
  *
  * @ignore
- * @param {Note} baseNote
- * @param {Set<Note>} candidates
+ * @param {Note} baseNote base note
+ * @param {Set<Note>} candidates matching candidates
  * @returns {Note} best matching note
  */
 export function findBestMatchBasedOnTime(baseNote, candidates) {
@@ -379,8 +381,8 @@ export function findBestMatchBasedOnTime(baseNote, candidates) {
  * A delta of 50 ms is indistinguishable for human hearing
  *
  * @ignore
- * @param {GuitarNote} expectedNote
- * @param {GuitarNote} actualNote
+ * @param {GuitarNote} expectedNote expected note
+ * @param {GuitarNote} actualNote actual note
  * @param {number} threshold threshold for 'same-ness' in seconds
  * @returns {NoteState} note state
  */

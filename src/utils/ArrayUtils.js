@@ -38,12 +38,12 @@ export function arrayHasSameElements(a, b, checkLength = true) {
     }
     const setA = new Set(a);
     const setB = new Set(b);
-    for (let element of setA) {
+    for (const element of setA) {
         if (!setB.has(element)) {
             return false;
         }
     }
-    for (let element of setB) {
+    for (const element of setB) {
         if (!setA.has(element)) {
             return false;
         }
@@ -90,8 +90,8 @@ export function arrayContainsArray(a, b) {
  */
 export function getMatrixMax(matrix) {
     let maximum = -Infinity;
-    for (let row of matrix) {
-        for (let value of row) {
+    for (const row of matrix) {
+        for (const value of row) {
             if (isNaN(+value)) { continue; }
             if (value > maximum) {
                 maximum = value;

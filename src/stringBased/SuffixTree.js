@@ -51,7 +51,7 @@ class SuffixTree {
 }
 
 /**
- *
+ * TreeNode
  */
 class TreeNode {
     /**
@@ -64,7 +64,8 @@ class TreeNode {
     }
 
     /**
-     * @param suf
+     * @param {string|Array} suf suffix
+     * @returns {boolean} true if first entry of suf equals the value of a child
      */
     checkNodes(suf) {
         let node;
@@ -79,7 +80,7 @@ class TreeNode {
     }
 
     /**
-     * @param suf
+     * @param {string|Array} suf suffix
      */
     checkLeaves(suf) {
         let node, leaf;
@@ -99,7 +100,7 @@ class TreeNode {
     }
 
     /**
-     * @param suf
+     * @param {string|Array} suf suffix
      */
     addSuffix(suf) {
         if (!suf.length) {
@@ -111,7 +112,9 @@ class TreeNode {
     }
 
     /**
+     * Returns the longest repeated substring
      *
+     * @returns {Array} longest substring
      */
     getLongestRepeatedSubString() {
         let arr = [];
@@ -141,12 +144,12 @@ class TreeNode {
         }
         if (this.nodes.length) {
             for (let i = 0; i < this.nodes.length; i++) {
-                str += `\n${ind}` + this.nodes[i].toString(indent + 1);
+                str += `\n${ind}${this.nodes[i].toString(indent + 1)}`;
             }
         }
         if (this.leaves.length) {
             for (let i = 0; i < this.leaves.length; i++) {
-                str += `\n${ind}-L ` + this.leaves[i];
+                str += `\n${ind}-L ${this.leaves[i]}`;
             }
         }
         return str;
