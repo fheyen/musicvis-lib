@@ -141,7 +141,7 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
     let currentPitch = 0;
     let currentOctOffset = 0;
     const notes = [];
-    tab = `${tab.toUpperCase()} `;
+    tab = `${tab.toUpperCase().replaceAll('\n', ' \n')} `;
     // This is needed more often
     const finishNote = () => {
         try {
@@ -161,7 +161,13 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
     };
     for (const char of tab) {
         if (char === '(') {
-            // Start chord
+            // Start chord (but finish current if any)
+            if (insideChord) {
+                insideChord = false;
+            }
+            if (insideNote) {
+                finishNote();
+            }
             insideChord = true;
         } else if (noteNamesSet.has(char)) {
             // Start note (but finish current if any)
