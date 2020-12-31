@@ -141,7 +141,8 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
     let currentPitch = 0;
     let currentOctOffset = 0;
     const notes = [];
-    tab = `${tab} `;
+    tab = `${tab.toUpperCase()} `;
+    // This is needed more often
     const finishNote = () => {
         try {
             notes.push(Note.from({
@@ -160,22 +161,28 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
     };
     for (const char of tab) {
         if (char === '(') {
+            // Start chord
             insideChord = true;
         } else if (noteNamesSet.has(char)) {
+            // Start note (but finish current if any)
             if (insideNote) {
                 finishNote();
             }
             insideNote = true;
             currentPitch = noteNames.indexOf(char);
         } else if (char === '#') {
+            // Sharpen note
             currentPitch++;
         } else if (char === '°') {
+            // Increase ocatve
             currentOctOffset++;
         } else if (char === ' ' || char === '\n' || char === ')') {
+            // End chord and note if inside
             if (char === ')') {
                 insideChord = false;
             }
             if (char === '\n') {
+                insideChord = false;
                 currentTime += secondsPerBeat;
             }
             if (insideNote) {
@@ -212,7 +219,13 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
     for (const chord of chords) {
         // Format chord's notes
         let chordString = chord
-            .map(note => pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`)
+            .map(note => {
+                if (pitchToSymbolMap.has(note.pitch)) {
+                    return pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
+                } else {
+                    return mode === 'letter' ? getMidiNoteByNr(note.pitch)?.name ?? note.pitch : note.pitch;
+                }
+            })
             .join(' ');
         if (chord.length > 1) {
             // Mark chords with backets (for multiple notes)
@@ -265,7 +278,12 @@ export function convertNotesToHtmlTab(
         // Format chord's notes
         let chordString = chord
             .map(note => {
-                const str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
+                let str;
+                if (pitchToSymbolMap.has(note.pitch)) {
+                    str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
+                } else {
+                    str = mode === 'letter' ? getMidiNoteByNr(note.pitch)?.name ?? note.pitch : note.pitch;
+                }
                 const color = colormap(note.pitch);
                 return `<span class='note' style='background-color: ${color}'>${str}</span>`;
             })
