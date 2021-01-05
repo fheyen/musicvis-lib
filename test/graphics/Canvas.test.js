@@ -45,4 +45,8 @@ describe('Canvas', () => {
     test('draw rounded rect', () => {
         expect(() => Canv.drawRoundedRect(ctx, 50, 50, 100, 200, 20)).not.toThrow();
     });
+
+    test('draw hexagon', () => {
+        expect(() => Canv.drawHexagon(ctx, 50, 50, 10)).not.toThrow();
+    });
 });

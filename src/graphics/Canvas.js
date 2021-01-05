@@ -181,3 +181,27 @@ export function drawRoundedRect(ctx, x, y, width, height, radius) {
     ctx.quadraticCurveTo(x, y, x + radius, y);
     ctx.closePath();
 }
+
+/**
+ * Draws a hexagon
+ *
+ * @param {CanvasRenderingContext2D} ctx canvas rendering context
+ * @param {number} cx center x
+ * @param {number} cy center y
+ * @param {number} radius radius of the circle on which the points are placed
+ */
+export function drawHexagon(ctx, cx, cy, radius) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+        // Start at 30° so snowflake can be drawn to the right
+        const angle = (60 * i + 30) / 180 * Math.PI;
+        const x = cx + Math.cos(angle) * radius;
+        const y = cy + Math.sin(angle) * radius;
+        if (i === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.closePath();
+}

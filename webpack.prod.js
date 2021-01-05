@@ -1,21 +1,21 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-    entry: path.resolve(__dirname, "src/index.js"),
+    entry: path.resolve(__dirname, 'src/index.js'),
     output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "musicvislib.min.js",
-        library: "musicvislib",
-        libraryTarget: "umd",
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'musicvislib.min.js',
+        library: 'musicvislib',
+        libraryTarget: 'umd',
     },
     module: {
         rules: [
             {
                 test: /\.(js)$/,
                 exclude: /node_modules/,
-                use: "babel-loader",
+                use: 'babel-loader',
             },
         ],
     },
-    mode: "production"
+    mode: 'production',
 };
