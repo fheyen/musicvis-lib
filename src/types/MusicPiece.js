@@ -108,6 +108,8 @@ class Track extends NoteArray {
 
     /**
      * Used by MusicPiece for its toMidi method
+     *
+     * @param midi
      */
     toMidi(midi) {
         const track = midi.addTrack();
@@ -120,7 +122,6 @@ class Track extends NoteArray {
             });
         }
     }
-}
 
     // TODO: clone, equals
 }

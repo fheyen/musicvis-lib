@@ -18,7 +18,6 @@ export class LamellophoneTuning {
      * @param {string} name name
      * @param {string[]} notes array of notes, same order as on instrument
      *      e.g. [..., 'D4','C4', 'F#4', ...]
-     * @todo
      */
     constructor(name, notes) {
         this.name = name;
