@@ -142,9 +142,9 @@ class GuitarNote extends Note {
      */
     toString(short = false) {
         if (short) {
-            return `GuitarNote(p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret})`;
+            return `GuitarNote(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret})`;
         }
-        return `GuitarNote(pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
+        return `GuitarNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
     }
 }
 

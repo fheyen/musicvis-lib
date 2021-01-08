@@ -34,10 +34,10 @@ describe('GuitarNote', () => {
     test('toString', () => {
         const note = new GuitarNote(12, 1.25, 120, 0, 3.0, 4, 12);
         expect(note.toString()).toBe(
-            `GuitarNote(pitch: 12, start: 1.25, end: 3, velocity: 120, channel: 0, string: 4, fret: 12)`
+            `GuitarNote(name: C0, pitch: 12, start: 1.25, end: 3, velocity: 120, channel: 0, string: 4, fret: 12)`
         );
         expect(note.toString(true)).toBe(
-            `GuitarNote(p: 12, s: 1.25, e: 3, v: 120, c: 0, s: 4, f: 12)`
+            `GuitarNote(n: C0, p: 12, s: 1.25, e: 3, v: 120, c: 0, s: 4, f: 12)`
         );
     });
 

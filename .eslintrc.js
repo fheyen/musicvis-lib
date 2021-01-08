@@ -17,7 +17,7 @@ module.exports = {
         ecmaVersion: 12,
         sourceType: 'module',
     },
-    ignorePatterns: ['**/docs/*.js', '**/dist/*.js', '**/.test.js'],
+    ignorePatterns: ['**/docs/*.js', '**/dist/*.js', '**/*.test.js', '**/node_modules/**'],
     rules: {
         // The Error level should be `error`, `warn`, or `off` (or 2, 1, or 0)
         'eqeqeq': 1,

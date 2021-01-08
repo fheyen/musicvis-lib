@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@tonaljs/tonal": "^4.6.0",
+    "@tonejs/midi": "^2.0.25",
     "d3": "^6.3.1",
     "dynamic-time-warping-2": "^1.1.2"
   },

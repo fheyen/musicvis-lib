@@ -1,5 +1,7 @@
 /**
  * @module instruments/StringedFingering
+ * @todo unfinished
+ * @todo not tested
  */
 
 

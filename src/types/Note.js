@@ -21,6 +21,15 @@ class Note {
         channel = 0,
         end = null,
     ) {
+        // Get note name, e.g. C#4
+        if (pitch < 0 || pitch > 127) {
+            throw new Error(`Invalid pitch ${pitch}`);
+        }
+        try {
+            this.name = getMidiNoteByNr(pitch).label;
+        } catch {
+            throw new Error(`Invalid pitch ${pitch}`);
+        }
         this.pitch = pitch;
         this.start = start;
         this.velocity = velocity;
@@ -101,7 +110,7 @@ class Note {
      * @returns {string} note name as string
      */
     getName() {
-        return getMidiNoteByNr(this.pitch).label;
+        return this.name;
     }
 
     /**
@@ -201,9 +210,9 @@ class Note {
      */
     toString(short = false) {
         if (short) {
-            return `Note(p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel})`;
+            return `Note(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel})`;
         }
-        return `Note(pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel})`;
+        return `Note(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel})`;
     }
 }
 

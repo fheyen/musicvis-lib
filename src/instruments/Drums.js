@@ -138,8 +138,7 @@ export function simplifyDrumPitches(notes, replacementMap) {
         } else {
             newPitch = replacementMap.get(oldPitch).repPitch;
         }
-        const newNote = Note.from(note);
-        newNote.pitch = newPitch;
+        const newNote = Note.from({ ...note, pitch: newPitch });
         return newNote;
     });
     // TODO: return errors, do not log! also easier to test

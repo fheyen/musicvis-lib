@@ -83,6 +83,23 @@ describe('Note', () => {
                 channel: 0
             })).toThrowError(`Invalid pitch for Note.from()`);
         });
+
+        test('note pitch incorrect', () => {
+            expect(() => Note.from({
+                pitch: -1,
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            })).toThrowError(`Invalid pitch -1`);
+            expect(() => Note.from({
+                pitch: 10.5,
+                start: 0.5,
+                end: 1.5,
+                velocity: 50,
+                channel: 0
+            })).toThrowError(`Invalid pitch 10.5`);
+        });
     });
 
 
@@ -236,10 +253,10 @@ describe('Note', () => {
     test('toString', () => {
         const note = new Note(12, 1.25, 120, 0, 3.0);
         expect(note.toString()).toBe(
-            `Note(pitch: 12, start: 1.25, end: 3, velocity: 120, channel: 0)`
+            `Note(name: C0, pitch: 12, start: 1.25, end: 3, velocity: 120, channel: 0)`
         );
         expect(note.toString(true)).toBe(
-            `Note(p: 12, s: 1.25, e: 3, v: 120, c: 0)`
+            `Note(n: C0, p: 12, s: 1.25, e: 3, v: 120, c: 0)`
         );
     });
 });

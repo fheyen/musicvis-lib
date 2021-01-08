@@ -96,7 +96,7 @@ describe('RecordingsUtils', () => {
             ],
             [
                 Note.from({ pitch: 120 }),
-                Note.from({ pitch: 130 }),
+                Note.from({ pitch: 122 }),
             ],
         ];
         const recs = [
