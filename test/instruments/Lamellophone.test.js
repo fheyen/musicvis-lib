@@ -13,6 +13,12 @@ describe('Kalimba', () => {
 
         test('tunings pitches', () => {
             expect(tuning.pitches).toStrictEqual(
+                [86, 83, 79, 76, 72, 69, 65, 62, 60, 64, 67, 71, 74, 77, 81, 84, 88]
+            );
+        });
+
+        test('tunings pitchesSorted', () => {
+            expect(tuning.pitchesSorted).toStrictEqual(
                 [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84, 86, 88]
             );
         });
@@ -33,21 +39,21 @@ describe('Kalimba', () => {
             );
         });
 
-        test('getNotesInInstrumentOrder pitches', () => {
-            expect(
-                tuning.getNotesInInstrumentOrder()
-            ).toStrictEqual(
-                [86, 83, 79, 76, 72, 69, 65, 62, 60, 64, 67, 71, 74, 77, 81, 84, 88]
-            );
-        });
+        // test('getNotesInInstrumentOrder pitches', () => {
+        //     expect(
+        //         tuning.getNotesInInstrumentOrder()
+        //     ).toStrictEqual(
+        //         [86, 83, 79, 76, 72, 69, 65, 62, 60, 64, 67, 71, 74, 77, 81, 84, 88]
+        //     );
+        // });
 
-        test('getNotesInInstrumentOrder note letters', () => {
-            expect(
-                tuning.getNotesInInstrumentOrder(false)
-            ).toStrictEqual(
-                ["D6", "B5", "G5", "E5", "C5", "A4", "F4", "D4", "C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6", "E6"]
-            );
-        });
+        // test('getNotesInInstrumentOrder note letters', () => {
+        //     expect(
+        //         tuning.getNotesInInstrumentOrder(false)
+        //     ).toStrictEqual(
+        //         ["D6", "B5", "G5", "E5", "C5", "A4", "F4", "D4", "C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6", "E6"]
+        //     );
+        // });
     });
 
     describe('convertTabToNotes', () => {
@@ -161,6 +167,23 @@ describe('Kalimba', () => {
             );
         });
 
+        test('octaves, other tuning', () => {
+            const tuning = Lamellophone.lamellophoneTunings?.get('Kalimba')?.get('9 A Minor');
+            const notes = [
+                Note.from({ pitch: 'C5', start: 0, end: 1 }),
+                Note.from({ pitch: 'A4', start: 1, end: 2 }),
+                Note.from({ pitch: 'F5', start: 1, end: 2 }),
+                Note.from({ pitch: 'E6', start: 3, end: 4 }),
+                Note.from({ pitch: 'F5', start: 4, end: 5 }),
+                Note.from({ pitch: 'B5', start: 5, end: 6 }),
+            ];
+            expect(
+                Lamellophone.convertTabToNotes(`C° (A F°)\nE°° F° B°`, tuning, 60)
+            ).toStrictEqual(
+                notes
+            );
+        });
+
         test('one note immediately after another', () => {
             const notes = [
                 Note.from({ pitch: 'C4', start: 0, end: 1 }),
@@ -268,7 +291,7 @@ describe('Kalimba', () => {
                 Note.from({ pitch: 'D5', start: 4, end: 5 }),
                 Note.from({ pitch: 'C6', start: 5, end: 6 }),
             ];
-            const tab = Lamellophone.convertNotesToTab(notes, tuning, 'letter', 0.1)
+            const tab = Lamellophone.convertNotesToTab(notes, tuning, 'letter', 0.1);
             expect(
                 Lamellophone.convertTabToNotes(tab, tuning, 60)
             ).toStrictEqual(
@@ -285,7 +308,7 @@ describe('Kalimba', () => {
                 Note.from({ pitch: 'D5', start: 4, end: 5 }),
                 Note.from({ pitch: 'C6', start: 5, end: 6 }),
             ];
-            const tab = Lamellophone.convertNotesToTab(notes, tuning, 'letter', 0.1)
+            const tab = Lamellophone.convertNotesToTab(notes, tuning, 'letter', 0.1);
             expect(
                 Lamellophone.convertTabToNotes(tab, tuning, 60)
             ).toStrictEqual(

@@ -16,14 +16,18 @@ export class LamellophoneTuning {
      * Represents a tuning of lamellophone.
      *
      * @param {string} name name
-     * @param {string[]} notes array of notes, low to high
-     *      e.g. ['C4', 'D4', 'F#4', ...]
+     * @param {string[]} notes array of notes, same order as on instrument
+     *      e.g. [..., 'D4','C4', 'F#4', ...]
+     * @todo
      */
     constructor(name, notes) {
         this.name = name;
         this.notes = notes;
         this.short = notes.join(' ');
         this.pitches = notes.map(note => getMidiNoteByLabel(note).pitch);
+        this.pitchesSorted = this.pitches
+            .slice()
+            .sort((a, b) => a - b);
         this.keyCount = notes.length;
     }
 
@@ -35,9 +39,10 @@ export class LamellophoneTuning {
      * @returns {string[]} array with tuning notes in number representation
      */
     getNumbers() {
+        const pitches = this.pitchesSorted;
         const numbers = new Map();
-        for (let i = 0; i < this.pitches.length; i++) {
-            const pitch = this.pitches[i];
+        for (let i = 0; i < pitches.length; i++) {
+            const pitch = pitches[i];
             let number = i + 1;
             let ending = '';
             let lowerOctave = pitch - 12;
@@ -48,7 +53,8 @@ export class LamellophoneTuning {
             }
             numbers.set(pitch, { number, numberString: `${number}${ending}` });
         }
-        return Array.from(numbers.values()).map(d => d.numberString);
+        return Array.from(numbers.values())
+            .map(d => d.numberString);
     }
 
     /**
@@ -59,9 +65,10 @@ export class LamellophoneTuning {
      * @returns {string[]} array with tuning notes in letter representation
      */
     getLetters() {
+        const pitches = this.pitchesSorted;
         const numbers = new Map();
-        for (let i = 0; i < this.pitches.length; i++) {
-            const pitch = this.pitches[i];
+        for (let i = 0; i < pitches.length; i++) {
+            const pitch = pitches[i];
             let number = i + 1;
             let ending = '';
             let lowerOctave = pitch - 12;
@@ -84,31 +91,41 @@ export class LamellophoneTuning {
      *      note letters
      * @returns {number[]|string[]} notes in the instuments' order
      */
-    getNotesInInstrumentOrder(returnPitches = true) {
-        const notes = returnPitches ? this.pitches : this.notes;
-        const result = [];
-        for (let i = 0; i < notes.length; i++) {
-            const p = notes[i];
-            if (i % 2 === 0) {
-                result.push(p);
-            } else {
-                result.unshift(p);
-            }
-        }
-        return result;
-    }
+    // getNotesInInstrumentOrder(returnPitches = true) {
+    //     const notes = returnPitches ? this.pitches : this.notes;
+    //     const result = [];
+    //     for (let i = 0; i < notes.length; i++) {
+    //         const p = notes[i];
+    //         if (i % 2 === 0) {
+    //             result.push(p);
+    //         } else {
+    //             result.unshift(p);
+    //         }
+    //     }
+    //     return result;
+    // }
 }
 
-
+/**
+ * Tunings.
+ * Notes are in the same order as on the instrument
+ */
 export const lamellophoneTunings = new Map([
     ['Kalimba', new Map([
         [
+            '9 A Minor',
+            // a°  c°°  c°  a°  a  f°  e°  e°°  h°
+            new LamellophoneTuning('9 A Minor', ['A5', 'C6', 'C5', 'A5', 'A4', 'F5', 'E5', 'E6', 'B5']),
+        ],
+        [
             '17 C Major',
-            new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
+            new LamellophoneTuning('17 C Major', ['D6', 'B5', 'G5', 'E5', 'C5', 'A4', 'F4', 'D4', 'C4', 'E4', 'G4', 'B4', 'D5', 'F5', 'A5', 'C6', 'E6']),
+            // new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
         ],
         [
             '21 C Major',
-            new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
+            new LamellophoneTuning('21 C Major', ['D6', 'B5', 'G5', 'E5', 'C5', 'A4', 'F4', 'D4', 'B3', 'G3', 'F3', 'A3', 'C4', 'E4', 'G4', 'B4', 'D5', 'F5', 'A5', 'C6', 'E6']),
+            // new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
         ],
     ])],
 ]);
@@ -128,12 +145,13 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
     const symbolToPitchMap = new Map();
     const symbols = tuning.getLetters();
     for (let i = 0; i < tuning.keyCount; i++) {
-        symbolToPitchMap.set(symbols[i], tuning.pitches[i]);
+        symbolToPitchMap.set(symbols[i], tuning.pitchesSorted[i]);
     }
     // Parse tab to notes
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const noteNamesSet = new Set(noteNames);
-    const startOct = getMidiNoteByNr(tuning.pitches[0]).octave;
+    const lowestNote = tuning.pitchesSorted[0];
+    const startOct = getMidiNoteByNr(lowestNote).octave;
     const secondsPerBeat = bpmToSecondsPerBeat(tempo);
     let insideChord = false;
     let insideNote = false;
@@ -215,7 +233,7 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
     const pitchToSymbolMap = new Map();
     const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
     for (let i = 0; i < tuning.keyCount; i++) {
-        pitchToSymbolMap.set(tuning.pitches[i], symbols[i]);
+        pitchToSymbolMap.set(tuning.pitchesSorted[i], symbols[i]);
     }
     // Get chords
     const chords = detectChordsByExactStart(notes);
