@@ -11,6 +11,14 @@ describe('Kalimba', () => {
             expect(Lamellophone.lamellophoneTunings.get('Kalimba').get('17 C Major')).toBeDefined();
         });
 
+        test('tunings key === tuning.name', () => {
+            for (let instrument of Lamellophone.lamellophoneTunings.values()) {
+                for (let [key, value] of instrument.entries()) {
+                    expect(value.name).toBe(key);
+                }
+            }
+        });
+
         test('tunings pitches', () => {
             expect(tuning.pitches).toStrictEqual(
                 [86, 83, 79, 76, 72, 69, 65, 62, 60, 64, 67, 71, 74, 77, 81, 84, 88]
@@ -299,7 +307,7 @@ describe('Kalimba', () => {
             );
         });
 
-        test.skip('gap', () => {
+        test('gap', () => {
             const notes = [
                 Note.from({ pitch: 'C4', start: 0, end: 1 }),
                 Note.from({ pitch: 'D4', start: 1, end: 2 }),
@@ -370,7 +378,7 @@ describe('Kalimba', () => {
         });
     });
 
-    describe.skip('bestTransposition', () => {
+    describe('bestTransposition', () => {
         const tuning = Lamellophone.lamellophoneTunings.get('Kalimba').get('17 C Major');
         test('empty', () => {
             expect(
@@ -389,56 +397,58 @@ describe('Kalimba', () => {
             );
         });
 
-        test('fits when transposed by -3', () => {
-            const notes = tuning.pitches.map(pitch => Note.from({ pitch: pitch + 3 }));
-            expect(
-                Lamellophone.bestTransposition(notes, tuning)
-            ).toStrictEqual(
-                { transpose: -3, retune: new Map() }
-            );
-        });
+        describe.skip('does not work yet', () => {
+            test('fits when transposed by -3', () => {
+                const notes = tuning.pitches.map(pitch => Note.from({ pitch: pitch + 3 }));
+                expect(
+                    Lamellophone.bestTransposition(notes, tuning)
+                ).toStrictEqual(
+                    { transpose: -3, retune: new Map() }
+                );
+            });
 
-        test('fits when transposed by 3', () => {
-            const notes = tuning.pitches.map(pitch => Note.from({ pitch: pitch - 3 }));
-            expect(
-                Lamellophone.bestTransposition(notes, tuning)
-            ).toStrictEqual(
-                { transpose: +3, retune: new Map() }
-            );
-        });
+            test('fits when transposed by 3', () => {
+                const notes = tuning.pitches.map(pitch => Note.from({ pitch: pitch - 3 }));
+                expect(
+                    Lamellophone.bestTransposition(notes, tuning)
+                ).toStrictEqual(
+                    { transpose: +3, retune: new Map() }
+                );
+            });
 
-        test('only some used', () => {
-            const notes = tuning.pitches.map(pitch => Note.from({ pitch: pitch - 3 }));
-            expect(
-                Lamellophone.bestTransposition(notes.slice(3, 10), tuning)
-            ).toStrictEqual(
-                { transpose: 3, retune: new Map() }
-            );
-            expect(
-                Lamellophone.bestTransposition(notes.slice(10, 12), tuning)
-            ).toStrictEqual(
-                { transpose: 0, retune: new Map() }
-            );
-        });
+            test('only some used', () => {
+                const notes = tuning.pitches.map(pitch => Note.from({ pitch: pitch - 3 }));
+                expect(
+                    Lamellophone.bestTransposition(notes.slice(3, 10), tuning)
+                ).toStrictEqual(
+                    { transpose: 3, retune: new Map() }
+                );
+                expect(
+                    Lamellophone.bestTransposition(notes.slice(10, 12), tuning)
+                ).toStrictEqual(
+                    { transpose: 0, retune: new Map() }
+                );
+            });
 
-        test('need to retune C to C#', () => {
-            const notes = [
-                Note.from({ pitch: 'C#4' }),
-                Note.from({ pitch: 'F4' }),
-                Note.from({ pitch: 'D4' }),
-                Note.from({ pitch: 'E4' }),
-                Note.from({ pitch: 'C5' }),
-            ];
-            expect(
-                Lamellophone.bestTransposition(notes, tuning)
-            ).toStrictEqual(
-                {
-                    transpose: 0,
-                    retune: new Map([
-                        [60, 1]
-                    ])
-                }
-            );
+            test('need to retune C to C#', () => {
+                const notes = [
+                    Note.from({ pitch: 'C#4' }),
+                    Note.from({ pitch: 'F4' }),
+                    Note.from({ pitch: 'D4' }),
+                    Note.from({ pitch: 'E4' }),
+                    Note.from({ pitch: 'C5' }),
+                ];
+                expect(
+                    Lamellophone.bestTransposition(notes, tuning)
+                ).toStrictEqual(
+                    {
+                        transpose: 0,
+                        retune: new Map([
+                            [60, 1]
+                        ])
+                    }
+                );
+            });
         });
     });
 });

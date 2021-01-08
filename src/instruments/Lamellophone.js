@@ -81,28 +81,6 @@ export class LamellophoneTuning {
         }
         return Array.from(numbers.values()).map(d => d.letterString);
     }
-
-    /**
-     * Returns note pitches or letters in the order that they appear on the
-     * instrument
-     *
-     * @param {boolean} returnPitches true: returns pitches, false: returns
-     *      note letters
-     * @returns {number[]|string[]} notes in the instuments' order
-     */
-    // getNotesInInstrumentOrder(returnPitches = true) {
-    //     const notes = returnPitches ? this.pitches : this.notes;
-    //     const result = [];
-    //     for (let i = 0; i < notes.length; i++) {
-    //         const p = notes[i];
-    //         if (i % 2 === 0) {
-    //             result.push(p);
-    //         } else {
-    //             result.unshift(p);
-    //         }
-    //     }
-    //     return result;
-    // }
 }
 
 /**
@@ -112,19 +90,36 @@ export class LamellophoneTuning {
 export const lamellophoneTunings = new Map([
     ['Kalimba', new Map([
         [
+            '9 A Major',
+            new LamellophoneTuning('9 A Major', ['A5', 'C#6', 'C#5', 'A5', 'A4', 'F#5', 'E5', 'E6', 'B5']),
+        ],
+        [
             '9 A Minor',
-            // a°  c°°  c°  a°  a  f°  e°  e°°  h°
             new LamellophoneTuning('9 A Minor', ['A5', 'C6', 'C5', 'A5', 'A4', 'F5', 'E5', 'E6', 'B5']),
+        ],
+        [
+            '9 A Minor 7',
+            new LamellophoneTuning('9 A Minor 7', ['A5', 'C6', 'C5', 'A5', 'A4', 'F#5', 'E5', 'E6', 'B5']),
+        ],
+        [
+            '9 A Ake Bono',
+            new LamellophoneTuning('9 A Ake Bono', ['A5', 'D6', 'D5', 'A5', 'A4', 'F5', 'E5', 'E6', 'A#5']),
+        ],
+        [
+            '9 A Hijaz',
+            new LamellophoneTuning('9 A Hijaz', ['G5', 'D6', 'D5', 'A5', 'A4', 'F#5', 'D#5', 'D#6', 'A#5']),
+        ],
+        [
+            '9 A Pygmy',
+            new LamellophoneTuning('9 A Pygmy', ['G5', 'C6', 'C5', 'G5', 'G4', 'D#5', 'D5', 'D#6', 'A#5']),
         ],
         [
             '17 C Major',
             new LamellophoneTuning('17 C Major', ['D6', 'B5', 'G5', 'E5', 'C5', 'A4', 'F4', 'D4', 'C4', 'E4', 'G4', 'B4', 'D5', 'F5', 'A5', 'C6', 'E6']),
-            // new LamellophoneTuning('17 C Major', ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
         ],
         [
             '21 C Major',
             new LamellophoneTuning('21 C Major', ['D6', 'B5', 'G5', 'E5', 'C5', 'A4', 'F4', 'D4', 'B3', 'G3', 'F3', 'A3', 'C4', 'E4', 'G4', 'B4', 'D5', 'F5', 'A5', 'C6', 'E6']),
-            // new LamellophoneTuning('21 C Major', ['F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6', 'D6', 'E6']),
         ],
     ])],
 ]);

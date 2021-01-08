@@ -33,7 +33,7 @@ export class StringedTuning {
  *
  * @example stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
  * @todo add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
- * @todo replace arrays by maps?
+ * @todo replace arrays by maps? tuning name - tuning
  */
 export const stringedTunings = new Map([
     ['Guitar', new Map([

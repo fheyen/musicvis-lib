@@ -5,7 +5,7 @@ import { quantile, mean, deviation } from 'd3';
  */
 
 /**
- * Calculates a confidence interval
+ * Calculates a 95% confidence interval
  *
  * @see https://www.alchemer.com/resources/blog/how-to-calculate-confidence-intervals/
  * @param {numnber[]} values values
@@ -48,6 +48,7 @@ export function getBoxplotCharacteristics(values) {
  *
  * @see https://www.d3-graph-gallery.com/graph/violin_basicDens.html
  * @example
+ * // With x being a d3.scaleLinear() scale
  * const kde = kernelDensityEstimator(kernelEpanechnikov(0.2), x.ticks(50));
  * const estimate = kde(data);
  * @param {Function} kernel kernel function
@@ -56,29 +57,57 @@ export function getBoxplotCharacteristics(values) {
  *
  */
 export function kernelDensityEstimator(kernel, X) {
-    return V => {
-        return X.map(x => {
-            return [x, mean(V, (v) => kernel(x - v))];
-        });
+    /**
+     * Kernel desity estimator
+     * For each value of X it computes the estimated density of the data values
+     * in V. The result has the form [ [x1, est1], [x2, est2], ... ]
+     *
+     * @param {number[]} V values
+     * @returns {number[][]} estimates for points of X
+     */
+    const estimator = (V) => {
+        return X.map(x => [
+            x,
+            mean(V, (v) => kernel(x - v)),
+        ]);
     };
+    return estimator;
 }
 
 /**
  * Epanechnikov kernel
  *
  * @param {number} k kernel size
- * @returns {Function} kernel function
+ * @returns {Function} kernel function with curried k
  */
 export function kernelEpanechnikov(k) {
-    return v => Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+    /**
+     * Epanechnokov kernel function
+     *
+     * @param {number} v value
+     * @returns {number} result
+     */
+    const epKernel = (v) => Math.abs(v /= k) <= 1 ?
+        0.75 * (1 - v * v) / k :
+        0;
+    return epKernel;
 }
 
 /**
  * Gauss kernel
  *
  * @param {number} k kernel size
- * @returns {Function} kernel function
+ * @returns {Function} kernel function with curried k
  */
 export function kernelGauss(k) {
-    return v => Math.abs(v / k) <= 1 ? ((1 / Math.sqrt(2 * Math.PI)) * Math.E**((-1 / 2) * v * v)) : 0;
+    /**
+     * Gaussian kernel function
+     *
+     * @param {number} v value
+     * @returns {number} result
+     */
+    const gaKernel = (v) => Math.abs(v / k) <= 1 ?
+        ((1 / Math.sqrt(2 * Math.PI)) * Math.E ** ((-1 / 2) * v * v)) :
+        0;
+    return gaKernel;
 }

@@ -21,7 +21,7 @@ export function formatTime(seconds, includeMillis = true) {
     if (!includeMillis) {
         return `${min}:${sec}`;
     }
-    let ms = (Math.floor((seconds - s) * 1000)).toString();
+    let ms = (Math.round((seconds - s) * 1000)).toString();
     if (ms.length < 2) {
         ms = `00${ms}`;
     } else if (ms.length < 3) {
