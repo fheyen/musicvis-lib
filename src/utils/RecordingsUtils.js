@@ -62,6 +62,27 @@ export function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
 }
 
 /**
+ * Aligns notes to a rhythmic pattern
+ *
+ * @todo not used
+ * @param {Note[]} notes notes
+ * @param {number} bpm e.g. 120 for tempo 120
+ * @param {number} timeDivision e.g. 16 for 16th note steps
+ * @returns {Note[]} aligned notes
+ */
+export function alignNotesToBpm(notes, bpm, timeDivision = 16) {
+    const secondsPerBeat = bpmToSecondsPerBeat(bpm);
+    const secondsPerDivision = secondsPerBeat / timeDivision;
+    return notes.map(note => {
+        const n = note.clone();
+        n.start = Math.round(n.start / secondsPerDivision) * secondsPerDivision;
+        n.end = Math.round(n.end / secondsPerDivision) * secondsPerDivision;
+        return n;
+    });
+}
+
+
+/**
  * Calculates a heatmap either pitch- or channel-wise.
  * Pitch-time heatmap:
  * Calculates a heatmap of multiple recordings, to see the note density in the
@@ -215,6 +236,7 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
  *      2 (additional, only rec has a note here)
  *      3 (both, both have a note here)
  *
+ * @todo move to comparison
  * @param {Note[]} gtNotes ground truth notes
  * @param {Note[]} recNotes recrodings notes
  * @param {number} binSize size of a time bin
@@ -275,6 +297,7 @@ export function differenceMap(gtNotes, recNotes, binSize) {
  * The area is simply the number of bins with each value, total area is max.
  * number of bins in all pitches * the number of pitches.
  *
+ * @todo move to comparison
  * @todo not used or tested yet
  * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
  *
@@ -304,25 +327,4 @@ export function differenceMapErrorAreas(differenceMap) {
         additional: additionalBins / totalArea,
         correct: correctBins / totalArea,
     };
-}
-
-
-/**
- * Aligns notes to a rhythmic pattern
- *
- * @todo not used or tested
- * @param {Note[]} notes notes
- * @param {number} bpm e.g. 120 for tempo 120
- * @param {number} timeDivision e.g. 16 for 16th note steps
- * @returns {Note[]} aligned notes
- */
-export function alignNotesToBpm(notes, bpm, timeDivision = 16) {
-    const secondsPerBeat = bpmToSecondsPerBeat(bpm);
-    const secondsPerDivision = secondsPerBeat / timeDivision;
-    return notes.map(note => {
-        const n = note.clone();
-        n.start = Math.round(n.start / secondsPerDivision) * secondsPerDivision;
-        n.end = Math.round(n.end / secondsPerDivision) * secondsPerDivision;
-        return n;
-    });
 }

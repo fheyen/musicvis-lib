@@ -1,11 +1,13 @@
 import { Midi } from '@tonejs/midi';
-import NoteArray from './NoteArray';
 import Note from './Note';
+const midiParser = require('midi-parser-js');
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
+import { preprocessMidiFileData } from '../fileFormats/MidiParser';
 
 /**
  * Represents a parsed MIDI or MusicXML file.
- * Close to the structure of @Tonejs/Midi
+ * Close to the structure of @Tonejs/Midi, but also able to represent MusicXML
+ * (not all features of it)
  *
  * @see https://github.com/Tonejs/Midi
  */
@@ -19,30 +21,34 @@ class MusicPiece {
      * @param {Track[]} tracks tracks
      */
     constructor(name, tempos, keySignatures, tracks) {
+        this.name = name;
         this.tempos = tempos;
         this.keySignatures = keySignatures;
-        this.name = name;
         this.tracks = tracks;
     }
 
     /**
      * Creates a MusicPiece object from a MIDI file binary
      *
+     * @param {string} name name
      * @param {ArrayBuffer} midiFile MIDI file
      * @returns {MusicPiece} new MusicPiece
+     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
      */
-    static fromMidi(midiFile) {
-
+    static fromMidi(name, midiFile) {
+        if (!midiFile) {
+            throw new Error('No MIDI file content given');
+        }
         const midi = new Midi(midiFile);
-        this.tempos = midi.tempos;
-        this.keySignatures = midi.keySignatures;
-        this.name = midi.name;
+        console.log(midi);
+        console.log(midi.header.tempos);
+        console.log(midi.header.keySignatures);
+
 
         // Tracks
         const tracks = midi.tracks.map(t => Track.fromMidi(t));
-
         return new MusicPiece(
-            midi.name,
+            name,
             midi.tempos,
             midi.keySignatures,
             tracks,
@@ -50,19 +56,88 @@ class MusicPiece {
     }
 
     /**
+     * Creates a MusicPiece object from a MIDI file binary
+     *
+     * @param {string} name name
+     * @param {ArrayBuffer} midiFile MIDI file
+     * @returns {MusicPiece} new MusicPiece
+     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+     */
+    static fromMidi2(name, midiFile) {
+        if (!midiFile) {
+            throw new Error('No MIDI file content given');
+        }
+        const midi = midiParser.parse(midiFile);
+        const parsed = preprocessMidiFileData(midi);
+
+        let tempos = [];
+        if (parsed.parts.length > 0) {
+            tempos = parsed.parts[0].tempoChanges
+                .map(d => new TempoDefinition(d.time, d.tempo));
+        }
+        let keySignatures = [];
+        if (parsed.parts.length > 0) {
+            keySignatures = parsed.parts[0].beatTypeChanges
+                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
+        }
+        const tracks = parsed.parts
+            .map((t, i) => Track.fromMusicXml(
+                parsed.partNames[i],
+                t.noteObjs,
+                i,
+            ));
+        // TODO:
+        return new MusicPiece(
+            name,
+            tempos,
+            keySignatures,
+            tracks,
+        );
+    }
+
+    /**
      * Creates a MusicPiece object from a MusicXML string
      *
+     * @param {string} name name
      * @param {string} xmlFile MusicXML file content
      * @returns {MusicPiece} new MusicPiece
+     * @throws {'No MusicXML file content given'} when MusicXML file is
+     *  undefined or null
      */
-    static fromMusicXML(xmlFile) {
+    static fromMusicXML(name, xmlFile) {
+        if (!xmlFile) {
+            throw new Error('No MusicXML file content given');
+        }
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
         // TODO:
         const parsed = preprocessMusicXmlData(xmlDoc);
 
+        console.log(parsed);
+
+        let tempos = [];
+        if (parsed.parts.length > 0) {
+            tempos = parsed.parts[0].tempoChanges
+                .map(d => new TempoDefinition(d.time, d.tempo));
+        }
+        let keySignatures = [];
+        if (parsed.parts.length > 0) {
+            keySignatures = parsed.parts[0].beatTypeChanges
+                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
+        }
+        const tracks = parsed.parts
+            .map((t, i) => Track.fromMusicXml(
+                parsed.partNames[i],
+                t.noteObjs,
+                i,
+            ));
         // TODO:
-        return new MusicPiece();
+        return new MusicPiece(
+            name,
+            tempos,
+            keySignatures,
+            tracks,
+        );
     }
 
     /**
@@ -76,6 +151,18 @@ class MusicPiece {
     }
 
     /**
+     * @param {boolean} sortByTime true: sort notes by time
+     * @returns {Note[]} all notes of this piece
+     */
+    getAllNotes(sortByTime = false) {
+        const notes = this.tracks.flatMap(t => t.notes);
+        if (sortByTime) {
+            notes.sort((a, b) => a.start - b.start);
+        }
+        return notes;
+    }
+
+    /**
      *
      */
     // clone() {
@@ -84,18 +171,29 @@ class MusicPiece {
 }
 
 /**
+ * Used by MusicPiece, should not be used directly
  *
- * @augments NoteArray
+ * @private
  */
-class Track extends NoteArray {
-
-    #notes;
+class Track {
 
     /**
-     * @param {object} midiTrack MIDI track
+     * @param {string} name name
+     * @param {Note[]} notes notes
+     */
+    constructor(name, notes) {
+        this.name = name;
+        this.notes = notes;
+    }
+
+    /**
+     * Creates a new Track from a MIDI track
+     *
+     * @param {object} midiTrack Tonejs MIDI track
      * @returns {Track} new Track
      */
     static fromMidi(midiTrack) {
+        const name = midiTrack.name.replace('\x00', '');
         const notes = midiTrack.notes.map(note => Note.from({
             pitch: note.midi,
             start: note.time,
@@ -103,17 +201,34 @@ class Track extends NoteArray {
             velocity: Math.round(note.velocity * 127),
             channel: midiTrack.channel,
         }));
-        return new Track(notes);
+        return new Track(name, notes);
+    }
+
+    /**
+     * Creates a new Track from a MusicXML track
+     *
+     * @param {string} name name
+     * @param {Note[]} notes parsed MusicXML track's notes
+     * @param {number} channel channel
+     * @returns {Track} new Track
+     */
+    static fromMusicXml(name, notes, channel) {
+        name = name.replace('\x00', '');
+        notes = notes.map(n => Note.from({
+            ...n,
+            channel,
+        }));
+        return new Track(name, notes);
     }
 
     /**
      * Used by MusicPiece for its toMidi method
      *
-     * @param midi
+     * @param {Midi} midi Tonejs Midi
      */
     toMidi(midi) {
         const track = midi.addTrack();
-        for (const note of this.#notes) {
+        for (const note of this.notes) {
             track.addNote({
                 midi: note.pitch,
                 time: note.start,
@@ -124,6 +239,38 @@ class Track extends NoteArray {
     }
 
     // TODO: clone, equals
+}
+
+/**
+ * Tempo definition
+ *
+ * @private
+ */
+class TempoDefinition {
+    /**
+     * @param {number} time in seconds
+     * @param {number} bpm tempo in seconds per beat
+     */
+    constructor(time, bpm) {
+        this.time = time;
+        this.bpm = bpm;
+    }
+}
+
+/**
+ * Time signature definition
+ *
+ * @private
+ */
+class TimeSignature {
+    /**
+     * @param {number} time in seconds
+     * @param {number[]} signature time signature as [beats, beatType]
+     */
+    constructor(time, signature) {
+        this.time = time;
+        this.signature = signature;
+    }
 }
 
 export default MusicPiece;

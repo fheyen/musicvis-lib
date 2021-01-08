@@ -275,7 +275,7 @@ describe('RecordingsUtils', () => {
         });
     });
 
-    describe('differenceMapErrorAreas', () => {
+    describe.skip('differenceMapErrorAreas', () => {
 
         test('', () => {
         });
@@ -283,7 +283,33 @@ describe('RecordingsUtils', () => {
 
     describe('alignNotesToBpm', () => {
 
-        test('', () => {
+        test('empty', () => {
+            expect(RecUtils.alignNotesToBpm([], 120)).toStrictEqual([]);
+        });
+
+        const notesAligned = [
+            Note.from({ pitch: 'C4', start: 0, end: 0.5 }),
+            Note.from({ pitch: 'E4', start: 0, end: 0.5 }),
+            Note.from({ pitch: 'D4', start: 0.5, end: 1 }),
+            Note.from({ pitch: 'E4', start: 0.5, end: 1.5 }),
+        ];
+
+        test('already aligned', () => {
+            expect(
+                RecUtils.alignNotesToBpm(notesAligned, 120, 4)
+            ).toStrictEqual(notesAligned);
+        });
+
+        test('not already aligned', () => {
+            const notes = [
+                Note.from({ pitch: 'C4', start: 0.11, end: 0.5 }),
+                Note.from({ pitch: 'E4', start: 0.01, end: 0.6 }),
+                Note.from({ pitch: 'D4', start: 0.55, end: 1.1 }),
+                Note.from({ pitch: 'E4', start: 0.45, end: 1.6 }),
+            ];
+            expect(
+                RecUtils.alignNotesToBpm(notes, 120, 2)
+            ).toStrictEqual(notesAligned);
         });
     });
 

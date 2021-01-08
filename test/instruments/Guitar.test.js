@@ -24,6 +24,14 @@ describe('Guitar.js', () => {
             expect(bass1down.stringCount).toBe(4);
             expect(bass1down.pitches).toStrictEqual([26, 31, 36, 41]);
         });
+
+        // test('tunings key === tuning.name', () => {
+        //     for (let instrument of Guitar.stringedTunings.values()) {
+        //         for (let [key, value] of instrument.entries()) {
+        //             expect(value.name).toBe(key);
+        //         }
+        //     }
+        // });
     });
 
     test('stringColors', () => {

@@ -27,6 +27,8 @@ This library is still in early and active development.
 
 `npm install --save musicvis-lib`
 
+Or download [dist/musicvislib.js](https://raw.githubusercontent.com/fheyen/musicvis-lib/main/dist/musicvislib.js) (development) or [dist/musicvislib.min.js](https://raw.githubusercontent.com/fheyen/musicvis-lib/main/dist/musicvislib.min.js) (minified).
+
 ## Documentation
 
 [See here](https://fheyen.github.io/musicvis-lib/)

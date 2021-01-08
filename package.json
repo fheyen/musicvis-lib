@@ -37,7 +37,8 @@
     "@tonaljs/tonal": "^4.6.0",
     "@tonejs/midi": "^2.0.25",
     "d3": "^6.3.1",
-    "dynamic-time-warping-2": "^1.1.2"
+    "dynamic-time-warping-2": "^1.1.2",
+    "midi-parser-js": "^4.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
