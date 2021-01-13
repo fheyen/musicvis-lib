@@ -3,6 +3,7 @@ import Note from './types/Note';
 import GuitarNote from './types/GuitarNote';
 import NoteArray from './types/NoteArray';
 import Recording from './types/Recording';
+import MusicPiece from './types/MusicPiece';
 import PitchSequence from './types/PitchSequence';
 import Fingers from './types/Fingers';
 // file formats
@@ -37,6 +38,7 @@ export {
     GuitarNote,
     NoteArray,
     Recording,
+    MusicPiece,
     PitchSequence,
     Fingers,
     // file formats

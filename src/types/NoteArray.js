@@ -144,6 +144,7 @@ class NoteArray {
     /**
      * Returns the duration of this note array in seconds
      *
+     * @todo: rename to getEndTime and make duration = end -start
      * @returns {number} duration
      */
     getDuration() {

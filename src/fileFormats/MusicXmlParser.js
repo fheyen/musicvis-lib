@@ -37,8 +37,7 @@ export function preprocessMusicXmlData(xml) {
         const measures = parts[p].children;
         parsedParts.push(preprocessMusicXmlMeasures(measures));
     }
-    console.groupEnd();
-    return {
+    const result = {
         parts: parsedParts,
         partNames,
         instruments: instrumentNames,
@@ -48,6 +47,9 @@ export function preprocessMusicXmlData(xml) {
         beats: parsedParts[0].beats,
         beatType: parsedParts[0].beatType,
     };
+    console.log(result);
+    console.groupEnd();
+    return result;
 }
 
 /**

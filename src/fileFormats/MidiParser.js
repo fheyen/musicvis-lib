@@ -28,10 +28,10 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
     // Parse notes
     let parsedTracks = [];
     const partNames = [];
-    const { tempoChanges, beatTypeChanges } = getMidiTempoAndBeatChanges(data.track);
+    const { tempoChanges, beatTypeChanges, keySignatureChanges } = getMidiTempoAndBeatChanges(data.track);
     for (let i = 0; i < data.track.length; i++) {
         const track = data.track[i];
-        const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges);
+        const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges);
         if (t !== null) {
             parsedTracks.push(t);
             // Get part name
@@ -47,7 +47,8 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
     const result = {
         parts: parsedTracks,
         partNames,
-        instruments: null,
+        // TODO: get instruments from MIDI
+        instruments: parsedTracks.map(() => 'unknown'),
         totalTime: max(parsedTracks, d => d.totalTime),
         // This is the first tempo etc., changes are stored in each part
         bpm: parsedTracks[0].bpm,
@@ -67,9 +68,10 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
  * @param {number} timeDivision MIDI time division
  * @param {object[]} tempoChanges array with tempo change events
  * @param {object[]} beatTypeChanges array with beat type change events
+ * @param {object[]} keySignatureChanges array with key signature change events
  * @returns {object} parsed track
  */
-function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
+function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges) {
     const notes = [];
     let tempo = tempoChanges.length > 0 ? tempoChanges[0].tempo : 120;
     let currentTick = 0;
@@ -165,6 +167,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges) {
             totalTime: currentTime,
             tempoChanges,
             beatTypeChanges,
+            keySignatureChanges,
             measureLinePositions,
             // Initial values
             bpm: tempoChanges[0]?.tempo || 120,
@@ -305,6 +308,7 @@ function getMillisecondsPerTick(tempo, timeDivision) {
 function getMidiTempoAndBeatChanges(tracks) {
     const tempoChanges = [];
     const beatTypeChanges = [];
+    const keySignatureChanges = [];
     let currentTick = 0;
     for (const track of tracks) {
         for (const event of track.event) {
@@ -332,6 +336,21 @@ function getMidiTempoAndBeatChanges(tracks) {
                 // console.log(`Metro: ${d[2]}`);
                 // console.log(`32nds: ${d[3]}`);
             }
+            // Key change
+            if (event.type === 255 && event.metaType === 0x59) {
+                console.log('keychange', event);
+                const d = event.data;
+                const numAccedentals = d[0];
+                const scale = d[1] === 0 ? 'major' : 'minor';
+                const key = d[1] === 0 ?
+                    keySignatureMajorMap.get(numAccedentals) :
+                    keySignatureMinorMap.get(numAccedentals);
+                keySignatureChanges.push({
+                    key,
+                    scale,
+                    tick: currentTick,
+                });
+            }
         }
     }
     // Default values
@@ -341,7 +360,10 @@ function getMidiTempoAndBeatChanges(tracks) {
     if (beatTypeChanges.length === 0) {
         beatTypeChanges.push({ beats: 4, beatType: 4, time: 0 });
     }
-    return { tempoChanges, beatTypeChanges };
+    if (keySignatureChanges.length === 0) {
+        keySignatureChanges.push({ key: 'C', scale: 'major', time: 0 });
+    }
+    return { tempoChanges, beatTypeChanges, keySignatureChanges };
 }
 
 /**
@@ -404,3 +426,40 @@ function getMidiTempoAndBeatChanges(tracks) {
 //     console.log('[MidiParser] Converted note array to MIDI JSON', result);
 //     return JSON.stringify(result);
 // }
+
+// Maps needed for key signature detection from number of sharps / flats
+// see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
+const keySignatureMajorMap = new Map([
+    [-7, 'Cb'],
+    [-6, 'Gb'],
+    [-5, 'Db'],
+    [-4, 'Ab'],
+    [-3, 'Eb'],
+    [-2, 'Bb'],
+    [-1, 'F'],
+    [0, 'C'],
+    [1, 'G'],
+    [2, 'D'],
+    [3, 'A'],
+    [4, 'E'],
+    [5, 'B'],
+    [6, 'F#'],
+    [7, 'C#'],
+]);
+const keySignatureMinorMap = new Map([
+    [-7, 'Ab'],
+    [-6, 'Eb'],
+    [-5, 'Bb'],
+    [-4, 'F'],
+    [-3, 'C'],
+    [-2, 'G'],
+    [-1, 'D'],
+    [0, 'A'],
+    [1, 'E'],
+    [2, 'B'],
+    [3, 'F#'],
+    [4, 'C#'],
+    [5, 'G#'],
+    [6, 'D#'],
+    [7, 'A#'],
+]);
