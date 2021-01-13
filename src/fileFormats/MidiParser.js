@@ -14,9 +14,10 @@ import { roundToNDecimals } from '../utils/MathUtils';
  * @param {object} data MIDI data in JSON format
  * @param {boolean} splitFormat0IntoTracks split MIDI format 0 data into tracks
  *      instead of using channels?
+ * @param {boolean} log set to true to log results etc. to the console
  * @returns {object} including an array of note objects and meta information
  */
-export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
+export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log = false) {
     if (data === null || data === undefined) {
         // console.warn('[MidiParser] MIDI data is null');
         return;
@@ -25,7 +26,9 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
         console.warn('[MidiParser] MIDI data has no track');
         return;
     }
-    console.groupCollapsed('[MidiParser] Preprocessing MIDI file data');
+    if (log) {
+        console.groupCollapsed('[MidiParser] Preprocessing MIDI file data');
+    }
     // Parse notes
     let parsedTracks = [];
     const partNames = [];
@@ -56,8 +59,10 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true) {
         beats: parsedTracks[0].beats,
         beatType: parsedTracks[0].beatType,
     };
-    console.log(`Got ${parsedTracks.length} MIDI tracks`, result);
-    console.groupEnd();
+    if (log) {
+        console.log(`Got ${parsedTracks.length} MIDI tracks`, result);
+        console.groupEnd();
+    }
     return result;
 }
 
@@ -82,7 +87,6 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
     let timeOfLastTempoChange = 0;
     for (const event of track.event) {
         currentTick += event.deltaTime;
-        let mostRecentTempoChange;
         // Update beat type change times
         for (const btc of beatTypeChanges) {
             if (btc.time === undefined && btc.tick <= currentTick) {
@@ -98,6 +102,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             }
         }
         // Handle last tempo change in track differently
+        let mostRecentTempoChange;
         if (tempoChanges.length > 0 && currentTick > tempoChanges[tempoChanges.length - 1].tick) {
             mostRecentTempoChange = tempoChanges[tempoChanges.length - 1];
         }
@@ -115,7 +120,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             const tick = mostRecentTempoChange.tick;
             timeOfLastTempoChange = (tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
             tickOfLastTempoChange = tick;
-            mostRecentTempoChange.time = timeOfLastTempoChange;
+            mostRecentTempoChange.time = roundToNDecimals(timeOfLastTempoChange, 12);
             tempo = mostRecentTempoChange.tempo;
             milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
         }
@@ -183,7 +188,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             beats: beatTypeChanges[0]?.beats || 4,
             beatType: beatTypeChanges[0]?.beatType || 4,
         };
-        console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
+        // console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
         return parsedTrack;
     } else {
         // console.log('Empty track');
@@ -195,8 +200,8 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
  * Extracts part name strings from MIDI tracks
  *
  * @private
- * @param {object[]} track MIDI tracks
- * @returns {string[]} part names
+ * @param {object} track MIDI tracks
+ * @returns {string} part names
  */
 function getPartName(track) {
     for (const event of track) {
@@ -204,7 +209,7 @@ function getPartName(track) {
             return event.data;
         }
     }
-    return null;
+    return '';
 }
 
 /**
@@ -276,7 +281,7 @@ function splitFormat0(tracks) {
     if (tracks.length > 1) {
         console.warn('Splitting a format 0 file with more than 1 track will result in all but the first beeing lost!');
     }
-    console.log('Splitting format 0 file into tracks based on channel');
+    // console.log('Splitting format 0 file into tracks based on channel');
     const grouped = group(tracks[0].noteObjs, d => d.channel);
     // All tracks will share the meta infomation of the 0th track
     // Assign the splitted-by-channel notes to their new tracks
@@ -319,6 +324,7 @@ function getMidiTempoAndBeatChanges(tracks) {
     const beatTypeChanges = [];
     const keySignatureChanges = [];
     let currentTick = 0;
+    let lastTempo = null;
     for (const track of tracks) {
         for (const event of track.event) {
             // Get timing of events
@@ -327,10 +333,15 @@ function getMidiTempoAndBeatChanges(tracks) {
             if (event.type === 255 && event.metaType === 81) {
                 const milliSecondsPerQuarter = event.data / 1000;
                 const tempo = Math.round(1 / (milliSecondsPerQuarter / 60000));
-                tempoChanges.push({
-                    tick: currentTick,
-                    tempo,
-                });
+                // Ignore tempo changes that don't change the tempo
+                if (tempo !== lastTempo) {
+                    tempoChanges.push({
+                        tick: currentTick,
+                        tempo,
+                        time: currentTick === 0 ? 0 : undefined,
+                    });
+                    lastTempo = tempo;
+                }
             }
             // Beat type change
             if (event.type === 255 && event.metaType === 88) {
@@ -351,9 +362,9 @@ function getMidiTempoAndBeatChanges(tracks) {
                 const d = event.data;
                 const { key, scale } = keySignatureMap.get(d);
                 keySignatureChanges.push({
+                    tick: currentTick,
                     key,
                     scale,
-                    tick: currentTick,
                 });
             }
         }

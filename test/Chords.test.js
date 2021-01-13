@@ -240,6 +240,47 @@ describe('Chords', () => {
             expect(Chords.detectChordsByOverlap(notes, true)).toStrictEqual(expected);
         });
 
+        describe('sorting', () => {
+            const notes = [
+                Note.from({ pitch: 2, start: 1, end: 4 }),
+                Note.from({ pitch: 1, start: 2, end: 5 }),
+                Note.from({ pitch: 3, start: 3, end: 6 }),
+                Note.from({ pitch: 4, start: 4, end: 7 }),
+                Note.from({ pitch: 6, start: 5, end: 8 }),
+                Note.from({ pitch: 5, start: 6, end: 9 }),
+            ];
+            test('confusing overlaps, no pitch sorting', () => {
+                const expected = [
+                    [
+                        Note.from({ pitch: 2, start: 1, end: 4 }),
+                        Note.from({ pitch: 1, start: 2, end: 5 }),
+                    ], [
+                        Note.from({ pitch: 3, start: 3, end: 6 }),
+                        Note.from({ pitch: 4, start: 4, end: 7 }),
+                    ], [
+                        Note.from({ pitch: 6, start: 5, end: 8 }),
+                        Note.from({ pitch: 5, start: 6, end: 9 }),
+                    ]
+                ];
+                expect(Chords.detectChordsByOverlap(notes, false)).toStrictEqual(expected);
+            });
+            test('confusing overlaps, with pitch sorting', () => {
+                const expected = [
+                    [
+                        Note.from({ pitch: 1, start: 2, end: 5 }),
+                        Note.from({ pitch: 2, start: 1, end: 4 }),
+                    ], [
+                        Note.from({ pitch: 3, start: 3, end: 6 }),
+                        Note.from({ pitch: 4, start: 4, end: 7 }),
+                    ], [
+                        Note.from({ pitch: 5, start: 6, end: 9 }),
+                        Note.from({ pitch: 6, start: 5, end: 8 }),
+                    ]
+                ];
+                expect(Chords.detectChordsByOverlap(notes, true)).toStrictEqual(expected);
+            });
+        });
+
     });
 
     describe('getChordType', () => {

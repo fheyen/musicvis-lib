@@ -2,6 +2,7 @@ import Note from '../types/Note';
 import GuitarNote from '../types/GuitarNote';
 import { getMidiNoteByNameAndOctave } from '../Midi';
 import { max } from 'd3';
+import { roundToNDecimals } from '../utils/MathUtils';
 
 /**
  * @module fileFormats/MusicXmlParser
@@ -13,12 +14,14 @@ import { max } from 'd3';
  *
  * @todo use https://github.com/jnetterf/musicxml-interfaces ?
  * @param {XMLDocument} xml MusicXML document
+ * @param {boolean} log set to true to log results etc. to the console
  * @returns {object} parsed document
  */
-export function preprocessMusicXmlData(xml) {
-    console.groupCollapsed('[MusicXmlParser] Parsing MusicXML');
-    // console.group('[MusicXmlParser] Parsing MusicXML');
-    console.log(xml);
+export function preprocessMusicXmlData(xml, log = false) {
+    if (log) {
+        console.groupCollapsed('[MusicXmlParser] Parsing MusicXML');
+        console.log(xml);
+    }
     // Get part and instrument names
     const partNameElements = xml.getElementsByTagName('part-name');
     const instruments = xml.getElementsByTagName('score-instrument');
@@ -47,8 +50,10 @@ export function preprocessMusicXmlData(xml) {
         beats: parsedParts[0].beats,
         beatType: parsedParts[0].beatType,
     };
-    console.log(result);
-    console.groupEnd();
+    if (log) {
+        console.log(result);
+        console.groupEnd();
+    }
     return result;
 }
 
@@ -77,18 +82,23 @@ function preprocessMusicXmlMeasures(measures) {
     const measureLinePositions = [];
     // const directions = [];
     for (const measure of measures) {
+        const currentTimeRounded = roundToNDecimals(currentTime, 12);
         // Try to update metrics (if they are not set, keep the old ones)
         try {
             const soundElements = measure.getElementsByTagName('sound');
             for (const el of soundElements) {
                 const tempoValue = el.getAttribute('tempo');
                 if (tempoValue !== null) {
-                    tempo = +tempoValue;
+                    tempo = roundToNDecimals(+tempoValue, 3);
                     tempoChanges.push({
-                        time: currentTime,
+                        time: currentTimeRounded,
                         tempo,
                     });
                 }
+                // TODO: this only support one tempo change per measure!
+                // TODO: tempo changes that are not at the measure start will be false
+                // TODO: solution: go trough all children of measure: notes and other children
+                // notes will update the time
                 break;
             }
         } catch { }
@@ -99,7 +109,7 @@ function preprocessMusicXmlMeasures(measures) {
             beats = +measure.getElementsByTagName('beats')[0].innerHTML;
             beatType = +measure.getElementsByTagName('beat-type')[0].innerHTML;
             beatTypeChanges.push({
-                time: currentTime,
+                time: currentTimeRounded,
                 beats,
                 beatType,
             });
@@ -109,7 +119,7 @@ function preprocessMusicXmlMeasures(measures) {
             const fifths = +measure.getElementsByTagName('fifths')[0].innerHTML;
             const { key, scale } = keySignatureMap.get(fifths);
             keySignatureChanges.push({
-                time: currentTime,
+                time: currentTimeRounded,
                 key,
                 scale,
             });
@@ -162,32 +172,32 @@ function preprocessMusicXmlMeasures(measures) {
                     } catch (e) {/* Do nothing */ }
                     // TODO: use xml note type?
                     // const type = note.getElementsByTagName('type')[0].innerHTML;
+                    const startTime = roundToNDecimals(currentTime, 12);
+                    const endTime = roundToNDecimals(currentTime + durationInSeconds, 12);
                     if (string !== null && fret !== null) {
                         noteObjs.push(new GuitarNote(
                             pitch,
-                            currentTime,
+                            startTime,
                             127,
                             string,
-                            currentTime + durationInSeconds,
+                            endTime,
                             string,
                             fret,
                         ));
                     } else {
                         noteObjs.push(new Note(
                             pitch,
-                            currentTime,
+                            startTime,
                             127,
                             string,
-                            currentTime + durationInSeconds,
+                            endTime,
                         ));
                     }
                 }
                 lastNoteDuration = durationInSeconds;
                 currentTime += durationInSeconds;
             } catch (e) {
-                console.warn('[MusicXmlParser] Cannot parse MusicXML note');
-                console.warn(e);
-                console.log(note);
+                console.warn('[MusicXmlParser] Cannot parse MusicXML note', e, note);
             }
         }
         // Add measure line position
@@ -216,7 +226,7 @@ function preprocessMusicXmlMeasures(measures) {
         beatType: beatTypeChanges[0].beatType,
         tuning: getTuningPitches(measures),
     };
-    console.log('[MusicXmlParser] Parsed part: ', result);
+    // console.log('[MusicXmlParser] Parsed part: ', result);
     return result;
 }
 

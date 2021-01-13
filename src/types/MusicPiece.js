@@ -94,7 +94,7 @@ class MusicPiece {
         // TODO:
         const parsed = preprocessMusicXmlData(xmlDoc);
 
-        console.log(parsed);
+        // console.log(parsed);
         // tempos
         let tempos = [];
         if (parsed.parts.length > 0) {
@@ -108,8 +108,11 @@ class MusicPiece {
                 .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
         }
         // key signatures
-        // TODO:
-        const keySignatures = [];
+        let keySignatures = [];
+        if (parsed.parts.length > 0) {
+            keySignatures = parsed.parts[0].keySignatureChanges
+                .map(d => new KeySignature(d.time, d.key, d.scale));
+        }
         // tracks
         const tracks = parsed.parts
             .map((t, i) => Track.fromMusicXml(
