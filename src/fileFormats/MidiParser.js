@@ -1,6 +1,7 @@
 import Note from '../types/Note';
 import { group, max } from 'd3';
 import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
+import { roundToNDecimals } from '../utils/MathUtils';
 
 /**
  * @module fileFormats/MidiParser
@@ -85,7 +86,15 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
         // Update beat type change times
         for (const btc of beatTypeChanges) {
             if (btc.time === undefined && btc.tick <= currentTick) {
-                btc.time = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+                const t = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+                btc.time = roundToNDecimals(t, 12);
+            }
+        }
+        // Update key signature change times
+        for (const ksc of keySignatureChanges) {
+            if (ksc.time === undefined && ksc.tick <= currentTick) {
+                const t = (ksc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+                ksc.time = roundToNDecimals(t, 12);
             }
         }
         // Handle last tempo change in track differently
@@ -145,7 +154,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             // Handle note-on
             notes.push(new Note(
                 pitch,
-                currentTime,
+                roundToNDecimals(currentTime, 12),
                 velocity,
                 channel,
                 -1,
@@ -155,7 +164,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
     // Fix missing note ends
     for (const note of notes) {
         if (note.end === -1) {
-            note.end = currentTime;
+            note.end = roundToNDecimals(currentTime, 12);
         }
     }
     // Generate measure lines from tempo and beat type changes
@@ -338,13 +347,9 @@ function getMidiTempoAndBeatChanges(tracks) {
             }
             // Key change
             if (event.type === 255 && event.metaType === 0x59) {
-                console.log('keychange', event);
+                // console.log('keychange', event);
                 const d = event.data;
-                const numAccedentals = d[0];
-                const scale = d[1] === 0 ? 'major' : 'minor';
-                const key = d[1] === 0 ?
-                    keySignatureMajorMap.get(numAccedentals) :
-                    keySignatureMinorMap.get(numAccedentals);
+                const { key, scale } = keySignatureMap.get(d);
                 keySignatureChanges.push({
                     key,
                     scale,
@@ -365,6 +370,9 @@ function getMidiTempoAndBeatChanges(tracks) {
     }
     return { tempoChanges, beatTypeChanges, keySignatureChanges };
 }
+
+
+
 
 /**
  * @todo test
@@ -427,39 +435,41 @@ function getMidiTempoAndBeatChanges(tracks) {
 //     return JSON.stringify(result);
 // }
 
-// Maps needed for key signature detection from number of sharps / flats
-// see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
-const keySignatureMajorMap = new Map([
-    [-7, 'Cb'],
-    [-6, 'Gb'],
-    [-5, 'Db'],
-    [-4, 'Ab'],
-    [-3, 'Eb'],
-    [-2, 'Bb'],
-    [-1, 'F'],
-    [0, 'C'],
-    [1, 'G'],
-    [2, 'D'],
-    [3, 'A'],
-    [4, 'E'],
-    [5, 'B'],
-    [6, 'F#'],
-    [7, 'C#'],
-]);
-const keySignatureMinorMap = new Map([
-    [-7, 'Ab'],
-    [-6, 'Eb'],
-    [-5, 'Bb'],
-    [-4, 'F'],
-    [-3, 'C'],
-    [-2, 'G'],
-    [-1, 'D'],
-    [0, 'A'],
-    [1, 'E'],
-    [2, 'B'],
-    [3, 'F#'],
-    [4, 'C#'],
-    [5, 'G#'],
-    [6, 'D#'],
-    [7, 'A#'],
+/**
+ * Maps needed for key signature detection from number of sharps / flats
+ * see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
+ */
+const keySignatureMap = new Map([
+    // major
+    [0xF900, { key: 'Cb', scale: 'major' }],
+    [0xFa00, { key: 'Gb', scale: 'major' }],
+    [0xFb00, { key: 'Db', scale: 'major' }],
+    [0xFc00, { key: 'Ab', scale: 'major' }],
+    [0xFd00, { key: 'Eb', scale: 'major' }],
+    [0xFe00, { key: 'Bb', scale: 'major' }],
+    [0xFf00, { key: 'F', scale: 'major' }],
+    [0x0000, { key: 'C', scale: 'major' }],
+    [0x0100, { key: 'G', scale: 'major' }],
+    [0x0200, { key: 'D', scale: 'major' }],
+    [0x0300, { key: 'A', scale: 'major' }],
+    [0x0400, { key: 'E', scale: 'major' }],
+    [0x0500, { key: 'B', scale: 'major' }],
+    [0x0600, { key: 'F#', scale: 'major' }],
+    [0x0700, { key: 'C#', scale: 'major' }],
+    // minor
+    [0xF901, { key: 'Ab', scale: 'minor' }],
+    [0xFa01, { key: 'Eb', scale: 'minor' }],
+    [0xFb01, { key: 'Bb', scale: 'minor' }],
+    [0xFc01, { key: 'F', scale: 'minor' }],
+    [0xFd01, { key: 'C', scale: 'minor' }],
+    [0xFe01, { key: 'G', scale: 'minor' }],
+    [0xFf01, { key: 'D', scale: 'minor' }],
+    [0x0001, { key: 'A', scale: 'minor' }],
+    [0x0101, { key: 'E', scale: 'minor' }],
+    [0x0201, { key: 'B', scale: 'minor' }],
+    [0x0301, { key: 'F#', scale: 'minor' }],
+    [0x0401, { key: 'C#', scale: 'minor' }],
+    [0x0501, { key: 'G#', scale: 'minor' }],
+    [0x0601, { key: 'D#', scale: 'minor' }],
+    [0x0701, { key: 'A#', scale: 'minor' }],
 ]);

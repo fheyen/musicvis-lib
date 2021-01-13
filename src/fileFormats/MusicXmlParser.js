@@ -72,6 +72,7 @@ function preprocessMusicXmlMeasures(measures) {
     // Handle changing tempo and beat type
     const tempoChanges = [];
     const beatTypeChanges = [];
+    const keySignatureChanges = [];
     const noteObjs = [];
     const measureLinePositions = [];
     // const directions = [];
@@ -102,8 +103,17 @@ function preprocessMusicXmlMeasures(measures) {
                 beats,
                 beatType,
             });
-        } catch (e) { }
+        } catch { }
         const secondsPerBeat = 1 / (tempo / 60);
+        try {
+            const fifths = +measure.getElementsByTagName('fifths')[0].innerHTML;
+            const { key, scale } = keySignatureMap.get(fifths);
+            keySignatureChanges.push({
+                time: currentTime,
+                key,
+                scale,
+            });
+        } catch { }
 
         // Read notes
         const notes = measure.getElementsByTagName('note');
@@ -183,12 +193,15 @@ function preprocessMusicXmlMeasures(measures) {
         // Add measure line position
         measureLinePositions.push(currentTime);
     }
-    // Default tempo and beat type
+    // Defaults
     if (tempoChanges.length === 0) {
         tempoChanges.push({ tempo: 120, time: 0 });
     }
     if (beatTypeChanges.length === 0) {
         beatTypeChanges.push({ beats: 4, beatType: 4, time: 0 });
+    }
+    if (keySignatureChanges.length === 0) {
+        keySignatureChanges.push({ key: 'C', scale: 'major', time: 0 });
     }
     const result = {
         noteObjs: noteObjs,
@@ -196,6 +209,7 @@ function preprocessMusicXmlMeasures(measures) {
         measureLinePositions,
         tempoChanges,
         beatTypeChanges,
+        keySignatureChanges,
         // Initial values
         bpm: tempoChanges[0]?.tempo || 120,
         beats: beatTypeChanges[0].beats,
@@ -289,3 +303,25 @@ function getTuningPitches(measures) {
     }
     return [];
 }
+
+/**
+ * Map from fiths to key signature
+ * TODO: how to do minor? does it exist?
+ */
+const keySignatureMap = new Map([
+    [-7, { key: 'Cb', scale: 'major' }],
+    [-6, { key: 'Gb', scale: 'major' }],
+    [-5, { key: 'Db', scale: 'major' }],
+    [-4, { key: 'Ab', scale: 'major' }],
+    [-3, { key: 'Eb', scale: 'major' }],
+    [-2, { key: 'Bb', scale: 'major' }],
+    [-1, { key: 'F', scale: 'major' }],
+    [0, { key: 'C', scale: 'major' }],
+    [1, { key: 'G', scale: 'major' }],
+    [2, { key: 'D', scale: 'major' }],
+    [3, { key: 'A', scale: 'major' }],
+    [4, { key: 'E', scale: 'major' }],
+    [5, { key: 'B', scale: 'major' }],
+    [6, { key: 'F#', scale: 'major' }],
+    [7, { key: 'C#', scale: 'major' }],
+]);

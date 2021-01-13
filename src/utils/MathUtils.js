@@ -39,6 +39,17 @@ export function clipValue(value, minValue, maxValue) {
 }
 
 /**
+ * Rounds a number to a given number of decimals
+ *
+ * @param {number} number a number
+ * @param {number} n number of digits
+ * @returns {number} rounded number
+ */
+export function roundToNDecimals(number, n) {
+    return +number.toFixed(n);
+}
+
+/**
  * Swaps two numbers if the first is larger than the second
  *
  * @param {number} x a number

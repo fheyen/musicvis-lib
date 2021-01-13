@@ -1,6 +1,6 @@
 import MusicPiece from '../../src/types/MusicPiece';
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 const GT_DIR = path.join(__dirname, '..', '_test_assets');
 
