@@ -94,7 +94,6 @@ class MusicPiece {
      * @param {TimeSignature[]} timeSignatures time signatures
      * @param {KeySignature[]} keySignatures key signatures
      * @param {Track[]} tracks tracks
-     * @todo key signatures not yet supported
      */
     constructor(name, tempos, timeSignatures, keySignatures, tracks) {
         this.name = name;
@@ -145,7 +144,6 @@ class MusicPiece {
                 t.noteObjs,
                 i,
             ));
-        // TODO:
         return new MusicPiece(
             name,
             tempos,
@@ -286,10 +284,7 @@ class Track {
      */
     static fromMusicXml(name, instrument, notes, channel) {
         name = name.replace('\x00', '');
-        notes = notes.map(n => Note.from({
-            ...n,
-            channel,
-        }));
+        notes = notes.forEach(n => n.channel = channel);
         return new Track(name, instrument, notes);
     }
 

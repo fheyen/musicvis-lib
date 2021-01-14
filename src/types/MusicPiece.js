@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import Note from './Note';
 import midiParser from 'midi-parser-js';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
@@ -15,7 +16,6 @@ class MusicPiece {
      * @param {TimeSignature[]} timeSignatures time signatures
      * @param {KeySignature[]} keySignatures key signatures
      * @param {Track[]} tracks tracks
-     * @todo key signatures not yet supported
      */
     constructor(name, tempos, timeSignatures, keySignatures, tracks) {
         this.name = name;
@@ -66,7 +66,6 @@ class MusicPiece {
                 t.noteObjs,
                 i,
             ));
-        // TODO:
         return new MusicPiece(
             name,
             tempos,
@@ -130,17 +129,6 @@ class MusicPiece {
         );
     }
 
-    // /**
-    //  * @returns {Buffer} MIDI binary
-    //  * @todo not needed currently
-    //  */
-    // toMidi() {
-    //     const midi = new Midi();
-    //     // TODO: more
-    //     this.tracks.forEach(t => t.toMidi(midi));
-    //     return Buffer.fromArray(midi.toArray());
-    // }
-
     /**
      * Returns an array with all notes from all tracks.
      *
@@ -154,14 +142,6 @@ class MusicPiece {
         }
         return notes;
     }
-
-
-    /**
-     *
-     */
-    // clone() {
-
-    // }
 }
 
 /**
@@ -207,30 +187,9 @@ class Track {
      */
     static fromMusicXml(name, instrument, notes, channel) {
         name = name.replace('\x00', '');
-        notes = notes.map(n => Note.from({
-            ...n,
-            channel,
-        }));
+        notes.forEach(n => n.channel = channel);
         return new Track(name, instrument, notes);
     }
-
-    // /**
-    //  * Used by MusicPiece for its toMidi method
-    //  *
-    //  * @todo not needed currently
-    //  * @param {Midi} midi Tonejs Midi
-    //  */
-    // toMidi(midi) {
-    //     const track = midi.addTrack();
-    //     for (const note of this.notes) {
-    //         track.addNote({
-    //             midi: note.pitch,
-    //             time: note.start,
-    //             duration: note.getDuration(),
-    //             // TODO: more
-    //         });
-    //     }
-    // }
 }
 
 /**

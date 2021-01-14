@@ -1,6 +1,8 @@
 import MusicPiece from '../../src/types/MusicPiece';
 import fs from 'fs';
 import path from 'path';
+import GuitarNote from '../../src/types/GuitarNote';
+import Note from '../../src/types/Note';
 
 const GT_DIR = path.join(__dirname, '..', '_test_assets');
 
@@ -31,6 +33,14 @@ describe('MusicPiece', () => {
             const file = readMidiFile2('[Test] 3-4 meter.mid');
             expect(() => MusicPiece.fromMidi('test', file)).not.toThrow();
         });
+
+        test('produces Notes', () => {
+            const midi = readMidiFile2(`[Test] Guitar Techniques 2.mid`);
+            const midiNotes = MusicPiece.fromMidi('test', midi).getAllNotes();
+            for (let note of midiNotes) {
+                expect(note).toBeInstanceOf(Note);
+            }
+        });
     });
 
     describe('fromMusicXml', () => {
@@ -41,6 +51,14 @@ describe('MusicPiece', () => {
         test('actual file', () => {
             const file = readXmlFile('[Test] 3-4 meter.musicxml');
             expect(() => MusicPiece.fromMusicXml('test', file)).not.toThrow();
+        });
+
+        test('produces GuitarNotes', () => {
+            const xml = readXmlFile('[Test] Guitar Techniques 2.musicxml');
+            const xmlNotes = MusicPiece.fromMusicXml('test', xml).getAllNotes();
+            for (let note of xmlNotes) {
+                expect(note).toBeInstanceOf(GuitarNote);
+            }
         });
 
     });
