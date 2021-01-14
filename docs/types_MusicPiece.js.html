@@ -77,7 +77,8 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Note from './Note';
+            <pre class="prettyprint source linenums"><code>// eslint-disable-next-line no-unused-vars
+import Note from './Note';
 import midiParser from 'midi-parser-js';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';
@@ -207,17 +208,6 @@ class MusicPiece {
         );
     }
 
-    // /**
-    //  * @returns {Buffer} MIDI binary
-    //  * @todo not needed currently
-    //  */
-    // toMidi() {
-    //     const midi = new Midi();
-    //     // TODO: more
-    //     this.tracks.forEach(t => t.toMidi(midi));
-    //     return Buffer.fromArray(midi.toArray());
-    // }
-
     /**
      * Returns an array with all notes from all tracks.
      *
@@ -231,14 +221,6 @@ class MusicPiece {
         }
         return notes;
     }
-
-
-    /**
-     *
-     */
-    // clone() {
-
-    // }
 }
 
 /**
@@ -284,27 +266,9 @@ class Track {
      */
     static fromMusicXml(name, instrument, notes, channel) {
         name = name.replace('\x00', '');
-        notes = notes.forEach(n => n.channel = channel);
+        notes.forEach(n => n.channel = channel);
         return new Track(name, instrument, notes);
     }
-
-    // /**
-    //  * Used by MusicPiece for its toMidi method
-    //  *
-    //  * @todo not needed currently
-    //  * @param {Midi} midi Tonejs Midi
-    //  */
-    // toMidi(midi) {
-    //     const track = midi.addTrack();
-    //     for (const note of this.notes) {
-    //         track.addNote({
-    //             midi: note.pitch,
-    //             time: note.start,
-    //             duration: note.getDuration(),
-    //             // TODO: more
-    //         });
-    //     }
-    // }
 }
 
 /**
