@@ -34,6 +34,8 @@ Using Jest.
 
 Using webpack.
 
+Using [source-map-loader](https://github.com/webpack-contrib/source-map-loader)
+
 ## Documentation
 
 `npm run doc`
