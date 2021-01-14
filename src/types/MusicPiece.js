@@ -85,7 +85,7 @@ class MusicPiece {
      * @throws {'No MusicXML file content given'} when MusicXML file is
      *  undefined or null
      */
-    static fromMusicXML(name, xmlFile) {
+    static fromMusicXml(name, xmlFile) {
         if (!xmlFile) {
             throw new Error('No MusicXML file content given');
         }

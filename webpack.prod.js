@@ -13,6 +13,7 @@ module.exports = {
             {
                 test: /\.(js)$/,
                 exclude: /node_modules/,
+                enforce: 'pre',
                 use: ['source-map-loader', 'babel-loader'],
             },
         ],

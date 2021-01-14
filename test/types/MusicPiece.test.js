@@ -35,12 +35,12 @@ describe('MusicPiece', () => {
 
     describe('fromMusicXml', () => {
         test('empty', () => {
-            expect(() => MusicPiece.fromMusicXML()).toThrow('No MusicXML file content given');
+            expect(() => MusicPiece.fromMusicXml()).toThrow('No MusicXML file content given');
         });
 
         test('actual file', () => {
             const file = readXmlFile('[Test] 3-4 meter.musicxml');
-            expect(() => MusicPiece.fromMusicXML('test', file)).not.toThrow();
+            expect(() => MusicPiece.fromMusicXml('test', file)).not.toThrow();
         });
 
     });
@@ -62,7 +62,7 @@ describe('MusicPiece', () => {
         //         const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
 
         //         const xml = readXmlFile(`${file}.musicxml`);
-        //         const xmlNotes = MusicPiece.fromMusicXML(file, xml).getAllNotes();
+        //         const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
 
         //         expect(midiNotes).toStrictEqual(xmlNotes);
         //     }
@@ -74,7 +74,7 @@ describe('MusicPiece', () => {
                 const midi = readMidiFile2(`${file}.mid`);
                 const xml = readXmlFile(`${file}.musicxml`);
                 const mpMidi = MusicPiece.fromMidi(file, midi);
-                const mpXml = MusicPiece.fromMusicXML(file, xml);
+                const mpXml = MusicPiece.fromMusicXml(file, xml);
                 expect(mpMidi.tempos).toStrictEqual(mpXml.tempos);
             }
         });
@@ -83,7 +83,7 @@ describe('MusicPiece', () => {
             const midi = readMidiFile2(`${file}.mid`);
             const xml = readXmlFile(`${file}.musicxml`);
             const mpMidi = MusicPiece.fromMidi(file, midi);
-            const mpXml = MusicPiece.fromMusicXML(file, xml);
+            const mpXml = MusicPiece.fromMusicXml(file, xml);
             expect(mpMidi.timeSignatures).toStrictEqual(mpXml.timeSignatures);
         });
 
@@ -91,7 +91,7 @@ describe('MusicPiece', () => {
             const midi = readMidiFile2(`${file}.mid`);
             const xml = readXmlFile(`${file}.musicxml`);
             const mpMidi = MusicPiece.fromMidi(file, midi);
-            const mpXml = MusicPiece.fromMusicXML(file, xml);
+            const mpXml = MusicPiece.fromMusicXml(file, xml);
             expect(mpMidi.keySignatures).toStrictEqual(mpXml.keySignatures);
         });
 
@@ -101,7 +101,7 @@ describe('MusicPiece', () => {
             const midi = readMidiFile2(`${file}.mid`);
             const xml = readXmlFile(`${file}.musicxml`);
             const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
-            const xmlNotes = MusicPiece.fromMusicXML(file, xml).getAllNotes();
+            const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
             expect(midiNotes).toStrictEqual(xmlNotes);
         });
 
@@ -111,7 +111,7 @@ describe('MusicPiece', () => {
                 const midiPiece = MusicPiece.fromMidi(file, midi);
 
                 const xml = readXmlFile(`${file}.musicxml`);
-                const xmlPiece = MusicPiece.fromMusicXML(file, xml);
+                const xmlPiece = MusicPiece.fromMusicXml(file, xml);
 
                 expect(midiPiece).toStrictEqual(xmlPiece);
             }

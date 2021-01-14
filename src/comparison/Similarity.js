@@ -312,7 +312,6 @@ export function getSimilarPartsViaMatching(notes) {
         while (currentIndex < notes.length && candidateSequences.length > 1) {
             const nextPitch = notes[currentIndex].pitch;
             // Only keep best candidates
-            // eslint-disable-next-line
             candidateSequences = candidateSequences.filter(cs => {
                 const nextIndex = cs.startIndex + currentIndex;
                 if (nextIndex < notes.length) {

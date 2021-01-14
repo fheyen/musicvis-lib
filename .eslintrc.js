@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 module.exports = {
     env: {
         browser: true,
@@ -18,6 +19,7 @@ module.exports = {
         sourceType: 'module',
     },
     ignorePatterns: ['**/docs/*.js', '**/dist/*.js', '**/*.test.js', '**/node_modules/**'],
+    reportUnusedDisableDirectives: true,
     rules: {
         // The Error level should be `error`, `warn`, or `off` (or 2, 1, or 0)
         'eqeqeq': 1,
