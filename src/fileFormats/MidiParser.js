@@ -52,7 +52,7 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
         parts: parsedTracks,
         partNames,
         // TODO: get instruments from MIDI
-        instruments: parsedTracks.map(() => 'unknown'),
+        instruments: parsedTracks.map(() => 'unknown instrument'),
         totalTime: max(parsedTracks, d => d.totalTime),
         // This is the first tempo etc., changes are stored in each part
         bpm: parsedTracks[0].bpm,
@@ -263,7 +263,7 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
         if (currentBeatsInMeasure >= beats) {
             // Measure is full
             currentBeatsInMeasure = 0;
-            measureLines.push(currentTime);
+            measureLines.push(roundToNDecimals(currentTime, 12));
         }
     }
     return measureLines;

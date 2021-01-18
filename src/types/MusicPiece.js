@@ -11,17 +11,29 @@ import NoteArray from './NoteArray';
 class MusicPiece {
 
     /**
+     * Do not use this constructor, but the static methods MusicPiece.fromMidi
+     * and MusicPiece.fromMusicXml instead.
+     *
+     * @private
      * @param {string} name name (e.g. file name or piece name)
      * @param {TempoDefinition[]} tempos tempos
      * @param {TimeSignature[]} timeSignatures time signatures
      * @param {KeySignature[]} keySignatures key signatures
+     * @param {number[]} measureTimes time in seconds for each measure line
      * @param {Track[]} tracks tracks
+     * @throws {'No or invalid tracks given!'} when invalid tracks are given
      */
-    constructor(name, tempos, timeSignatures, keySignatures, tracks) {
+    constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
         this.name = name;
         this.tempos = tempos;
         this.timeSignatures = timeSignatures;
         this.keySignatures = keySignatures;
+        this.measureTimes = measureTimes;
+
+        if (!tracks || !tracks.length) {
+            // TODO: test this
+            throw new Error('No or invalid tracks given');
+        }
         this.tracks = tracks;
         this.duration = Math.max(...this.tracks.map(d => d.duration));
     }
@@ -58,6 +70,11 @@ class MusicPiece {
             keySignatures = parsed.parts[0].keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
         }
+        // measure times
+        let measureTimes = [];
+        if (parsed.parts.length > 0) {
+            measureTimes = parsed.parts[0].measureLinePositions;
+        }
         // tracks signatures
         const tracks = parsed.parts
             .map((t, i) => Track.fromMidi(
@@ -71,6 +88,7 @@ class MusicPiece {
             tempos,
             timeSignatures,
             keySignatures,
+            measureTimes,
             tracks,
         );
     }
@@ -90,10 +108,7 @@ class MusicPiece {
         }
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
-        // TODO:
         const parsed = preprocessMusicXmlData(xmlDoc);
-
-        // console.log(parsed);
         // tempos
         let tempos = [];
         if (parsed.parts.length > 0) {
@@ -112,6 +127,11 @@ class MusicPiece {
             keySignatures = parsed.parts[0].keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
         }
+        // measure times
+        let measureTimes = [];
+        if (parsed.parts.length > 0) {
+            measureTimes = parsed.parts[0].measureLinePositions;
+        }
         // tracks
         const tracks = parsed.parts
             .map((t, i) => Track.fromMusicXml(
@@ -125,6 +145,7 @@ class MusicPiece {
             tempos,
             timeSignatures,
             keySignatures,
+            measureTimes,
             tracks,
         );
     }
@@ -152,6 +173,10 @@ class MusicPiece {
 class Track {
 
     /**
+     * Do not use this constructor, but the static methods Track.fromMidi
+     * and Track.fromMusicXml instead.
+     *
+     * @private
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes

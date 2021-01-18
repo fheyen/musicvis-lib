@@ -201,7 +201,7 @@ function preprocessMusicXmlMeasures(measures) {
             }
         }
         // Add measure line position
-        measureLinePositions.push(currentTime);
+        measureLinePositions.push(roundToNDecimals(currentTime, 12));
     }
     // Defaults
     if (tempoChanges.length === 0) {

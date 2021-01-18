@@ -246,4 +246,16 @@ describe('MidiFileParser', () => {
             },
         ]);
     });
+
+    // TODO: more tests
+    test('measure times', () => {
+        const midi = readMidiFile('[Test] Tempo Change.mid');
+        const parsed = preprocessMidiFileData(midi);
+        expect(parsed.parts[0].measureLinePositions).toStrictEqual([
+            2,
+            3.5,
+            4.7,
+            5.7,
+        ]);
+    });
 });

@@ -153,6 +153,18 @@ describe('MusicXmlParser', () => {
         ]);
     });
 
+    // TODO: more tests
+    test('measure times', () => {
+        const midi = readXmlFile('[Test] Tempo change.musicxml');
+        const parsed = preprocessMusicXmlData(midi);
+        expect(parsed.parts[0].measureLinePositions).toStrictEqual([
+            2,
+            3.5,
+            4.7,
+            5.7,
+        ]);
+    });
+
     // TODO: multiple tempos whithin a measure do not work
     // TODO: tempos that are not at the start of measures do not work
     test.skip('tempos 2', () => {

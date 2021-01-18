@@ -23,8 +23,35 @@ function listFiles() {
 
 describe('MusicPiece', () => {
 
-    describe('fromMidi', () => {
+    describe('constuctor', () => {
+        test('invalid tracks', () => {
+            expect(() => new MusicPiece()).toThrow('No or invalid tracks given');
+        });
+    });
 
+    describe('getAllNotes', () => {
+        test('unsorted', () => {
+            const file = readMidiFile2('[Test] 3-4 meter.mid');
+            const mp = MusicPiece.fromMidi('test', file);
+            expect(
+                mp.getAllNotes()
+            ).toStrictEqual(
+                mp.tracks.flatMap(t => t.notes)
+            );
+        });
+        // TODO: create an unsorted track manually
+        test('sorted', () => {
+            const file = readMidiFile2('[Test] 3-4 meter.mid');
+            const mp = MusicPiece.fromMidi('test', file);
+            expect(
+                mp.getAllNotes(true)
+            ).toStrictEqual(
+                mp.tracks.flatMap(t => t.notes).sort((a, b) => a.start - b.start)
+            );
+        });
+    });
+
+    describe('fromMidi', () => {
         test('empty', () => {
             expect(() => MusicPiece.fromMidi()).toThrow('No MIDI file content given');
         });
@@ -60,7 +87,6 @@ describe('MusicPiece', () => {
                 expect(note).toBeInstanceOf(GuitarNote);
             }
         });
-
     });
 
     /**
@@ -105,12 +131,22 @@ describe('MusicPiece', () => {
             expect(mpMidi.timeSignatures).toStrictEqual(mpXml.timeSignatures);
         });
 
+        // TODO:
         test.skip.each(files)('key signature %s', (file) => {
             const midi = readMidiFile2(`${file}.mid`);
             const xml = readXmlFile(`${file}.musicxml`);
             const mpMidi = MusicPiece.fromMidi(file, midi);
             const mpXml = MusicPiece.fromMusicXml(file, xml);
             expect(mpMidi.keySignatures).toStrictEqual(mpXml.keySignatures);
+        });
+
+        // TODO:
+        test.skip.each(files)('measure times %s', (file) => {
+            const midi = readMidiFile2(`${file}.mid`);
+            const xml = readXmlFile(`${file}.musicxml`);
+            const mpMidi = MusicPiece.fromMidi(file, midi);
+            const mpXml = MusicPiece.fromMusicXml(file, xml);
+            expect(mpMidi.measureTimes).toStrictEqual(mpXml.measureTimes);
         });
 
         // TODO: tuxguitar uses different note lengths than musescore?
@@ -123,16 +159,13 @@ describe('MusicPiece', () => {
             expect(midiNotes).toStrictEqual(xmlNotes);
         });
 
-        test.skip('complete MusicPiece', () => {
-            for (const file of files) {
-                const midi = readMidiFile2(`${file}.mid`);
-                const midiPiece = MusicPiece.fromMidi(file, midi);
-
-                const xml = readXmlFile(`${file}.musicxml`);
-                const xmlPiece = MusicPiece.fromMusicXml(file, xml);
-
-                expect(midiPiece).toStrictEqual(xmlPiece);
-            }
+        // TODO: will probably never work since some data is not available
+        test.skip.each(files)('complete MusicPiece %s', (file) => {
+            const midi = readMidiFile2(`${file}.mid`);
+            const midiPiece = MusicPiece.fromMidi(file, midi);
+            const xml = readXmlFile(`${file}.musicxml`);
+            const xmlPiece = MusicPiece.fromMusicXml(file, xml);
+            expect(midiPiece).toStrictEqual(xmlPiece);
         });
 
     });
