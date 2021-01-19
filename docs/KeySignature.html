@@ -26,7 +26,7 @@
     
 
 
-    <title>utils/StatisticsUtils.js</title>
+    <title>KeySignature</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,132 +67,248 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">utils/StatisticsUtils.js</h1>
+    <h1 id='page-title' class="page-title">KeySignature</h1>
     
 
     
 
 
 
+
+<section>
+
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { quantile, mean, deviation } from 'd3';
+        
+        <h2>
+        
+        KeySignature
+        
+        </h2>
+        
+        
+            <div class="class-description">Key signature definition</div>
+            <hr/>
+        
+    
+</header>
 
-/**
- * @module utils/StatisticsUtils
- */
 
-/**
- * Calculates a 95% confidence interval
- *
- * @see https://www.alchemer.com/resources/blog/how-to-calculate-confidence-intervals/
- * @param {numnber[]} values values
- * @returns {object} {mean, low, high}
- */
-export function confidenceInterval(values) {
-    const n = values.length;
-    const m = mean(values);
-    const s = deviation(values);
-    const z = 1.960; // 95% CI
-    // const z = 2.576; // 99% CI
-    const part = z * (s / Math.sqrt(n));
-    const low = m - part;
-    const high = m + part;
-    return { mean: m, low, high };
-}
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * Given an array of Note objects, returns the numbers
- * that are drawn in a box plot (of the Note.start property)
- *
- * @param {number[]} values values
- * @returns {object} { q1, q2, q3, r0, r1 }
- */
-export function getBoxplotCharacteristics(values) {
-    values.sort((a, b) => a - b);
-    const minVal = values[0];
-    const maxVal = values[values.length - 1];
-    const q1 = quantile(values, 0.25);
-    const q2 = quantile(values, 0.50);
-    const q3 = quantile(values, 0.75);
-    const iqr = q3 - q1;
-    const r0 = Math.max(minVal, q1 - iqr * 1.5);
-    const r1 = Math.min(maxVal, q3 + iqr * 1.5);
-    return { q1, q2, q3, r0, r1 };
-}
+    
+        <h2>Constructor</h2>
+    
 
-/**
- * Returns a kernel desity estimator function.
- *
- * @see https://www.d3-graph-gallery.com/graph/violin_basicDens.html
- * @example
- * // With x being a d3.scaleLinear() scale
- * const kde = kernelDensityEstimator(kernelEpanechnikov(0.2), x.ticks(50));
- * const estimate = kde(data);
- * @param {Function} kernel kernel function
- * @param {number[]} X domain
- * @returns {Function} kernel density estimator
- *
- */
-export function kernelDensityEstimator(kernel, X) {
-    /**
-     * Kernel desity estimator
-     * For each value of X it computes the estimated density of the data values
-     * in V. The result has the form [ [x1, est1], [x2, est2], ... ]
-     *
-     * @param {number[]} V values
-     * @returns {number[][]} estimates for points of X
-     */
-    const estimator = (V) => {
-        return X.map(x => [
-            x,
-            mean(V, (v) => kernel(x - v)),
-        ]);
-    };
-    return estimator;
-}
+    <h4 class="name" id="KeySignature">
+        <a href="#KeySignature">#</a>
+        <span class="type-signature">(private) </span>new KeySignature<span class="signature">(time, key, scale)</span><span class="type-signature"></span>
+    </h4>
 
-/**
- * Epanechnikov kernel
- *
- * @param {number} k kernel size
- * @returns {Function} kernel function with curried k
- */
-export function kernelEpanechnikov(k) {
-    /**
-     * Epanechnokov kernel function
-     *
-     * @param {number} v value
-     * @returns {number} result
-     */
-    const epKernel = (v) => Math.abs(v /= k) &lt;= 1 ?
-        0.75 * (1 - v * v) / k :
-        0;
-    return epKernel;
-}
+    
 
-/**
- * Gauss kernel
- *
- * @param {number} k kernel size
- * @returns {Function} kernel function with curried k
- */
-export function kernelGauss(k) {
-    /**
-     * Gaussian kernel function
-     *
-     * @param {number} v value
-     * @returns {number} result
-     */
-    const gaKernel = (v) => Math.abs(v / k) &lt;= 1 ?
-        ((1 / Math.sqrt(2 * Math.PI)) * Math.E ** ((-1 / 2) * v * v)) :
-        0;
-    return gaKernel;
-}
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">key e.g. 'C'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>scale</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">scale e.g. 'major'</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_MusicPiece.js.html">types/MusicPiece.js</a>, <a href="types_MusicPiece.js.html#line260">line 260</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="KeySignature.html">KeySignature</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
