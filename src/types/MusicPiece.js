@@ -15,6 +15,7 @@ class MusicPiece {
      * and MusicPiece.fromMusicXml instead.
      *
      * @private
+     * @todo does not show in docs
      * @param {string} name name (e.g. file name or piece name)
      * @param {TempoDefinition[]} tempos tempos
      * @param {TimeSignature[]} timeSignatures time signatures
@@ -170,7 +171,7 @@ class MusicPiece {
  *
  * @private
  */
-class Track {
+export class Track {
 
     /**
      * Do not use this constructor, but the static methods Track.fromMidi
@@ -222,7 +223,7 @@ class Track {
  *
  * @private
  */
-class TempoDefinition {
+export class TempoDefinition {
     /**
      * @param {number} time in seconds
      * @param {number} bpm tempo in seconds per beat
@@ -230,6 +231,7 @@ class TempoDefinition {
     constructor(time, bpm) {
         this.time = time;
         this.bpm = bpm;
+        this.string = `${bpm} bpm`;
     }
 }
 
@@ -238,7 +240,7 @@ class TempoDefinition {
  *
  * @private
  */
-class TimeSignature {
+export class TimeSignature {
     /**
      * @param {number} time in seconds
      * @param {number[]} signature time signature as [beats, beatType]
@@ -246,6 +248,7 @@ class TimeSignature {
     constructor(time, signature) {
         this.time = time;
         this.signature = signature;
+        this.string = signature.join('/');
     }
 }
 
@@ -254,7 +257,7 @@ class TimeSignature {
  *
  * @private
  */
-class KeySignature {
+export class KeySignature {
     /**
      * @param {number} time in seconds
      * @param {string} key key e.g. 'C'
@@ -264,6 +267,7 @@ class KeySignature {
         this.time = time;
         this.key = key;
         this.scale = scale;
+        this.string = `${key} ${scale}`;
     }
 }
 

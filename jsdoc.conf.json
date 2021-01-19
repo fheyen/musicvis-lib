@@ -30,7 +30,7 @@
     "opts": {
         "destination": "./docs/",
         "encoding": "utf8",
-        "private": false,
+        "private": true,
         "recurse": true,
         "template": "./node_modules/clean-jsdoc-theme",
         "verbose": true,

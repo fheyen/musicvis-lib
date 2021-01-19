@@ -1,4 +1,4 @@
-import MusicPiece from '../../src/types/MusicPiece';
+import MusicPiece, { Track, TempoDefinition, TimeSignature, KeySignature } from '../../src/types/MusicPiece';
 import fs from 'fs';
 import path from 'path';
 import GuitarNote from '../../src/types/GuitarNote';
@@ -71,8 +71,13 @@ describe('MusicPiece', () => {
     });
 
     describe('fromMusicXml', () => {
-        test('empty', () => {
+        test('empty arguments', () => {
             expect(() => MusicPiece.fromMusicXml()).toThrow('No MusicXML file content given');
+        });
+
+        test('empty file (no tracks)', () => {
+            const file = readXmlFile('[Test] Empty.musicxml');
+            expect(() => MusicPiece.fromMusicXml('test', file)).toThrow('No or invalid tracks given');
         });
 
         test('actual file', () => {
@@ -90,11 +95,11 @@ describe('MusicPiece', () => {
     });
 
     /**
-     * Tests for all musicxml files wether the MIDI file leads to the same output
+     * Tests for all musicxml files whether the MIDI file leads to the same output
      */
     describe('equal result from MIDI and MusicXml', () => {
         const files = listFiles()
-            .filter(f => f.endsWith('.musicxml'))
+            .filter(f => f !== '[Test] Empty.musicxml' && f.endsWith('.musicxml'))
             .map(f => f.substr(0, f.length - 9));
 
 
@@ -168,5 +173,41 @@ describe('MusicPiece', () => {
             expect(midiPiece).toStrictEqual(xmlPiece);
         });
 
+    });
+});
+
+describe('Track', () => {
+    test('constructor', () => {
+        expect(() => new Track()).not.toThrow();
+    });
+});
+
+describe('TempoDefinition', () => {
+    test('constructor', () => {
+        expect(() => new TempoDefinition(10, 120)).not.toThrow();
+    });
+    test('string', () => {
+        expect(new TempoDefinition(10, 127).string).toBe('127 bpm');
+        expect(new TempoDefinition(20, 200.5).string).toBe('200.5 bpm');
+    });
+});
+
+describe('TimeSignature', () => {
+    test('constructor', () => {
+        expect(() => new TimeSignature(10, [4, 4])).not.toThrow();
+    });
+    test('string', () => {
+        expect(new TimeSignature(10, [4, 4]).string).toBe('4/4');
+        expect(new TimeSignature(20, [6, 8]).string).toBe('6/8');
+    });
+});
+
+describe('KeySignature', () => {
+    test('constructor', () => {
+        expect(() => new KeySignature(10, 'C', 'major')).not.toThrow();
+    });
+    test('string', () => {
+        expect(new KeySignature(10, 'C', 'major').string).toBe('C major');
+        expect(new KeySignature(10, 'D', 'minor').string).toBe('D minor');
     });
 });

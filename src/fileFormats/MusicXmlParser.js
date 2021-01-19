@@ -46,9 +46,9 @@ export function preprocessMusicXmlData(xml, log = false) {
         instruments: instrumentNames,
         totalTime: max(parsedParts, d => d.totalTime),
         // This is the first tempo etc., changes are stored in each part
-        bpm: parsedParts[0].bpm,
-        beats: parsedParts[0].beats,
-        beatType: parsedParts[0].beatType,
+        bpm: parsedParts[0]?.bpm ?? 120,
+        beats: parsedParts[0]?.beats ?? 4,
+        beatType: parsedParts[0]?.beatType ?? 4,
     };
     if (log) {
         console.log(result);
