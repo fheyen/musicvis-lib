@@ -1,4 +1,14 @@
 /**
+ * Maximum of 3 values
+ *
+ * @param {number} a a number
+ * @param {number} b a number
+ * @param {number} c a number
+ * @returns {number} maximum
+ */
+const max3 = (a, b, c) => Math.max(Math.max(a, b), c);
+
+/**
  * Calculates the SIMILARITY for two strings or arrays.
  * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
  * IMPORTANT: This metric is not symmetric!
@@ -26,47 +36,45 @@ export function gotoh(
     if (seqA.length === 0 && seqB.length === 0) { return 0; }
     // gap penalty function
     const gap = (index) => gapPenaltyStart + (index - 1) * gapPenaltyExtend;
-    // maximum of 3 values
-    const max = (a, b, c) => Math.max(Math.max(a, b), c);
-    const lenA = seqA.length;
-    const lenB = seqB.length;
+    const lengthA = seqA.length;
+    const lengthB = seqB.length;
     // initialize matrices
-    const a = new Array(lenA + 1).fill(0).map(() => new Array(lenB + 1));
-    const b = new Array(lenA + 1).fill(0).map(() => new Array(lenB + 1));
-    const c = new Array(lenA + 1).fill(0).map(() => new Array(lenB + 1));
+    const a = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
+    const b = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
+    const c = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
     a[0][0] = 0;
     b[0][0] = 0;
     c[0][0] = 0;
-    for (let i = 1; i <= lenA; i++) {
-        a[i][0] = c[i][0] = -Infinity;
+    for (let i = 1; i <= lengthA; i++) {
+        a[i][0] = c[i][0] = Number.NEGATIVE_INFINITY;
         b[i][0] = gap(i);
     }
-    for (let j = 1; j <= lenB; j++) {
-        a[0][j] = b[0][j] = -Infinity;
-        c[0][j] = gap(j);
+    for (let i = 1; i <= lengthB; i++) {
+        a[0][i] = b[0][i] = Number.NEGATIVE_INFINITY;
+        c[0][i] = gap(i);
     }
     // compute matrices
-    for (let i = 1; i <= lenA; i++) {
-        for (let j = 1; j <= lenB; j++) {
+    for (let i = 1; i <= lengthA; i++) {
+        for (let j = 1; j <= lengthB; j++) {
             const sim = similarityFunction(seqA[i - 1], seqB[j - 1]);
-            a[i][j] = max(
+            a[i][j] = max3(
                 a[i - 1][j - 1],
                 b[i - 1][j - 1],
                 c[i - 1][j - 1]) + sim;
-            b[i][j] = max(
+            b[i][j] = max3(
                 a[i - 1][j] + gapPenaltyStart,
                 b[i - 1][j] + gapPenaltyExtend,
                 c[i - 1][j] + gapPenaltyStart);
-            c[i][j] = max(
+            c[i][j] = max3(
                 a[i][j - 1] + gapPenaltyStart,
                 b[i][j - 1] + gapPenaltyStart,
                 c[i][j - 1] + gapPenaltyExtend);
         }
     }
-    return max(
-        a[lenA][lenB],
-        b[lenA][lenB],
-        c[lenA][lenB],
+    return max3(
+        a[lengthA][lengthB],
+        b[lengthA][lengthB],
+        c[lengthA][lengthB],
     );
 }
 

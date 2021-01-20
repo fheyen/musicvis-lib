@@ -63,11 +63,11 @@ export function reverseString(s) {
  * @returns {Note} closest note to targetNote
  */
 export function findNearest(notes, targetNote) {
-    if (!notes || !notes.length || notes.length === 0 || !targetNote) {
+    if (!notes || notes.length === 0 || !targetNote) {
         return null;
     }
     let nearest = null;
-    let dist = Infinity;
+    let dist = Number.POSITIVE_INFINITY;
     const targetStart = targetNote.start;
     for (const n of notes) {
         const newDist = Math.abs(n.start - targetStart);

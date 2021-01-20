@@ -17,8 +17,8 @@ export const recordAudio = () => {
         let stream;
         try {
             stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        } catch (e) {
-            console.warn('[AudioInput] Cannot access audio', e);
+        } catch (error) {
+            console.warn('[AudioInput] Cannot access audio', error);
             return;
         }
         const options = {

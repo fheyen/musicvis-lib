@@ -115,7 +115,7 @@ class NoteArray {
         }
         const copy = this.clone();
         const duration = this.getDuration();
-        for (let i = 1; i < times; i++) {
+        for (let index = 1; index < times; index++) {
             // Shift notes in time
             copy.shiftTime(duration);
             result.concat(copy);
@@ -203,11 +203,11 @@ class NoteArray {
     /**
      * Similar to Array.forEach
      *
-     * @param {*} fn a function
+     * @param {Function} func a function
      * @returns {NoteArray} this
      */
-    forEach(fn) {
-        this.#notes.forEach(fn);
+    forEach(func) {
+        this.#notes.forEach((element, index, array) => func(element, index, array));
         return this;
     }
 
@@ -240,7 +240,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     map(mapFunction) {
-        this.#notes = this.#notes.map(mapFunction);
+        this.#notes = this.#notes.map((element, index, array) => mapFunction(element, index, array));
         return this;
     }
 
@@ -270,16 +270,16 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     sliceTime(startTime, endTime, mode = 'contained') {
-        const s = startTime;
-        const e = endTime;
+        const start = startTime;
+        const end = endTime;
         if (mode === 'start') {
-            this.#notes = this.#notes.filter(n => n.start >= s && n.start < e);
+            this.#notes = this.#notes.filter(n => n.start >= start && n.start < end);
         }
         if (mode === 'end') {
-            this.#notes = this.#notes.filter(n => n.end !== null && n.end >= s && n.end < e);
+            this.#notes = this.#notes.filter(n => n.end !== null && n.end >= start && n.end < end);
         }
         if (mode === 'contained') {
-            this.#notes = this.#notes.filter(n => n.end !== null && n.start >= s && n.end < e);
+            this.#notes = this.#notes.filter(n => n.end !== null && n.start >= start && n.end < end);
         }
         return this;
     }
@@ -292,7 +292,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     filter(filterFunction) {
-        this.#notes = this.#notes.filter(filterFunction);
+        this.#notes = this.#notes.filter((element, index, array) => filterFunction(element, index, array));
         return this;
     }
 
@@ -357,8 +357,8 @@ class NoteArray {
         if (this.#notes.length !== notes.length) {
             return false;
         }
-        for (let i = 0; i < notes.length; i++) {
-            if (!this.#notes[i].equals(notes[i])) {
+        for (const [index, note] of notes.entries()) {
+            if (!this.#notes[index].equals(note)) {
                 return false;
             }
         }

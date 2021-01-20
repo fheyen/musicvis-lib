@@ -266,8 +266,7 @@ export function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) 
  */
 export function generateExampleData(startTime = 0, count = 50, tuning) {
     let currentTime = startTime;
-    return new Array(count)
-        .fill(0)
+    return Array.from({ length: count })
         .map(() => {
             const start = currentTime + randFloat(0, 1);
             currentTime = start + randFloat(0, 1);

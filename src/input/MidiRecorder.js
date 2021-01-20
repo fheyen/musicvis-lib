@@ -15,8 +15,8 @@ export const recordMidi = () => {
         let midiAccess;
         try {
             midiAccess = await navigator.requestMIDIAccess();
-        } catch (e) {
-            console.warn('[MidiInput] Cannot access MIDI', e);
+        } catch (error) {
+            console.warn('[MidiInput] Cannot access MIDI', error);
             return;
         }
         let messages = [];

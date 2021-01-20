@@ -9,9 +9,11 @@ module.exports = {
     extends: [
         'eslint:recommended',
         'plugin:jsdoc/recommended',
+        'plugin:unicorn/recommended',
     ],
     plugins: [
         'jsdoc',
+        'unicorn',
     ],
     parser: 'babel-eslint',
     parserOptions: {
@@ -70,6 +72,26 @@ module.exports = {
         'quotes': ['error', 'single'],
         'semi': 'error',
         'spaced-comment': ['warn', 'always'],
+        'unicorn/filename-case': 'off',
+        'unicorn/no-null': 'off', // TODO:
+        'unicorn/no-new-array': 'warn',
+        'unicorn/prevent-abbreviations': [
+            'warn',
+            {
+                'replacements': {
+                    'i': {
+                        'index': false,
+                    },
+                    'j': {
+                        'index': false,
+                    },
+                    'func': {
+                        'function': false,
+                        'function_': false,
+                    },
+                },
+            },
+        ],
         'yoda': 'warn',
     },
 };

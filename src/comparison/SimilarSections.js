@@ -21,8 +21,8 @@ export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0
     // Convert to string
     const dataString = PitchSequence.fromNotes(notes).getPitches();
     const searchString = PitchSequence.fromNotes(selectedNotes).getPitches();
-    const len = searchString.length;
-    if (len < 3) {
+    const length = searchString.length;
+    if (length < 3) {
         return [];
     }
     // Find matches
@@ -31,7 +31,7 @@ export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0
     return matches.map(m => {
         const { index } = m;
         const note1 = notes[index];
-        const note2 = notes[index + len];
+        const note2 = notes[index + length];
         return {
             ...m,
             startTime: note1.start,
@@ -49,13 +49,13 @@ export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0
  * @returns {object[]} {index, distance}
  */
 export function findSimilarStringSections(dataString, searchString, threshold = 0.5) {
-    const len = searchString.length;
+    const length = searchString.length;
     const matches = [];
-    for (let i = 0; i < dataString.length - len; i++) {
-        const slice = dataString.slice(i, i + len);
-        const distance = levenshtein(searchString, slice) / len;
+    for (let index = 0; index < dataString.length - length; index++) {
+        const slice = dataString.slice(index, index + length);
+        const distance = levenshtein(searchString, slice) / length;
         if (distance < threshold) {
-            matches.push({ index: i, distance });
+            matches.push({ index: index, distance });
         }
     }
     // Filter overlapping matches by removing the ones with larger distances
@@ -63,12 +63,12 @@ export function findSimilarStringSections(dataString, searchString, threshold = 
     // Therefore, sort by distance ascending and add them one by one
     matches.sort((a, b) => a.distance - b.distance);
     // Speed up hit detection by keeping track of indices that are already occupied
-    const occupied = new Array(dataString.length).fill(false);
+    const occupied = Array.from({ length: dataString.length }).fill(false);
     for (const m of matches) {
         const { index } = m;
         // Check if occupied
         let occ = false;
-        for (let i = index; i < index + len; i++) {
+        for (let i = index; i < index + length; i++) {
             if (occupied[i]) {
                 occ = true;
                 break;
@@ -77,7 +77,7 @@ export function findSimilarStringSections(dataString, searchString, threshold = 
         // If not occupied, add and occupy
         if (!occ) {
             filtered.push(m);
-            for (let i = index; i < index + len; i++) {
+            for (let i = index; i < index + length; i++) {
                 occupied[i] = true;
             }
         }

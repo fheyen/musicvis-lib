@@ -67,7 +67,7 @@ class Note {
             channel = 0,
             end = null,
         } = object;
-        if (typeof pitch === 'string' && isNaN(+pitch)) {
+        if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
             const note = getMidiNoteByLabel(pitch);
             if (note === null || note === undefined) {
                 throw new Error('Invalid pitch for Note.from()');

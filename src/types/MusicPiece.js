@@ -31,7 +31,7 @@ class MusicPiece {
         this.keySignatures = keySignatures;
         this.measureTimes = measureTimes;
 
-        if (!tracks || !tracks.length) {
+        if (!tracks || tracks.length === 0) {
             // TODO: test this
             throw new Error('No or invalid tracks given');
         }
@@ -78,11 +78,11 @@ class MusicPiece {
         }
         // tracks signatures
         const tracks = parsed.parts
-            .map((t, i) => Track.fromMidi(
-                parsed.partNames[i],
-                parsed.instruments[i],
+            .map((t, index) => Track.fromMidi(
+                parsed.partNames[index],
+                parsed.instruments[index],
                 t.noteObjs,
-                i,
+                index,
             ));
         return new MusicPiece(
             name,
@@ -108,8 +108,8 @@ class MusicPiece {
             throw new Error('No MusicXML file content given');
         }
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
-        const parsed = preprocessMusicXmlData(xmlDoc);
+        const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
+        const parsed = preprocessMusicXmlData(xmlDocument);
         // tempos
         let tempos = [];
         if (parsed.parts.length > 0) {
@@ -135,11 +135,11 @@ class MusicPiece {
         }
         // tracks
         const tracks = parsed.parts
-            .map((t, i) => Track.fromMusicXml(
-                parsed.partNames[i],
-                parsed.instruments[i],
+            .map((t, index) => Track.fromMusicXml(
+                parsed.partNames[index],
+                parsed.instruments[index],
                 t.noteObjs,
-                i,
+                index,
             ));
         return new MusicPiece(
             name,
@@ -183,6 +183,7 @@ export class Track {
      * @param {Note[]} notes notes
      */
     constructor(name, instrument, notes) {
+        name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
         this.name = name;
         this.instrument = instrument;
         this.notes = notes;
@@ -198,7 +199,6 @@ export class Track {
      * @returns {Track} new Track
      */
     static fromMidi(name, instrument, notes) {
-        name = name.replace('\x00', '');
         return new Track(name, instrument, notes);
     }
 
@@ -212,7 +212,6 @@ export class Track {
      * @returns {Track} new Track
      */
     static fromMusicXml(name, instrument, notes, channel) {
-        name = name.replace('\x00', '');
         notes.forEach(n => n.channel = channel);
         return new Track(name, instrument, notes);
     }

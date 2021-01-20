@@ -7,17 +7,17 @@ class SuffixTree {
     /**
      * SuffixTree for strings or Arrays
      *
-     * @param {string|Array} arr string or Array to process
+     * @param {string|Array} array string or Array to process
      */
-    constructor(arr) {
+    constructor(array) {
         // Split string to array
-        if (typeof arr === 'string') {
-            arr = arr.split('');
+        if (typeof array === 'string') {
+            array = array.split('');
         }
         this.node = new TreeNode();
-        if (arr && arr.length) {
-            for (let i = 0; i < arr.length; i++) {
-                this.node.addSuffix(arr.slice(i));
+        if (array && array.length > 0) {
+            for (let index = 0; index < array.length; index++) {
+                this.node.addSuffix(array.slice(index));
             }
         }
     }
@@ -69,8 +69,8 @@ class TreeNode {
      */
     checkNodes(suf) {
         let node;
-        for (let i = 0; i < this.nodes.length; i++) {
-            node = this.nodes[i];
+        for (let index = 0; index < this.nodes.length; index++) {
+            node = this.nodes[index];
             if (arrayShallowEquals(node.value, [suf[0]])) {
                 node.addSuffix(suf.slice(1));
                 return true;
@@ -84,15 +84,15 @@ class TreeNode {
      */
     checkLeaves(suf) {
         let node, leaf;
-        for (let i = 0; i < this.leaves.length; i++) {
-            leaf = this.leaves[i];
+        for (let index = 0; index < this.leaves.length; index++) {
+            leaf = this.leaves[index];
             if (leaf[0] === suf[0]) {
                 node = new TreeNode();
                 node.value = [leaf[0]];
                 node.addSuffix(suf.slice(1));
                 node.addSuffix(leaf.slice(1));
                 this.nodes.push(node);
-                this.leaves.splice(i, 1);
+                this.leaves.splice(index, 1);
                 return;
             }
         }
@@ -103,7 +103,7 @@ class TreeNode {
      * @param {string|Array} suf suffix
      */
     addSuffix(suf) {
-        if (!suf.length) {
+        if (suf.length === 0) {
             return;
         }
         if (!this.checkNodes(suf)) {
@@ -117,15 +117,15 @@ class TreeNode {
      * @returns {Array} longest substring
      */
     getLongestRepeatedSubString() {
-        let arr = [];
-        let temp = [];
-        for (let i = 0; i < this.nodes.length; i++) {
-            temp = this.nodes[i].getLongestRepeatedSubString();
-            if (temp.length > arr.length) {
-                arr = temp;
+        let array = [];
+        let temporary = [];
+        for (let index = 0; index < this.nodes.length; index++) {
+            temporary = this.nodes[index].getLongestRepeatedSubString();
+            if (temporary.length > array.length) {
+                array = temporary;
             }
         }
-        return this.value.concat(arr);
+        return this.value.concat(array);
     }
 
     /**
@@ -136,23 +136,19 @@ class TreeNode {
      */
     toString(indent = 1) {
         const ind = ' |'.repeat(indent);
-        let str = '';
-        if (this.value.length) {
-            str += `-N '${this.value}'`;
-        } else {
-            str += 'root';
-        }
-        if (this.nodes.length) {
-            for (let i = 0; i < this.nodes.length; i++) {
-                str += `\n${ind}${this.nodes[i].toString(indent + 1)}`;
+        let string = '';
+        string += this.value.length > 0 ? `-N '${this.value}'` : 'root';
+        if (this.nodes.length > 0) {
+            for (let index = 0; index < this.nodes.length; index++) {
+                string += `\n${ind}${this.nodes[index].toString(indent + 1)}`;
             }
         }
-        if (this.leaves.length) {
-            for (let i = 0; i < this.leaves.length; i++) {
-                str += `\n${ind}-L ${this.leaves[i]}`;
+        if (this.leaves.length > 0) {
+            for (let index = 0; index < this.leaves.length; index++) {
+                string += `\n${ind}-L ${this.leaves[index]}`;
             }
         }
-        return str;
+        return string;
     }
 }
 

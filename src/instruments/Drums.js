@@ -78,7 +78,7 @@ export function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove =
     for (const note of data) {
         usedPitches.add(note.pitch);
     }
-    const pitches = Array.from(usedPitches);
+    const pitches = [...usedPitches];
     // Create variation by adding, removing, and shifting notes
     const randVelocity = randomInt(15, 128);
     const randTime = randomNormal(0, deviation);
@@ -159,8 +159,8 @@ export function simplifyDrumPitches(notes, replacementMap) {
  */
 export function getPitch2PositionMap(replacementMap) {
     const result = new Map();
-    const uniqeRows = Array.from(group(Array.from(replacementMap), d => d[1].repPitch));
+    const uniqeRows = [...group([...replacementMap], d => d[1].repPitch)];
     uniqeRows.sort((a, b) => a[1][0][1].order - b[1][0][1].order);
-    uniqeRows.forEach((d, i) => result.set(d[0], i));
+    uniqeRows.forEach((d, index) => result.set(d[0], index));
     return result;
 }

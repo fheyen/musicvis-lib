@@ -41,8 +41,8 @@ class PitchSequence {
      * @returns {PitchSequence} pitch sequence
      */
     static fromCharString(string) {
-        if (!string || !string.length) { return new PitchSequence(); }
-        const pitches = string.split('').map((d, i) => string.charCodeAt(i));
+        if (!string || string.length === 0) { return new PitchSequence(); }
+        const pitches = string.split('').map((d, index) => string.charCodeAt(index));
         return new PitchSequence(pitches);
     }
 
@@ -67,7 +67,7 @@ class PitchSequence {
      * @returns {string} string representation of note pitches
      */
     toCharString() {
-        if (!this.#pitches || !this.#pitches.length) {
+        if (!this.#pitches || this.#pitches.length === 0) {
             return '';
         }
         return String.fromCharCode(...this.#pitches);
@@ -108,12 +108,12 @@ class PitchSequence {
      */
     toIntervals() {
         const p = this.#pitches;
-        if (!p || !p.length || p.length < 2) {
+        if (!p || p.length === 0 || p.length < 2) {
             return [];
         }
-        const result = new Array(p.length - 1);
-        for (let i = 1; i < p.length; i++) {
-            result[i - 1] = p[i] - p[i - 1];
+        const result = Array.from({ length: p.length - 1 });
+        for (let index = 1; index < p.length; index++) {
+            result[index - 1] = p[index] - p[index - 1];
         }
         return result;
     }
@@ -139,8 +139,8 @@ class PitchSequence {
         if (this.#pitches.length !== p.length) {
             return false;
         }
-        for (let i = 0; i < p.length; i++) {
-            if (this.#pitches[i] !== p[i]) {
+        for (const [index, element] of p.entries()) {
+            if (this.#pitches[index] !== element) {
                 return false;
             }
         }

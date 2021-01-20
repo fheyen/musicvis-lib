@@ -145,11 +145,7 @@ export function discretizeTime(track, secondsPerBin) {
         const endBin = Math.round((note.end - minTime) / secondsPerBin);
         const pitch = note.pitch;
         let binArray;
-        if (result.has(pitch)) {
-            binArray = result.get(pitch);
-        } else {
-            binArray = new Array(binCount).fill(0);
-        }
+        binArray = result.has(pitch) ? result.get(pitch) : Array.from({ length: binCount }).fill(0);
         for (let bin = startBin; bin <= endBin; bin++) {
             binArray[bin] = 1;
         }
@@ -203,11 +199,11 @@ function sliceDiscretizedTrack(trackMap, startBin, endBin) {
 function euclideanDistanceSquared(A, B) {
     const maxBins = Math.max(A.length, B.length);
     let sum = 0;
-    for (let i = 0; i < maxBins; i++) {
+    for (let index = 0; index < maxBins; index++) {
         // If undefined (because one array is shorter)
         // use 0 as padding value
-        const a = A[i] || 0;
-        const b = B[i] || 0;
+        const a = A[index] || 0;
+        const b = B[index] || 0;
         const diff = a - b;
         sum += diff * diff;
     }
@@ -229,12 +225,12 @@ function neirestNeighborDistance(A, B) {
     const maxBins = Math.max(A.length, B.length);
     const maxOffset = Math.round(maxBins / 4);
     let sum = 0;
-    for (let i = 0; i < maxBins; i++) {
+    for (let index = 0; index < maxBins; index++) {
         let offset = 0;
         // If undefined (because one array is shorter)
         // use 0 as padding value
-        const a = A[i] || 0;
-        const b = B[i] || 0;
+        const a = A[index] || 0;
+        const b = B[index] || 0;
         if (a === b) {
             // 0 cost
         } else if (a === 0 && b === 1) {
@@ -243,7 +239,7 @@ function neirestNeighborDistance(A, B) {
             // while (i - offset > 0 && i + offset < (maxBins-1) && offset <= maxOffset) {
             while (offset <= maxOffset) {
                 offset++;
-                if (a[i - offset] === 1 || a[i + offset === 1]) {
+                if (a[index - offset] === 1 || a[index + offset === 1]) {
                     break;
                 }
             }
@@ -251,7 +247,7 @@ function neirestNeighborDistance(A, B) {
             // If a == 1, look for the nearest 1 in b
             while (offset <= maxOffset) {
                 offset++;
-                if (b[i - offset] === 1 || b[i + offset === 1]) {
+                if (b[index - offset] === 1 || b[index + offset === 1]) {
                     break;
                 }
             }
@@ -297,11 +293,10 @@ export function getSimilarPartsViaMatching(notes) {
 
         // Get all notes with same pitch
         let candidateSequences = [];
-        for (let i = 0; i < notes.length; i++) {
-            const n = notes[i];
+        for (const [index, n] of notes.entries()) {
             if (n.pitch === startNote.pitch) {
                 candidateSequences.push({
-                    startIndex: i,
+                    startIndex: index,
                     length: 1,
                 });
             }

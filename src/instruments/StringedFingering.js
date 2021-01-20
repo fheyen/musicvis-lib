@@ -92,10 +92,10 @@ class HandPose {
      *      right thumb, 4 right fingers. Values: null for finger not pressed,
      *      {string:number, fret:number} for pressed fingers
      */
-    constructor(fingerPositions = new Array(10).fill(null)) {
+    constructor(fingerPositions = Array.from({length: 10}).fill(null)) {
         if (fingerPositions.length !== 10) {
             console.error('fingerPositions must have length 10!');
-            fingerPositions = new Array(10).fill(null);
+            fingerPositions = Array.from({length: 10}).fill(null);
         }
         this.fingerPositions = fingerPositions;
     }
@@ -156,10 +156,8 @@ class HandPose {
      */
     isValid(maxString, maxFret) {
         for (const finger of this.fingerPositions) {
-            if (finger !== null) {
-                if (!finger.isValid(maxString, maxFret)) {
-                    return false;
-                }
+            if (finger !== null && !finger.isValid(maxString, maxFret)) {
+                return false;
             }
         }
         return true;
@@ -174,12 +172,12 @@ class HandPose {
     euqals(otherHandPose) {
         const fingers1 = this.fingerPositions;
         const fingers2 = otherHandPose.fingerPositions;
-        for (let i = 0; i < 10; i++) {
-            if (fingers1[i] !== fingers2[i]) {
-                if (fingers1[i] === null || fingers2[i] === null) {
+        for (let index = 0; index < 10; index++) {
+            if (fingers1[index] !== fingers2[index]) {
+                if (fingers1[index] === null || fingers2[index] === null) {
                     return false;
                 }
-                if (!fingers1[i].equals(fingers2[i])) {
+                if (!fingers1[index].equals(fingers2[index])) {
                     return false;
                 }
             }
@@ -191,15 +189,15 @@ class HandPose {
      * @returns {string} string representation
      */
     toString() {
-        let str = 'HandPose ';
+        let string = 'HandPose ';
         const names = ['T', 1, 2, 3, 4, 'RT', 6, 7, 8, 9];
-        for (let i = 0; i < 10; i++) {
-            const finger = this.fingerPositions[i];
+        for (let index = 0; index < 10; index++) {
+            const finger = this.fingerPositions[index];
             if (finger !== null) {
-                str = `${str} ${names[i]} ${finger.toString()}`;
+                string = `${string} ${names[index]} ${finger.toString()}`;
             }
         }
-        return str;
+        return string;
     }
 
     /**
@@ -219,13 +217,13 @@ class HandPose {
         const diff = [];
         const fingers1 = this.fingerPositions;
         const fingers2 = otherHandPose.fingerPositions;
-        for (let i = 0; i < 10; i++) {
-            if (fingers1[i] === null) {
-                diff[i] = fingers2[i];
-            } else if (fingers2[i] === null) {
-                diff[i] = null;
+        for (let index = 0; index < 10; index++) {
+            if (fingers1[index] === null) {
+                diff[index] = fingers2[index];
+            } else if (fingers2[index] === null) {
+                diff[index] = null;
             } else {
-                diff[i] = fingers1[i].difference(fingers2[i]);
+                diff[index] = fingers1[index].difference(fingers2[index]);
             }
         }
         return diff;
@@ -266,8 +264,8 @@ class HandPose {
         }
         // Lift some fingers, others stay the same
         let assumptionValid = true;
-        for (let i = 0; i < 10; i++) {
-            if (fingers2[i] !== null && !fingers1[i].equals(fingers2[i])) {
+        for (let index = 0; index < 10; index++) {
+            if (fingers2[index] !== null && !fingers1[index].equals(fingers2[index])) {
                 assumptionValid = false;
                 break;
             }
@@ -284,8 +282,8 @@ class HandPose {
         }
         // Put some fingers down, other stay the same
         assumptionValid = true;
-        for (let i = 0; i < 10; i++) {
-            if (fingers1[i] !== null && !fingers1[i].equals(fingers2[i])) {
+        for (let index = 0; index < 10; index++) {
+            if (fingers1[index] !== null && !fingers1[index].equals(fingers2[index])) {
                 assumptionValid = false;
                 break;
             }

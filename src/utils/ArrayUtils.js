@@ -13,8 +13,8 @@ export function arrayShallowEquals(a, b) {
     if (a.length !== b.length) {
         return false;
     }
-    for (let i = 0; i < a.length; i++) {
-        if (a[i] !== b[i]) {
+    for (const [index, element] of a.entries()) {
+        if (element !== b[index]) {
             return false;
         }
     }
@@ -58,7 +58,7 @@ export function arrayHasSameElements(a, b, checkLength = true) {
  * @returns {Array} array without duplicates
  */
 export function removeDuplicates(array) {
-    return Array.from(new Set(array));
+    return [...new Set(array)];
 }
 
 /**
@@ -74,8 +74,8 @@ export function arrayContainsArray(a, b) {
     if (a.length < b.length) {
         return false;
     }
-    for (let i = 0; i < b.length; i++) {
-        if (a[i] !== b[i]) {
+    for (const [index, element] of b.entries()) {
+        if (a[index] !== element) {
             return false;
         }
     }
@@ -89,10 +89,10 @@ export function arrayContainsArray(a, b) {
  * @returns {number} maximum value
  */
 export function getMatrixMax(matrix) {
-    let maximum = -Infinity;
+    let maximum = Number.NEGATIVE_INFINITY;
     for (const row of matrix) {
         for (const value of row) {
-            if (isNaN(+value)) { continue; }
+            if (Number.isNaN(+value)) { continue; }
             if (value > maximum) {
                 maximum = value;
             }
@@ -105,15 +105,15 @@ export function getMatrixMax(matrix) {
  * Stringifies a 2D array / matrix for logging onto the console.
  *
  * @param {any[][]} matrix the matrix
- * @param {string} colSep column separator
- * @param {string} rowSep row separator
+ * @param {string} colSeparator column separator
+ * @param {string} rowSeparator row separator
  * @param {Function} formatter formatting for each element
  * @returns {string} stringified matrix
  */
-export function formatMatrix(matrix, colSep = ', ', rowSep = '\n', formatter) {
-    if (!matrix || !matrix.length) { return ''; }
+export function formatMatrix(matrix, colSeparator = ', ', rowSeparator = '\n', formatter) {
+    if (!matrix || matrix.length === 0) { return ''; }
     if (formatter) {
         matrix = matrix.map(row => row.map(value => formatter(value)));
     }
-    return matrix.map(row => row.join(colSep)).join(rowSep);
+    return matrix.map(row => row.join(colSeparator)).join(rowSeparator);
 }

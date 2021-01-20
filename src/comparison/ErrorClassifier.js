@@ -43,8 +43,8 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
     const recGrouped = group(recNotes, accessor);
 
     // Get all pitches / channels
-    const gtKeys = Array.from(gtGrouped.keys());
-    const recKeys = Array.from(recGrouped.keys());
+    const gtKeys = [...gtGrouped.keys()];
+    const recKeys = [...recGrouped.keys()];
     const allKeys = Utils.removeDuplicates(gtKeys.concat(recKeys));
 
     let classifiedNotes = [];
@@ -196,7 +196,7 @@ function getGtRecOverlaps(gtNotes, recNotes) {
         }
     }
     const missed = missedGtNotes.map(d => new NoteWithState(d, NoteState.MISSED));
-    const extra = Array.from(extraRecNotes).map(d => new NoteWithState(d, NoteState.MISSED));
+    const extra = [...extraRecNotes].map(d => new NoteWithState(d, NoteState.MISSED));
     return {
         classified: missed.concat(extra),
         overlapping: overlaps,
@@ -362,18 +362,17 @@ export function findBestMatch(baseNote, candidates) {
  * @returns {Note} best matching note
  */
 export function findBestMatchBasedOnTime(baseNote, candidates) {
-    const candArr = Array.from(candidates);
-    const deltas = candArr.map((value) => Math.abs(baseNote.start - value.start));
-    let minimum = Infinity;
+    const candArray = [...candidates];
+    const deltas = candArray.map((value) => Math.abs(baseNote.start - value.start));
+    let minimum = Number.POSITIVE_INFINITY;
     let bestMatch = 0;
-    for (let i = 0; i < deltas.length; i++) {
-        const value = deltas[i];
+    for (const [index, value] of deltas.entries()) {
         if (value < minimum) {
-            bestMatch = i;
+            bestMatch = index;
             minimum = value;
         }
     }
-    return candArr[bestMatch];
+    return candArray[bestMatch];
 }
 
 /**

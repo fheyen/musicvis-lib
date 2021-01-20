@@ -27,7 +27,7 @@ class Recording extends NoteArray {
         this.date = date;
         // Save formatted date for faster access
         this.dateString = date.toISOString()
-            .substring(0, 19)
+            .slice(0, 19)
             .replace('T', ' ');
         this.speed = +speed;
         this.selectedTrack = +selectedTrack;
@@ -77,8 +77,8 @@ class Recording extends NoteArray {
         if (notes1.length !== notes2.length) {
             return false;
         }
-        for (let i = 0; i < notes1.length; i++) {
-            if (!notes1[i].equals(notes2[i])) {
+        for (const [index, element] of notes1.entries()) {
+            if (!element.equals(notes2[index])) {
                 return false;
             }
         }
@@ -104,31 +104,32 @@ class Recording extends NoteArray {
     /**
      * Creates a Note object from an object via destructuring
      *
-     * @param {object} obj object with at least {name, date, notes, speed}
+     * @param {object} object object with at least {name, date, notes, speed}
      * @returns {Recording} new note
      * @throws {Error} when name, date, or notes are missing
      */
-    static from(obj) {
-        let { name, date, notes } = obj;
+    static from(object) {
+        let { name, date, notes } = object;
         // Check for undefined
         const values = [name, date, notes];
         const names = ['name', 'date', 'notes'];
-        for (let i = 0; i < values.length; i++) {
-            if (values[i] === undefined || values[i] === null) {
-                throw new Error(`Cannot create Recording with undefined ${names[i]}`);
+        for (const [index, value] of values.entries()) {
+            if (value === undefined || value === null) {
+                throw new Error(`Cannot create Recording with undefined ${names[index]}`);
             }
         }
         // Parse date if it is a string
         if (typeof (date) === 'string') {
             date = new Date(Date.parse(date));
         }
+        const { speed, selectedTrack, timeSelection } = object;
         return new Recording(
             name,
             date,
             notes,
-            obj.speed,
-            obj.selectedTrack,
-            obj.timeSelection,
+            speed,
+            selectedTrack,
+            timeSelection,
         );
     }
 }

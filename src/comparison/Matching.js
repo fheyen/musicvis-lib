@@ -166,9 +166,9 @@ export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) 
             let error = 0;
             if (matchedRecNotes.length > 0) {
                 for (const note of matchedRecNotes) {
-                    const err = Math.abs(note.start - gtStart);
-                    if (err <= errorThreshold) {
-                        error += err;
+                    const error_ = Math.abs(note.start - gtStart);
+                    if (error_ <= errorThreshold) {
+                        error += error_;
                     }
                 }
                 error /= matchedRecNotes.length;
@@ -216,9 +216,9 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
             // If it is null, this is handled in missingNotes
             if (matchedRecNote !== null) {
                 correct++;
-                const err = Math.abs(matchedRecNote.start - gtStart);
-                if (err > timeThreshold) {
-                    timeError += err;
+                const error = Math.abs(matchedRecNote.start - gtStart);
+                if (error > timeThreshold) {
+                    timeError += error;
                 }
             }
         });
@@ -258,10 +258,8 @@ export function getMatchingSection(matching, start, end) {
         const newGtRecMap = new Map();
         gtRecMap.forEach((matchedRecNote, gtStart) => {
             // If it is null, this is handled in missingNotes
-            if (matchedRecNote !== null) {
-                if (gtStart >= start && gtStart < end) {
-                    newGtRecMap.set(gtStart, matchedRecNote);
-                }
+            if (matchedRecNote !== null && gtStart >= start && gtStart < end) {
+                newGtRecMap.set(gtStart, matchedRecNote);
             }
         });
         result.set(pitch, {

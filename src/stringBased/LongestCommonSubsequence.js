@@ -16,17 +16,17 @@ export function lcs(a, b) {
     // Return now if one (or both) empty
     if (a.length === 0) { return a; }
     if (b.length === 0) { return b; }
-    let i, j, row = [], left, diag, latch;
+    let i, j, row = [], left, diagonal, latch;
     const lcs = [];
     const c = [];
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
     for (i = 0; i < m; i++) {
         c[i] = row = row.slice();
-        for (diag = 0, j = 0; j < n; j++, diag = latch) {
+        for (diagonal = 0, j = 0; j < n; j++, diagonal = latch) {
             latch = row[j];
             if (a[i] === b[j]) {
-                row[j] = diag + 1;
+                row[j] = diagonal + 1;
             } else {
                 left = row[j - 1] || 0;
                 if (left > row[j]) {
@@ -52,11 +52,7 @@ export function lcs(a, b) {
         }
     }
     // Only join when x and y are strings
-    if ((a instanceof Array) || (b instanceof Array)) {
-        return lcs;
-    } else {
-        return lcs.join('');
-    }
+    return (Array.isArray(a)) || (Array.isArray(b)) ? lcs : lcs.join('');
 }
 
 /**
@@ -78,16 +74,16 @@ export function lcsLength(a, b) {
     // Return now if one (or both) empty
     if (a.length === 0) { return 0; }
     if (b.length === 0) { return 0; }
-    let i, j, row = [], left, diag, latch;
+    let i, j, row = [], left, diagonal, latch;
     const c = [];
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
     for (i = 0; i < m; i++) {
         c[i] = row = row.slice();
-        for (diag = 0, j = 0; j < n; j++, diag = latch) {
+        for (diagonal = 0, j = 0; j < n; j++, diagonal = latch) {
             latch = row[j];
             if (a[i] === b[j]) {
-                row[j] = diag + 1;
+                row[j] = diagonal + 1;
             } else {
                 left = row[j - 1] || 0;
                 if (left > row[j]) {

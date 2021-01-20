@@ -42,16 +42,16 @@ export function formatTime(seconds, includeMillis = true) {
  * @returns {string} formatted date
  */
 export function formatDate(date, replaceT = false, keepMillis = true) {
-    let str = date.toISOString()
+    let string = date.toISOString()
         .split(':')
         .join('-');
     if (!keepMillis) {
-        str = str.slice(0, str.indexOf('.'));
+        string = string.slice(0, string.indexOf('.'));
     }
     if (replaceT) {
-        str = str.replace('T', ' ');
+        string = string.replace('T', ' ');
     }
-    return str;
+    return string;
 }
 
 /**

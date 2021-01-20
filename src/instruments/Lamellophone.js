@@ -40,9 +40,8 @@ export class LamellophoneTuning {
     getNumbers() {
         const pitches = this.pitchesSorted;
         const numbers = new Map();
-        for (let i = 0; i < pitches.length; i++) {
-            const pitch = pitches[i];
-            let number = i + 1;
+        for (const [index, pitch] of pitches.entries()) {
+            let number = index + 1;
             let ending = '';
             let lowerOctave = pitch - 12;
             while (lowerOctave > 0 && numbers.has(lowerOctave)) {
@@ -52,7 +51,7 @@ export class LamellophoneTuning {
             }
             numbers.set(pitch, { number, numberString: `${number}${ending}` });
         }
-        return Array.from(numbers.values())
+        return [...numbers.values()]
             .map(d => d.numberString);
     }
 
@@ -66,9 +65,8 @@ export class LamellophoneTuning {
     getLetters() {
         const pitches = this.pitchesSorted;
         const numbers = new Map();
-        for (let i = 0; i < pitches.length; i++) {
-            const pitch = pitches[i];
-            let number = i + 1;
+        for (const [index, pitch] of pitches.entries()) {
+            let number = index + 1;
             let ending = '';
             let lowerOctave = pitch - 12;
             while (lowerOctave > 0 && numbers.has(lowerOctave)) {
@@ -79,7 +77,7 @@ export class LamellophoneTuning {
             const letter = getMidiNoteByNr(pitch).name;
             numbers.set(pitch, { number, letterString: `${letter}${ending}` });
         }
-        return Array.from(numbers.values()).map(d => d.letterString);
+        return [...numbers.values()].map(d => d.letterString);
     }
 }
 
@@ -134,12 +132,12 @@ export const lamellophoneTunings = new Map([
  * @returns {Note[]} notes
  */
 export function convertTabToNotes(tab, tuning, tempo = 120) {
-    if (!tab || !tab.length) { return []; }
+    if (!tab || tab.length === 0) { return []; }
     // Create a mapping symbol->pitch
     const symbolToPitchMap = new Map();
     const symbols = tuning.getLetters();
-    for (let i = 0; i < tuning.keyCount; i++) {
-        symbolToPitchMap.set(symbols[i], tuning.pitchesSorted[i]);
+    for (let index = 0; index < tuning.keyCount; index++) {
+        symbolToPitchMap.set(symbols[index], tuning.pitchesSorted[index]);
     }
     // Parse tab to notes
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -166,7 +164,7 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
             if (!insideChord) {
                 currentTime += secondsPerBeat;
             }
-        } catch (e) {
+        } catch {
             console.log(currentPitch);
         }
         insideNote = false;
@@ -222,18 +220,18 @@ export function convertTabToNotes(tab, tuning, tempo = 120) {
  * @returns {string} text tab
  */
 export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1) {
-    if (!notes || !notes.length) { return []; }
+    if (!notes || notes.length === 0) { return []; }
     // Create a mapping pitch->symbol
     const pitchToSymbolMap = new Map();
     const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
-    for (let i = 0; i < tuning.keyCount; i++) {
-        pitchToSymbolMap.set(tuning.pitchesSorted[i], symbols[i]);
+    for (let index = 0; index < tuning.keyCount; index++) {
+        pitchToSymbolMap.set(tuning.pitchesSorted[index], symbols[index]);
     }
     // Get chords
     const chords = detectChordsByExactStart(notes);
     // Create tab
     let tab = '';
-    let prevEnd = 0;
+    let previousEnd = 0;
     for (const chord of chords) {
         // Format chord's notes
         let chordString = chord
@@ -249,14 +247,9 @@ export function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1
             // Mark chords with backets (for multiple notes)
             chordString = `(${chordString})`;
         }
-        if (chord[0].start - prevEnd > restSize) {
-            // Add new line
-            tab = `${tab}\n${chordString}`;
-        } else {
-            tab = `${tab} ${chordString}`;
-        }
+        tab = chord[0].start - previousEnd > restSize ? `${tab}\n${chordString}` : `${tab} ${chordString}`;
         // Update last end time of chord
-        prevEnd = max(chord, n => n.end);
+        previousEnd = max(chord, n => n.end);
     }
     // Remove leading space
     return tab.slice(1);
@@ -280,44 +273,39 @@ export function convertNotesToHtmlTab(
     restSize = 0.1,
     colormap = () => 'black',
 ) {
-    if (!notes || !notes.length) { return []; }
+    if (!notes || notes.length === 0) { return []; }
     // Create a mapping pitch->symbol
     const pitchToSymbolMap = new Map();
     const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
-    for (let i = 0; i < tuning.keyCount; i++) {
-        pitchToSymbolMap.set(tuning.pitches[i], symbols[i]);
+    for (let index = 0; index < tuning.keyCount; index++) {
+        pitchToSymbolMap.set(tuning.pitches[index], symbols[index]);
     }
     // Get chords
     const chords = detectChordsByExactStart(notes);
     // Create tab
     let tab = '';
-    let prevEnd = 0;
+    let previousEnd = 0;
     for (const chord of chords) {
         // Format chord's notes
         let chordString = chord
             .map(note => {
-                let str;
+                let string;
                 if (pitchToSymbolMap.has(note.pitch)) {
-                    str = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
+                    string = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
                 } else {
-                    str = mode === 'letter' ? getMidiNoteByNr(note.pitch)?.name ?? note.pitch : note.pitch;
+                    string = mode === 'letter' ? getMidiNoteByNr(note.pitch)?.name ?? note.pitch : note.pitch;
                 }
                 const color = colormap(note.pitch);
-                return `<span class='note' style='background-color: ${color}'>${str}</span>`;
+                return `<span class='note' style='background-color: ${color}'>${string}</span>`;
             })
             .join('\n');
         if (chord.length > 1) {
             // Mark chords with backets (for multiple notes)
             chordString = `<span class='chord'>${chordString}</span>`;
         }
-        if (chord[0].start - prevEnd > restSize) {
-            // Add new line
-            tab = `${tab}<br/>${chordString}`;
-        } else {
-            tab = `${tab}${chordString}`;
-        }
+        tab = chord[0].start - previousEnd > restSize ? `${tab}<br/>${chordString}` : `${tab}${chordString}`;
         // Update last end time of chord
-        prevEnd = max(chord, n => n.end);
+        previousEnd = max(chord, n => n.end);
     }
     return tab;
 }
@@ -330,7 +318,7 @@ export function convertNotesToHtmlTab(
  * @returns {string} tab in letter format
  */
 export function convertNumbersToLetters(numberTab, numberLetterMap) {
-    if (!numberTab || !numberTab.length) { return ''; }
+    if (!numberTab || numberTab.length === 0) { return ''; }
     // Normalize to °
     numberTab = numberTab.replaceAll('\'', '°');
     numberTab = numberTab.replaceAll('’', '°');
@@ -354,7 +342,7 @@ export function convertNumbersToLetters(numberTab, numberLetterMap) {
  * @returns {object} {transpose: number, retune: Map}
  */
 export function bestTransposition(notes, tuning) {
-    if (!notes || !notes.length) {
+    if (!notes || notes.length === 0) {
         return { transpose: 0, retune: new Map() };
     }
 
@@ -365,7 +353,7 @@ export function bestTransposition(notes, tuning) {
         // just choose best approx?
 
     }
-    const notePitches = Array.from(occuringPitches);
+    const notePitches = [...occuringPitches];
 
     // Already perfect? return now
     if (difference(notePitches, tuning.pitches).size === 0) {
@@ -373,7 +361,8 @@ export function bestTransposition(notes, tuning) {
     }
 
     const [minPitch, maxPitch] = extent(notePitches);
-    const transpose = (arr, steps) => arr.map(d => d + steps);
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const transpose = (array, steps) => array.map(d => d + steps);
 
     // Just brute force through all transpositions
     let bestSteps = 0;
@@ -425,7 +414,7 @@ export function bestTransposition(notes, tuning) {
     const retune = new Map();
     for (const neededPitch of neededPitches) {
         let bestMatch = null;
-        const bestDiff = Infinity;
+        const bestDiff = Number.POSITIVE_INFINITY;
         let freePitch;
         for (freePitch of freePitches) {
             const diff = Math.abs(neededPitch - freePitch);

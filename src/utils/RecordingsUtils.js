@@ -49,10 +49,9 @@ export function filterRecordingNoise(recording, velocityThreshold = 0, durationT
 export function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
     // Speed up by getting range only once for all tracks
     const pitchRanges = new Map();
-    for (let i = 0; i < groundTruth.length; i++) {
-        const part = groundTruth[i];
-        const ext = extent(part, d => d.pitch);
-        pitchRanges.set(i, ext);
+    for (const [index, part] of groundTruth.entries()) {
+        const extension = extent(part, d => d.pitch);
+        pitchRanges.set(index, extension);
     }
     return recordings.map(recording => {
         const track = recording.selectedTrack;
@@ -109,11 +108,11 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
     }
 
     const heatmapByAttribute = new Map();
-    for (const [attr, notes] of groupedByAttribute.entries()) {
+    for (const [attribute_, notes] of groupedByAttribute.entries()) {
         // Calculate heatmap
         const maxTime = max(notes, d => d.end);
         const nBins = Math.ceil((maxTime * 1000) / binSize) + 1;
-        const heatmap = new Array(nBins).fill(0);
+        const heatmap = Array.from({ length: nBins }).fill(0);
         for (const note of notes) {
             const start = Math.round(note.start * 1000 / binSize);
             const end = Math.round(note.end * 1000 / binSize);
@@ -125,7 +124,7 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
         for (let bin = 0; bin < heatmap.length; bin++) {
             heatmap[bin] /= nRecs;
         }
-        heatmapByAttribute.set(attr, heatmap);
+        heatmapByAttribute.set(attribute_, heatmap);
     }
     return heatmapByAttribute;
 }
@@ -245,11 +244,9 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
 export function differenceMap(gtNotes, recNotes, binSize) {
     const recHeatmap = recordingsHeatmap(recNotes, 1, binSize);
     const gtHeatmap = recordingsHeatmap(gtNotes, 1, binSize);
-    const allPitches = Array.from(
-        new Set(
-            Array.from(recHeatmap.keys()).concat(Array.from(gtHeatmap.keys())),
-        ),
-    );
+    const allPitches = [...new Set(
+        [...recHeatmap.keys()].concat([...gtHeatmap.keys()]),
+    )];
     const resultMap = new Map();
     for (const pitch of allPitches) {
         let result;
@@ -265,25 +262,25 @@ export function differenceMap(gtNotes, recNotes, binSize) {
             const recH = recHeatmap.get(pitch);
             const gtH = gtHeatmap.get(pitch);
             const nBins = Math.max(recH.length, gtH.length);
-            result = new Array(nBins).fill(0);
-            for (let i = 0; i < result.length; i++) {
-                const gtValue = gtH[i] || 0;
-                const recValue = recH[i] || 0;
+            result = Array.from({ length: nBins }).fill(0);
+            for (let index = 0; index < result.length; index++) {
+                const gtValue = gtH[index] || 0;
+                const recValue = recH[index] || 0;
                 if (gtValue === 0 && recValue === 0) {
                     // None
-                    result[i] = 0;
+                    result[index] = 0;
                 }
                 if (gtValue !== 0 && recValue === 0) {
                     // Missing
-                    result[i] = 1;
+                    result[index] = 1;
                 }
                 if (gtValue === 0 && recValue !== 0) {
                     // Additional
-                    result[i] = 2;
+                    result[index] = 2;
                 }
                 if (gtValue !== 0 && recValue !== 0) {
                     // Both
-                    result[i] = 3;
+                    result[index] = 3;
                 }
             }
         }
@@ -319,7 +316,7 @@ export function differenceMapErrorAreas(differenceMap) {
     }
 
     // Normalize
-    const maxLength = max(Array.from(differenceMap), d => d[1].length);
+    const maxLength = max([...differenceMap], d => d[1].length);
     const totalArea = differenceMap.size * maxLength;
 
     return {

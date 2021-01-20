@@ -69,9 +69,8 @@ const noteColormapAccessible = [
  * Gradient color map from black to steelblue
  */
 const colorInterpolator = interpolateRgb('black', 'steelblue');
-const noteColormapGradientArray = new Array(12)
-    .fill(0)
-    .map((d, i) => colorInterpolator(i / 11));
+const noteColormapGradientArray = Array.from({ length: 12 })
+    .map((d, index) => colorInterpolator(index / 11));
 
 /**
  * Returns the note color depending on the given pitch.

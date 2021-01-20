@@ -69,34 +69,34 @@ export function swapSoSmallerFirst(x, y) {
  * boundary.
  * IMPORTANT: does not find plateaus
  *
- * @param {number[]} arr array
+ * @param {number[]} array array
  * @returns {number[]} array with indices of maxima
  */
-export function findLocalMaxima(arr) {
-    if (arr.length <= 1) { return []; }
-    if (arr.length === 2) {
-        if (arr[0] > arr[1]) { return [0]; }
-        if (arr[1] > arr[0]) { return [1]; }
+export function findLocalMaxima(array) {
+    if (array.length <= 1) { return []; }
+    if (array.length === 2) {
+        if (array[0] > array[1]) { return [0]; }
+        if (array[1] > array[0]) { return [1]; }
         return [];
     }
     // General case with 3 or more
     const maximaIndices = [];
-    if (arr[0] > arr[1]) {
+    if (array[0] > array[1]) {
         maximaIndices.push(0);
     }
-    let last = arr[0];
-    let curr = arr[1];
-    for (let i = 1; i < arr.length - 1; i++) {
-        const next = arr[i + 1];
-        if (curr > last && curr > next) {
-            maximaIndices.push(i);
+    let last = array[0];
+    let current = array[1];
+    for (let index = 1; index < array.length - 1; index++) {
+        const next = array[index + 1];
+        if (current > last && current > next) {
+            maximaIndices.push(index);
         }
-        last = curr;
-        curr = next;
+        last = current;
+        current = next;
     }
-    const lastIndex = arr.length - 1;
-    if (arr[lastIndex] > arr[lastIndex - 1]) {
-        maximaIndices.push(arr.length - 1);
+    const lastIndex = array.length - 1;
+    if (array[lastIndex] > array[lastIndex - 1]) {
+        maximaIndices.push(array.length - 1);
     }
     return maximaIndices;
 }

@@ -43,7 +43,7 @@ class NeedlemanWunsch {
         this.T.push([[false, false, false]]);
 
         // Calculate scores and traceback on first row
-        for (let j = 1; j < this.seq2.length + 1; j++) {
+        for (let i = 1; i < this.seq2.length + 1; i++) {
             this.S[0].push(this.S[0][this.S[0].length - 1] + this.gap_penalty);
             this.I[0].push([null, null, null]);
             this.T[0].push([true, false, false]);
@@ -60,15 +60,11 @@ class NeedlemanWunsch {
                 // similarity
                 // TODO: support function here
                 let sim_score;
-                if (this.seq1[i - 1] === this.seq2[j - 1]) {
-                    sim_score = this.match_score;
-                } else {
-                    sim_score = this.mismatch_penalty;
-                }
+                sim_score = this.seq1[i - 1] === this.seq2[j - 1] ? this.match_score : this.mismatch_penalty;
                 const match = this.S[i - 1][j - 1] + sim_score;
                 const intermediate_scores = [insert, match, del];
                 const score = Math.max(...intermediate_scores);
-                const tracebackTypeStatus = intermediate_scores.map(e => e === score);
+                const tracebackTypeStatus = intermediate_scores.map(entry => entry === score);
                 this.S[i].push(score);
                 this.I[i].push(intermediate_scores);
                 this.T[i].push(tracebackTypeStatus);
@@ -121,7 +117,7 @@ class NeedlemanWunsch {
                 // score: this.score,
             },
         };
-        let current, child, children, len, alignment, pos, t;
+        let current, child, children, length, alignment, pos, t;
         current = root;
         while (current) {
             pos = current.pos;
@@ -129,11 +125,11 @@ class NeedlemanWunsch {
             // Get children alignments
             children = this.alignmentChildren(current.pos);
             // Store completed alignments
-            if (!children.length) {
+            if (children.length === 0) {
                 finalAlignments.push(alignment);
             }
             current = current.next;
-            for (t = 0, len = children.length; t < len; t++) {
+            for (t = 0, length = children.length; t < length; t++) {
                 child = children[t];
                 child.alignment = {
                     // -1 refers to offset between  scoring matrix and the sequence

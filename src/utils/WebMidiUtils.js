@@ -18,14 +18,14 @@ export function pingMidiDevice(deviceName, howOften = 1) {
         let sentCount = 0;
         let sentTime;
         let totalTime = 0;
+        // Start listening for incoming data
+        const receiveFunction = () => {
+            const ping = Date.now() - sentTime;
+            totalTime += ping;
+            const avg = totalTime / sentCount;
+            console.log(`Received MIDI from ${deviceName} after ${ping} ms (avg: ${avg})`);
+        };
         navigator.requestMIDIAccess().then(midiAccess => {
-            // Start listening for incoming data
-            const receiveFunction = () => {
-                const ping = new Date() - sentTime;
-                totalTime += ping;
-                const avg = totalTime / sentCount;
-                console.log(`Received MIDI from ${deviceName} after ${ping} ms (avg: ${avg})`);
-            };
             for (const input of midiAccess.inputs.values()) {
                 if (deviceName === input.name) {
                     input.onmidimessage = receiveFunction;
@@ -47,13 +47,12 @@ export function pingMidiDevice(deviceName, howOften = 1) {
                     sentCount++;
                     console.log(`Ping ${sentCount}/${howOften} Sending MIDI ping to ${deviceName}`);
                     sentTime = new Date();
-                    outputDevice.send([0x90, 0x45, 0x7f]);
+                    outputDevice.send([0x90, 0x45, 0x7F]);
                     setTimeout(pingFunction, 1000);
                 }
             };
             setTimeout(pingFunction, 1000);
-        },
-        () => console.error('Cannot get MIDI access'),
+        }, () => console.error('Cannot get MIDI access'),
         );
     }
 }

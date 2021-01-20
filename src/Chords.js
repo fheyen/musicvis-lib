@@ -18,7 +18,7 @@ import Note from '../src/types/Note'; /* eslint-disable-line no-unused-vars */
  */
 export function detectChordsByExactStart(notes) {
     const grouped = group(notes, d => d.start);
-    const chords = Array.from(grouped)
+    const chords = [...grouped]
         .map(d => d[1])
         // Sort chords by time
         .sort((a, b) => a[0].start - b[0].start)
@@ -44,7 +44,7 @@ export function detectChordsByExactStart(notes) {
  * @returns {Note[][]} array of chord arrays
  */
 export function detectChordsByOverlap(notes, sortByPitch = true) {
-    if (!notes || !notes.length) { return []; }
+    if (!notes || notes.length === 0) { return []; }
     if (notes.length === 1) { return [[notes[0]]]; }
     const sorted = notes.slice().sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch; });
     const notesTodo = new Set(sorted);
@@ -193,20 +193,20 @@ const chordTypes = new Map([
  * @returns {string} chord type
  */
 export function getChordType(notes) {
-    if (!notes || !notes.length) { return { name: 'No note' }; }
+    if (!notes || notes.length === 0) { return { name: 'No note' }; }
     if (notes.length === 1) { return { name: 'Single note' }; }
     // Get distances in semitones
     let steps = [];
     const lowest = notes[0].pitch;
-    for (let i = 1; i < notes.length; i++) {
-        steps.push(notes[i].pitch - lowest);
+    for (let index = 1; index < notes.length; index++) {
+        steps.push(notes[index].pitch - lowest);
     }
     // Normalize higher than octave
     steps = steps.map(d => d % 12);
     // Filter octaves
     steps = steps.filter(d => d !== 0);
     // Filter doubles
-    steps = Array.from(new Set(steps));
+    steps = [...new Set(steps)];
     if (steps.length === 0) { return { name: 'Octave' }; }
     steps.sort((a, b) => a - b);
 

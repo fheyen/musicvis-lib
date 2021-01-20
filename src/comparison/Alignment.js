@@ -127,8 +127,8 @@ function alignmentForce(a, b) {
     let count = 0;
     // For each note in a, search the closest note in b with the same pitch and calculate the distance
     for (const noteA of a) {
-        let distance = Infinity;
-        let diff = Infinity;
+        let distance = Number.POSITIVE_INFINITY;
+        let diff = Number.POSITIVE_INFINITY;
         for (const noteB of b) {
             if (noteA.pitch === noteB.pitch) {
                 const dist = Math.abs(noteA.start - noteB.start);
@@ -143,7 +143,7 @@ function alignmentForce(a, b) {
             }
         }
         // (If not found, this does not change alignment)
-        if (distance < Infinity) {
+        if (distance < Number.POSITIVE_INFINITY) {
             difference += diff;
             count++;
         }
@@ -207,7 +207,7 @@ export function alignmentBenchmark() {
     const randDuration = randomUniform.source(randomLcg(seed))(1 / 64, 2);
 
     // Create random notes
-    const randomNotes = new Array(200).fill(0).map(() => {
+    const randomNotes = Array.from({length: 200}).fill(0).map(() => {
         const start = randTime();
         return new Note(
             rand127(),

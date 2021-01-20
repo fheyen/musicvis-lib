@@ -23,21 +23,21 @@ export function preprocessMusicXmlData(xml, log = false) {
         console.log(xml);
     }
     // Get part and instrument names
-    const partNameElements = xml.getElementsByTagName('part-name');
-    const instruments = xml.getElementsByTagName('score-instrument');
+    const partNameElements = xml.querySelectorAll('part-name');
+    const instruments = xml.querySelectorAll('score-instrument');
     const partNames = [];
     const instrumentNames = [];
     for (const p of partNameElements) {
         partNames.push(p.innerHTML);
     }
-    for (const i of instruments) {
-        instrumentNames.push(i.children[0].innerHTML);
+    for (const index of instruments) {
+        instrumentNames.push(index.children[0].innerHTML);
     }
     // Preprocess notes
-    const parts = xml.getElementsByTagName('part');
+    const parts = xml.querySelectorAll('part');
     const parsedParts = [];
-    for (let p = 0; p < parts.length; p++) {
-        const measures = parts[p].children;
+    for (const part of parts) {
+        const measures = part.children;
         parsedParts.push(preprocessMusicXmlMeasures(measures));
     }
     const result = {
@@ -85,9 +85,9 @@ function preprocessMusicXmlMeasures(measures) {
         const currentTimeRounded = roundToNDecimals(currentTime, 12);
         // Try to update metrics (if they are not set, keep the old ones)
         try {
-            const soundElements = measure.getElementsByTagName('sound');
-            for (const el of soundElements) {
-                const tempoValue = el.getAttribute('tempo');
+            const soundElements = measure.querySelectorAll('sound');
+            for (const element of soundElements) {
+                const tempoValue = element.getAttribute('tempo');
                 if (tempoValue !== null) {
                     tempo = roundToNDecimals(+tempoValue, 3);
                     tempoChanges.push({
@@ -101,62 +101,62 @@ function preprocessMusicXmlMeasures(measures) {
                 // notes will update the time
                 break;
             }
-        } catch { }
+        } catch {}
         try {
-            divisions = +measure.getElementsByTagName('divisions')[0].innerHTML;
-        } catch { }
+            divisions = +measure.querySelectorAll('divisions')[0].innerHTML;
+        } catch {}
         try {
-            beats = +measure.getElementsByTagName('beats')[0].innerHTML;
-            beatType = +measure.getElementsByTagName('beat-type')[0].innerHTML;
+            beats = +measure.querySelectorAll('beats')[0].innerHTML;
+            beatType = +measure.querySelectorAll('beat-type')[0].innerHTML;
             beatTypeChanges.push({
                 time: currentTimeRounded,
                 beats,
                 beatType,
             });
-        } catch { }
+        } catch {}
         const secondsPerBeat = 1 / (tempo / 60);
         try {
-            const fifths = +measure.getElementsByTagName('fifths')[0].innerHTML;
+            const fifths = +measure.querySelectorAll('fifths')[0].innerHTML;
             const { key, scale } = keySignatureMap.get(fifths);
             keySignatureChanges.push({
                 time: currentTimeRounded,
                 key,
                 scale,
             });
-        } catch { }
+        } catch {}
 
         // Read notes
-        const notes = measure.getElementsByTagName('note');
+        const notes = measure.querySelectorAll('note');
         let lastNoteDuration = 0;
         for (const note of notes) {
             try {
                 // TODO: Ignore non-tab staff when there is a tab staff
                 // Get note duration in seconds
-                const duration = +note.getElementsByTagName('duration')[0].innerHTML;
+                const duration = +note.querySelectorAll('duration')[0].innerHTML;
                 const durationInBeats = duration / divisions;
                 const durationInSeconds = durationInBeats * secondsPerBeat;
                 // Do not create note object for rests, only increase time
-                const isRest = note.getElementsByTagName('rest').length !== 0;
+                const isRest = note.querySelectorAll('rest').length > 0;
                 if (isRest) {
                     currentTime += durationInSeconds;
                     continue;
                 }
                 // Get MIDI pitch
-                const no = note.getElementsByTagName('step')[0].innerHTML;
-                const octave = +note.getElementsByTagName('octave')[0].innerHTML;
+                const no = note.querySelectorAll('step')[0].innerHTML;
+                const octave = +note.querySelectorAll('octave')[0].innerHTML;
                 const pitch = getMidiNoteByNameAndOctave(no, octave).pitch;
                 // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
-                const isChord = note.getElementsByTagName('chord').length > 0;
+                const isChord = note.querySelectorAll('chord').length > 0;
                 if (isChord) {
                     currentTime -= lastNoteDuration;
                 }
                 // Is this note tied?
-                const tieEl = note.getElementsByTagName('tie')[0];
-                if (tieEl && tieEl.getAttribute('type') === 'stop') {
+                const tieElement = note.querySelectorAll('tie')[0];
+                if (tieElement && tieElement.getAttribute('type') === 'stop') {
                     const noteEnd = currentTime + durationInSeconds;
                     // Find last note with this pitch and update end
-                    for (let i = noteObjs.length - 1; i > 0; i--) {
-                        const n = noteObjs[i];
+                    for (let index = noteObjs.length - 1; index > 0; index--) {
+                        const n = noteObjs[index];
                         if (n.pitch === pitch) {
                             n.end = noteEnd;
                             break;
@@ -167,9 +167,9 @@ function preprocessMusicXmlMeasures(measures) {
                     let string = null;
                     let fret = null;
                     try {
-                        fret = +note.getElementsByTagName('fret')[0].innerHTML;
-                        string = +note.getElementsByTagName('string')[0].innerHTML;
-                    } catch (e) {/* Do nothing */ }
+                        fret = +note.querySelectorAll('fret')[0].innerHTML;
+                        string = +note.querySelectorAll('string')[0].innerHTML;
+                    } catch {/* Do nothing */ }
                     // TODO: use xml note type?
                     // const type = note.getElementsByTagName('type')[0].innerHTML;
                     const startTime = roundToNDecimals(currentTime, 12);
@@ -196,8 +196,8 @@ function preprocessMusicXmlMeasures(measures) {
                 }
                 lastNoteDuration = durationInSeconds;
                 currentTime += durationInSeconds;
-            } catch (e) {
-                console.warn('[MusicXmlParser] Cannot parse MusicXML note', e, note);
+            } catch (error) {
+                console.warn('[MusicXmlParser] Cannot parse MusicXML note', error, note);
             }
         }
         // Add measure line position
@@ -243,13 +243,12 @@ function preprocessMusicXmlMeasures(measures) {
 function duplicateRepeatedMeasures(measures) {
     let repeatedMeasures = [];
     let currentRepetition = [];
-    for (let i = 0; i < measures.length; i++) {
-        const measure = measures[i];
-        const rep = measure.getElementsByTagName('repeat');
+    for (const measure of measures) {
+        const rep = measure.querySelectorAll('repeat');
         if (rep.length === 2) {
             // Only this measure is repeated
             const times = rep[1].getAttribute('times') || 2;
-            const repetition = new Array(+times).fill(measure);
+            const repetition = Array.from({ length: +times }).fill(measure);
             if (currentRepetition.length === 0) {
                 repeatedMeasures = repeatedMeasures.concat(repetition);
             } else {
@@ -257,16 +256,16 @@ function duplicateRepeatedMeasures(measures) {
             }
         } else if (rep.length === 1) {
             // Repetition either starts or ends here
-            const dir = rep[0].getAttribute('direction');
-            if (dir === 'forward') {
+            const direction = rep[0].getAttribute('direction');
+            if (direction === 'forward') {
                 // Start new repetition
                 currentRepetition.push(measure);
-            } else if (dir === 'backward') {
+            } else if (direction === 'backward') {
                 const times = rep[0].getAttribute('times') || 2;
                 if (currentRepetition.length > 0) {
                     // Finish current repetition
                     currentRepetition.push(measure);
-                    for (let i = 0; i < times; i++) {
+                    for (let index = 0; index < times; index++) {
                         repeatedMeasures = repeatedMeasures.concat(currentRepetition);
                     }
                     currentRepetition = [];
@@ -300,16 +299,16 @@ function getTuningPitches(measures) {
     for (const measure of measures) {
         try {
             const tuningPitches = [];
-            const staffTunings = measure.getElementsByTagName('staff-tuning');
+            const staffTunings = measure.querySelectorAll('staff-tuning');
             for (const st of staffTunings) {
-                const tuningNote = st.getElementsByTagName('tuning-step')[0].innerHTML;
-                const tuningOctave = +st.getElementsByTagName('tuning-octave')[0].innerHTML;
+                const tuningNote = st.querySelectorAll('tuning-step')[0].innerHTML;
+                const tuningOctave = +st.querySelectorAll('tuning-octave')[0].innerHTML;
                 // let line = +st.getAttribute('line');
                 // console.log(`String ${line} is tuned to ${tuningNote}${tuningOctave}`);
                 tuningPitches.push(getMidiNoteByNameAndOctave(tuningNote, tuningOctave).pitch);
             }
             return tuningPitches;
-        } catch (e) { }
+        } catch {}
     }
     return [];
 }

@@ -68,6 +68,14 @@ describe('MusicPiece', () => {
                 expect(note).toBeInstanceOf(Note);
             }
         });
+
+        const allMidiFiles = listFiles()
+            .filter(f => f.endsWith('.mid') || f.endsWith('.midi'));
+
+        test.each(allMidiFiles)('parses MIDI without error %s', (file) => {
+            const midi = readMidiFile2(file);
+            expect(() => MusicPiece.fromMidi(file, midi)).not.toThrow();
+        });
     });
 
     describe('fromMusicXml', () => {
@@ -91,6 +99,15 @@ describe('MusicPiece', () => {
             for (let note of xmlNotes) {
                 expect(note).toBeInstanceOf(GuitarNote);
             }
+        });
+
+        const allXmlFiles = listFiles()
+            .filter(f => f.endsWith('.xml') || f.endsWith('.musicxml'))
+            .filter(f => f !== '[Test] Empty.musicxml');
+
+        test.each(allXmlFiles)('parses MusicXML without error %s', (file) => {
+            const xml = readXmlFile(file);
+            expect(() => MusicPiece.fromMusicXml(file, xml)).not.toThrow();
         });
     });
 
@@ -162,6 +179,18 @@ describe('MusicPiece', () => {
             const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
             const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
             expect(midiNotes).toStrictEqual(xmlNotes);
+        });
+
+        const filesThatWork = ['[Test] C4 to C5'];
+        test.each(filesThatWork)('all notes, only pitch %s', (file) => {
+            const midi = readMidiFile2(`${file}.mid`);
+            const xml = readXmlFile(`${file}.musicxml`);
+            const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
+            const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
+            expect(midiNotes.length).toBe(xmlNotes.length);
+            for (let i = 0; i < midiNotes.length; i++) {
+                expect(midiNotes[i].pitch).toBe(xmlNotes[i].pitch);
+            }
         });
 
         // TODO: will probably never work since some data is not available

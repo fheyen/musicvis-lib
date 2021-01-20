@@ -32,15 +32,15 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
     // Parse notes
     let parsedTracks = [];
     const partNames = [];
-    const { tempoChanges, beatTypeChanges, keySignatureChanges } = getMidiTempoAndBeatChanges(data.track);
-    for (let i = 0; i < data.track.length; i++) {
-        const track = data.track[i];
+    const { tempoChanges, beatTypeChanges, keySignatureChanges } = getSignatureChanges(data.track);
+    for (let index = 0; index < data.track.length; index++) {
+        const track = data.track[index];
         const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges);
         if (t !== null) {
             parsedTracks.push(t);
             // Get part name
             const name = getPartName(track.event);
-            partNames.push(name ? name : `Track ${i}`);
+            partNames.push(name ? name : `Track ${index}`);
         }
     }
     // Split MIDI format 0 data into tracks instead of having channels
@@ -107,10 +107,10 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             mostRecentTempoChange = tempoChanges[tempoChanges.length - 1];
         }
         // Get current tempo, as soon as we are too far, 1 step back
-        for (let i = 1; i < tempoChanges.length; i++) {
-            const tick = tempoChanges[i].tick;
+        for (let index = 1; index < tempoChanges.length; index++) {
+            const tick = tempoChanges[index].tick;
             if (tick > currentTick) {
-                const change = tempoChanges[i - 1];
+                const change = tempoChanges[index - 1];
                 mostRecentTempoChange = change;
                 break;
             }
@@ -143,16 +143,16 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             // Handle note-off
             // Go back to latest note with the same pitch and add the end time
             // If more than one channel, check also the channel!
-            let i = notes.length - 1;
-            while (notes[i].pitch !== pitch || notes[i].channel !== channel || notes[i].end !== -1) {
-                i--;
-                if (i < 0) {
+            let index = notes.length - 1;
+            while (notes[index].pitch !== pitch || notes[index].channel !== channel || notes[index].end !== -1) {
+                index--;
+                if (index < 0) {
                     console.warn('Did not find note-on event for note-off event!');
                     break;
                 }
             }
-            if (i >= 0) {
-                notes[i].end = currentTime;
+            if (index >= 0) {
+                notes[index].end = currentTime;
             }
         } else {
             // TODO: What about pitch-bend (14) etc?
@@ -319,7 +319,7 @@ function getMillisecondsPerTick(tempo, timeDivision) {
  * @returns {object} {tempoChanges, beatTypeChanges} as arrays of objects, which
  *      contain the MIDI tick and the new information
  */
-function getMidiTempoAndBeatChanges(tracks) {
+function getSignatureChanges(tracks) {
     const tempoChanges = [];
     const beatTypeChanges = [];
     const keySignatureChanges = [];
@@ -353,6 +353,20 @@ function getMidiTempoAndBeatChanges(tracks) {
                     beats,
                     beatType,
                 });
+                const newEntry = {
+                    tick: currentTick,
+                    beats,
+                    beatType,
+                };
+                if (beatTypeChanges.length === 0) {
+                    beatTypeChanges.push(newEntry);
+                } else {
+                    // If it id not change, do not add
+                    const last = beatTypeChanges[beatTypeChanges.length - 1];
+                    if (last.beats !== beats || last.beatType !== beatType) {
+                        beatTypeChanges.push(newEntry);
+                    }
+                }
                 // console.log(`Metro: ${d[2]}`);
                 // console.log(`32nds: ${d[3]}`);
             }
@@ -361,11 +375,20 @@ function getMidiTempoAndBeatChanges(tracks) {
                 // console.log('keychange', event);
                 const d = event.data;
                 const { key, scale } = keySignatureMap.get(d);
-                keySignatureChanges.push({
+                const newEntry = {
                     tick: currentTick,
                     key,
                     scale,
-                });
+                };
+                if (keySignatureChanges.length === 0) {
+                    keySignatureChanges.push(newEntry);
+                } else {
+                    // If it id not change, do not add
+                    const last = keySignatureChanges[keySignatureChanges.length - 1];
+                    if (last.key !== key || last.scale !== scale) {
+                        keySignatureChanges.push(newEntry);
+                    }
+                }
             }
         }
     }
@@ -453,12 +476,12 @@ function getMidiTempoAndBeatChanges(tracks) {
 const keySignatureMap = new Map([
     // major
     [0xF900, { key: 'Cb', scale: 'major' }],
-    [0xFa00, { key: 'Gb', scale: 'major' }],
-    [0xFb00, { key: 'Db', scale: 'major' }],
-    [0xFc00, { key: 'Ab', scale: 'major' }],
-    [0xFd00, { key: 'Eb', scale: 'major' }],
-    [0xFe00, { key: 'Bb', scale: 'major' }],
-    [0xFf00, { key: 'F', scale: 'major' }],
+    [0xFA00, { key: 'Gb', scale: 'major' }],
+    [0xFB00, { key: 'Db', scale: 'major' }],
+    [0xFC00, { key: 'Ab', scale: 'major' }],
+    [0xFD00, { key: 'Eb', scale: 'major' }],
+    [0xFE00, { key: 'Bb', scale: 'major' }],
+    [0xFF00, { key: 'F', scale: 'major' }],
     [0x0000, { key: 'C', scale: 'major' }],
     [0x0100, { key: 'G', scale: 'major' }],
     [0x0200, { key: 'D', scale: 'major' }],
@@ -469,12 +492,12 @@ const keySignatureMap = new Map([
     [0x0700, { key: 'C#', scale: 'major' }],
     // minor
     [0xF901, { key: 'Ab', scale: 'minor' }],
-    [0xFa01, { key: 'Eb', scale: 'minor' }],
-    [0xFb01, { key: 'Bb', scale: 'minor' }],
-    [0xFc01, { key: 'F', scale: 'minor' }],
-    [0xFd01, { key: 'C', scale: 'minor' }],
-    [0xFe01, { key: 'G', scale: 'minor' }],
-    [0xFf01, { key: 'D', scale: 'minor' }],
+    [0xFA01, { key: 'Eb', scale: 'minor' }],
+    [0xFB01, { key: 'Bb', scale: 'minor' }],
+    [0xFC01, { key: 'F', scale: 'minor' }],
+    [0xFD01, { key: 'C', scale: 'minor' }],
+    [0xFE01, { key: 'G', scale: 'minor' }],
+    [0xFF01, { key: 'D', scale: 'minor' }],
     [0x0001, { key: 'A', scale: 'minor' }],
     [0x0101, { key: 'E', scale: 'minor' }],
     [0x0201, { key: 'B', scale: 'minor' }],

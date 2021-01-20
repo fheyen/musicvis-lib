@@ -12,37 +12,33 @@
 export function levenshtein(a, b) {
     if (a.length === 0) { return b.length; }
     if (b.length === 0) { return a.length; }
-    let i, j, prev, val;
+    let i, j, previous, value;
     // swap to save some memory O(min(a,b)) instead of O(a)
     if (a.length > b.length) {
-        const tmp = a;
+        const temporary = a;
         a = b;
-        b = tmp;
+        b = temporary;
     }
     // init the row
-    const row = Array(a.length + 1);
+    const row = Array.from({ length: a.length + 1 });
     for (i = 0; i <= a.length; i++) {
         row[i] = i;
     }
     // fill in the rest
     for (i = 1; i <= b.length; i++) {
-        prev = i;
+        previous = i;
         for (j = 1; j <= a.length; j++) {
-            if (b[i - 1] === a[j - 1]) {
-                val = row[j - 1]; // match
-            } else {
-                val = Math.min(
-                    row[j - 1] + 1, // substitution
-                    Math.min(
-                        prev + 1,   // insertion
-                        row[j] + 1,  // deletion
-                    ),
-                );
-            }
-            row[j - 1] = prev;
-            prev = val;
+            value = b[i - 1] === a[j - 1] ? row[j - 1] : Math.min(
+                row[j - 1] + 1, // substitution
+                Math.min(
+                    previous + 1,   // insertion
+                    row[j] + 1,  // deletion
+                ),
+            );
+            row[j - 1] = previous;
+            previous = value;
         }
-        row[a.length] = prev;
+        row[a.length] = previous;
     }
     return row[a.length];
 }
@@ -59,23 +55,18 @@ export function levenshtein(a, b) {
 export function damerauLevenshtein(a, b) {
     if (a.length === 0) { return b.length; }
     if (b.length === 0) { return a.length; }
-    const d = new Array(a.length + 1)
-        .fill(0)
-        .map(() => new Array(b.length));
+    const d = Array.from({ length: a.length + 1 })
+        .map(() => Array.from({ length: b.length }));
     for (let i = 0; i <= a.length; i++) {
         d[i][0] = i;
     }
-    for (let j = 0; j <= b.length; j++) {
-        d[0][j] = j;
+    for (let i = 0; i <= b.length; i++) {
+        d[0][i] = i;
     }
     let cost;
     for (let i = 1; i <= a.length; i++) {
         for (let j = 1; j <= b.length; j++) {
-            if (a[i - 1] === b[j - 1]) {
-                cost = 0;
-            } else {
-                cost = 1;
-            }
+            cost = a[i - 1] === b[j - 1] ? 0 : 1;
             d[i][j] = Math.min(
                 d[i - 1][j] + 1,        // deletion
                 d[i][j - 1] + 1,        // insertion

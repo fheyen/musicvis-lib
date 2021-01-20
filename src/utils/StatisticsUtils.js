@@ -15,7 +15,7 @@ export function confidenceInterval(values) {
     const n = values.length;
     const m = mean(values);
     const s = deviation(values);
-    const z = 1.960; // 95% CI
+    const z = 1.96; // 95% CI
     // const z = 2.576; // 99% CI
     const part = z * (s / Math.sqrt(n));
     const low = m - part;
@@ -32,14 +32,14 @@ export function confidenceInterval(values) {
  */
 export function getBoxplotCharacteristics(values) {
     values.sort((a, b) => a - b);
-    const minVal = values[0];
-    const maxVal = values[values.length - 1];
+    const minValue = values[0];
+    const maxValue = values[values.length - 1];
     const q1 = quantile(values, 0.25);
-    const q2 = quantile(values, 0.50);
+    const q2 = quantile(values, 0.5);
     const q3 = quantile(values, 0.75);
     const iqr = q3 - q1;
-    const r0 = Math.max(minVal, q1 - iqr * 1.5);
-    const r1 = Math.min(maxVal, q3 + iqr * 1.5);
+    const r0 = Math.max(minValue, q1 - iqr * 1.5);
+    const r1 = Math.min(maxValue, q3 + iqr * 1.5);
     return { q1, q2, q3, r0, r1 };
 }
 
