@@ -31,7 +31,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
     const groupedByPitchRec = group(recNotes, d => d.pitch);
     const result = new Map();
     // For each pitch, map recorded notes to GT notes
-    groupedByPitch.forEach((gtNotes, pitch) => {
+    for (const [pitch, gtNotes] of groupedByPitch.entries()) {
         const gtRecMap = new Map();
         const additionalNotes = [];
         const missingNotes = [];
@@ -46,7 +46,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
                 missingNotes: gtNotes,
                 gtNotes: gtNotes,
             });
-            return;
+            continue;
         }
         const recNotes = groupedByPitchRec.get(pitch);
         for (const r of recNotes) {
@@ -81,9 +81,9 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
             missingNotes,
             gtNotes: gtNotes,
         });
-    });
+    }
     // If a recording has a pitch that GT has not, all those notes are additional notes
-    groupedByPitchRec.forEach((recNotes, pitch) => {
+    for (const [pitch, recNotes] of groupedByPitchRec.entries()) {
         if (!groupedByPitch.has(pitch)) {
             result.set(pitch, {
                 gtRecMap: new Map(),
@@ -93,7 +93,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
             });
 
         }
-    });
+    }
     // console.log(result);
     return result;
 }
@@ -118,7 +118,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
     const groupedByPitchRec = group(allRecNotes, d => d.pitch);
     const result = new Map();
     // For each pitch, map recorded notes to GT notes and keep track of misses
-    groupedByPitch.forEach((gtNotes, pitch) => {
+    for (const [pitch, gtNotes] of groupedByPitch.entries()) {
         const gtRecMap = new Map();
         for (const n of gtNotes) {
             gtRecMap.set(n.start, []);
@@ -126,7 +126,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
         // Recording might be missing this pitch, then match is empty
         if (!groupedByPitchRec.has(pitch)) {
             result.set(pitch, new Map());
-            return;
+            continue;
         }
         const recNotes = groupedByPitchRec.get(pitch);
         for (const r of recNotes) {
@@ -138,7 +138,7 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
         }
         // Store result in map pitch->groupings
         result.set(pitch, gtRecMap);
-    });
+    }
     // console.log(result);
     return result;
 }
@@ -158,11 +158,11 @@ export function matchGtAndMultipleRecordings(recordings, gtNotes) {
  */
 export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) {
     const result = new Map();
-    multiMatching.forEach((gtRecMap, pitch) => {
+    for (const [pitch, gtRecMap] of multiMatching.entries()) {
         const gtErrorMap = new Map();
         let maxError = 0;
         // Go through all gtStart and matched notes
-        gtRecMap.forEach((matchedRecNotes, gtStart) => {
+        for (const [gtStart, matchedRecNotes] of gtRecMap.entries()) {
             let error = 0;
             if (matchedRecNotes.length > 0) {
                 for (const note of matchedRecNotes) {
@@ -177,12 +177,12 @@ export function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) 
                 }
             }
             gtErrorMap.set(gtStart, error);
-        });
+        }
         result.set(pitch, {
             gtErrorMap,
             maxError,
         });
-    });
+    }
     return result;
 }
 
@@ -206,13 +206,13 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
         totalNumberOfGtNotes: 0,
         perPitch: new Map(),
     };
-    matching.forEach((m, pitch) => {
+    for (const [pitch, m] of matching.entries()) {
         const { gtRecMap, additionalNotes, missingNotes, gtNotes } = m;
         const addError = additionalNotes.length * addPenalty;
         const missError = missingNotes.length * missPenalty;
         let correct = 0;
         let timeError = 0;
-        gtRecMap.forEach((matchedRecNote, gtStart) => {
+        for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
             // If it is null, this is handled in missingNotes
             if (matchedRecNote !== null) {
                 correct++;
@@ -221,7 +221,7 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
                     timeError += error;
                 }
             }
-        });
+        }
         const total = addError + missError + timeError * timingPenalty;
         result.perPitch.set(pitch, {
             total,
@@ -238,7 +238,7 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
         result.totalTime += timeError;
         result.total += total;
         result.totalNumberOfGtNotes += gtNotes.length;
-    });
+    }
     return result;
 }
 
@@ -253,22 +253,22 @@ export function getMatchingError(matching, addPenalty, missPenalty, timingPenalt
  */
 export function getMatchingSection(matching, start, end) {
     const result = new Map();
-    matching.forEach((m, pitch) => {
+    for (const [pitch, m] of matching.entries()) {
         const { gtRecMap, additionalNotes, missingNotes, gtNotes } = m;
         const newGtRecMap = new Map();
-        gtRecMap.forEach((matchedRecNote, gtStart) => {
+        for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
             // If it is null, this is handled in missingNotes
             if (matchedRecNote !== null && gtStart >= start && gtStart < end) {
                 newGtRecMap.set(gtStart, matchedRecNote);
             }
-        });
+        }
         result.set(pitch, {
             gtRecMap: newGtRecMap,
             additionalNotes: additionalNotes.filter(d => d.start >= start && d.start < end),
             missingNotes: missingNotes.filter(d => d.start >= start && d.start < end),
             gtNotes: gtNotes,
         });
-    });
+    }
     return result;
 }
 

@@ -61,7 +61,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     addNotes(notes, sort = true) {
-        this.#notes = this.#notes.concat(notes);
+        this.#notes = [...this.#notes, ...notes];
         if (sort) {
             this.sortByTime();
         }
@@ -78,7 +78,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     concat(noteArray) {
-        this.#notes = this.#notes.concat(noteArray.#notes);
+        this.#notes = [...this.#notes, ...noteArray.#notes];
         return this;
     }
 
@@ -94,7 +94,7 @@ class NoteArray {
         const duration = this.getDuration();
         const clone = noteArray.clone();
         clone.shiftTime(duration + gap);
-        this.#notes = this.#notes.concat(clone.#notes);
+        this.#notes = [...this.#notes, ...clone.#notes];
         this.sortByTime();
         return this;
     }
@@ -118,6 +118,8 @@ class NoteArray {
         for (let index = 1; index < times; index++) {
             // Shift notes in time
             copy.shiftTime(duration);
+            // Result is a NoteArray so use .concat
+            // eslint-disable-next-line unicorn/prefer-spread
             result.concat(copy);
         }
         return result;

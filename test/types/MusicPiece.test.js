@@ -104,7 +104,6 @@ describe('MusicPiece', () => {
         const allXmlFiles = listFiles()
             .filter(f => f.endsWith('.xml') || f.endsWith('.musicxml'))
             .filter(f => f !== '[Test] Empty.musicxml');
-
         test.each(allXmlFiles)('parses MusicXML without error %s', (file) => {
             const xml = readXmlFile(file);
             expect(() => MusicPiece.fromMusicXml(file, xml)).not.toThrow();

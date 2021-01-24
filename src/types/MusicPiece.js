@@ -212,7 +212,9 @@ export class Track {
      * @returns {Track} new Track
      */
     static fromMusicXml(name, instrument, notes, channel) {
-        notes.forEach(n => n.channel = channel);
+        for (const n of notes) {
+            n.channel = channel;
+        }
         return new Track(name, instrument, notes);
     }
 }

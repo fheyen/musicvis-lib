@@ -244,9 +244,10 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
 export function differenceMap(gtNotes, recNotes, binSize) {
     const recHeatmap = recordingsHeatmap(recNotes, 1, binSize);
     const gtHeatmap = recordingsHeatmap(gtNotes, 1, binSize);
-    const allPitches = [...new Set(
-        [...recHeatmap.keys()].concat([...gtHeatmap.keys()]),
-    )];
+    const allPitches = [...new Set([
+        ...recHeatmap.keys(),
+        ...gtHeatmap.keys(),
+    ])];
     const resultMap = new Map();
     for (const pitch of allPitches) {
         let result;

@@ -250,9 +250,9 @@ function duplicateRepeatedMeasures(measures) {
             const times = rep[1].getAttribute('times') || 2;
             const repetition = Array.from({ length: +times }).fill(measure);
             if (currentRepetition.length === 0) {
-                repeatedMeasures = repeatedMeasures.concat(repetition);
+                repeatedMeasures = [...repeatedMeasures, ...repetition];
             } else {
-                currentRepetition = currentRepetition.concat(repetition);
+                currentRepetition = [...currentRepetition, ...repetition];
             }
         } else if (rep.length === 1) {
             // Repetition either starts or ends here
@@ -266,13 +266,13 @@ function duplicateRepeatedMeasures(measures) {
                     // Finish current repetition
                     currentRepetition.push(measure);
                     for (let index = 0; index < times; index++) {
-                        repeatedMeasures = repeatedMeasures.concat(currentRepetition);
+                        repeatedMeasures = [...repeatedMeasures, ...currentRepetition];
                     }
                     currentRepetition = [];
                 } else {
                     // Repetition started at the start of the piece, repeat all
                     // we have until here
-                    repeatedMeasures = repeatedMeasures.concat(repeatedMeasures);
+                    repeatedMeasures = [...repeatedMeasures, ...repeatedMeasures];
                 }
             }
         } else {

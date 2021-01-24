@@ -45,7 +45,7 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
     // Get all pitches / channels
     const gtKeys = [...gtGrouped.keys()];
     const recKeys = [...recGrouped.keys()];
-    const allKeys = Utils.removeDuplicates(gtKeys.concat(recKeys));
+    const allKeys = Utils.removeDuplicates([...gtKeys, ...recKeys]);
 
     let classifiedNotes = [];
     for (const key of allKeys) {
@@ -53,22 +53,28 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
         const rec = recGrouped.get(key);
         if (!gt) {
             // All rec notes are extra
-            classifiedNotes = classifiedNotes.concat(rec.map(d => {
-                return new NoteWithState(d, NoteState.EXTRA);
-            }));
+            classifiedNotes = [
+                ...classifiedNotes,
+                ...rec.map(d => {
+                    return new NoteWithState(d, NoteState.EXTRA);
+                }),
+            ];
         }
         if (!rec) {
             // All gt notes are missing
-            classifiedNotes = classifiedNotes.concat(gt.map(d => {
-                return new NoteWithState(d, NoteState.MISSED);
-            }));
+            classifiedNotes = [
+                ...classifiedNotes,
+                ...gt.map(d => {
+                    return new NoteWithState(d, NoteState.MISSED);
+                }),
+            ];
         }
         if (gt && rec) {
             // There can by overlaps, handle this in other function
             const { classified, overlapping } = getGtRecOverlaps(gt, rec);
             const classifiedOverlaps = handleOverlappingNotes(overlapping, threshold);
-            classifiedNotes = classifiedNotes.concat(classified);
-            classifiedNotes = classifiedNotes.concat(classifiedOverlaps);
+            classifiedNotes = [...classifiedNotes, ...classified];
+            classifiedNotes = [...classifiedNotes, ...classifiedOverlaps];
         }
     }
     classifiedNotes.sort((a, b) => a.start - b.start);
@@ -198,7 +204,7 @@ function getGtRecOverlaps(gtNotes, recNotes) {
     const missed = missedGtNotes.map(d => new NoteWithState(d, NoteState.MISSED));
     const extra = [...extraRecNotes].map(d => new NoteWithState(d, NoteState.MISSED));
     return {
-        classified: missed.concat(extra),
+        classified: [...missed, ...extra],
         overlapping: overlaps,
     };
 }
@@ -229,87 +235,87 @@ function handleOverlappingNotes(overlapping, threshold) {
     // one Recorded note should correspond to one groundTruth note,
     // if it overlaps multiple ones the best match based on start time is
     // calculated and the other GT notes are missed
-    recGtMap.forEach((gtCandidates, recNote) => {
+    for (const [recNote, gtCandidates] of recGtMap.entries()) {
         const gtMatchCandidate = findBestMatch(recNote, gtCandidates);
         if (gtMatchCandidate && hasAtLeastOne(gtRecMap, gtMatchCandidate)) {
             // for the best matching Gt note, get all other matching recordings
             const recMatchContender = gtRecMap.get(gtMatchCandidate);
             if (!recMatchContender) {
                 console.log('Should Not happen');
-                return;
+                continue;
             }
             // check the other recordings, this match is either the same note or a better match
             const recActualBestMatch = findBestMatch(gtMatchCandidate, recMatchContender);
             if (!recActualBestMatch) {
                 console.log('Should Not happen');
-                return;
+                continue;
             }
             // remove the matched recordedNote from the Set
             recMatchContender.delete(recActualBestMatch);
             // mark all unmatched notes as possibly extra
-            recMatchContender.forEach((recordedNote) =>
-                possiblyExtraRec.add(recordedNote),
-            );
+            for (const recordedNote of recMatchContender) {
+                possiblyExtraRec.add(recordedNote);
+            }
             // remove this groundTruthNote as it was handled
             gtRecMap.delete(gtMatchCandidate);
             // remove the matched recorded note from all other groundTruth notes
-            gtCandidates.forEach((gtNote) => {
+            for (const gtNote of gtCandidates) {
                 gtRecMap.get(gtNote)?.delete(recActualBestMatch);
                 if (!hasAtLeastOne(gtRecMap, gtNote)) {
                     gtRecMap.delete(gtNote);
                 }
-            });
+            }
             // add the matched pair for later analysis
             matchedOverlaps.push({ rec: recActualBestMatch, gt: gtMatchCandidate });
         } else {
             // the note has no matching GroundTruh Notes
             possiblyExtraRec.add(recNote);
         }
-    });
+    }
 
     // Do the same for all unmatched GroundTruth Note
     // This should be a very small percentage
-    gtRecMap.forEach((recCandidates, gtNote) => {
+    for (const [gtNote, recCandidates] of gtRecMap.entries()) {
         // get a possible match Candidate
         const recMatchCandidate = findBestMatch(gtNote, recCandidates);
         if (recMatchCandidate && hasAtLeastOne(recGtMap, recMatchCandidate)) {
             const gtMatchContender = recGtMap.get(recMatchCandidate);
             if (!gtMatchContender) {
                 console.log('Should Not happen');
-                return;
+                continue;
             }
             // check the other groundtruth Notes, this match is either the same note or a better match
             const gtActualBestMatch = findBestMatch(recMatchCandidate, gtMatchContender);
             if (!gtActualBestMatch) {
                 console.log('Should Not happen');
-                return;
+                continue;
             }
             // the same procedure as during recording
             gtMatchContender.delete(gtActualBestMatch);
-            gtMatchContender.forEach((value) => possiblyMissedGt.add(value));
+            for (const value of gtMatchContender) possiblyMissedGt.add(value);
             // remove the recording as its handled
             recGtMap.delete(recMatchCandidate);
             matchedOverlaps.push({ rec: recMatchCandidate, gt: gtActualBestMatch });
-            recCandidates.forEach((gtNote) => {
+            for (const gtNote of recCandidates) {
                 gtRecMap.get(gtNote)?.delete(gtActualBestMatch);
                 if (!hasAtLeastOne(gtRecMap, gtNote)) {
                     gtRecMap.delete(gtNote);
                 }
-            });
+            }
         } else {
             possiblyMissedGt.add(gtNote);
         }
-    });
+    }
 
     const resultingMatchedNotes = [];
     // clear the overlapping notes from the missed and extra Sets
-    matchedOverlaps.forEach((value) => {
+    for (const value of matchedOverlaps) {
         const { gt, rec } = value;
         possiblyMissedGt.delete(gt);
         possiblyExtraRec.delete(rec);
         const state = compareNotes(gt, rec, threshold);
         resultingMatchedNotes.push(new NoteWithState(rec, state));
-    });
+    }
     // certainly missed
     for (const [note] of possiblyMissedGt.entries()) {
         resultingMatchedNotes.push(new NoteWithState(note, NoteState.MISSED));

@@ -63,8 +63,9 @@ class Track {
      */
     getAllNotes() {
         let notes = [];
+        // TODO: use flatmap
         for (const p of this.measures) {
-            notes = notes.concat(p.notes());
+            notes = [...notes, ...p.notes()];
         }
         return notes.sort((a, b) => a.start - b.start);
     }

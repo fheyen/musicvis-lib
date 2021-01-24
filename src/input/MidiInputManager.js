@@ -147,7 +147,7 @@ class MidiInputManager {
         // But this might be good, since only 'unfinished' notes need to be checked on note-off,
         // so we can remove finished notes from the cache
         let midiData = this.#getMidiLiveData();
-        midiData = midiData.concat([note]);
+        midiData = [...midiData, note];
         this.#setMidiLiveData(midiData);
     }
 

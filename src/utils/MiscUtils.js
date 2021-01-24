@@ -23,9 +23,9 @@ export function bpmToSecondsPerBeat(bpm) {
  */
 export function deepCloneFlatObjectMap(map) {
     const result = new Map();
-    map.forEach((value, key) => {
+    for (const [key, value] of map.entries()) {
         result.set(key, { ...value });
-    });
+    }
     return result;
 }
 

@@ -161,6 +161,8 @@ export function getPitch2PositionMap(replacementMap) {
     const result = new Map();
     const uniqeRows = [...group([...replacementMap], d => d[1].repPitch)];
     uniqeRows.sort((a, b) => a[1][0][1].order - b[1][0][1].order);
-    uniqeRows.forEach((d, index) => result.set(d[0], index));
+    for (const [index, d] of uniqeRows.entries()) {
+        result.set(d[0], index);
+    }
     return result;
 }

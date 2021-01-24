@@ -181,9 +181,9 @@ function countActiveNoteBins(binArray) {
  */
 function sliceDiscretizedTrack(trackMap, startBin, endBin) {
     const slice = new Map();
-    trackMap.forEach((value, key) => {
+    for (const [key, value] of trackMap.entries()) {
         slice.set(key, value.slice(startBin, endBin));
-    });
+    }
     return slice;
 }
 

@@ -286,12 +286,12 @@ function splitFormat0(tracks) {
     // All tracks will share the meta infomation of the 0th track
     // Assign the splitted-by-channel notes to their new tracks
     const splittedTracks = [];
-    grouped.forEach((notes, channelId) => {
+    for (const [channelId, notes] of grouped.entries()) {
         splittedTracks[channelId] = {
             ...tracks[0],
             noteObjs: notes,
         };
-    });
+    }
     return splittedTracks;
 }
 

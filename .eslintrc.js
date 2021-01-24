@@ -45,7 +45,7 @@ module.exports = {
             },
         ],
         'jsdoc/require-throws': 'error',
-        'linebreak-style': ['warn', 'unix'],
+        // 'linebreak-style': ['warn', 'unix'],
         'multiline-comment-style': ['off', 'starred-block'],
         'newline-per-chained-call': ['warn', { 'ignoreChainWithDepth': 3 }],
         'new-parens': 'error',
@@ -75,6 +75,8 @@ module.exports = {
         'unicorn/filename-case': 'off',
         'unicorn/no-null': 'off', // TODO:
         'unicorn/no-new-array': 'warn',
+        'unicorn/no-array-for-each': 'off',
+        'unicorn/prefer-ternary': ['warn', 'only-single-line'],
         'unicorn/prevent-abbreviations': [
             'warn',
             {

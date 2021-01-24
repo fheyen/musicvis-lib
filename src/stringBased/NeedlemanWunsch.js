@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-spread */
 /**
  * Needleman-Wunsch algorithm
  *
