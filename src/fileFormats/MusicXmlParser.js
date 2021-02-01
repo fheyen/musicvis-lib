@@ -101,10 +101,10 @@ function preprocessMusicXmlMeasures(measures) {
                 // notes will update the time
                 break;
             }
-        } catch {}
+        } catch { }
         try {
             divisions = +measure.querySelectorAll('divisions')[0].innerHTML;
-        } catch {}
+        } catch { }
         try {
             beats = +measure.querySelectorAll('beats')[0].innerHTML;
             beatType = +measure.querySelectorAll('beat-type')[0].innerHTML;
@@ -113,7 +113,7 @@ function preprocessMusicXmlMeasures(measures) {
                 beats,
                 beatType,
             });
-        } catch {}
+        } catch { }
         const secondsPerBeat = 1 / (tempo / 60);
         try {
             const fifths = +measure.querySelectorAll('fifths')[0].innerHTML;
@@ -123,7 +123,7 @@ function preprocessMusicXmlMeasures(measures) {
                 key,
                 scale,
             });
-        } catch {}
+        } catch { }
 
         // Read notes
         const notes = measure.querySelectorAll('note');
@@ -238,7 +238,7 @@ function preprocessMusicXmlMeasures(measures) {
  * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
  * @private
  * @param {HTMLCollection} measures measures
- * @returns {*} processed measures
+ * @returns {HTMLAllCollection[]} processed measures
  */
 function duplicateRepeatedMeasures(measures) {
     let repeatedMeasures = [];
@@ -308,7 +308,7 @@ function getTuningPitches(measures) {
                 tuningPitches.push(getMidiNoteByNameAndOctave(tuningNote, tuningOctave).pitch);
             }
             return tuningPitches;
-        } catch {}
+        } catch { }
     }
     return [];
 }
