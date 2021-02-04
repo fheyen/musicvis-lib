@@ -1,4 +1,6 @@
 benchmarks/
+# Causes problems with dependabot
+**/package-lock.json
 
 # ---> Node
 # Logs

@@ -124,7 +124,7 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
     // Get all pitches / channels
     const gtKeys = [...gtGrouped.keys()];
     const recKeys = [...recGrouped.keys()];
-    const allKeys = Utils.removeDuplicates([...gtKeys, recKeys]);
+    const allKeys = Utils.removeDuplicates([...gtKeys, ...recKeys]);
 
     let classifiedNotes = [];
     for (const key of allKeys) {
@@ -132,22 +132,28 @@ export function classifyErrors(gtNotes, recNotes, groupBy = 'pitch', threshold =
         const rec = recGrouped.get(key);
         if (!gt) {
             // All rec notes are extra
-            classifiedNotes = [...classifiedNotes, rec.map(d => {
-                return new NoteWithState(d, NoteState.EXTRA);
-            })];
+            classifiedNotes = [
+                ...classifiedNotes,
+                ...rec.map(d => {
+                    return new NoteWithState(d, NoteState.EXTRA);
+                }),
+            ];
         }
         if (!rec) {
             // All gt notes are missing
-            classifiedNotes = [...classifiedNotes, gt.map(d => {
-                return new NoteWithState(d, NoteState.MISSED);
-            })];
+            classifiedNotes = [
+                ...classifiedNotes,
+                ...gt.map(d => {
+                    return new NoteWithState(d, NoteState.MISSED);
+                }),
+            ];
         }
         if (gt &amp;&amp; rec) {
             // There can by overlaps, handle this in other function
             const { classified, overlapping } = getGtRecOverlaps(gt, rec);
             const classifiedOverlaps = handleOverlappingNotes(overlapping, threshold);
-            classifiedNotes = [...classifiedNotes, classified];
-            classifiedNotes = [...classifiedNotes, classifiedOverlaps];
+            classifiedNotes = [...classifiedNotes, ...classified];
+            classifiedNotes = [...classifiedNotes, ...classifiedOverlaps];
         }
     }
     classifiedNotes.sort((a, b) => a.start - b.start);
@@ -277,7 +283,7 @@ function getGtRecOverlaps(gtNotes, recNotes) {
     const missed = missedGtNotes.map(d => new NoteWithState(d, NoteState.MISSED));
     const extra = [...extraRecNotes].map(d => new NoteWithState(d, NoteState.MISSED));
     return {
-        classified: [...missed, extra],
+        classified: [...missed, ...extra],
         overlapping: overlaps,
     };
 }

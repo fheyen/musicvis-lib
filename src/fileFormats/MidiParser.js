@@ -374,19 +374,23 @@ function getSignatureChanges(tracks) {
             if (event.type === 255 && event.metaType === 0x59) {
                 // console.log('keychange', event);
                 const d = event.data;
-                const { key, scale } = keySignatureMap.get(d);
-                const newEntry = {
-                    tick: currentTick,
-                    key,
-                    scale,
-                };
-                if (keySignatureChanges.length === 0) {
-                    keySignatureChanges.push(newEntry);
+                if (!keySignatureMap.has(d)) {
+                    console.warn('[MidiParser] Invalid key signature', d);
                 } else {
-                    // If it id not change, do not add
-                    const last = keySignatureChanges[keySignatureChanges.length - 1];
-                    if (last.key !== key || last.scale !== scale) {
+                    const { key, scale } = keySignatureMap.get(d);
+                    const newEntry = {
+                        tick: currentTick,
+                        key,
+                        scale,
+                    };
+                    if (keySignatureChanges.length === 0) {
                         keySignatureChanges.push(newEntry);
+                    } else {
+                        // If it id not change, do not add
+                        const last = keySignatureChanges[keySignatureChanges.length - 1];
+                        if (last.key !== key || last.scale !== scale) {
+                            keySignatureChanges.push(newEntry);
+                        }
                     }
                 }
             }
