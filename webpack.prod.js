@@ -1,3 +1,4 @@
+// eslint-disable-next-line unicorn/prevent-abbreviations
 const path = require('path');
 
 module.exports = {
@@ -7,6 +8,7 @@ module.exports = {
         filename: 'musicvislib.min.js',
         library: 'musicvislib',
         libraryTarget: 'umd',
+        globalObject: 'this',
     },
     module: {
         rules: [

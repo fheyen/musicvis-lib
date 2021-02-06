@@ -10,6 +10,8 @@
  * @returns {CanvasRenderingContext2D} canvas rendering context
  */
 export function setupCanvas(canvas) {
+    // Fix issues when importing musicvis-lib in Node.js
+    if (!window) { return; }
     // Get the device pixel ratio, falling back to 1.
     const dpr = window.devicePixelRatio || 1;
     // Get the size of the canvas in CSS pixels.
