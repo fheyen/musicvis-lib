@@ -15,7 +15,7 @@
 		exports["musicvislib"] = factory();
 	else
 		root["musicvislib"] = factory();
-})(self, function() {
+})(this, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
