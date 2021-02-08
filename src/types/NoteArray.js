@@ -25,7 +25,7 @@ import { min } from 'd3';
  */
 class NoteArray {
 
-    #notes;
+    _notes;
 
     /**
      * Creates a new NoteArray,
@@ -35,7 +35,7 @@ class NoteArray {
      */
     constructor(notes = []) {
         // Parse notes
-        this.#notes = notes.map(d => {
+        this._notes = notes.map(d => {
             if (d.string !== undefined && d.fret !== undefined) {
                 return GuitarNote.from(d);
             }
@@ -49,7 +49,7 @@ class NoteArray {
      * @returns {Note[]} array with Note objects
      */
     getNotes() {
-        return this.#notes;
+        return this._notes;
     }
 
     /**
@@ -61,7 +61,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     addNotes(notes, sort = true) {
-        this.#notes = [...this.#notes, ...notes];
+        this._notes = [...this._notes, ...notes];
         if (sort) {
             this.sortByTime();
         }
@@ -78,7 +78,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     concat(noteArray) {
-        this.#notes = [...this.#notes, ...noteArray.#notes];
+        this._notes = [...this._notes, ...noteArray._notes];
         return this;
     }
 
@@ -94,7 +94,7 @@ class NoteArray {
         const duration = this.getDuration();
         const clone = noteArray.clone();
         clone.shiftTime(duration + gap);
-        this.#notes = [...this.#notes, ...clone.#notes];
+        this._notes = [...this._notes, ...clone._notes];
         this.sortByTime();
         return this;
     }
@@ -131,7 +131,7 @@ class NoteArray {
      * @returns {number} note count
      */
     length() {
-        return this.#notes.length;
+        return this._notes.length;
     }
 
     /**
@@ -140,7 +140,7 @@ class NoteArray {
      * @returns {number} start time
      */
     getStartTime() {
-        return min(this.#notes, d => d.start);
+        return min(this._notes, d => d.start);
     }
 
     /**
@@ -151,7 +151,7 @@ class NoteArray {
      */
     getDuration() {
         let duration = 0;
-        for (const note of this.#notes) {
+        for (const note of this._notes) {
             const noteEnd = note.end === null ? note.start : note.end;
             if (noteEnd > duration) {
                 duration = noteEnd;
@@ -167,7 +167,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     scaleTime(factor) {
-        this.#notes = this.#notes.map(n => n.scaleTime(factor));
+        this._notes = this._notes.map(n => n.scaleTime(factor));
         return this;
     }
 
@@ -178,7 +178,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     shiftTime(addedSeconds) {
-        this.#notes = this.#notes.map(n => n.shiftTime(addedSeconds));
+        this._notes = this._notes.map(n => n.shiftTime(addedSeconds));
         return this;
     }
 
@@ -191,9 +191,9 @@ class NoteArray {
      */
     shiftToStartAt(startTime) {
         this.sortByTime();
-        const firstNoteStart = this.#notes[0].start;
+        const firstNoteStart = this._notes[0].start;
         const offset = firstNoteStart - startTime;
-        this.#notes.forEach(n => {
+        this._notes.forEach(n => {
             n.start -= offset;
             if (n.end !== null) {
                 n.end -= offset;
@@ -209,7 +209,7 @@ class NoteArray {
      * @returns {NoteArray} this
      */
     forEach(func) {
-        this.#notes.forEach((element, index, array) => func(element, index, array));
+        this._notes.forEach((element, index, array) => func(element, index, array));
         return this;
     }
 
@@ -220,7 +220,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     sort(sortFunction) {
-        this.#notes = this.#notes.sort(sortFunction);
+        this._notes = this._notes.sort(sortFunction);
         return this;
     }
 
@@ -230,7 +230,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     sortByTime() {
-        this.#notes = this.#notes.sort((a, b) => a.start - b.start);
+        this._notes = this._notes.sort((a, b) => a.start - b.start);
         return this;
     }
 
@@ -242,7 +242,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     map(mapFunction) {
-        this.#notes = this.#notes.map((element, index, array) => mapFunction(element, index, array));
+        this._notes = this._notes.map((element, index, array) => mapFunction(element, index, array));
         return this;
     }
 
@@ -254,7 +254,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     slice(start, end) {
-        this.#notes = this.#notes.slice(start, end);
+        this._notes = this._notes.slice(start, end);
         return this;
     }
 
@@ -275,13 +275,13 @@ class NoteArray {
         const start = startTime;
         const end = endTime;
         if (mode === 'start') {
-            this.#notes = this.#notes.filter(n => n.start >= start && n.start < end);
+            this._notes = this._notes.filter(n => n.start >= start && n.start < end);
         }
         if (mode === 'end') {
-            this.#notes = this.#notes.filter(n => n.end !== null && n.end >= start && n.end < end);
+            this._notes = this._notes.filter(n => n.end !== null && n.end >= start && n.end < end);
         }
         if (mode === 'contained') {
-            this.#notes = this.#notes.filter(n => n.end !== null && n.start >= start && n.end < end);
+            this._notes = this._notes.filter(n => n.end !== null && n.start >= start && n.end < end);
         }
         return this;
     }
@@ -294,7 +294,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     filter(filterFunction) {
-        this.#notes = this.#notes.filter((element, index, array) => filterFunction(element, index, array));
+        this._notes = this._notes.filter((element, index, array) => filterFunction(element, index, array));
         return this;
     }
 
@@ -305,7 +305,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     filterPitches(pitches) {
-        this.#notes = this.#notes.filter(n => pitches.includes(n.pitch));
+        this._notes = this._notes.filter(n => pitches.includes(n.pitch));
         return this;
     }
 
@@ -316,7 +316,7 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     transpose(steps) {
-        for (const n of this.#notes) {
+        for (const n of this._notes) {
             n.pitch = clipValue(n.pitch + steps, 0, 127);
         }
         return this;
@@ -330,11 +330,11 @@ class NoteArray {
     reverse() {
         // Update note start and end times
         const duration = this.getDuration();
-        // for (let n of this.#notes) {
+        // for (let n of this._notes) {
         //     n.start = duration - n.end;
         //     n.end = duration - n.start;
         // }
-        this.#notes = this.#notes.map(n => {
+        this._notes = this._notes.map(n => {
             const newNote = n.clone();
             newNote.start = duration - n.end;
             newNote.end = newNote.start + n.getDuration();
@@ -356,11 +356,11 @@ class NoteArray {
             return false;
         }
         const notes = otherNoteArray.getNotes();
-        if (this.#notes.length !== notes.length) {
+        if (this._notes.length !== notes.length) {
             return false;
         }
         for (const [index, note] of notes.entries()) {
-            if (!this.#notes[index].equals(note)) {
+            if (!this._notes[index].equals(note)) {
                 return false;
             }
         }
@@ -373,7 +373,7 @@ class NoteArray {
      * @returns {NoteArray} clone
      */
     clone() {
-        return new NoteArray(this.#notes);
+        return new NoteArray(this._notes);
     }
 }
 

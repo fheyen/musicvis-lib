@@ -5,9 +5,6 @@ import { arrayShallowEquals } from '../utils/ArrayUtils';
  * Class for storing recorded notes alongside meta information.
  */
 class Recording extends NoteArray {
-
-    #notes = [];
-
     /**
      * Creates a new Recording
      *

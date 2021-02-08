@@ -1,14 +1,4 @@
 /**
- * Maximum of 3 values
- *
- * @param {number} a a number
- * @param {number} b a number
- * @param {number} c a number
- * @returns {number} maximum
- */
-const max3 = (a, b, c) => Math.max(Math.max(a, b), c);
-
-/**
  * Calculates the SIMILARITY for two strings or arrays.
  * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
  * IMPORTANT: This metric is not symmetric!
@@ -57,21 +47,21 @@ export function gotoh(
     for (let i = 1; i <= lengthA; i++) {
         for (let j = 1; j <= lengthB; j++) {
             const sim = similarityFunction(seqA[i - 1], seqB[j - 1]);
-            a[i][j] = max3(
+            a[i][j] = Math.max(
                 a[i - 1][j - 1],
                 b[i - 1][j - 1],
                 c[i - 1][j - 1]) + sim;
-            b[i][j] = max3(
+            b[i][j] = Math.max(
                 a[i - 1][j] + gapPenaltyStart,
                 b[i - 1][j] + gapPenaltyExtend,
                 c[i - 1][j] + gapPenaltyStart);
-            c[i][j] = max3(
+            c[i][j] = Math.max(
                 a[i][j - 1] + gapPenaltyStart,
                 b[i][j - 1] + gapPenaltyStart,
                 c[i][j - 1] + gapPenaltyExtend);
         }
     }
-    return max3(
+    return Math.max(
         a[lengthA][lengthB],
         b[lengthA][lengthB],
         c[lengthA][lengthB],

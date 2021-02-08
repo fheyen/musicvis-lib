@@ -172,7 +172,6 @@ class MusicPiece {
  * @private
  */
 export class Track {
-
     /**
      * Do not use this constructor, but the static methods Track.fromMidi
      * and Track.fromMusicXml instead.
