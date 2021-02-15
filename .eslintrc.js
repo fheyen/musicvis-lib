@@ -72,6 +72,7 @@ module.exports = {
         'quotes': ['error', 'single'],
         'semi': 'error',
         'spaced-comment': ['warn', 'always'],
+        'unicorn/empty-brace-spaces': 'off',
         'unicorn/filename-case': 'off',
         'unicorn/no-null': 'off', // TODO:
         'unicorn/no-new-array': 'warn',

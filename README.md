@@ -31,13 +31,27 @@ Or download [dist/musicvislib.js](https://raw.githubusercontent.com/fheyen/music
 
 ## Documentation
 
-[See here](https://fheyen.github.io/musicvis-lib/)
+[See here](https://fheyen.github.io/musicvis-lib/) for the full documentation.
 
 ## How to use
 
 With modules
 ```javascript
-import Note from 'musicvis-lib';
+import {Note} from 'musicvis-lib';
+
+const note = Note.from({
+  pitch: 65,
+  start: 2.0,
+  end: 3.0,
+  velocity: 127,
+  channel: 0
+});
+```
+
+With require
+```javascript
+const musicvislib = require('musicvis-lib');
+const {Note} = musicvislib;
 
 const note = Note.from({
   pitch: 65,

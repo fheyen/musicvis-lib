@@ -137,7 +137,7 @@ export function getTuningFromPitches(pitches) {
  * Returns the pitch range of a tuning, given the number of frets.
  *
  * @param {StringedTuning} tuning tuning
- * @param {number} fretCount number of frets the instrument has (defaul: 24)
+ * @param {number} fretCount number of frets the instrument has (default: 24)
  * @returns {number[]} [minPitch, maxPitch]
  */
 export function getTuningPitchRange(tuning, fretCount = 24) {

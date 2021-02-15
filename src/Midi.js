@@ -103,6 +103,16 @@ export function getNoteNameFromNoteNr(nr) {
     return NOTE_NAMES[nr % 12];
 }
 
+/**
+ * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
+ */
+export const flatToSharp = new Map([
+    ['Db', 'C#'],
+    ['Eb', 'D#'],
+    ['Gb', 'F#'],
+    ['Ab', 'G#'],
+    ['Bb', 'A#'],
+]);
 
 
 /**
