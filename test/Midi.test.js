@@ -50,8 +50,10 @@ describe('Midi', () => {
 
     test('flatToSharp', () => {
         const cases = [
+            ['Cb', 'B'],
             ['Db', 'C#'],
             ['Eb', 'D#'],
+            ['Fb', 'E'],
             ['Gb', 'F#'],
             ['Ab', 'G#'],
             ['Bb', 'A#'],

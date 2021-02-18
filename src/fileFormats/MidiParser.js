@@ -47,13 +47,17 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
     if (data.formatType === 0 && splitFormat0IntoTracks && parsedTracks.length > 0) {
         parsedTracks = splitFormat0(parsedTracks);
     }
+    // Generate measure lines from tempo and beat type changes
+    const totalTime = max(parsedTracks, d => d.totalTime);
+    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime);
     // Return similar format as MusicXmlParser
     const result = {
         parts: parsedTracks,
         partNames,
         // TODO: get instruments from MIDI
         instruments: parsedTracks.map(() => 'unknown instrument'),
-        totalTime: max(parsedTracks, d => d.totalTime),
+        totalTime,
+        measureLinePositions,
         // This is the first tempo etc., changes are stored in each part
         bpm: parsedTracks[0].bpm,
         beats: parsedTracks[0].beats,
@@ -217,7 +221,7 @@ function getPartName(track) {
  * type change events
  *
  * @todo probably does not handle complex meters correctly
- * @todo does not handle tempo change yet, do this as in parsing notes
+ * @todo does not handle tempo change yet, do this as in parsing notes (still an issue?)
  *
  * @private
  * @param {object[]} tempoChanges tempo change events

@@ -74,7 +74,7 @@ class MusicPiece {
         // measure times
         let measureTimes = [];
         if (parsed.parts.length > 0) {
-            measureTimes = parsed.parts[0].measureLinePositions;
+            measureTimes = parsed.measureLinePositions;
         }
         // tracks signatures
         const tracks = parsed.parts
