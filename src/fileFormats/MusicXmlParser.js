@@ -12,7 +12,6 @@ import { roundToNDecimals } from '../utils/MathUtils';
  * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
  * Also calculates the position of measure lines and the total time in seconds.
  *
- * @todo use https://github.com/jnetterf/musicxml-interfaces ?
  * @param {XMLDocument} xml MusicXML document
  * @param {boolean} log set to true to log results etc. to the console
  * @returns {object} parsed document
@@ -33,12 +32,13 @@ export function preprocessMusicXmlData(xml, log = false) {
     for (const index of instruments) {
         instrumentNames.push(index.children[0].innerHTML);
     }
+    // Get instrument definitions
+    const drumInstrumentMap = getDrumInstrumentMap(xml);
     // Preprocess notes
     const parts = xml.querySelectorAll('part');
     const parsedParts = [];
     for (const part of parts) {
-        const measures = part.children;
-        parsedParts.push(preprocessMusicXmlMeasures(measures));
+        parsedParts.push(preprocessMusicXmlPart(part, drumInstrumentMap));
     }
     const result = {
         parts: parsedParts,
@@ -62,10 +62,13 @@ export function preprocessMusicXmlData(xml, log = false) {
  * Also calculates the position of measure lines and the total time in seconds.
  *
  * @private
- * @param {HTMLCollection} measures collection of measures with notes
+ * @param {HTMLElement} part MusicXML part
+ * @param {Map} drumInstrumentMap midiPitch = map.get(partId).get(instrId)
  * @returns {object} parsed measures
  */
-function preprocessMusicXmlMeasures(measures) {
+function preprocessMusicXmlPart(part, drumInstrumentMap) {
+    // const partId = part.id;
+    let measures = part.children;
     // Handle repetitions by duplicating measures
     measures = duplicateRepeatedMeasures(measures);
 
@@ -101,10 +104,10 @@ function preprocessMusicXmlMeasures(measures) {
                 // notes will update the time
                 break;
             }
-        } catch {}
+        } catch { }
         try {
             divisions = +measure.querySelectorAll('divisions')[0].innerHTML;
-        } catch {}
+        } catch { }
         try {
             beats = +measure.querySelectorAll('beats')[0].innerHTML;
             beatType = +measure.querySelectorAll('beat-type')[0].innerHTML;
@@ -113,7 +116,7 @@ function preprocessMusicXmlMeasures(measures) {
                 beats,
                 beatType,
             });
-        } catch {}
+        } catch { }
         const secondsPerBeat = 1 / (tempo / 60);
         try {
             const fifths = +measure.querySelectorAll('fifths')[0].innerHTML;
@@ -123,7 +126,7 @@ function preprocessMusicXmlMeasures(measures) {
                 key,
                 scale,
             });
-        } catch {}
+        } catch { }
 
         // Read notes
         const notes = measure.querySelectorAll('note');
@@ -141,10 +144,18 @@ function preprocessMusicXmlMeasures(measures) {
                     currentTime += durationInSeconds;
                     continue;
                 }
-                // Get MIDI pitch
-                const no = note.querySelectorAll('step')[0].innerHTML;
-                const octave = +note.querySelectorAll('octave')[0].innerHTML;
-                const pitch = getMidiNoteByNameAndOctave(no, octave).pitch;
+                let pitch;
+                if (note.querySelectorAll('unpitched').length > 0) {
+                    // TODO: handle drum notes
+                    const instrumentId = note.querySelectorAll('instrument')[0].id;
+                    pitch = drumInstrumentMap.get(part.id).get(instrumentId);
+                } else {
+                    // Get MIDI pitch
+                    // TODO: handle <alter> tag
+                    const no = note.querySelectorAll('step')[0].innerHTML;
+                    const octave = +note.querySelectorAll('octave')[0].innerHTML;
+                    pitch = getMidiNoteByNameAndOctave(no, octave).pitch;
+                }
                 // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
                 const isChord = note.querySelectorAll('chord').length > 0;
                 if (isChord) {
@@ -189,7 +200,7 @@ function preprocessMusicXmlMeasures(measures) {
                             pitch,
                             startTime,
                             127,
-                            string,
+                            0,
                             endTime,
                         ));
                     }
@@ -235,6 +246,7 @@ function preprocessMusicXmlMeasures(measures) {
  *
  * @todo handle 3x etc
  * @todo handle different endings
+ * @todo write tests
  * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
  * @private
  * @param {HTMLCollection} measures measures
@@ -308,7 +320,7 @@ function getTuningPitches(measures) {
                 tuningPitches.push(getMidiNoteByNameAndOctave(tuningNote, tuningOctave).pitch);
             }
             return tuningPitches;
-        } catch {}
+        } catch { }
     }
     return [];
 }
@@ -334,3 +346,34 @@ const keySignatureMap = new Map([
     [6, { key: 'F#', scale: 'major' }],
     [7, { key: 'C#', scale: 'major' }],
 ]);
+
+/**
+ * Retruns a map containing maps, such that result.get(partId).get(instrId)
+ * gives you the instrument with the ID instrId as defined in the part partId.
+ *
+ * This is needed to map drum notes to MIDI pitches.
+ *
+ * @param {XMLDocument} xml MusicXML
+ * @returns {Map} map with structure result.get(partId).get(instrId)
+ */
+function getDrumInstrumentMap(xml) {
+    const partMap = new Map();
+    const scoreParts = xml.querySelectorAll('part-list')[0]?.querySelectorAll('score-part');
+    if (!scoreParts) { return partMap; }
+    for (const scorePart of scoreParts) {
+        const partId = scorePart.id;
+        const instruMap = new Map();
+        // const scoreInstrs = scorePart.querySelectorAll('score-instrument');
+        const midiInstrs = scorePart.querySelectorAll('midi-instrument');
+        // for (const scoreInstr of scoreInstrs) {
+        for (const midiInstr of midiInstrs) {
+            const instrId = midiInstr.id;
+            const pitch = midiInstr.querySelectorAll('midi-unpitched')[0]?.innerHTML;
+            if (pitch) {
+                instruMap.set(instrId, +pitch);
+            }
+        }
+        partMap.set(partId, instruMap);
+    }
+    return partMap;
+}

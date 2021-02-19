@@ -114,8 +114,12 @@ describe('MusicPiece', () => {
      * Tests for all musicxml files whether the MIDI file leads to the same output
      */
     describe('equal result from MIDI and MusicXml', () => {
+        const excludeFiles = new Set([
+            '[Test] Empty.musicxml',
+            '[Test] Simple Drum Pattern 1 120 bpm.musicxml',
+        ]);
         const files = listFiles()
-            .filter(f => f !== '[Test] Empty.musicxml' && f.endsWith('.musicxml'))
+            .filter(f => !excludeFiles.has(f) && f.endsWith('.musicxml'))
             .map(f => f.substr(0, f.length - 9));
 
 
