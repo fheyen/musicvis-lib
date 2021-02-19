@@ -26,7 +26,7 @@
     
 
 
-    <title>Chords</title>
+    <title>experimental/MusicUtils.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -295,831 +295,117 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">Chords</h1>
-    
-
-    
-
-
-
-
-<section>
-
-
-<header>
-    
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~chordTypes">
-    <a href="#~chordTypes">#</a>
-    <span class="type-signature">(inner, constant) </span>chordTypes<span class="type-signature"></span>
-</h4>
-
-
-
-
-<div class="description">
-    Maps number of steps (number of notes -1) to possible chord types
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="Chords.js.html">Chords.js</a>, <a href="Chords.js.html#line119">line 119</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".detectChordsByExactStart">
-        <a href="#.detectChordsByExactStart">#</a>
-        <span class="type-signature">(static) </span>detectChordsByExactStart<span class="signature">(notes)</span><span class="type-signature"> &rarr; {Array.&lt;Array.&lt;<a href="Note.html">Note</a>>>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Detects chords as those notes that have the exact same start time, only works
-for ground truth (since recordings are not exact)
-Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>notes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">notes</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="Chords.js.html">Chords.js</a>, <a href="Chords.js.html#line19">line 19</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    array of chord arrays
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;Array.&lt;<a href="Note.html">Note</a>>></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".detectChordsByOverlap">
-        <a href="#.detectChordsByOverlap">#</a>
-        <span class="type-signature">(static) </span>detectChordsByOverlap<span class="signature">(notes, sortByPitch)</span><span class="type-signature"> &rarr; {Array.&lt;Array.&lt;<a href="Note.html">Note</a>>>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Detects chords, by simply looking for notes that overlap each other in time.
-Example:
-   =======
-      =========
-        ========
-Important: Notes must be sorted by start time for this to work correctly.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>notes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">array of Note objects</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>sortByPitch</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">sort chords by pitch? (otherwise sorted
-     by note start time)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="Chords.js.html">Chords.js</a>, <a href="Chords.js.html#line46">line 46</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-todo">To Do:</dt>
-            <dd class="tag-todo">
-                <ul>
-                    <li>not used yet</li>
-                
-                    <li>optional minimum overlap ratio</li>
-                
-                    <li>new definition of chord? i.e. notes have to start 'together'</li>
-                </ul>
-            </dd>
-        </div>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    array of chord arrays
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;Array.&lt;<a href="Note.html">Note</a>>></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getChordName">
-        <a href="#.getChordName">#</a>
-        <span class="type-signature">(static) </span>getChordName<span class="signature">(notes)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        https://github.com/tonaljs/tonal/tree/master/packages/chord
-Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>notes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">notes</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="Chords.js.html">Chords.js</a>, <a href="Chords.js.html#line230">line 230</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    possible chord types
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;string></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getChordType">
-        <a href="#.getChordType">#</a>
-        <span class="type-signature">(static) </span>getChordType<span class="signature">(notes)</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns chord type, e.g. 'Major', 'Diminished', ...
-Important: Notes must be sorted by pitch ascending
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>notes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">notes (sorted by pitch asc.)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="Chords.js.html">Chords.js</a>, <a href="Chords.js.html#line195">line 195</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-todo">To Do:</dt>
-            <dd class="tag-todo">
-                <ul>
-                    <li>some chords might be multiple types</li>
-                </ul>
-            </dd>
-        </div>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    chord type
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 id='page-title' class="page-title">experimental/MusicUtils.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Converts beats per minute to seconds per beat
+ *
+ * @param {number} bpm tempo in beats per minute
+ * @returns {number} seconds per beat
+ */
+export function bpmToSecondsPerBeat(bpm) {
+    return 1 / (bpm / 60);
+}
+
+/**
+ * noteTypeDurationRatios
+ * 1 = whole note, 1/2 = half note, ...
+ *
+ * With added dots:
+ * o. has duration of 1.5, o.. 1.75, ...
+ */
+const noteTypeDurationRatios = [];
+const baseDurations = [2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16, 1 / 32, 1 / 64];
+for (const d of baseDurations) {
+    for (let dots = 0; dots &lt; 4; dots++) {
+        let duration = d;
+        let toAdd = d;
+        for (let dot = 0; dot &lt; dots; dot++) {
+            // Each dot after the note adds half of the one before
+            toAdd /= 2;
+            duration += toAdd;
+        }
+        noteTypeDurationRatios.push({
+            type: d,
+            dots,
+            duration,
+        });
+    }
+}
+noteTypeDurationRatios.sort((a, b) => a.duration - b.duration);
+
+/**
+ * Estimates the note type (whole, quarter, ...) and number of dots for dotted
+ * notes
+ *
+ * @todo test if corrrectly 'calibrated'
+ * @param {number} duration duration of a note
+ * @param {number} bpm tempo of the piece in bpm
+ * @returns {object} note type and number of dots
+ *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
+ *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
+ */
+export function noteDurationToNoteType(duration, bpm) {
+    const quarterDuration = bpmToSecondsPerBeat(bpm);
+    const ratio = duration / quarterDuration / 4;
+    // TODO: round to finest representable step?
+
+    // Binary search
+    return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
+}
+
+/**
+ * Returns the value in array that is closest to value.
+ * Array MUST be sorted ascending.
+ *
+ * @todo move to arrayutils
+ * @param {Array} array array
+ * @param {*} value value
+ * @param {Function} accessor accessor
+ * @returns {*} value in array closest to value
+ */
+export function binarySearch(array, value, accessor = d => d) {
+    // console.log('search', array, 'for', value);
+    // Handle short arrays
+    if (array.length &lt;= 3) {
+        let closest = null;
+        let diff = Number.POSITIVE_INFINITY;
+        for (const element of array) {
+            const value_ = accessor(element);
+            const diff2 = Math.abs(value - value_);
+            if (diff2 &lt; diff) {
+                closest = element;
+                diff = diff2;
+            }
+        }
+        return closest;
+    }
+    // Split longer array in two for binary search
+    const pivotPosition = Math.floor(array.length / 2);
+    const pivotElement = array[pivotPosition];
+    const pivotValue = accessor(pivotElement);
+    if (value === pivotValue) {
+        return pivotElement;
+    }
+    if (value &lt; pivotValue) {
+        return binarySearch(array.slice(0, pivotPosition + 1), value, accessor);
+    }
+    if (value > pivotValue) {
+        return binarySearch(array.slice(pivotPosition - 1), value, accessor);
+    }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
