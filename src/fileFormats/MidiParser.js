@@ -231,9 +231,6 @@ function getInstrumentAndTrackName(track) {
  * Caclulates the time positions of measure lines by looking at tempo and beat
  * type change events
  *
- * @todo probably does not handle complex meters correctly
- * @todo does not handle tempo change yet, do this as in parsing notes (still an issue?)
- *
  * @private
  * @param {object[]} tempoChanges tempo change events
  * @param {object[]} beatTypeChanges beat type change events
@@ -245,8 +242,7 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
     // Generate measure lines from tempo and beat type changes
     let tempo = 120;
     let beats = 4;
-    let secondsPerBeat = bpmToSecondsPerBeat(tempo);
-    // let beatType = 4;
+    let beatType = 4;
     let currentTime = 0;
     let currentBeatsInMeasure = 0;
     let timeOfLastTempoChange = 0;
@@ -263,16 +259,16 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
             timeOfLastTempoChange = currentTime;
             timeSinceLastTempoChange = 0;
             tempo = mostRecentTempoChange;
-            secondsPerBeat = bpmToSecondsPerBeat(tempo);
         }
         for (const b of beatTypeChanges) {
             if (b.time <= currentTime) {
                 beats = b.beats;
-                // beatType = b.beatType;
+                beatType = b.beatType;
             }
         }
         // Update time and beats
         currentBeatsInMeasure++;
+        const secondsPerBeat = bpmToSecondsPerBeat(tempo) / (beatType / 4);
         timeSinceLastTempoChange += secondsPerBeat;
         currentTime = timeOfLastTempoChange + timeSinceLastTempoChange;
         if (currentBeatsInMeasure >= beats) {
@@ -363,11 +359,6 @@ function getSignatureChanges(tracks) {
                 const d = event.data;
                 const beats = d[0];
                 const beatType = 2 ** d[1];
-                beatTypeChanges.push({
-                    tick: currentTick,
-                    beats,
-                    beatType,
-                });
                 const newEntry = {
                     tick: currentTick,
                     beats,
@@ -425,68 +416,7 @@ function getSignatureChanges(tracks) {
 }
 
 /**
- * @todo test
- *  - convert something to MIDI and back with above function to see if result is the same as the original
- *  - and the other way round
- *
- * @private
- * @param {Note[]} notes notes
- * @param {number} bpm tempo in beats per minute
- */
-// export function convertNoteArrayToMIDIJSON(notes, bpm) {
-//     const timeDivision = 96;
-//     const milliSecondsPerBeat = 1 / bpm * 60_000;
-//     const ticksPerMillisecond = timeDivision / milliSecondsPerBeat;
-//     const track = [];
-//     let currentTime = 0;
-//     // For each note create a note on and note off event
-//     // duplicate each note and set the start of the second copy to the note's end
-//     // sort notes by the new start times
-//     const noteOns = notes.slice();
-//     const noteOffs = notes.map(n => n.clone());
-//     noteOffs.forEach(n => n.start = n.end);
-//     const notesNew = noteOns.concat(noteOffs).sort((a, b) => a.start - b.start);
-//     // Go through all notes, and remember which ones are currently 'on'
-//     // If a note appears and is currently 'off': note_on event, and vice versa
-//     const currentlyOn = Array(128).fill(false);
-//     for (let note of notesNew) {
-//         let eventType;
-//         if (!currentlyOn[note.pitch]) {
-//             // note_on event
-//             eventType = 9;
-//         } else if (currentlyOn[note.pitch]) {
-//             // note_off event
-//             eventType = 8;
-//         }
-//         currentlyOn[note.pitch] = !currentlyOn[note.pitch];
-//         // Convert to ticks
-//         const deltaTime = (note.start - currentTime) * 1000 * ticksPerMillisecond;
-//         currentTime = note.start;
-//         track.push({
-//             deltaTime,
-//             type: eventType,
-//             channel: 0,
-//             data: [
-//                 note.pitch,
-//                 note.velocity
-//             ]
-//         });
-//     }
-//     const result = {
-//         formatType: 0,
-//         tracks: 1,
-//         timeDivision,
-//         bpm: bpm,
-//         track: [
-//             { event: track }
-//         ]
-//     };
-//     console.log('[MidiParser] Converted note array to MIDI JSON', result);
-//     return JSON.stringify(result);
-// }
-
-/**
- * MIDI event types and meta types
+ * MIDI event types and meta types and their codes
  *
  * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
  * Event Type         Value   Value decimal    Parameter 1         Parameter 2
@@ -497,7 +427,7 @@ function getSignatureChanges(tracks) {
  * Program Change     0xC      12              program number      not used
  * Channel Aftertouch 0xD      13              aftertouch value    not used
  * Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
- * Meta               0xFF    255                         depend on meta type
+ * Meta               0xFF    255                 parameters depend on meta type
  */
 const EVENT_TYPES = {
     noteOff: 0x8,
