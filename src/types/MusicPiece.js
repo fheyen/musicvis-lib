@@ -24,17 +24,38 @@ class MusicPiece {
      * @throws {'No or invalid tracks given!'} when invalid tracks are given
      */
     constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
-        this.name = name;
-        this.tempos = tempos;
-        this.timeSignatures = timeSignatures;
-        this.keySignatures = keySignatures;
-        this.measureTimes = measureTimes;
-
         if (!tracks || tracks.length === 0) {
             throw new Error('No or invalid tracks given');
         }
+        this.name = name;
+        this.measureTimes = measureTimes;
         this.tracks = tracks;
         this.duration = Math.max(...this.tracks.map(d => d.duration));
+        // Filter multiple identical consecutive infos
+        this.tempos = tempos.slice(0, 1);
+        let currentTempo = tempos[0];
+        for (const tempo of tempos) {
+            if (tempo.string !== currentTempo.string) {
+                currentTempo = tempo;
+                this.tempos.push(tempo);
+            }
+        }
+        this.timeSignatures = timeSignatures.slice(0, 1);
+        let currentTimeSig = timeSignatures[0];
+        for (const timeSignature of timeSignatures) {
+            if (timeSignature.string !== currentTimeSig.string) {
+                currentTimeSig = timeSignature;
+                this.timeSignatures.push(timeSignature);
+            }
+        }
+        this.keySignatures = keySignatures.slice(0, 1);
+        let currentKeySig = keySignatures[0];
+        for (const keySignature of keySignatures) {
+            if (keySignature.string !== currentKeySig.string) {
+                currentKeySig = keySignature;
+                this.keySignatures.push(keySignature);
+            }
+        }
     }
 
     /**
