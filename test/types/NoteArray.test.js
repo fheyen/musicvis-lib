@@ -357,9 +357,7 @@ describe('NoteArray', () => {
                 expect(
                     toSlice.clone().sliceTime(1, 2).getNotes()
                 ).toStrictEqual(
-                    new NoteArray([
-
-                    ]).getNotes()
+                    new NoteArray([]).getNotes()
                 );
             });
             test('exact time 1 3', () => {
@@ -369,6 +367,103 @@ describe('NoteArray', () => {
                     new NoteArray([
                         Note.from({ start: 1, end: 2 }),
                         Note.from({ start: 1, end: 2 }),
+                    ]).getNotes()
+                );
+            });
+        });
+
+        describe('touched', () => {
+            test('simple case', () => {
+                expect(
+                    toSlice.clone().sliceTime(0.5, 2.5, 'touched').getNotes()
+                ).toStrictEqual(
+                    new NoteArray([
+                        Note.from({ start: 0, end: 1 }),
+                        Note.from({ start: 0, end: 2 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1, end: 3 }),
+                        Note.from({ start: 2, end: 3 }),
+                        Note.from({ start: 2 }),
+                    ]).getNotes()
+                );
+            });
+            test('exact time 1 2', () => {
+                expect(
+                    toSlice.clone().sliceTime(1, 2, 'touched').getNotes()
+                ).toStrictEqual(
+                    new NoteArray([
+                        Note.from({ start: 0, end: 1 }),
+                        Note.from({ start: 0, end: 2 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1, end: 3 }),
+                        Note.from({ start: 2, end: 3 }),
+                        Note.from({ start: 2 }),
+                    ]).getNotes()
+                );
+            });
+            test('exact time 1 1', () => {
+                expect(
+                    toSlice.clone().sliceTime(1, 1, 'touched').getNotes()
+                ).toStrictEqual(
+                    new NoteArray([
+                        Note.from({ start: 0, end: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1, end: 3 }),
+                    ]).getNotes()
+                );
+            });
+        });
+
+        describe('touched-included', () => {
+            test('simple case', () => {
+                expect(
+                    toSlice.clone().sliceTime(0.5, 2.5, 'touched-included').getNotes()
+                ).toStrictEqual(
+                    new NoteArray([
+                        Note.from({ start: 0, end: 1 }),
+                        Note.from({ start: 0, end: 2 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1, end: 3 }),
+                        Note.from({ start: 2, end: 3 }),
+                        Note.from({ start: 2 }),
+                    ]).getNotes()
+                );
+            });
+            test('exact time 1 2', () => {
+                expect(
+                    toSlice.clone().sliceTime(1, 2, 'touched-included').getNotes()
+                ).toStrictEqual(
+                    new NoteArray([
+                        Note.from({ start: 0, end: 1 }),
+                        Note.from({ start: 0, end: 2 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1, end: 3 }),
+                        Note.from({ start: 2, end: 3 }),
+                        Note.from({ start: 2 }),
+                    ]).getNotes()
+                );
+            });
+            test('exact time 1 1', () => {
+                expect(
+                    toSlice.clone().sliceTime(1, 1, 'touched-included').getNotes()
+                ).toStrictEqual(
+                    new NoteArray([
+                        Note.from({ start: 0, end: 1 }),
+                        Note.from({ start: 0, end: 2 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1 }),
+                        Note.from({ start: 1, end: 2 }),
+                        Note.from({ start: 1, end: 3 }),
                     ]).getNotes()
                 );
             });

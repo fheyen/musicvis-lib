@@ -260,29 +260,50 @@ class NoteArray {
 
     /**
      * Slices the notes by time.
-     * The modes end and contained will remove all notes with end === null!
+     * The modes 'end' and 'contained' will remove all notes with end === null!
+     * Notes will not be changed, e.g. start time will remain the same.
      *
      * @param {number} startTime start of the filter range in seconds
      * @param {number} endTime end of the filter range in seconds (exclusive)
      * @param {string} mode controls which note time to consider, one of:
-     *      - start (note.start must be inside range),
-     *      - end (note.end ''),
-     *      - contained (both note.start and note.end must be inside range)
+     *      - start: note.start must be inside range
+     *      - end: note.end must be inside range
+     *      - contained: BOTH note.start and note.end must be inside range
+     *      - touched: EITHER start or end (or both) must be inside range)
+     *      - touched-included: like touched, but also includes notes where
+     *          neither start nor end inside range, but range is completely
+     *          inside the note
      *      (contained is default)
      * @returns {NoteArray} itself
+     * @throws {'Invalid slicing mode'} When slicing mode is not one of the
+     *      above values
      */
     sliceTime(startTime, endTime, mode = 'contained') {
         const start = startTime;
         const end = endTime;
+        let filterFunc;
         if (mode === 'start') {
-            this._notes = this._notes.filter(n => n.start >= start && n.start < end);
+            filterFunc = n => n.start >= start && n.start < end;
+        } else if (mode === 'end') {
+            filterFunc = n => n.end !== null && n.end >= start && n.end < end;
+        } else if (mode === 'contained') {
+            filterFunc = n => n.end !== null && n.start >= start && n.end < end;
+        } else if (mode === 'touched') {
+            filterFunc = n =>
+                (n.start >= start && n.start <= end) ||
+                (n.end !== null && n.end >= start && n.end <= end);
+        } else if (mode === 'touched-included') {
+            filterFunc = n =>
+                // like touched
+                (n.start >= start && n.start <= end) ||
+                (n.end !== null && n.end >= start && n.end <= end) ||
+                // filter range inside note range
+                (n.end !== null && n.start <= start && n.end >= end);
+        } else {
+            throw new Error('Invalid slicing mode');
         }
-        if (mode === 'end') {
-            this._notes = this._notes.filter(n => n.end !== null && n.end >= start && n.end < end);
-        }
-        if (mode === 'contained') {
-            this._notes = this._notes.filter(n => n.end !== null && n.start >= start && n.end < end);
-        }
+        // eslint-disable-next-line unicorn/no-array-callback-reference
+        this._notes = this._notes.filter(filterFunc);
         return this;
     }
 

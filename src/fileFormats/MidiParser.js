@@ -48,7 +48,7 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
         parsedTracks = splitFormat0(parsedTracks);
     }
     // Generate measure lines from tempo and beat type changes
-    const totalTime = max(parsedTracks, d => d.totalTime);
+    const totalTime = max(parsedTracks, d => d?.totalTime ?? 0);
     const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime);
     // Return similar format as MusicXmlParser
     const result = {
@@ -59,9 +59,9 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
         totalTime,
         measureLinePositions,
         // This is the first tempo etc., changes are stored in each part
-        bpm: parsedTracks[0].bpm,
-        beats: parsedTracks[0].beats,
-        beatType: parsedTracks[0].beatType,
+        bpm: parsedTracks[0]?.bpm ?? 120,
+        beats: parsedTracks[0]?.beats ?? 4,
+        beatType: parsedTracks[0]?.beatType ?? 4,
     };
     if (log) {
         console.log(`Got ${parsedTracks.length} MIDI tracks`, result);
@@ -83,7 +83,7 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
  */
 function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges) {
     const notes = [];
-    let tempo = tempoChanges.length > 0 ? tempoChanges[0].tempo : 120;
+    let tempo = tempoChanges[0]?.tempo ?? 120;
     let currentTick = 0;
     let currentTime;
     let milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
