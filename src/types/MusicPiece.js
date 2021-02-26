@@ -15,7 +15,6 @@ class MusicPiece {
      * and MusicPiece.fromMusicXml instead.
      *
      * @private
-     * @todo does not show in docs
      * @param {string} name name (e.g. file name or piece name)
      * @param {TempoDefinition[]} tempos tempos
      * @param {TimeSignature[]} timeSignatures time signatures
@@ -32,7 +31,6 @@ class MusicPiece {
         this.measureTimes = measureTimes;
 
         if (!tracks || tracks.length === 0) {
-            // TODO: test this
             throw new Error('No or invalid tracks given');
         }
         this.tracks = tracks;
@@ -53,37 +51,30 @@ class MusicPiece {
         }
         const midi = midiParser.parse(midiFile);
         const parsed = preprocessMidiFileData(midi);
-        // tempos
         let tempos = [];
-        if (parsed.parts.length > 0) {
+        let timeSignatures = [];
+        let keySignatures = [];
+        let measureTimes = [];
+        if (parsed.tracks.length > 0) {
+            // tempos
             tempos = parsed.tempoChanges
                 .map(d => new TempoDefinition(d.time, d.tempo));
-        }
-        // time signatures
-        let timeSignatures = [];
-        if (parsed.parts.length > 0) {
+            // time signatures
             timeSignatures = parsed.beatTypeChanges
                 .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-        }
-        // key signatures
-        let keySignatures = [];
-        if (parsed.parts.length > 0) {
+            // key signatures
             keySignatures = parsed.keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
-        }
-        // measure times
-        let measureTimes = [];
-        if (parsed.parts.length > 0) {
+            // measure times
             measureTimes = parsed.measureLinePositions;
         }
         // tracks signatures
-        const tracks = parsed.parts
-            .map((t, index) => Track.fromMidi(
-                t.trackName,
-                t.instrumentName,
-                t.noteObjs,
-                index,
-            ));
+        const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
+            t.trackName,
+            t.instrumentName,
+            t.noteObjs,
+            index,
+        ));
         return new MusicPiece(
             name,
             tempos,
@@ -110,21 +101,17 @@ class MusicPiece {
         const parser = new DOMParser();
         const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
         const parsed = preprocessMusicXmlData(xmlDocument);
-        // tempos
         let tempos = [];
-        if (parsed.parts.length > 0) {
-            tempos = parsed.parts[0].tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-        }
-        // time signatures
         let timeSignatures = [];
-        if (parsed.parts.length > 0) {
-            timeSignatures = parsed.parts[0].beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-        }
-        // key signatures
         let keySignatures = [];
         if (parsed.parts.length > 0) {
+            // tempos
+            tempos = parsed.parts[0].tempoChanges
+                .map(d => new TempoDefinition(d.time, d.tempo));
+            // time signatures
+            timeSignatures = parsed.parts[0].beatTypeChanges
+                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
+            // key signatures
             keySignatures = parsed.parts[0].keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
         }

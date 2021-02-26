@@ -203,18 +203,20 @@ export function getChordType(notes) {
     }
     // Normalize higher than octave
     steps = steps.map(d => d % 12);
-    // Filter octaves
-    steps = steps.filter(d => d !== 0);
     // Filter doubles
     steps = [...new Set(steps)];
+    // Filter octaves
+    steps = steps.filter(d => d !== 0);
     if (steps.length === 0) { return { name: 'Octave' }; }
     steps.sort((a, b) => a - b);
 
     // Now get the chord type
     const candidates = chordTypes.get(steps.length);
-    for (const cand of candidates) {
-        if (arrayShallowEquals(steps, cand.steps)) {
-            return cand;
+    if (candidates) {
+        for (const cand of candidates) {
+            if (arrayShallowEquals(steps, cand.steps)) {
+                return cand;
+            }
         }
     }
     return { name: 'Unknown chord type' };
