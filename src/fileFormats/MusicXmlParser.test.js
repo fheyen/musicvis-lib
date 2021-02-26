@@ -1,12 +1,12 @@
-import { preprocessMusicXmlData } from '../../src/fileFormats/MusicXmlParser';
+import { preprocessMusicXmlData } from './MusicXmlParser';
 import fs from 'fs';
 import path from 'path';
-import Note from '../../src/types/Note';
+import Note from '../types/Note';
 
 const parser = new DOMParser();
 
 function readXmlFile(fileName) {
-    const file = path.join(__dirname, '..', '_test_assets', fileName);
+    const file = path.join(__dirname, '..', '..', 'test', '_test_assets', fileName);
     const text = fs.readFileSync(file, 'utf8');
     return parser.parseFromString(text, 'text/xml');
 }

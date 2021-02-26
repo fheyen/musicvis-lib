@@ -1,10 +1,23 @@
-import { preprocessMidiFileData } from '../../src/fileFormats/MidiParser';
+import { preprocessMidiFileData } from './MidiParser';
 import fs from 'fs';
 import path from 'path';
 import midiParser from 'midi-parser-js';
 
+
+function listMidiFiles() {
+    const GT_DIR = path.join(__dirname, '..', '..', 'test', '_test_assets_private');
+    return fs.readdirSync(GT_DIR)
+        .filter(d => d.endsWith('.mid') || d.endsWith('.midi'));
+}
+
 function readMidiFile(fileName) {
-    const file = path.join(__dirname, '..', '_test_assets', fileName);
+    const file = path.join(__dirname, '..', '..', 'test', '_test_assets', fileName);
+    const binary = fs.readFileSync(file, 'base64');
+    return midiParser.parse(binary);
+}
+
+function readMidiFilePrivate(fileName) {
+    const file = path.join(__dirname, '..', '..', 'test', '_test_assets_private', fileName);
     const binary = fs.readFileSync(file, 'base64');
     return midiParser.parse(binary);
 }
@@ -22,7 +35,7 @@ describe('MidiFileParser', () => {
     test('key signatures', () => {
         const midi = readMidiFile('[Test] Key Signatures 2.mid');
         const parsed = preprocessMidiFileData(midi);
-        expect(parsed.parts[0].keySignatureChanges).toStrictEqual([
+        expect(parsed.keySignatureChanges).toStrictEqual([
             {
                 "key": "C",
                 "scale": "major",
@@ -125,7 +138,7 @@ describe('MidiFileParser', () => {
     test('beat types', () => {
         const midi = readMidiFile('[Test] Beat type change.mid');
         const parsed = preprocessMidiFileData(midi);
-        expect(parsed.parts[0].beatTypeChanges).toStrictEqual([
+        expect(parsed.beatTypeChanges).toStrictEqual([
             {
                 "beatType": 4,
                 "beats": 3,
@@ -156,7 +169,7 @@ describe('MidiFileParser', () => {
     test('tempos', () => {
         const midi = readMidiFile('[Test] Tempo change.mid');
         const parsed = preprocessMidiFileData(midi);
-        expect(parsed.parts[0].tempoChanges).toStrictEqual([
+        expect(parsed.tempoChanges).toStrictEqual([
             {
                 "tempo": 120,
                 "tick": 0,
@@ -183,7 +196,7 @@ describe('MidiFileParser', () => {
     test('tempos 2', () => {
         const midi = readMidiFile('[Test] Tempo Change 2.mid');
         const parsed = preprocessMidiFileData(midi);
-        expect(parsed.parts[0].tempoChanges).toStrictEqual([
+        expect(parsed.tempoChanges).toStrictEqual([
             {
                 "tempo": 110,
                 "tick": 0,
@@ -251,11 +264,25 @@ describe('MidiFileParser', () => {
     test('measure times', () => {
         const midi = readMidiFile('[Test] Tempo Change.mid');
         const parsed = preprocessMidiFileData(midi);
-        expect(parsed.parts[0].measureLinePositions).toStrictEqual([
+        expect(parsed.measureLinePositions).toStrictEqual([
             2,
             3.5,
             4.7,
             5.7,
         ]);
+    });
+
+    describe('Braking MIDI files', () => {
+        const files = listMidiFiles();
+
+        test.each(files)('Exept no throw %s', (file) => {
+            const midi = readMidiFilePrivate(file);
+            expect(() => preprocessMidiFileData(midi)).not.toThrow();
+        });
+
+        test.skip.each(files)('to have tracks %s', (file) => {
+            const midi = readMidiFilePrivate(file);
+            expect(preprocessMidiFileData(midi)).toStrictEqual();
+        });
     });
 });

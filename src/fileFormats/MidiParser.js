@@ -5,6 +5,8 @@ import { roundToNDecimals } from '../utils/MathUtils';
 
 /**
  * @module fileFormats/MidiParser
+ *
+ * @todo parse pitch bends
  */
 
 /**
@@ -31,16 +33,12 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
     }
     // Parse notes
     let parsedTracks = [];
-    const partNames = [];
     const { tempoChanges, beatTypeChanges, keySignatureChanges } = getSignatureChanges(data.track);
     for (let index = 0; index < data.track.length; index++) {
         const track = data.track[index];
-        const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges);
+        const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log);
         if (t !== null) {
             parsedTracks.push(t);
-            // Get part name
-            const name = getPartName(track.event);
-            partNames.push(name ? name : `Track ${index}`);
         }
     }
     // Split MIDI format 0 data into tracks instead of having channels
@@ -53,15 +51,11 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
     // Return similar format as MusicXmlParser
     const result = {
         parts: parsedTracks,
-        partNames,
-        // TODO: get instruments from MIDI
-        instruments: parsedTracks.map(() => 'unknown instrument'),
         totalTime,
+        tempoChanges,
+        beatTypeChanges,
+        keySignatureChanges,
         measureLinePositions,
-        // This is the first tempo etc., changes are stored in each part
-        bpm: parsedTracks[0]?.bpm ?? 120,
-        beats: parsedTracks[0]?.beats ?? 4,
-        beatType: parsedTracks[0]?.beatType ?? 4,
     };
     if (log) {
         console.log(`Got ${parsedTracks.length} MIDI tracks`, result);
@@ -79,9 +73,10 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
  * @param {object[]} tempoChanges array with tempo change events
  * @param {object[]} beatTypeChanges array with beat type change events
  * @param {object[]} keySignatureChanges array with key signature change events
+ * @param {boolean} log if true, debug info will be logged to the console
  * @returns {object} parsed track
  */
-function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges) {
+function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log) {
     const notes = [];
     let tempo = tempoChanges[0]?.tempo ?? 120;
     let currentTick = 0;
@@ -89,6 +84,8 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
     let milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
     let tickOfLastTempoChange = 0;
     let timeOfLastTempoChange = 0;
+    // This map stores note-on note that have not yet been finished by a note-off
+    const unfinishedNotes = new Map();
     for (const event of track.event) {
         currentTick += event.deltaTime;
         // Update beat type change times
@@ -132,65 +129,58 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
         currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
         // Skip events that are neither note-on nor note-off
         const type = event.type;
-        if (type !== 8 && type !== 9) {
+        if (type !== EVENT_TYPES.noteOn && type !== EVENT_TYPES.noteOff) {
             continue;
         }
         const [pitch, velocity] = event.data;
         const channel = event.channel;
-        // Avoid numerical precision errors
-        currentTime = +(currentTime).toFixed(10);
-        if (event.type === 8 || velocity === 0) {
-            // This might happen for empty or corrupted files
-            if (notes.length === 0) {
-                continue;
-            }
+        const key = `${pitch} ${channel}`;
+        if (type === EVENT_TYPES.noteOff || (type === EVENT_TYPES.noteOn && velocity === 0)) {
             // Handle note-off
-            // Go back to latest note with the same pitch and add the end time
-            // If more than one channel, check also the channel!
-            let index = notes.length - 1;
-            while (notes[index].pitch !== pitch || notes[index].channel !== channel || notes[index].end !== -1) {
-                index--;
-                if (index < 0) {
-                    console.warn('Did not find note-on event for note-off event!');
-                    break;
+            if (unfinishedNotes.has(key)) {
+                unfinishedNotes.get(key).end = currentTime;
+                unfinishedNotes.delete(key);
+            } else {
+                if (log) {
+                    console.warn('Did not find an unfinished note for note-off event!');
+                    console.log(event);
                 }
             }
-            if (index >= 0) {
-                notes[index].end = currentTime;
-            }
-        } else {
-            // TODO: What about pitch-bend (14) etc?
+        } else if (type === EVENT_TYPES.noteOn) {
             // Handle note-on
-            notes.push(new Note(
+            const newNote = new Note(
                 pitch,
                 roundToNDecimals(currentTime, 12),
                 velocity,
                 channel,
-                -1,
-            ));
+            );
+            notes.push(newNote);
+            unfinishedNotes.set(key, newNote);
+        } else {
+            continue;
         }
     }
     // Fix missing note ends
+    const neededToFix = [];
     for (const note of notes) {
         if (note.end === -1) {
             note.end = roundToNDecimals(currentTime, 12);
+            neededToFix.push(note);
         }
     }
-    // Generate measure lines from tempo and beat type changes
-    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, currentTime);
+    if (neededToFix.length > 0) {
+        console.warn(`had to fix ${neededToFix.length} notes`);
+        console.log(neededToFix);
+    }
     // Save parsed track with meta information
+    const { trackName, instrument, instrumentName } = getInstrumentAndTrackName(track);
     if (notes.length > 0) {
         const parsedTrack = {
             noteObjs: notes,
             totalTime: currentTime,
-            tempoChanges,
-            beatTypeChanges,
-            keySignatureChanges,
-            measureLinePositions,
-            // Initial values
-            bpm: tempoChanges[0]?.tempo || 120,
-            beats: beatTypeChanges[0]?.beats || 4,
-            beatType: beatTypeChanges[0]?.beatType || 4,
+            trackName: trackName ?? 'Track',
+            instrument,
+            instrumentName: instrumentName ?? 'Unknown instrument',
         };
         // console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
         return parsedTrack;
@@ -201,19 +191,33 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
 }
 
 /**
- * Extracts part name strings from MIDI tracks
+ * Finds out the name of the track and the instrument, if this data is available
  *
  * @private
- * @param {object} track MIDI tracks
- * @returns {string} part names
+ * @param {object} track MIDI track
+ * @returns {{trackName, instrument, instrumentName}} meta data with either
+ *      values or null when no information found
  */
-function getPartName(track) {
-    for (const event of track) {
-        if (event.type === 255 && event.metaType === 3) {
-            return event.data;
+function getInstrumentAndTrackName(track) {
+    let trackName = null;
+    let instrument = null;
+    let instrumentName = null;
+    for (const event of track.event) {
+        if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.trackName) {
+            trackName = event.data;
+        }
+        if (event.type === EVENT_TYPES.programChange) {
+            instrument = event.data;
+        }
+        if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.instrumentName) {
+            instrumentName = event.data;
         }
     }
-    return '';
+    return {
+        trackName,
+        instrument,
+        instrumentName,
+    };
 }
 
 /**
@@ -334,7 +338,7 @@ function getSignatureChanges(tracks) {
             // Get timing of events
             currentTick += event.deltaTime;
             // Tempo change
-            if (event.type === 255 && event.metaType === 81) {
+            if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.setTempo) {
                 const milliSecondsPerQuarter = event.data / 1000;
                 const tempo = Math.round(1 / (milliSecondsPerQuarter / 60000));
                 // Ignore tempo changes that don't change the tempo
@@ -348,7 +352,7 @@ function getSignatureChanges(tracks) {
                 }
             }
             // Beat type change
-            if (event.type === 255 && event.metaType === 88) {
+            if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.timeSignature) {
                 const d = event.data;
                 const beats = d[0];
                 const beatType = 2 ** d[1];
@@ -375,13 +379,13 @@ function getSignatureChanges(tracks) {
                 // console.log(`32nds: ${d[3]}`);
             }
             // Key change
-            if (event.type === 255 && event.metaType === 0x59) {
+            if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.keySignature) {
                 // console.log('keychange', event);
                 const d = event.data;
-                if (!keySignatureMap.has(d)) {
+                if (!KEY_SIG_MAP.has(d)) {
                     console.warn('[MidiParser] Invalid key signature', d);
                 } else {
-                    const { key, scale } = keySignatureMap.get(d);
+                    const { key, scale } = KEY_SIG_MAP.get(d);
                     const newEntry = {
                         tick: currentTick,
                         key,
@@ -412,9 +416,6 @@ function getSignatureChanges(tracks) {
     }
     return { tempoChanges, beatTypeChanges, keySignatureChanges };
 }
-
-
-
 
 /**
  * @todo test
@@ -478,10 +479,52 @@ function getSignatureChanges(tracks) {
 // }
 
 /**
+ * MIDI event types and meta types
+ *
+ * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+ * Event Type         Value   Value decimal    Parameter 1         Parameter 2
+ * Note Off           0x8       8              note number         velocity
+ * Note On            0x9       9              note number         velocity
+ * Note Aftertouch    0xA      10              note number         aftertouch value
+ * Controller         0xB      11              controller number   controller value
+ * Program Change     0xC      12              program number      not used
+ * Channel Aftertouch 0xD      13              aftertouch value    not used
+ * Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
+ * Meta               0xFF    255                         depend on meta type
+ */
+const EVENT_TYPES = {
+    noteOff: 0x8,
+    noteOn: 0x9,
+    noteAftertouch: 0xA,
+    controller: 0xB,
+    programChange: 0xC,
+    channelAftertouch: 0xD,
+    pitchBend: 0xE,
+    meta: 0xFF,
+};
+const META_TYPES = {
+    sequenceNumber: 0x0,
+    textEvent: 0x1,
+    copyright: 0x2,
+    trackName: 0x3,
+    instrumentName: 0x4,
+    lyrics: 0x5,
+    marker: 0x6,
+    cuePoint: 0x7,
+    channelPrefix: 0x20,
+    endOfTrack: 0x2F,
+    setTempo: 0x51,
+    smpteOffset: 0x54,
+    timeSignature: 0x58,
+    keySignature: 0x59,
+    sequencerSpecific: 0x7F,
+};
+
+/**
  * Maps needed for key signature detection from number of sharps / flats
  * see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
  */
-const keySignatureMap = new Map([
+const KEY_SIG_MAP = new Map([
     // major
     [0xF900, { key: 'Cb', scale: 'major' }],
     [0xFA00, { key: 'Gb', scale: 'major' }],

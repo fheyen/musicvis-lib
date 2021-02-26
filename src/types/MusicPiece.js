@@ -56,19 +56,19 @@ class MusicPiece {
         // tempos
         let tempos = [];
         if (parsed.parts.length > 0) {
-            tempos = parsed.parts[0].tempoChanges
+            tempos = parsed.tempoChanges
                 .map(d => new TempoDefinition(d.time, d.tempo));
         }
         // time signatures
         let timeSignatures = [];
         if (parsed.parts.length > 0) {
-            timeSignatures = parsed.parts[0].beatTypeChanges
+            timeSignatures = parsed.beatTypeChanges
                 .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
         }
         // key signatures
         let keySignatures = [];
         if (parsed.parts.length > 0) {
-            keySignatures = parsed.parts[0].keySignatureChanges
+            keySignatures = parsed.keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
         }
         // measure times
@@ -79,8 +79,8 @@ class MusicPiece {
         // tracks signatures
         const tracks = parsed.parts
             .map((t, index) => Track.fromMidi(
-                parsed.partNames[index],
-                parsed.instruments[index],
+                t.trackName,
+                t.instrumentName,
                 t.noteObjs,
                 index,
             ));
