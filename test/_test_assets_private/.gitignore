@@ -2,3 +2,4 @@
 **/*.midi
 **/*.xml
 **/*.musicxml
+**/*.json

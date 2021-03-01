@@ -94,6 +94,11 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
     // This map stores note-on note that have not yet been finished by a note-off
     const unfinishedNotes = new Map();
     for (const event of track.event) {
+        const type = event.type;
+        // Ignore delta time if it is a meta event (fixes some parsing issues)
+        if (type === EVENT_TYPES.meta) {
+            continue;
+        }
         currentTick += event.deltaTime;
         // Update beat type change times
         for (const btc of beatTypeChanges) {
@@ -135,7 +140,6 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
         // Update current time in seconds
         currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
         // Skip events that are neither note-on nor note-off
-        const type = event.type;
         if (type !== EVENT_TYPES.noteOn && type !== EVENT_TYPES.noteOff) {
             continue;
         }
@@ -297,11 +301,11 @@ function splitFormat0(tracks) {
     // All tracks will share the meta infomation of the 0th track
     // Assign the splitted-by-channel notes to their new tracks
     const splittedTracks = [];
-    for (const [channelId, notes] of grouped.entries()) {
-        splittedTracks[channelId] = {
+    for (const notes of grouped.values()) {
+        splittedTracks.push({
             ...tracks[0],
             noteObjs: notes,
-        };
+        });
     }
     return splittedTracks;
 }
