@@ -21,6 +21,59 @@ function listFiles() {
     return fs.readdirSync(GT_DIR);
 }
 
+/**
+ * Reads and parses a MIDI file and returns the parsed notes
+ *
+ * @param {string} fileBaseName filename without extension
+ * @returns {Note[]} notes
+ */
+function getAllNotesFromMidi(fileBaseName) {
+    const midi = readMidiFile2(`${fileBaseName}.mid`);
+    return MusicPiece.fromMidi(fileBaseName, midi).getAllNotes();
+}
+
+/**
+ * Reads and parses a MusicXML file and returns the parsed notes
+ *
+ * @param {string} fileBaseName filename without extension
+ * @returns {Note[]} notes
+ */
+function getAllNotesFromXml(fileBaseName) {
+    const xml = readXmlFile(`${fileBaseName}.musicxml`);
+    return MusicPiece.fromMusicXml(fileBaseName, xml).getAllNotes();
+}
+
+/**
+ * Simplifies each object in an array by copying only some keys and their values
+ *
+ * @param {object[]} objectArray array with objects
+ * @param {string[]} keys keys to copy
+ */
+function simplify(objectArray, keys) {
+    return objectArray.map(obj => {
+        const newObj = {};
+        for (const key of keys) {
+            newObj[key] = obj[key];
+        }
+        return newObj;
+    });
+}
+
+test('simplify test helper', () => {
+    const notes = [
+        Note.from({ pitch: 42, start: 12 }),
+        Note.from({ pitch: 43, start: 13 }),
+    ];
+    expect(simplify(notes, ['pitch'])).toStrictEqual([
+        { pitch: 42 },
+        { pitch: 43 },
+    ]);
+    expect(simplify(notes, ['pitch', 'start'])).toStrictEqual([
+        { pitch: 42, start: 12 },
+        { pitch: 43, start: 13 },
+    ]);
+});
+
 describe('MusicPiece', () => {
 
     describe('constuctor', () => {
@@ -122,21 +175,6 @@ describe('MusicPiece', () => {
             .filter(f => !excludeFiles.has(f) && f.endsWith('.musicxml'))
             .map(f => f.substr(0, f.length - 9));
 
-
-        // test('only notes, only some files', () => {
-        //     const files = ['[Test] 3-4 meter'];
-
-        //     for (const file of files) {
-        //         const midi = readMidiFile(`${file}.mid`);
-        //         const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
-
-        //         const xml = readXmlFile(`${file}.musicxml`);
-        //         const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
-
-        //         expect(midiNotes).toStrictEqual(xmlNotes);
-        //     }
-        // });
-
         // TODO: need to fix tempo detection in musicxml see test there
         test.skip('tempos', () => {
             for (const file of files) {
@@ -156,8 +194,7 @@ describe('MusicPiece', () => {
             expect(mpMidi.timeSignatures).toStrictEqual(mpXml.timeSignatures);
         });
 
-        // TODO:
-        test.skip.each(files)('key signature %s', (file) => {
+        test.each(files)('key signature %s', (file) => {
             const midi = readMidiFile2(`${file}.mid`);
             const xml = readXmlFile(`${file}.musicxml`);
             const mpMidi = MusicPiece.fromMidi(file, midi);
@@ -165,7 +202,8 @@ describe('MusicPiece', () => {
             expect(mpMidi.keySignatures).toStrictEqual(mpXml.keySignatures);
         });
 
-        // TODO:
+        // TODO: there are issues with tempo change
+        // TODO: xml often has one more than midi (no huge problem)
         test.skip.each(files)('measure times %s', (file) => {
             const midi = readMidiFile2(`${file}.mid`);
             const xml = readXmlFile(`${file}.musicxml`);
@@ -174,26 +212,30 @@ describe('MusicPiece', () => {
             expect(mpMidi.measureTimes).toStrictEqual(mpXml.measureTimes);
         });
 
+        // Files that should work
+        test.each([
+            // Simple scale
+            '[Test] C4 to C5',
+            // Notes with accidentals
+            '[Test] Accidentals',
+            '[Test] Accidentals E Major',
+            '[Test] Guitar Chromatic Scale',
+        ])('complete MusicPiece %s', (file) => {
+            const midiNotes = getAllNotesFromMidi(file);
+            const xmlNotes = getAllNotesFromXml(file);
+            const simplifiedMidi = simplify(midiNotes, ['pitch', 'start']);
+            const simplifiedXml = simplify(xmlNotes, ['pitch', 'start']);
+            expect(simplifiedMidi).toStrictEqual(simplifiedXml);
+        });
+
         // TODO: tuxguitar uses different note lengths than musescore?
         // TODO: xml parser does not consider velocity
         test.skip.each(files)('all notes %s', (file) => {
-            const midi = readMidiFile2(`${file}.mid`);
-            const xml = readXmlFile(`${file}.musicxml`);
-            const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
-            const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
-            expect(midiNotes).toStrictEqual(xmlNotes);
-        });
-
-        const filesThatWork = ['[Test] C4 to C5'];
-        test.each(filesThatWork)('all notes, only pitch %s', (file) => {
-            const midi = readMidiFile2(`${file}.mid`);
-            const xml = readXmlFile(`${file}.musicxml`);
-            const midiNotes = MusicPiece.fromMidi(file, midi).getAllNotes();
-            const xmlNotes = MusicPiece.fromMusicXml(file, xml).getAllNotes();
-            expect(midiNotes.length).toBe(xmlNotes.length);
-            for (let i = 0; i < midiNotes.length; i++) {
-                expect(midiNotes[i].pitch).toBe(xmlNotes[i].pitch);
-            }
+            const midiNotes = getAllNotesFromMidi(file);
+            const xmlNotes = getAllNotesFromXml(file);
+            const simplifiedMidi = simplify(midiNotes, ['pitch', 'start']);
+            const simplifiedXml = simplify(xmlNotes, ['pitch', 'start']);
+            expect(simplifiedMidi).toStrictEqual(simplifiedXml);
         });
 
         // TODO: will probably never work since some data is not available

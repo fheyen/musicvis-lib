@@ -67,7 +67,6 @@ export function preprocessMusicXmlData(xml, log = false) {
  * @returns {object} parsed measures
  */
 function preprocessMusicXmlPart(part, drumInstrumentMap) {
-    // const partId = part.id;
     let measures = part.children;
     // Handle repetitions by duplicating measures
     measures = duplicateRepeatedMeasures(measures);
@@ -146,15 +145,16 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                 }
                 let pitch;
                 if (note.querySelectorAll('unpitched').length > 0) {
-                    // TODO: handle drum notes
+                    // Handle drum notes
                     const instrumentId = note.querySelectorAll('instrument')[0].id;
                     pitch = drumInstrumentMap.get(part.id).get(instrumentId);
                 } else {
                     // Get MIDI pitch
-                    // TODO: handle <alter> tag
+                    // Handle <alter> tag for accidentals
+                    const alter = +(note.querySelectorAll('alter')[0]?.innerHTML ?? 0);
                     const no = note.querySelectorAll('step')[0].innerHTML;
                     const octave = +note.querySelectorAll('octave')[0].innerHTML;
-                    pitch = getMidiNoteByNameAndOctave(no, octave).pitch;
+                    pitch = getMidiNoteByNameAndOctave(no, octave).pitch + alter;
                 }
                 // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
                 const isChord = note.querySelectorAll('chord').length > 0;
@@ -231,10 +231,6 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         tempoChanges,
         beatTypeChanges,
         keySignatureChanges,
-        // Initial values
-        bpm: tempoChanges[0]?.tempo || 120,
-        beats: beatTypeChanges[0].beats,
-        beatType: beatTypeChanges[0].beatType,
         tuning: getTuningPitches(measures),
     };
     // console.log('[MusicXmlParser] Parsed part: ', result);
@@ -327,7 +323,6 @@ function getTuningPitches(measures) {
 
 /**
  * Map from fiths to key signature
- * TODO: how to do minor? does it exist?
  */
 const keySignatureMap = new Map([
     [-7, { key: 'Cb', scale: 'major' }],
@@ -363,9 +358,7 @@ function getDrumInstrumentMap(xml) {
     for (const scorePart of scoreParts) {
         const partId = scorePart.id;
         const instruMap = new Map();
-        // const scoreInstrs = scorePart.querySelectorAll('score-instrument');
         const midiInstrs = scorePart.querySelectorAll('midi-instrument');
-        // for (const scoreInstr of scoreInstrs) {
         for (const midiInstr of midiInstrs) {
             const instrId = midiInstr.id;
             const pitch = midiInstr.querySelectorAll('midi-unpitched')[0]?.innerHTML;

@@ -31,7 +31,7 @@
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "lint": "eslint --fix src && remark .",
+    "lint": "eslint --fix src; remark .",
     "predeploy": "jest --silent && eslint --fix src && webpack -c webpack.dev.js && webpack -c webpack.prod.js && jsdoc -c jsdoc.conf.json",
     "deploy": "npm publish && git add . && git commit -m 'new version build'; git push; git push origin --tags"
   },
