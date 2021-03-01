@@ -9,6 +9,10 @@ import { roundToNDecimals } from '../utils/MathUtils';
  * @todo parse pitch bends
  */
 
+
+// Precision in number of digits when rounding seconds
+const ROUNDING_PRECISION = 5;
+
 /**
  * Parses a MIDI JSON file to get Note objects with absolute time in seconds.
  *
@@ -104,14 +108,14 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
         for (const btc of beatTypeChanges) {
             if (btc.time === undefined && btc.tick <= currentTick) {
                 const t = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
-                btc.time = roundToNDecimals(t, 12);
+                btc.time = roundToNDecimals(t, ROUNDING_PRECISION);
             }
         }
         // Update key signature change times
         for (const ksc of keySignatureChanges) {
             if (ksc.time === undefined && ksc.tick <= currentTick) {
                 const t = (ksc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
-                ksc.time = roundToNDecimals(t, 12);
+                ksc.time = roundToNDecimals(t, ROUNDING_PRECISION);
             }
         }
         // Handle last tempo change in track differently
@@ -133,7 +137,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             const tick = mostRecentTempoChange.tick;
             timeOfLastTempoChange = (tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
             tickOfLastTempoChange = tick;
-            mostRecentTempoChange.time = roundToNDecimals(timeOfLastTempoChange, 12);
+            mostRecentTempoChange.time = roundToNDecimals(timeOfLastTempoChange, ROUNDING_PRECISION);
             tempo = mostRecentTempoChange.tempo;
             milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
         }
@@ -161,7 +165,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             // Handle note-on
             const newNote = new Note(
                 pitch,
-                roundToNDecimals(currentTime, 12),
+                roundToNDecimals(currentTime, ROUNDING_PRECISION),
                 velocity,
                 channel,
             );
@@ -175,7 +179,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
     const neededToFix = [];
     for (const note of notes) {
         if (note.end === -1) {
-            note.end = roundToNDecimals(currentTime, 12);
+            note.end = roundToNDecimals(currentTime, ROUNDING_PRECISION);
             neededToFix.push(note);
         }
     }
@@ -278,7 +282,7 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
         if (currentBeatsInMeasure >= beats) {
             // Measure is full
             currentBeatsInMeasure = 0;
-            measureLines.push(roundToNDecimals(currentTime, 12));
+            measureLines.push(roundToNDecimals(currentTime, ROUNDING_PRECISION));
         }
     }
     return measureLines;

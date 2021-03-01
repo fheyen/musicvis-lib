@@ -1,4 +1,4 @@
-import SuffixTree from '../../src/stringBased/SuffixTree';
+import SuffixTree from './SuffixTree';
 
 describe('SuffixTree', () => {
 

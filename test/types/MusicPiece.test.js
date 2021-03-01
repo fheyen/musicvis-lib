@@ -5,20 +5,21 @@ import GuitarNote from '../../src/types/GuitarNote';
 import Note from '../../src/types/Note';
 
 const GT_DIR = path.join(__dirname, '..', '_test_assets');
+const GT_DIR_PRIVATE = path.join(__dirname, '..', '_test_assets_private');
 
 // TODO: async to speed up testing
-function readMidiFile2(fileName) {
-    const file = path.join(GT_DIR, fileName);
+function readMidiFile2(fileName, dir = GT_DIR) {
+    const file = path.join(dir, fileName);
     return fs.readFileSync(file, 'base64');
 }
 
-function readXmlFile(fileName) {
-    const file = path.join(GT_DIR, fileName);
+function readXmlFile(fileName, dir = GT_DIR) {
+    const file = path.join(dir, fileName);
     return fs.readFileSync(file, 'utf8');
 }
 
-function listFiles() {
-    return fs.readdirSync(GT_DIR);
+function listFiles(dir = GT_DIR) {
+    return fs.readdirSync(dir);
 }
 
 /**
@@ -27,8 +28,8 @@ function listFiles() {
  * @param {string} fileBaseName filename without extension
  * @returns {Note[]} notes
  */
-function getAllNotesFromMidi(fileBaseName) {
-    const midi = readMidiFile2(`${fileBaseName}.mid`);
+function getAllNotesFromMidi(fileBaseName, dir = GT_DIR) {
+    const midi = readMidiFile2(`${fileBaseName}.mid`, dir);
     return MusicPiece.fromMidi(fileBaseName, midi).getAllNotes();
 }
 
@@ -38,8 +39,8 @@ function getAllNotesFromMidi(fileBaseName) {
  * @param {string} fileBaseName filename without extension
  * @returns {Note[]} notes
  */
-function getAllNotesFromXml(fileBaseName) {
-    const xml = readXmlFile(`${fileBaseName}.musicxml`);
+function getAllNotesFromXml(fileBaseName, dir = GT_DIR) {
+    const xml = readXmlFile(`${fileBaseName}.musicxml`, dir);
     return MusicPiece.fromMusicXml(fileBaseName, xml).getAllNotes();
 }
 
@@ -247,6 +248,49 @@ describe('MusicPiece', () => {
             expect(midiPiece).toStrictEqual(xmlPiece);
         });
 
+    });
+
+    /**
+     * Test with actual music
+     */
+    describe('Actual music', () => {
+        const filesPrivate = listFiles(GT_DIR_PRIVATE);
+        const filesPrivateSet = new Set(filesPrivate);
+
+        const filesMidiAndMusicXML = [];
+        for (const file of filesPrivate) {
+            if (file.endsWith('.mid')) {
+                const baseName = file.replace('.mid', '');
+                if (filesPrivateSet.has(`${baseName}.musicxml`)) {
+                    filesMidiAndMusicXML.push(baseName);
+                }
+            }
+        }
+
+
+        describe('compare MIDI and MusicXML (sliced)', () => {
+            const sliceLength = 20;
+            test.each(filesMidiAndMusicXML)('all notes %s', (file) => {
+                const midiNotes = getAllNotesFromMidi(file, GT_DIR_PRIVATE);
+                const xmlNotes = getAllNotesFromXml(file, GT_DIR_PRIVATE);
+                const simplifiedMidi = simplify(midiNotes, ['pitch', 'start'])
+                    .slice(0, sliceLength);
+                const simplifiedXml = simplify(xmlNotes, ['pitch', 'start'])
+                    .slice(0, sliceLength);
+                expect(simplifiedMidi).toStrictEqual(simplifiedXml);
+            });
+        });
+
+        // TODO: overflows console so hard to test
+        describe.skip('compare MIDI and MusicXML (full)', () => {
+            test.each(filesMidiAndMusicXML)('all notes %s', (file) => {
+                const midiNotes = getAllNotesFromMidi(file, GT_DIR_PRIVATE);
+                const xmlNotes = getAllNotesFromXml(file, GT_DIR_PRIVATE);
+                const simplifiedMidi = simplify(midiNotes, ['pitch', 'start']);
+                const simplifiedXml = simplify(xmlNotes, ['pitch', 'start']);
+                expect(simplifiedMidi).toStrictEqual(simplifiedXml);
+            });
+        });
     });
 });
 

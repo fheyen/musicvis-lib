@@ -1,4 +1,4 @@
-import { gotoh, normalizedGotoh, matchMissmatchSimilarity, differenceSimilarity } from '../../src/stringBased/Gotoh';
+import { gotoh, normalizedGotoh, matchMissmatchSimilarity, differenceSimilarity } from './Gotoh';
 
 describe('Gotoh', () => {
     describe('matchMissmatchSimilarity', () => {

@@ -1,4 +1,4 @@
-import { levenshtein, damerauLevenshtein, normalizedLevenshtein } from '../../src/stringBased/Levenshtein';
+import { levenshtein, damerauLevenshtein, normalizedLevenshtein } from './Levenshtein';
 
 describe('levenshtein', () => {
     test('both empty: 0', () => {

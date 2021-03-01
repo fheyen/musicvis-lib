@@ -1,4 +1,4 @@
-import NeedlemanWunsch from '../../src/stringBased/NeedlemanWunsch';
+import NeedlemanWunsch from './NeedlemanWunsch';
 
 describe('NeedlemanWunsch', () => {
     test('both empty: 0', () => {

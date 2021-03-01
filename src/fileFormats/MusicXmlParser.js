@@ -8,6 +8,10 @@ import { roundToNDecimals } from '../utils/MathUtils';
  * @module fileFormats/MusicXmlParser
  */
 
+
+// Precision in number of digits when rounding seconds
+const ROUNDING_PRECISION = 5;
+
 /**
  * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
  * Also calculates the position of measure lines and the total time in seconds.
@@ -45,10 +49,6 @@ export function preprocessMusicXmlData(xml, log = false) {
         partNames,
         instruments: instrumentNames,
         totalTime: max(parsedParts, d => d.totalTime),
-        // This is the first tempo etc., changes are stored in each part
-        bpm: parsedParts[0]?.bpm ?? 120,
-        beats: parsedParts[0]?.beats ?? 4,
-        beatType: parsedParts[0]?.beatType ?? 4,
     };
     if (log) {
         console.log(result);
@@ -84,7 +84,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     const measureLinePositions = [];
     // const directions = [];
     for (const measure of measures) {
-        const currentTimeRounded = roundToNDecimals(currentTime, 12);
+        const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION);
         // Try to update metrics (if they are not set, keep the old ones)
         try {
             const soundElements = measure.querySelectorAll('sound');
@@ -183,8 +183,8 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                     } catch {/* Do nothing */ }
                     // TODO: use xml note type?
                     // const type = note.getElementsByTagName('type')[0].innerHTML;
-                    const startTime = roundToNDecimals(currentTime, 12);
-                    const endTime = roundToNDecimals(currentTime + durationInSeconds, 12);
+                    const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION);
+                    const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION);
                     if (string !== null && fret !== null) {
                         noteObjs.push(new GuitarNote(
                             pitch,
@@ -212,7 +212,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
             }
         }
         // Add measure line position
-        measureLinePositions.push(roundToNDecimals(currentTime, 12));
+        measureLinePositions.push(roundToNDecimals(currentTime, ROUNDING_PRECISION));
     }
     // Defaults
     if (tempoChanges.length === 0) {

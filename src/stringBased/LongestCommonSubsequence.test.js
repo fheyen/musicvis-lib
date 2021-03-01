@@ -1,4 +1,4 @@
-import { lcs, lcsLength, normalizedLcsLength } from '../../src/stringBased/LongestCommonSubsequence';
+import { lcs, lcsLength, normalizedLcsLength } from './LongestCommonSubsequence';
 
 describe('lcsLength', () => {
     test('both empty: 0', () => {
