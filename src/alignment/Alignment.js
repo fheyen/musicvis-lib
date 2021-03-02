@@ -1,4 +1,4 @@
-import { matchGtAndRecordingNotes } from './Matching';
+import { matchGtAndRecordingNotes } from '../comparison/Matching';
 import { randomInt, randomLcg, randomUniform, median } from 'd3';
 import * as Drums from '../instruments/Drums';
 import Note from '../types/Note';
@@ -207,7 +207,7 @@ export function alignmentBenchmark() {
     const randDuration = randomUniform.source(randomLcg(seed))(1 / 64, 2);
 
     // Create random notes
-    const randomNotes = Array.from({length: 200}).fill(0).map(() => {
+    const randomNotes = Array.from({ length: 200 }).fill(0).map(() => {
         const start = randTime();
         return new Note(
             rand127(),

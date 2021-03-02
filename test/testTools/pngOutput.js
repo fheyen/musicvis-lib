@@ -22,6 +22,19 @@ class Image {
         this.fillRect(0, 0, width, height, [0, 0, 0, 0]);
     }
 
+    /**
+     * Some pre-defined colors
+     */
+    static colors = {
+        BLACK: [0, 0, 0, 255],
+        WHITE: [255, 255, 255, 255],
+        RED: [255, 0, 0, 255],
+        GREEN: [0, 255, 0, 255],
+        BLUE: [0, 0, 255, 255],
+        GRAY: [127, 127, 127, 255],
+        TRANSPARENT: [0, 0, 0, 0],
+    };
+
     // setFillColor(rgbaArray) {
     //     this.fillStyle = rgbaArray;
     // }
@@ -41,7 +54,6 @@ class Image {
         width = Math.round(width);
         height = Math.round(height);
         const [r, g, b, a] = fillStyle;
-        // console.log(`Fill rect ${xPos} ${yPos} with ${fillStyle.join(' ')}`);
         for (let y = yPos; y < yPos + height; y++) {
             for (let x = xPos; x < xPos + width; x++) {
                 const index = (this.width * y + x) << 2;
@@ -54,13 +66,31 @@ class Image {
     }
 
     /**
+     * Fills a single pixel with fillStyle
+     *
+     * @param {number} x x
+     * @param {number} y y
+     * @param {number[]} fillStyle color as [r, g, b, a], values are 0-255
+     */
+    fillPixel(x, y, fillStyle = this.fillStyle) {
+        x = Math.round(x);
+        y = Math.round(y);
+        const [r, g, b, a] = fillStyle;
+        const index = (this.width * y + x) << 2;
+        this.data[index + 0] = r;
+        this.data[index + 1] = g;
+        this.data[index + 2] = b;
+        this.data[index + 3] = a;
+    }
+
+    /**
      * Draws a straight line between (x1, y1) and (x2, y2)
      *
      * @param {number} x1 x coordinate of the first point
      * @param {number} y1 y coordinate of the first point
      * @param {number} x2 x coordinate of the second point
      * @param {number} y2 y coordinate of the second point
-     * @param {number[]} fillStyle fill color
+     * @param {number[]} fillStyle color as [r, g, b, a], values are 0-255
      */
     drawLine(x1, y1, x2, y2, fillStyle = this.fillStyle) {
         const [r, g, b, a] = fillStyle;

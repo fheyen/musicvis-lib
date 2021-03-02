@@ -1,4 +1,4 @@
-// types
+// Types
 import Note from './types/Note';
 import GuitarNote from './types/GuitarNote';
 import NoteArray from './types/NoteArray';
@@ -6,34 +6,36 @@ import Recording from './types/Recording';
 import MusicPiece from './types/MusicPiece';
 import PitchSequence from './types/PitchSequence';
 import Fingers from './types/Fingers';
-// file formats
+// File formats
 import { preprocessMidiFileData } from './fileFormats/MidiParser';
 import { preprocessMusicXmlData } from './fileFormats/MusicXmlParser';
 import * as Midi from './fileFormats/Midi';
-// graphics
+// Graphics
 import * as Canvas from './graphics/Canvas';
-// input
+// Input
 import { recordAudio } from './input/AudioRecorder';
 import { recordMidi } from './input/MidiRecorder';
 import MidiInputManager from './input/MidiInputManager';
-// instruments
+// Instruments
 import * as Drums from './instruments/Drums';
 import * as Guitar from './instruments/Guitar';
 import * as Lamellophone from './instruments/Lamellophone';
 import * as Piano from './instruments/Piano';
 import * as StringedFingering from './instruments/StringedFingering';
-// comparison
-import * as Alignment from './comparison/Alignment';
+// Alignment
+import * as Alignment from './aligment/Alignment';
+import * as DiffAlignment from './alignment/DiffAlignment';
+// Comparison
 import * as Matching from './comparison/Matching';
 import * as Similarity from './comparison/Similarity';
 import * as SimilarSections from './comparison/SimilarSections';
-// libraries
+// Libraries
 import * as Utils from './utils';
 import * as Chords from './chords/Chords';
 import * as StringBased from './stringBased';
 
 export {
-    // types
+    // Types
     Note,
     GuitarNote,
     NoteArray,
@@ -41,28 +43,30 @@ export {
     MusicPiece,
     PitchSequence,
     Fingers,
-    // file formats
+    // File formats
     Midi,
     preprocessMidiFileData,
     preprocessMusicXmlData,
     // graphics
     Canvas,
-    // input
+    // Input
     recordAudio,
     recordMidi,
     MidiInputManager,
-    // instruments
+    // Instruments
     Drums,
     Guitar,
     Lamellophone,
     Piano,
     StringedFingering,
-    // comparison
+    // Alignment
     Alignment,
+    DiffAlignment,
+    // Comparison
     Matching,
     Similarity,
     SimilarSections,
-    // libraries
+    // Libraries
     Utils,
     Chords,
     StringBased,

@@ -23,6 +23,7 @@
     "music"
   ],
   "main": "dist/musicvislib.js",
+  "type": "module",
   "scripts": {
     "upd": "npm-check-updates -u",
     "build": "webpack --config webpack.dev.js",
