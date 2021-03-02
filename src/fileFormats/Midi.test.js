@@ -1,4 +1,4 @@
-import * as Midi from "../src/Midi";
+import * as Midi from "./Midi";
 
 describe('Midi', () => {
     test('MIDI notes', () => {

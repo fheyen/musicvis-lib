@@ -9,6 +9,7 @@ import Fingers from './types/Fingers';
 // file formats
 import { preprocessMidiFileData } from './fileFormats/MidiParser';
 import { preprocessMusicXmlData } from './fileFormats/MusicXmlParser';
+import * as Midi from './fileFormats/Midi';
 // graphics
 import * as Canvas from './graphics/Canvas';
 // input
@@ -27,9 +28,8 @@ import * as Matching from './comparison/Matching';
 import * as Similarity from './comparison/Similarity';
 import * as SimilarSections from './comparison/SimilarSections';
 // libraries
-import * as Midi from './Midi';
 import * as Utils from './utils';
-import * as Chords from './Chords';
+import * as Chords from './chords/Chords';
 import * as StringBased from './stringBased';
 
 export {
@@ -42,6 +42,7 @@ export {
     PitchSequence,
     Fingers,
     // file formats
+    Midi,
     preprocessMidiFileData,
     preprocessMusicXmlData,
     // graphics
@@ -62,7 +63,6 @@ export {
     Similarity,
     SimilarSections,
     // libraries
-    Midi,
     Utils,
     Chords,
     StringBased,

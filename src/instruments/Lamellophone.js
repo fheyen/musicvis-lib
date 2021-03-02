@@ -1,6 +1,6 @@
 import { difference, extent, intersection, max } from 'd3';
-import { getMidiNoteByLabel, getMidiNoteByNr } from '../Midi';
-import { detectChordsByExactStart } from '../Chords';
+import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi';
+import { detectChordsByExactStart } from '../chords/Chords';
 import Note from '../types/Note';
 import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
 

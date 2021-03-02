@@ -1,6 +1,6 @@
 import Note from '../types/Note';
 import GuitarNote from '../types/GuitarNote';
-import { getMidiNoteByNameAndOctave } from '../Midi';
+import { getMidiNoteByNameAndOctave } from './Midi';
 import { max } from 'd3';
 import { roundToNDecimals } from '../utils/MathUtils';
 

@@ -1,4 +1,4 @@
-import { getMidiNoteByLabel } from '../Midi';
+import { getMidiNoteByLabel } from '../fileFormats/Midi';
 import Note from './Note';
 
 

@@ -1,7 +1,7 @@
 import { group } from 'd3';
-import { arrayShallowEquals } from './utils/ArrayUtils';
+import { arrayShallowEquals } from '../utils/ArrayUtils';
 import { Chord } from '@tonaljs/tonal';
-import Note from '../src/types/Note'; /* eslint-disable-line no-unused-vars */
+import Note from '../types/Note'; /* eslint-disable-line no-unused-vars */
 
 
 /**

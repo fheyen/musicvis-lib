@@ -1,5 +1,5 @@
-import * as Chords from '../src/Chords';
-import Note from '../src/types/Note';
+import * as Chords from './Chords';
+import Note from '../types/Note';
 
 
 describe('Chords', () => {

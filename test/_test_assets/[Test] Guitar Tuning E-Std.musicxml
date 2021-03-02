@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<score-partwise>
+    <work>
+        <work-title />
+    </work>
+    <part-list>
+        <score-part id="P1">
+            <part-name>[Guitar Exercise] C pentatonic G type 120 bpm</part-name>
+            <score-instrument id="P1-I1">
+                <instrument-name>Steel String Guitar 1</instrument-name>
+            </score-instrument>
+            <midi-instrument id="P1-I1">
+                <midi-channel>1</midi-channel>
+                <midi-program>26</midi-program>
+            </midi-instrument>
+        </score-part>
+    </part-list>
+    <part id="P1">
+        <measure number="1">
+            <attributes>
+                <divisions>960</divisions>
+                <key>
+                    <fifths>0</fifths>
+                    <mode>major</mode>
+                </key>
+                <clef>
+                    <sign>G</sign>
+                    <line>2</line>
+                </clef>
+                <time>
+                    <beats>4</beats>
+                    <beat-type>4</beat-type>
+                </time>
+                <staff-details>
+                    <staff-lines>6</staff-lines>
+                    <staff-tuning line="1">
+                        <tuning-step>E</tuning-step>
+                        <tuning-octave>2</tuning-octave>
+                    </staff-tuning>
+                    <staff-tuning line="2">
+                        <tuning-step>A</tuning-step>
+                        <tuning-octave>2</tuning-octave>
+                    </staff-tuning>
+                    <staff-tuning line="3">
+                        <tuning-step>D</tuning-step>
+                        <tuning-octave>3</tuning-octave>
+                    </staff-tuning>
+                    <staff-tuning line="4">
+                        <tuning-step>G</tuning-step>
+                        <tuning-octave>3</tuning-octave>
+                    </staff-tuning>
+                    <staff-tuning line="5">
+                        <tuning-step>B</tuning-step>
+                        <tuning-octave>3</tuning-octave>
+                    </staff-tuning>
+                    <staff-tuning line="6">
+                        <tuning-step>E</tuning-step>
+                        <tuning-octave>4</tuning-octave>
+                    </staff-tuning>
+                </staff-details>
+            </attributes>
+            <direction placement="above">
+                <sound tempo="120" />
+            </direction>
+            <note>
+                <pitch>
+                    <step>A</step>
+                    <octave>2</octave>
+                </pitch>
+                <notations>
+                    <technical>
+                        <fret>5</fret>
+                        <string>6</string>
+                    </technical>
+                </notations>
+                <voice>1</voice>
+                <duration>960</duration>
+                <type>quarter</type>
+            </note>
+            <note>
+                <pitch>
+                    <step>C</step>
+                    <octave>3</octave>
+                </pitch>
+                <notations>
+                    <technical>
+                        <fret>8</fret>
+                        <string>6</string>
+                    </technical>
+                </notations>
+                <voice>1</voice>
+                <duration>960</duration>
+                <type>quarter</type>
+            </note>
+            <note>
+                <pitch>
+                    <step>D</step>
+                    <octave>3</octave>
+                </pitch>
+                <notations>
+                    <technical>
+                        <fret>5</fret>
+                        <string>5</string>
+                    </technical>
+                </notations>
+                <voice>1</voice>
+                <duration>960</duration>
+                <type>quarter</type>
+            </note>
+            <note>
+                <pitch>
+                    <step>E</step>
+                    <octave>3</octave>
+                </pitch>
+                <notations>
+                    <technical>
+                        <fret>7</fret>
+                        <string>5</string>
+                    </technical>
+                </notations>
+                <voice>1</voice>
+                <duration>960</duration>
+                <type>quarter</type>
+            </note>
+        </measure>
+    </part>
+</score-partwise>

@@ -1,5 +1,5 @@
 import { randFloat } from '../utils/MathUtils';
-import { getMidiNoteByNr, getMidiNoteByLabel } from '../Midi';
+import { getMidiNoteByNr, getMidiNoteByLabel } from '../fileFormats/Midi';
 import GuitarNote from '../types/GuitarNote';
 import { randomInt, extent } from 'd3';
 import { arrayShallowEquals } from '../utils/ArrayUtils';

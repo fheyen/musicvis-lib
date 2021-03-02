@@ -5,7 +5,7 @@ const PNG = require('pngjs').PNG;
 /**
  * Similar to HTML canvas API
  */
-export class Image {
+class Image {
     /**
      * Creates a new empty image
      *
@@ -54,6 +54,45 @@ export class Image {
     }
 
     /**
+     * Draws a straight line between (x1, y1) and (x2, y2)
+     *
+     * @param {number} x1 x coordinate of the first point
+     * @param {number} y1 y coordinate of the first point
+     * @param {number} x2 x coordinate of the second point
+     * @param {number} y2 y coordinate of the second point
+     * @param {number[]} fillStyle fill color
+     */
+    drawLine(x1, y1, x2, y2, fillStyle = this.fillStyle) {
+        const [r, g, b, a] = fillStyle;
+        x1 = Math.round(x1);
+        x2 = Math.round(x2);
+        if (x1 === x2) {
+            // Avoid division through 0
+            return;
+        }
+        if (x1 > x2) {
+            const temporary = x1;
+            x1 = x2;
+            x2 = temporary;
+            const temporary2 = y1;
+            y1 = y2;
+            y2 = temporary2;
+        }
+        const yStep = (y2 - y1) / (x2 - x1);
+        let currentY = y1;
+        for (let currentX = Math.round(x1); currentX < Math.round(x2); currentX++) {
+            const xPos = Math.round(currentX);
+            const yPos = Math.round(currentY);
+            currentY += yStep;
+            const index = (this.width * yPos + xPos) << 2;
+            this.data[index + 0] = r;
+            this.data[index + 1] = g;
+            this.data[index + 2] = b;
+            this.data[index + 3] = a;
+        }
+    }
+
+    /**
      * Saves the image to a PNG file
      *
      * @param {string} fileName  file name
@@ -79,17 +118,6 @@ export class Image {
     }
 }
 
-/**
- * Test
- */
-function test() {
-    const width = 600;
-    const height = 300;
-    const image = new Image(width, height);
-    // image.fillStyle = [0, 0, 0, 255];
-    image.fillStyle = [255, 255, 255, 255];
-    image.fillRect(200, 100, 100, 50);
-    image.writeToPngFile('test.png');
-}
-
-test();
+module.exports = {
+    Image,
+};

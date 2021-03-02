@@ -105,8 +105,8 @@ describe('MusicXmlParser', () => {
     });
 
     test('beat types', () => {
-        const midi = readXmlFile('[Test] Beat type change.musicxml');
-        const parsed = preprocessMusicXmlData(midi);
+        const xml = readXmlFile('[Test] Beat type change.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].beatTypeChanges).toStrictEqual([
             {
                 "beatType": 4,
@@ -132,8 +132,8 @@ describe('MusicXmlParser', () => {
     });
 
     test('tempos', () => {
-        const midi = readXmlFile('[Test] Tempo change.musicxml');
-        const parsed = preprocessMusicXmlData(midi);
+        const xml = readXmlFile('[Test] Tempo change.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].tempoChanges).toStrictEqual([
             {
                 "tempo": 120,
@@ -156,8 +156,8 @@ describe('MusicXmlParser', () => {
 
     // TODO: more tests
     test('measure times', () => {
-        const midi = readXmlFile('[Test] Tempo change.musicxml');
-        const parsed = preprocessMusicXmlData(midi);
+        const xml = readXmlFile('[Test] Tempo change.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].measureLinePositions).toStrictEqual([
             2,
             3.5,
@@ -170,8 +170,8 @@ describe('MusicXmlParser', () => {
     // TODO: tempos that are not at the start of measures do not work
     test.skip('tempos 2', () => {
         // test('tempos 2', () => {
-        const midi = readXmlFile('[Test] Tempo Change 2.musicxml');
-        const parsed = preprocessMusicXmlData(midi);
+        const xml = readXmlFile('[Test] Tempo Change 2.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].tempoChanges).toStrictEqual([
             {
                 "tempo": 110,
@@ -224,10 +224,22 @@ describe('MusicXmlParser', () => {
         ]);
     });
 
+    describe('tunings', () => {
+        test.each([
+            ['[Test] Guitar Tuning E-Std.musicxml', [40, 45, 50, 55, 59, 64]],
+            ['[Test] Guitar Tuning D-Std.musicxml', [38, 43, 48, 53, 57, 62]],
+            ['[Test] Guitar Tuning DropD.musicxml', [38, 45, 50, 55, 59, 64]],
+        ])('tuning %s', (file, tuning) => {
+            const xml = readXmlFile(file);
+            const parsed = preprocessMusicXmlData(xml);
+            expect(parsed.parts[0].tuning).toStrictEqual(tuning);
+        });
+    });
+
 
     test('Drum data', () => {
-        const midi = readXmlFile('[Test] Simple Drum Pattern 1 120 bpm.musicxml');
-        const parsed = preprocessMusicXmlData(midi);
+        const xml = readXmlFile('[Test] Simple Drum Pattern 1 120 bpm.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].noteObjs).toStrictEqual([
             {
                 "channel": 0,
