@@ -344,6 +344,20 @@ class NoteArray {
     }
 
     /**
+     * Will set the octave of all notes to -1.
+     * This might cause two notes to exist at the same time and pitch!
+     *
+     * @returns {NoteArray} itself
+     */
+    removeOctaves() {
+        this._notes = this._notes.map(note => Note.from({
+            ...note,
+            pitch: note.pitch % 12,
+        }));
+        return this;
+    }
+
+    /**
      * Reverses the note array, such that it can be played backwards.
      *
      * @returns {NoteArray} itself
@@ -351,10 +365,6 @@ class NoteArray {
     reverse() {
         // Update note start and end times
         const duration = this.getDuration();
-        // for (let n of this._notes) {
-        //     n.start = duration - n.end;
-        //     n.end = duration - n.start;
-        // }
         this._notes = this._notes.map(n => {
             const newNote = n.clone();
             newNote.start = duration - n.end;

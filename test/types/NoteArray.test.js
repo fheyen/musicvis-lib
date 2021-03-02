@@ -235,6 +235,23 @@ describe('NoteArray', () => {
         expect(transp1.equals(transp2)).toBe(true);
     });
 
+    test('removeOctaves', () => {
+        const na = new NoteArray([
+            new Note(60, 0.0, 127, 0, 1.0),
+            new Note(65, 1.0, 127, 0, 2.0),
+            new Note(72, 1.0, 127, 0, 2.0),
+            new Note(67, 2.0, 127, 0, 3.0),
+        ]);
+        expect(
+            na.removeOctaves().getNotes()
+        ).toStrictEqual([
+            new Note(0, 0.0, 127, 0, 1.0),
+            new Note(5, 1.0, 127, 0, 2.0),
+            new Note(0, 1.0, 127, 0, 2.0),
+            new Note(7, 2.0, 127, 0, 3.0),
+        ]);
+    });
+
     test('forEach', () => {
         const na = new NoteArray([
             Note.from({ channel: 1 }),
@@ -369,6 +386,12 @@ describe('NoteArray', () => {
                         Note.from({ start: 1, end: 2 }),
                     ]).getNotes()
                 );
+            });
+
+            test('invalid mode', () => {
+                expect(
+                    () => toSlice.sliceTime(1, 3, 'invalid')
+                ).toThrow('Invalid slicing mode');
             });
         });
 
