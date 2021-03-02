@@ -26,7 +26,7 @@
     
 
 
-    <title>types/MusicPiece.js</title>
+    <title>alignment/DiffAlignment.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -295,7 +295,7 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">types/MusicPiece.js</h1>
+    <h1 id='page-title' class="page-title">alignment/DiffAlignment.js</h1>
     
 
     
@@ -305,288 +305,148 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// eslint-disable-next-line no-unused-vars
-import Note from './Note';
-import midiParser from 'midi-parser-js';
-import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
-import { preprocessMidiFileData } from '../fileFormats/MidiParser';
-import NoteArray from './NoteArray';
+            <pre class="prettyprint source linenums"><code>import NoteArray from '../types/NoteArray';
+import { group, max } from 'd3';
 
 /**
- * Represents a parsed MIDI or MusicXML file in a uniform format.
+ * Global alignment.
+ *
+ * Returns an array with matches sorted by magnitude of agreement.
+ * The offsetMilliseconds value describes at what time the first note of the
+ * recording should start.
+ *
+ * Goal: Know which part of ground truth (GT) was played in recording (rec)
+ * Assumptions:
+ * - Rec has same tempo as GT
+ * - Rec does not start before GT
+ * - Rec does not repeat something that is not repeated in the GT
+ * - Rec does not have gaps
+ * Ideas:
+ * - Brute-force
+ * - Sliding window
+ * - Using diff between time-pitch matrix of GT and rec
+ * - Only compute agreement (correct diff part) for the current overlap
+ * - For each time position save the agreement magnitude
+ * - Optionally: repeat around local maxima with finer binSize
+ *
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Note[]} recNotes recorded notes
+ * @param {number} binSize time bin size in milliseconds
+ * @returns {object[]} best offsets with agreements
  */
-class MusicPiece {
+export function alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize) {
+    gtNotes = new NoteArray(gtNotes);
+    recNotes = new NoteArray(recNotes).shiftToStartAt(0);
+    const gtDuration = gtNotes.getDuration();
+    const recDuration = recNotes.getDuration();
+    const nBins = Math.ceil((gtDuration * 1000) / binSize) + 1;
+    const nRecBins = Math.ceil((recDuration * 1000) / binSize) + 1;
+    // TODO: just switch them around?
+    if (nRecBins > nBins) {
+        console.warn('Cannot compare GT and rec if rec is longer');
+    }
+    // Get activation maps
+    const gtActivation = activationMap(gtNotes.getNotes(), binSize);
+    const recActivation = activationMap(recNotes.getNotes(), binSize);
+    // Compare with sliding window
+    const agreementsPerOffset = [];
+    for (let offset = 0; offset &lt; nBins - nRecBins + 1; offset++) {
+        const currentAgreement = agreement(gtActivation, recActivation, offset);
+        // console.log(`Comparing gt bins ${offset}...${offset + nRecBins} to rec\nGot agreement ${currentAgreement}`);
+        agreementsPerOffset.push({
+            offsetBins: offset,
+            offsetMilliseconds: offset * binSize,
+            agreement: currentAgreement,
+        });
+    }
+    // Sort by best match
+    const sorted = agreementsPerOffset.sort((a, b) => b.agreement - a.agreement);
+    return sorted;
+}
 
-    /**
-     * Do not use this constructor, but the static methods MusicPiece.fromMidi
-     * and MusicPiece.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name (e.g. file name or piece name)
-     * @param {TempoDefinition[]} tempos tempos
-     * @param {TimeSignature[]} timeSignatures time signatures
-     * @param {KeySignature[]} keySignatures key signatures
-     * @param {number[]} measureTimes time in seconds for each measure line
-     * @param {Track[]} tracks tracks
-     * @throws {'No or invalid tracks given!'} when invalid tracks are given
-     */
-    constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
-        if (!tracks || tracks.length === 0) {
-            throw new Error('No or invalid tracks given');
-        }
-        this.name = name;
-        this.measureTimes = measureTimes;
-        this.tracks = tracks;
-        this.duration = Math.max(...this.tracks.map(d => d.duration));
-        // Filter multiple identical consecutive infos
-        this.tempos = tempos.slice(0, 1);
-        let currentTempo = tempos[0];
-        for (const tempo of tempos) {
-            if (tempo.string !== currentTempo.string) {
-                currentTempo = tempo;
-                this.tempos.push(tempo);
+/**
+ * Returns an activation map, that maps pitch to an array of time bins.
+ * Each bin contains a 0 when there is no note or a 1 when there is one.
+ *
+ * @param {Note[]} allNotes notes
+ * @param {number} binSize time bin size in milliseconds
+ * @returns {Map} activation map
+ */
+export function activationMap(allNotes, binSize = 100) {
+    const activationMap = new Map();
+    for (const [pitch, notes] of group(allNotes, d => d.pitch).entries()) {
+        const maxTime = max(notes, d => d.end);
+        const nBins = Math.ceil((maxTime * 1000) / binSize) + 1;
+        const pitchActivationMap = Array.from({ length: nBins }).fill(0);
+        // Calculate heatmap by writing 1 where a note is active
+        for (const note of notes) {
+            const start = Math.round(note.start * 1000 / binSize);
+            const end = Math.round(note.end * 1000 / binSize);
+            for (let bin = start; bin &lt;= end; bin++) {
+                pitchActivationMap[bin] = 1;
             }
         }
-        this.timeSignatures = timeSignatures.slice(0, 1);
-        let currentTimeSig = timeSignatures[0];
-        for (const timeSignature of timeSignatures) {
-            if (timeSignature.string !== currentTimeSig.string) {
-                currentTimeSig = timeSignature;
-                this.timeSignatures.push(timeSignature);
+        activationMap.set(pitch, pitchActivationMap);
+    }
+    return activationMap;
+}
+
+/**
+ * Given two activation maps, simply counts the number of bins [pitch, time]
+ * where both have a 1, so an acitve note
+ * Gtmust be longer than rec
+ *
+ * @todo also count common 0s?
+ * @param {Map} gtActivations see activationMap()
+ * @param {Map} recActivations see activationMap()
+ * @param {number} offset offset for activation2 when comparing
+ * @returns {number} agreement
+ */
+export function agreement(gtActivations, recActivations, offset) {
+    const allPitches = [...new Set([
+        ...gtActivations.keys(),
+        ...recActivations.keys(),
+    ])];
+    let agreement = 0;
+    for (const pitch of allPitches) {
+        // Handle pitches that occur only in one of both
+        if (!gtActivations.has(pitch)) {
+            // All notes are missing
+        } else if (!recActivations.has(pitch)) {
+            // All notes are additional
+        } else {
+            // Compare both bins for each time slice
+            const gtA = gtActivations.get(pitch);
+            const recA = recActivations.get(pitch);
+            // Go through full rec, and compare to current section of GT
+            // eslint-disable-next-line unicorn/no-for-loop
+            for (let index = 0; index &lt; recA.length; index++) {
+                const gtValue = gtA[index + offset] || 0;
+                const recValue = recA[index] || 0;
+                if (gtValue === 1 &amp;&amp; recValue === 1) {
+                    agreement++;
+                }
             }
-        }
-        this.keySignatures = keySignatures.slice(0, 1);
-        let currentKeySig = keySignatures[0];
-        for (const keySignature of keySignatures) {
-            if (keySignature.string !== currentKeySig.string) {
-                currentKeySig = keySignature;
-                this.keySignatures.push(keySignature);
-            }
-        }
-    }
 
-    /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     */
-    static fromMidi(name, midiFile) {
-        if (!midiFile) {
-            throw new Error('No MIDI file content given');
         }
-        const midi = midiParser.parse(midiFile);
-        const parsed = preprocessMidiFileData(midi);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        let measureTimes = [];
-        if (parsed.tracks.length > 0) {
-            // tempos
-            tempos = parsed.tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-            // measure times
-            measureTimes = parsed.measureLinePositions;
-        }
-        // tracks signatures
-        const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
-            t.trackName,
-            t.instrumentName,
-            t.noteObjs,
-            index,
-        ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
     }
-
-    /**
-     * Creates a MusicPiece object from a MusicXML string
-     *
-     * @param {string} name name
-     * @param {string} xmlFile MusicXML file content
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MusicXML file content given'} when MusicXML file is
-     *  undefined or null
-     */
-    static fromMusicXml(name, xmlFile) {
-        if (!xmlFile) {
-            throw new Error('No MusicXML file content given');
-        }
-        const parser = new DOMParser();
-        const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
-        const parsed = preprocessMusicXmlData(xmlDocument);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        if (parsed.parts.length > 0) {
-            // tempos
-            tempos = parsed.parts[0].tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.parts[0].beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.parts[0].keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-        }
-        // measure times
-        let measureTimes = [];
-        if (parsed.parts.length > 0) {
-            measureTimes = parsed.parts[0].measureLinePositions;
-        }
-        // tracks
-        const tracks = parsed.parts
-            .map((t, index) => Track.fromMusicXml(
-                parsed.partNames[index],
-                parsed.instruments[index],
-                t.noteObjs,
-                index,
-            ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
-    }
-
-    /**
-     * Returns an array with all notes from all tracks.
-     *
-     * @param {boolean} sortByTime true: sort notes by time
-     * @returns {Note[]} all notes of this piece
-     */
-    getAllNotes(sortByTime = false) {
-        const notes = this.tracks.flatMap(t => t.notes);
-        if (sortByTime) {
-            notes.sort((a, b) => a.start - b.start);
-        }
-        return notes;
-    }
+    return agreement;
 }
 
 /**
- * Used by MusicPiece, should not be used directly
+ * Aligns the recording to the best fitting position of the ground truth
  *
- * @private
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Recording} recording a Recording object
+ * @param {number} binSize time bin size in milliseconds
+ * @returns {Recording} aligned recording
  */
-export class Track {
-    /**
-     * Do not use this constructor, but the static methods Track.fromMidi
-     * and Track.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes notes
-     */
-    constructor(name, instrument, notes) {
-        name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
-        this.name = name;
-        this.instrument = instrument;
-        this.notes = notes;
-        this.duration = new NoteArray(notes).getDuration();
-    }
-
-    /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @returns {Track} new Track
-     */
-    static fromMidi(name, instrument, notes) {
-        return new Track(name, instrument, notes);
-    }
-
-    /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number} channel channel
-     * @returns {Track} new Track
-     */
-    static fromMusicXml(name, instrument, notes, channel) {
-        for (const n of notes) {
-            n.channel = channel;
-        }
-        return new Track(name, instrument, notes);
-    }
+export function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
+    const recNotes = recording.getNotes();
+    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
+    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
+    return newRec;
 }
-
-/**
- * Tempo definition
- *
- * @private
- */
-export class TempoDefinition {
-    /**
-     * @param {number} time in seconds
-     * @param {number} bpm tempo in seconds per beat
-     */
-    constructor(time, bpm) {
-        this.time = time;
-        this.bpm = bpm;
-        this.string = `${bpm} bpm`;
-    }
-}
-
-/**
- * Time signature definition
- *
- * @private
- */
-export class TimeSignature {
-    /**
-     * @param {number} time in seconds
-     * @param {number[]} signature time signature as [beats, beatType]
-     */
-    constructor(time, signature) {
-        this.time = time;
-        this.signature = signature;
-        this.string = signature.join('/');
-    }
-}
-
-/**
- * Key signature definition
- *
- * @private
- */
-export class KeySignature {
-    /**
-     * @param {number} time in seconds
-     * @param {string} key key e.g. 'C'
-     * @param {string} scale scale e.g. 'major'
-     */
-    constructor(time, key, scale) {
-        this.time = time;
-        this.key = key;
-        this.scale = scale;
-        this.string = `${key} ${scale}`;
-    }
-}
-
-export default MusicPiece;
 </code></pre>
         </article>
     </section>

@@ -23,10 +23,10 @@
     "music"
   ],
   "main": "dist/musicvislib.js",
-  "type": "module",
   "scripts": {
     "upd": "npm-check-updates -u",
     "build": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
     "test": "jest --coverage",
     "testch": "jest --coverage --changedFilesWithAncestor",
     "testclear": "jest --clearCache",

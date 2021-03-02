@@ -23,7 +23,7 @@ import * as Lamellophone from './instruments/Lamellophone';
 import * as Piano from './instruments/Piano';
 import * as StringedFingering from './instruments/StringedFingering';
 // Alignment
-import * as Alignment from './aligment/Alignment';
+import * as Alignment from './alignment/Alignment';
 import * as DiffAlignment from './alignment/DiffAlignment';
 // Comparison
 import * as Matching from './comparison/Matching';

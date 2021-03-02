@@ -26,7 +26,7 @@
     
 
 
-    <title>types/MusicPiece.js</title>
+    <title>experimental/musicXml/Track.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -295,7 +295,7 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">types/MusicPiece.js</h1>
+    <h1 id='page-title' class="page-title">experimental/musicXml/Track.js</h1>
     
 
     
@@ -305,288 +305,87 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// eslint-disable-next-line no-unused-vars
-import Note from './Note';
-import midiParser from 'midi-parser-js';
-import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
-import { preprocessMidiFileData } from '../fileFormats/MidiParser';
-import NoteArray from './NoteArray';
-
-/**
- * Represents a parsed MIDI or MusicXML file in a uniform format.
- */
-class MusicPiece {
-
-    /**
-     * Do not use this constructor, but the static methods MusicPiece.fromMidi
-     * and MusicPiece.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name (e.g. file name or piece name)
-     * @param {TempoDefinition[]} tempos tempos
-     * @param {TimeSignature[]} timeSignatures time signatures
-     * @param {KeySignature[]} keySignatures key signatures
-     * @param {number[]} measureTimes time in seconds for each measure line
-     * @param {Track[]} tracks tracks
-     * @throws {'No or invalid tracks given!'} when invalid tracks are given
-     */
-    constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
-        if (!tracks || tracks.length === 0) {
-            throw new Error('No or invalid tracks given');
-        }
-        this.name = name;
-        this.measureTimes = measureTimes;
-        this.tracks = tracks;
-        this.duration = Math.max(...this.tracks.map(d => d.duration));
-        // Filter multiple identical consecutive infos
-        this.tempos = tempos.slice(0, 1);
-        let currentTempo = tempos[0];
-        for (const tempo of tempos) {
-            if (tempo.string !== currentTempo.string) {
-                currentTempo = tempo;
-                this.tempos.push(tempo);
-            }
-        }
-        this.timeSignatures = timeSignatures.slice(0, 1);
-        let currentTimeSig = timeSignatures[0];
-        for (const timeSignature of timeSignatures) {
-            if (timeSignature.string !== currentTimeSig.string) {
-                currentTimeSig = timeSignature;
-                this.timeSignatures.push(timeSignature);
-            }
-        }
-        this.keySignatures = keySignatures.slice(0, 1);
-        let currentKeySig = keySignatures[0];
-        for (const keySignature of keySignatures) {
-            if (keySignature.string !== currentKeySig.string) {
-                currentKeySig = keySignature;
-                this.keySignatures.push(keySignature);
-            }
-        }
-    }
-
-    /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     */
-    static fromMidi(name, midiFile) {
-        if (!midiFile) {
-            throw new Error('No MIDI file content given');
-        }
-        const midi = midiParser.parse(midiFile);
-        const parsed = preprocessMidiFileData(midi);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        let measureTimes = [];
-        if (parsed.tracks.length > 0) {
-            // tempos
-            tempos = parsed.tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-            // measure times
-            measureTimes = parsed.measureLinePositions;
-        }
-        // tracks signatures
-        const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
-            t.trackName,
-            t.instrumentName,
-            t.noteObjs,
-            index,
-        ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
-    }
-
-    /**
-     * Creates a MusicPiece object from a MusicXML string
-     *
-     * @param {string} name name
-     * @param {string} xmlFile MusicXML file content
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MusicXML file content given'} when MusicXML file is
-     *  undefined or null
-     */
-    static fromMusicXml(name, xmlFile) {
-        if (!xmlFile) {
-            throw new Error('No MusicXML file content given');
-        }
-        const parser = new DOMParser();
-        const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
-        const parsed = preprocessMusicXmlData(xmlDocument);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        if (parsed.parts.length > 0) {
-            // tempos
-            tempos = parsed.parts[0].tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.parts[0].beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.parts[0].keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-        }
-        // measure times
-        let measureTimes = [];
-        if (parsed.parts.length > 0) {
-            measureTimes = parsed.parts[0].measureLinePositions;
-        }
-        // tracks
-        const tracks = parsed.parts
-            .map((t, index) => Track.fromMusicXml(
-                parsed.partNames[index],
-                parsed.instruments[index],
-                t.noteObjs,
-                index,
-            ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
-    }
-
-    /**
-     * Returns an array with all notes from all tracks.
-     *
-     * @param {boolean} sortByTime true: sort notes by time
-     * @returns {Note[]} all notes of this piece
-     */
-    getAllNotes(sortByTime = false) {
-        const notes = this.tracks.flatMap(t => t.notes);
-        if (sortByTime) {
-            notes.sort((a, b) => a.start - b.start);
-        }
-        return notes;
-    }
-}
-
-/**
- * Used by MusicPiece, should not be used directly
+            <pre class="prettyprint source linenums"><code>/**
+ * A Track is a collection of measures.
+ * Since each Part can only have fixed tempo and beat type, tracks may be used
+ * to represent music pieces where those attributes change.
+ * This class should allow to do abstract music theretical stuff with a track of notes.
  *
- * @private
+ * @todo Not used yet
+ * @ignore
  */
-export class Track {
+class Track {
+    measures = [];
+    #title = '';
+
     /**
-     * Do not use this constructor, but the static methods Track.fromMidi
-     * and Track.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes notes
+     * @param {string} title title
+     * @param {Measure[]} measures measures
      */
-    constructor(name, instrument, notes) {
-        name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
-        this.name = name;
-        this.instrument = instrument;
-        this.notes = notes;
-        this.duration = new NoteArray(notes).getDuration();
+    constructor(title, measures = []) {
+        this.#title = title;
+        this.measures = measures;
+    }
+
+    // /**
+    //  * @todo Reads attributes and notes from MIDI and create a JavaScript
+    //  * representation.
+    //  * @param {object} midiJson MIDI data parsed to JSON by midi-parser-js
+    //  * @returns {Track} a track parsed from the given MIDI data
+    //  */
+    // static fromMidi(midiJson) {
+    //     return null;
+    // }
+
+    // /**
+    //  * @todo Reads attributes and notes from MusicXML and create a JavaScript
+    //  * representation.
+    //  * @param {XMLDocument} musicXml MusicXML document
+    //  * @returns {Track} a track parsed from the given MIDI data
+    //  */
+    // static fromMusicXml(musicXml) {
+    //     return null;
+    // }
+
+    /**
+     * Returns all measures of this track.
+     *
+     * @returns {Measure[]} measures
+     */
+    get measures() {
+        return this.measures;
     }
 
     /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @returns {Track} new Track
+     * @returns {string} title
      */
-    static fromMidi(name, instrument, notes) {
-        return new Track(name, instrument, notes);
+    get title() {
+        return this.#title;
     }
 
     /**
-     * Creates a new Track from a MusicXML track
+     * Returns the notes of all measures of this track sorted by start time.
      *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number} channel channel
-     * @returns {Track} new Track
+     * @returns {Note[]} notes of this track
      */
-    static fromMusicXml(name, instrument, notes, channel) {
-        for (const n of notes) {
-            n.channel = channel;
+    getAllNotes() {
+        let notes = [];
+        // TODO: use flatmap
+        for (const p of this.measures) {
+            notes = [...notes, ...p.notes()];
         }
-        return new Track(name, instrument, notes);
+        return notes.sort((a, b) => a.start - b.start);
     }
-}
 
-/**
- * Tempo definition
- *
- * @private
- */
-export class TempoDefinition {
     /**
-     * @param {number} time in seconds
-     * @param {number} bpm tempo in seconds per beat
+     * @returns {Track} clone
      */
-    constructor(time, bpm) {
-        this.time = time;
-        this.bpm = bpm;
-        this.string = `${bpm} bpm`;
+    clone() {
+        return new Track(this.#title, this.measures);
     }
 }
 
-/**
- * Time signature definition
- *
- * @private
- */
-export class TimeSignature {
-    /**
-     * @param {number} time in seconds
-     * @param {number[]} signature time signature as [beats, beatType]
-     */
-    constructor(time, signature) {
-        this.time = time;
-        this.signature = signature;
-        this.string = signature.join('/');
-    }
-}
-
-/**
- * Key signature definition
- *
- * @private
- */
-export class KeySignature {
-    /**
-     * @param {number} time in seconds
-     * @param {string} key key e.g. 'C'
-     * @param {string} scale scale e.g. 'major'
-     */
-    constructor(time, key, scale) {
-        this.time = time;
-        this.key = key;
-        this.scale = scale;
-        this.string = `${key} ${scale}`;
-    }
-}
-
-export default MusicPiece;
+export default Track;
 </code></pre>
         </article>
     </section>

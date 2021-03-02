@@ -26,7 +26,7 @@
     
 
 
-    <title>types/MusicPiece.js</title>
+    <title>chords/Chords.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -295,7 +295,7 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">types/MusicPiece.js</h1>
+    <h1 id='page-title' class="page-title">chords/Chords.js</h1>
     
 
     
@@ -305,288 +305,256 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// eslint-disable-next-line no-unused-vars
-import Note from './Note';
-import midiParser from 'midi-parser-js';
-import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
-import { preprocessMidiFileData } from '../fileFormats/MidiParser';
-import NoteArray from './NoteArray';
+            <pre class="prettyprint source linenums"><code>import { group } from 'd3';
+import { arrayShallowEquals } from '../utils/ArrayUtils';
+import { Chord } from '@tonaljs/tonal';
+import Note from '../types/Note'; /* eslint-disable-line no-unused-vars */
+
 
 /**
- * Represents a parsed MIDI or MusicXML file in a uniform format.
+ * @module Chords
  */
-class MusicPiece {
 
-    /**
-     * Do not use this constructor, but the static methods MusicPiece.fromMidi
-     * and MusicPiece.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name (e.g. file name or piece name)
-     * @param {TempoDefinition[]} tempos tempos
-     * @param {TimeSignature[]} timeSignatures time signatures
-     * @param {KeySignature[]} keySignatures key signatures
-     * @param {number[]} measureTimes time in seconds for each measure line
-     * @param {Track[]} tracks tracks
-     * @throws {'No or invalid tracks given!'} when invalid tracks are given
-     */
-    constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
-        if (!tracks || tracks.length === 0) {
-            throw new Error('No or invalid tracks given');
-        }
-        this.name = name;
-        this.measureTimes = measureTimes;
-        this.tracks = tracks;
-        this.duration = Math.max(...this.tracks.map(d => d.duration));
-        // Filter multiple identical consecutive infos
-        this.tempos = tempos.slice(0, 1);
-        let currentTempo = tempos[0];
-        for (const tempo of tempos) {
-            if (tempo.string !== currentTempo.string) {
-                currentTempo = tempo;
-                this.tempos.push(tempo);
+/**
+ * Detects chords as those notes that have the exact same start time, only works
+ * for ground truth (since recordings are not exact)
+ * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
+ *
+ * @param {Note[]} notes notes
+ * @returns {Note[][]} array of chord arrays
+ */
+export function detectChordsByExactStart(notes) {
+    const grouped = group(notes, d => d.start);
+    const chords = [...grouped]
+        .map(d => d[1])
+        // Sort chords by time
+        .sort((a, b) => a[0].start - b[0].start)
+        // Sort notes in each chord by pitch
+        .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
+    return chords;
+}
+
+/**
+ * Detects chords, by simply looking for notes that overlap each other in time.
+ * Example:
+ *    =======
+ *       =========
+ *         ========
+ * Important: Notes must be sorted by start time for this to work correctly.
+ *
+ * @todo not used yet
+ * @todo optional minimum overlap ratio
+ * @todo new definition of chord? i.e. notes have to start 'together'
+ * @param {Note[]} notes array of Note objects
+ * @param {boolean} sortByPitch sort chords by pitch? (otherwise sorted
+ *      by note start time)
+ * @returns {Note[][]} array of chord arrays
+ */
+export function detectChordsByOverlap(notes, sortByPitch = true) {
+    if (!notes || notes.length === 0) { return []; }
+    if (notes.length === 1) { return [[notes[0]]]; }
+    const sorted = notes.slice().sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch; });
+    const notesTodo = new Set(sorted);
+    const chords = [];
+    // Find all overlaps with brute force
+    while (notesTodo.size > 0) {
+        // Take a new note and make a new chord
+        const note1 = notesTodo.values().next().value;
+        notesTodo.delete(note1);
+        let chord = [note1];
+        // Add all notes that overap note1
+        for (const note2 of notesTodo.values()) {
+            if (note1.overlapInSeconds(note2) >= 0.5 * note1.getDuration()) {
+                chord.push(note2);
+                notesTodo.delete(note2);
             }
         }
-        this.timeSignatures = timeSignatures.slice(0, 1);
-        let currentTimeSig = timeSignatures[0];
-        for (const timeSignature of timeSignatures) {
-            if (timeSignature.string !== currentTimeSig.string) {
-                currentTimeSig = timeSignature;
-                this.timeSignatures.push(timeSignature);
+        if (sortByPitch) {
+            chord = chord.sort((a, b) => a.pitch - b.pitch);
+        }
+        chords.push(chord);
+    }
+    return chords;
+}
+// export function detectChordsByOverlap(notes, sortByPitch = true) {
+//     if (!notes || !notes.length) { return []; }
+//     if (notes.length === 1) { return [[notes[0]]]; }
+//     const chords = [];
+//     let currentChord = [notes[0]];
+//     for (let i = 1; i &lt; notes.length; i++) {
+//         const note = notes[i];
+//         console.log(i);
+//         console.log(currentChord);
+//         console.log(note);
+
+//         // Check for overlap with current chord
+//         let overlaps = false;
+//         for (let note2 of currentChord) {
+//             if (note.overlapsInTime(note2)) {
+//                 overlaps = true;
+//                 break;
+//             }
+//         }
+//         console.log(overlaps);
+//         if (overlaps) {
+//             currentChord.push(note);
+//             // TODO: also check the distance from the first note of the chord!
+//             // TODO:jump ahead to not count the cord multiple times (partially)
+//         } else {
+//             // If not, the previous chord is finished
+//             // Sort chord by pitch?
+//             if (sortByPitch) {
+//                 currentChord = currentChord.sort((a, b) => a.pitch - b.pitch);
+//             }
+//             chords.push(currentChord);
+//             // Start new chord
+//             if (i &lt; notes.length - 1) {
+//                 currentChord = [notes[i + 1]];
+//                 i++;
+//             }
+//         }
+//     }
+//     // finish last chord
+//     chords.push(currentChord);
+//     return chords;
+// }
+
+
+/**
+ * Maps number of steps (number of notes -1) to possible chord types
+ */
+const chordTypes = new Map([
+    [
+        1,
+        [
+            // TODO: how to handle inversions?
+            { steps: [5], name: 'Inverted power chord', suffix: '?' },
+            { steps: [7], name: 'Power chord', suffix: '5' },
+        ],
+    ],
+    [
+        2,
+        [
+            { steps: [2, 7], name: 'Suspended second', suffix: 'sus2' },
+            { steps: [3, 6], name: 'Diminished', suffix: 'dim' },
+            { steps: [3, 7], name: 'Minor', suffix: 'min' },
+            { steps: [4, 10], name: 'Seventh', suffix: '7' },
+            { steps: [4, 7], name: 'Major', suffix: '' },
+            { steps: [4, 8], name: 'Augmented', suffix: 'aug' },
+            { steps: [4, 9], name: 'Sixth', suffix: '6' },
+            { steps: [5, 7], name: 'Suspended fourth', suffix: 'sus4' },
+        ],
+    ],
+    [
+        3,
+        [
+            { steps: [2, 3, 7], name: 'Minor, added ninth', suffix: 'm(add9)' },
+            { steps: [2, 4, 7], name: 'Added ninth', suffix: 'add9' },
+            { steps: [3, 6, 10], name: 'Minor seventh, flat fifth', suffix: 'm7b5' },
+            { steps: [3, 7, 10], name: 'Minor seventh', suffix: 'm7' },
+            { steps: [3, 7, 11], name: 'Minor, major seventh', suffix: 'm(Maj7)' },
+            { steps: [3, 7, 8], name: 'Minor, flat sixth', suffix: 'mb6' },
+            { steps: [3, 7, 9], name: 'Minor sixth', suffix: 'm6' },
+            { steps: [4, 5, 11], name: 'Major eleventh (no fifth, no ninth)', suffix: 'Maj11' },
+            { steps: [4, 5, 7], name: 'Added fourth', suffix: 'add4' },
+            { steps: [4, 7, 10], name: 'Dominant seventh', suffix: '7' },
+            { steps: [4, 7, 11], name: 'Major seventh', suffix: 'Maj7' },
+            { steps: [4, 7, 9], name: 'Major Sixth', suffix: 'Maj6' },
+        ],
+    ],
+    [
+        4,
+        [
+            { steps: [2, 3, 6, 10], name: 'Minor ninth flat fifth', suffix: 'm9b5' },
+            { steps: [2, 3, 7, 10], name: 'Minor ninth', suffix: 'm9' },
+            { steps: [2, 3, 7, 11], name: 'Minor ninth, major seventh', suffix: 'm9(Maj7)' },
+            { steps: [2, 3, 7, 9], name: 'Minor sixth, added ninth', suffix: 'm6/9' },
+            { steps: [2, 4, 7, 11], name: 'Major ninth', suffix: 'Maj9' },
+            { steps: [2, 4, 7, 9], name: 'Sixth, added ninth', suffix: '6/9' },
+            { steps: [4, 5, 7, 11], name: 'Major eleventh (no ninth)', suffix: 'Maj11' },
+            { steps: [4, 6, 7, 10], name: 'Seventh, sharp eleventh', suffix: '7#11' },
+            { steps: [4, 6, 7, 11], name: 'Major seventh, sharp eleventh', suffix: 'Maj7#11' },
+        ],
+    ],
+    [
+        5,
+        [
+            { steps: [2, 4, 5, 7, 11], name: 'Major eleventh', suffix: 'Maj11' },
+            { steps: [2, 4, 7, 9, 11], name: 'Major thirteen', suffix: 'Maj13' },
+        ],
+    ],
+    [
+        6,
+        [
+            { steps: [2, 3, 4, 6, 7, 10], name: 'Minor thirteen', suffix: 'm13' },
+        ],
+    ],
+]);
+
+/**
+ * Returns chord type, e.g. 'Major', 'Diminished', ...
+ * Important: Notes must be sorted by pitch ascending
+ *
+ * @todo some chords might be multiple types
+ * @param {Note[]} notes notes (sorted by pitch asc.)
+ * @returns {string} chord type
+ */
+export function getChordType(notes) {
+    if (!notes || notes.length === 0) { return { name: 'No note' }; }
+    if (notes.length === 1) { return { name: 'Single note' }; }
+    // Get distances in semitones
+    let steps = [];
+    const lowest = notes[0].pitch;
+    for (let index = 1; index &lt; notes.length; index++) {
+        steps.push(notes[index].pitch - lowest);
+    }
+    // Normalize higher than octave
+    steps = steps.map(d => d % 12);
+    // Filter doubles
+    steps = [...new Set(steps)];
+    // Filter octaves
+    steps = steps.filter(d => d !== 0);
+    if (steps.length === 0) { return { name: 'Octave' }; }
+    steps.sort((a, b) => a - b);
+
+    // Now get the chord type
+    const candidates = chordTypes.get(steps.length);
+    if (candidates) {
+        for (const cand of candidates) {
+            if (arrayShallowEquals(steps, cand.steps)) {
+                return cand;
             }
         }
-        this.keySignatures = keySignatures.slice(0, 1);
-        let currentKeySig = keySignatures[0];
-        for (const keySignature of keySignatures) {
-            if (keySignature.string !== currentKeySig.string) {
-                currentKeySig = keySignature;
-                this.keySignatures.push(keySignature);
-            }
-        }
     }
-
-    /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     */
-    static fromMidi(name, midiFile) {
-        if (!midiFile) {
-            throw new Error('No MIDI file content given');
-        }
-        const midi = midiParser.parse(midiFile);
-        const parsed = preprocessMidiFileData(midi);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        let measureTimes = [];
-        if (parsed.tracks.length > 0) {
-            // tempos
-            tempos = parsed.tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-            // measure times
-            measureTimes = parsed.measureLinePositions;
-        }
-        // tracks signatures
-        const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
-            t.trackName,
-            t.instrumentName,
-            t.noteObjs,
-            index,
-        ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
-    }
-
-    /**
-     * Creates a MusicPiece object from a MusicXML string
-     *
-     * @param {string} name name
-     * @param {string} xmlFile MusicXML file content
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MusicXML file content given'} when MusicXML file is
-     *  undefined or null
-     */
-    static fromMusicXml(name, xmlFile) {
-        if (!xmlFile) {
-            throw new Error('No MusicXML file content given');
-        }
-        const parser = new DOMParser();
-        const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
-        const parsed = preprocessMusicXmlData(xmlDocument);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        if (parsed.parts.length > 0) {
-            // tempos
-            tempos = parsed.parts[0].tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.parts[0].beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.parts[0].keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-        }
-        // measure times
-        let measureTimes = [];
-        if (parsed.parts.length > 0) {
-            measureTimes = parsed.parts[0].measureLinePositions;
-        }
-        // tracks
-        const tracks = parsed.parts
-            .map((t, index) => Track.fromMusicXml(
-                parsed.partNames[index],
-                parsed.instruments[index],
-                t.noteObjs,
-                index,
-            ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
-    }
-
-    /**
-     * Returns an array with all notes from all tracks.
-     *
-     * @param {boolean} sortByTime true: sort notes by time
-     * @returns {Note[]} all notes of this piece
-     */
-    getAllNotes(sortByTime = false) {
-        const notes = this.tracks.flatMap(t => t.notes);
-        if (sortByTime) {
-            notes.sort((a, b) => a.start - b.start);
-        }
-        return notes;
-    }
+    return { name: 'Unknown chord type' };
 }
 
 /**
- * Used by MusicPiece, should not be used directly
+ * https://github.com/tonaljs/tonal/tree/master/packages/chord
+ * Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
  *
- * @private
+ * @param {Note[]} notes notes
+ * @returns {string[]} possible chord types
  */
-export class Track {
-    /**
-     * Do not use this constructor, but the static methods Track.fromMidi
-     * and Track.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes notes
-     */
-    constructor(name, instrument, notes) {
-        name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
-        this.name = name;
-        this.instrument = instrument;
-        this.notes = notes;
-        this.duration = new NoteArray(notes).getDuration();
-    }
-
-    /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @returns {Track} new Track
-     */
-    static fromMidi(name, instrument, notes) {
-        return new Track(name, instrument, notes);
-    }
-
-    /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number} channel channel
-     * @returns {Track} new Track
-     */
-    static fromMusicXml(name, instrument, notes, channel) {
-        for (const n of notes) {
-            n.channel = channel;
-        }
-        return new Track(name, instrument, notes);
-    }
+export function getChordName(notes) {
+    const noteLetters = notes
+        .sort((a, b) => a.pitch - b.pitch)
+        .map(d => d.getLetter());
+    const chords = Chord.detect(noteLetters);
+    return chords;
 }
 
-/**
- * Tempo definition
- *
- * @private
- */
-export class TempoDefinition {
-    /**
-     * @param {number} time in seconds
-     * @param {number} bpm tempo in seconds per beat
-     */
-    constructor(time, bpm) {
-        this.time = time;
-        this.bpm = bpm;
-        this.string = `${bpm} bpm`;
-    }
-}
-
-/**
- * Time signature definition
- *
- * @private
- */
-export class TimeSignature {
-    /**
-     * @param {number} time in seconds
-     * @param {number[]} signature time signature as [beats, beatType]
-     */
-    constructor(time, signature) {
-        this.time = time;
-        this.signature = signature;
-        this.string = signature.join('/');
-    }
-}
-
-/**
- * Key signature definition
- *
- * @private
- */
-export class KeySignature {
-    /**
-     * @param {number} time in seconds
-     * @param {string} key key e.g. 'C'
-     * @param {string} scale scale e.g. 'major'
-     */
-    constructor(time, key, scale) {
-        this.time = time;
-        this.key = key;
-        this.scale = scale;
-        this.string = `${key} ${scale}`;
-    }
-}
-
-export default MusicPiece;
+// /**
+//  * Estimates the name of a given chord of notes
+//  *
+//  * @param {string} chord name
+//  * @return {Note[]} notes array of Note objects
+//  * @todo use tonaljs
+//  * @todo use this https://github.com/greird/chordictionaryjs
+//  */
+// export function getNotesFromChordName(name, length = 1, start = 0) {
+//     console.error('NIY');
+// }
 </code></pre>
         </article>
     </section>

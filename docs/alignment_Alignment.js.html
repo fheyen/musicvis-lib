@@ -26,7 +26,7 @@
     
 
 
-    <title>types/MusicPiece.js</title>
+    <title>alignment/Alignment.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -295,7 +295,7 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">types/MusicPiece.js</h1>
+    <h1 id='page-title' class="page-title">alignment/Alignment.js</h1>
     
 
     
@@ -305,288 +305,261 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// eslint-disable-next-line no-unused-vars
-import Note from './Note';
-import midiParser from 'midi-parser-js';
-import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
-import { preprocessMidiFileData } from '../fileFormats/MidiParser';
-import NoteArray from './NoteArray';
+            <pre class="prettyprint source linenums"><code>import { matchGtAndRecordingNotes } from '../comparison/Matching';
+import { randomInt, randomLcg, randomUniform, median } from 'd3';
+import * as Drums from '../instruments/Drums';
+import Note from '../types/Note';
+import NoteArray from '../types/NoteArray';
 
 /**
- * Represents a parsed MIDI or MusicXML file in a uniform format.
+ * @module comparison/Alignment
  */
-class MusicPiece {
 
-    /**
-     * Do not use this constructor, but the static methods MusicPiece.fromMidi
-     * and MusicPiece.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name (e.g. file name or piece name)
-     * @param {TempoDefinition[]} tempos tempos
-     * @param {TimeSignature[]} timeSignatures time signatures
-     * @param {KeySignature[]} keySignatures key signatures
-     * @param {number[]} measureTimes time in seconds for each measure line
-     * @param {Track[]} tracks tracks
-     * @throws {'No or invalid tracks given!'} when invalid tracks are given
-     */
-    constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
-        if (!tracks || tracks.length === 0) {
-            throw new Error('No or invalid tracks given');
-        }
-        this.name = name;
-        this.measureTimes = measureTimes;
-        this.tracks = tracks;
-        this.duration = Math.max(...this.tracks.map(d => d.duration));
-        // Filter multiple identical consecutive infos
-        this.tempos = tempos.slice(0, 1);
-        let currentTempo = tempos[0];
-        for (const tempo of tempos) {
-            if (tempo.string !== currentTempo.string) {
-                currentTempo = tempo;
-                this.tempos.push(tempo);
+/**
+ * Given two NoteArrays, shift the second one in time such that they are aligned
+ *
+ * @todo use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
+ *      to find note alignment, then only use those for force calculation
+ * @param {NoteArray} gt a NoteArray, e.g. the ground truth
+ * @param {NoteArray} rec a NoteArray to align to a
+ * @returns {NoteArray} an aligned copy of b
+ */
+export function alignNoteArrays(gt, rec) {
+    rec = rec.clone();
+    const f = alignmentForce(gt.getNotes(), rec.getNotes());
+    rec = rec.shiftTime(f);
+    // console.log(`Aligned recording via shifting by ${f.toFixed(3)} seconds`);
+    return {
+        aligned: rec,
+        timeDifference: f,
+    };
+}
+
+/**
+ * Given two NoteArrays, shift the second one in time such that they are aligned
+ *
+ * @param {NoteArray} gt a NoteArray, e.g. the ground truth
+ * @param {NoteArray} rec a NoteArray to align to a
+ * @returns {NoteArray} an aligned copy of b
+ */
+export function alignNoteArrays2(gt, rec) {
+    let timeDifference = 0;
+    let tries = 0;
+    rec = rec.clone();
+    while (tries &lt; 25) {
+        // Get a 1-to-1 matching between gt and rec notes so noise has less impact
+        const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes());
+        // Get average time difference between matched notes
+        let timeDiff = 0;
+        let count = 0;
+        for (const m of matching.values()) {
+            const { gtRecMap } = m;
+            for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
+                if (matchedRecNote !== null) {
+                    count++;
+                    timeDiff += gtStart - matchedRecNote.start;
+                }
             }
         }
-        this.timeSignatures = timeSignatures.slice(0, 1);
-        let currentTimeSig = timeSignatures[0];
-        for (const timeSignature of timeSignatures) {
-            if (timeSignature.string !== currentTimeSig.string) {
-                currentTimeSig = timeSignature;
-                this.timeSignatures.push(timeSignature);
+        timeDiff /= count;
+        // Shift recording
+        rec.shiftTime(timeDiff);
+        timeDifference += timeDiff;
+        // console.log(`${tries} shifting by ${timeDiff.toFixed(3)} seconds`);
+        // Stop while loop when finished
+        if (Math.abs(timeDiff) &lt; 0.0005) {
+            break;
+        }
+        tries++;
+    }
+    return {
+        aligned: rec,
+        timeDifference,
+    };
+}
+
+/**
+ * Given two NoteArrays, shift the second one in time such that they are aligned
+ *
+ * @todo use median instead of average?
+ * @param {NoteArray} gt a NoteArray, e.g. the ground truth
+ * @param {NoteArray} rec a NoteArray to align to a
+ * @returns {NoteArray} an aligned copy of b
+ */
+export function alignNoteArrays3(gt, rec) {
+    let timeDifference = 0;
+    let tries = 0;
+    rec = rec.clone();
+    while (tries &lt; 25) {
+        // Get a 1-to-1 matching between gt and rec notes so noise has less impact
+        const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes());
+        // Get time differences
+        const timeDiffs = [];
+        for (const m of matching.values()) {
+            for (const [gtStart, matchedRecNote] of m.gtRecMap.entries()) {
+                if (matchedRecNote !== null) {
+                    timeDiffs.push(gtStart - matchedRecNote.start);
+                }
             }
         }
-        this.keySignatures = keySignatures.slice(0, 1);
-        let currentKeySig = keySignatures[0];
-        for (const keySignature of keySignatures) {
-            if (keySignature.string !== currentKeySig.string) {
-                currentKeySig = keySignature;
-                this.keySignatures.push(keySignature);
+        const shift = median(timeDiffs);
+        // Shift recording
+        rec.shiftTime(shift);
+        timeDifference += shift;
+        // console.log(`${tries} shifting by ${shift.toFixed(3)} seconds`);
+        // Stop while loop when finished
+        if (Math.abs(shift) &lt; 0.0001) {
+            break;
+        }
+        tries++;
+    }
+    return {
+        aligned: rec,
+        timeDifference,
+    };
+}
+
+
+
+/**
+ * Calculates the mean difference between all notes in a and the nearest same-
+ * pitched notes in b
+ *
+ * @param {Note[]} a array with notes
+ * @param {Note[]} b array with notes
+ * @returns {number} mean time difference
+ */
+function alignmentForce(a, b) {
+    let difference = 0;
+    let count = 0;
+    // For each note in a, search the closest note in b with the same pitch and calculate the distance
+    for (const noteA of a) {
+        let distance = Number.POSITIVE_INFINITY;
+        let diff = Number.POSITIVE_INFINITY;
+        for (const noteB of b) {
+            if (noteA.pitch === noteB.pitch) {
+                const dist = Math.abs(noteA.start - noteB.start);
+                if (dist &lt; distance) {
+                    distance = dist;
+                    diff = noteA.start - noteB.start;
+                    // TODO: Larger distances might be errors
+                    // if (diff > 1) {
+                    //     diff = Math.sqrt(diff);
+                    // }
+                }
             }
+        }
+        // (If not found, this does not change alignment)
+        if (distance &lt; Number.POSITIVE_INFINITY) {
+            difference += diff;
+            count++;
         }
     }
+    return difference / count;
+}
 
-    /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     */
-    static fromMidi(name, midiFile) {
-        if (!midiFile) {
-            throw new Error('No MIDI file content given');
-        }
-        const midi = midiParser.parse(midiFile);
-        const parsed = preprocessMidiFileData(midi);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        let measureTimes = [];
-        if (parsed.tracks.length > 0) {
-            // tempos
-            tempos = parsed.tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-            // measure times
-            measureTimes = parsed.measureLinePositions;
-        }
-        // tracks signatures
-        const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
-            t.trackName,
-            t.instrumentName,
-            t.noteObjs,
-            index,
-        ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
+/**
+ * Test function
+ *
+ * @todo move to test
+ */
+export function testAlignment() {
+    const test = (a, b, title) => {
+        console.log(title);
+        console.log(b.getNotes().map(n => n.start));
+        const aligned = alignNoteArrays(a, b);
+        console.log(aligned.getNotes().map(n => n.start));
+    };
+    const a = new NoteArray([
+        new Note(69, 0, 127, 0, 1),
+        new Note(70, 1, 127, 0, 2),
+        new Note(71, 2, 127, 0, 3),
+    ]);
+    console.log(a.getNotes().map(n => n.start));
+
+    let b;
+
+    b = a.clone().shiftTime(2);
+    test(a, b, 'shifted by 2');
+
+    b = a.clone().shiftTime(-2);
+    test(a, b, 'shifted by -2');
+
+    b = a.clone()
+        .shiftTime(3)
+        .addNotes([new Note(72, 2, 127, 0, 3)]);
+    test(a, b, 'shifted by 3, added note');
+
+    b = a.clone().repeat(2);
+    test(a, b, 'repeated');
+
+    b = a.clone()
+        .repeat(2)
+        .shiftTime(3);
+    test(a, b, 'repeated, shifted by 3');
+}
+
+
+
+/**
+ * @todo Benchmark different aligment functions on a randomly generated test set
+ * This allows to check the calculated alignment against a known ground truth
+ */
+export function alignmentBenchmark() {
+    // Use random seed for reproducability
+    const seed = 0.44871573888282423; // any number in [0, 1)
+    const rand127 = randomInt.source(randomLcg(seed))(0, 127);
+    const maxTime = 500;
+    const randTime = randomUniform.source(randomLcg(seed))(0, maxTime);
+    const randDuration = randomUniform.source(randomLcg(seed))(1 / 64, 2);
+
+    // Create random notes
+    const randomNotes = Array.from({ length: 200 }).fill(0).map(() => {
+        const start = randTime();
+        return new Note(
+            rand127(),
+            start,
+            127,
+            0,
+            start + randDuration(),
         );
+    });
+    const notes = new NoteArray(randomNotes).sortByTime();
+    console.log('true notes', notes.getNotes());
+
+    // Shift notes by some amount of seconds (this is what alignment should calculate!)
+    const shift = 3;
+    const shifted = notes.clone().shiftTime(shift);
+    console.log('shifted', shifted);
+
+
+    // Introduce errors, as a human would
+    const deviation = 0.1;
+    const pAdd = 0.1;
+    const pRemove = 0.1;
+    let variation = Drums.generateDrumVariation(shifted.getNotes(), deviation, pAdd, pRemove);
+    variation = new NoteArray(variation);
+    console.log('variation', variation);
+
+
+    // Run all functions
+    const funcs = [alignNoteArrays, alignNoteArrays2, alignNoteArrays3];
+    console.log(`True time shift: ${shift} seconds`);
+
+    console.log('Only shifted');
+    for (const f of funcs) {
+        const { timeDifference } = f(notes, shifted);
+        const error = Math.abs(timeDifference - -shift);
+        console.log(`${f.name}\nshift: ${timeDifference.toFixed(3)} \nError ${error.toFixed(3)}`);
     }
 
-    /**
-     * Creates a MusicPiece object from a MusicXML string
-     *
-     * @param {string} name name
-     * @param {string} xmlFile MusicXML file content
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MusicXML file content given'} when MusicXML file is
-     *  undefined or null
-     */
-    static fromMusicXml(name, xmlFile) {
-        if (!xmlFile) {
-            throw new Error('No MusicXML file content given');
-        }
-        const parser = new DOMParser();
-        const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
-        const parsed = preprocessMusicXmlData(xmlDocument);
-        let tempos = [];
-        let timeSignatures = [];
-        let keySignatures = [];
-        if (parsed.parts.length > 0) {
-            // tempos
-            tempos = parsed.parts[0].tempoChanges
-                .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
-            timeSignatures = parsed.parts[0].beatTypeChanges
-                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
-            keySignatures = parsed.parts[0].keySignatureChanges
-                .map(d => new KeySignature(d.time, d.key, d.scale));
-        }
-        // measure times
-        let measureTimes = [];
-        if (parsed.parts.length > 0) {
-            measureTimes = parsed.parts[0].measureLinePositions;
-        }
-        // tracks
-        const tracks = parsed.parts
-            .map((t, index) => Track.fromMusicXml(
-                parsed.partNames[index],
-                parsed.instruments[index],
-                t.noteObjs,
-                index,
-            ));
-        return new MusicPiece(
-            name,
-            tempos,
-            timeSignatures,
-            keySignatures,
-            measureTimes,
-            tracks,
-        );
-    }
-
-    /**
-     * Returns an array with all notes from all tracks.
-     *
-     * @param {boolean} sortByTime true: sort notes by time
-     * @returns {Note[]} all notes of this piece
-     */
-    getAllNotes(sortByTime = false) {
-        const notes = this.tracks.flatMap(t => t.notes);
-        if (sortByTime) {
-            notes.sort((a, b) => a.start - b.start);
-        }
-        return notes;
+    console.log('Shifted &amp; variation');
+    for (const f of funcs) {
+        const { timeDifference } = f(notes, variation);
+        const error = Math.abs(timeDifference - -shift);
+        console.log(`${f.name}\nshift: ${timeDifference.toFixed(3)} \nError ${error.toFixed(3)}`);
     }
 }
-
-/**
- * Used by MusicPiece, should not be used directly
- *
- * @private
- */
-export class Track {
-    /**
-     * Do not use this constructor, but the static methods Track.fromMidi
-     * and Track.fromMusicXml instead.
-     *
-     * @private
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes notes
-     */
-    constructor(name, instrument, notes) {
-        name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
-        this.name = name;
-        this.instrument = instrument;
-        this.notes = notes;
-        this.duration = new NoteArray(notes).getDuration();
-    }
-
-    /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @returns {Track} new Track
-     */
-    static fromMidi(name, instrument, notes) {
-        return new Track(name, instrument, notes);
-    }
-
-    /**
-     * Creates a new Track from a MusicXML track
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number} channel channel
-     * @returns {Track} new Track
-     */
-    static fromMusicXml(name, instrument, notes, channel) {
-        for (const n of notes) {
-            n.channel = channel;
-        }
-        return new Track(name, instrument, notes);
-    }
-}
-
-/**
- * Tempo definition
- *
- * @private
- */
-export class TempoDefinition {
-    /**
-     * @param {number} time in seconds
-     * @param {number} bpm tempo in seconds per beat
-     */
-    constructor(time, bpm) {
-        this.time = time;
-        this.bpm = bpm;
-        this.string = `${bpm} bpm`;
-    }
-}
-
-/**
- * Time signature definition
- *
- * @private
- */
-export class TimeSignature {
-    /**
-     * @param {number} time in seconds
-     * @param {number[]} signature time signature as [beats, beatType]
-     */
-    constructor(time, signature) {
-        this.time = time;
-        this.signature = signature;
-        this.string = signature.join('/');
-    }
-}
-
-/**
- * Key signature definition
- *
- * @private
- */
-export class KeySignature {
-    /**
-     * @param {number} time in seconds
-     * @param {string} key key e.g. 'C'
-     * @param {string} scale scale e.g. 'major'
-     */
-    constructor(time, key, scale) {
-        this.time = time;
-        this.key = key;
-        this.scale = scale;
-        this.string = `${key} ${scale}`;
-    }
-}
-
-export default MusicPiece;
 </code></pre>
         </article>
     </section>
