@@ -125,3 +125,18 @@ export function agreement(gtActivations, recActivations, offset) {
     }
     return agreement;
 }
+
+/**
+ * Aligns the recording to the best fitting position of the ground truth
+ *
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Recording} recording a Recording object
+ * @param {number} binSize time bin size in milliseconds
+ * @returns {Recording} aligned recording
+ */
+export function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
+    const recNotes = recording.getNotes();
+    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
+    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
+    return newRec;
+}
