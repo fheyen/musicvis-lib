@@ -1,4 +1,4 @@
-// import * as Similarity from '../../src/comparison/Similarity';
+// import * as Similarity from './Similarity';
 
 describe('Similarity', () => {
     test.skip('todo', () => {

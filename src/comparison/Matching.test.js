@@ -1,4 +1,4 @@
-import * as Matching from '../../src/comparison/Matching';
+import * as Matching from './Matching';
 
 describe('Matching', () => {
     test.skip('todo', () => {

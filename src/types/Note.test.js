@@ -1,5 +1,5 @@
-import Note from '../../src/types/Note';
-import NoteArray from '../../src/types/NoteArray';
+import Note from './Note';
+// import NoteArray from './NoteArray';
 
 const note1 = new Note(0, 0.0, 127, 0, 3.0);
 

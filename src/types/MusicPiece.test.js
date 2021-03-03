@@ -1,11 +1,11 @@
-import MusicPiece, { Track, TempoDefinition, TimeSignature, KeySignature } from '../../src/types/MusicPiece';
+import MusicPiece, { Track, TempoDefinition, TimeSignature, KeySignature } from './MusicPiece';
 import path from 'path';
-import GuitarNote from '../../src/types/GuitarNote';
-import Note from '../../src/types/Note';
-import { readMidiFile, readXmlFile, listFiles, getAllNotesFromMidi, getAllNotesFromXml, getSongsWithMidiAndXml } from '../testTools/readTestAssetFiles';
+import GuitarNote from './GuitarNote';
+import Note from './Note';
+import { readMidiFile, readXmlFile, listFiles, getAllNotesFromMidi, getAllNotesFromXml, getSongsWithMidiAndXml } from '../../test/testTools/readTestAssetFiles';
 
-const GT_DIR = path.join(__dirname, '..', '_test_assets');
-const GT_DIR_PRIVATE = path.join(__dirname, '..', '_test_assets_private');
+const GT_DIR = path.join(__dirname, '..', '..', 'test', '_test_assets');
+const GT_DIR_PRIVATE = path.join(__dirname, '..', '..', 'test', '_test_assets_private');
 
 /**
  * Simplifies each object in an array by copying only some keys and their values

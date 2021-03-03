@@ -1,6 +1,6 @@
-import NoteArray from '../../src/types/NoteArray';
-import Note from '../../src/types/Note';
-import PitchSequence from '../../src/types/PitchSequence';
+import NoteArray from './NoteArray';
+import Note from './Note';
+import PitchSequence from './PitchSequence';
 
 describe('PitchSequence', () => {
 

@@ -5,10 +5,7 @@ import NoteArray from './types/NoteArray';
 import Recording from './types/Recording';
 import MusicPiece from './types/MusicPiece';
 import PitchSequence from './types/PitchSequence';
-import Fingers from './types/Fingers';
 // File formats
-import { preprocessMidiFileData } from './fileFormats/MidiParser';
-import { preprocessMusicXmlData } from './fileFormats/MusicXmlParser';
 import * as Midi from './fileFormats/Midi';
 // Graphics
 import * as Canvas from './graphics/Canvas';
@@ -21,7 +18,6 @@ import * as Drums from './instruments/Drums';
 import * as Guitar from './instruments/Guitar';
 import * as Lamellophone from './instruments/Lamellophone';
 import * as Piano from './instruments/Piano';
-import * as StringedFingering from './instruments/StringedFingering';
 // Alignment
 import * as Alignment from './alignment/Alignment';
 import * as DiffAlignment from './alignment/DiffAlignment';
@@ -42,11 +38,8 @@ export {
     Recording,
     MusicPiece,
     PitchSequence,
-    Fingers,
     // File formats
     Midi,
-    preprocessMidiFileData,
-    preprocessMusicXmlData,
     // graphics
     Canvas,
     // Input
@@ -58,7 +51,6 @@ export {
     Guitar,
     Lamellophone,
     Piano,
-    StringedFingering,
     // Alignment
     Alignment,
     DiffAlignment,

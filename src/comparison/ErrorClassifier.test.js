@@ -1,6 +1,6 @@
-import GuitarNote from '../../src/types/GuitarNote';
-import Note from '../../src/types/Note';
-import * as ErrorClassifier from '../../src/comparison/ErrorClassifier';
+import GuitarNote from '../types/GuitarNote';
+import Note from '../types/Note';
+import * as ErrorClassifier from './ErrorClassifier';
 
 const NoteState = ErrorClassifier.NoteState;
 
@@ -13,7 +13,7 @@ const gt = [
 describe.skip('classifyErrors', () => {
     test('every note on point', () => {
         const result = ErrorClassifier.classifyErrors(gt, gt, 'string');
-        const states = result.map(d => d.state)
+        const states = result.map(d => d.state);
         const expected = [
             NoteState.SAME,
             NoteState.SAME,
@@ -28,7 +28,7 @@ describe.skip('classifyErrors', () => {
             GuitarNote.from({ start: 1, end: 2, string: 4, fret: 0 }),
         ];
         const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-        const states = result.map(d => d.state)
+        const states = result.map(d => d.state);
         const expected = [
             NoteState.SAME,
             NoteState.SAME,
@@ -45,7 +45,7 @@ describe.skip('classifyErrors', () => {
             GuitarNote.from({ start: 2.5, end: 3.5, string: 5, fret: 0 }),
         ];
         const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-        const states = result.map(d => d.state)
+        const states = result.map(d => d.state);
         const expected = [
             NoteState.SAME,
             NoteState.SAME,
@@ -63,7 +63,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 2.5, string: 5, fret: 0 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.LATE,
                 NoteState.SAME,
@@ -79,7 +79,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 2.5, string: 5, fret: 0 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SAME,
                 NoteState.EARLY,
@@ -97,7 +97,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 2.5, string: 5, fret: 0 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SHORT,
                 NoteState.SAME,
@@ -112,7 +112,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 3, string: 5, fret: 0 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SHORT,
                 NoteState.SAME,
@@ -130,7 +130,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 2.5, string: 2, fret: 0 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SAME,
                 NoteState.SAME,
@@ -146,7 +146,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 2.5, string: 2, fret: 2 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SAME,
                 NoteState.SAME,
@@ -166,7 +166,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1.5, end: 2.5, string: 4, fret: 0 }),
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SAME,
                 NoteState.DIFFERENT,
@@ -183,7 +183,7 @@ describe.skip('classifyErrors', () => {
                 GuitarNote.from({ start: 1, end: 2, string: 4, fret: 0 })
             ];
             const result = ErrorClassifier.classifyErrors(gt, rec, 'string');
-            const states = result.map(d => d.state)
+            const states = result.map(d => d.state);
             const expected = [
                 NoteState.SAME,
             ];

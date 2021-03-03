@@ -1,4 +1,4 @@
-import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from '../../src/utils/StatisticsUtils';
+import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from './StatisticsUtils';
 
 describe('StatisticsUtils', () => {
 

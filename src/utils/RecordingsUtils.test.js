@@ -1,6 +1,6 @@
-import * as RecUtils from '../../src/utils/RecordingsUtils';
-import Note from '../../src/types/Note';
-import Recording from '../../src/types/Recording';
+import * as RecUtils from './RecordingsUtils';
+import Note from '../types/Note';
+import Recording from '../types/Recording';
 
 describe('RecordingsUtils', () => {
 

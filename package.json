@@ -16,24 +16,27 @@
     "music visualization",
     "visual analytics",
     "JavaScript",
+    "ECMAScript",
     "web-based",
     "MIDI",
     "MusicXML",
     "Web MIDI",
-    "music"
+    "music",
+    "string comparison"
   ],
   "main": "dist/musicvislib.js",
   "scripts": {
     "upd": "npm-check-updates -u",
-    "build": "webpack --config webpack.dev.js",
+    "build:dev": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
+    "build:all": "npm run build:dev && npm run build:prod",
     "test": "jest --coverage",
     "testch": "jest --coverage --changedFilesWithAncestor",
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
     "lint": "eslint --fix src; remark .",
-    "predeploy": "jest --silent && eslint --fix src && webpack -c webpack.dev.js && webpack -c webpack.prod.js && jsdoc -c jsdoc.conf.json",
+    "predeploy": "eslint --fix src && npm run build:all && jest --silent && npm run doc",
     "deploy": "npm publish && git add . && git commit -m 'new version build'; git push; git push origin --tags"
   },
   "dependencies": {

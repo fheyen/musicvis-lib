@@ -1,4 +1,4 @@
-import * as SimilarSections from '../../src/comparison/SimilarSections';
+import * as SimilarSections from './SimilarSections';
 
 describe('SimilarSections', () => {
     describe('findSimilarStringSections', () => {

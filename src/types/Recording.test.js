@@ -1,6 +1,5 @@
-import Note from '../../src/types/Note';
-// import { newRecording } from '../../src/types/Recording';
-import Recording from '../../src/types/Recording';
+import Note from './Note';
+import Recording from './Recording';
 
 const notes = [
     new Note(69, 0.0, 127, 0, 1.0),

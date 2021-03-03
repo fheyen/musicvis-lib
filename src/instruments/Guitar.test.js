@@ -1,7 +1,7 @@
-import Note from '../../src/types/Note';
-import GuitarNote from '../../src/types/GuitarNote';
-import * as Guitar from '../../src/instruments/Guitar';
-import * as Midi from '../../src/fileFormats/Midi';
+import Note from '../types/Note';
+import GuitarNote from '../types/GuitarNote';
+import * as Guitar from './Guitar';
+import * as Midi from '../fileFormats/Midi';
 
 const stdTuning = Guitar.stringedTunings.get('Guitar').get(6)[0];
 const dropD = Guitar.stringedTunings.get('Guitar').get(6)[1];

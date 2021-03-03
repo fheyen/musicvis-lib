@@ -1,4 +1,4 @@
-import { formatTime, formatDate, formatSongTitle } from '../../src/utils/FormattingUtils';
+import { formatTime, formatDate, formatSongTitle } from './FormattingUtils';
 
 describe('format time', () => {
     test('does format undefined', () => {

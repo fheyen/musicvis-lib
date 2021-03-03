@@ -1,4 +1,4 @@
-import { randFloat, clipValue, roundToNDecimals, choose, swapSoSmallerFirst, findLocalMaxima } from '../../src/utils/MathUtils';
+import { randFloat, clipValue, roundToNDecimals, choose, swapSoSmallerFirst, findLocalMaxima } from './MathUtils';
 
 
 

@@ -26,7 +26,7 @@
     
 
 
-    <title>Note</title>
+    <title>experimental/StringedFingering.js</title>
 
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -295,2074 +295,361 @@
 
 <div id="main">
     
-    <h1 id='page-title' class="page-title">Note</h1>
-    
-
-    
-
-
-
-
-<section>
-
-
-<header>
-    
-        
-        <h2>
-        
-        Note
-        
-        </h2>
-        
-        
-            <div class="class-description">Note class that reflects MIDI properties but has
-absolute start and end times in seconds.</div>
-            <hr/>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-        <h2>Constructor</h2>
-    
-
-    <h4 class="name" id="Note">
-        <a href="#Note">#</a>
-        <span class="type-signature"></span>new Note<span class="signature">(pitch, start, velocity, channel, end)</span><span class="type-signature"></span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Creates a new Note
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pitch</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last">pitch</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last">start time in seconds</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>velocity</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    127
-                
-                </td>
-            
-
-            <td class="description last">velocity</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>channel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last">MIDI channel</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>end</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last">end time in seconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line7">line 7</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".from">
-        <a href="#.from">#</a>
-        <span class="type-signature">(static) </span>from<span class="signature">(object)</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Creates a Note object from an object via destructuring
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>object</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">object with at least {pitch}
- {
-     pitch: number|string    e.g. 12 or C#4
-     start: number           start time in seconds
-     end: number             end time in seconds
-     velocity: number        MIDI velocity
-     channel: number         MIDI channel
- }</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line62">line 62</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-    <strong>Throws:</strong>
-    
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        when pitch is invalid
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    new note
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Example</strong>
-        
-    <pre class="prettyprint"><code>const n = Note.from({
-     pitch: 'C#4'     // e.g. 12 or C#4
-     start: 0.5       // start time in seconds
-     end: 1.5         // end time in seconds
-     velocity: 127    // MIDI velocity
-     channel: 0       // MIDI channel
- });</code></pre>
-
-    </div>
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="clone">
-        <a href="#clone">#</a>
-        <span class="type-signature"></span>clone<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns a copy of the Note object
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line85">line 85</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    new note
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="equals">
-        <a href="#equals">#</a>
-        <span class="type-signature"></span>equals<span class="signature">(otherNote)</span><span class="type-signature"> &rarr; {boolean}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns true if this note and otherNote have equal attributes.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>otherNote</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">another Note</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line192">line 192</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    true if equal
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getDuration">
-        <a href="#getDuration">#</a>
-        <span class="type-signature"></span>getDuration<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns the duration of this note in seconds
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line100">line 100</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    note duration
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getLetter">
-        <a href="#getLetter">#</a>
-        <span class="type-signature"></span>getLetter<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns the note's name WITHOUT the octave, e.g. 'C#'
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line121">line 121</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    note name as string
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getName">
-        <a href="#getName">#</a>
-        <span class="type-signature"></span>getName<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns the note's name and octave, e.g. 'C#3'
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line112">line 112</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    note name as string
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getOctave">
-        <a href="#getOctave">#</a>
-        <span class="type-signature"></span>getOctave<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns the note's octave
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line130">line 130</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    the note's octave
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="overlapInSeconds">
-        <a href="#overlapInSeconds">#</a>
-        <span class="type-signature"></span>overlapInSeconds<span class="signature">(otherNote)</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns the amount of seconds this Note and otherNote overlap in time.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>otherNote</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">another Note</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line177">line 177</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    seconds of overlap
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="overlapsInTime">
-        <a href="#overlapsInTime">#</a>
-        <span class="type-signature"></span>overlapsInTime<span class="signature">(otherNote)</span><span class="type-signature"> &rarr; {boolean}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns true, if this Note and otherNote overlap in time.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>otherNote</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">another Note</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line166">line 166</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    true if they overlap
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="scaleTime">
-        <a href="#scaleTime">#</a>
-        <span class="type-signature"></span>scaleTime<span class="signature">(factor)</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns a new Note where start and end are multiplied by factor
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>factor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">factor to scale start and end with</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line153">line 153</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    new note
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="shiftTime">
-        <a href="#shiftTime">#</a>
-        <span class="type-signature"></span>shiftTime<span class="signature">(addedSeconds)</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns a new Note where start and end are multiplied by factor
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>addedSeconds</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">seconds to be added to start and end</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line140">line 140</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    new note
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Note.html">Note</a></span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="toString">
-        <a href="#toString">#</a>
-        <span class="type-signature"></span>toString<span class="signature">(short)</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Human-readable string representation of this Note
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>short</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last">if true, attribute names will be shortened</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line211">line 211</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    string representation
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    </div>
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 id='page-title' class="page-title">experimental/StringedFingering.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module instruments/StringedFingering
+ * @todo unfinished
+ * @todo not tested
+ */
+
+
+/**
+ * Represents a positon as {string, fret}
+ */
+class FretboardPosition {
+    /**
+     * @param {number} string string
+     * @param {number} fret fret
+     */
+    constructor(string, fret) {
+        this.string = string;
+        this.fret = fret;
+    }
+
+    /**
+     * Moves the positon by string and fret
+     *
+     * @param {number} string string
+     * @param {number} fret fret
+     */
+    moveBy(string, fret) {
+        this.string += string;
+        this.fret += fret;
+    }
+
+    /**
+     * Checks whether this position is valid
+     *
+     * @param {number} maxString number of strings -1
+     * @param {number} maxFret number of frets
+     * @returns {boolean} true iff valid
+     */
+    isValid(maxString, maxFret) {
+        return this.string &lt;= maxString &amp;&amp; this.fret &lt;= maxFret;
+    }
+
+    /**
+     * Returns true iff this and another FretboardPosition are equal
+     *
+     * @param {FretboardPosition} otherFretboardPosition another FretboardPosition
+     * @returns {boolean} true iff equal
+     */
+    equals(otherFretboardPosition) {
+        return this.string === otherFretboardPosition.string &amp;&amp;
+            this.fret === otherFretboardPosition.fret;
+    }
+
+    /**
+     * String representation
+     *
+     * @returns {string} string representation
+     */
+    toString() {
+        return `(${this.string}, ${this.fret})`;
+    }
+
+    /**
+     * @returns {FretboardPosition} clone
+     */
+    clone() {
+        return new FretboardPosition(this.string, this.fret);
+    }
+
+    /**
+     * Returns (other - this), i.e. how you need to move this to get to other
+     *
+     * @param {FretboardPosition} otherFretboardPosition another FretboardPosition
+     * @returns {object} difference in {string, fret}
+     */
+    difference(otherFretboardPosition) {
+        return {
+            string: otherFretboardPosition.string - this.string,
+            fret: otherFretboardPosition.fret - this.fret,
+        };
+    }
+}
+
+/**
+ * Represents a hand pose, for each of the 10 fingers with a FretboardPosition
+ * or null, if the finger is not used
+ */
+class HandPose {
+    /**
+     *
+     * @param {number[]} fingerPositions Indices 0-9: left thumb, 4 left fingers
+     *      right thumb, 4 right fingers. Values: null for finger not pressed,
+     *      {string:number, fret:number} for pressed fingers
+     */
+    constructor(fingerPositions = Array.from({length: 10}).fill(null)) {
+        if (fingerPositions.length !== 10) {
+            console.error('fingerPositions must have length 10!');
+            fingerPositions = Array.from({length: 10}).fill(null);
+        }
+        this.fingerPositions = fingerPositions;
+    }
+
+    /**
+     * Move a single finger
+     *
+     * @param {number} index finger index in [0, 9]
+     * @param {FretboardPosition} newPosition new position
+     */
+    moveFingerTo(index, newPosition) {
+        this.fingerPositions[index] = newPosition;
+    }
+
+    /**
+     *
+     * Lift a single finger
+     *
+     * @param {number} index finger index in [0, 9]
+     */
+    liftFinger(index) {
+        this.fingerPositions[index] = null;
+    }
+
+    /**
+     * Moves the finger by string and fret
+     *
+     * @param {number} index finger index in [0, 9]
+     * @param {number} string string
+     * @param {number} fret fret
+     */
+    moveFingerBy(index, string, fret) {
+        const finger = this.fingerPositions[index];
+        if (!finger) { return; }
+        finger.moveBy(string, fret);
+    }
+
+    /**
+     * Move the whole hand, fingers keep relative positions
+     *
+     * @param {number} string string
+     * @param {number} fret fret
+     */
+    moveHandBy(string, fret) {
+        for (const finger of this.fingerPositions) {
+            if (finger !== null) {
+                finger.moveBy(string, fret);
+            }
+        }
+    }
+
+    /**
+     * Checks whether this position is valid
+     *
+     * @param {number} maxString max string
+     * @param {number} maxFret max fret
+     * @returns {boolean} true iff valid
+     */
+    isValid(maxString, maxFret) {
+        for (const finger of this.fingerPositions) {
+            if (finger !== null &amp;&amp; !finger.isValid(maxString, maxFret)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns true iff this and another FretboardPosition are equal
+     *
+     * @param {HandPose} otherHandPose another hand pose
+     * @returns {boolean} ture iff equal
+     */
+    euqals(otherHandPose) {
+        const fingers1 = this.fingerPositions;
+        const fingers2 = otherHandPose.fingerPositions;
+        for (let index = 0; index &lt; 10; index++) {
+            if (fingers1[index] !== fingers2[index]) {
+                if (fingers1[index] === null || fingers2[index] === null) {
+                    return false;
+                }
+                if (!fingers1[index].equals(fingers2[index])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @returns {string} string representation
+     */
+    toString() {
+        let string = 'HandPose ';
+        const names = ['T', 1, 2, 3, 4, 'RT', 6, 7, 8, 9];
+        for (let index = 0; index &lt; 10; index++) {
+            const finger = this.fingerPositions[index];
+            if (finger !== null) {
+                string = `${string} ${names[index]} ${finger.toString()}`;
+            }
+        }
+        return string;
+    }
+
+    /**
+     * @returns {HandPose} clone
+     */
+    clone() {
+        return new HandPose(this.fingerPositions.map(d => d.clone()));
+    }
+
+    /**
+     * Returns (other - this), i.e. how you need to move this to get to other
+     *
+     * @param {HandPose} otherHandPose another HandPose
+     * @returns {object[]} difference
+     */
+    difference(otherHandPose) {
+        const diff = [];
+        const fingers1 = this.fingerPositions;
+        const fingers2 = otherHandPose.fingerPositions;
+        for (let index = 0; index &lt; 10; index++) {
+            if (fingers1[index] === null) {
+                diff[index] = fingers2[index];
+            } else if (fingers2[index] === null) {
+                diff[index] = null;
+            } else {
+                diff[index] = fingers1[index].difference(fingers2[index]);
+            }
+        }
+        return diff;
+    }
+
+    /**
+     * Calculates movement costs
+     *
+     * @param {HandPose} otherHandPose another HandPose
+     * @returns {number} cost
+     */
+    costOfMovement(otherHandPose) {
+        // Naive: move every finger alone
+        // TODO:
+
+        // Cheaper to lift finger than to move anything
+        // const costs = {
+        //     lift: 1,
+        //     moveFret: 2,
+        //     press: 3,
+        //     wholeHandMoveFret: 1,
+        //     wholeHandMoveString: 1,
+        // };
+
+        if (this.equals(otherHandPose)) {
+            return 0;
+        }
+
+        const diff = this.difference(otherHandPose);
+        const fingers1 = this.fingerPositions;
+        const fingers2 = otherHandPose.fingerPositions;
+
+        // Easy cases
+
+        // Lift all fingers
+        if (diff.every(d => d === null)) {
+            return 1;
+        }
+        // Lift some fingers, others stay the same
+        let assumptionValid = true;
+        for (let index = 0; index &lt; 10; index++) {
+            if (fingers2[index] !== null &amp;&amp; !fingers1[index].equals(fingers2[index])) {
+                assumptionValid = false;
+                break;
+            }
+        }
+        if (assumptionValid) {
+            return 2;
+        }
+        // Slide whole hand, no string change
+        if (diff.every(d => d !== null &amp;&amp; d.string === 0)) {
+            const fret = diff[0].fret;
+            if (diff.every(d => d.fret === fret)) {
+                return 1 + 0.1 * Math.abs(fret);
+            }
+        }
+        // Put some fingers down, other stay the same
+        assumptionValid = true;
+        for (let index = 0; index &lt; 10; index++) {
+            if (fingers1[index] !== null &amp;&amp; !fingers1[index].equals(fingers2[index])) {
+                assumptionValid = false;
+                break;
+            }
+        }
+        if (assumptionValid) {
+            return 2;
+        }
+        // TODO: more cases
+        console.log('unknown pose change cost', this, otherHandPose, diff);
+
+        return 5;
+    }
+}
+
+// export function getHandPoseForChord(positions) {
+//     // Sort by string DESCENDING and fret ASCENDING
+//     positions.sort((a, b) => {
+//         if (a.string !== b.string) {
+//             return b.string - a.string;
+//         }
+//         return a.fret - b.fret;
+//     });
+//     console.log(positions.map(d => d.toString()));
+
+//     const empty = new Array(10).fill(null);
+//     if (positions.length === 0) {
+//         return new HandPose();
+//     }
+//     if (notes.length === 1) {
+//         empty[1] = new FretboardPosition(string, fret);
+//         return new HandPose(empty);
+//     }
+//     if (notes.length === 1) {
+//         empty[1] = new FretboardPosition(string, fret);
+//         return new HandPose(empty);
+//     }
+
+
+// }
+
+
+// /**
+//  * @todo try beam search, i.e. look ahead into the tree of possible
+//  * continuations, always with a certain number of branches and depth
+//  * @param {Note[]} notes
+//  */
+// export function getOptimalHandPoseSequence(notes, branches, depth) {
+//     // Segment track into chords?
+//     // Pro: easier to solve?
+//     // Contra:
+
+//     // Get list of possible FretboardPosition for all notes
+
+//     // Choose first pose
+
+// }
+</code></pre>
+        </article>
+    </section>
 
 
 

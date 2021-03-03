@@ -1,5 +1,5 @@
-import Note from '../../src/types/Note';
-import * as Drums from '../../src/instruments/Drums';
+import Note from '../types/Note';
+import * as Drums from './Drums';
 
 test('drumPitchReplacementMapMPS850', () => {
     expect(

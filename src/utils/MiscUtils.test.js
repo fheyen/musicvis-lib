@@ -1,5 +1,5 @@
-import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest } from '../../src/utils/MiscUtils';
-import Note from '../../src/types/Note';
+import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest } from './MiscUtils';
+import Note from '../types/Note';
 
 
 describe('bpmToSecondsPerBeat', () => {

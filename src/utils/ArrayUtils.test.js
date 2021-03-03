@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix } from '../../src/utils/ArrayUtils';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix } from './ArrayUtils';
 
 
 describe('arrayContainsArray', () => {
