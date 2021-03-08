@@ -67,8 +67,10 @@ export function preprocessMusicXmlData(xml, log = false) {
  * @returns {object} parsed measures
  */
 function preprocessMusicXmlPart(part, drumInstrumentMap) {
-    let measures = part.children;
+    // Handle Guitar sheets with stave and tab (so doublicate notes)
+    part = handleStaveAndTab(part);
     // Handle repetitions by duplicating measures
+    let measures = part.children;
     measures = duplicateRepeatedMeasures(measures);
 
     let currentTime = 0;
@@ -128,8 +130,8 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         } catch { }
 
         // Read notes
-        const notes = measure.querySelectorAll('note');
         let lastNoteDuration = 0;
+        const notes = measure.querySelectorAll('note');
         for (const note of notes) {
             try {
                 // TODO: Ignore non-tab staff when there is a tab staff
@@ -294,6 +296,39 @@ function duplicateRepeatedMeasures(measures) {
         }
     }
     return repeatedMeasures;
+}
+
+/**
+ * Handles MusicXML measures that contain both a stave and a tab. Since every
+ * note is described twice, we just need to remove those without string, fret
+ * information
+ *
+ * @private
+ * @param {HTMLElement} track a MusicXML track, i.e. its measures
+ * @returns {HTMLCollection} cleaned-up MusicXML measure
+ */
+function handleStaveAndTab(track) {
+    const notes = track.querySelectorAll('note');
+    // Check whether this file has notes with string, fret information
+    let hasStringFretNotes = false;
+    for (const note of notes) {
+        if (
+            note.querySelectorAll('string').length > 0
+            && note.querySelectorAll('fret').length > 0
+        ) {
+            hasStringFretNotes = true;
+            break;
+        }
+    }
+    // If some notes have string and fret information, remove all the others
+    if (hasStringFretNotes) {
+        for (const note of notes) {
+            if (note.querySelectorAll('fret').length === 0) {
+                note.remove();
+            }
+        }
+    }
+    return track;
 }
 
 /**

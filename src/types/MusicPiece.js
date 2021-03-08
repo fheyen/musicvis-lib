@@ -116,6 +116,12 @@ class MusicPiece {
      * @returns {MusicPiece} new MusicPiece
      * @throws {'No MusicXML file content given'} when MusicXML file is
      *  undefined or null
+     * @example Parsing a MusicPiece in Node.js
+     *    const jsdom = require('jsdom');
+     *    const xmlFile = fs.readFileSync('My Song.musicxml');
+     *    const dom = new jsdom.JSDOM(xmlFile);
+     *    const xmlDocument = dom.window.document;
+     *    const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
      */
     static fromMusicXml(name, xmlFile) {
         if (!xmlFile) {

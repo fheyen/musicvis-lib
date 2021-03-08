@@ -660,4 +660,10 @@ describe('MusicXmlParser', () => {
         ].map(d => Note.from(d)));
     });
 
+    test('Guitar sheet with stave and tab do not lead to duplicate notes', () => {
+        const xml = readXmlFile('[Test] Guitar Stave and Tab.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
+        expect(parsed.parts[0].noteObjs.length).toBe(256);
+    });
+
 });
