@@ -49,7 +49,7 @@
     "@babel/core": "^7.13.8",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-proposal-optional-chaining": "^7.13.8",
-    "@babel/preset-env": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
     "@types/jest": "^26.0.20",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
@@ -65,13 +65,13 @@
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.1",
     "jsdoc": "^3.6.6",
-    "npm-check-updates": "^11.1.10",
+    "npm-check-updates": "^11.2.0",
     "pngjs": "^6.0.0",
     "remark-cli": "^9.0.0",
     "remark-lint": "^8.0.0",
     "remark-preset-lint-recommended": "^5.0.0",
     "source-map-loader": "^2.0.1",
-    "webpack": "^5.24.2",
+    "webpack": "^5.24.4",
     "webpack-cli": "^4.5.0"
   }
 }

@@ -110,7 +110,9 @@ class MusicPiece {
      * Creates a MusicPiece object from a MusicXML string
      *
      * @param {string} name name
-     * @param {string} xmlFile MusicXML file content
+     * @param {string|object} xmlFile MusicXML file content as string or object
+     *      If it is an object, it must behave like a DOM, e.g. provide methods
+     *      such as .querySelectorAll()
      * @returns {MusicPiece} new MusicPiece
      * @throws {'No MusicXML file content given'} when MusicXML file is
      *  undefined or null
@@ -119,8 +121,11 @@ class MusicPiece {
         if (!xmlFile) {
             throw new Error('No MusicXML file content given');
         }
-        const parser = new DOMParser();
-        const xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
+        let xmlDocument = xmlFile;
+        if (typeof xmlDocument === 'string') {
+            const parser = new DOMParser();
+            xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
+        }
         const parsed = preprocessMusicXmlData(xmlDocument);
         let tempos = [];
         let timeSignatures = [];
