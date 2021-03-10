@@ -67,7 +67,7 @@ export function preprocessMusicXmlData(xml, log = false) {
  * @returns {object} parsed measures
  */
 function preprocessMusicXmlPart(part, drumInstrumentMap) {
-    // Handle Guitar sheets with stave and tab (so doublicate notes)
+    // Handle Guitar sheets with stave and tab (so dublicate notes)
     part = handleStaveAndTab(part);
     // Handle repetitions by duplicating measures
     let measures = part.children;
@@ -84,7 +84,6 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     const keySignatureChanges = [];
     const noteObjs = [];
     const measureLinePositions = [];
-    // const directions = [];
     for (const measure of measures) {
         const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION);
         // Try to update metrics (if they are not set, keep the old ones)
@@ -131,86 +130,94 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
 
         // Read notes
         let lastNoteDuration = 0;
-        const notes = measure.querySelectorAll('note');
-        for (const note of notes) {
-            try {
-                // TODO: Ignore non-tab staff when there is a tab staff
-                // Get note duration in seconds
-                const duration = +note.querySelectorAll('duration')[0].innerHTML;
-                const durationInBeats = duration / divisions;
-                const durationInSeconds = durationInBeats * secondsPerBeat;
-                // Do not create note object for rests, only increase time
-                const isRest = note.querySelectorAll('rest').length > 0;
-                if (isRest) {
-                    currentTime += durationInSeconds;
-                    continue;
-                }
-                let pitch;
-                if (note.querySelectorAll('unpitched').length > 0) {
-                    // Handle drum notes
-                    const instrumentId = note.querySelectorAll('instrument')[0].id;
-                    pitch = drumInstrumentMap.get(part.id).get(instrumentId);
-                } else {
-                    // Get MIDI pitch
-                    // Handle <alter> tag for accidentals
-                    const alter = +(note.querySelectorAll('alter')[0]?.innerHTML ?? 0);
-                    const no = note.querySelectorAll('step')[0].innerHTML;
-                    const octave = +note.querySelectorAll('octave')[0].innerHTML;
-                    pitch = getMidiNoteByNameAndOctave(no, octave).pitch + alter;
-                }
-                // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
-                const isChord = note.querySelectorAll('chord').length > 0;
-                if (isChord) {
-                    currentTime -= lastNoteDuration;
-                }
-                // Is this note tied?
-                const tieElement = note.querySelectorAll('tie')[0];
-                if (tieElement && tieElement.getAttribute('type') === 'stop') {
-                    const noteEnd = currentTime + durationInSeconds;
-                    // Find last note with this pitch and update end
-                    for (let index = noteObjs.length - 1; index > 0; index--) {
-                        const n = noteObjs[index];
-                        if (n.pitch === pitch) {
-                            n.end = noteEnd;
-                            break;
+        // const notes = measure.querySelectorAll('note');
+        // for (const note of notes) {
+        for (const child of measure.children) {
+            if (child.nodeName === 'backup') {
+                const duration = +child.querySelectorAll('duration')[0].innerHTML;
+                const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
+                currentTime -= durationInSeconds;
+            } else if (child.nodeName === 'note') {
+                const note = child;
+                try {
+                    // Get note duration in seconds
+                    const duration = +note.querySelectorAll('duration')[0].innerHTML;
+                    const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
+                    // Do not create note object for rests, only increase time
+                    const isRest = note.querySelectorAll('rest').length > 0;
+                    if (isRest) {
+                        currentTime += durationInSeconds;
+                        continue;
+                    }
+                    let pitch;
+                    if (note.querySelectorAll('unpitched').length > 0) {
+                        // Handle drum notes
+                        const instrumentId = note.querySelectorAll('instrument')[0].id;
+                        pitch = drumInstrumentMap.get(part.id).get(instrumentId);
+                    } else {
+                        // Get MIDI pitch
+                        // Handle <alter> tag for accidentals
+                        const alter = +(note.querySelectorAll('alter')[0]?.innerHTML ?? 0);
+                        const step = note.querySelectorAll('step')[0].innerHTML;
+                        const octave = +note.querySelectorAll('octave')[0].innerHTML;
+                        pitch = getMidiNoteByNameAndOctave(step, octave).pitch + alter;
+                    }
+                    // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
+                    const isChord = note.querySelectorAll('chord').length > 0;
+                    if (isChord) {
+                        currentTime -= lastNoteDuration;
+                    }
+                    // Is this note tied?
+                    const tieElement = note.querySelectorAll('tie')[0];
+                    if (tieElement && tieElement.getAttribute('type') === 'stop') {
+                        const noteEnd = currentTime + durationInSeconds;
+                        // Find last note with this pitch and update end
+                        for (let index = noteObjs.length - 1; index > 0; index--) {
+                            const n = noteObjs[index];
+                            if (n.pitch === pitch) {
+                                n.end = noteEnd;
+                                break;
+                            }
+                        }
+                    } else {
+                        // Try to get guitar specific data
+                        let string = null;
+                        let fret = null;
+                        try {
+                            fret = +note.querySelectorAll('fret')[0].innerHTML;
+                            string = +note.querySelectorAll('string')[0].innerHTML;
+                        } catch {/* Do nothing */ }
+                        // Staff is used as note's channel for non-guitar notes
+                        const staff = +(note.querySelectorAll('staff')[0]?.innerHTML ?? 1) - 1;
+                        // TODO: use xml note type?
+                        // const type = note.getElementsByTagName('type')[0].innerHTML;
+                        const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION);
+                        const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION);
+                        if (string !== null && fret !== null) {
+                            noteObjs.push(new GuitarNote(
+                                pitch,
+                                startTime,
+                                127,
+                                string,
+                                endTime,
+                                string,
+                                fret,
+                            ));
+                        } else {
+                            noteObjs.push(new Note(
+                                pitch,
+                                startTime,
+                                127,
+                                staff,
+                                endTime,
+                            ));
                         }
                     }
-                } else {
-                    // Try to get guitar specific data
-                    let string = null;
-                    let fret = null;
-                    try {
-                        fret = +note.querySelectorAll('fret')[0].innerHTML;
-                        string = +note.querySelectorAll('string')[0].innerHTML;
-                    } catch {/* Do nothing */ }
-                    // TODO: use xml note type?
-                    // const type = note.getElementsByTagName('type')[0].innerHTML;
-                    const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION);
-                    const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION);
-                    if (string !== null && fret !== null) {
-                        noteObjs.push(new GuitarNote(
-                            pitch,
-                            startTime,
-                            127,
-                            string,
-                            endTime,
-                            string,
-                            fret,
-                        ));
-                    } else {
-                        noteObjs.push(new Note(
-                            pitch,
-                            startTime,
-                            127,
-                            0,
-                            endTime,
-                        ));
-                    }
+                    lastNoteDuration = durationInSeconds;
+                    currentTime += durationInSeconds;
+                } catch (error) {
+                    console.warn('[MusicXmlParser] Cannot parse MusicXML note', error, note);
                 }
-                lastNoteDuration = durationInSeconds;
-                currentTime += durationInSeconds;
-            } catch (error) {
-                console.warn('[MusicXmlParser] Cannot parse MusicXML note', error, note);
             }
         }
         // Add measure line position
@@ -237,6 +244,21 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     };
     // console.log('[MusicXmlParser] Parsed part: ', result);
     return result;
+}
+
+/**
+ * Calculates the duration in seconds of a note, rest or backup
+ *
+ * @private
+ * @param {number} duration duration of the event in divisions
+ * @param {number} divisions MusicXML time divisions value
+ * @param {number} secondsPerBeat seconds per beat
+ * @returns {number} duration in seconds
+ */
+function getDurationInSeconds(duration, divisions, secondsPerBeat) {
+    const durationInBeats = duration / divisions;
+    const durationInSeconds = durationInBeats * secondsPerBeat;
+    return durationInSeconds;
 }
 
 /**
@@ -303,6 +325,7 @@ function duplicateRepeatedMeasures(measures) {
  * note is described twice, we just need to remove those without string, fret
  * information
  *
+ * @todo need to remove <backup> tags? or remember to not consider them
  * @private
  * @param {HTMLElement} track a MusicXML track, i.e. its measures
  * @returns {HTMLCollection} cleaned-up MusicXML measure

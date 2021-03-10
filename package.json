@@ -80,8 +80,7 @@
       "<rootDir>/dist/"
     ],
     "collectCoverageFrom": [
-      "src/**/*.js",
-      "test/**/*.js"
+      "src/**/*.js"
     ]
   }
 }
