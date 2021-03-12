@@ -4,8 +4,6 @@ import midiParser from 'midi-parser-js';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';
 import NoteArray from './NoteArray';
-import { note } from '@tonaljs/tonal';
-
 /**
  * Represents a parsed MIDI or MusicXML file in a uniform format.
  */
