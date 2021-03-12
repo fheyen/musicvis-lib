@@ -68,6 +68,40 @@ describe('MusicPiece', () => {
         });
     });
 
+    describe('getNotesFromTracks', () => {
+        const file = readMidiFile('[Test] Multiple Parts.mid', GT_DIR);
+        const mp = MusicPiece.fromMidi('test', file);
+        test('all', () => {
+            expect(
+                mp.getNotesFromTracks('all')
+            ).toStrictEqual(
+                mp.tracks.flatMap(t => t.notes)
+            );
+        });
+        test('track 1', () => {
+            expect(
+                mp.getNotesFromTracks(1)
+            ).toStrictEqual(
+                mp.tracks[1].notes
+            );
+        });
+        test('multiple tracks', () => {
+            expect(
+                mp.getNotesFromTracks([1, 3])
+            ).toStrictEqual(
+                [...mp.tracks[1].notes, ...mp.tracks[3].notes]
+            );
+        });
+        test('multiple tracks sorted', () => {
+            expect(
+                mp.getNotesFromTracks([1, 3], true)
+            ).toStrictEqual(
+                [...mp.tracks[1].notes, ...mp.tracks[3].notes]
+                    .sort((a, b) => a.start - b.start)
+            );
+        });
+    });
+
     describe('fromMidi', () => {
         test('empty', () => {
             expect(() => MusicPiece.fromMidi()).toThrow('No MIDI file content given');
@@ -234,8 +268,24 @@ describe('MusicPiece', () => {
 });
 
 describe('Track', () => {
-    test('constructor', () => {
-        expect(() => new Track()).not.toThrow();
+    test('invalid constructor call', () => {
+        expect(() => new Track()).toThrow('Notes are undefined or not an array');
+    });
+    const notes = [
+        Note.from({ start: 1 }),
+        Note.from({ start: 0 }),
+        Note.from({ start: -1 }),
+        Note.from({ start: 2 }),
+    ];
+    test('valid constructor call', () => {
+        expect(() => new Track('testName', 'testInstrument', notes)).not.toThrow();
+    });
+    test('does sort notes by start time', () => {
+        expect(
+            new Track('testName', 'testInstrument', notes).notes.map(d => d.start)
+        ).toStrictEqual([
+            -1, 0, 1, 2
+        ]);
     });
 });
 

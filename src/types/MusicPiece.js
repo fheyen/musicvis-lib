@@ -4,6 +4,7 @@ import midiParser from 'midi-parser-js';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';
 import NoteArray from './NoteArray';
+import { note } from '@tonaljs/tonal';
 
 /**
  * Represents a parsed MIDI or MusicXML file in a uniform format.
@@ -173,11 +174,43 @@ class MusicPiece {
     /**
      * Returns an array with all notes from all tracks.
      *
+     * @deprecated use getNotesFromTracks('all') instead.
      * @param {boolean} sortByTime true: sort notes by time
      * @returns {Note[]} all notes of this piece
      */
     getAllNotes(sortByTime = false) {
         const notes = this.tracks.flatMap(t => t.notes);
+        if (sortByTime) {
+            notes.sort((a, b) => a.start - b.start);
+        }
+        return notes;
+    }
+
+    /**
+     * Returns an array with notes from the specified tracks.
+     *
+     * @param {string|number|number[]} indices either 'all', a number, or an
+     *      Array with numbers
+     * @param {boolean} sortByTime true: sort notes by time (not needed for a
+     *      single track)
+     * @returns {Note[]} Array with all notes from the specified tracks
+     */
+    getNotesFromTracks(indices, sortByTime = false) {
+        let notes = [];
+        if (indices === 'all') {
+            // Return all notes from all tracks
+            notes = this.tracks.flatMap(t => t.notes);
+        } else if (Array.isArray(indices)) {
+            // Return notes from some tracks
+            notes = this.tracks
+                .filter((d, i) => indices.includes(i))
+                .flatMap(t => t.notes);
+        } else {
+            // Return notes from a single track
+            notes = this.tracks[indices].notes;
+            // Notes in each tracks are already sorted
+            sortByTime = false;
+        }
         if (sortByTime) {
             notes.sort((a, b) => a.start - b.start);
         }
@@ -195,16 +228,22 @@ export class Track {
      * Do not use this constructor, but the static methods Track.fromMidi
      * and Track.fromMusicXml instead.
      *
+     * Notes will be sorted by start time.
+     *
      * @private
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
+     * @throws {'Notes are undefined or not an array'} for invalid notes
      */
     constructor(name, instrument, notes) {
         name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
         this.name = name;
         this.instrument = instrument;
-        this.notes = notes;
+        if (!notes || notes.length === undefined) {
+            throw new Error('Notes are undefined or not an array');
+        }
+        this.notes = notes.sort((a, b) => a.start - b.start);
         this.duration = new NoteArray(notes).getDuration();
     }
 
