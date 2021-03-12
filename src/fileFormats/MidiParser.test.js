@@ -272,7 +272,8 @@ describe('MidiFileParser', () => {
         ]);
     });
 
-    describe('Braking MIDI files', () => {
+    // Worked
+    describe.skip('Breaking MIDI files', () => {
         const files = listMidiFiles();
 
         test.each(files)('Exept no throw %s', (file) => {

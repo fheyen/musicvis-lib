@@ -209,7 +209,9 @@ class NoteArray {
      * @returns {NoteArray} this
      */
     forEach(func) {
-        this._notes.forEach((element, index, array) => func(element, index, array));
+        this._notes.forEach(
+            (element, index, array) => func(element, index, array)
+        );
         return this;
     }
 
@@ -242,7 +244,9 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     map(mapFunction) {
-        this._notes = this._notes.map((element, index, array) => mapFunction(element, index, array));
+        this._notes = this._notes.map(
+            (element, index, array) => mapFunction(element, index, array)
+        );
         return this;
     }
 

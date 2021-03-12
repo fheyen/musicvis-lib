@@ -113,7 +113,7 @@ export function matchGtAndRecordingNotes(recNotes, gtNotes) {
  * @returns {Map} matching
  */
 export function matchGtAndMultipleRecordings(recordings, gtNotes) {
-    const allRecNotes = recordings.map(d => d.notes).flat();
+    const allRecNotes = recordings.flatMap(d => d.notes);
     const groupedByPitch = group(gtNotes, d => d.pitch);
     const groupedByPitchRec = group(allRecNotes, d => d.pitch);
     const result = new Map();

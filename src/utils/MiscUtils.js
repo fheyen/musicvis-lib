@@ -38,6 +38,9 @@ export function deepCloneFlatObjectMap(map) {
  */
 export function groupNotesByPitch(tracks) {
     const allNotes = tracks.flat();
+    if (allNotes.length === 0) {
+        return new Map();
+    }
     return group(allNotes, d => d.pitch);
 }
 
