@@ -78,6 +78,8 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     let tempo = 120;
     let beats = 4;
     let beatType = 4;
+    // Default velocity is 90 https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
+    let velocity = 90;
     // Handle changing tempo and beat type
     const tempoChanges = [];
     const beatTypeChanges = [];
@@ -130,13 +132,28 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
 
         // Read notes
         let lastNoteDuration = 0;
-        // const notes = measure.querySelectorAll('note');
-        // for (const note of notes) {
         for (const child of measure.children) {
             if (child.nodeName === 'backup') {
+                // Handle backup, which reduces the current time to handle multiple staves
                 const duration = +child.querySelectorAll('duration')[0].innerHTML;
                 const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
                 currentTime -= durationInSeconds;
+            } else if (child.nodeName === 'direction') {
+                // Handle directions such as dynamics
+                for (const direction of child.children) {
+                    if (direction.nodeName === 'sound' && direction.getAttribute('dynamics')) {
+                        velocity = Math.round(+direction.getAttribute('dynamics'));
+                    }
+                    // TODO: handle others, e.g. tempo
+                    // if (direction.nodeName === 'sound' && direction.getAttribute('tempo')) {
+                    //     const tempoValue = Math.round(+direction.getAttribute('tempo'));
+                    //     tempo = roundToNDecimals(tempoValue, 3);
+                    //     tempoChanges.push({
+                    //         time: roundToNDecimals(currentTime, ROUNDING_PRECISION),
+                    //         tempo,
+                    //     });
+                    // }
+                }
             } else if (child.nodeName === 'note') {
                 const note = child;
                 try {
@@ -180,24 +197,24 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                             }
                         }
                     } else {
+                        // Staff is used as note's channel for non-guitar notes
+                        const staff = +(note.querySelectorAll('staff')[0]?.innerHTML ?? 1);
+                        // TODO: use xml note type?
+                        // const type = note.getElementsByTagName('type')[0].innerHTML;
+                        const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION);
+                        const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION);
                         // Try to get guitar specific data
                         let string = null;
                         let fret = null;
                         try {
                             fret = +note.querySelectorAll('fret')[0].innerHTML;
                             string = +note.querySelectorAll('string')[0].innerHTML;
-                        } catch {/* Do nothing */ }
-                        // Staff is used as note's channel for non-guitar notes
-                        const staff = +(note.querySelectorAll('staff')[0]?.innerHTML ?? 1) - 1;
-                        // TODO: use xml note type?
-                        // const type = note.getElementsByTagName('type')[0].innerHTML;
-                        const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION);
-                        const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION);
+                        } catch { }
                         if (string !== null && fret !== null) {
                             noteObjs.push(new GuitarNote(
                                 pitch,
                                 startTime,
-                                127,
+                                velocity,
                                 string,
                                 endTime,
                                 string,
@@ -207,8 +224,9 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                             noteObjs.push(new Note(
                                 pitch,
                                 startTime,
-                                127,
-                                staff,
+                                velocity,
+                                // MusicXML starts with 1 but MIDI with 0
+                                staff - 1,
                                 endTime,
                             ));
                         }
@@ -263,9 +281,9 @@ function getDurationInSeconds(duration, divisions, secondsPerBeat) {
 
 /**
  * Resolves repetitions by simply duplicating repeated measures.
+ * Handles volta lines (ending one, ending two).
  *
  * @todo handle 3x etc
- * @todo handle different endings
  * @todo write tests
  * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
  * @private
@@ -273,59 +291,97 @@ function getDurationInSeconds(duration, divisions, secondsPerBeat) {
  * @returns {HTMLAllCollection[]} processed measures
  */
 function duplicateRepeatedMeasures(measures) {
-    let repeatedMeasures = [];
-    let currentRepetition = [];
+    let resultMeasures = [];
+    let currentRepeatedSection = [];
+    let isAlternativeEndingOne = false;
     for (const measure of measures) {
-        const rep = measure.querySelectorAll('repeat');
-        if (rep.length === 2) {
+        // Check if this is the first measure of an volta ending 1
+        const endingMarks = measure.querySelectorAll('ending');
+        if (
+            +(endingMarks[0]?.getAttribute('number')) === 1
+            && endingMarks[0]?.getAttribute('type') === 'start'
+        ) {
+            isAlternativeEndingOne = true;
+        }
+        // Handle repetition marks
+        const repetitionMarks = measure.querySelectorAll('repeat');
+        if (repetitionMarks.length === 2) {
             // Only this measure is repeated
-            const times = rep[1].getAttribute('times') || 2;
+            // TODO: volta endings don't make sense here so no need to handle?
+            const times = repetitionMarks[1].getAttribute('times') || 2;
             const repetition = Array.from({ length: +times }).fill(measure);
-            if (currentRepetition.length === 0) {
-                repeatedMeasures = [...repeatedMeasures, ...repetition];
+            if (currentRepeatedSection.length === 0) {
+                resultMeasures = [...resultMeasures, ...repetition];
             } else {
-                currentRepetition = [...currentRepetition, ...repetition];
+                currentRepeatedSection = [...currentRepeatedSection, ...repetition];
             }
-        } else if (rep.length === 1) {
+        } else if (repetitionMarks.length === 1) {
             // Repetition either starts or ends here
-            const direction = rep[0].getAttribute('direction');
+            const direction = repetitionMarks[0].getAttribute('direction');
             if (direction === 'forward') {
                 // Start new repetition
-                currentRepetition.push(measure);
+                currentRepeatedSection.push(measure);
             } else if (direction === 'backward') {
-                const times = rep[0].getAttribute('times') || 2;
-                if (currentRepetition.length > 0) {
+                const times = repetitionMarks[0].getAttribute('times') || 2;
+                if (currentRepeatedSection.length > 0) {
                     // Finish current repetition
-                    currentRepetition.push(measure);
-                    for (let index = 0; index < times; index++) {
-                        repeatedMeasures = [...repeatedMeasures, ...currentRepetition];
+                    if (!isAlternativeEndingOne) {
+                        currentRepeatedSection.push(measure);
+                        for (let index = 0; index < times; index++) {
+                            resultMeasures = [...resultMeasures, ...currentRepeatedSection];
+                        }
+                    } else {
+                        // Only include ending 1 in first repetition
+                        const firstRepetition = [...currentRepeatedSection, measure];
+                        resultMeasures = [...resultMeasures, ...firstRepetition];
+                        for (let index = 1; index < times; index++) {
+                            resultMeasures = [...resultMeasures, ...currentRepeatedSection];
+                        }
                     }
-                    currentRepetition = [];
+                    currentRepeatedSection = [];
                 } else {
                     // Repetition started at the start of the piece, repeat all
                     // we have until here
-                    repeatedMeasures = [...repeatedMeasures, ...repeatedMeasures];
+                    const allMeasuresUntilHere = [...resultMeasures];
+                    for (let index = 1; index < times; index++) {
+                        resultMeasures = [...resultMeasures, ...allMeasuresUntilHere];
+                    }
+                    // resultMeasures = [...resultMeasures, ...resultMeasures];
                 }
             }
         } else {
-            // Measure without repetition marks, but might still be inside a
-            // repetition
-            if (currentRepetition.length === 0) {
-                repeatedMeasures.push(measure);
-            } else {
-                currentRepetition.push(measure);
+            if (!isAlternativeEndingOne) {
+                // Measure without repetition marks, but might still be inside a
+                // repetition
+                if (currentRepeatedSection.length === 0) {
+                    resultMeasures.push(measure);
+                } else {
+                    currentRepeatedSection.push(measure);
+                }
+            }
+        }
+        // Check if this is the last measure of a volta ending 1
+        if (isAlternativeEndingOne) {
+            for (const endingMark of endingMarks) {
+                if (
+                    +(endingMark.getAttribute('number')) === 1
+                    && endingMark.getAttribute('type') === 'stop'
+                ) {
+                    isAlternativeEndingOne = false;
+                }
             }
         }
     }
-    return repeatedMeasures;
+    return resultMeasures;
 }
 
 /**
  * Handles MusicXML measures that contain both a stave and a tab. Since every
  * note is described twice, we just need to remove those without string, fret
  * information
+ * This function also removes <backup> tags which should not be necessary after
+ * removing dublicate notes (only if string, fret notes were found).
  *
- * @todo need to remove <backup> tags? or remember to not consider them
  * @private
  * @param {HTMLElement} track a MusicXML track, i.e. its measures
  * @returns {HTMLCollection} cleaned-up MusicXML measure
@@ -349,6 +405,12 @@ function handleStaveAndTab(track) {
             if (note.querySelectorAll('fret').length === 0) {
                 note.remove();
             }
+        }
+        // Also remove <backup> tags which were only there due to having to
+        // staves
+        const backups = track.querySelectorAll('backup');
+        for (const backup of backups) {
+            backup.remove();
         }
     }
     return track;
