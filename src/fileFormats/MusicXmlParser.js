@@ -138,6 +138,11 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                 const duration = +child.querySelectorAll('duration')[0].innerHTML;
                 const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
                 currentTime -= durationInSeconds;
+            } else if (child.nodeName === 'forward') {
+                // Forward is inverse of backward
+                const duration = +child.querySelectorAll('duration')[0].innerHTML;
+                const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
+                currentTime += durationInSeconds;
             } else if (child.nodeName === 'direction') {
                 // Handle directions such as dynamics
                 for (const direction of child.children) {
