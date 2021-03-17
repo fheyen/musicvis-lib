@@ -1,5 +1,5 @@
 import { max, min } from 'd3';
-import DynamicTimeWarping from 'dynamic-time-warping-2';
+// import DynamicTimeWarping from 'dynamic-time-warping-2';
 import { Note } from '../types/Note'; /* eslint-disable-line no-unused-vars */
 
 /**
@@ -68,16 +68,16 @@ export function getSimilarParts(track, selectedInterval, stride, threshold, seco
 }
 
 /**
- * Uses dynamic time warping (DTW) to calculate the distance between
+ * Uses calculates the distance between
  * two discretized tracks, for each pitch separately.
- * Pitch-wise distances are averaged and a penalty if added to the distance
+ * Pitch-wise distances are averaged and a penalty is added to the distance
  * for pitches that are not occuring in both tracks
  *
  * @see https://github.com/GordonLesti/dynamic-time-warping
  *
  * @param {Map} discrA discretized track
  * @param {Map} discrB discretized track
- * @param {string} distance one of: 'dtw', 'euclidean', 'nearest'
+ * @param {string} distance one of: 'euclidean', 'nearest'
  * @returns {number} distance
  */
 export function getTrackSimilarity(discrA, discrB, distance) {
@@ -96,8 +96,8 @@ export function getTrackSimilarity(discrA, discrB, distance) {
         const binsB = discrB.get(pitch);
         let dist;
         if (distance === 'dtw') {
-            const dtw = new DynamicTimeWarping(binsA, binsB, (a, b) => Math.abs(a - b));
-            dist = dtw.getDistance();
+            // const dtw = new DynamicTimeWarping(binsA, binsB, (a, b) => Math.abs(a - b));
+            // dist = dtw.getDistance();
         } else if (distance === 'euclidean') {
             dist = euclideanDistanceSquared(binsA, binsB);
         } else if (distance === 'nearest') {
@@ -187,7 +187,6 @@ function sliceDiscretizedTrack(trackMap, startBin, endBin) {
     return slice;
 }
 
-
 /**
  * Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},
  * i.e. Euclidean distance but without square root
@@ -255,86 +254,4 @@ function neirestNeighborDistance(A, B) {
         sum += offset;
     }
     return sum;
-}
-
-
-// TODO: get similarity without binning by just comparing note start times
-
-
-
-
-/**
- * @param {Note[]} notes notes
- * @todo abandones for now
- * @todo use a greedy approach:
- * Start at the first notes start and take the first 2 notes
- *
- * @returns {void}
- */
-export function getSimilarPartsViaMatching(notes) {
-    // TODO: Sort notes by time AND pitch to make sure chords are in the same order?
-
-    if (notes === undefined) {
-        console.log('[Similarity] Undefined notes');
-        return [];
-    }
-
-    if (notes.length < 5) {
-        console.log('[Similarity] Not enough notes to calculate similar parts');
-        return [];
-    }
-
-    let finished = [];
-
-    for (let sequenceStart = 0; sequenceStart < notes.length - 3; sequenceStart++) {
-        // Take first note
-        let currentIndex = sequenceStart;
-        const startNote = notes[currentIndex];
-
-        // Get all notes with same pitch
-        let candidateSequences = [];
-        for (const [index, n] of notes.entries()) {
-            if (n.pitch === startNote.pitch) {
-                candidateSequences.push({
-                    startIndex: index,
-                    length: 1,
-                });
-            }
-        }
-        currentIndex++;
-
-        // For each of those start notes, see if the following notes are the same
-        while (currentIndex < notes.length && candidateSequences.length > 1) {
-            const nextPitch = notes[currentIndex].pitch;
-            // Only keep best candidates
-            candidateSequences = candidateSequences.filter(cs => {
-                const nextIndex = cs.startIndex + currentIndex;
-                if (nextIndex < notes.length) {
-                    const next = notes[nextIndex];
-                    if (next.pitch === nextPitch) {
-                        cs.length++;
-                        return true;
-                    }
-                }
-                // Remove
-                finished.push(cs);
-                return false;
-            });
-            currentIndex++;
-        }
-    }
-
-    // Filter out short sequences
-    finished = finished.filter(d => d.length > 4).sort((a, b) => a.length - b.length);
-
-    for (const f of finished) {
-        const { startIndex, length } = f;
-        const end = startIndex + length;
-        console.log(`Sequence ${startIndex} - ${end} length ${length}`);
-        const seq = notes.slice(startIndex, end);
-        console.log(seq.map(d => d.pitch).join(', '));
-    }
-
-
-
 }

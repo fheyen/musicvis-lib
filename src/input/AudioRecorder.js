@@ -1,6 +1,7 @@
 /**
  * Allows to record audio blobs.
  *
+ * @module input/AudioRecorder
  * @example
  * Usage (only in async functions):
  *     const recorder = await recordAudio();

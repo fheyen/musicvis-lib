@@ -1,4 +1,8 @@
 /**
+ * @module stringBased/LongestCommonSubsequence
+ */
+
+/**
  * Calculates the longest common subsequence.
  *
  * @see https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript

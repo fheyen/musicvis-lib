@@ -2,6 +2,10 @@ import NoteArray from '../types/NoteArray';
 import { group, max } from 'd3';
 
 /**
+ * @module alignment/DiffAlignment
+ */
+
+/**
  * Global alignment.
  *
  * Returns an array with matches sorted by magnitude of agreement.

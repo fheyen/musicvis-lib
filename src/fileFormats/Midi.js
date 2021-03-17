@@ -1,8 +1,8 @@
 /**
  * Lookup for many MIDI specifications.
  *
+ * @module fileFormats/Midi
  * @see https://soundprogramming.net/file-formats/
- * @module Midi
  */
 
 

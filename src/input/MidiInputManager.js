@@ -2,6 +2,8 @@ import Note from '../types/Note';
 
 /**
  * Handles incoming MIDI messages from a MIDI device.
+ *
+ * @module input/MidiInputManager
  */
 class MidiInputManager {
 
@@ -45,8 +47,8 @@ class MidiInputManager {
     constructor(
         getMidiLiveData,
         setMidiLiveData,
-        addCurrentNote = () => {},
-        removeCurrentNote = () => {},
+        addCurrentNote = () => { },
+        removeCurrentNote = () => { },
     ) {
         this.#getMidiLiveData = getMidiLiveData;
         this.#setMidiLiveData = setMidiLiveData;
@@ -80,7 +82,7 @@ class MidiInputManager {
         //     console.log(` - ${output.name}`);
         // }
         // console.groupEnd();
-    }
+    };
 
     /**
      * Handles MIDI access errors
@@ -125,7 +127,7 @@ class MidiInputManager {
         default:
             // TODO: handle other commands?
         }
-    }
+    };
 
     /**
      * Handles note-on messages

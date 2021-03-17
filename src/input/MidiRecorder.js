@@ -3,6 +3,7 @@ import Note from '../types/Note';
 /**
  * Records incoming MIDI messages from a MIDI device.
  *
+ * @module input/MidiRecorder
  * @example
  * Usage (only in async functions):
  *     const recorder = await recordMidi();

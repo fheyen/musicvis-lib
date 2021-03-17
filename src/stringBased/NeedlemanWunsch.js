@@ -1,4 +1,9 @@
 /* eslint-disable unicorn/prefer-spread */
+
+/**
+ * @module stringBased/NeedlemanWunsch
+ */
+
 /**
  * Needleman-Wunsch algorithm
  *

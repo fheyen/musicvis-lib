@@ -4,6 +4,9 @@ import * as Gotoh from './Gotoh';
 import * as SuffixTree from './SuffixTree';
 import NeedlemanWunsch from './NeedlemanWunsch';
 
+/**
+ * @module stringBased
+ */
 
 export {
     Levenshtein,

@@ -61,6 +61,7 @@ describe('NoteArray', () => {
         );
     });
 
+
     test('concat', () => {
         const na = new NoteArray([
             new Note(69, 0.0, 127, 0, 1.0),
@@ -74,6 +75,7 @@ describe('NoteArray', () => {
         ]);
         expect(na.clone().concat(na).getNotes()).toStrictEqual(na2.getNotes());
     });
+
 
     describe('append', () => {
         test('no gap', () => {
@@ -108,6 +110,7 @@ describe('NoteArray', () => {
             expect(newNa.getNotes()).toStrictEqual(na2.getNotes());
         });
     });
+
 
     describe('repeat', () => {
         const na = new NoteArray([
@@ -219,6 +222,7 @@ describe('NoteArray', () => {
         expect(na.clone().shiftToStartAt(0).getStartTime()).toBe(0);
     });
 
+
     test('has correct duration when scaled', () => {
         expect(na.clone().scaleTime(2.0).getDuration()).toBe(6.0);
     });
@@ -229,11 +233,13 @@ describe('NoteArray', () => {
         expect(na.equals(transp)).toBe(true);
     });
 
+
     test('transposed transitively', () => {
         const transp1 = na.clone().transpose(6).transpose(6);
         const transp2 = na.clone().transpose(12);
         expect(transp1.equals(transp2)).toBe(true);
     });
+
 
     test('removeOctaves', () => {
         const na = new NoteArray([
@@ -251,6 +257,7 @@ describe('NoteArray', () => {
             new Note(7, 2.0, 127, 0, 3.0),
         ]);
     });
+
 
     test('forEach', () => {
         const na = new NoteArray([
@@ -271,6 +278,7 @@ describe('NoteArray', () => {
         ]));
         expect(processed.getNotes()).toStrictEqual(expected.getNotes());
     });
+
 
     test('sort', () => {
         const na = new NoteArray([
@@ -297,6 +305,7 @@ describe('NoteArray', () => {
         expect(sorted.getNotes()).toStrictEqual(expected.getNotes());
     });
 
+
     test('sortByTime', () => {
         const na = new NoteArray([
             Note.from({ start: 3.5 }),
@@ -322,6 +331,7 @@ describe('NoteArray', () => {
         expect(sorted.getNotes()).toStrictEqual(na2.getNotes());
     });
 
+
     test('map', () => {
         const na = new NoteArray([
             new Note(71, 1.0, 20),
@@ -334,6 +344,7 @@ describe('NoteArray', () => {
         const mapped = na.clone().map(n => Note.from({ ...n, velocity: n.velocity * 2 }));
         expect(mapped.getNotes()).toStrictEqual(na2.getNotes());
     });
+
 
     describe('scliceTime', () => {
         const toSlice = new NoteArray([
@@ -521,6 +532,36 @@ describe('NoteArray', () => {
         });
     });
 
+
+    // TODO: test other modes? more edge cases?
+    describe('sliceAtTimes', () => {
+        const toSlice = new NoteArray([
+            Note.from({ start: 0, end: 1 }),
+            Note.from({ start: 1, end: 2 }),
+            Note.from({ start: 1, end: 2 }),
+            Note.from({ start: 2, end: 3 }),
+        ]);
+
+        test('complete piece in one slice', () => {
+            expect(
+                toSlice.sliceAtTimes([3], 'touched')
+            ).toStrictEqual([
+                toSlice.getNotes()
+            ]);
+        });
+
+        test('one chord in each slice', () => {
+            expect(
+                toSlice.sliceAtTimes([1, 2, 3], 'start')
+            ).toStrictEqual([
+                [Note.from({ start: 0, end: 1 })],
+                [Note.from({ start: 1, end: 2 }), Note.from({ start: 1, end: 2 })],
+                [Note.from({ start: 2, end: 3 })],
+            ]);
+        });
+    });
+
+
     test('filter', () => {
         const na = new NoteArray([
             new Note(69, 0.0, 127, 0, 1.0),
@@ -536,7 +577,8 @@ describe('NoteArray', () => {
         expect(filtered.getNotes()).toStrictEqual(na2.getNotes());
     });
 
-    test('filterPitches', () => {
+
+    describe('filterPitches', () => {
         const na = new NoteArray([
             new Note(69, 0.0, 127, 0, 1.0),
             new Note(71, 1.0, 127, 0, 2.0),
@@ -547,9 +589,16 @@ describe('NoteArray', () => {
             new Note(71, 1.0, 127, 0, 2.0),
             new Note(67, 2.0, 127, 0, 3.0),
         ]);
-        const filtered = na.clone().filterPitches([71, 67]);
-        expect(filtered.getNotes()).toStrictEqual(na2.getNotes());
+        test('array', () => {
+            const filtered = na.clone().filterPitches([71, 67]);
+            expect(filtered.getNotes()).toStrictEqual(na2.getNotes());
+        });
+        test('Set', () => {
+            const filtered = na.clone().filterPitches(new Set([71, 67]));
+            expect(filtered.getNotes()).toStrictEqual(na2.getNotes());
+        });
     });
+
 
     describe('reverse', () => {
         test('same when reversed', () => {

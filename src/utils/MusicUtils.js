@@ -1,6 +1,9 @@
 import { countOnesOfBinary } from './MathUtils';
 import { binarySearch } from './ArrayUtils';
 
+/**
+ * @module utils/MusicUtils
+ */
 
 /**
  * Converts beats per minute to seconds per beat

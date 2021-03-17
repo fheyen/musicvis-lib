@@ -468,7 +468,7 @@ const keySignatureMap = new Map([
 ]);
 
 /**
- * Retruns a map containing maps, such that result.get(partId).get(instrId)
+ * Returns a map containing maps, such that result.get(partId).get(instrId)
  * gives you the instrument with the ID instrId as defined in the part partId.
  *
  * This is needed to map drum notes to MIDI pitches.

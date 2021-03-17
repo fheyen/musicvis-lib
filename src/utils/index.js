@@ -10,6 +10,9 @@ import { filterRecordingNoise, clipRecordingsPitchesToGtRange, recordingsHeatmap
 import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from './StatisticsUtils';
 import { pingMidiDevice } from './WebMidiUtils';
 
+/**
+ * @module utils
+ */
 export {
     // Array
     arrayShallowEquals,

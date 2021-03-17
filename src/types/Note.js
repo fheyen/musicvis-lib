@@ -3,6 +3,8 @@ import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi';
 /**
  * Note class that reflects MIDI properties but has
  * absolute start and end times in seconds.
+ *
+ * @module types/Note
  */
 class Note {
     /**

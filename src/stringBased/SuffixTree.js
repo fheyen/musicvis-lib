@@ -2,6 +2,12 @@
 import { arrayShallowEquals } from '../utils/ArrayUtils';
 
 /**
+ * @module stringBased/SuffixTree
+ */
+
+/**
+ * Suffix tree, a tree that shows which subsequences are repeated
+ *
  * @see https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
  */
 class SuffixTree {

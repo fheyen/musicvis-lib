@@ -1,4 +1,9 @@
 /**
+ * @module stringBased/Gotoh
+ */
+
+
+/**
  * Calculates the SIMILARITY for two strings or arrays.
  * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
  * IMPORTANT: This metric is not symmetric!

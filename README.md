@@ -21,6 +21,7 @@ This library is still in early and active development.
    3. [How to use](#how-to-use)
    4. [Examples](#examples)
    5. [Contributing](#contributing)
+   6. [Credits](#credits)
 
 ## Setup
 
@@ -89,3 +90,7 @@ Here are some examples that show for what `musicvis-lib` can be used:
 If you like to contribute, feel free to create pull requests or [issues](https://github.com/fheyen/musicvis-lib/issues).
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for more.
+
+## Credits
+
+See [CREDITS.md](./CREDITS.md).

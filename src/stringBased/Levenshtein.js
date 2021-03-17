@@ -1,4 +1,8 @@
 /**
+ * @module stringBased/Levenshtein
+ */
+
+/**
  * Computes the Levenshtein distance of two strings or arrays.
  *
  * @see https://gist.github.com/andrei-m/982927#gistcomment-1931258

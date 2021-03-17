@@ -7,6 +7,7 @@ import { min } from 'd3';
  * This class represents an array of note objects.
  * This can be used to simplify operations on a track.
  *
+ * @module types/NoteArray
  * @example
  *   const notes = [
  *       // Some Note objects
@@ -312,11 +313,42 @@ class NoteArray {
     }
 
     /**
+     * Slices this NoteArray into slices by the given times. Will not return
+     * NoteArrays but simple Note[][], where each item contains all notes of one
+     * time slice. Do not include 0, it will be assumed as first time to slice.
+     * To make sure notes are not contained twice in different slices use the
+     * mode 'start'.
+     *
+     * @param {number[]} times points of time at which to slice (in seconds)
+     * @param {string} mode see NoteArray.sliceTime()
+     * @returns {Note[][]} time slices
+     * @example
+     *      // Slice into 1 second slices
+     *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
+     */
+    sliceAtTimes(times, mode) {
+        const slices = [];
+        let lastTime = 0;
+        for (const time of times) {
+            slices.push(
+                this.clone()
+                    .sliceTime(lastTime, time, mode)
+                    .getNotes(),
+            );
+            lastTime = time;
+        }
+        return slices;
+    }
+
+    /**
      * Filters the NoteArray like you would filter via Array.filter().
      *
      * @param {Function} filterFunction filter function, same signature as
      *      Array.filter()
      * @returns {NoteArray} itself
+     * @example
+     *      // Only keep notes longer than 1 second
+     *      const filtered = noteArray.filter(note=>note.getDuration()>1);
      */
     filter(filterFunction) {
         this._notes = this._notes.filter((element, index, array) => filterFunction(element, index, array));
@@ -326,11 +358,14 @@ class NoteArray {
     /**
      * Filters by pitch, keeping only pitches specified in <pitches>
      *
-     * @param {number[]} pitches array of pitches to keep
+     * @param {number[]|Set<number>} pitches array or Set of pitches to keep
      * @returns {NoteArray} itself
      */
     filterPitches(pitches) {
-        this._notes = this._notes.filter(n => pitches.includes(n.pitch));
+        if (!(pitches instanceof Set)) {
+            pitches = new Set(pitches);
+        }
+        this._notes = this._notes.filter(n => pitches.has(n.pitch));
         return this;
     }
 

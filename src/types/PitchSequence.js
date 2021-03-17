@@ -5,6 +5,7 @@ import { getMidiNoteByNr } from '../fileFormats/Midi';
  * manipulate it.
  *
  * @todo implement keepOnlyHighestConcurrentNotes
+ * @module types/PitchSequence
  */
 class PitchSequence {
 
