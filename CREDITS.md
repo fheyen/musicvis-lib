@@ -27,3 +27,7 @@ Damerau-Levenshtein: [this Wikipedia article](https://en.wikipedia.org/wiki/Dame
 ### Counting 1s in a Binary Number
 
 [prismoskills.appspot.com](https://prismoskills.appspot.com/lessons/Bitwise_Operators/Count_ones_in_an_integer.jsp)
+
+## Library Development
+
+- [Exporting TypeScript types from jsDoc comments](https://codewithhugo.com/jsdoc-typescript-typings-types-d-ts/) [repo](https://github.com/HugoDF/jsdoc-type-d-ts-node-pkg)

@@ -25,6 +25,7 @@
     "string comparison"
   ],
   "main": "dist/musicvislib.js",
+  "types": "./types.d.ts",
   "scripts": {
     "upd": "npm-check-updates -u",
     "upd:i": "npm-check-updates -u && npm i",
@@ -36,8 +37,9 @@
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
+    "types": "jsdoc -t node_modules/tsd-jsdoc/dist -r src -d .",
     "lint": "eslint --fix src; remark .",
-    "predeploy": "eslint --fix src && npm run build:all && jest --silent && npm run doc",
+    "predeploy": "eslint --fix src && npm run build:all && jest --silent && && npm run types && npm run doc",
     "deploy": "npm publish && git add . && git commit -m 'new version build'; git push; git push origin --tags"
   },
   "dependencies": {
@@ -72,6 +74,7 @@
     "remark-lint": "^8.0.0",
     "remark-preset-lint-recommended": "^5.0.0",
     "source-map-loader": "^2.0.1",
+    "tsd-jsdoc": "^2.5.0",
     "webpack": "^5.25.0",
     "webpack-cli": "^4.5.0"
   },
