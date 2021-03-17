@@ -4,7 +4,7 @@ import { noteColorFromPitch } from '../utils/NoteColorUtils';
 
 const tuning = Lamellophone.lamellophoneTunings?.get('Kalimba')?.get('17 C Major');
 
-describe('Kalimba', () => {
+describe('Lamellophone', () => {
     describe('tunings', () => {
         test('tunings are defined', () => {
             expect(Lamellophone.lamellophoneTunings).toBeDefined();

@@ -75,6 +75,7 @@ export function gotoh(
  *
  * @todo does this work with negative costs and/or results?
  * @todo can this be optimized since only the similarityFunction is needed?
+ * @todo only compute 'a' matrix for maxSimilarity
  * @param {string|Array} seqA a sequence
  * @param {string|Array} seqB a sequence
  * @param {Function} similarityFunction a function that takes two elements and

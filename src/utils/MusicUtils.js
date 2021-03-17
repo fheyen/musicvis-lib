@@ -1,3 +1,6 @@
+import { countOnesOfBinary } from './MathUtils';
+import { binarySearch } from './ArrayUtils';
+
 
 /**
  * Converts beats per minute to seconds per beat
@@ -7,6 +10,52 @@
  */
 export function bpmToSecondsPerBeat(bpm) {
     return 1 / (bpm / 60);
+}
+
+/**
+ * Turns a chord into an integer that uniquely describes the occuring chroma.
+ * If the same chroma occurs twice this will not make a difference
+ * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
+ *
+ * How it works:
+ * Chord has C, E, and G
+ * x = 000010010001
+ *         G  E   C
+ *
+ * @param {Note[]} notes notes
+ * @returns {number} an integer that uniquely identifies this chord's chroma
+ */
+export function chordToInteger(notes) {
+    let value = 0x0;
+    for (const note of notes) {
+        const chroma = note.pitch % 12;
+        // eslint-disable-next-line no-bitwise
+        const noteInteger = 1 << chroma;
+        // eslint-disable-next-line no-bitwise
+        value = value | noteInteger;
+    }
+    return value;
+}
+
+/**
+ * Takes two chord integer representations from chordToInteger() and computes
+ * the Jackard index
+ *
+ * @param {number} chord1 chord as integer representation
+ * @param {number} chord2 chord as integer representation
+ * @returns {number} Jackard index, from 0 for different to 1 for identical
+ */
+export function chordIntegerJackardIndex(chord1, chord2) {
+    if (chord1 === chord2) {
+        return 1;
+    }
+    // eslint-disable-next-line no-bitwise
+    const intersection = chord1 & chord2;
+    // eslint-disable-next-line no-bitwise
+    const union = chord1 | chord2;
+    const intersectionSize = countOnesOfBinary(intersection);
+    const unionSize = countOnesOfBinary(union);
+    return intersectionSize / unionSize;
 }
 
 /**
@@ -54,45 +103,4 @@ export function noteDurationToNoteType(duration, bpm) {
 
     // Binary search
     return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
-}
-
-/**
- * Returns the value in array that is closest to value.
- * Array MUST be sorted ascending.
- *
- * @todo move to arrayutils
- * @param {Array} array array
- * @param {*} value value
- * @param {Function} accessor accessor
- * @returns {*} value in array closest to value
- */
-export function binarySearch(array, value, accessor = d => d) {
-    // console.log('search', array, 'for', value);
-    // Handle short arrays
-    if (array.length <= 3) {
-        let closest = null;
-        let diff = Number.POSITIVE_INFINITY;
-        for (const element of array) {
-            const value_ = accessor(element);
-            const diff2 = Math.abs(value - value_);
-            if (diff2 < diff) {
-                closest = element;
-                diff = diff2;
-            }
-        }
-        return closest;
-    }
-    // Split longer array in two for binary search
-    const pivotPosition = Math.floor(array.length / 2);
-    const pivotElement = array[pivotPosition];
-    const pivotValue = accessor(pivotElement);
-    if (value === pivotValue) {
-        return pivotElement;
-    }
-    if (value < pivotValue) {
-        return binarySearch(array.slice(0, pivotPosition + 1), value, accessor);
-    }
-    if (value > pivotValue) {
-        return binarySearch(array.slice(pivotPosition - 1), value, accessor);
-    }
 }

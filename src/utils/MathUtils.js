@@ -64,6 +64,23 @@ export function swapSoSmallerFirst(x, y) {
 }
 
 /**
+ * Counts the number of 1s in a binary number, e.g 100101 has 3 1s
+ *
+ * @see https://prismoskills.appspot.com/lessons/Bitwise_Operators/Count_ones_in_an_integer.jsp
+ * @param {number} integer an integer number
+ * @returns {number} number of 1s
+ */
+export function countOnesOfBinary(integer) {
+    let count = 0;
+    while (integer !== 0) {
+        // eslint-disable-next-line no-bitwise
+        integer = integer & (integer - 1);
+        count++;
+    }
+    return count;
+}
+
+/**
  * Local maxima are found by looking at entries that are higher than their left
  * and right neighbor, or higher than their only neighbor if they are at the
  * boundary.

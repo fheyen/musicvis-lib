@@ -1,4 +1,4 @@
-import { randFloat, clipValue, roundToNDecimals, choose, swapSoSmallerFirst, findLocalMaxima } from './MathUtils';
+import { randFloat, clipValue, roundToNDecimals, choose, swapSoSmallerFirst, countOnesOfBinary, findLocalMaxima } from './MathUtils';
 
 
 
@@ -91,6 +91,25 @@ describe('MathUtils', () => {
 
         test('incorrect', () => {
             expect(swapSoSmallerFirst(2, 1)).toStrictEqual([1, 2]);
+        });
+    });
+
+    describe('countOnesOfBinary', () => {
+        test.each([
+            ['00000000', 0],
+            ['01001011', 4],
+            ['11001011', 5],
+        ])('some cases from strings %s', (binaryString, result) => {
+            const binary = parseInt(binaryString, 2);
+            expect(countOnesOfBinary(binary)).toBe(result);
+        });
+
+        test.each([
+            [0, 0],
+            [4 + 8 + 32, 3],
+            [1 + 4 + 16 + 32, 4],
+        ])('some cases from sums %s', (binary, result) => {
+            expect(countOnesOfBinary(binary)).toBe(result);
         });
     });
 

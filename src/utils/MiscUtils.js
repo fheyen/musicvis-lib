@@ -7,7 +7,7 @@ import { group } from 'd3';
 /**
  * Converts beats per minute to seconds per beat
  *
- * @todo move to MusicUtils
+ * @deprecated use MusicUtils.bpmToSecondsPerBeat instead
  * @param {number} bpm tempo in beats per minute
  * @returns {number} seconds per beat
  */
