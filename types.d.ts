@@ -35,61 +35,60 @@ declare module "comparison/Alignment" {
     function alignmentBenchmark(): void;
 }
 
-/**
- * Global alignment.
- *
- * Returns an array with matches sorted by magnitude of agreement.
- * The offsetMilliseconds value describes at what time the first note of the
- * recording should start.
- *
- * Goal: Know which part of ground truth (GT) was played in recording (rec)
- * Assumptions:
- * - Rec has same tempo as GT
- * - Rec does not start before GT
- * - Rec does not repeat something that is not repeated in the GT
- * - Rec does not have gaps
- * Ideas:
- * - Brute-force
- * - Sliding window
- * - Using diff between time-pitch matrix of GT and rec
- * - Only compute agreement (correct diff part) for the current overlap
- * - For each time position save the agreement magnitude
- * - Optionally: repeat around local maxima with finer binSize
- * @param gtNotes - ground truth notes
- * @param recNotes - recorded notes
- * @param binSize - time bin size in milliseconds
- * @returns best offsets with agreements
- */
-declare function alignGtAndRecToMinimizeDiffError(gtNotes: Note[], recNotes: Note[], binSize: number): object[];
-
-/**
- * Returns an activation map, that maps pitch to an array of time bins.
- * Each bin contains a 0 when there is no note or a 1 when there is one.
- * @param allNotes - notes
- * @param binSize - time bin size in milliseconds
- * @returns activation map
- */
-declare function activationMap(allNotes: Note[], binSize: number): Map;
-
-/**
- * Given two activation maps, simply counts the number of bins [pitch, time]
- * where both have a 1, so an acitve note
- * Gtmust be longer than rec
- * @param gtActivations - see activationMap()
- * @param recActivations - see activationMap()
- * @param offset - offset for activation2 when comparing
- * @returns agreement
- */
-declare function agreement(gtActivations: Map, recActivations: Map, offset: number): number;
-
-/**
- * Aligns the recording to the best fitting position of the ground truth
- * @param gtNotes - ground truth notes
- * @param recording - a Recording object
- * @param binSize - time bin size in milliseconds
- * @returns aligned recording
- */
-declare function alignRecordingToBestFit(gtNotes: Note[], recording: Recording, binSize: number): Recording;
+declare module "alignment/DiffAlignment" {
+    /**
+     * Global alignment.
+     *
+     * Returns an array with matches sorted by magnitude of agreement.
+     * The offsetMilliseconds value describes at what time the first note of the
+     * recording should start.
+     *
+     * Goal: Know which part of ground truth (GT) was played in recording (rec)
+     * Assumptions:
+     * - Rec has same tempo as GT
+     * - Rec does not start before GT
+     * - Rec does not repeat something that is not repeated in the GT
+     * - Rec does not have gaps
+     * Ideas:
+     * - Brute-force
+     * - Sliding window
+     * - Using diff between time-pitch matrix of GT and rec
+     * - Only compute agreement (correct diff part) for the current overlap
+     * - For each time position save the agreement magnitude
+     * - Optionally: repeat around local maxima with finer binSize
+     * @param gtNotes - ground truth notes
+     * @param recNotes - recorded notes
+     * @param binSize - time bin size in milliseconds
+     * @returns best offsets with agreements
+     */
+    function alignGtAndRecToMinimizeDiffError(gtNotes: Note[], recNotes: Note[], binSize: number): object[];
+    /**
+     * Returns an activation map, that maps pitch to an array of time bins.
+     * Each bin contains a 0 when there is no note or a 1 when there is one.
+     * @param allNotes - notes
+     * @param binSize - time bin size in milliseconds
+     * @returns activation map
+     */
+    function activationMap(allNotes: Note[], binSize: number): Map;
+    /**
+     * Given two activation maps, simply counts the number of bins [pitch, time]
+     * where both have a 1, so an acitve note
+     * Gtmust be longer than rec
+     * @param gtActivations - see activationMap()
+     * @param recActivations - see activationMap()
+     * @param offset - offset for activation2 when comparing
+     * @returns agreement
+     */
+    function agreement(gtActivations: Map, recActivations: Map, offset: number): number;
+    /**
+     * Aligns the recording to the best fitting position of the ground truth
+     * @param gtNotes - ground truth notes
+     * @param recording - a Recording object
+     * @param binSize - time bin size in milliseconds
+     * @returns aligned recording
+     */
+    function alignRecordingToBestFit(gtNotes: Note[], recording: Recording, binSize: number): Recording;
+}
 
 declare module "Chords" {
     /**
@@ -262,13 +261,13 @@ declare module "comparison/Similarity" {
      */
     function getSimilarParts(track: Note[], selectedInterval: number[], stride: number, threshold: number, secondsPerBin: number, distance: string): any;
     /**
-     * Uses dynamic time warping (DTW) to calculate the distance between
+     * Uses calculates the distance between
      * two discretized tracks, for each pitch separately.
-     * Pitch-wise distances are averaged and a penalty if added to the distance
+     * Pitch-wise distances are averaged and a penalty is added to the distance
      * for pitches that are not occuring in both tracks
      * @param discrA - discretized track
      * @param discrB - discretized track
-     * @param distance - one of: 'dtw', 'euclidean', 'nearest'
+     * @param distance - one of: 'euclidean', 'nearest'
      * @returns distance
      */
     function getTrackSimilarity(discrA: Map, discrB: Map, distance: string): number;
@@ -317,10 +316,6 @@ declare module "comparison/Similarity" {
      * @returns nearest neighbor distance
      */
     function neirestNeighborDistance(A: number[], B: number[]): number;
-    /**
-     * @param notes - notes
-     */
-    function getSimilarPartsViaMatching(notes: Note[]): void;
 }
 
 declare module "comparison/SimilarSections" {
@@ -343,6 +338,11 @@ declare module "comparison/SimilarSections" {
      */
     function findSimilarStringSections(dataString: stringArray, searchString: stringArray, threshold: number): object[];
 }
+
+/**
+ * Takes the ground truth and a single recording
+ */
+declare function getErrorPerGtNote(gtNotes: any, recNotes: any): void;
 
 /**
  * Represents all fingers of both hands
@@ -497,7 +497,7 @@ declare module "instruments/StringedFingering" {
 /**
  * Lookup for many MIDI specifications.
  */
-declare module "Midi" {
+declare module "fileFormats/Midi" {
     /**
      * Returns information on the MIDI note with the specified number.
      * @param nr - MIDI note number in [0, 127]
@@ -612,7 +612,7 @@ declare module "fileFormats/MusicXmlParser" {
      */
     const keySignatureMap: any;
     /**
-     * Retruns a map containing maps, such that result.get(partId).get(instrId)
+     * Returns a map containing maps, such that result.get(partId).get(instrId)
     gives you the instrument with the ID instrId as defined in the part partId.
     
     This is needed to map drum notes to MIDI pitches.
@@ -721,41 +721,46 @@ declare module "graphics/Canvas" {
  *     const audio = await recorder.stop();
  * stop() returns a Blob with audio data
  */
-declare const recordAudio: any;
+declare module "input/AudioRecorder" { }
 
 /**
- * Constructor with callback functions
- * @param getMidiLiveData - a function called by this object to get
- *      the currently recorded MIDI notes from App.js, where the
- *      MidiInputManager instance should be created
- *      Example for how to defined getMidiLiveData as method in App.js:
- *          getMidiLiveData = () => this.state.midiLiveData;
- * @param setMidiLiveData - a function called by this object to
- *      update the currently MIDI notes in App.js
- *      Example:
- *          setMidiLiveData = (data) => {
- *              // Work-around so note_off event handling can
- *              // immediately find the note_on event
- *              this.state.midiLiveData = data;
- *              this.setState({ midiLiveData: data });
- *          };
- * @param addCurrentNote - a function called by this object to add
- *      a currently played note (e.g. currently pressed piano key)
- *      Example:
- *          addCurrentNote = (note) => {
- *              const newMap = new Map(this.state.currentNotes).set(note.pitch, note);
- *              this.setState({ currentNotes: newMap });
- *          }
- * @param removeCurrentNote - a function called by this object to
- *      remove a currently played note
- *      Example:
- *          removeCurrentNote = (pitch) => {
- *              const newMap = new Map(this.state.currentNotes).delete(pitch);
- *              this.setState({ currentNotes: newMap });
- *          }
+ * Handles incoming MIDI messages from a MIDI device.
  */
-declare class MidiInputManager {
-    constructor(getMidiLiveData: (...params: any[]) => any, setMidiLiveData: (...params: any[]) => any, addCurrentNote: (...params: any[]) => any, removeCurrentNote: (...params: any[]) => any);
+declare module "input/MidiInputManager" {
+    /**
+     * Constructor with callback functions
+     * @param getMidiLiveData - a function called by this object to get
+     *      the currently recorded MIDI notes from App.js, where the
+     *      MidiInputManager instance should be created
+     *      Example for how to defined getMidiLiveData as method in App.js:
+     *          getMidiLiveData = () => this.state.midiLiveData;
+     * @param setMidiLiveData - a function called by this object to
+     *      update the currently MIDI notes in App.js
+     *      Example:
+     *          setMidiLiveData = (data) => {
+     *              // Work-around so note_off event handling can
+     *              // immediately find the note_on event
+     *              this.state.midiLiveData = data;
+     *              this.setState({ midiLiveData: data });
+     *          };
+     * @param addCurrentNote - a function called by this object to add
+     *      a currently played note (e.g. currently pressed piano key)
+     *      Example:
+     *          addCurrentNote = (note) => {
+     *              const newMap = new Map(this.state.currentNotes).set(note.pitch, note);
+     *              this.setState({ currentNotes: newMap });
+     *          }
+     * @param removeCurrentNote - a function called by this object to
+     *      remove a currently played note
+     *      Example:
+     *          removeCurrentNote = (pitch) => {
+     *              const newMap = new Map(this.state.currentNotes).delete(pitch);
+     *              this.setState({ currentNotes: newMap });
+     *          }
+     */
+    class MidiInputManager {
+        constructor(getMidiLiveData: (...params: any[]) => any, setMidiLiveData: (...params: any[]) => any, addCurrentNote: (...params: any[]) => any, removeCurrentNote: (...params: any[]) => any);
+    }
 }
 
 /**
@@ -766,7 +771,7 @@ declare class MidiInputManager {
  *     recorder.start();
  *     const notes = recorder.stop();
  */
-declare const recordMidi: any;
+declare module "input/MidiRecorder" { }
 
 declare module "instruments/Drums" {
     /**
@@ -992,281 +997,254 @@ declare module "instruments/Piano" {
     const pianoPitchRange: any;
 }
 
-/**
- * Calculates the SIMILARITY for two strings or arrays.
- * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
- * IMPORTANT: This metric is not symmetric!
- * @param seqA - a sequence
- * @param seqB - a sequence
- * @param similarityFunction - a function that takes two elements and
- *      returns their similarity score (higher => more similar)
- *      (a:any, b:any):number
- * @param gapPenaltyStart - cost for starting a new gap (negative)
- * @param gapPenaltyExtend - cost for continuing a gap (negative)
- * @returns similarity score
- */
-declare function gotoh(seqA: string | any[], seqB: string | any[], similarityFunction: (...params: any[]) => any, gapPenaltyStart: number, gapPenaltyExtend: number): number;
-
-/**
- * Idea: what would the max. similarity value be? the string with itself!
- * So just compare the longer string to itself and use that similarity to
- * normalize
- * @param seqA - a sequence
- * @param seqB - a sequence
- * @param similarityFunction - a function that takes two elements and
- *      returns their similarity score (higher => more similar)
- *      (a:any, b:any):number
- * @param gapPenaltyStart - cost for starting a new gap (negative)
- * @param gapPenaltyExtend - cost for continuing a gap (negative)
- * @returns normalized similarity score
- */
-declare function normalizedGotoh(seqA: string | any[], seqB: string | any[], similarityFunction: (...params: any[]) => any, gapPenaltyStart: number, gapPenaltyExtend: number): number;
-
-/**
- * Cost function that simply checks whether two values are equal or not with ===
- */
-declare const matchMissmatchSimilarity: any;
-
-/**
- * Cost function that takes the negative absolute value of the value's
- * difference, assuming that close values are more similar
- */
-declare const differenceSimilarity: any;
-
-/**
- * Computes the Levenshtein distance of two strings or arrays.
- * @param a - a string
- * @param b - another string
- * @param normalize - when set to true, the distance will be normalized
- *      to [0, 1], by dividing by the longer string's length
- * @returns Levenshtein distance
- */
-declare function levenshtein(a: string | any[], b: string | any[], normalize: boolean): number;
-
-/**
- * Computes the Damerau-Levenshtein distance of two strings or arrays.
- * @param a - a string
- * @param b - another string
- * @param normalize - when set to true, the distance will be normalized
- *      to [0, 1], by dividing by the longer string's length
- * @returns Levenshtein distance
- */
-declare function damerauLevenshtein(a: string | any[], b: string | any[], normalize: boolean): number;
-
-/**
- * Calculates the longest common subsequence.
- * @example
- * const lcs = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
- * // world
- * @param a - a string
- * @param b - another string
- * @returns the longest common subsequence
- */
-declare function lcs(a: string | any[], b: string | any[]): string | any[];
-
-/**
- * Calculates the *length* of the longest common subsequence.
- * Also works with arrays.
- * @example
- * const lcsLength = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
- * // 5
- * @param a - a string
- * @param b - another string
- * @returns the length of longest common subsequence
- */
-declare function lcsLength(a: string | any[], b: string | any[]): number;
-
-/**
- * Normalizes the result of lcsLength() by dividing by the longer string's
- * length.
- * @param a - a string
- * @param b - another string
- * @returns normalized length of longest common subsequence
- */
-declare function normalizedLcsLength(a: string | any[], b: string | any[]): number;
-
-/**
- * Needleman-Wunsch algorithm
- * @param seq1 - a string
- * @param seq2 - another string
- * @param match_score - score for matching characters
- * @param mismatch_penalty - penalty for mismatching characters
- * @param gap_penalty - penalty for a gap
- */
-declare class NeedlemanWunsch {
-    constructor(seq1: string | any[], seq2: string | any[], match_score?: number, mismatch_penalty: number, gap_penalty: number);
+declare module "stringBased/Gotoh" {
     /**
-     * Calculates (intermediate) scores and tracebacks using provided parameters
+     * Calculates the SIMILARITY for two strings or arrays.
+     * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
+     * IMPORTANT: This metric is not symmetric!
+     * @param seqA - a sequence
+     * @param seqB - a sequence
+     * @param similarityFunction - a function that takes two elements and
+     *      returns their similarity score (higher => more similar)
+     *      (a:any, b:any):number
+     * @param gapPenaltyStart - cost for starting a new gap (negative)
+     * @param gapPenaltyExtend - cost for continuing a gap (negative)
+     * @returns similarity score
      */
-    calcScoresAndTracebacks(): void;
+    function gotoh(seqA: string | any[], seqB: string | any[], similarityFunction: (...params: any[]) => any, gapPenaltyStart: number, gapPenaltyExtend: number): number;
     /**
-     * Finds next alignment locations (children) from a position in scoring matrix
-     * @param pos - m- Position in scoring matrix
-     * @returns children - Children positions and alignment types
+     * Idea: what would the max. similarity value be? the string with itself!
+     * So just compare the longer string to itself and use that similarity to
+     * normalize
+     * @param seqA - a sequence
+     * @param seqB - a sequence
+     * @param similarityFunction - a function that takes two elements and
+     *      returns their similarity score (higher => more similar)
+     *      (a:any, b:any):number
+     * @param gapPenaltyStart - cost for starting a new gap (negative)
+     * @param gapPenaltyExtend - cost for continuing a gap (negative)
+     * @returns normalized similarity score
      */
-    alignmentChildren(pos: number[]): object[];
+    function normalizedGotoh(seqA: string | any[], seqB: string | any[], similarityFunction: (...params: any[]) => any, gapPenaltyStart: number, gapPenaltyExtend: number): number;
     /**
-     * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
-     * @returns e.g. [{ seq1: '-4321', seq2: '54321' }]
+     * Cost function that simply checks whether two values are equal or not with ===
      */
-    alignmentTraceback(): object[];
+    const matchMissmatchSimilarity: any;
+    /**
+     * Cost function that takes the negative absolute value of the value's
+     * difference, assuming that close values are more similar
+     */
+    const differenceSimilarity: any;
+}
+
+declare module "stringBased" { }
+
+declare module "stringBased/Levenshtein" {
+    /**
+     * Computes the Levenshtein distance of two strings or arrays.
+     * @param a - a string
+     * @param b - another string
+     * @param normalize - when set to true, the distance will be normalized
+     *      to [0, 1], by dividing by the longer string's length
+     * @returns Levenshtein distance
+     */
+    function levenshtein(a: string | any[], b: string | any[], normalize: boolean): number;
+    /**
+     * Computes the Damerau-Levenshtein distance of two strings or arrays.
+     * @param a - a string
+     * @param b - another string
+     * @param normalize - when set to true, the distance will be normalized
+     *      to [0, 1], by dividing by the longer string's length
+     * @returns Levenshtein distance
+     */
+    function damerauLevenshtein(a: string | any[], b: string | any[], normalize: boolean): number;
+}
+
+declare module "stringBased/LongestCommonSubsequence" {
+    /**
+     * Calculates the longest common subsequence.
+     * @example
+     * const lcs = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
+     * // world
+     * @param a - a string
+     * @param b - another string
+     * @returns the longest common subsequence
+     */
+    function lcs(a: string | any[], b: string | any[]): string | any[];
+    /**
+     * Calculates the *length* of the longest common subsequence.
+     * Also works with arrays.
+     * @example
+     * const lcsLength = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
+     * // 5
+     * @param a - a string
+     * @param b - another string
+     * @returns the length of longest common subsequence
+     */
+    function lcsLength(a: string | any[], b: string | any[]): number;
+    /**
+     * Normalizes the result of lcsLength() by dividing by the longer string's
+     * length.
+     * @param a - a string
+     * @param b - another string
+     * @returns normalized length of longest common subsequence
+     */
+    function normalizedLcsLength(a: string | any[], b: string | any[]): number;
+}
+
+declare module "stringBased/NeedlemanWunsch" {
+    /**
+     * Needleman-Wunsch algorithm
+     * @param seq1 - a string
+     * @param seq2 - another string
+     * @param match_score - score for matching characters
+     * @param mismatch_penalty - penalty for mismatching characters
+     * @param gap_penalty - penalty for a gap
+     */
+    class NeedlemanWunsch {
+        constructor(seq1: string | any[], seq2: string | any[], match_score?: number, mismatch_penalty: number, gap_penalty: number);
+        /**
+         * Calculates (intermediate) scores and tracebacks using provided parameters
+         */
+        calcScoresAndTracebacks(): void;
+        /**
+         * Finds next alignment locations (children) from a position in scoring matrix
+         * @param pos - m- Position in scoring matrix
+         * @returns children - Children positions and alignment types
+         */
+        alignmentChildren(pos: number[]): object[];
+        /**
+         * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
+         * @returns e.g. [{ seq1: '-4321', seq2: '54321' }]
+         */
+        alignmentTraceback(): object[];
+    }
+}
+
+declare module "stringBased/SuffixTree" {
+    /**
+     * SuffixTree for strings or Arrays
+     * @param array - string or Array to process
+     */
+    class SuffixTree {
+        constructor(array: string | any[]);
+        /**
+         * Returns the longest repeated substring
+         * @returns longest repeated substring
+         */
+        getLongestRepeatedSubString(): any[];
+        /**
+         * Returns a readable string format of this tree
+         * @returns string
+         */
+        toString(): string;
+        /**
+         * Returns a JSON representation of this tree
+         * @returns JSON
+         */
+        toJson(): string;
+    }
+    /**
+     * TreeNode
+     */
+    class TreeNode {
+        /**
+         * @param suf - suffix
+         * @returns true if first entry of suf equals the value of a child
+         */
+        checkNodes(suf: string | any[]): boolean;
+        /**
+         * @param suf - suffix
+         */
+        checkLeaves(suf: string | any[]): void;
+        /**
+         * @param suf - suffix
+         */
+        addSuffix(suf: string | any[]): void;
+        /**
+         * Returns the longest repeated substring
+         * @returns longest substring
+         */
+        getLongestRepeatedSubString(): any[];
+        /**
+         * Readable string representation of this node and its children
+         * @param indent - indentation
+         * @returns string representation
+         */
+        toString(indent?: number): string;
+    }
 }
 
 /**
- * SuffixTree for strings or Arrays
- * @param array - string or Array to process
+ * Guitar note class that reflects MIDI properties but has
+ * absolute start and end times in seconds and
+ * information on how to play it.
  */
-declare class SuffixTree {
-    constructor(array: string | any[]);
+declare module "types/GuitarNote" {
     /**
-     * Returns the longest repeated substring
-     * @returns longest repeated substring
+     * Creates a new Note
+     * @param pitch - pitch
+     * @param start - start time in seconds
+     * @param velocity - velocity
+     * @param channel - MIDI channel
+     * @param end - end time in seconds
+     * @param string - guitar string
+     * @param fret - guitar fret
      */
-    getLongestRepeatedSubString(): any[];
-    /**
-     * Returns a readable string format of this tree
-     * @returns string
-     */
-    toString(): string;
-    /**
-     * Returns a JSON representation of this tree
-     * @returns JSON
-     */
-    toJson(): string;
+    class GuitarNote {
+        constructor(pitch: number, start: number, velocity?: number, channel: number, end: number, string: number, fret: number);
+        /**
+         * Creates a GuitarNote object from an object via destructuring
+         * @param object - object with at least {pitch}
+         *  {
+         *      pitch: number|string    e.g. 12 or C#4
+         *      start: number           start time in seconds
+         *      end: number             end time in seconds
+         *      velocity: number        MIDI velocity
+         *      channel: number         MIDI channel
+         *      string: number          guitar string
+         *      fret: number            guitar fret
+         *  }
+         * @returns new note
+         */
+        static from(object: any): GuitarNote;
+        /**
+         * Converts a Note to a GuitarNote
+         * @param note - note
+         * @param string - string
+         * @param fret - fret
+         * @returns guitar note
+         */
+        static fromNote(note: Note, string: number, fret: number): GuitarNote;
+        /**
+         * Simplifies the GuitarNote to a Note
+         * @returns note
+         */
+        toNote(): Note;
+        /**
+         * Returns a copy of the Note object
+         * @returns new note
+         */
+        clone(): GuitarNote;
+        /**
+         * Returns true if this note and otherNote have equal attributes.
+         * @param otherNote - another GuitarNote
+         * @returns true if equal
+         */
+        equals(otherNote: GuitarNote): boolean;
+        /**
+         * Human-readable string representation of this GuitarNote
+         * @param short - if true, attribute names will be shortened
+         * @returns string representation
+         */
+        toString(short: boolean): string;
+    }
 }
 
 /**
- * TreeNode
+ * Represents a parsed MIDI or MusicXML file in a uniform format.
  */
-declare class TreeNode {
-    /**
-     * @param suf - suffix
-     * @returns true if first entry of suf equals the value of a child
-     */
-    checkNodes(suf: string | any[]): boolean;
-    /**
-     * @param suf - suffix
-     */
-    checkLeaves(suf: string | any[]): void;
-    /**
-     * @param suf - suffix
-     */
-    addSuffix(suf: string | any[]): void;
-    /**
-     * Returns the longest repeated substring
-     * @returns longest substring
-     */
-    getLongestRepeatedSubString(): any[];
-    /**
-     * Readable string representation of this node and its children
-     * @param indent - indentation
-     * @returns string representation
-     */
-    toString(indent?: number): string;
-}
-
-/**
- * Creates a new Note
- * @param pitch - pitch
- * @param start - start time in seconds
- * @param velocity - velocity
- * @param channel - MIDI channel
- * @param end - end time in seconds
- * @param string - guitar string
- * @param fret - guitar fret
- */
-declare class GuitarNote extends Note {
-    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number, string: number, fret: number);
-    /**
-     * Creates a GuitarNote object from an object via destructuring
-     * @param object - object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *      string: number          guitar string
-     *      fret: number            guitar fret
-     *  }
-     * @returns new note
-     */
-    static from(object: any): GuitarNote;
-    /**
-     * Converts a Note to a GuitarNote
-     * @param note - note
-     * @param string - string
-     * @param fret - fret
-     * @returns guitar note
-     */
-    static fromNote(note: Note, string: number, fret: number): GuitarNote;
-    /**
-     * Simplifies the GuitarNote to a Note
-     * @returns note
-     */
-    toNote(): Note;
-    /**
-     * Returns a copy of the Note object
-     * @returns new note
-     */
-    clone(): GuitarNote;
-    /**
-     * Returns true if this note and otherNote have equal attributes.
-     * @param otherNote - another GuitarNote
-     * @returns true if equal
-     */
-    equals(otherNote: GuitarNote): boolean;
-    /**
-     * Human-readable string representation of this GuitarNote
-     * @param short - if true, attribute names will be shortened
-     * @returns string representation
-     */
-    toString(short: boolean): string;
-    /**
-     * Returns the duration of this note in seconds
-     * @returns note duration
-     */
-    getDuration(): number;
-    /**
-     * Returns the note's name and octave, e.g. 'C#3'
-     * @returns note name as string
-     */
-    getName(): string;
-    /**
-     * Returns the note's name WITHOUT the octave, e.g. 'C#'
-     * @returns note name as string
-     */
-    getLetter(): string;
-    /**
-     * Returns the note's octave
-     * @returns the note's octave
-     */
-    getOctave(): number;
-    /**
-     * Returns a new Note where start and end are multiplied by factor
-     * @param addedSeconds - seconds to be added to start and end
-     * @returns new note
-     */
-    shiftTime(addedSeconds: number): Note;
-    /**
-     * Returns a new Note where start and end are multiplied by factor
-     * @param factor - factor to scale start and end with
-     * @returns new note
-     */
-    scaleTime(factor: number): Note;
-    /**
-     * Returns true, if this Note and otherNote overlap in time.
-     * @param otherNote - another Note
-     * @returns true if they overlap
-     */
-    overlapsInTime(otherNote: Note): boolean;
-    /**
-     * Returns the amount of seconds this Note and otherNote overlap in time.
-     * @param otherNote - another Note
-     * @returns seconds of overlap
-     */
-    overlapInSeconds(otherNote: Note): number;
-}
+declare module "types/MusicPiece" { }
 
 /**
  * Simplifies each object in an array by copying only some keys and their values
@@ -1276,102 +1254,108 @@ declare class GuitarNote extends Note {
 declare function simplify(objectArray: object[], keys: string[]): void;
 
 /**
- * Creates a new Note
- * @param pitch - pitch
- * @param start - start time in seconds
- * @param velocity - velocity
- * @param channel - MIDI channel
- * @param end - end time in seconds
+ * Note class that reflects MIDI properties but has
+ * absolute start and end times in seconds.
  */
-declare class Note {
-    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
+declare module "types/Note" {
     /**
-     * Creates a Note object from an object via destructuring
-     * @example
-     * const n = Note.from({
-     *      pitch: 'C#4'     // e.g. 12 or C#4
-     *      start: 0.5       // start time in seconds
-     *      end: 1.5         // end time in seconds
-     *      velocity: 127    // MIDI velocity
-     *      channel: 0       // MIDI channel
-     *  });
-     * @param object - object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *  }
-     * @returns new note
+     * Creates a new Note
+     * @param pitch - pitch
+     * @param start - start time in seconds
+     * @param velocity - velocity
+     * @param channel - MIDI channel
+     * @param end - end time in seconds
      */
-    static from(object: any): Note;
-    /**
-     * Returns a copy of the Note object
-     * @returns new note
-     */
-    clone(): Note;
-    /**
-     * Returns the duration of this note in seconds
-     * @returns note duration
-     */
-    getDuration(): number;
-    /**
-     * Returns the note's name and octave, e.g. 'C#3'
-     * @returns note name as string
-     */
-    getName(): string;
-    /**
-     * Returns the note's name WITHOUT the octave, e.g. 'C#'
-     * @returns note name as string
-     */
-    getLetter(): string;
-    /**
-     * Returns the note's octave
-     * @returns the note's octave
-     */
-    getOctave(): number;
-    /**
-     * Returns a new Note where start and end are multiplied by factor
-     * @param addedSeconds - seconds to be added to start and end
-     * @returns new note
-     */
-    shiftTime(addedSeconds: number): Note;
-    /**
-     * Returns a new Note where start and end are multiplied by factor
-     * @param factor - factor to scale start and end with
-     * @returns new note
-     */
-    scaleTime(factor: number): Note;
-    /**
-     * Returns true, if this Note and otherNote overlap in time.
-     * @param otherNote - another Note
-     * @returns true if they overlap
-     */
-    overlapsInTime(otherNote: Note): boolean;
-    /**
-     * Returns the amount of seconds this Note and otherNote overlap in time.
-     * @param otherNote - another Note
-     * @returns seconds of overlap
-     */
-    overlapInSeconds(otherNote: Note): number;
-    /**
-     * Returns true if this note and otherNote have equal attributes.
-     * @param otherNote - another Note
-     * @returns true if equal
-     */
-    equals(otherNote: Note): boolean;
-    /**
-     * Human-readable string representation of this Note
-     * @param short - if true, attribute names will be shortened
-     * @returns string representation
-     */
-    toString(short: boolean): string;
+    class Note {
+        constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
+        /**
+         * Creates a Note object from an object via destructuring
+         * @example
+         * const n = Note.from({
+         *      pitch: 'C#4'     // e.g. 12 or C#4
+         *      start: 0.5       // start time in seconds
+         *      end: 1.5         // end time in seconds
+         *      velocity: 127    // MIDI velocity
+         *      channel: 0       // MIDI channel
+         *  });
+         * @param object - object with at least {pitch}
+         *  {
+         *      pitch: number|string    e.g. 12 or C#4
+         *      start: number           start time in seconds
+         *      end: number             end time in seconds
+         *      velocity: number        MIDI velocity
+         *      channel: number         MIDI channel
+         *  }
+         * @returns new note
+         */
+        static from(object: any): Note;
+        /**
+         * Returns a copy of the Note object
+         * @returns new note
+         */
+        clone(): Note;
+        /**
+         * Returns the duration of this note in seconds
+         * @returns note duration
+         */
+        getDuration(): number;
+        /**
+         * Returns the note's name and octave, e.g. 'C#3'
+         * @returns note name as string
+         */
+        getName(): string;
+        /**
+         * Returns the note's name WITHOUT the octave, e.g. 'C#'
+         * @returns note name as string
+         */
+        getLetter(): string;
+        /**
+         * Returns the note's octave
+         * @returns the note's octave
+         */
+        getOctave(): number;
+        /**
+         * Returns a new Note where start and end are multiplied by factor
+         * @param addedSeconds - seconds to be added to start and end
+         * @returns new note
+         */
+        shiftTime(addedSeconds: number): Note;
+        /**
+         * Returns a new Note where start and end are multiplied by factor
+         * @param factor - factor to scale start and end with
+         * @returns new note
+         */
+        scaleTime(factor: number): Note;
+        /**
+         * Returns true, if this Note and otherNote overlap in time.
+         * @param otherNote - another Note
+         * @returns true if they overlap
+         */
+        overlapsInTime(otherNote: Note): boolean;
+        /**
+         * Returns the amount of seconds this Note and otherNote overlap in time.
+         * @param otherNote - another Note
+         * @returns seconds of overlap
+         */
+        overlapInSeconds(otherNote: Note): number;
+        /**
+         * Returns true if this note and otherNote have equal attributes.
+         * @param otherNote - another Note
+         * @returns true if equal
+         */
+        equals(otherNote: Note): boolean;
+        /**
+         * Human-readable string representation of this Note
+         * @param short - if true, attribute names will be shortened
+         * @returns string representation
+         */
+        toString(short: boolean): string;
+    }
 }
 
 /**
- * Creates a new NoteArray,
-will make a copy of the passed array and cast all notes
+ * This class represents an array of note objects.
+This can be used to simplify operations on a track.
  * @example
  * const notes = [
       // Some Note objects
@@ -1387,308 +1371,344 @@ will make a copy of the passed array and cast all notes
   // Get Note objects back in a simple Array
   const transformedNotes = noteArr.getNotes();
   // [Note, Note, Note, ...]
- * @param notes - notes, default: []
  */
-declare class NoteArray {
-    constructor(notes: Note[]);
+declare module "types/NoteArray" {
     /**
-     * Returns a simple array with all Note objects.
-     * @returns array with Note objects
+     * Creates a new NoteArray,
+    will make a copy of the passed array and cast all notes
+     * @param notes - notes, default: []
      */
-    getNotes(): Note[];
-    /**
-     * Appends notes to this note array
-     * @param notes - notes
-     * @param sort - iff ture, sorts notes by start timeafter adding
-         the new ones (default:true)
-     * @returns itself
-     */
-    addNotes(notes: Note[], sort?: boolean): NoteArray;
-    /**
-     * Adds the notes from another NoteArray to this NoteArray
-    IMPORTANT: this does not change the notes or sort them!
-    Take a look at NoteArray.append() if you want to extend
-    a track at its end.
-     * @param noteArray - another NoteArray
-     * @returns itself
-     */
-    concat(noteArray: NoteArray): NoteArray;
-    /**
-     * Appends notes to the end of this NoteArray, after shifting them by its
-    duration. Set gap to something != 0 to create a gap or overlap.
-     * @param noteArray - another NoteArray
-     * @param gap - in seconds between the two parts
-     * @returns itself
-     */
-    append(noteArray: NoteArray, gap: number): NoteArray;
-    /**
-     * Repeats the notes of this array by concatenating a time-shifted copy
-     * @param times - number of times to repeat it
-     * @returns a new NoteArray with the repeated note sequence
-     */
-    repeat(times: number): NoteArray;
-    /**
-     * Returns the number of Note objects in this NoteArray
-     * @returns note count
-     */
-    length(): number;
-    /**
-     * Returns the start time of the earliest note in this NoteArray
-     * @returns start time
-     */
-    getStartTime(): number;
-    /**
-     * Returns the duration of this note array in seconds from 0 to the end of
-    the latest note.
-     * @returns duration
-     */
-    getDuration(): number;
-    /**
-     * Scales the time of each note by factor
-     * @param factor - factor
-     * @returns itself
-     */
-    scaleTime(factor: number): NoteArray;
-    /**
-     * Adds the speicifed number of seconds to each note
-     * @param addedSeconds - time to add in seconds
-     * @returns itself
-     */
-    shiftTime(addedSeconds: number): NoteArray;
-    /**
-     * Moves all notes s.t. the first starts at <start>
-    Will sort the notes by start time.
-     * @param startTime - the new start time for the earliest note
-     * @returns itself
-     */
-    shiftToStartAt(startTime: number): NoteArray;
-    /**
-     * Similar to Array.forEach
-     * @param func - a function
-     * @returns this
-     */
-    forEach(func: (...params: any[]) => any): NoteArray;
-    /**
-     * Sorts the notes
-     * @param sortFunction - sort function, e.g. (a, b)=>a.start-b.start
-     * @returns itself
-     */
-    sort(sortFunction: (...params: any[]) => any): NoteArray;
-    /**
-     * Sorts the notes by start time
-     * @returns itself
-     */
-    sortByTime(): NoteArray;
-    /**
-     * Maps the notes using some mapping function
-     * @param mapFunction - mapping function with same signature as
-         Array.map()
-     * @returns itself
-     */
-    map(mapFunction: (...params: any[]) => any): NoteArray;
-    /**
-     * Slices the notes by index, like Array.slice()
-     * @param start - start index
-     * @param end - end index
-     * @returns itself
-     */
-    slice(start: number, end: number): NoteArray;
-    /**
-     * Slices the notes by time.
-    The modes 'end' and 'contained' will remove all notes with end === null!
-    Notes will not be changed, e.g. start time will remain the same.
-     * @param startTime - start of the filter range in seconds
-     * @param endTime - end of the filter range in seconds (exclusive)
-     * @param mode - controls which note time to consider, one of:
-         - start: note.start must be inside range
-         - end: note.end must be inside range
-         - contained: BOTH note.start and note.end must be inside range
-         - touched: EITHER start or end (or both) must be inside range)
-         - touched-included: like touched, but also includes notes where
-             neither start nor end inside range, but range is completely
-             inside the note
-         (contained is default)
-     * @returns itself
-     */
-    sliceTime(startTime: number, endTime: number, mode?: string): NoteArray;
-    /**
-     * Filters the NoteArray like you would filter via Array.filter().
-     * @param filterFunction - filter function, same signature as
-         Array.filter()
-     * @returns itself
-     */
-    filter(filterFunction: (...params: any[]) => any): NoteArray;
-    /**
-     * Filters by pitch, keeping only pitches specified in <pitches>
-     * @param pitches - array of pitches to keep
-     * @returns itself
-     */
-    filterPitches(pitches: number[]): NoteArray;
-    /**
-     * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
-     * @param steps - number of semitones to transpose, can be negative
-     * @returns itself
-     */
-    transpose(steps: number): NoteArray;
-    /**
-     * Will set the octave of all notes to -1.
-    This might cause two notes to exist at the same time and pitch!
-     * @returns itself
-     */
-    removeOctaves(): NoteArray;
-    /**
-     * Reverses the note array, such that it can be played backwards.
-     * @returns itself
-     */
-    reverse(): NoteArray;
-    /**
-     * Returns true if this NoteArray and otherNoteArray have equal attributes.
-     * @param otherNoteArray - another NoteArray
-     * @returns true if equal
-     */
-    equals(otherNoteArray: NoteArray): boolean;
-    /**
-     * Deep clone, all contained notes are cloned as well.
-     * @returns clone
-     */
-    clone(): NoteArray;
+    class NoteArray {
+        constructor(notes: Note[]);
+        /**
+         * Returns a simple array with all Note objects.
+         * @returns array with Note objects
+         */
+        getNotes(): Note[];
+        /**
+         * Appends notes to this note array
+         * @param notes - notes
+         * @param sort - iff ture, sorts notes by start timeafter adding
+             the new ones (default:true)
+         * @returns itself
+         */
+        addNotes(notes: Note[], sort?: boolean): NoteArray;
+        /**
+         * Adds the notes from another NoteArray to this NoteArray
+        IMPORTANT: this does not change the notes or sort them!
+        Take a look at NoteArray.append() if you want to extend
+        a track at its end.
+         * @param noteArray - another NoteArray
+         * @returns itself
+         */
+        concat(noteArray: NoteArray): NoteArray;
+        /**
+         * Appends notes to the end of this NoteArray, after shifting them by its
+        duration. Set gap to something != 0 to create a gap or overlap.
+         * @param noteArray - another NoteArray
+         * @param gap - in seconds between the two parts
+         * @returns itself
+         */
+        append(noteArray: NoteArray, gap: number): NoteArray;
+        /**
+         * Repeats the notes of this array by concatenating a time-shifted copy
+         * @param times - number of times to repeat it
+         * @returns a new NoteArray with the repeated note sequence
+         */
+        repeat(times: number): NoteArray;
+        /**
+         * Returns the number of Note objects in this NoteArray
+         * @returns note count
+         */
+        length(): number;
+        /**
+         * Returns the start time of the earliest note in this NoteArray
+         * @returns start time
+         */
+        getStartTime(): number;
+        /**
+         * Returns the duration of this note array in seconds from 0 to the end of
+        the latest note.
+         * @returns duration
+         */
+        getDuration(): number;
+        /**
+         * Scales the time of each note by factor
+         * @param factor - factor
+         * @returns itself
+         */
+        scaleTime(factor: number): NoteArray;
+        /**
+         * Adds the speicifed number of seconds to each note
+         * @param addedSeconds - time to add in seconds
+         * @returns itself
+         */
+        shiftTime(addedSeconds: number): NoteArray;
+        /**
+         * Moves all notes s.t. the first starts at <start>
+        Will sort the notes by start time.
+         * @param startTime - the new start time for the earliest note
+         * @returns itself
+         */
+        shiftToStartAt(startTime: number): NoteArray;
+        /**
+         * Similar to Array.forEach
+         * @param func - a function
+         * @returns this
+         */
+        forEach(func: (...params: any[]) => any): NoteArray;
+        /**
+         * Sorts the notes
+         * @param sortFunction - sort function, e.g. (a, b)=>a.start-b.start
+         * @returns itself
+         */
+        sort(sortFunction: (...params: any[]) => any): NoteArray;
+        /**
+         * Sorts the notes by start time
+         * @returns itself
+         */
+        sortByTime(): NoteArray;
+        /**
+         * Maps the notes using some mapping function
+         * @param mapFunction - mapping function with same signature as
+             Array.map()
+         * @returns itself
+         */
+        map(mapFunction: (...params: any[]) => any): NoteArray;
+        /**
+         * Slices the notes by index, like Array.slice()
+         * @param start - start index
+         * @param end - end index
+         * @returns itself
+         */
+        slice(start: number, end: number): NoteArray;
+        /**
+         * Slices the notes by time.
+        The modes 'end' and 'contained' will remove all notes with end === null!
+        Notes will not be changed, e.g. start time will remain the same.
+         * @param startTime - start of the filter range in seconds
+         * @param endTime - end of the filter range in seconds (exclusive)
+         * @param mode - controls which note time to consider, one of:
+             - start: note.start must be inside range
+             - end: note.end must be inside range
+             - contained: BOTH note.start and note.end must be inside range
+             - touched: EITHER start or end (or both) must be inside range)
+             - touched-included: like touched, but also includes notes where
+                 neither start nor end inside range, but range is completely
+                 inside the note
+             (contained is default)
+         * @returns itself
+         */
+        sliceTime(startTime: number, endTime: number, mode?: string): NoteArray;
+        /**
+         * Slices this NoteArray into slices by the given times. Will not return
+        NoteArrays but simple Note[][], where each item contains all notes of one
+        time slice. Do not include 0, it will be assumed as first time to slice.
+        To make sure notes are not contained twice in different slices use the
+        mode 'start'.
+         * @example
+         * // Slice into 1 second slices
+             const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
+         * @param times - points of time at which to slice (in seconds)
+         * @param mode - see NoteArray.sliceTime()
+         * @returns time slices
+         */
+        sliceAtTimes(times: number[], mode: string): Note[][];
+        /**
+         * Filters the NoteArray like you would filter via Array.filter().
+         * @example
+         * // Only keep notes longer than 1 second
+             const filtered = noteArray.filter(note=>note.getDuration()>1);
+         * @param filterFunction - filter function, same signature as
+             Array.filter()
+         * @returns itself
+         */
+        filter(filterFunction: (...params: any[]) => any): NoteArray;
+        /**
+         * Filters by pitch, keeping only pitches specified in <pitches>
+         * @param pitches - array or Set of pitches to keep
+         * @returns itself
+         */
+        filterPitches(pitches: number[] | Set<number>): NoteArray;
+        /**
+         * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
+         * @param steps - number of semitones to transpose, can be negative
+         * @returns itself
+         */
+        transpose(steps: number): NoteArray;
+        /**
+         * Will set the octave of all notes to -1.
+        This might cause two notes to exist at the same time and pitch!
+         * @returns itself
+         */
+        removeOctaves(): NoteArray;
+        /**
+         * Reverses the note array, such that it can be played backwards.
+         * @returns itself
+         */
+        reverse(): NoteArray;
+        /**
+         * Returns true if this NoteArray and otherNoteArray have equal attributes.
+         * @param otherNoteArray - another NoteArray
+         * @returns true if equal
+         */
+        equals(otherNoteArray: NoteArray): boolean;
+        /**
+         * Deep clone, all contained notes are cloned as well.
+         * @returns clone
+         */
+        clone(): NoteArray;
+    }
 }
 
 /**
  * Class that allows to represent pitch-bends from a MIDI file
- * @param pitch - pitch
- * @param start - start time in seconds
- * @param velocity - velocity
- * @param channel - MIDI channel
- * @param end - end time in seconds
  */
-declare class PitchBend {
-    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
+declare module "types/PitchBend" {
     /**
-     * Creates a GuitarNote object from an object via destructuring
-     * @param object - object with at least {pitch}
-     * @returns new note
+     * @param pitch - pitch
+     * @param start - start time in seconds
+     * @param velocity - velocity
+     * @param channel - MIDI channel
+     * @param end - end time in seconds
      */
-    static from(object: any): PitchBend;
-    /**
-     * Converts a Note to a GuitarNote
-     * @param note - note
-     * @returns guitar note
-     */
-    static fromNote(note: Note): PitchBend;
-    /**
-     * Returns a copy of the Note object
-     * @returns new note
-     */
-    clone(): PitchBend;
-    /**
-     * Returns true if this note and otherNote have equal attributes.
-     * @param otherNote - another GuitarNote
-     * @returns true if equal
-     */
-    equals(otherNote: PitchBend): boolean;
+    class PitchBend {
+        constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
+        /**
+         * Creates a GuitarNote object from an object via destructuring
+         * @param object - object with at least {pitch}
+         * @returns new note
+         */
+        static from(object: any): PitchBend;
+        /**
+         * Converts a Note to a GuitarNote
+         * @param note - note
+         * @returns guitar note
+         */
+        static fromNote(note: Note): PitchBend;
+        /**
+         * Returns a copy of the Note object
+         * @returns new note
+         */
+        clone(): PitchBend;
+        /**
+         * Returns true if this note and otherNote have equal attributes.
+         * @param otherNote - another GuitarNote
+         * @returns true if equal
+         */
+        equals(otherNote: PitchBend): boolean;
+    }
 }
 
 /**
  * Stores a sequence of pitches and provides some methods to simplify and
  * manipulate it.
- * @param pitches - pitches
  */
-declare class PitchSequence {
-    constructor(pitches: number[]);
+declare module "types/PitchSequence" {
     /**
-     * Creates a pitch sequence from an array of Notes
-     * @param notes - notes
-     * @returns pitch sequence
+     * @param pitches - pitches
      */
-    static fromNotes(notes: Note[]): PitchSequence;
-    /**
-     * @param string - a string of Unicode characters
-     * @returns pitch sequence
-     */
-    static fromCharString(string: string): PitchSequence;
-    /**
-     * @returns pitches
-     */
-    getPitches(): number[];
-    /**
-     * @returns number of pitches
-     */
-    length(): number;
-    /**
-     * Turns pitch sequence into a string by turning each  pitch into a character
-     * (based on Unicode index)
-     * @returns string representation of note pitches
-     */
-    toCharString(): string;
-    /**
-     * @returns a string with the notes' names
-     */
-    toNoteNameString(): string;
-    /**
-     * Reverses the order of pitches in this PitchSequence
-     * @returns this
-     */
-    reverse(): PitchSequence;
-    /**
-     * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
-     * @returns this
-     */
-    removeOctaves(): PitchSequence;
-    /**
-     * Transforms note pitches to intervals, i.e. diffrences between to subsequent
-     * notes: C, C#, C, D => 1, -1, 2
-     * @returns intervals
-     */
-    toIntervals(): number[];
-    /**
-     * @returns clone
-     */
-    clone(): PitchSequence;
-    /**
-     * Returns true if this NoteArray and otherNoteArray have equal attributes.
-     * @param otherPitchSequence - another NoteArray
-     * @returns true if equal
-     */
-    equals(otherPitchSequence: NoteArray): boolean;
+    class PitchSequence {
+        constructor(pitches: number[]);
+        /**
+         * Creates a pitch sequence from an array of Notes
+         * @param notes - notes
+         * @returns pitch sequence
+         */
+        static fromNotes(notes: Note[]): PitchSequence;
+        /**
+         * @param string - a string of Unicode characters
+         * @returns pitch sequence
+         */
+        static fromCharString(string: string): PitchSequence;
+        /**
+         * @returns pitches
+         */
+        getPitches(): number[];
+        /**
+         * @returns number of pitches
+         */
+        length(): number;
+        /**
+         * Turns pitch sequence into a string by turning each  pitch into a character
+         * (based on Unicode index)
+         * @returns string representation of note pitches
+         */
+        toCharString(): string;
+        /**
+         * @returns a string with the notes' names
+         */
+        toNoteNameString(): string;
+        /**
+         * Reverses the order of pitches in this PitchSequence
+         * @returns this
+         */
+        reverse(): PitchSequence;
+        /**
+         * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
+         * @returns this
+         */
+        removeOctaves(): PitchSequence;
+        /**
+         * Transforms note pitches to intervals, i.e. diffrences between to subsequent
+         * notes: C, C#, C, D => 1, -1, 2
+         * @returns intervals
+         */
+        toIntervals(): number[];
+        /**
+         * @returns clone
+         */
+        clone(): PitchSequence;
+        /**
+         * Returns true if this NoteArray and otherNoteArray have equal attributes.
+         * @param otherPitchSequence - another NoteArray
+         * @returns true if equal
+         */
+        equals(otherPitchSequence: NoteArray): boolean;
+    }
 }
 
 /**
- * Creates a new Recording
- * @param name - name if the song
- * @param date - date of the recording
- * @param notes - array of Note objects
- * @param speed - relative speed compared to ground truth, e.g. 0.5
- *      for half as fast
- * @param selectedTrack - track number of the ground truth to which
- *      this recording belongs
- * @param timeSelection - time selection of the ground truth
- *      to which this recording belongs, or null if full duration
+ * Class for storing recorded notes alongside meta information.
  */
-declare class Recording {
-    constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack: number, timeSelection: number[] | null);
+declare module "types/Recording" {
     /**
-     * Returns a copy of the Note object
-     * @returns new recording
+     * Creates a new Recording
+     * @param name - name if the song
+     * @param date - date of the recording
+     * @param notes - array of Note objects
+     * @param speed - relative speed compared to ground truth, e.g. 0.5
+     *      for half as fast
+     * @param selectedTrack - track number of the ground truth to which
+     *      this recording belongs
+     * @param timeSelection - time selection of the ground truth
+     *      to which this recording belongs, or null if full duration
      */
-    clone(): Recording;
-    /**
-     * Returns true if this Recording and otherRecording have equal attributes.
-     * @param otherRecording - another Recording
-     * @returns true if equal
-     */
-    equals(otherRecording: Recording): boolean;
-    /**
-     * Turns the recoring into a simple object with the same properties
-     * @returns simple object representation of the recording
-     */
-    toSimpleObject(): any;
-    /**
-     * Creates a Note object from an object via destructuring
-     * @param object - object with at least {name, date, notes, speed}
-     * @returns new note
-     */
-    static from(object: any): Recording;
+    class Recording {
+        constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack: number, timeSelection: number[] | null);
+        /**
+         * Returns a copy of the Note object
+         * @returns new recording
+         */
+        clone(): Recording;
+        /**
+         * Returns true if this Recording and otherRecording have equal attributes.
+         * @param otherRecording - another Recording
+         * @returns true if equal
+         */
+        equals(otherRecording: Recording): boolean;
+        /**
+         * Turns the recoring into a simple object with the same properties
+         * @returns simple object representation of the recording
+         */
+        toSimpleObject(): any;
+        /**
+         * Creates a Note object from an object via destructuring
+         * @param object - object with at least {name, date, notes, speed}
+         * @returns new note
+         */
+        static from(object: any): Recording;
+    }
 }
 
 declare module "utils/ArrayUtils" {
@@ -1801,6 +1821,8 @@ declare module "utils/FormattingUtils" {
     function formatSongTitle(title: string, maxLength: number): string;
 }
 
+declare module "utils" { }
+
 declare module "utils/LocalStorageUtils" {
     /**
      * Stringifies an object and stores it in the localStorage
@@ -1906,55 +1928,53 @@ declare module "utils/MiscUtils" {
     function findNearest(notes: Note[], targetNote: Note): Note;
 }
 
-/**
- * Converts beats per minute to seconds per beat
- * @param bpm - tempo in beats per minute
- * @returns seconds per beat
- */
-declare function bpmToSecondsPerBeat(bpm: number): number;
-
-/**
- * Turns a chord into an integer that uniquely describes the occuring chroma.
- * If the same chroma occurs twice this will not make a difference
- * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
- *
- * How it works:
- * Chord has C, E, and G
- * x = 000010010001
- *         G  E   C
- * @param notes - notes
- * @returns an integer that uniquely identifies this chord's chroma
- */
-declare function chordToInteger(notes: Note[]): number;
-
-/**
- * Takes two chord integer representations from chordToInteger() and computes
- * the Jackard index
- * @param chord1 - chord as integer representation
- * @param chord2 - chord as integer representation
- * @returns Jackard index, from 0 for different to 1 for identical
- */
-declare function chordIntegerJackardIndex(chord1: number, chord2: number): number;
-
-/**
- * noteTypeDurationRatios
- * 1 = whole note, 1/2 = half note, ...
- *
- * With added dots:
- * o. has duration of 1.5, o.. 1.75, ...
- */
-declare const noteTypeDurationRatios: any;
-
-/**
- * Estimates the note type (whole, quarter, ...) and number of dots for dotted
- * notes
- * @param duration - duration of a note
- * @param bpm - tempo of the piece in bpm
- * @returns note type and number of dots
- *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
- *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
- */
-declare function noteDurationToNoteType(duration: number, bpm: number): any;
+declare module "utils/MusicUtils" {
+    /**
+     * Converts beats per minute to seconds per beat
+     * @param bpm - tempo in beats per minute
+     * @returns seconds per beat
+     */
+    function bpmToSecondsPerBeat(bpm: number): number;
+    /**
+     * Turns a chord into an integer that uniquely describes the occuring chroma.
+     * If the same chroma occurs twice this will not make a difference
+     * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
+     *
+     * How it works:
+     * Chord has C, E, and G
+     * x = 000010010001
+     *         G  E   C
+     * @param notes - notes
+     * @returns an integer that uniquely identifies this chord's chroma
+     */
+    function chordToInteger(notes: Note[]): number;
+    /**
+     * Takes two chord integer representations from chordToInteger() and computes
+     * the Jackard index
+     * @param chord1 - chord as integer representation
+     * @param chord2 - chord as integer representation
+     * @returns Jackard index, from 0 for different to 1 for identical
+     */
+    function chordIntegerJackardIndex(chord1: number, chord2: number): number;
+    /**
+     * noteTypeDurationRatios
+     * 1 = whole note, 1/2 = half note, ...
+     *
+     * With added dots:
+     * o. has duration of 1.5, o.. 1.75, ...
+     */
+    const noteTypeDurationRatios: any;
+    /**
+     * Estimates the note type (whole, quarter, ...) and number of dots for dotted
+     * notes
+     * @param duration - duration of a note
+     * @param bpm - tempo of the piece in bpm
+     * @returns note type and number of dots
+     *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
+     *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
+     */
+    function noteDurationToNoteType(duration: number, bpm: number): any;
+}
 
 declare module "utils/NoteColorUtils" {
     /**
