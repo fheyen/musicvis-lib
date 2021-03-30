@@ -2,6 +2,8 @@
  * Represents all fingers of both hands
  */
 const FINGERS = {
+    // None
+    NONE: 'FINGERS.NONE',
     // Left
     LEFT_THUMB: 'FINGERS.LEFT_THUMB',
     LEFT_INDEX: 'FINGERS.LEFT_INDEX',

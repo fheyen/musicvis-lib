@@ -46,7 +46,7 @@ export function detectChordsByExactStart(notes) {
 export function detectChordsByOverlap(notes, sortByPitch = true) {
     if (!notes || notes.length === 0) { return []; }
     if (notes.length === 1) { return [[notes[0]]]; }
-    const sorted = notes.slice().sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch; });
+    const sorted = [...notes].sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch; });
     const notesTodo = new Set(sorted);
     const chords = [];
     // Find all overlaps with brute force

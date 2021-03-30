@@ -26,7 +26,7 @@ export function lcs(a, b) {
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
     for (i = 0; i < m; i++) {
-        c[i] = row = row.slice();
+        c[i] = row = [...row];
         for (diagonal = 0, j = 0; j < n; j++, diagonal = latch) {
             latch = row[j];
             if (a[i] === b[j]) {
@@ -83,7 +83,7 @@ export function lcsLength(a, b) {
     // Build the c-table
     for (j = 0; j < n; row[j++] = 0);
     for (i = 0; i < m; i++) {
-        c[i] = row = row.slice();
+        c[i] = row = [...row];
         for (diagonal = 0, j = 0; j < n; j++, diagonal = latch) {
             latch = row[j];
             if (a[i] === b[j]) {

@@ -1,9 +1,9 @@
-import Symbol from './Symbol';
+import Note from '../../types/Note';
 
 /**
  * @ignore
  */
-class NoteSymbol extends Symbol {
+class NoteSymbol extends Note {
     // constructor() {
 
     // }

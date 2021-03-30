@@ -25,8 +25,7 @@ class PitchSequence {
      * @returns {PitchSequence} pitch sequence
      */
     static fromNotes(notes = []) {
-        const pitches = notes
-            .slice()
+        const pitches = [...notes]
             .sort((a, b) => {
                 if (a.start === b.start) {
                     return a.pitch - b.pitch;

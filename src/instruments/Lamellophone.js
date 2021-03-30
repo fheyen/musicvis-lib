@@ -24,8 +24,7 @@ export class LamellophoneTuning {
         this.notes = notes;
         this.short = notes.join(' ');
         this.pitches = notes.map(note => getMidiNoteByLabel(note).pitch);
-        this.pitchesSorted = this.pitches
-            .slice()
+        this.pitchesSorted = [...this.pitches]
             .sort((a, b) => a - b);
         this.keyCount = notes.length;
     }
