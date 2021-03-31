@@ -612,6 +612,10 @@ declare module "fileFormats/MusicXmlParser" {
      */
     const keySignatureMap: any;
     /**
+     * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
+     */
+    const dynamicsMap: any;
+    /**
      * Returns a map containing maps, such that result.get(partId).get(instrId)
     gives you the instrument with the ID instrId as defined in the part partId.
     
@@ -830,16 +834,16 @@ declare module "instruments/Guitar" {
     }
     /**
      * Maps from instrument to string number to list of tunings.
-     * Defaults are at the top.
+    Defaults are at the top.
      * @example
      * stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
      */
     const stringedTunings: any;
     /**
      * For Notes that have a guitar string encoded in their channel, this function
-     * allows to convert them to a GuitarNote.
+    allows to convert them to a GuitarNote.
      * @param note - a Note that has the guitar string stored in its channel
-     *      e.g. 0 to 5 for a six string
+         e.g. 0 to 5 for a six string
      * @param tuning - tuning
      * @returns a GuitarNote
      */
@@ -847,7 +851,7 @@ declare module "instruments/Guitar" {
     /**
      * Returns a tuning with the specified pitches or null if none found.
      * @param pitches - pitches of the tuning, same order as in
-     *      Guitar.js' stringedTunings, i.e. low to high notes
+         Guitar.js' stringedTunings, i.e. low to high notes
      * @returns the found tuning or null
      */
     function getTuningFromPitches(pitches: number[]): StringedTuning | null;
@@ -860,7 +864,7 @@ declare module "instruments/Guitar" {
     function getTuningPitchRange(tuning: StringedTuning, fretCount: number): number[];
     /**
      * Colors for guitar strings, acces via stringColor[string]
-     * where string in [1, 8].
+    where string in [1, 8].
      */
     const stringColors: any;
     /**
@@ -1252,6 +1256,13 @@ declare module "types/MusicPiece" { }
  * @param keys - keys to copy
  */
 declare function simplify(objectArray: object[], keys: string[]): void;
+
+/**
+ * Given a file name (without extension), this function will read a .mid and a
+.musicxml file and parse both to a MusicPiece before returning those.
+ * @param fileBaseName - file name without extension
+ */
+declare function getMusicPiecesFromBothFormats(fileBaseName: string): any;
 
 /**
  * Note class that reflects MIDI properties but has
@@ -1721,7 +1732,7 @@ declare module "utils/ArrayUtils" {
     function arrayShallowEquals(a: any[], b: any[]): boolean;
     /**
      * Checks if two arrays contain the same elements,
-     * ignoring their ordering in each array.
+    ignoring their ordering in each array.
      * @param a - an array
      * @param b - another array
      * @param checkLength - also checks if arrays have the same length
@@ -1729,14 +1740,14 @@ declare module "utils/ArrayUtils" {
      */
     function arrayHasSameElements(a: any[], b: any[], checkLength: boolean): boolean;
     /**
-     * Jackard index calulates the similarity of the sets as the size of the set
-     * interaction divided by the size of the set union:
-     * jackard_index = |intersection| / |union|
+     * Jaccard index calulates the similarity of the sets as the size of the set
+    interaction divided by the size of the set union:
+    jackard_index = |intersection| / |union|
      * @param set1 - set 1
      * @param set2 - set 2
      * @returns similarity in [0, 1]
      */
-    function jackardIndex(set1: number[], set2: number[]): number;
+    function jaccardIndex(set1: number[], set2: number[]): number;
     /**
      * Removes duplicates from an Array by converting to a Set and back
      * @param array - an array
@@ -1745,7 +1756,7 @@ declare module "utils/ArrayUtils" {
     function removeDuplicates(array: any[]): any[];
     /**
      * Checks whether the array a contains the array b, i.e. whether the first
-     * b.length elements are the same.
+    b.length elements are the same.
      * @param a - an array
      * @param b - a shorter array
      * @returns true iff a contains b
@@ -1768,7 +1779,7 @@ declare module "utils/ArrayUtils" {
     function formatMatrix(matrix: any[][], colSeparator: string, rowSeparator: string, formatter: (...params: any[]) => any): string;
     /**
      * Returns the value in array that is closest to value.
-     * Array MUST be sorted ascending.
+    Array MUST be sorted ascending.
      * @param array - array
      * @param value - value
      * @param accessor - accessor

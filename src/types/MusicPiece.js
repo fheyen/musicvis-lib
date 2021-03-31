@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import Note from './Note';
 import midiParser from 'midi-parser-js';
 import { Midi } from '@tonejs/midi';

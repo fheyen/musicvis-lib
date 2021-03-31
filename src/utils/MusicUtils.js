@@ -42,13 +42,13 @@ export function chordToInteger(notes) {
 
 /**
  * Takes two chord integer representations from chordToInteger() and computes
- * the Jackard index
+ * the Jaccard index
  *
  * @param {number} chord1 chord as integer representation
  * @param {number} chord2 chord as integer representation
  * @returns {number} Jackard index, from 0 for different to 1 for identical
  */
-export function chordIntegerJackardIndex(chord1, chord2) {
+export function chordIntegerJaccardIndex(chord1, chord2) {
     if (chord1 === chord2) {
         return 1;
     }
