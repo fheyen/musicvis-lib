@@ -1,4 +1,4 @@
-declare module "comparison/Alignment" {
+declare module "Alignment" {
     /**
      * Given two NoteArrays, shift the second one in time such that they are aligned
      * @param gt - a NoteArray, e.g. the ground truth
@@ -35,7 +35,7 @@ declare module "comparison/Alignment" {
     function alignmentBenchmark(): void;
 }
 
-declare module "alignment/DiffAlignment" {
+declare module "DiffAlignment" {
     /**
      * Global alignment.
      *

@@ -28,7 +28,7 @@
 
 
     <title>
-      LamellophoneTuning
+      Alignment
     </title>
 
     <!--[if lt IE 9]>
@@ -98,7 +98,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        LamellophoneTuning
+        Alignment
       </h1>
       
 
@@ -113,17 +113,6 @@
 <header>
     
         
-        <h2>
-        
-            <span class="ancestors"><a href="module-instruments_Lamellophone.html">instruments/Lamellophone</a>.</span>
-        
-        LamellophoneTuning
-        
-        </h2>
-        
-        
-            <div class="class-description">Represents Lamellophone tunings</div>
-        
     
 </header>
 
@@ -133,13 +122,130 @@
     
         
 
+        
     
-        <h2>Constructor</h2>
+    </div>
+
     
 
-    <h4 class="name" id="LamellophoneTuning">
-        <a href="#LamellophoneTuning">#</a>
-        <span class="type-signature"></span>new LamellophoneTuning<span class="signature">(name, notes)</span><span class="type-signature"></span>
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".alignmentBenchmark">
+        <a href="#.alignmentBenchmark">#</a>
+        <span class="type-signature">(static) </span>alignmentBenchmark<span class="signature">()</span><span class="type-signature"></span>
+    </h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="alignment_Alignment.js.html">alignment/Alignment.js</a>, <a href="alignment_Alignment.js.html#line201">line 201</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-todo">To Do:</dt>
+            <dd class="tag-todo">
+                <ul>
+                    <li>Benchmark different aligment functions on a randomly generated test set
+This allows to check the calculated alignment against a known ground truth</li>
+                </ul>
+            </dd>
+        </div>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".alignNoteArrays">
+        <a href="#.alignNoteArrays">#</a>
+        <span class="type-signature">(static) </span>alignNoteArrays<span class="signature">(gt, rec)</span><span class="type-signature"> &rarr; {NoteArray}</span>
     </h4>
 
     
@@ -147,7 +253,7 @@
 
 
     <div class="description">
-        Represents a tuning of lamellophone.
+        Given two NoteArrays, shift the second one in time such that they are aligned
     </div>
 
 
@@ -184,13 +290,13 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>gt</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">NoteArray</span>
 
 
             
@@ -200,20 +306,20 @@
 
             
 
-            <td class="description last">name</td>
+            <td class="description last">a NoteArray, e.g. the ground truth</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>notes</code></td>
+                <td class="name"><code>rec</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">NoteArray</span>
 
 
             
@@ -223,8 +329,207 @@
 
             
 
-            <td class="description last">array of notes, same order as on instrument
-     e.g. [..., 'D4','C4', 'F#4', ...]</td>
+            <td class="description last">a NoteArray to align to a</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="alignment_Alignment.js.html">alignment/Alignment.js</a>, <a href="alignment_Alignment.js.html#line20">line 20</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-todo">To Do:</dt>
+            <dd class="tag-todo">
+                <ul>
+                    <li>use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
+     to find note alignment, then only use those for force calculation</li>
+                </ul>
+            </dd>
+        </div>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    an aligned copy of b
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">NoteArray</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".alignNoteArrays2">
+        <a href="#.alignNoteArrays2">#</a>
+        <span class="type-signature">(static) </span>alignNoteArrays2<span class="signature">(gt, rec)</span><span class="type-signature"> &rarr; {NoteArray}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Given two NoteArrays, shift the second one in time such that they are aligned
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">NoteArray</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a NoteArray, e.g. the ground truth</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rec</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">NoteArray</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a NoteArray to align to a</td>
         </tr>
 
     
@@ -252,80 +557,12 @@
 
 
 
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="getLetters">
-        <a href="#getLetters">#</a>
-        <span class="type-signature"></span>getLetters<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns an array of the tuning's notes as letter representation:
-Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-Number format: C,  D,  ... C°, D°, ... C°°, D°°
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="method-member-container mt-20">
     <strong>Returns:</strong>
         
             
 <div class="param-desc">
-    array with tuning notes in letter representation
+    an aligned copy of b
 </div>
 
 
@@ -336,7 +573,7 @@ Number format: C,  D,  ... C°, D°, ... C°°, D°°
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">NoteArray</span>
 
 
     </dd>
@@ -353,9 +590,9 @@ Number format: C,  D,  ... C°, D°, ... C°°, D°°
 
     
 
-    <h4 class="name" id="getNumbers">
-        <a href="#getNumbers">#</a>
-        <span class="type-signature"></span>getNumbers<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span>
+    <h4 class="name" id=".alignNoteArrays3">
+        <a href="#.alignNoteArrays3">#</a>
+        <span class="type-signature">(static) </span>alignNoteArrays3<span class="signature">(gt, rec)</span><span class="type-signature"> &rarr; {NoteArray}</span>
     </h4>
 
     
@@ -363,9 +600,7 @@ Number format: C,  D,  ... C°, D°, ... C°°, D°°
 
 
     <div class="description">
-        Returns an array of the tuning's notes as number representation:
-Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
+        Given two NoteArrays, shift the second one in time such that they are aligned
     </div>
 
 
@@ -375,6 +610,380 @@ Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
 
 
 
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">NoteArray</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a NoteArray, e.g. the ground truth</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rec</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">NoteArray</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">a NoteArray to align to a</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="alignment_Alignment.js.html">alignment/Alignment.js</a>, <a href="alignment_Alignment.js.html#line82">line 82</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-todo">To Do:</dt>
+            <dd class="tag-todo">
+                <ul>
+                    <li>use median instead of average?</li>
+                </ul>
+            </dd>
+        </div>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    an aligned copy of b
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">NoteArray</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".testAlignment">
+        <a href="#.testAlignment">#</a>
+        <span class="type-signature">(static) </span>testAlignment<span class="signature">()</span><span class="type-signature"></span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Test function
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="alignment_Alignment.js.html">alignment/Alignment.js</a>, <a href="alignment_Alignment.js.html#line159">line 159</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-todo">To Do:</dt>
+            <dd class="tag-todo">
+                <ul>
+                    <li>move to test</li>
+                </ul>
+            </dd>
+        </div>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~alignmentForce">
+        <a href="#~alignmentForce">#</a>
+        <span class="type-signature">(inner) </span>alignmentForce<span class="signature">(a, b)</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Calculates the mean difference between all notes in a and the nearest same-
+pitched notes in b
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>a</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Note></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array with notes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>b</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Note></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array with notes</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
 
 
 
@@ -400,7 +1009,7 @@ Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
         
             
 <div class="param-desc">
-    array with tuning notes in number representation
+    mean time difference
 </div>
 
 
@@ -411,7 +1020,7 @@ Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">number</span>
 
 
     </dd>
