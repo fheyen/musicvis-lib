@@ -376,9 +376,10 @@ class NoteArray {
      * @returns {NoteArray} itself
      */
     transpose(steps) {
-        for (const n of this._notes) {
-            n.pitch = clipValue(n.pitch + steps, 0, 127);
-        }
+        this._notes = this._notes.map(n => Note.from({
+            ...n,
+            pitch: clipValue(n.pitch + steps, 0, 127),
+        }));
         return this;
     }
 

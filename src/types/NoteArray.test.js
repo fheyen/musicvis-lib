@@ -228,16 +228,17 @@ describe('NoteArray', () => {
     });
 
 
-    test('can be transposed back and forth', () => {
-        const transp = na.clone().transpose(12).transpose(-12);
-        expect(na.equals(transp)).toBe(true);
-    });
+    describe('transpose', () => {
+        test('can be transposed back and forth', () => {
+            const transp = na.clone().transpose(12).transpose(-12);
+            expect(na.equals(transp)).toBe(true);
+        });
 
-
-    test('transposed transitively', () => {
-        const transp1 = na.clone().transpose(6).transpose(6);
-        const transp2 = na.clone().transpose(12);
-        expect(transp1.equals(transp2)).toBe(true);
+        test('transposed transitively', () => {
+            const transp1 = na.clone().transpose(6).transpose(6);
+            const transp2 = na.clone().transpose(12);
+            expect(transp1.equals(transp2)).toBe(true);
+        });
     });
 
 

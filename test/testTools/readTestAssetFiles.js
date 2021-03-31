@@ -2,6 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import MusicPiece from '../../src/types/MusicPiece';
 
+
+/**
+ * Reads a binary file
+ *
+ * @param {string} fileName filenamefileName
+ * @param {string} directory directory
+ * @returns {Buffer} binary
+ */
+export function readFile(fileName, directory) {
+    const file = path.join(directory, fileName);
+    return fs.readFileSync(file);
+}
+
 /**
  * Reads a MIDI file
  *

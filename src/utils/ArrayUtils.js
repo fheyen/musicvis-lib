@@ -54,7 +54,7 @@ export function arrayHasSameElements(a, b, checkLength = true) {
 }
 
 /**
- * Jackard index calulates the similarity of the sets as the size of the set
+ * Jaccard index calulates the similarity of the sets as the size of the set
  * interaction divided by the size of the set union:
  * jackard_index = |intersection| / |union|
  *
@@ -63,7 +63,7 @@ export function arrayHasSameElements(a, b, checkLength = true) {
  * @param {number[]} set2 set 2
  * @returns {number} similarity in [0, 1]
  */
-export function jackardIndex(set1, set2) {
+export function jaccardIndex(set1, set2) {
     if (set1.length === 0 && set2.length === 0) {
         return 1;
     }

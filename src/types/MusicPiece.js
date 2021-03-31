@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import Note from './Note';
 import midiParser from 'midi-parser-js';
+import { Midi } from '@tonejs/midi';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';
 import NoteArray from './NoteArray';
@@ -67,6 +68,13 @@ class MusicPiece {
      * @param {ArrayBuffer} midiFile MIDI file
      * @returns {MusicPiece} new MusicPiece
      * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+     * @example In Node.js
+     *      const file = path.join(directory, fileName);
+     *      const data = fs.readFileSync(file, 'base64');
+     *      const mp = MusicPiece.fromMidi(fileName, data);
+     * @example In the browser
+     *      const uintArray = new Uint8Array(midiBinary);
+     *      const MP = MusicPiece.fromMidi(filename, uintArray);
      */
     static fromMidi(name, midiFile) {
         if (!midiFile) {
@@ -79,25 +87,102 @@ class MusicPiece {
         let keySignatures = [];
         let measureTimes = [];
         if (parsed.tracks.length > 0) {
-            // tempos
+            // Tempos
             tempos = parsed.tempoChanges
                 .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
+            // Time signatures
             timeSignatures = parsed.beatTypeChanges
                 .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
+            // Key signatures
             keySignatures = parsed.keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
-            // measure times
+            // Measure times
             measureTimes = parsed.measureLinePositions;
         }
-        // tracks signatures
+        // Tracks
         const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
             t.trackName,
             t.instrumentName,
             t.noteObjs,
             index,
         ));
+        return new MusicPiece(
+            name,
+            tempos,
+            timeSignatures,
+            keySignatures,
+            measureTimes,
+            tracks,
+        );
+    }
+
+    /**
+     * Creates a MusicPiece object from a MIDI file binary
+     *
+     * @todo on hold until @tonejs/midi adds time in seconds for meta events
+     * @deprecated This is not fully implemented yet
+     * @todo use @tonejs/midi for parsing, but the same information as with
+     * MusicPiece.fromMidi()
+     * @see https://github.com/Tonejs/Midi
+     * @param {string} name name
+     * @param {ArrayBuffer} midiFile MIDI file
+     * @returns {MusicPiece} new MusicPiece
+     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+     * @example In Node.js
+     *      const file = path.join(directory, fileName);
+     *      const data = fs.readFileSync(file);
+     *      const mp = MusicPiece.fromMidi(fileName, data);
+     * @example In the browser
+     *      const uintArray = new Uint8Array(midiBinary);
+     *      const MP = MusicPiece.fromMidi(filename, uintArray);
+     */
+    static fromMidi2(name, midiFile) {
+        if (!midiFile) {
+            throw new Error('No MIDI file content given');
+        }
+
+        const parsed = new Midi(midiFile);
+        // const uintArray = new Uint8Array(midiFile);
+        // const parsed = new Midi(uintArray);
+
+        // Tracks
+        const tracks = [];
+        for (const track of parsed.tracks) {
+            if (track.notes.length === 0) { continue; }
+            const notes = track.notes.map(note => Note.from({
+                pitch: note.midi,
+                start: note.time,
+                end: note.time + note.duration,
+                velocity: Math.round(note.velocity * 127),
+                channel: track.channel,
+            }));
+            tracks.push(
+                Track.fromMidi(
+                    track.trackName,
+                    track.instrumentName,
+                    notes,
+                ),
+            );
+        }
+
+        // TODO: convert ticks to seconds
+        let tempos = [];
+        let timeSignatures = [];
+        let keySignatures = [];
+        let measureTimes = [];
+        if (parsed.tracks.length > 0) {
+            // tempos
+            tempos = parsed.header.tempos
+                .map(d => new TempoDefinition(d.time, d.tempo));
+            // time signatures
+            timeSignatures = parsed.header.timeSignatures
+                .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
+            // key signatures
+            keySignatures = parsed.header.keySignatures
+                .map(d => new KeySignature(d.time, d.key, d.scale));
+            // measure times
+            measureTimes = parsed.measureLinePositions;
+        }
         return new MusicPiece(
             name,
             tempos,
@@ -139,28 +224,29 @@ class MusicPiece {
         let timeSignatures = [];
         let keySignatures = [];
         if (parsed.parts.length > 0) {
-            // tempos
+            // Tempos
             tempos = parsed.parts[0].tempoChanges
                 .map(d => new TempoDefinition(d.time, d.tempo));
-            // time signatures
+            // Time signatures
             timeSignatures = parsed.parts[0].beatTypeChanges
                 .map(d => new TimeSignature(d.time, [d.beats, d.beatType]));
-            // key signatures
+            // Key signatures
             keySignatures = parsed.parts[0].keySignatureChanges
                 .map(d => new KeySignature(d.time, d.key, d.scale));
         }
-        // measure times
+        // Measure times
         let measureTimes = [];
         if (parsed.parts.length > 0) {
             measureTimes = parsed.parts[0].measureLinePositions;
         }
-        // tracks
+        // Tracks
         const tracks = parsed.parts
             .map((t, index) => Track.fromMusicXml(
                 parsed.partNames[index],
                 parsed.instruments[index],
                 t.noteObjs,
                 index,
+                t.tuning,
             ));
         return new MusicPiece(
             name,
@@ -190,7 +276,7 @@ class MusicPiece {
     /**
      * Returns an array with notes from the specified tracks.
      *
-     * @param {string|number|number[]} indices either 'all', a number, or an
+     * @param {'all'|number|number[]} indices either 'all', a number, or an
      *      Array with numbers
      * @param {boolean} sortByTime true: sort notes by time (not needed for a
      *      single track)
@@ -217,6 +303,47 @@ class MusicPiece {
         }
         return notes;
     }
+
+    /**
+     * Transposes all or only the specified tracks by the specified number of
+     * (semitone) steps.
+     * Will return a new MusicPiece instance.
+     * Note pitches will be clipped to [0, 127].
+     *
+     * @param {number} steps number of semitones to transpose (can be negative)
+     * @param {'all'|number|number[]} tracks tracks to transpose
+     * @returns {MusicPiece} a new, transposed MusicPiece
+     */
+    transpose(steps = 0, tracks = 'all') {
+        const newTracks = this.tracks.map((track, index) => {
+            const change = (
+                tracks === 'all'
+                || (Array.isArray(tracks) && tracks.includes(index))
+                || tracks === index
+            );
+            const na = new NoteArray(track.notes);
+            let tuning = track.tuningPitches;
+            if (change) {
+                // Transpose notes and tuning pitches
+                na.transpose(steps);
+                tuning = track.tuningPitches.map(d => d + steps);
+            }
+            return new Track(
+                track.name,
+                track.instrument,
+                na.getNotes(),
+                tuning,
+            );
+        });
+        return new MusicPiece(
+            this.name,
+            [...this.tempos],
+            [...this.timeSignatures],
+            [...this.keySignatures],
+            [...this.measureTimes],
+            newTracks,
+        );
+    }
 }
 
 /**
@@ -235,9 +362,10 @@ export class Track {
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
+     * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
      * @throws {'Notes are undefined or not an array'} for invalid notes
      */
-    constructor(name, instrument, notes) {
+    constructor(name, instrument, notes, tuningPitches = null) {
         name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
         this.name = name;
         this.instrument = instrument;
@@ -245,7 +373,16 @@ export class Track {
             throw new Error('Notes are undefined or not an array');
         }
         this.notes = notes.sort((a, b) => a.start - b.start);
+        this.tuningPitches = tuningPitches;
+        // Computed properties
         this.duration = new NoteArray(notes).getDuration();
+        this.hasStringFret = false;
+        for (const note of notes) {
+            if (note.string !== undefined && note.fret !== undefined) {
+                this.hasStringFret = true;
+                break;
+            }
+        }
     }
 
     /**
@@ -267,13 +404,14 @@ export class Track {
      * @param {string} instrument instrument name
      * @param {Note[]} notes parsed MusicXML track's notes
      * @param {number} channel channel
+     * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
      * @returns {Track} new Track
      */
-    static fromMusicXml(name, instrument, notes, channel) {
+    static fromMusicXml(name, instrument, notes, channel, tuningPitches = null) {
         for (const n of notes) {
             n.channel = channel;
         }
-        return new Track(name, instrument, notes);
+        return new Track(name, instrument, notes, tuningPitches);
     }
 }
 

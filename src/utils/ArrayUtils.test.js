@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jackardIndex, binarySearch } from './ArrayUtils';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch } from './ArrayUtils';
 
 describe('ArrayUtils', () => {
 
@@ -81,21 +81,21 @@ describe('ArrayUtils', () => {
         });
     });
 
-    describe('jackardIndex', () => {
+    describe('jaccardIndex', () => {
         test('empty', () => {
-            expect(jackardIndex([], [])).toBe(1);
-            expect(jackardIndex([1], [])).toBe(0);
-            expect(jackardIndex([], [1])).toBe(0);
+            expect(jaccardIndex([], [])).toBe(1);
+            expect(jaccardIndex([1], [])).toBe(0);
+            expect(jaccardIndex([], [1])).toBe(0);
         });
 
         test('simple cases', () => {
-            expect(jackardIndex([], [2, 3])).toBe(0);
-            expect(jackardIndex([1], [2, 3])).toBe(0);
-            expect(jackardIndex([1], [1, 2, 3])).toBe(1 / 3);
-            expect(jackardIndex([1, 2], [1, 2, 3])).toBe(2 / 3);
-            expect(jackardIndex([1, 2, 3], [1, 2, 3])).toBe(1);
-            expect(jackardIndex([1, 2, 3, 2], [1, 2, 3])).toBe(1);
-            expect(jackardIndex([1, 2, 3, 2], [1, 2, 3, 3])).toBe(1);
+            expect(jaccardIndex([], [2, 3])).toBe(0);
+            expect(jaccardIndex([1], [2, 3])).toBe(0);
+            expect(jaccardIndex([1], [1, 2, 3])).toBe(1 / 3);
+            expect(jaccardIndex([1, 2], [1, 2, 3])).toBe(2 / 3);
+            expect(jaccardIndex([1, 2, 3], [1, 2, 3])).toBe(1);
+            expect(jaccardIndex([1, 2, 3, 2], [1, 2, 3])).toBe(1);
+            expect(jaccardIndex([1, 2, 3, 2], [1, 2, 3, 3])).toBe(1);
         });
     });
 
