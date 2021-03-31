@@ -1,4 +1,4 @@
-import { chordToInteger, chordIntegerJackardIndex, noteDurationToNoteType, binarySearch } from './MusicUtils';
+import { chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType } from './MusicUtils';
 import Note from '../types/Note';
 
 describe('MusicUtils', () => {
@@ -37,7 +37,7 @@ describe('MusicUtils', () => {
         });
     });
 
-    describe('chordIntegerJackardIndex', () => {
+    describe('chordIntegerJaccardIndex', () => {
         test.each([
             ['00000000', '00000000', 1],
             ['00000000', '00000001', 0],
@@ -47,7 +47,7 @@ describe('MusicUtils', () => {
         ])('%s', (chord1, chord2, result) => {
             const c1 = parseInt(chord1, 2);
             const c2 = parseInt(chord2, 2);
-            expect(chordIntegerJackardIndex(c1, c2)).toBe(result);
+            expect(chordIntegerJaccardIndex(c1, c2)).toBe(result);
         });
     });
 
