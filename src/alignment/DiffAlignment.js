@@ -2,7 +2,7 @@ import NoteArray from '../types/NoteArray';
 import { group, max } from 'd3';
 
 /**
- * @module alignment/DiffAlignment
+ * @module DiffAlignment
  */
 
 /**

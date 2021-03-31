@@ -5,6 +5,8 @@
 /**
  * Map:keyCount->pitchRange
  * pitchRange is {minPitch:number, maxPitch:number}
+ *
+ * @type {Map<number,object>}
  */
 export const pianoPitchRange = new Map([
     [72, { minPitch: 24, maxPitch: 95 }],

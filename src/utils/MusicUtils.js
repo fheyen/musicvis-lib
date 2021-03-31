@@ -61,7 +61,7 @@ export function chordIntegerJaccardIndex(chord1, chord2) {
     return intersectionSize / unionSize;
 }
 
-/**
+/*
  * noteTypeDurationRatios
  * 1 = whole note, 1/2 = half note, ...
  *

@@ -83,6 +83,8 @@ export class LamellophoneTuning {
 /**
  * Tunings.
  * Notes are in the same order as on the instrument
+ *
+ * @type {Map<string,Map<string,LamellophoneTuning>>}
  */
 export const lamellophoneTunings = new Map([
     ['Kalimba', new Map([

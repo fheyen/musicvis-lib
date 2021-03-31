@@ -24,6 +24,8 @@ import { randomNormal, randomInt, group } from 'd3';
  *  shape: Note shape in notation: triangle, <>, x, o, ostroke, xstroke
  *  label: Short label for this intrument
  *  name: Full name of this instrument
+ *
+ * @type {Map<number,object>}
  */
 export const drumPitchReplacementMapMPS850 = new Map([
     // Crash 1

@@ -17,7 +17,6 @@ class MusicPiece {
      * Do not use this constructor, but the static methods MusicPiece.fromMidi
      * and MusicPiece.fromMusicXml instead.
      *
-     * @private
      * @param {string} name name (e.g. file name or piece name)
      * @param {TempoDefinition[]} tempos tempos
      * @param {TimeSignature[]} timeSignatures time signatures
@@ -68,11 +67,11 @@ class MusicPiece {
      * @param {ArrayBuffer} midiFile MIDI file
      * @returns {MusicPiece} new MusicPiece
      * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     * @example In Node.js
+     * @example <caption>In Node.js</caption>
      *      const file = path.join(directory, fileName);
      *      const data = fs.readFileSync(file, 'base64');
      *      const mp = MusicPiece.fromMidi(fileName, data);
-     * @example In the browser
+     * @example <caption>In the browser</caption>
      *      const uintArray = new Uint8Array(midiBinary);
      *      const MP = MusicPiece.fromMidi(filename, uintArray);
      */
@@ -128,11 +127,11 @@ class MusicPiece {
      * @param {ArrayBuffer} midiFile MIDI file
      * @returns {MusicPiece} new MusicPiece
      * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     * @example In Node.js
+     * @example <caption>In Node.js</caption>
      *      const file = path.join(directory, fileName);
      *      const data = fs.readFileSync(file);
      *      const mp = MusicPiece.fromMidi(fileName, data);
-     * @example In the browser
+     * @example <caption>In the browser</caption>
      *      const uintArray = new Uint8Array(midiBinary);
      *      const MP = MusicPiece.fromMidi(filename, uintArray);
      */
@@ -348,8 +347,6 @@ class MusicPiece {
 
 /**
  * Used by MusicPiece, should not be used directly
- *
- * @private
  */
 export class Track {
     /**
@@ -358,7 +355,6 @@ export class Track {
      *
      * Notes will be sorted by start time.
      *
-     * @private
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
@@ -417,8 +413,6 @@ export class Track {
 
 /**
  * Tempo definition
- *
- * @private
  */
 export class TempoDefinition {
     /**
@@ -434,8 +428,6 @@ export class TempoDefinition {
 
 /**
  * Time signature definition
- *
- * @private
  */
 export class TimeSignature {
     /**
@@ -451,8 +443,6 @@ export class TimeSignature {
 
 /**
  * Key signature definition
- *
- * @private
  */
 export class KeySignature {
     /**

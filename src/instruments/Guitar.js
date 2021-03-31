@@ -31,9 +31,11 @@ export class StringedTuning {
  * Maps from instrument to string number to list of tunings.
  * Defaults are at the top.
  *
- * @example stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
  * @todo add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
  * @todo replace arrays by maps? tuning name - tuning
+ * @type {Map<string,Map<number,StringedTuning>>}
+ * @example
+ *      stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
  */
 export const stringedTunings = new Map([
     ['Guitar', new Map([
@@ -150,6 +152,8 @@ export function getTuningPitchRange(tuning, fretCount = 24) {
 /**
  * Colors for guitar strings, acces via stringColor[string]
  * where string in [1, 8].
+ *
+ * @type {string[]}
  */
 export const stringColors = [
     '#888',

@@ -752,7 +752,7 @@ declare module "instruments/Drums" {
      *  label: Short label for this intrument
      *  name: Full name of this instrument
      */
-    const drumPitchReplacementMapMPS850: any;
+    const drumPitchReplacementMapMPS850: Map<number, object>;
     /**
      * Generates a variation of an array of notes by adding, removing or changing notes
      * @param data - array of notes
@@ -793,7 +793,7 @@ declare module "instruments/Guitar" {
      * @example
      * stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
      */
-    const stringedTunings: any;
+    const stringedTunings: Map<string, Map<number, StringedTuning>>;
     /**
      * For Notes that have a guitar string encoded in their channel, this function
     allows to convert them to a GuitarNote.
@@ -821,7 +821,7 @@ declare module "instruments/Guitar" {
      * Colors for guitar strings, acces via stringColor[string]
     where string in [1, 8].
      */
-    const stringColors: any;
+    const stringColors: string[];
     /**
      * Returns the pitch of a note at a given fretboard position.
      * @param string - string
@@ -900,7 +900,7 @@ declare module "instruments/Lamellophone" {
      * Tunings.
      * Notes are in the same order as on the instrument
      */
-    const lamellophoneTunings: any;
+    const lamellophoneTunings: Map<string, Map<string, LamellophoneTuning>>;
     /**
      * Parses a tab into notes
      * @param tab - in letter format
@@ -953,7 +953,7 @@ declare module "instruments/Piano" {
      * Map:keyCount->pitchRange
      * pitchRange is {minPitch:number, maxPitch:number}
      */
-    const pianoPitchRange: any;
+    const pianoPitchRange: Map<number, object>;
 }
 
 declare module "stringBased/Gotoh" {
@@ -987,13 +987,19 @@ declare module "stringBased/Gotoh" {
     function normalizedGotoh(seqA: string | any[], seqB: string | any[], similarityFunction: (...params: any[]) => any, gapPenaltyStart: number, gapPenaltyExtend: number): number;
     /**
      * Cost function that simply checks whether two values are equal or not with ===
+     * @param a - some value
+     * @param b - some value
+     * @returns 1 if equal, -1 otherwise
      */
-    const matchMissmatchSimilarity: any;
+    function matchMissmatchSimilarity(a: any, b: any): number;
     /**
      * Cost function that takes the negative absolute value of the value's
      * difference, assuming that close values are more similar
+     * @param a - some value
+     * @param b - some value
+     * @returns -Math.abs(a - b)
      */
-    const differenceSimilarity: any;
+    function differenceSimilarity(a: number, b: number): number;
 }
 
 declare module "stringBased" { }
@@ -1198,6 +1204,93 @@ declare module "types/GuitarNote" {
          */
         toString(short: boolean): string;
     }
+}
+
+/**
+ * Do not use this constructor, but the static methods MusicPiece.fromMidi
+and MusicPiece.fromMusicXml instead.
+ * @param name - name (e.g. file name or piece name)
+ * @param tempos - tempos
+ * @param timeSignatures - time signatures
+ * @param keySignatures - key signatures
+ * @param measureTimes - time in seconds for each measure line
+ * @param tracks - tracks
+ */
+declare class MusicPiece {
+    constructor(name: string, tempos: TempoDefinition[], timeSignatures: TimeSignature[], keySignatures: KeySignature[], measureTimes: number[], tracks: Track[]);
+    /**
+     * Creates a MusicPiece object from a MIDI file binary
+     * @example
+     * <caption>In Node.js</caption>
+         const file = path.join(directory, fileName);
+         const data = fs.readFileSync(file, 'base64');
+         const mp = MusicPiece.fromMidi(fileName, data);
+     * @example
+     * <caption>In the browser</caption>
+         const uintArray = new Uint8Array(midiBinary);
+         const MP = MusicPiece.fromMidi(filename, uintArray);
+     * @param name - name
+     * @param midiFile - MIDI file
+     * @returns new MusicPiece
+     */
+    static fromMidi(name: string, midiFile: ArrayBuffer): MusicPiece;
+    /**
+     * Creates a MusicPiece object from a MIDI file binary
+     * @example
+     * <caption>In Node.js</caption>
+         const file = path.join(directory, fileName);
+         const data = fs.readFileSync(file);
+         const mp = MusicPiece.fromMidi(fileName, data);
+     * @example
+     * <caption>In the browser</caption>
+         const uintArray = new Uint8Array(midiBinary);
+         const MP = MusicPiece.fromMidi(filename, uintArray);
+     * @param name - name
+     * @param midiFile - MIDI file
+     * @returns new MusicPiece
+     */
+    static fromMidi2(name: string, midiFile: ArrayBuffer): MusicPiece;
+    /**
+     * Creates a MusicPiece object from a MusicXML string
+     * @example
+     * Parsing a MusicPiece in Node.js
+       const jsdom = require('jsdom');
+       const xmlFile = fs.readFileSync('My Song.musicxml');
+       const dom = new jsdom.JSDOM(xmlFile);
+       const xmlDocument = dom.window.document;
+       const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
+     * @param name - name
+     * @param xmlFile - MusicXML file content as string or object
+         If it is an object, it must behave like a DOM, e.g. provide methods
+         such as .querySelectorAll()
+     * @returns new MusicPiece
+     */
+    static fromMusicXml(name: string, xmlFile: string | any): MusicPiece;
+    /**
+     * Returns an array with all notes from all tracks.
+     * @param sortByTime - true: sort notes by time
+     * @returns all notes of this piece
+     */
+    getAllNotes(sortByTime: boolean): Note[];
+    /**
+     * Returns an array with notes from the specified tracks.
+     * @param indices - either 'all', a number, or an
+         Array with numbers
+     * @param sortByTime - true: sort notes by time (not needed for a
+         single track)
+     * @returns Array with all notes from the specified tracks
+     */
+    getNotesFromTracks(indices?: 'all' | number | number[], sortByTime: boolean): Note[];
+    /**
+     * Transposes all or only the specified tracks by the specified number of
+    (semitone) steps.
+    Will return a new MusicPiece instance.
+    Note pitches will be clipped to [0, 127].
+     * @param steps - number of semitones to transpose (can be negative)
+     * @param tracks - tracks to transpose
+     * @returns a new, transposed MusicPiece
+     */
+    transpose(steps: number, tracks?: 'all' | number | number[]): MusicPiece;
 }
 
 /**
@@ -1919,14 +2012,6 @@ declare module "utils/MusicUtils" {
      */
     function chordIntegerJaccardIndex(chord1: number, chord2: number): number;
     /**
-     * noteTypeDurationRatios
-     * 1 = whole note, 1/2 = half note, ...
-     *
-     * With added dots:
-     * o. has duration of 1.5, o.. 1.75, ...
-     */
-    const noteTypeDurationRatios: any;
-    /**
      * Estimates the note type (whole, quarter, ...) and number of dots for dotted
      * notes
      * @param duration - duration of a note
@@ -1944,18 +2029,18 @@ declare module "utils/NoteColorUtils" {
      * Colors from https://www.svpwiki.com/music+note+or+sound+colors
      * Order is C, C#, ... B
      */
-    const noteColormap: any;
+    const noteColormap: string[];
     /**
      * Colorblind save colors from
      * Malandrino et al. - Visualization and Music Harmony: Design, Implementation,
      * and Evaluation https://ieeexplore.ieee.org/abstract/document/8564210
      * Order is C, C#, ... B
      */
-    const noteColormapAccessible: any;
+    const noteColormapAccessible: string[];
     /**
      * Gradient color map from black to steelblue
      */
-    const colorInterpolator: any;
+    const noteColormapGradientArray: string[];
     /**
      * Returns the note color depending on the given pitch.
      * (Simplifies note color lookup by looking up the color for pitch%12.)

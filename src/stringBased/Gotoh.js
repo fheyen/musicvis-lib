@@ -114,8 +114,9 @@ export function normalizedGotoh(
  * @param {any} b some value
  * @returns {number} 1 if equal, -1 otherwise
  */
-export const matchMissmatchSimilarity = (a, b) => a === b ? 1 : -1;
-
+export function matchMissmatchSimilarity(a, b) {
+    return a === b ? 1 : -1;
+}
 
 /**
  * Cost function that takes the negative absolute value of the value's
@@ -125,4 +126,6 @@ export const matchMissmatchSimilarity = (a, b) => a === b ? 1 : -1;
  * @param {number} b some value
  * @returns {number} -Math.abs(a - b)
  */
-export const differenceSimilarity = (a, b) => -Math.abs(a - b);
+export function differenceSimilarity(a, b) {
+    return -Math.abs(a - b);
+}

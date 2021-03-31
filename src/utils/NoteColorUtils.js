@@ -10,6 +10,8 @@ import { hsl, interpolateRgb } from 'd3';
  * Maps each note to a color
  * Colors from https://www.svpwiki.com/music+note+or+sound+colors
  * Order is C, C#, ... B
+ *
+ * @type {string[]}
  */
 const noteColormap = [
     '#ff0000',
@@ -35,6 +37,8 @@ const noteColormap = [
  * Malandrino et al. - Visualization and Music Harmony: Design, Implementation,
  * and Evaluation https://ieeexplore.ieee.org/abstract/document/8564210
  * Order is C, C#, ... B
+ *
+ * @type {string[]}
  */
 // export const noteColormapAccessible = new Map([
 //     ['C', '#9aebff'],
@@ -65,10 +69,12 @@ const noteColormapAccessible = [
     '#0000cc',
 ];
 
+const colorInterpolator = interpolateRgb('black', 'steelblue');
 /**
  * Gradient color map from black to steelblue
+ *
+ * @type {string[]}
  */
-const colorInterpolator = interpolateRgb('black', 'steelblue');
 const noteColormapGradientArray = Array.from({ length: 12 })
     .map((d, index) => colorInterpolator(index / 11));
 
@@ -82,11 +88,11 @@ const noteColormapGradientArray = Array.from({ length: 12 })
  */
 export function noteColorFromPitch(pitch, colormap = 'default') {
     switch (colormap) {
-    case 'accessible':
-        return noteColormapAccessible[pitch % 12];
-    case 'gradient':
-        return noteColormapGradientArray[pitch % 12];
-    default:
-        return noteColormap[pitch % 12];
+        case 'accessible':
+            return noteColormapAccessible[pitch % 12];
+        case 'gradient':
+            return noteColormapGradientArray[pitch % 12];
+        default:
+            return noteColormap[pitch % 12];
     }
 }

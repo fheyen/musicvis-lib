@@ -5,7 +5,7 @@ import Note from '../types/Note';
 import NoteArray from '../types/NoteArray';
 
 /**
- * @module comparison/Alignment
+ * @module Alignment
  */
 
 /**
