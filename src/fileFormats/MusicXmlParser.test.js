@@ -247,7 +247,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 0,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -255,7 +255,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 0,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -263,7 +263,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 0.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -271,7 +271,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 1,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -279,7 +279,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 1,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -287,7 +287,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 1.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -295,7 +295,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 2,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -303,7 +303,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 2,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -311,7 +311,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 2.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -319,7 +319,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 2.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -327,7 +327,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 3,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -335,7 +335,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 3,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -343,7 +343,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 3.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -351,7 +351,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 4,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -359,7 +359,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 4,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -367,7 +367,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 4.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -375,7 +375,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -383,7 +383,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -391,7 +391,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 5.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -399,7 +399,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 6,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -407,7 +407,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 6,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -415,7 +415,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 6.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -423,7 +423,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 6.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -431,7 +431,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 7,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -439,7 +439,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 7,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -447,7 +447,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 7.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -455,7 +455,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 8,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -463,7 +463,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 8,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -471,7 +471,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 8.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -479,7 +479,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 9,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -487,7 +487,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 9,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -495,7 +495,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 9.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -503,7 +503,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 10,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -511,7 +511,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 10,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -519,7 +519,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 10.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -527,7 +527,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 10.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -535,7 +535,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 11,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -543,7 +543,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 11,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -551,7 +551,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 11.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -559,7 +559,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 12,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -567,7 +567,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 12,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -575,7 +575,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 12.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -583,7 +583,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 13,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -591,7 +591,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 13,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -599,7 +599,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 13.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -607,7 +607,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 14,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -615,7 +615,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 14,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -623,7 +623,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 14.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -631,7 +631,7 @@ describe('MusicXmlParser', () => {
                 "name": "C2",
                 "pitch": 36,
                 "start": 14.5,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -639,7 +639,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 15,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -647,7 +647,7 @@ describe('MusicXmlParser', () => {
                 "name": "D#2",
                 "pitch": 39,
                 "start": 15,
-                "velocity": 90,
+                "velocity": 81
             },
             {
                 "channel": 0,
@@ -655,7 +655,7 @@ describe('MusicXmlParser', () => {
                 "name": "G2",
                 "pitch": 43,
                 "start": 15.5,
-                "velocity": 90,
+                "velocity": 81
             },
         ].map(d => Note.from(d)));
     });
@@ -711,22 +711,20 @@ describe('MusicXmlParser', () => {
         const xml = readXmlFile('[Test] Dynamics.musicxml');
         const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].noteObjs.map(d => d.velocity)).toStrictEqual([
-            18,
-            18,
-            37,
-            37,
-            54,
-            54,
-            71,
-            71,
-            89,
-            89,
-            107,
-            107,
-            124,
-            124,
-            140,
-            140,
+            1,
+            5,
+            10,
+            16,
+            33,
+            49,
+            64,
+            80,
+            96,
+            112,
+            126,
+            127,
+            127,
+            127,
         ]);
     });
 

@@ -282,7 +282,7 @@ class MusicPiece {
      *      single track)
      * @returns {Note[]} Array with all notes from the specified tracks
      */
-    getNotesFromTracks(indices, sortByTime = false) {
+    getNotesFromTracks(indices = 'all', sortByTime = false) {
         let notes = [];
         if (indices === 'all') {
             // Return all notes from all tracks

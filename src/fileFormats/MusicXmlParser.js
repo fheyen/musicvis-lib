@@ -79,7 +79,10 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     let beats = 4;
     let beatType = 4;
     // Default velocity is 90 https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
-    let velocity = 90;
+    const defaultVelocity = 90;
+    const velocityFactor = 64 / 71;
+    let velocity = Math.round(defaultVelocity * velocityFactor);
+
     // Handle changing tempo and beat type
     const tempoChanges = [];
     const beatTypeChanges = [];
@@ -147,7 +150,8 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                 // Handle directions such as dynamics
                 for (const direction of child.children) {
                     if (direction.nodeName === 'sound' && direction.getAttribute('dynamics')) {
-                        velocity = Math.round(+direction.getAttribute('dynamics'));
+                        // Convert number... https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
+                        velocity = Math.round(velocityFactor * +direction.getAttribute('dynamics'));
                     }
                     // TODO: handle others, e.g. tempo
                     // if (direction.nodeName === 'sound' && direction.getAttribute('tempo')) {
@@ -184,6 +188,12 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                         const octave = +note.querySelectorAll('octave')[0].innerHTML;
                         pitch = getMidiNoteByNameAndOctave(step, octave).pitch + alter;
                     }
+                    // TODO: Handle dynamics defined as tag inside a note
+                    const dynamicsTag = note.querySelectorAll('dynamics')[0]?.children[0];
+                    if (dynamicsTag) {
+                        velocity = dynamicsMap.get(dynamicsTag.nodeName);
+                    }
+
                     // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
                     const isChord = note.querySelectorAll('chord').length > 0;
                     if (isChord) {
@@ -465,6 +475,20 @@ const keySignatureMap = new Map([
     [5, { key: 'B', scale: 'major' }],
     [6, { key: 'F#', scale: 'major' }],
     [7, { key: 'C#', scale: 'major' }],
+]);
+
+/**
+ * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
+ */
+const dynamicsMap = new Map([
+    ['ppp', 25],
+    ['pp', 38],
+    ['p', 51],
+    ['mp', 64],
+    ['mf', 76],
+    ['f', 89],
+    ['ff', 102],
+    ['fff', 114],
 ]);
 
 /**

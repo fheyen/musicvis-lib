@@ -24,6 +24,22 @@ function simplify(objectArray, keys) {
     });
 }
 
+/**
+ * Given a file name (without extension), this function will read a .mid and a
+ * .musicxml file and parse both to a MusicPiece before returning those.
+ *
+ * @param {string} fileBaseName file name without extension
+ * @returns {mpMidi:MusicPiece, mpXml:MusicPiece} two MusicPiece objects
+ */
+function getMusicPiecesFromBothFormats(fileBaseName, directory) {
+    const midi = readMidiFile(`${fileBaseName}.mid`, directory);
+    const xml = readXmlFile(`${fileBaseName}.musicxml`, directory);
+    const mpMidi = MusicPiece.fromMidi(fileBaseName, midi);
+    const mpXml = MusicPiece.fromMusicXml(fileBaseName, xml);
+    return { mpMidi, mpXml };
+}
+
+
 test('simplify test helper', () => {
     const notes = [
         Note.from({ pitch: 42, start: 12 }),
@@ -49,30 +65,15 @@ describe('MusicPiece', () => {
 
 
     describe('getNotesFromTracks', () => {
-        test('unsorted', () => {
-            const file = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
-            const mp = MusicPiece.fromMidi('test', file);
-            expect(
-                mp.getNotesFromTracks('all')
-            ).toStrictEqual(
-                mp.tracks.flatMap(t => t.notes)
-            );
-        });
-        // TODO: create an unsorted track manually
-        test('sorted', () => {
-            const file = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
-            const mp = MusicPiece.fromMidi('test', file);
-            expect(
-                mp.getNotesFromTracks('all', true)
-            ).toStrictEqual(
-                mp.tracks.flatMap(t => t.notes).sort((a, b) => a.start - b.start)
-            );
-        });
-    });
-
-    describe('getNotesFromTracks', () => {
         const file = readMidiFile('[Test] Multiple Parts.mid', TEST_DIR);
         const mp = MusicPiece.fromMidi('test', file);
+        test('default is same as all', () => {
+            expect(
+                mp.getNotesFromTracks()
+            ).toStrictEqual(
+                mp.getNotesFromTracks('all')
+            );
+        });
         test('all', () => {
             expect(
                 mp.getNotesFromTracks('all')
@@ -100,6 +101,26 @@ describe('MusicPiece', () => {
             ).toStrictEqual(
                 [...mp.tracks[1].notes, ...mp.tracks[3].notes]
                     .sort((a, b) => a.start - b.start)
+            );
+        });
+
+        test('unsorted', () => {
+            const file = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
+            const mp = MusicPiece.fromMidi('test', file);
+            expect(
+                mp.getNotesFromTracks('all')
+            ).toStrictEqual(
+                mp.tracks.flatMap(t => t.notes)
+            );
+        });
+        // TODO: create an unsorted track manually
+        test('sorted', () => {
+            const file = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
+            const mp = MusicPiece.fromMidi('test', file);
+            expect(
+                mp.getNotesFromTracks('all', true)
+            ).toStrictEqual(
+                mp.tracks.flatMap(t => t.notes).sort((a, b) => a.start - b.start)
             );
         });
     });
@@ -217,28 +238,38 @@ describe('MusicPiece', () => {
             // TODO: pickup measure does not work yet
             files.filter(d => d !== '[Test] Pickup Measure')
         )('time signature %s', (file) => {
-            const midi = readMidiFile(`${file}.mid`, TEST_DIR);
-            const xml = readXmlFile(`${file}.musicxml`, TEST_DIR);
-            const mpMidi = MusicPiece.fromMidi(file, midi);
-            const mpXml = MusicPiece.fromMusicXml(file, xml);
+            const { mpMidi, mpXml } = getMusicPiecesFromBothFormats(file, TEST_DIR);
             expect(mpMidi.timeSignatures).toStrictEqual(mpXml.timeSignatures);
         });
 
         test.each(files)('key signature %s', (file) => {
-            const midi = readMidiFile(`${file}.mid`, TEST_DIR);
-            const xml = readXmlFile(`${file}.musicxml`, TEST_DIR);
-            const mpMidi = MusicPiece.fromMidi(file, midi);
-            const mpXml = MusicPiece.fromMusicXml(file, xml);
+            const { mpMidi, mpXml } = getMusicPiecesFromBothFormats(file, TEST_DIR);
             expect(mpMidi.keySignatures).toStrictEqual(mpXml.keySignatures);
+        });
+
+        describe('Dynamics', () => {
+            test('In <sound> tags (MuseScore)', () => {
+                const { mpMidi, mpXml } = getMusicPiecesFromBothFormats('[Test] Dynamics', TEST_DIR);
+                expect(
+                    simplify(mpMidi.getNotesFromTracks(), ['pitch', 'velocity'])
+                ).toStrictEqual(
+                    simplify(mpXml.getNotesFromTracks(), ['pitch', 'velocity'])
+                );
+            });
+            test('As <ff> et. tags (GuitarPro)', () => {
+                const { mpMidi, mpXml } = getMusicPiecesFromBothFormats('[Test] Dynamics GuitarPro', TEST_DIR);
+                expect(
+                    simplify(mpMidi.getNotesFromTracks(), ['pitch', 'velocity'])
+                ).toStrictEqual(
+                    simplify(mpXml.getNotesFromTracks(), ['pitch', 'velocity'])
+                );
+            });
         });
 
         // TODO: there are issues with tempo change
         // TODO: xml often has one more than midi (no huge problem)
         test.skip.each(files)('measure times %s', (file) => {
-            const midi = readMidiFile(`${file}.mid`, TEST_DIR);
-            const xml = readXmlFile(`${file}.musicxml`, TEST_DIR);
-            const mpMidi = MusicPiece.fromMidi(file, midi);
-            const mpXml = MusicPiece.fromMusicXml(file, xml);
+            const { mpMidi, mpXml } = getMusicPiecesFromBothFormats(file, TEST_DIR);
             expect(mpMidi.measureTimes).toStrictEqual(mpXml.measureTimes);
         });
 

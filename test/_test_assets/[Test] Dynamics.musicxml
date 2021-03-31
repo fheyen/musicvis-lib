@@ -8,7 +8,7 @@
     <creator type="composer">Composer</creator>
     <encoding>
       <software>MuseScore 3.6.2</software>
-      <encoding-date>2021-03-11</encoding-date>
+      <encoding-date>2021-03-31</encoding-date>
       <supports element="accidental" type="yes"/>
       <supports element="beam" type="yes"/>
       <supports element="print" attribute="new-page" type="yes" value="yes"/>
@@ -42,11 +42,11 @@
     </defaults>
   <credit page="1">
     <credit-type>title</credit-type>
-    <credit-words default-x="600.242" default-y="1611.21" justify="center" valign="top" font-size="22">[Test] Dynamics</credit-words>
+    <credit-words default-x="600.24" default-y="1611.42" justify="center" valign="top" font-size="22">Dynamics</credit-words>
     </credit>
   <credit page="1">
     <credit-type>composer</credit-type>
-    <credit-words default-x="1114.76" default-y="1511.21" justify="right" valign="bottom">Composer</credit-words>
+    <credit-words default-x="1114.75" default-y="1511.42" justify="right" valign="top">Composer</credit-words>
     </credit>
   <part-list>
     <score-part id="P1">
@@ -65,7 +65,7 @@
       </score-part>
     </part-list>
   <part id="P1">
-    <measure number="1" width="278.90">
+    <measure number="1" width="121.09">
       <print>
         <system-layout>
           <system-margins>
@@ -91,32 +91,80 @@
         </attributes>
       <direction placement="below">
         <direction-type>
-          <dynamics default-x="3.25" default-y="-40.00" relative-y="-25.00">
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
+            <pppppp/>
+            </dynamics>
+          </direction-type>
+        <sound dynamics="1.11"/>
+        </direction>
+      <note default-x="73.72" default-y="-15.00">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>whole</type>
+        </note>
+      </measure>
+    <measure number="2" width="65.65">
+      <direction placement="below">
+        <direction-type>
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
+            <ppppp/>
+            </dynamics>
+          </direction-type>
+        <sound dynamics="5.56"/>
+        </direction>
+      <note default-x="13.96" default-y="-15.00">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>whole</type>
+        </note>
+      </measure>
+    <measure number="3" width="65.65">
+      <direction placement="below">
+        <direction-type>
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
+            <pppp/>
+            </dynamics>
+          </direction-type>
+        <sound dynamics="11.11"/>
+        </direction>
+      <note default-x="13.96" default-y="-15.00">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>whole</type>
+        </note>
+      </measure>
+    <measure number="4" width="65.65">
+      <direction placement="below">
+        <direction-type>
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
             <ppp/>
             </dynamics>
           </direction-type>
         <sound dynamics="17.78"/>
         </direction>
-      <note default-x="80.72" default-y="-15.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
           <step>C</step>
           <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>down</stem>
+        <type>whole</type>
         </note>
-      <note default-x="129.82" default-y="-25.00">
-        <pitch>
-          <step>A</step>
-          <octave>4</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
+      </measure>
+    <measure number="5" width="65.65">
       <direction placement="below">
         <direction-type>
           <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
@@ -125,56 +173,36 @@
           </direction-type>
         <sound dynamics="36.67"/>
         </direction>
-      <note default-x="178.91" default-y="-40.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
-          <step>E</step>
-          <octave>4</octave>
+          <step>C</step>
+          <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
-      <note default-x="228.01" default-y="-30.00">
-        <pitch>
-          <step>G</step>
-          <octave>4</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <type>whole</type>
         </note>
       </measure>
-    <measure number="2" width="211.18">
+    <measure number="6" width="65.65">
       <direction placement="below">
         <direction-type>
-          <dynamics default-x="3.25" default-y="-40.00" relative-y="-25.00">
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
             <p/>
             </dynamics>
           </direction-type>
         <sound dynamics="54.44"/>
         </direction>
-      <note default-x="13.00" default-y="-15.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
           <step>C</step>
           <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>down</stem>
+        <type>whole</type>
         </note>
-      <note default-x="62.10" default-y="-25.00">
-        <pitch>
-          <step>A</step>
-          <octave>4</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
+      </measure>
+    <measure number="7" width="65.65">
       <direction placement="below">
         <direction-type>
           <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
@@ -183,141 +211,147 @@
           </direction-type>
         <sound dynamics="71.11"/>
         </direction>
-      <note default-x="111.19" default-y="-40.00">
-        <pitch>
-          <step>E</step>
-          <octave>4</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
-      <note default-x="160.29" default-y="-50.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
           <step>C</step>
-          <octave>4</octave>
+          <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <type>whole</type>
         </note>
       </measure>
-    <measure number="3" width="239.88">
+    <measure number="8" width="65.65">
       <direction placement="below">
         <direction-type>
-          <dynamics default-x="6.50" default-y="-53.14" relative-y="-25.00">
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
             <mf/>
             </dynamics>
           </direction-type>
         <sound dynamics="88.89"/>
         </direction>
-      <note default-x="16.50" default-y="-50.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
           <step>C</step>
-          <octave>4</octave>
+          <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <type>whole</type>
         </note>
-      <note default-x="71.90" default-y="-60.00">
-        <pitch>
-          <step>A</step>
-          <octave>3</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
+      </measure>
+    <measure number="9" width="65.65">
       <direction placement="below">
         <direction-type>
-          <dynamics default-x="6.50" default-y="-78.55" relative-y="-25.00">
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
             <f/>
             </dynamics>
           </direction-type>
         <sound dynamics="106.67"/>
         </direction>
-      <note default-x="127.29" default-y="-75.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
-          <step>E</step>
-          <octave>3</octave>
+          <step>C</step>
+          <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
-      <note default-x="182.69" default-y="-65.00">
-        <pitch>
-          <step>G</step>
-          <octave>3</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <type>whole</type>
         </note>
       </measure>
-    <measure number="4" width="248.73">
+    <measure number="10" width="65.65">
       <direction placement="below">
         <direction-type>
-          <dynamics default-x="6.50" default-y="-53.55" relative-y="-25.00">
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
             <ff/>
             </dynamics>
           </direction-type>
         <sound dynamics="124.44"/>
         </direction>
-      <note default-x="16.50" default-y="-50.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
           <step>C</step>
-          <octave>4</octave>
+          <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <type>whole</type>
         </note>
-      <note default-x="71.90" default-y="-50.00">
-        <pitch>
-          <step>C</step>
-          <octave>4</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
+      </measure>
+    <measure number="11" width="65.65">
       <direction placement="below">
         <direction-type>
-          <dynamics default-x="6.50" default-y="-63.55" relative-y="-25.00">
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
             <fff/>
             </dynamics>
           </direction-type>
         <sound dynamics="140.00"/>
         </direction>
-      <note default-x="127.29" default-y="-60.00">
-        <pitch>
-          <step>A</step>
-          <octave>3</octave>
-          </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        </note>
-      <note default-x="182.69" default-y="-50.00">
+      <note default-x="13.96" default-y="-15.00">
         <pitch>
           <step>C</step>
-          <octave>4</octave>
+          <octave>5</octave>
           </pitch>
-        <duration>1</duration>
+        <duration>4</duration>
         <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <type>whole</type>
+        </note>
+      </measure>
+    <measure number="12" width="65.65">
+      <direction placement="below">
+        <direction-type>
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
+            <ffff/>
+            </dynamics>
+          </direction-type>
+        <sound dynamics="141.11"/>
+        </direction>
+      <note default-x="13.96" default-y="-15.00">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>whole</type>
+        </note>
+      </measure>
+    <measure number="13" width="65.65">
+      <direction placement="below">
+        <direction-type>
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
+            <fffff/>
+            </dynamics>
+          </direction-type>
+        <sound dynamics="141.11"/>
+        </direction>
+      <note default-x="13.96" default-y="-15.00">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>whole</type>
+        </note>
+      </measure>
+    <measure number="14" width="70.18">
+      <direction placement="below">
+        <direction-type>
+          <dynamics default-x="6.50" default-y="-40.00" relative-y="-25.00">
+            <ffffff/>
+            </dynamics>
+          </direction-type>
+        <sound dynamics="141.11"/>
+        </direction>
+      <note default-x="13.96" default-y="-15.00">
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>4</duration>
+        <voice>1</voice>
+        <type>whole</type>
         </note>
       <barline location="right">
         <bar-style>light-heavy</bar-style>
