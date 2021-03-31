@@ -111,7 +111,7 @@ class Overlap {
     }
 }
 
-/**
+/*
  * @todo use everywhere
  */
 export const NoteState = {

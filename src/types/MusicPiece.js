@@ -5,10 +5,11 @@ import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';
 import NoteArray from './NoteArray';
 
+
+
 /**
  * Represents a parsed MIDI or MusicXML file in a uniform format.
  *
- * @module types/MusicPiece
  */
 class MusicPiece {
 

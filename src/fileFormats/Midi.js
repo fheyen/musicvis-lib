@@ -103,7 +103,7 @@ export function getNoteNameFromNoteNr(nr) {
     return NOTE_NAMES[nr % 12];
 }
 
-/**
+/*
  * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
  */
 export const flatToSharp = new Map([
@@ -117,7 +117,7 @@ export const flatToSharp = new Map([
 ]);
 
 
-/**
+/*
  * Below here are only arrays with information and lookup-map-building code
  */
 
@@ -323,7 +323,7 @@ export const SHARPS = new Map([
     [126, null],
 ]);
 
-/**
+/*
  * MIDI commands with code, name, and parameters
  * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
  * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
@@ -353,7 +353,7 @@ export const MIDI_COMMANDS = new Map([
     [0xFF, { name: 'systemReset', description: 'System Reset (Sys Realtime)' }],
 ]);
 
-/**
+/*
  * MIDI instruments with number, group, and label
  */
 const MIDI_INSTRUMENTS = [

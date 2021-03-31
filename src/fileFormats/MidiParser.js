@@ -423,7 +423,7 @@ function getSignatureChanges(tracks) {
     return { tempoChanges, beatTypeChanges, keySignatureChanges };
 }
 
-/**
+/*
  * MIDI event types and meta types and their codes
  *
  * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
@@ -465,9 +465,9 @@ const META_TYPES = {
     sequencerSpecific: 0x7F,
 };
 
-/**
+/*
  * Maps needed for key signature detection from number of sharps / flats
- * see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
+ * @see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
  */
 const KEY_SIG_MAP = new Map([
     // major

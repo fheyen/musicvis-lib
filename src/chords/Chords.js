@@ -113,7 +113,7 @@ export function detectChordsByOverlap(notes, sortByPitch = true) {
 // }
 
 
-/**
+/*
  * Maps number of steps (number of notes -1) to possible chord types
  */
 const chordTypes = new Map([

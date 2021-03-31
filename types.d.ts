@@ -113,10 +113,6 @@ declare module "Chords" {
      */
     function detectChordsByOverlap(notes: Note[], sortByPitch: boolean): Note[][];
     /**
-     * Maps number of steps (number of notes -1) to possible chord types
-     */
-    const chordTypes: any;
-    /**
      * Returns chord type, e.g. 'Major', 'Diminished', ...
      * Important: Notes must be sorted by pitch ascending
      * @param notes - notes (sorted by pitch asc.)
@@ -149,7 +145,6 @@ declare module "comparison/ErrorClassifier" {
      * @returns separated notes
      */
     function separateMissed(classifiedNotes: NoteWithState[]): any;
-    const NoteState: any;
     /**
      * @param map - map
      * @param key - key
@@ -343,11 +338,6 @@ declare module "comparison/SimilarSections" {
  * Takes the ground truth and a single recording
  */
 declare function getErrorPerGtNote(gtNotes: any, recNotes: any): void;
-
-/**
- * Represents all fingers of both hands
- */
-declare const FINGERS: any;
 
 /**
  * Creates a track of metronome ticks for a given tempo and meter.
@@ -557,24 +547,6 @@ declare module "fileFormats/Midi" {
      * @returns note name such as 'C#'
      */
     function getNoteNameFromNoteNr(nr: number): string;
-    /**
-     * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
-     */
-    const flatToSharp: any;
-    /**
-     * Below here are only arrays with information and lookup-map-building code
-     */
-    const NOTE_NAMES: any;
-    /**
-     * MIDI commands with code, name, and parameters
-     * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
-     * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
-     */
-    const MIDI_COMMANDS: any;
-    /**
-     * MIDI instruments with number, group, and label
-     */
-    const MIDI_INSTRUMENTS: any;
 }
 
 declare module "fileFormats/MidiParser" {
@@ -587,15 +559,6 @@ declare module "fileFormats/MidiParser" {
      * @returns including an array of note objects and meta information
      */
     function preprocessMidiFileData(data: any, splitFormat0IntoTracks: boolean, log: boolean): any;
-    /**
-     * MIDI event types and meta types and their codes
-     */
-    const EVENT_TYPES: any;
-    /**
-     * Maps needed for key signature detection from number of sharps / flats
-     * see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
-     */
-    const KEY_SIG_MAP: any;
 }
 
 declare module "fileFormats/MusicXmlParser" {
@@ -607,14 +570,6 @@ declare module "fileFormats/MusicXmlParser" {
      * @returns parsed document
      */
     function preprocessMusicXmlData(xml: XMLDocument, log: boolean): any;
-    /**
-     * Map from fiths to key signature
-     */
-    const keySignatureMap: any;
-    /**
-     * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
-     */
-    const dynamicsMap: any;
     /**
      * Returns a map containing maps, such that result.get(partId).get(instrId)
     gives you the instrument with the ID instrId as defined in the part partId.
@@ -1246,11 +1201,6 @@ declare module "types/GuitarNote" {
 }
 
 /**
- * Represents a parsed MIDI or MusicXML file in a uniform format.
- */
-declare module "types/MusicPiece" { }
-
-/**
  * Simplifies each object in an array by copying only some keys and their values
  * @param objectArray - array with objects
  * @param keys - keys to copy
@@ -1261,6 +1211,7 @@ declare function simplify(objectArray: object[], keys: string[]): void;
  * Given a file name (without extension), this function will read a .mid and a
 .musicxml file and parse both to a MusicPiece before returning those.
  * @param fileBaseName - file name without extension
+ * @returns two MusicPiece objects
  */
 declare function getMusicPiecesFromBothFormats(fileBaseName: string): any;
 
@@ -1961,12 +1912,12 @@ declare module "utils/MusicUtils" {
     function chordToInteger(notes: Note[]): number;
     /**
      * Takes two chord integer representations from chordToInteger() and computes
-     * the Jackard index
+     * the Jaccard index
      * @param chord1 - chord as integer representation
      * @param chord2 - chord as integer representation
      * @returns Jackard index, from 0 for different to 1 for identical
      */
-    function chordIntegerJackardIndex(chord1: number, chord2: number): number;
+    function chordIntegerJaccardIndex(chord1: number, chord2: number): number;
     /**
      * noteTypeDurationRatios
      * 1 = whole note, 1/2 = half note, ...

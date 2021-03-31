@@ -457,41 +457,6 @@ function getTuningPitches(measures) {
 }
 
 /**
- * Map from fiths to key signature
- */
-const keySignatureMap = new Map([
-    [-7, { key: 'Cb', scale: 'major' }],
-    [-6, { key: 'Gb', scale: 'major' }],
-    [-5, { key: 'Db', scale: 'major' }],
-    [-4, { key: 'Ab', scale: 'major' }],
-    [-3, { key: 'Eb', scale: 'major' }],
-    [-2, { key: 'Bb', scale: 'major' }],
-    [-1, { key: 'F', scale: 'major' }],
-    [0, { key: 'C', scale: 'major' }],
-    [1, { key: 'G', scale: 'major' }],
-    [2, { key: 'D', scale: 'major' }],
-    [3, { key: 'A', scale: 'major' }],
-    [4, { key: 'E', scale: 'major' }],
-    [5, { key: 'B', scale: 'major' }],
-    [6, { key: 'F#', scale: 'major' }],
-    [7, { key: 'C#', scale: 'major' }],
-]);
-
-/**
- * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
- */
-const dynamicsMap = new Map([
-    ['ppp', 25],
-    ['pp', 38],
-    ['p', 51],
-    ['mp', 64],
-    ['mf', 76],
-    ['f', 89],
-    ['ff', 102],
-    ['fff', 114],
-]);
-
-/**
  * Returns a map containing maps, such that result.get(partId).get(instrId)
  * gives you the instrument with the ID instrId as defined in the part partId.
  *
@@ -519,3 +484,38 @@ function getDrumInstrumentMap(xml) {
     }
     return partMap;
 }
+
+/*
+ * Map from fiths to key signature
+ */
+const keySignatureMap = new Map([
+    [-7, { key: 'Cb', scale: 'major' }],
+    [-6, { key: 'Gb', scale: 'major' }],
+    [-5, { key: 'Db', scale: 'major' }],
+    [-4, { key: 'Ab', scale: 'major' }],
+    [-3, { key: 'Eb', scale: 'major' }],
+    [-2, { key: 'Bb', scale: 'major' }],
+    [-1, { key: 'F', scale: 'major' }],
+    [0, { key: 'C', scale: 'major' }],
+    [1, { key: 'G', scale: 'major' }],
+    [2, { key: 'D', scale: 'major' }],
+    [3, { key: 'A', scale: 'major' }],
+    [4, { key: 'E', scale: 'major' }],
+    [5, { key: 'B', scale: 'major' }],
+    [6, { key: 'F#', scale: 'major' }],
+    [7, { key: 'C#', scale: 'major' }],
+]);
+
+/*
+ * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
+ */
+const dynamicsMap = new Map([
+    ['ppp', 25],
+    ['pp', 38],
+    ['p', 51],
+    ['mp', 64],
+    ['mf', 76],
+    ['f', 89],
+    ['ff', 102],
+    ['fff', 114],
+]);

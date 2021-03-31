@@ -29,7 +29,7 @@ function simplify(objectArray, keys) {
  * .musicxml file and parse both to a MusicPiece before returning those.
  *
  * @param {string} fileBaseName file name without extension
- * @returns {mpMidi, mpXml} two MusicPiece objects
+ * @returns {{mpMidi, mpXml}} two MusicPiece objects
  */
 function getMusicPiecesFromBothFormats(fileBaseName, directory) {
     const midi = readMidiFile(`${fileBaseName}.mid`, directory);

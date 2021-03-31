@@ -1,4 +1,4 @@
-/**
+/*
  * Represents all fingers of both hands
  */
 const FINGERS = {
