@@ -24,7 +24,7 @@
     "music",
     "string comparison"
   ],
-  "main": "src/index.js",
+  "main": "dist/musicvislib.js",
   "unpkg": "dist/musicvislib.min.js",
   "module": "dist/musicvislib.js",
   "types": "./types.d.ts",

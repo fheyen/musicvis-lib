@@ -9,7 +9,6 @@ import NoteArray from './NoteArray';
 
 /**
  * Represents a parsed MIDI or MusicXML file in a uniform format.
- *
  */
 class MusicPiece {
 

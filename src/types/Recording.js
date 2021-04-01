@@ -3,8 +3,6 @@ import { arrayShallowEquals } from '../utils/ArrayUtils';
 
 /**
  * Class for storing recorded notes alongside meta information.
- *
- * @module types/Recording
  */
 class Recording extends NoteArray {
     /**

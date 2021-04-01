@@ -3,7 +3,6 @@ import Note from './Note';
 /**
  * Class that allows to represent pitch-bends from a MIDI file
  *
- * @module types/PitchBend
  * @todo nothing other than in note.js implemented yet
  * @todo NYI
  * @todo not used yet

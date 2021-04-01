@@ -8,7 +8,6 @@ import Note from './Note';
  * information on how to play it.
  *
  * @augments Note
- * @module types/GuitarNote
  */
 class GuitarNote extends Note {
     /**

@@ -7,8 +7,7 @@ import meta from './package.json';
 import commonjs from '@rollup/plugin-commonjs';
 
 
-
-const version = `// ${meta.homepage} v${meta.version}`;
+const version = `// musicvis-lib v${meta.version} ${meta.homepage}`;
 const input = 'src/index.js';
 
 export default [
@@ -29,6 +28,10 @@ export default [
             }),
             resolve(),
             commonjs(),
+            babel({
+                babelHelpers: 'bundled',
+                plugins: [['@babel/plugin-proposal-class-properties', { 'loose': true }]],
+            }),
             jsdoc({
                 args: ['-r', '-d', 'docs'],
                 config: 'jsdoc.conf.json',
@@ -37,18 +40,6 @@ export default [
     },
     {
         input,
-        plugins: [
-            json({
-                compact: true,
-            }),
-            resolve(),
-            commonjs(),
-            terser({
-                format: {
-                    preamble: version,
-                },
-            }),
-        ],
         output: {
             extend: true,
             file: 'dist/musicvislib.min.js',
@@ -56,9 +47,6 @@ export default [
             indent: false,
             name: 'musicvislib',
         },
-    },
-    {
-        input,
         plugins: [
             json({
                 compact: true,
@@ -71,6 +59,9 @@ export default [
                 },
             }),
         ],
+    },
+    {
+        input,
         output: {
             extend: true,
             file: 'dist/musicvislib.esm.js',
@@ -78,9 +69,6 @@ export default [
             indent: false,
             name: 'musicvislib',
         },
-    },
-    {
-        input,
         plugins: [
             json({
                 compact: true,
@@ -92,8 +80,10 @@ export default [
                     preamble: version,
                 },
             }),
-            babel({ babelHelpers: 'bundled', plugins: [['@babel/plugin-proposal-class-properties', { 'loose': true }]] }),
         ],
+    },
+    {
+        input,
         output: {
             extend: true,
             file: 'dist/musicvislib.es6.js',
@@ -101,5 +91,21 @@ export default [
             indent: false,
             name: 'musicvislib',
         },
+        plugins: [
+            json({
+                compact: true,
+            }),
+            resolve(),
+            commonjs(),
+            terser({
+                format: {
+                    preamble: version,
+                },
+            }),
+            babel({
+                babelHelpers: 'bundled',
+                plugins: [['@babel/plugin-proposal-class-properties', { 'loose': true }]],
+            }),
+        ],
     },
 ];

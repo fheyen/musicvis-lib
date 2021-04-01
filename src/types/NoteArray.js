@@ -7,7 +7,6 @@ import { min } from 'd3';
  * This class represents an array of note objects.
  * This can be used to simplify operations on a track.
  *
- * @module types/NoteArray
  * @example
  *   const notes = [
  *       // Some Note objects
