@@ -85,30 +85,4 @@ export default [
             }),
         ],
     },
-    {
-        input,
-        output: {
-            extend: true,
-            file: 'dist/musicvislib.es6.js',
-            format: 'umd',
-            indent: false,
-            name: 'musicvislib',
-        },
-        plugins: [
-            json({
-                compact: true,
-            }),
-            resolve(),
-            commonjs(),
-            terser({
-                format: {
-                    preamble: version,
-                },
-            }),
-            babel({
-                babelHelpers: 'bundled',
-                plugins: [['@babel/plugin-proposal-class-properties', { 'loose': true }]],
-            }),
-        ],
-    },
 ];
