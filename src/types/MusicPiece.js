@@ -1,5 +1,5 @@
 import Note from './Note';
-import midiParser from 'midi-parser-js';
+import * as midiParser from 'midi-parser-js';
 import { Midi } from '@tonejs/midi';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';

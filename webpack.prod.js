@@ -5,7 +5,7 @@ module.exports = {
     entry: path.resolve(__dirname, 'src/index.js'),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'musicvislib.min.js',
+        filename: 'musicvislib.wp.min.js',
         library: 'musicvislib',
         libraryTarget: 'umd',
         globalObject: 'this',
