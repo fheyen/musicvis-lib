@@ -1141,69 +1141,106 @@ declare module "stringBased/SuffixTree" {
 }
 
 /**
- * Guitar note class that reflects MIDI properties but has
- * absolute start and end times in seconds and
- * information on how to play it.
+ * Creates a new Note
+ * @param pitch - pitch
+ * @param start - start time in seconds
+ * @param velocity - velocity
+ * @param channel - MIDI channel
+ * @param end - end time in seconds
+ * @param string - guitar string
+ * @param fret - guitar fret
  */
-declare module "types/GuitarNote" {
+declare class GuitarNote extends Note {
+    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number, string: number, fret: number);
     /**
-     * Creates a new Note
-     * @param pitch - pitch
-     * @param start - start time in seconds
-     * @param velocity - velocity
-     * @param channel - MIDI channel
-     * @param end - end time in seconds
-     * @param string - guitar string
-     * @param fret - guitar fret
+     * Creates a GuitarNote object from an object via destructuring
+     * @param object - object with at least {pitch}
+     *  {
+     *      pitch: number|string    e.g. 12 or C#4
+     *      start: number           start time in seconds
+     *      end: number             end time in seconds
+     *      velocity: number        MIDI velocity
+     *      channel: number         MIDI channel
+     *      string: number          guitar string
+     *      fret: number            guitar fret
+     *  }
+     * @returns new note
      */
-    class GuitarNote {
-        constructor(pitch: number, start: number, velocity?: number, channel: number, end: number, string: number, fret: number);
-        /**
-         * Creates a GuitarNote object from an object via destructuring
-         * @param object - object with at least {pitch}
-         *  {
-         *      pitch: number|string    e.g. 12 or C#4
-         *      start: number           start time in seconds
-         *      end: number             end time in seconds
-         *      velocity: number        MIDI velocity
-         *      channel: number         MIDI channel
-         *      string: number          guitar string
-         *      fret: number            guitar fret
-         *  }
-         * @returns new note
-         */
-        static from(object: any): GuitarNote;
-        /**
-         * Converts a Note to a GuitarNote
-         * @param note - note
-         * @param string - string
-         * @param fret - fret
-         * @returns guitar note
-         */
-        static fromNote(note: Note, string: number, fret: number): GuitarNote;
-        /**
-         * Simplifies the GuitarNote to a Note
-         * @returns note
-         */
-        toNote(): Note;
-        /**
-         * Returns a copy of the Note object
-         * @returns new note
-         */
-        clone(): GuitarNote;
-        /**
-         * Returns true if this note and otherNote have equal attributes.
-         * @param otherNote - another GuitarNote
-         * @returns true if equal
-         */
-        equals(otherNote: GuitarNote): boolean;
-        /**
-         * Human-readable string representation of this GuitarNote
-         * @param short - if true, attribute names will be shortened
-         * @returns string representation
-         */
-        toString(short: boolean): string;
-    }
+    static from(object: any): GuitarNote;
+    /**
+     * Converts a Note to a GuitarNote
+     * @param note - note
+     * @param string - string
+     * @param fret - fret
+     * @returns guitar note
+     */
+    static fromNote(note: Note, string: number, fret: number): GuitarNote;
+    /**
+     * Simplifies the GuitarNote to a Note
+     * @returns note
+     */
+    toNote(): Note;
+    /**
+     * Returns a copy of the Note object
+     * @returns new note
+     */
+    clone(): GuitarNote;
+    /**
+     * Returns true if this note and otherNote have equal attributes.
+     * @param otherNote - another GuitarNote
+     * @returns true if equal
+     */
+    equals(otherNote: GuitarNote): boolean;
+    /**
+     * Human-readable string representation of this GuitarNote
+     * @param short - if true, attribute names will be shortened
+     * @returns string representation
+     */
+    toString(short: boolean): string;
+    /**
+     * Returns the duration of this note in seconds
+     * @returns note duration
+     */
+    getDuration(): number;
+    /**
+     * Returns the note's name and octave, e.g. 'C#3'
+     * @returns note name as string
+     */
+    getName(): string;
+    /**
+     * Returns the note's name WITHOUT the octave, e.g. 'C#'
+     * @returns note name as string
+     */
+    getLetter(): string;
+    /**
+     * Returns the note's octave
+     * @returns the note's octave
+     */
+    getOctave(): number;
+    /**
+     * Returns a new Note where start and end are multiplied by factor
+     * @param addedSeconds - seconds to be added to start and end
+     * @returns new note
+     */
+    shiftTime(addedSeconds: number): Note;
+    /**
+     * Returns a new Note where start and end are multiplied by factor
+     * @param factor - factor to scale start and end with
+     * @returns new note
+     */
+    scaleTime(factor: number): Note;
+    /**
+     * Returns true, if this Note and otherNote overlap in time.
+     * @param otherNote - another Note
+     * @returns true if they overlap
+     */
+    overlapsInTime(otherNote: Note): boolean;
+    /**
+     * Returns the amount of seconds this Note and otherNote overlap in time.
+     * @param otherNote - another Note
+     * @returns seconds of overlap
+     */
+    overlapInSeconds(otherNote: Note): number;
 }
 
 /**
@@ -1309,108 +1346,102 @@ declare function simplify(objectArray: object[], keys: string[]): void;
 declare function getMusicPiecesFromBothFormats(fileBaseName: string): any;
 
 /**
- * Note class that reflects MIDI properties but has
- * absolute start and end times in seconds.
+ * Creates a new Note
+ * @param pitch - pitch
+ * @param start - start time in seconds
+ * @param velocity - velocity
+ * @param channel - MIDI channel
+ * @param end - end time in seconds
  */
-declare module "types/Note" {
+declare class Note {
+    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
     /**
-     * Creates a new Note
-     * @param pitch - pitch
-     * @param start - start time in seconds
-     * @param velocity - velocity
-     * @param channel - MIDI channel
-     * @param end - end time in seconds
+     * Creates a Note object from an object via destructuring
+     * @example
+     * const n = Note.from({
+     *      pitch: 'C#4'     // e.g. 12 or C#4
+     *      start: 0.5       // start time in seconds
+     *      end: 1.5         // end time in seconds
+     *      velocity: 127    // MIDI velocity
+     *      channel: 0       // MIDI channel
+     *  });
+     * @param object - object with at least {pitch}
+     *  {
+     *      pitch: number|string    e.g. 12 or C#4
+     *      start: number           start time in seconds
+     *      end: number             end time in seconds
+     *      velocity: number        MIDI velocity
+     *      channel: number         MIDI channel
+     *  }
+     * @returns new note
      */
-    class Note {
-        constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
-        /**
-         * Creates a Note object from an object via destructuring
-         * @example
-         * const n = Note.from({
-         *      pitch: 'C#4'     // e.g. 12 or C#4
-         *      start: 0.5       // start time in seconds
-         *      end: 1.5         // end time in seconds
-         *      velocity: 127    // MIDI velocity
-         *      channel: 0       // MIDI channel
-         *  });
-         * @param object - object with at least {pitch}
-         *  {
-         *      pitch: number|string    e.g. 12 or C#4
-         *      start: number           start time in seconds
-         *      end: number             end time in seconds
-         *      velocity: number        MIDI velocity
-         *      channel: number         MIDI channel
-         *  }
-         * @returns new note
-         */
-        static from(object: any): Note;
-        /**
-         * Returns a copy of the Note object
-         * @returns new note
-         */
-        clone(): Note;
-        /**
-         * Returns the duration of this note in seconds
-         * @returns note duration
-         */
-        getDuration(): number;
-        /**
-         * Returns the note's name and octave, e.g. 'C#3'
-         * @returns note name as string
-         */
-        getName(): string;
-        /**
-         * Returns the note's name WITHOUT the octave, e.g. 'C#'
-         * @returns note name as string
-         */
-        getLetter(): string;
-        /**
-         * Returns the note's octave
-         * @returns the note's octave
-         */
-        getOctave(): number;
-        /**
-         * Returns a new Note where start and end are multiplied by factor
-         * @param addedSeconds - seconds to be added to start and end
-         * @returns new note
-         */
-        shiftTime(addedSeconds: number): Note;
-        /**
-         * Returns a new Note where start and end are multiplied by factor
-         * @param factor - factor to scale start and end with
-         * @returns new note
-         */
-        scaleTime(factor: number): Note;
-        /**
-         * Returns true, if this Note and otherNote overlap in time.
-         * @param otherNote - another Note
-         * @returns true if they overlap
-         */
-        overlapsInTime(otherNote: Note): boolean;
-        /**
-         * Returns the amount of seconds this Note and otherNote overlap in time.
-         * @param otherNote - another Note
-         * @returns seconds of overlap
-         */
-        overlapInSeconds(otherNote: Note): number;
-        /**
-         * Returns true if this note and otherNote have equal attributes.
-         * @param otherNote - another Note
-         * @returns true if equal
-         */
-        equals(otherNote: Note): boolean;
-        /**
-         * Human-readable string representation of this Note
-         * @param short - if true, attribute names will be shortened
-         * @returns string representation
-         */
-        toString(short: boolean): string;
-    }
+    static from(object: any): Note;
+    /**
+     * Returns a copy of the Note object
+     * @returns new note
+     */
+    clone(): Note;
+    /**
+     * Returns the duration of this note in seconds
+     * @returns note duration
+     */
+    getDuration(): number;
+    /**
+     * Returns the note's name and octave, e.g. 'C#3'
+     * @returns note name as string
+     */
+    getName(): string;
+    /**
+     * Returns the note's name WITHOUT the octave, e.g. 'C#'
+     * @returns note name as string
+     */
+    getLetter(): string;
+    /**
+     * Returns the note's octave
+     * @returns the note's octave
+     */
+    getOctave(): number;
+    /**
+     * Returns a new Note where start and end are multiplied by factor
+     * @param addedSeconds - seconds to be added to start and end
+     * @returns new note
+     */
+    shiftTime(addedSeconds: number): Note;
+    /**
+     * Returns a new Note where start and end are multiplied by factor
+     * @param factor - factor to scale start and end with
+     * @returns new note
+     */
+    scaleTime(factor: number): Note;
+    /**
+     * Returns true, if this Note and otherNote overlap in time.
+     * @param otherNote - another Note
+     * @returns true if they overlap
+     */
+    overlapsInTime(otherNote: Note): boolean;
+    /**
+     * Returns the amount of seconds this Note and otherNote overlap in time.
+     * @param otherNote - another Note
+     * @returns seconds of overlap
+     */
+    overlapInSeconds(otherNote: Note): number;
+    /**
+     * Returns true if this note and otherNote have equal attributes.
+     * @param otherNote - another Note
+     * @returns true if equal
+     */
+    equals(otherNote: Note): boolean;
+    /**
+     * Human-readable string representation of this Note
+     * @param short - if true, attribute names will be shortened
+     * @returns string representation
+     */
+    toString(short: boolean): string;
 }
 
 /**
- * This class represents an array of note objects.
-This can be used to simplify operations on a track.
+ * Creates a new NoteArray,
+will make a copy of the passed array and cast all notes
  * @example
  * const notes = [
       // Some Note objects
@@ -1426,344 +1457,325 @@ This can be used to simplify operations on a track.
   // Get Note objects back in a simple Array
   const transformedNotes = noteArr.getNotes();
   // [Note, Note, Note, ...]
+ * @param notes - notes, default: []
  */
-declare module "types/NoteArray" {
+declare class NoteArray {
+    constructor(notes: Note[]);
     /**
-     * Creates a new NoteArray,
-    will make a copy of the passed array and cast all notes
-     * @param notes - notes, default: []
+     * Returns a simple array with all Note objects.
+     * @returns array with Note objects
      */
-    class NoteArray {
-        constructor(notes: Note[]);
-        /**
-         * Returns a simple array with all Note objects.
-         * @returns array with Note objects
-         */
-        getNotes(): Note[];
-        /**
-         * Appends notes to this note array
-         * @param notes - notes
-         * @param sort - iff ture, sorts notes by start timeafter adding
-             the new ones (default:true)
-         * @returns itself
-         */
-        addNotes(notes: Note[], sort?: boolean): NoteArray;
-        /**
-         * Adds the notes from another NoteArray to this NoteArray
-        IMPORTANT: this does not change the notes or sort them!
-        Take a look at NoteArray.append() if you want to extend
-        a track at its end.
-         * @param noteArray - another NoteArray
-         * @returns itself
-         */
-        concat(noteArray: NoteArray): NoteArray;
-        /**
-         * Appends notes to the end of this NoteArray, after shifting them by its
-        duration. Set gap to something != 0 to create a gap or overlap.
-         * @param noteArray - another NoteArray
-         * @param gap - in seconds between the two parts
-         * @returns itself
-         */
-        append(noteArray: NoteArray, gap: number): NoteArray;
-        /**
-         * Repeats the notes of this array by concatenating a time-shifted copy
-         * @param times - number of times to repeat it
-         * @returns a new NoteArray with the repeated note sequence
-         */
-        repeat(times: number): NoteArray;
-        /**
-         * Returns the number of Note objects in this NoteArray
-         * @returns note count
-         */
-        length(): number;
-        /**
-         * Returns the start time of the earliest note in this NoteArray
-         * @returns start time
-         */
-        getStartTime(): number;
-        /**
-         * Returns the duration of this note array in seconds from 0 to the end of
-        the latest note.
-         * @returns duration
-         */
-        getDuration(): number;
-        /**
-         * Scales the time of each note by factor
-         * @param factor - factor
-         * @returns itself
-         */
-        scaleTime(factor: number): NoteArray;
-        /**
-         * Adds the speicifed number of seconds to each note
-         * @param addedSeconds - time to add in seconds
-         * @returns itself
-         */
-        shiftTime(addedSeconds: number): NoteArray;
-        /**
-         * Moves all notes s.t. the first starts at <start>
-        Will sort the notes by start time.
-         * @param startTime - the new start time for the earliest note
-         * @returns itself
-         */
-        shiftToStartAt(startTime: number): NoteArray;
-        /**
-         * Similar to Array.forEach
-         * @param func - a function
-         * @returns this
-         */
-        forEach(func: (...params: any[]) => any): NoteArray;
-        /**
-         * Sorts the notes
-         * @param sortFunction - sort function, e.g. (a, b)=>a.start-b.start
-         * @returns itself
-         */
-        sort(sortFunction: (...params: any[]) => any): NoteArray;
-        /**
-         * Sorts the notes by start time
-         * @returns itself
-         */
-        sortByTime(): NoteArray;
-        /**
-         * Maps the notes using some mapping function
-         * @param mapFunction - mapping function with same signature as
-             Array.map()
-         * @returns itself
-         */
-        map(mapFunction: (...params: any[]) => any): NoteArray;
-        /**
-         * Slices the notes by index, like Array.slice()
-         * @param start - start index
-         * @param end - end index
-         * @returns itself
-         */
-        slice(start: number, end: number): NoteArray;
-        /**
-         * Slices the notes by time.
-        The modes 'end' and 'contained' will remove all notes with end === null!
-        Notes will not be changed, e.g. start time will remain the same.
-         * @param startTime - start of the filter range in seconds
-         * @param endTime - end of the filter range in seconds (exclusive)
-         * @param mode - controls which note time to consider, one of:
-             - start: note.start must be inside range
-             - end: note.end must be inside range
-             - contained: BOTH note.start and note.end must be inside range
-             - touched: EITHER start or end (or both) must be inside range)
-             - touched-included: like touched, but also includes notes where
-                 neither start nor end inside range, but range is completely
-                 inside the note
-             (contained is default)
-         * @returns itself
-         */
-        sliceTime(startTime: number, endTime: number, mode?: string): NoteArray;
-        /**
-         * Slices this NoteArray into slices by the given times. Will not return
-        NoteArrays but simple Note[][], where each item contains all notes of one
-        time slice. Do not include 0, it will be assumed as first time to slice.
-        To make sure notes are not contained twice in different slices use the
-        mode 'start'.
-         * @example
-         * // Slice into 1 second slices
-             const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
-         * @param times - points of time at which to slice (in seconds)
-         * @param mode - see NoteArray.sliceTime()
-         * @returns time slices
-         */
-        sliceAtTimes(times: number[], mode: string): Note[][];
-        /**
-         * Filters the NoteArray like you would filter via Array.filter().
-         * @example
-         * // Only keep notes longer than 1 second
-             const filtered = noteArray.filter(note=>note.getDuration()>1);
-         * @param filterFunction - filter function, same signature as
-             Array.filter()
-         * @returns itself
-         */
-        filter(filterFunction: (...params: any[]) => any): NoteArray;
-        /**
-         * Filters by pitch, keeping only pitches specified in <pitches>
-         * @param pitches - array or Set of pitches to keep
-         * @returns itself
-         */
-        filterPitches(pitches: number[] | Set<number>): NoteArray;
-        /**
-         * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
-         * @param steps - number of semitones to transpose, can be negative
-         * @returns itself
-         */
-        transpose(steps: number): NoteArray;
-        /**
-         * Will set the octave of all notes to -1.
-        This might cause two notes to exist at the same time and pitch!
-         * @returns itself
-         */
-        removeOctaves(): NoteArray;
-        /**
-         * Reverses the note array, such that it can be played backwards.
-         * @returns itself
-         */
-        reverse(): NoteArray;
-        /**
-         * Returns true if this NoteArray and otherNoteArray have equal attributes.
-         * @param otherNoteArray - another NoteArray
-         * @returns true if equal
-         */
-        equals(otherNoteArray: NoteArray): boolean;
-        /**
-         * Deep clone, all contained notes are cloned as well.
-         * @returns clone
-         */
-        clone(): NoteArray;
-    }
+    getNotes(): Note[];
+    /**
+     * Appends notes to this note array
+     * @param notes - notes
+     * @param sort - iff ture, sorts notes by start timeafter adding
+         the new ones (default:true)
+     * @returns itself
+     */
+    addNotes(notes: Note[], sort?: boolean): NoteArray;
+    /**
+     * Adds the notes from another NoteArray to this NoteArray
+    IMPORTANT: this does not change the notes or sort them!
+    Take a look at NoteArray.append() if you want to extend
+    a track at its end.
+     * @param noteArray - another NoteArray
+     * @returns itself
+     */
+    concat(noteArray: NoteArray): NoteArray;
+    /**
+     * Appends notes to the end of this NoteArray, after shifting them by its
+    duration. Set gap to something != 0 to create a gap or overlap.
+     * @param noteArray - another NoteArray
+     * @param gap - in seconds between the two parts
+     * @returns itself
+     */
+    append(noteArray: NoteArray, gap: number): NoteArray;
+    /**
+     * Repeats the notes of this array by concatenating a time-shifted copy
+     * @param times - number of times to repeat it
+     * @returns a new NoteArray with the repeated note sequence
+     */
+    repeat(times: number): NoteArray;
+    /**
+     * Returns the number of Note objects in this NoteArray
+     * @returns note count
+     */
+    length(): number;
+    /**
+     * Returns the start time of the earliest note in this NoteArray
+     * @returns start time
+     */
+    getStartTime(): number;
+    /**
+     * Returns the duration of this note array in seconds from 0 to the end of
+    the latest note.
+     * @returns duration
+     */
+    getDuration(): number;
+    /**
+     * Scales the time of each note by factor
+     * @param factor - factor
+     * @returns itself
+     */
+    scaleTime(factor: number): NoteArray;
+    /**
+     * Adds the speicifed number of seconds to each note
+     * @param addedSeconds - time to add in seconds
+     * @returns itself
+     */
+    shiftTime(addedSeconds: number): NoteArray;
+    /**
+     * Moves all notes s.t. the first starts at <start>
+    Will sort the notes by start time.
+     * @param startTime - the new start time for the earliest note
+     * @returns itself
+     */
+    shiftToStartAt(startTime: number): NoteArray;
+    /**
+     * Similar to Array.forEach
+     * @param func - a function
+     * @returns this
+     */
+    forEach(func: (...params: any[]) => any): NoteArray;
+    /**
+     * Sorts the notes
+     * @param sortFunction - sort function, e.g. (a, b)=>a.start-b.start
+     * @returns itself
+     */
+    sort(sortFunction: (...params: any[]) => any): NoteArray;
+    /**
+     * Sorts the notes by start time
+     * @returns itself
+     */
+    sortByTime(): NoteArray;
+    /**
+     * Maps the notes using some mapping function
+     * @param mapFunction - mapping function with same signature as
+         Array.map()
+     * @returns itself
+     */
+    map(mapFunction: (...params: any[]) => any): NoteArray;
+    /**
+     * Slices the notes by index, like Array.slice()
+     * @param start - start index
+     * @param end - end index
+     * @returns itself
+     */
+    slice(start: number, end: number): NoteArray;
+    /**
+     * Slices the notes by time.
+    The modes 'end' and 'contained' will remove all notes with end === null!
+    Notes will not be changed, e.g. start time will remain the same.
+     * @param startTime - start of the filter range in seconds
+     * @param endTime - end of the filter range in seconds (exclusive)
+     * @param mode - controls which note time to consider, one of:
+         - start: note.start must be inside range
+         - end: note.end must be inside range
+         - contained: BOTH note.start and note.end must be inside range
+         - touched: EITHER start or end (or both) must be inside range)
+         - touched-included: like touched, but also includes notes where
+             neither start nor end inside range, but range is completely
+             inside the note
+         (contained is default)
+     * @returns itself
+     */
+    sliceTime(startTime: number, endTime: number, mode?: string): NoteArray;
+    /**
+     * Slices this NoteArray into slices by the given times. Will not return
+    NoteArrays but simple Note[][], where each item contains all notes of one
+    time slice. Do not include 0, it will be assumed as first time to slice.
+    To make sure notes are not contained twice in different slices use the
+    mode 'start'.
+     * @example
+     * // Slice into 1 second slices
+         const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
+     * @param times - points of time at which to slice (in seconds)
+     * @param mode - see NoteArray.sliceTime()
+     * @returns time slices
+     */
+    sliceAtTimes(times: number[], mode: string): Note[][];
+    /**
+     * Filters the NoteArray like you would filter via Array.filter().
+     * @example
+     * // Only keep notes longer than 1 second
+         const filtered = noteArray.filter(note=>note.getDuration()>1);
+     * @param filterFunction - filter function, same signature as
+         Array.filter()
+     * @returns itself
+     */
+    filter(filterFunction: (...params: any[]) => any): NoteArray;
+    /**
+     * Filters by pitch, keeping only pitches specified in <pitches>
+     * @param pitches - array or Set of pitches to keep
+     * @returns itself
+     */
+    filterPitches(pitches: number[] | Set<number>): NoteArray;
+    /**
+     * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
+     * @param steps - number of semitones to transpose, can be negative
+     * @returns itself
+     */
+    transpose(steps: number): NoteArray;
+    /**
+     * Will set the octave of all notes to -1.
+    This might cause two notes to exist at the same time and pitch!
+     * @returns itself
+     */
+    removeOctaves(): NoteArray;
+    /**
+     * Reverses the note array, such that it can be played backwards.
+     * @returns itself
+     */
+    reverse(): NoteArray;
+    /**
+     * Returns true if this NoteArray and otherNoteArray have equal attributes.
+     * @param otherNoteArray - another NoteArray
+     * @returns true if equal
+     */
+    equals(otherNoteArray: NoteArray): boolean;
+    /**
+     * Deep clone, all contained notes are cloned as well.
+     * @returns clone
+     */
+    clone(): NoteArray;
 }
 
 /**
  * Class that allows to represent pitch-bends from a MIDI file
+ * @param pitch - pitch
+ * @param start - start time in seconds
+ * @param velocity - velocity
+ * @param channel - MIDI channel
+ * @param end - end time in seconds
  */
-declare module "types/PitchBend" {
+declare class PitchBend {
+    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
     /**
-     * @param pitch - pitch
-     * @param start - start time in seconds
-     * @param velocity - velocity
-     * @param channel - MIDI channel
-     * @param end - end time in seconds
+     * Creates a GuitarNote object from an object via destructuring
+     * @param object - object with at least {pitch}
+     * @returns new note
      */
-    class PitchBend {
-        constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
-        /**
-         * Creates a GuitarNote object from an object via destructuring
-         * @param object - object with at least {pitch}
-         * @returns new note
-         */
-        static from(object: any): PitchBend;
-        /**
-         * Converts a Note to a GuitarNote
-         * @param note - note
-         * @returns guitar note
-         */
-        static fromNote(note: Note): PitchBend;
-        /**
-         * Returns a copy of the Note object
-         * @returns new note
-         */
-        clone(): PitchBend;
-        /**
-         * Returns true if this note and otherNote have equal attributes.
-         * @param otherNote - another GuitarNote
-         * @returns true if equal
-         */
-        equals(otherNote: PitchBend): boolean;
-    }
+    static from(object: any): PitchBend;
+    /**
+     * Converts a Note to a GuitarNote
+     * @param note - note
+     * @returns guitar note
+     */
+    static fromNote(note: Note): PitchBend;
+    /**
+     * Returns a copy of the Note object
+     * @returns new note
+     */
+    clone(): PitchBend;
+    /**
+     * Returns true if this note and otherNote have equal attributes.
+     * @param otherNote - another GuitarNote
+     * @returns true if equal
+     */
+    equals(otherNote: PitchBend): boolean;
 }
 
 /**
  * Stores a sequence of pitches and provides some methods to simplify and
  * manipulate it.
+ * @param pitches - pitches
  */
-declare module "types/PitchSequence" {
+declare class PitchSequence {
+    constructor(pitches: number[]);
     /**
-     * @param pitches - pitches
+     * Creates a pitch sequence from an array of Notes
+     * @param notes - notes
+     * @returns pitch sequence
      */
-    class PitchSequence {
-        constructor(pitches: number[]);
-        /**
-         * Creates a pitch sequence from an array of Notes
-         * @param notes - notes
-         * @returns pitch sequence
-         */
-        static fromNotes(notes: Note[]): PitchSequence;
-        /**
-         * @param string - a string of Unicode characters
-         * @returns pitch sequence
-         */
-        static fromCharString(string: string): PitchSequence;
-        /**
-         * @returns pitches
-         */
-        getPitches(): number[];
-        /**
-         * @returns number of pitches
-         */
-        length(): number;
-        /**
-         * Turns pitch sequence into a string by turning each  pitch into a character
-         * (based on Unicode index)
-         * @returns string representation of note pitches
-         */
-        toCharString(): string;
-        /**
-         * @returns a string with the notes' names
-         */
-        toNoteNameString(): string;
-        /**
-         * Reverses the order of pitches in this PitchSequence
-         * @returns this
-         */
-        reverse(): PitchSequence;
-        /**
-         * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
-         * @returns this
-         */
-        removeOctaves(): PitchSequence;
-        /**
-         * Transforms note pitches to intervals, i.e. diffrences between to subsequent
-         * notes: C, C#, C, D => 1, -1, 2
-         * @returns intervals
-         */
-        toIntervals(): number[];
-        /**
-         * @returns clone
-         */
-        clone(): PitchSequence;
-        /**
-         * Returns true if this NoteArray and otherNoteArray have equal attributes.
-         * @param otherPitchSequence - another NoteArray
-         * @returns true if equal
-         */
-        equals(otherPitchSequence: NoteArray): boolean;
-    }
+    static fromNotes(notes: Note[]): PitchSequence;
+    /**
+     * @param string - a string of Unicode characters
+     * @returns pitch sequence
+     */
+    static fromCharString(string: string): PitchSequence;
+    /**
+     * @returns pitches
+     */
+    getPitches(): number[];
+    /**
+     * @returns number of pitches
+     */
+    length(): number;
+    /**
+     * Turns pitch sequence into a string by turning each  pitch into a character
+     * (based on Unicode index)
+     * @returns string representation of note pitches
+     */
+    toCharString(): string;
+    /**
+     * @returns a string with the notes' names
+     */
+    toNoteNameString(): string;
+    /**
+     * Reverses the order of pitches in this PitchSequence
+     * @returns this
+     */
+    reverse(): PitchSequence;
+    /**
+     * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
+     * @returns this
+     */
+    removeOctaves(): PitchSequence;
+    /**
+     * Transforms note pitches to intervals, i.e. diffrences between to subsequent
+     * notes: C, C#, C, D => 1, -1, 2
+     * @returns intervals
+     */
+    toIntervals(): number[];
+    /**
+     * @returns clone
+     */
+    clone(): PitchSequence;
+    /**
+     * Returns true if this NoteArray and otherNoteArray have equal attributes.
+     * @param otherPitchSequence - another NoteArray
+     * @returns true if equal
+     */
+    equals(otherPitchSequence: NoteArray): boolean;
 }
 
 /**
- * Class for storing recorded notes alongside meta information.
+ * Creates a new Recording
+ * @param name - name if the song
+ * @param date - date of the recording
+ * @param notes - array of Note objects
+ * @param speed - relative speed compared to ground truth, e.g. 0.5
+ *      for half as fast
+ * @param selectedTrack - track number of the ground truth to which
+ *      this recording belongs
+ * @param timeSelection - time selection of the ground truth
+ *      to which this recording belongs, or null if full duration
  */
-declare module "types/Recording" {
+declare class Recording {
+    constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack: number, timeSelection: number[] | null);
     /**
-     * Creates a new Recording
-     * @param name - name if the song
-     * @param date - date of the recording
-     * @param notes - array of Note objects
-     * @param speed - relative speed compared to ground truth, e.g. 0.5
-     *      for half as fast
-     * @param selectedTrack - track number of the ground truth to which
-     *      this recording belongs
-     * @param timeSelection - time selection of the ground truth
-     *      to which this recording belongs, or null if full duration
+     * Returns a copy of the Note object
+     * @returns new recording
      */
-    class Recording {
-        constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack: number, timeSelection: number[] | null);
-        /**
-         * Returns a copy of the Note object
-         * @returns new recording
-         */
-        clone(): Recording;
-        /**
-         * Returns true if this Recording and otherRecording have equal attributes.
-         * @param otherRecording - another Recording
-         * @returns true if equal
-         */
-        equals(otherRecording: Recording): boolean;
-        /**
-         * Turns the recoring into a simple object with the same properties
-         * @returns simple object representation of the recording
-         */
-        toSimpleObject(): any;
-        /**
-         * Creates a Note object from an object via destructuring
-         * @param object - object with at least {name, date, notes, speed}
-         * @returns new note
-         */
-        static from(object: any): Recording;
-    }
+    clone(): Recording;
+    /**
+     * Returns true if this Recording and otherRecording have equal attributes.
+     * @param otherRecording - another Recording
+     * @returns true if equal
+     */
+    equals(otherRecording: Recording): boolean;
+    /**
+     * Turns the recoring into a simple object with the same properties
+     * @returns simple object representation of the recording
+     */
+    toSimpleObject(): any;
+    /**
+     * Creates a Note object from an object via destructuring
+     * @param object - object with at least {name, date, notes, speed}
+     * @returns new note
+     */
+    static from(object: any): Recording;
 }
 
 declare module "utils/ArrayUtils" {
