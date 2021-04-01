@@ -1,4 +1,4 @@
-// musicvis-lib v0.46.5 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.46.6 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -9281,7 +9281,7 @@
             const note = child;
 
             try {
-              var _note$querySelectorAl2;
+              var _note$querySelectorAl3;
 
               // Get note duration in seconds
               const duration = +note.querySelectorAll('duration')[0].innerHTML;
@@ -9301,18 +9301,18 @@
                 const instrumentId = note.querySelectorAll('instrument')[0].id;
                 pitch = drumInstrumentMap.get(part.id).get(instrumentId);
               } else {
-                var _note$querySelectorAl;
+                var _note$querySelectorAl, _note$querySelectorAl2;
 
                 // Get MIDI pitch
                 // Handle <alter> tag for accidentals
-                const alter = +(((_note$querySelectorAl = note.querySelectorAll('alter')[0]) === null || _note$querySelectorAl === void 0 ? void 0 : _note$querySelectorAl.innerHTML) ?? 0);
+                const alter = +((_note$querySelectorAl = (_note$querySelectorAl2 = note.querySelectorAll('alter')[0]) === null || _note$querySelectorAl2 === void 0 ? void 0 : _note$querySelectorAl2.innerHTML) !== null && _note$querySelectorAl !== void 0 ? _note$querySelectorAl : 0);
                 const step = note.querySelectorAll('step')[0].innerHTML;
                 const octave = +note.querySelectorAll('octave')[0].innerHTML;
                 pitch = getMidiNoteByNameAndOctave(step, octave).pitch + alter;
               } // TODO: Handle dynamics defined as tag inside a note
 
 
-              const dynamicsTag = (_note$querySelectorAl2 = note.querySelectorAll('dynamics')[0]) === null || _note$querySelectorAl2 === void 0 ? void 0 : _note$querySelectorAl2.children[0];
+              const dynamicsTag = (_note$querySelectorAl3 = note.querySelectorAll('dynamics')[0]) === null || _note$querySelectorAl3 === void 0 ? void 0 : _note$querySelectorAl3.children[0];
 
               if (dynamicsTag) {
                 velocity = dynamicsMap.get(dynamicsTag.nodeName);
@@ -9340,10 +9340,10 @@
                   }
                 }
               } else {
-                var _note$querySelectorAl3;
+                var _note$querySelectorAl4, _note$querySelectorAl5;
 
                 // Staff is used as note's channel for non-guitar notes
-                const staff = +(((_note$querySelectorAl3 = note.querySelectorAll('staff')[0]) === null || _note$querySelectorAl3 === void 0 ? void 0 : _note$querySelectorAl3.innerHTML) ?? 1); // TODO: use xml note type?
+                const staff = +((_note$querySelectorAl4 = (_note$querySelectorAl5 = note.querySelectorAll('staff')[0]) === null || _note$querySelectorAl5 === void 0 ? void 0 : _note$querySelectorAl5.innerHTML) !== null && _note$querySelectorAl4 !== void 0 ? _note$querySelectorAl4 : 1); // TODO: use xml note type?
                 // const type = note.getElementsByTagName('type')[0].innerHTML;
 
                 const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION$1);
@@ -9857,7 +9857,11 @@
       } // Generate measure lines from tempo and beat type changes
 
 
-      const totalTime = max(parsedTracks, d => (d === null || d === void 0 ? void 0 : d.totalTime) ?? 0);
+      const totalTime = max(parsedTracks, d => {
+        var _d$totalTime;
+
+        return (_d$totalTime = d === null || d === void 0 ? void 0 : d.totalTime) !== null && _d$totalTime !== void 0 ? _d$totalTime : 0;
+      });
       const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime);
       const result = {
         tracks: parsedTracks,
@@ -9889,10 +9893,10 @@
      */
 
     function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log) {
-      var _tempoChanges$;
+      var _tempoChanges$0$tempo, _tempoChanges$;
 
       const notes = [];
-      let tempo = ((_tempoChanges$ = tempoChanges[0]) === null || _tempoChanges$ === void 0 ? void 0 : _tempoChanges$.tempo) ?? 120;
+      let tempo = (_tempoChanges$0$tempo = (_tempoChanges$ = tempoChanges[0]) === null || _tempoChanges$ === void 0 ? void 0 : _tempoChanges$.tempo) !== null && _tempoChanges$0$tempo !== void 0 ? _tempoChanges$0$tempo : 120;
       let currentTick = 0;
       let currentTime;
       let milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
@@ -10011,9 +10015,9 @@
         const parsedTrack = {
           noteObjs: notes,
           totalTime: currentTime,
-          trackName: trackName ?? 'Track',
+          trackName: trackName !== null && trackName !== void 0 ? trackName : 'Track',
           instrument,
-          instrumentName: instrumentName ?? 'Unknown instrument'
+          instrumentName: instrumentName !== null && instrumentName !== void 0 ? instrumentName : 'Unknown instrument'
         }; // console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
 
         return parsedTrack;
@@ -14048,9 +14052,9 @@
           if (pitchToSymbolMap.has(note.pitch)) {
             return pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
           } else {
-            var _getMidiNoteByNr;
+            var _getMidiNoteByNr$name, _getMidiNoteByNr;
 
-            return mode === 'letter' ? ((_getMidiNoteByNr = getMidiNoteByNr(note.pitch)) === null || _getMidiNoteByNr === void 0 ? void 0 : _getMidiNoteByNr.name) ?? note.pitch : note.pitch;
+            return mode === 'letter' ? (_getMidiNoteByNr$name = (_getMidiNoteByNr = getMidiNoteByNr(note.pitch)) === null || _getMidiNoteByNr === void 0 ? void 0 : _getMidiNoteByNr.name) !== null && _getMidiNoteByNr$name !== void 0 ? _getMidiNoteByNr$name : note.pitch : note.pitch;
           }
         }).join(' ');
 
@@ -14106,9 +14110,9 @@
           if (pitchToSymbolMap.has(note.pitch)) {
             string = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
           } else {
-            var _getMidiNoteByNr2;
+            var _getMidiNoteByNr$name2, _getMidiNoteByNr2;
 
-            string = mode === 'letter' ? ((_getMidiNoteByNr2 = getMidiNoteByNr(note.pitch)) === null || _getMidiNoteByNr2 === void 0 ? void 0 : _getMidiNoteByNr2.name) ?? note.pitch : note.pitch;
+            string = mode === 'letter' ? (_getMidiNoteByNr$name2 = (_getMidiNoteByNr2 = getMidiNoteByNr(note.pitch)) === null || _getMidiNoteByNr2 === void 0 ? void 0 : _getMidiNoteByNr2.name) !== null && _getMidiNoteByNr$name2 !== void 0 ? _getMidiNoteByNr$name2 : note.pitch : note.pitch;
           }
 
           const color = colormap(note.pitch);
