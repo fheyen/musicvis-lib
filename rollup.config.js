@@ -30,7 +30,10 @@ export default [
             commonjs(),
             babel({
                 babelHelpers: 'bundled',
-                plugins: [['@babel/plugin-proposal-class-properties', { 'loose': true }]],
+                plugins: [
+                    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+                    ['@babel/plugin-proposal-nullish-coalescing-operator'],
+                ],
             }),
             jsdoc({
                 args: ['-r', '-d', 'docs'],
