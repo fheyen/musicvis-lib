@@ -56,6 +56,13 @@ export default [
             }),
             resolve(),
             commonjs(),
+            babel({
+                babelHelpers: 'bundled',
+                plugins: [
+                    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+                    ['@babel/plugin-proposal-nullish-coalescing-operator'],
+                ],
+            }),
             terser({
                 format: {
                     preamble: version,
@@ -78,6 +85,13 @@ export default [
             }),
             resolve(),
             commonjs(),
+            babel({
+                babelHelpers: 'bundled',
+                plugins: [
+                    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+                    ['@babel/plugin-proposal-nullish-coalescing-operator'],
+                ],
+            }),
             terser({
                 format: {
                     preamble: version,
