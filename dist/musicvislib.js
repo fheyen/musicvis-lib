@@ -1,4 +1,4 @@
-// musicvis-lib v0.46.7 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.46.8 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
