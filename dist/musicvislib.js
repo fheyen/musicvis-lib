@@ -1,4 +1,4 @@
-// musicvis-lib v0.46.6 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.46.7 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -5234,6 +5234,7 @@
       return maximaIndices;
     }
 
+    let _Symbol$iterator;
     /**
      * This class represents an array of note objects.
      * This can be used to simplify operations on a track.
@@ -5250,10 +5251,18 @@
      *       // Do more ...
      *       // This class also mirrors many functions from the Array class
      *       .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
+     *
      *   // Get Note objects back in a simple Array
      *   const transformedNotes = noteArr.getNotes();
      *   // [Note, Note, Note, ...]
+     *
+     *   // Or use an iterator
+     *   for (const note of noteArr) {
+     *       console.log(note);
+     *   }
      */
+
+    _Symbol$iterator = Symbol.iterator;
 
     class NoteArray {
       /**
@@ -5277,11 +5286,33 @@
        * Returns a simple array with all Note objects.
        *
        * @returns {Note[]} array with Note objects
+       * @example <caption>Using an iterator instead</caption>
+       *      const na = new NoteArray(someNotes);
+       *      for (const note of na) {
+       *          console.log(note);
+       *      }
        */
 
 
       getNotes() {
         return this._notes;
+      }
+      /**
+       * Makes this class iterable
+       *
+       * @yields {Note} note
+       * @example
+       *      const na = new NoteArray(someNotes);
+       *      for (const note of na) {
+       *          console.log(note);
+       *      }
+       */
+
+
+      *[_Symbol$iterator]() {
+        for (const note of this._notes) {
+          yield note;
+        }
       }
       /**
        * Appends notes to this note array
@@ -11087,6 +11118,23 @@
       return context;
     }
     /**
+     * Draws a stroked straight line.
+     *
+     * @param {CanvasRenderingContext2D} context canvas rendering context
+     * @param {number} x1 x coordinate of the start
+     * @param {number} y1 y coordinate of the start
+     * @param {number} x2 x coordinate of end
+     * @param {number} y2 y coordinate of end
+     * @returns {void}
+     */
+
+    function drawLine(context, x1, y1, x2, y2) {
+      context.beginPath();
+      context.moveTo(x1, y1);
+      context.lineTo(x2, y2);
+      context.stroke();
+    }
+    /**
      * Draws a stroked circle.
      *
      * @param {CanvasRenderingContext2D} context canvas rendering context
@@ -11278,6 +11326,7 @@
     var Canvas = /*#__PURE__*/Object.freeze({
         __proto__: null,
         setupCanvas: setupCanvas,
+        drawLine: drawLine,
         drawCircle: drawCircle,
         drawFilledCircle: drawFilledCircle,
         drawTriangle: drawTriangle,

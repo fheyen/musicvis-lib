@@ -589,6 +589,15 @@ declare module "graphics/Canvas" {
      */
     function setupCanvas(canvas: HTMLCanvasElement): CanvasRenderingContext2D;
     /**
+     * Draws a stroked straight line.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of the start
+     * @param y1 - y coordinate of the start
+     * @param x2 - x coordinate of end
+     * @param y2 - y coordinate of end
+     */
+    function drawLine(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number): void;
+    /**
      * Draws a stroked circle.
      * @param context - canvas rendering context
      * @param x - x coordinate of center
@@ -1454,15 +1463,27 @@ will make a copy of the passed array and cast all notes
       // Do more ...
       // This class also mirrors many functions from the Array class
       .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
+
   // Get Note objects back in a simple Array
   const transformedNotes = noteArr.getNotes();
   // [Note, Note, Note, ...]
+
+  // Or use an iterator
+  for (const note of noteArr) {
+      console.log(note);
+  }
  * @param notes - notes, default: []
  */
 declare class NoteArray {
     constructor(notes: Note[]);
     /**
      * Returns a simple array with all Note objects.
+     * @example
+     * <caption>Using an iterator instead</caption>
+         const na = new NoteArray(someNotes);
+         for (const note of na) {
+             console.log(note);
+         }
      * @returns array with Note objects
      */
     getNotes(): Note[];
