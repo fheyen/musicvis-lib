@@ -27,6 +27,23 @@ export function setupCanvas(canvas) {
 }
 
 /**
+ * Draws a stroked straight line.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of the start
+ * @param {number} y1 y coordinate of the start
+ * @param {number} x2 x coordinate of end
+ * @param {number} y2 y coordinate of end
+ * @returns {void}
+ */
+export function drawLine(context, x1, y1, x2, y2) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.lineTo(x2, y2);
+    context.stroke();
+}
+
+/**
  * Draws a stroked circle.
  *
  * @param {CanvasRenderingContext2D} context canvas rendering context

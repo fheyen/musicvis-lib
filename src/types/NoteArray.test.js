@@ -62,6 +62,16 @@ describe('NoteArray', () => {
     });
 
 
+    test('Iterator', () => {
+        const notes = na.getNotes();
+        let index = 0;
+        for (const note of na) {
+            expect(note).toBe(notes[index]);
+            index++;
+        }
+    });
+
+
     test('concat', () => {
         const na = new NoteArray([
             new Note(69, 0.0, 127, 0, 1.0),

@@ -18,6 +18,10 @@ describe('Canvas', () => {
         expect(() => Canv.drawCircle(ctx, 50, 50, 10)).not.toThrow();
     });
 
+    test('draw line', () => {
+        expect(() => Canv.drawLine(ctx, 30, 50, 10, 20)).not.toThrow();
+    });
+
     test('draw filled circle', () => {
         expect(() => Canv.drawFilledCircle(ctx, 50, 50, 10)).not.toThrow();
     });

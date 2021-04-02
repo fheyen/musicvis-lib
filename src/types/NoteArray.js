@@ -19,9 +19,15 @@ import { min } from 'd3';
  *       // Do more ...
  *       // This class also mirrors many functions from the Array class
  *       .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
+ *
  *   // Get Note objects back in a simple Array
  *   const transformedNotes = noteArr.getNotes();
  *   // [Note, Note, Note, ...]
+ *
+ *   // Or use an iterator
+ *   for (const note of noteArr) {
+ *       console.log(note);
+ *   }
  */
 class NoteArray {
 
@@ -47,9 +53,30 @@ class NoteArray {
      * Returns a simple array with all Note objects.
      *
      * @returns {Note[]} array with Note objects
+     * @example <caption>Using an iterator instead</caption>
+     *      const na = new NoteArray(someNotes);
+     *      for (const note of na) {
+     *          console.log(note);
+     *      }
      */
     getNotes() {
         return this._notes;
+    }
+
+    /**
+     * Makes this class iterable
+     *
+     * @yields {Note} note
+     * @example
+     *      const na = new NoteArray(someNotes);
+     *      for (const note of na) {
+     *          console.log(note);
+     *      }
+     */
+    *[Symbol.iterator]() {
+        for (const note of this._notes) {
+            yield note;
+        }
     }
 
     /**

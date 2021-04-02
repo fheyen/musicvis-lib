@@ -25,7 +25,7 @@ module.exports = {
     rules: {
         // The Error level should be `error`, `warn`, or `off` (or 2, 1, or 0)
         'eqeqeq': 1,
-        'indent': ['error', 4],
+        'indent': ['warn', 4],
         'comma-dangle': ['warn', 'always-multiline'],
         'comma-style': ['warn', 'last'],
         'eol-last': ['warn', 'always'],
