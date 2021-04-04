@@ -489,29 +489,44 @@ declare module "instruments/StringedFingering" {
  */
 declare module "fileFormats/Midi" {
     /**
+     * A MIDI note
+     * @example
+     * <caption>Example for a MIDI note</caption>
+     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @property pitch - the MIDI note number e.g. 60 for C4
+     * @property name - e.g. C#
+     * @property octave - number in [-1, 9]
+     * @property label - name and octave, e.g. C#5
+     * @property frequency - physical frequency
+     */
+    type MidiNote = {
+        pitch: number;
+        name: string;
+        octave: number;
+        label: string;
+        frequency: number;
+    };
+    /**
      * Returns information on the MIDI note with the specified number.
      * @param nr - MIDI note number in [0, 127]
-     * @returns note info, e.g.
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @returns MIDI note information as a {@link MidiNote}
      */
-    function getMidiNoteByNr(nr: number): any;
+    function getMidiNoteByNr(nr: number): MidiNote;
     /**
      * Returns information on the MIDI note with the specified label.
      * @param label - note label, e.g. 'D#0'
      *      (upper-case and sharp notation necessary)
-     * @returns note info, e.g.
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @returns MIDI note information as a {@link MidiNote}
      */
-    function getMidiNoteByLabel(label: string): any;
+    function getMidiNoteByLabel(label: string): MidiNote;
     /**
      * Returns information on the MIDI note with the specified name and octave.
      * @param name - note name, e.g. 'D#'
      *      (upper-case and sharp notation necessary)
      * @param octave - octave in [-1, 9]
-     * @returns note info, e.g.
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @returns MIDI note information as a {@link MidiNote}
      */
-    function getMidiNoteByNameAndOctave(name: string, octave: number): any;
+    function getMidiNoteByNameAndOctave(name: string, octave: number): MidiNote;
     /**
      * Returns information on the MIDI instrument with the specified number.
      * @param nr - MIDI instrument number in [0, 127]
@@ -547,6 +562,53 @@ declare module "fileFormats/Midi" {
      * @returns note name such as 'C#'
      */
     function getNoteNameFromNoteNr(nr: number): string;
+    /**
+     * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
+     */
+    const flatToSharp: Map<string, string>;
+    /**
+     * Maps shaprs to flats, e.g. sharpToFlat.get('C#') === 'Db'
+     */
+    const sharpToFlat: Map<string, string>;
+    /**
+     * Below here are only arrays with information and lookup-map-building code
+     */
+    const NOTE_NAMES: string[];
+    /**
+     * Index equals MIDI note number
+     */
+    const MIDI_NOTES: MidiNote[];
+    /**
+     * Set of all MIDI notes that are sharp/flat
+     * @example
+     * <caption>Find out if a note is sharp/flat</caption>
+     *      const midiNr = 42;
+     *      const isSharp = Midi.SHARPS.has(midiNr);
+     *      // true
+     */
+    const SHARPS: Set<number>;
+    /**
+     * A MIDI command
+     * @example
+     * <caption>Example for a MIDI command</caption>
+     *      { name: 'noteOn', description: 'Note-on', params: ['key', 'velocity'] }],
+     * @property name - e.g. 'noteOn'
+     * @property description - e.g. 'Note-on'
+     * @property params - additional prameters of that command
+     */
+    type MidiCommand = {
+        name: string;
+        description: string;
+        params: string[] | undefined;
+    };
+    /**
+     * MIDI commands with code, name, and parameters
+     * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
+     * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
+     */
+    const MIDI_COMMANDS: Map<number, MidiCommand>;
+    const GENERAL_MIDI_DRUM_NOTE_NUMBERS: Map<number, string>;
+    const MIDI_NOTE_RANGES: object[];
 }
 
 declare module "fileFormats/MidiParser" {
@@ -559,6 +621,10 @@ declare module "fileFormats/MidiParser" {
      * @returns including an array of note objects and meta information
      */
     function preprocessMidiFileData(data: any, splitFormat0IntoTracks: boolean, log: boolean): any;
+    /**
+     * Maps needed for key signature detection from number of sharps / flats
+     */
+    const KEY_SIG_MAP: Map<number, object>;
 }
 
 declare module "fileFormats/MusicXmlParser" {
@@ -579,6 +645,14 @@ declare module "fileFormats/MusicXmlParser" {
      * @returns map with structure result.get(partId).get(instrId)
      */
     function getDrumInstrumentMap(xml: XMLDocument): Map;
+    /**
+     * Map from fiths to key signature
+     */
+    const keySignatureMap: Map<number, object>;
+    /**
+     * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
+     */
+    const dynamicsMap: Map<string, number>;
 }
 
 declare module "graphics/Canvas" {
@@ -1479,6 +1553,10 @@ declare class NoteArray {
     /**
      * Returns a simple array with all Note objects.
      * @example
+     * <caption>Getting notes as simple Note[]</caption>
+         const na = new NoteArray(someNotes);
+         const notes = na.getNotes();
+     * @example
      * <caption>Using an iterator instead</caption>
          const na = new NoteArray(someNotes);
          for (const note of na) {
@@ -1488,7 +1566,7 @@ declare class NoteArray {
      */
     getNotes(): Note[];
     /**
-     * Appends notes to this note array
+     * Appends notes to this NoteArray
      * @param notes - notes
      * @param sort - iff ture, sorts notes by start timeafter adding
          the new ones (default:true)
@@ -2054,6 +2132,11 @@ declare module "utils/MusicUtils" {
      *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
      */
     function noteDurationToNoteType(duration: number, bpm: number): any;
+    /**
+     * Circle of 5ths as
+     * [midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
+     */
+    const CIRCLE_OF_5THS: any[][];
 }
 
 declare module "utils/NoteColorUtils" {

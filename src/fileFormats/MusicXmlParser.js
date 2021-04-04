@@ -485,8 +485,10 @@ function getDrumInstrumentMap(xml) {
     return partMap;
 }
 
-/*
+/**
  * Map from fiths to key signature
+ *
+ * @type {Map<number,object>}
  */
 const keySignatureMap = new Map([
     [-7, { key: 'Cb', scale: 'major' }],
@@ -506,8 +508,10 @@ const keySignatureMap = new Map([
     [7, { key: 'C#', scale: 'major' }],
 ]);
 
-/*
+/**
  * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
+ *
+ * @type {Map<string,number>}
  */
 const dynamicsMap = new Map([
     ['ppp', 25],

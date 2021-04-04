@@ -5,7 +5,7 @@ import { min } from 'd3';
 
 /**
  * This class represents an array of note objects.
- * This can be used to simplify operations on a track.
+ * It can be used to simplify operations on a track.
  *
  * @example
  *   const notes = [
@@ -53,11 +53,16 @@ class NoteArray {
      * Returns a simple array with all Note objects.
      *
      * @returns {Note[]} array with Note objects
+     * @example <caption>Getting notes as simple Note[]</caption>
+     *      const na = new NoteArray(someNotes);
+     *      const notes = na.getNotes();
      * @example <caption>Using an iterator instead</caption>
      *      const na = new NoteArray(someNotes);
      *      for (const note of na) {
      *          console.log(note);
      *      }
+     *      // Or copy all Notes to an array with
+     *      const array = [...na];
      */
     getNotes() {
         return this._notes;
@@ -67,7 +72,7 @@ class NoteArray {
      * Makes this class iterable
      *
      * @yields {Note} note
-     * @example
+     * @example <caption>Using an iterator for NoteArray</caption>
      *      const na = new NoteArray(someNotes);
      *      for (const note of na) {
      *          console.log(note);
@@ -80,7 +85,7 @@ class NoteArray {
     }
 
     /**
-     * Appends notes to this note array
+     * Appends notes to this NoteArray
      *
      * @param {Note[]} notes notes
      * @param {boolean} sort iff ture, sorts notes by start timeafter adding

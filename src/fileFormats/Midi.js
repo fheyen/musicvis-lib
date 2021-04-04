@@ -6,6 +6,19 @@
  */
 
 
+
+/**
+ * @typedef {object} MidiNote A MIDI note
+ * @property {number} pitch the MIDI note number e.g. 60 for C4
+ * @property {string} name e.g. C#
+ * @property {number} octave number in [-1, 9]
+ * @property {string} label name and octave, e.g. C#5
+ * @property {number} frequency physical frequency
+ * @example <caption>Example for a MIDI note</caption>
+ *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+ */
+
+
 const MidiNoteByPitch = new Map();
 const MidiNoteByLabel = new Map();
 const MidiInstrumentByNumber = new Map();
@@ -15,8 +28,7 @@ const MidiInstrumentByNumberLev2 = new Map();
  * Returns information on the MIDI note with the specified number.
  *
  * @param {number} nr MIDI note number in [0, 127]
- * @returns {object} note info, e.g.
- *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+ * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
  */
 export function getMidiNoteByNr(nr) {
     return MidiNoteByPitch.get(nr);
@@ -27,8 +39,7 @@ export function getMidiNoteByNr(nr) {
  *
  * @param {string} label note label, e.g. 'D#0'
  *      (upper-case and sharp notation necessary)
- * @returns {object} note info, e.g.
- *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+ * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
  */
 export function getMidiNoteByLabel(label) {
     return MidiNoteByLabel.get(label);
@@ -40,8 +51,7 @@ export function getMidiNoteByLabel(label) {
  * @param {string} name note name, e.g. 'D#'
  *      (upper-case and sharp notation necessary)
  * @param {number} octave octave in [-1, 9]
- * @returns {object} note info, e.g.
- *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+ * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
  */
 export function getMidiNoteByNameAndOctave(name, octave) {
     return MidiNoteByLabel.get(`${name}${octave}`);
@@ -103,8 +113,10 @@ export function getNoteNameFromNoteNr(nr) {
     return NOTE_NAMES[nr % 12];
 }
 
-/*
+/**
  * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
+ *
+ * @type {Map<string,string>}
  */
 export const flatToSharp = new Map([
     ['Cb', 'B'],
@@ -116,11 +128,26 @@ export const flatToSharp = new Map([
     ['Bb', 'A#'],
 ]);
 
-
-/*
- * Below here are only arrays with information and lookup-map-building code
+/**
+ * Maps shaprs to flats, e.g. sharpToFlat.get('C#') === 'Db'
+ *
+ * @type {Map<string,string>}
  */
+export const sharpToFlat = new Map([
+    ['C#', 'Db'],
+    ['D#', 'Eb'],
+    ['E#', 'F'],
+    ['F#', 'Gb'],
+    ['G#', 'Ab'],
+    ['A#', 'Bb'],
+    ['B#', 'C'],
+]);
 
+/**
+ * Names of notes, indexed like MIDI numbers, i.e. C is 0
+ *
+ * @type {string[]}
+ */
 export const NOTE_NAMES = [
     'C',
     'C#',
@@ -136,7 +163,12 @@ export const NOTE_NAMES = [
     'B',
 ];
 
-const MIDI_NOTES = [
+/**
+ * Index equals MIDI note number
+ *
+ * @type {Array<MidiNote>}
+ */
+export const MIDI_NOTES = [
     { pitch: 0, name: 'C', octave: -1, label: 'C-1', frequency: 8.176 },
     { pitch: 1, name: 'C#', octave: -1, label: 'C#-1', frequency: 8.662 },
     { pitch: 2, name: 'D', octave: -1, label: 'D-1', frequency: 9.177 },
@@ -267,66 +299,86 @@ const MIDI_NOTES = [
     { pitch: 127, name: 'G', octave: 9, label: 'G9', frequency: 12543.85 },
 ];
 
-export const SHARPS = new Map([
-    [1, null],
-    [3, null],
-    [6, null],
-    [8, null],
-    [10, null],
-    [13, null],
-    [15, null],
-    [18, null],
-    [20, null],
-    [22, null],
-    [25, null],
-    [27, null],
-    [30, null],
-    [32, null],
-    [34, null],
-    [37, null],
-    [39, null],
-    [42, null],
-    [44, null],
-    [46, null],
-    [49, null],
-    [51, null],
-    [54, null],
-    [56, null],
-    [58, null],
-    [61, null],
-    [63, null],
-    [66, null],
-    [68, null],
-    [70, null],
-    [73, null],
-    [75, null],
-    [78, null],
-    [80, null],
-    [82, null],
-    [85, null],
-    [87, null],
-    [90, null],
-    [92, null],
-    [94, null],
-    [97, null],
-    [99, null],
-    [102, null],
-    [104, null],
-    [106, null],
-    [109, null],
-    [111, null],
-    [114, null],
-    [116, null],
-    [118, null],
-    [121, null],
-    [123, null],
-    [126, null],
+/**
+ * Set of all MIDI notes that are sharp/flat
+ *
+ * @type {Set<number>}
+ * @example <caption>Find out if a note is sharp/flat</caption>
+ *      const midiNr = 42;
+ *      const isSharp = Midi.SHARPS.has(midiNr);
+ *      // true
+ */
+export const SHARPS = new Set([
+    1,
+    3,
+    6,
+    8,
+    10,
+    13,
+    15,
+    18,
+    20,
+    22,
+    25,
+    27,
+    30,
+    32,
+    34,
+    37,
+    39,
+    42,
+    44,
+    46,
+    49,
+    51,
+    54,
+    56,
+    58,
+    61,
+    63,
+    66,
+    68,
+    70,
+    73,
+    75,
+    78,
+    80,
+    82,
+    85,
+    87,
+    90,
+    92,
+    94,
+    97,
+    99,
+    102,
+    104,
+    106,
+    109,
+    111,
+    114,
+    116,
+    118,
+    121,
+    123,
+    126,
 ]);
 
-/*
+/**
+ * @typedef {object} MidiCommand A MIDI command
+ * @property {string} name e.g. 'noteOn'
+ * @property {string} description e.g. 'Note-on'
+ * @property {string[]|undefined} params additional prameters of that command
+ * @example <caption>Example for a MIDI command</caption>
+ *      { name: 'noteOn', description: 'Note-on', params: ['key', 'velocity'] }],
+ */
+
+/**
  * MIDI commands with code, name, and parameters
  * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
  * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
+ *
+ * @type {Map<number,MidiCommand>}
  */
 export const MIDI_COMMANDS = new Map([
     [0x80, { name: 'noteOff', description: 'Note-off', params: ['key', 'velocity'] }],
@@ -746,6 +798,9 @@ const MIDI_INSTRUMENTS_Lev2 = [
     { number: 128, subnumber: 3, group: 'Sound Effects', label: 'Explosion' },
 ];
 
+/**
+ * @type {Map<number,string>}
+ */
 const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([
     [27, 'High Q(GM2)'],
     [28, 'Slap(GM2)'],
@@ -810,8 +865,12 @@ const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([
     [87, 'Open Surdo(GM2)'],
 ]);
 
-// TODO: This might be useful, e.g. to check which notes Player can play
-// TODO: add instrument numbers
+
+/**
+ * @type {object[]}
+ * @todo add instrument numbers
+ * @todo This might be useful, e.g. to check which notes Player can play
+ */
 export const MIDI_NOTE_RANGES = [
     // Strings
     { instrNr: 40, nrL2: -1, subNrL2: -1, label: 'Violin', min: 55, max: 103 },

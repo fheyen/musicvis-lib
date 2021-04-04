@@ -61,14 +61,19 @@ describe('NoteArray', () => {
         );
     });
 
-
-    test('Iterator', () => {
+    describe('Iterator', () => {
         const notes = na.getNotes();
-        let index = 0;
-        for (const note of na) {
-            expect(note).toBe(notes[index]);
-            index++;
-        }
+        test('for-of', () => {
+            let index = 0;
+            for (const note of na) {
+                expect(note).toBe(notes[index]);
+                index++;
+            }
+        });
+        test('spread into an array', () => {
+            const notes2 = [...na];
+            expect(notes2).toStrictEqual(notes);
+        });
     });
 
 

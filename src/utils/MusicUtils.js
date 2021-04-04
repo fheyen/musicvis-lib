@@ -107,3 +107,25 @@ export function noteDurationToNoteType(duration, bpm) {
     // Binary search
     return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
 }
+
+/**
+ * Circle of 5ths as
+ * [midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
+ *
+ * @see https://en.wikipedia.org/wiki/Circle_of_fifths
+ * @type {any[][]}
+ */
+export const CIRCLE_OF_5THS = [
+    [0, 'C', 'C', 0, 0],
+    [7, 'G', 'G', 1, 0],
+    [2, 'D', 'D', 2, 0],
+    [9, 'A', 'A', 3, 0],
+    [4, 'E', 'E', 4, 0],
+    [11, 'B', 'B', 5, 7],
+    [6, 'F#', 'Gb', 6, 6],
+    [1, 'C#', 'Db', 7, 5],
+    [8, 'G#', 'Ab', 0, 4],
+    [3, 'D#', 'Eb', 0, 3],
+    [10, 'A#', 'Bb', 0, 2],
+    [5, 'F', 'F', 0, 1],
+];
