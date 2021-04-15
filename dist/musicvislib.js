@@ -1,4 +1,4 @@
-// musicvis-lib v0.46.8 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.46.9 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -11,6 +11,17 @@
      * @module fileFormats/Midi
      * @see https://soundprogramming.net/file-formats/
      */
+
+    /**
+     * @typedef {object} MidiNote A MIDI note
+     * @property {number} pitch the MIDI note number e.g. 60 for C4
+     * @property {string} name e.g. C#
+     * @property {number} octave number in [-1, 9]
+     * @property {string} label name and octave, e.g. C#5
+     * @property {number} frequency physical frequency
+     * @example <caption>Example for a MIDI note</caption>
+     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     */
     const MidiNoteByPitch = new Map();
     const MidiNoteByLabel = new Map();
     const MidiInstrumentByNumber = new Map();
@@ -19,8 +30,7 @@
      * Returns information on the MIDI note with the specified number.
      *
      * @param {number} nr MIDI note number in [0, 127]
-     * @returns {object} note info, e.g.
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
      */
 
     function getMidiNoteByNr(nr) {
@@ -31,8 +41,7 @@
      *
      * @param {string} label note label, e.g. 'D#0'
      *      (upper-case and sharp notation necessary)
-     * @returns {object} note info, e.g.
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
      */
 
     function getMidiNoteByLabel(label) {
@@ -44,8 +53,7 @@
      * @param {string} name note name, e.g. 'D#'
      *      (upper-case and sharp notation necessary)
      * @param {number} octave octave in [-1, 9]
-     * @returns {object} note info, e.g.
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+     * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
      */
 
     function getMidiNoteByNameAndOctave(name, octave) {
@@ -107,16 +115,33 @@
     function getNoteNameFromNoteNr(nr) {
       return NOTE_NAMES[nr % 12];
     }
-    /*
+    /**
      * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
+     *
+     * @type {Map<string,string>}
      */
 
     const flatToSharp = new Map([['Cb', 'B'], ['Db', 'C#'], ['Eb', 'D#'], ['Fb', 'E'], ['Gb', 'F#'], ['Ab', 'G#'], ['Bb', 'A#']]);
-    /*
-     * Below here are only arrays with information and lookup-map-building code
+    /**
+     * Maps shaprs to flats, e.g. sharpToFlat.get('C#') === 'Db'
+     *
+     * @type {Map<string,string>}
+     */
+
+    const sharpToFlat = new Map([['C#', 'Db'], ['D#', 'Eb'], ['E#', 'F'], ['F#', 'Gb'], ['G#', 'Ab'], ['A#', 'Bb'], ['B#', 'C']]);
+    /**
+     * Names of notes, indexed like MIDI numbers, i.e. C is 0
+     *
+     * @type {string[]}
      */
 
     const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    /**
+     * Index equals MIDI note number
+     *
+     * @type {Array<MidiNote>}
+     */
+
     const MIDI_NOTES = [{
       pitch: 0,
       name: 'C',
@@ -886,11 +911,32 @@
       label: 'G9',
       frequency: 12543.85
     }];
-    const SHARPS = new Map([[1, null], [3, null], [6, null], [8, null], [10, null], [13, null], [15, null], [18, null], [20, null], [22, null], [25, null], [27, null], [30, null], [32, null], [34, null], [37, null], [39, null], [42, null], [44, null], [46, null], [49, null], [51, null], [54, null], [56, null], [58, null], [61, null], [63, null], [66, null], [68, null], [70, null], [73, null], [75, null], [78, null], [80, null], [82, null], [85, null], [87, null], [90, null], [92, null], [94, null], [97, null], [99, null], [102, null], [104, null], [106, null], [109, null], [111, null], [114, null], [116, null], [118, null], [121, null], [123, null], [126, null]]);
-    /*
+    /**
+     * Set of all MIDI notes that are sharp/flat
+     *
+     * @type {Set<number>}
+     * @example <caption>Find out if a note is sharp/flat</caption>
+     *      const midiNr = 42;
+     *      const isSharp = Midi.SHARPS.has(midiNr);
+     *      // true
+     */
+
+    const SHARPS = new Set([1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27, 30, 32, 34, 37, 39, 42, 44, 46, 49, 51, 54, 56, 58, 61, 63, 66, 68, 70, 73, 75, 78, 80, 82, 85, 87, 90, 92, 94, 97, 99, 102, 104, 106, 109, 111, 114, 116, 118, 121, 123, 126]);
+    /**
+     * @typedef {object} MidiCommand A MIDI command
+     * @property {string} name e.g. 'noteOn'
+     * @property {string} description e.g. 'Note-on'
+     * @property {string[]|undefined} params additional prameters of that command
+     * @example <caption>Example for a MIDI command</caption>
+     *      { name: 'noteOn', description: 'Note-on', params: ['key', 'velocity'] }],
+     */
+
+    /**
      * MIDI commands with code, name, and parameters
      * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
      * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
+     *
+     * @type {Map<number,MidiCommand>}
      */
 
     const MIDI_COMMANDS = new Map([[0x80, {
@@ -2765,8 +2811,16 @@
       group: 'Sound Effects',
       label: 'Explosion'
     }];
-    const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([[27, 'High Q(GM2)'], [28, 'Slap(GM2)'], [29, 'Scratch Push(GM2)'], [30, 'Scratch Pull(GM2)'], [31, 'Sticks(GM2)'], [32, 'Square Click(GM2)'], [33, 'Metronome Click(GM2)'], [34, 'Metronome Bell(GM2)'], [35, 'Bass Drum 2'], [36, 'Bass Drum 1'], [37, 'Side Stick'], [38, 'Snare Drum 1'], [39, 'Hand Clap'], [40, 'Snare Drum 2'], [41, 'Low Tom 2'], [42, 'Closed Hi-hat'], [43, 'Low Tom 1'], [44, 'Pedal Hi-hat'], [45, 'Mid Tom 2'], [46, 'Open Hi-hat'], [47, 'Mid Tom 1'], [48, 'High Tom 2'], [49, 'Crash Cymbal 1'], [50, 'High Tom 1'], [51, 'Ride Cymbal 1'], [52, 'Chinese Cymbal'], [53, 'Ride Bell'], [54, 'Tambourine'], [55, 'Splash Cymbal'], [56, 'Cowbell'], [57, 'Crash Cymbal 2'], [58, 'Vibra Slap'], [59, 'Ride Cymbal 2'], [60, 'High Bongo'], [61, 'Low Bongo'], [62, 'Mute High Conga'], [63, 'Open High Conga'], [64, 'Low Conga'], [65, 'High Timbale'], [66, 'Low Timbale'], [67, 'High Agogo'], [68, 'Low Agogo'], [69, 'Cabasa'], [70, 'Maracas'], [71, 'Short Whistle'], [72, 'Long Whistle'], [73, 'Short Guiro'], [74, 'Long Guiro'], [75, 'Claves'], [76, 'High Wood Block'], [77, 'Low Wood Block'], [78, 'Mute Cuica'], [79, 'Open Cuica'], [80, 'Mute Triangle'], [81, 'Open Triangle'], [82, 'Shaker(GM2)'], [83, 'Jingle Bell(GM2)'], [84, 'Belltree(GM2)'], [85, 'Castanets(GM2)'], [86, 'Mute Surdo(GM2)'], [87, 'Open Surdo(GM2)']]); // TODO: This might be useful, e.g. to check which notes Player can play
-    // TODO: add instrument numbers
+    /**
+     * @type {Map<number,string>}
+     */
+
+    const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([[27, 'High Q(GM2)'], [28, 'Slap(GM2)'], [29, 'Scratch Push(GM2)'], [30, 'Scratch Pull(GM2)'], [31, 'Sticks(GM2)'], [32, 'Square Click(GM2)'], [33, 'Metronome Click(GM2)'], [34, 'Metronome Bell(GM2)'], [35, 'Bass Drum 2'], [36, 'Bass Drum 1'], [37, 'Side Stick'], [38, 'Snare Drum 1'], [39, 'Hand Clap'], [40, 'Snare Drum 2'], [41, 'Low Tom 2'], [42, 'Closed Hi-hat'], [43, 'Low Tom 1'], [44, 'Pedal Hi-hat'], [45, 'Mid Tom 2'], [46, 'Open Hi-hat'], [47, 'Mid Tom 1'], [48, 'High Tom 2'], [49, 'Crash Cymbal 1'], [50, 'High Tom 1'], [51, 'Ride Cymbal 1'], [52, 'Chinese Cymbal'], [53, 'Ride Bell'], [54, 'Tambourine'], [55, 'Splash Cymbal'], [56, 'Cowbell'], [57, 'Crash Cymbal 2'], [58, 'Vibra Slap'], [59, 'Ride Cymbal 2'], [60, 'High Bongo'], [61, 'Low Bongo'], [62, 'Mute High Conga'], [63, 'Open High Conga'], [64, 'Low Conga'], [65, 'High Timbale'], [66, 'Low Timbale'], [67, 'High Agogo'], [68, 'Low Agogo'], [69, 'Cabasa'], [70, 'Maracas'], [71, 'Short Whistle'], [72, 'Long Whistle'], [73, 'Short Guiro'], [74, 'Long Guiro'], [75, 'Claves'], [76, 'High Wood Block'], [77, 'Low Wood Block'], [78, 'Mute Cuica'], [79, 'Open Cuica'], [80, 'Mute Triangle'], [81, 'Open Triangle'], [82, 'Shaker(GM2)'], [83, 'Jingle Bell(GM2)'], [84, 'Belltree(GM2)'], [85, 'Castanets(GM2)'], [86, 'Mute Surdo(GM2)'], [87, 'Open Surdo(GM2)']]);
+    /**
+     * @type {object[]}
+     * @todo add instrument numbers
+     * @todo This might be useful, e.g. to check which notes Player can play
+     */
 
     const MIDI_NOTE_RANGES = [// Strings
     {
@@ -3072,7 +3126,9 @@
         isSharp: isSharp,
         getNoteNameFromNoteNr: getNoteNameFromNoteNr,
         flatToSharp: flatToSharp,
+        sharpToFlat: sharpToFlat,
         NOTE_NAMES: NOTE_NAMES,
+        MIDI_NOTES: MIDI_NOTES,
         SHARPS: SHARPS,
         MIDI_COMMANDS: MIDI_COMMANDS,
         MIDI_NOTE_RANGES: MIDI_NOTE_RANGES
@@ -5237,7 +5293,7 @@
     let _Symbol$iterator;
     /**
      * This class represents an array of note objects.
-     * This can be used to simplify operations on a track.
+     * It can be used to simplify operations on a track.
      *
      * @example
      *   const notes = [
@@ -5286,11 +5342,16 @@
        * Returns a simple array with all Note objects.
        *
        * @returns {Note[]} array with Note objects
+       * @example <caption>Getting notes as simple Note[]</caption>
+       *      const na = new NoteArray(someNotes);
+       *      const notes = na.getNotes();
        * @example <caption>Using an iterator instead</caption>
        *      const na = new NoteArray(someNotes);
        *      for (const note of na) {
        *          console.log(note);
        *      }
+       *      // Or copy all Notes to an array with
+       *      const array = [...na];
        */
 
 
@@ -5301,7 +5362,7 @@
        * Makes this class iterable
        *
        * @yields {Note} note
-       * @example
+       * @example <caption>Using an iterator for NoteArray</caption>
        *      const na = new NoteArray(someNotes);
        *      for (const note of na) {
        *          console.log(note);
@@ -5315,7 +5376,7 @@
         }
       }
       /**
-       * Appends notes to this note array
+       * Appends notes to this NoteArray
        *
        * @param {Note[]} notes notes
        * @param {boolean} sort iff ture, sorts notes by start timeafter adding
@@ -9683,8 +9744,10 @@
 
       return partMap;
     }
-    /*
+    /**
      * Map from fiths to key signature
+     *
+     * @type {Map<number,object>}
      */
 
 
@@ -9734,8 +9797,10 @@
       key: 'C#',
       scale: 'major'
     }]]);
-    /*
+    /**
      * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
+     *
+     * @type {Map<string,number>}
      */
 
     const dynamicsMap = new Map([['ppp', 25], ['pp', 38], ['p', 51], ['mp', 64], ['mf', 76], ['f', 89], ['ff', 102], ['fff', 114]]);
@@ -10323,7 +10388,7 @@
         keySignatureChanges
       };
     }
-    /*
+    /**
      * MIDI event types and meta types and their codes
      *
      * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
@@ -10336,6 +10401,8 @@
      * Channel Aftertouch 0xD      13              aftertouch value    not used
      * Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
      * Meta               0xFF    255                 parameters depend on meta type
+     *
+     * @type {object}
      */
 
 
@@ -10349,6 +10416,10 @@
       pitchBend: 0xE,
       meta: 0xFF
     };
+    /**
+     * @type {object}
+     */
+
     const META_TYPES = {
       sequenceNumber: 0x0,
       textEvent: 0x1,
@@ -10366,8 +10437,10 @@
       keySignature: 0x59,
       sequencerSpecific: 0x7F
     };
-    /*
+    /**
      * Maps needed for key signature detection from number of sharps / flats
+     *
+     * @type {Map<number,object>}
      * @see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
      */
 
@@ -11296,6 +11369,55 @@
       context.closePath();
     }
     /**
+     * Draws a horizontal, then vertical line to connect two points (or the other
+     * way round when xFirst == false)
+     *
+     * @param {CanvasRenderingContext2D} context canvas rendering context
+     * @param {number} x1 x coordinate of start
+     * @param {number} y1 y coordinate of start
+     * @param {number} x2 x coordinate of end
+     * @param {number} y2 y coordinate of end
+     * @param {boolean} [xFirst=true] controls whether to go first in x or y direction
+     */
+
+    function drawCornerLine(context, x1, y1, x2, y2, xFirst = true) {
+      context.beginPath();
+      context.moveTo(x1, y1);
+      xFirst ? context.lineTo(x2, y1) : context.lineTo(x1, y2);
+      context.lineTo(x2, y2);
+      context.stroke();
+    }
+    /**
+     * Draws a rounded version of drawCornerLine()
+     *
+     * @todo only works for dendrograms drawn from top-dowm
+     * @param {CanvasRenderingContext2D} context canvas rendering context
+     * @param {number} x1 x coordinate of start
+     * @param {number} y1 y coordinate of start
+     * @param {number} x2 x coordinate of end
+     * @param {number} y2 y coordinate of end
+     * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
+     */
+
+    function drawRoundedCornerLine(context, x1, y1, x2, y2, maxRadius = 25) {
+      const xDist = Math.abs(x2 - x1);
+      const yDist = Math.abs(y2 - y1);
+      const radius = Math.min(xDist, yDist, maxRadius);
+      const cx = x1 < x2 ? x2 - radius : x2 + radius;
+      const cy = y1 < y2 ? y1 + radius : y1 - radius;
+      context.beginPath();
+      context.moveTo(x1, y1);
+
+      if (x1 < x2) {
+        context.arc(cx, cy, radius, 1.5 * Math.PI, 2 * Math.PI);
+      } else {
+        context.arc(cx, cy, radius, 1.5 * Math.PI, Math.PI, true);
+      }
+
+      context.lineTo(x2, y2);
+      context.stroke();
+    }
+    /**
      * Draws a hexagon
      *
      * @param {CanvasRenderingContext2D} context canvas rendering context
@@ -11308,7 +11430,7 @@
       context.beginPath();
 
       for (let index = 0; index < 6; index++) {
-        // Start at 30° so snowflake can be drawn to the right
+        // Start at 30° TODO: allow to specify
         const angle = (60 * index + 30) / 180 * Math.PI;
         const x = cx + Math.cos(angle) * radius;
         const y = cy + Math.sin(angle) * radius;
@@ -11335,6 +11457,8 @@
         drawNoteTrapezoid: drawNoteTrapezoid,
         drawNoteTrapezoidUpwards: drawNoteTrapezoidUpwards,
         drawRoundedRect: drawRoundedRect,
+        drawCornerLine: drawCornerLine,
+        drawRoundedCornerLine: drawRoundedCornerLine,
         drawHexagon: drawHexagon
     });
 

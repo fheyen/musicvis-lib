@@ -571,7 +571,7 @@ declare module "fileFormats/Midi" {
      */
     const sharpToFlat: Map<string, string>;
     /**
-     * Below here are only arrays with information and lookup-map-building code
+     * Names of notes, indexed like MIDI numbers, i.e. C is 0
      */
     const NOTE_NAMES: string[];
     /**
@@ -621,6 +621,11 @@ declare module "fileFormats/MidiParser" {
      * @returns including an array of note objects and meta information
      */
     function preprocessMidiFileData(data: any, splitFormat0IntoTracks: boolean, log: boolean): any;
+    /**
+     * MIDI event types and meta types and their codes
+     */
+    const EVENT_TYPES: any;
+    const META_TYPES: any;
     /**
      * Maps needed for key signature detection from number of sharps / flats
      */
@@ -743,6 +748,27 @@ declare module "graphics/Canvas" {
      * @param radius - rounding radius
      */
     function drawRoundedRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void;
+    /**
+     * Draws a horizontal, then vertical line to connect two points (or the other
+     * way round when xFirst == false)
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of start
+     * @param y1 - y coordinate of start
+     * @param x2 - x coordinate of end
+     * @param y2 - y coordinate of end
+     * @param [xFirst = true] - controls whether to go first in x or y direction
+     */
+    function drawCornerLine(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, xFirst?: boolean): void;
+    /**
+     * Draws a rounded version of drawCornerLine()
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of start
+     * @param y1 - y coordinate of start
+     * @param x2 - x coordinate of end
+     * @param y2 - y coordinate of end
+     * @param [maxRadius = 25] - maximum radius, fixes possible overlaps
+     */
+    function drawRoundedCornerLine(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, maxRadius?: number): void;
     /**
      * Draws a hexagon
      * @param context - canvas rendering context
@@ -1562,6 +1588,8 @@ declare class NoteArray {
          for (const note of na) {
              console.log(note);
          }
+         // Or copy all Notes to an array with
+         const array = [...na];
      * @returns array with Note objects
      */
     getNotes(): Note[];
