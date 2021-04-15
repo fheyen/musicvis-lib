@@ -202,6 +202,55 @@ export function drawRoundedRect(context, x, y, width, height, radius) {
 }
 
 /**
+ * Draws a horizontal, then vertical line to connect two points (or the other
+ * way round when xFirst == false)
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of start
+ * @param {number} y1 y coordinate of start
+ * @param {number} x2 x coordinate of end
+ * @param {number} y2 y coordinate of end
+ * @param {boolean} [xFirst=true] controls whether to go first in x or y direction
+ */
+export function drawCornerLine(context, x1, y1, x2, y2, xFirst = true) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+    xFirst
+        ? context.lineTo(x2, y1)
+        : context.lineTo(x1, y2);
+    context.lineTo(x2, y2);
+    context.stroke();
+}
+
+/**
+ * Draws a rounded version of drawCornerLine()
+ *
+ * @todo only works for dendrograms drawn from top-dowm
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of start
+ * @param {number} y1 y coordinate of start
+ * @param {number} x2 x coordinate of end
+ * @param {number} y2 y coordinate of end
+ * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
+ */
+export function drawRoundedCornerLine(context, x1, y1, x2, y2, maxRadius = 25) {
+    const xDist = Math.abs(x2 - x1);
+    const yDist = Math.abs(y2 - y1);
+    const radius = Math.min(xDist, yDist, maxRadius);
+    const cx = x1 < x2 ? x2 - radius : x2 + radius;
+    const cy = y1 < y2 ? y1 + radius : y1 - radius;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    if (x1 < x2) {
+        context.arc(cx, cy, radius, 1.5 * Math.PI, 2 * Math.PI);
+    } else {
+        context.arc(cx, cy, radius, 1.5 * Math.PI, Math.PI, true);
+    }
+    context.lineTo(x2, y2);
+    context.stroke();
+}
+
+/**
  * Draws a hexagon
  *
  * @param {CanvasRenderingContext2D} context canvas rendering context
@@ -212,7 +261,7 @@ export function drawRoundedRect(context, x, y, width, height, radius) {
 export function drawHexagon(context, cx, cy, radius) {
     context.beginPath();
     for (let index = 0; index < 6; index++) {
-        // Start at 30° so snowflake can be drawn to the right
+        // Start at 30° TODO: allow to specify
         const angle = (60 * index + 30) / 180 * Math.PI;
         const x = cx + Math.cos(angle) * radius;
         const y = cy + Math.sin(angle) * radius;

@@ -51,6 +51,19 @@ describe('Canvas', () => {
         expect(() => Canv.drawRoundedRect(ctx, 50, 50, -1, 200, 20)).not.toThrow();
     });
 
+    test('drawCornerLine', () => {
+        expect(() => Canv.drawCornerLine(ctx, 50, 50, 100, 200)).not.toThrow();
+        expect(() => Canv.drawCornerLine(ctx, 50, 50, 100, 200, true)).not.toThrow();
+        expect(() => Canv.drawCornerLine(ctx, 50, 50, 100, 200, false)).not.toThrow();
+        expect(() => Canv.drawCornerLine(ctx, 50, 50, 0, 20)).not.toThrow();
+    });
+    test('drawRoundedCornerLine', () => {
+        expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 100, 200)).not.toThrow();
+        expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 100, 200, 10)).not.toThrow();
+        expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 10, 200)).not.toThrow();
+        expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 0, 0)).not.toThrow();
+    });
+
     test('draw hexagon', () => {
         expect(() => Canv.drawHexagon(ctx, 50, 50, 10)).not.toThrow();
     });

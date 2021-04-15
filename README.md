@@ -9,11 +9,11 @@
 [![GitHub issues](https://img.shields.io/github/contributors/fheyen/musicvis-lib?color=%234dc71f)](https://github.com/fheyen/musicvis-lib/graphs/contributors)
 
 
-Goal: Provide tools for web-based music visualization.
+Goal: Provide data structures and algorithms for music analysis and visualization in JavaScript.
 
 This library is still in early and active development.
 
-**Do not use this for anything yet.**
+**Breaking changes might happen.**
 
 1. [musicvis-lib &#9835;](#musicvis-lib-)
    1. [Setup](#setup)
@@ -64,7 +64,10 @@ const note = Note.from({
 
 In HTML
 ```html
-<script src="musicvislib.min.js"></script>
+<!-- With unpkg... -->
+<script src="https://unpkg.com/musicvis-lib"></script>
+<!-- ... or with a downloaded file -->
+<script src="./musicvislib.min.js"></script>
 <script>
     console.log(musicvislib);
     console.log(musicvislib.Midi);
