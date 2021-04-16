@@ -669,6 +669,12 @@ declare module "graphics/Canvas" {
     function setupCanvas(canvas: HTMLCanvasElement): CanvasRenderingContext2D;
     /**
      * Draws a stroked straight line.
+     * @example
+     * // Set the strokeStyle first
+     *      context.strokeStyle = 'black';
+     *      // Let's draw an X
+     *      Canvas.drawLine(context, 0, 0, 50, 50);
+     *      Canvas.drawLine(context, 0, 50, 50, 0);
      * @param context - canvas rendering context
      * @param x1 - x coordinate of the start
      * @param y1 - y coordinate of the start
@@ -676,6 +682,22 @@ declare module "graphics/Canvas" {
      * @param y2 - y coordinate of end
      */
     function drawLine(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number): void;
+    /**
+     * Draws a stroked straight horizontal line.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of the start
+     * @param y - y coordinate of the start
+     * @param x2 - x coordinate of end
+     */
+    function drawHLine(context: CanvasRenderingContext2D, x1: number, y: number, x2: number): void;
+    /**
+     * Draws a stroked straight vertical line.
+     * @param context - canvas rendering context
+     * @param x - x coordinate of the start
+     * @param y1 - y coordinate of the start
+     * @param y2 - y coordinate of end
+     */
+    function drawVLine(context: CanvasRenderingContext2D, x: number, y1: number, y2: number): void;
     /**
      * Draws a stroked circle.
      * @param context - canvas rendering context
@@ -1413,6 +1435,24 @@ declare class MusicPiece {
      */
     static fromMusicXml(name: string, xmlFile: string | any): MusicPiece;
     /**
+     * Allows to get a MusicPiece from JSON after doing JSON.stringify()
+     * @example
+     * const jsonString = mp.toJson();
+         const recovered = MusicPiece.fromJson(jsonString);
+     * @param json - JSON
+     * @returns new MusicPiece
+     */
+    static fromJson(json: string | JSON): MusicPiece;
+    /**
+     * Returns a JSON-serialized representation
+     * @example
+     * const jsonString = mp.toJson();
+         const recovered = MusicPiece.fromJson(jsonString);
+     * @param pretty - true for readable (prettified) JSON
+     * @returns JSON as string
+     */
+    toJson(pretty: boolean): string;
+    /**
      * Returns an array with all notes from all tracks.
      * @param sortByTime - true: sort notes by time
      * @returns all notes of this piece
@@ -1931,6 +1971,14 @@ declare module "utils/ArrayUtils" {
      * @returns similarity in [0, 1]
      */
     function jaccardIndex(set1: number[], set2: number[]): number;
+    /**
+     * Kendall Tau distance
+     * @param ranking1 - a ranking, i.e. for each entry the rank
+     * @param ranking2 - a ranking, i.e. for each entry the rank
+     * @param [normalize = true] - normalize to [0, 1]?
+     * @returns Kendall tau distance
+     */
+    function kendallTau(ranking1: number[], ranking2: number[], normalize?: boolean): number;
     /**
      * Removes duplicates from an Array by converting to a Set and back
      * @param array - an array

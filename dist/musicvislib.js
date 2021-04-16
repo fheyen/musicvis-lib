@@ -1,4 +1,4 @@
-// musicvis-lib v0.46.9 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.47.0 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -10763,6 +10763,44 @@
         return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
       }
       /**
+       * Allows to get a MusicPiece from JSON after doing JSON.stringify()
+       *
+       * @param {string|JSON} json JSON
+       * @returns {MusicPiece} new MusicPiece
+       * @example
+       *      const jsonString = mp.toJson();
+       *      const recovered = MusicPiece.fromJson(jsonString);
+       */
+
+
+      static fromJson(json) {
+        json = typeof json === 'string' ? JSON.parse(json) : json;
+        const name = json.name;
+        const tempos = json.tempos.map(d => new TempoDefinition(d.time, d.bpm));
+        const timeSignatures = json.timeSignatures.map(d => new TimeSignature(d.time, d.signature));
+        const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale));
+        const measureTimes = json.measureTimes;
+        const tracks = json.tracks.map(track => {
+          const notes = track.notes.map(note => Note$1.from(note));
+          return new Track(track.name, track.instrument, notes, track.tuningPitches);
+        });
+        return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+      }
+      /**
+       * Returns a JSON-serialized representation
+       *
+       * @param {boolean} pretty true for readable (prettified) JSON
+       * @returns {string} JSON as string
+       * @example
+       *      const jsonString = mp.toJson();
+       *      const recovered = MusicPiece.fromJson(jsonString);
+       */
+
+
+      toJson(pretty = false) {
+        return JSON.stringify(this, undefined, pretty ? 2 : 0);
+      }
+      /**
        * Returns an array with all notes from all tracks.
        *
        * @deprecated use getNotesFromTracks('all') instead.
@@ -11199,12 +11237,52 @@
      * @param {number} x2 x coordinate of end
      * @param {number} y2 y coordinate of end
      * @returns {void}
+     * @example
+     *      // Set the strokeStyle first
+     *      context.strokeStyle = 'black';
+     *      // Let's draw an X
+     *      Canvas.drawLine(context, 0, 0, 50, 50);
+     *      Canvas.drawLine(context, 0, 50, 50, 0);
      */
 
     function drawLine(context, x1, y1, x2, y2) {
       context.beginPath();
       context.moveTo(x1, y1);
       context.lineTo(x2, y2);
+      context.stroke();
+    }
+    /**
+     * Draws a stroked straight horizontal line.
+     *
+     * @deprecated Use context.fillRect(x1, y, x2-x1, strokeWidth)
+     * @param {CanvasRenderingContext2D} context canvas rendering context
+     * @param {number} x1 x coordinate of the start
+     * @param {number} y y coordinate of the start
+     * @param {number} x2 x coordinate of end
+     * @returns {void}
+     */
+
+    function drawHLine(context, x1, y, x2) {
+      context.beginPath();
+      context.moveTo(x1, y);
+      context.lineTo(x2, y);
+      context.stroke();
+    }
+    /**
+     * Draws a stroked straight vertical line.
+     *
+     * @deprecated Use context.fillRect(x1, y1, strokeWidth, y2-y1)
+     * @param {CanvasRenderingContext2D} context canvas rendering context
+     * @param {number} x x coordinate of the start
+     * @param {number} y1 y coordinate of the start
+     * @param {number} y2 y coordinate of end
+     * @returns {void}
+     */
+
+    function drawVLine(context, x, y1, y2) {
+      context.beginPath();
+      context.moveTo(x, y1);
+      context.lineTo(x, y2);
       context.stroke();
     }
     /**
@@ -11449,6 +11527,8 @@
         __proto__: null,
         setupCanvas: setupCanvas,
         drawLine: drawLine,
+        drawHLine: drawHLine,
+        drawVLine: drawVLine,
         drawCircle: drawCircle,
         drawFilledCircle: drawFilledCircle,
         drawTriangle: drawTriangle,
