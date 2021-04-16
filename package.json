@@ -32,6 +32,7 @@
   "scripts": {
     "upd": "npm-check-updates -u",
     "upd:i": "npm-check-updates -u && npm i",
+    "upd:i:t": "npm-check-updates -u && npm i && npm test",
     "build:webpack": "webpack --config webpack.dev.js && webpack --config webpack.prod.js",
     "build:rollup": "rollup -c",
     "build:all": "npm run build:webpack && npm run build:rollup",

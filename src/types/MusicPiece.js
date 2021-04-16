@@ -257,6 +257,42 @@ class MusicPiece {
     }
 
     /**
+     * Allows to get a MusicPiece from JSON after doing JSON.stringify()
+     *
+     * @param {string|JSON} json JSON
+     * @returns {MusicPiece} new MusicPiece
+     * @example
+     *      const jsonString = mp.toJson();
+     *      const recovered = MusicPiece.fromJson(jsonString);
+     */
+    static fromJson(json) {
+        json = (typeof json === 'string') ? JSON.parse(json) : json;
+        const name = json.name;
+        const tempos = json.tempos.map(d => new TempoDefinition(d.time, d.bpm));
+        const timeSignatures = json.timeSignatures.map(d => new TimeSignature(d.time, d.signature));
+        const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale));
+        const measureTimes = json.measureTimes;
+        const tracks = json.tracks.map(track => {
+            const notes = track.notes.map(note => Note.from(note));
+            return new Track(track.name, track.instrument, notes, track.tuningPitches);
+        });
+        return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    }
+
+    /**
+     * Returns a JSON-serialized representation
+     *
+     * @param {boolean} pretty true for readable (prettified) JSON
+     * @returns {string} JSON as string
+     * @example
+     *      const jsonString = mp.toJson();
+     *      const recovered = MusicPiece.fromJson(jsonString);
+     */
+    toJson(pretty = false) {
+        return JSON.stringify(this, undefined, pretty ? 2 : 0);
+    }
+
+    /**
      * Returns an array with all notes from all tracks.
      *
      * @deprecated use getNotesFromTracks('all') instead.

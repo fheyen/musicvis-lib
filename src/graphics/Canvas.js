@@ -35,11 +35,51 @@ export function setupCanvas(canvas) {
  * @param {number} x2 x coordinate of end
  * @param {number} y2 y coordinate of end
  * @returns {void}
+ * @example
+ *      // Set the strokeStyle first
+ *      context.strokeStyle = 'black';
+ *      // Let's draw an X
+ *      Canvas.drawLine(context, 0, 0, 50, 50);
+ *      Canvas.drawLine(context, 0, 50, 50, 0);
  */
 export function drawLine(context, x1, y1, x2, y2) {
     context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
+    context.stroke();
+}
+
+/**
+ * Draws a stroked straight horizontal line.
+ *
+ * @deprecated Use context.fillRect(x1, y, x2-x1, strokeWidth)
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of the start
+ * @param {number} y y coordinate of the start
+ * @param {number} x2 x coordinate of end
+ * @returns {void}
+ */
+export function drawHLine(context, x1, y, x2) {
+    context.beginPath();
+    context.moveTo(x1, y);
+    context.lineTo(x2, y);
+    context.stroke();
+}
+
+/**
+ * Draws a stroked straight vertical line.
+ *
+ * @deprecated Use context.fillRect(x1, y1, strokeWidth, y2-y1)
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x x coordinate of the start
+ * @param {number} y1 y coordinate of the start
+ * @param {number} y2 y coordinate of end
+ * @returns {void}
+ */
+export function drawVLine(context, x, y1, y2) {
+    context.beginPath();
+    context.moveTo(x, y1);
+    context.lineTo(x, y2);
     context.stroke();
 }
 

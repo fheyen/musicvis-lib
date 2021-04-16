@@ -217,6 +217,22 @@ describe('MusicPiece', () => {
         });
     });
 
+    describe('toJson / fromJson', () => {
+        const file = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
+        const mp = MusicPiece.fromMidi('test', file);
+
+        test('with JSON.stringify', () => {
+            const json = JSON.stringify(mp);
+            const recovered = MusicPiece.fromJson(json);
+            expect(mp).toStrictEqual(recovered);
+        });
+        test('with mp.toJson', () => {
+            const json = mp.toJson();
+            const recovered = MusicPiece.fromJson(json);
+            expect(mp).toStrictEqual(recovered);
+        });
+    });
+
     /**
      * Tests for all musicxml files whether the MIDI file leads to the same output
      */

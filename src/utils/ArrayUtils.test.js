@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch } from './ArrayUtils';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch, kendallTau } from './ArrayUtils';
 
 describe('ArrayUtils', () => {
 
@@ -96,6 +96,42 @@ describe('ArrayUtils', () => {
             expect(jaccardIndex([1, 2, 3], [1, 2, 3])).toBe(1);
             expect(jaccardIndex([1, 2, 3, 2], [1, 2, 3])).toBe(1);
             expect(jaccardIndex([1, 2, 3, 2], [1, 2, 3, 3])).toBe(1);
+        });
+    });
+
+    describe('kendallTau', () => {
+        test('empty', () => {
+            expect(kendallTau([], [])).toBe(0);
+        });
+        test('different length', () => {
+            expect(() => kendallTau([1], [])).toThrow('Ranking length must be equal');
+        });
+        test('no inversions', () => {
+            expect(
+                kendallTau([1, 2, 4, 3], [1, 2, 4, 3], false)
+            ).toBe(0);
+        });
+        test('1 inversion', () => {
+            expect(
+                kendallTau([1, 2, 3, 4], [1, 2, 4, 3], false)
+            ).toBe(1);
+        });
+        test('2 inversions', () => {
+            expect(
+                kendallTau([1, 2, 3, 4], [2, 1, 4, 3], false)
+            ).toBe(2);
+        });
+        test('2 inversions, normalized', () => {
+            expect(
+                kendallTau([1, 2, 3, 4], [2, 1, 4, 3])
+            ).toBe(2 / (4 * 3 / 2));
+        });
+        test('Wikipedia example', () => {
+            // https://en.wikipedia.org/wiki/Kendall_tau_distance
+            const r1 = [1, 2, 3, 4, 5];
+            const r2 = [3, 4, 1, 2, 5];
+            expect(kendallTau(r1, r2, false)).toBe(4);
+            expect(kendallTau(r1, r2)).toBe(0.4);
         });
     });
 

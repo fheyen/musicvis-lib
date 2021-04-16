@@ -71,6 +71,41 @@ export function jaccardIndex(set1, set2) {
 }
 
 /**
+ * Kendall Tau distance
+ *
+ * @todo naive implementation, can be sped up with hints on Wikipedia
+ * @see https://en.wikipedia.org/wiki/Kendall_tau_distance
+ * @param {number[]} ranking1 a ranking, i.e. for each entry the rank
+ * @param {number[]} ranking2 a ranking, i.e. for each entry the rank
+ * @param {boolean} [normalize=true] normalize to [0, 1]?
+ * @returns {number} Kendall tau distance
+ * @throws {'Ranking length must be equal'} if rankings don't have euqal length
+ */
+export function kendallTau(ranking1, ranking2, normalize = true) {
+    if (ranking1.length !== ranking2.length) {
+        throw new Error('Ranking length must be equal');
+    }
+    if (ranking1.length === 0) {
+        return 0;
+    }
+    let inversions = 0;
+    const n = ranking1.length;
+    for (let a = 0; a < n; a++) {
+        for (let b = a + 1; b < n; b++) {
+            const r1smaller = ranking1[a] < ranking1[b];
+            const r2smaller = ranking2[a] < ranking2[b];
+            if (r1smaller !== r2smaller) {
+                inversions++;
+            }
+        }
+    }
+    if (normalize) {
+        inversions /= n * (n - 1) / 2;
+    }
+    return inversions;
+}
+
+/**
  * Removes duplicates from an Array by converting to a Set and back
  *
  * @param {Array} array an array
