@@ -73,8 +73,8 @@ export function jaccardIndex(set1, set2) {
 /**
  * Kendall Tau distance
  *
- * @todo naive implementation, can be sped up with hints on Wikipedia
  * @see https://en.wikipedia.org/wiki/Kendall_tau_distance
+ * @todo naive implementation, can be sped up with hints on Wikipedia, see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
  * @param {number[]} ranking1 a ranking, i.e. for each entry the rank
  * @param {number[]} ranking2 a ranking, i.e. for each entry the rank
  * @param {boolean} [normalize=true] normalize to [0, 1]?

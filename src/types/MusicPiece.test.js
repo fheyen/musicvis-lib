@@ -218,15 +218,17 @@ describe('MusicPiece', () => {
     });
 
     describe('toJson / fromJson', () => {
-        const file = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
-        const mp = MusicPiece.fromMidi('test', file);
+        const midi = readMidiFile('[Test] 3-4 meter.mid', TEST_DIR);
+        const mpMidi = MusicPiece.fromMidi('test', midi);
+        const xml = readXmlFile('[Test] Guitar Chromatic Scale.musicxml', TEST_DIR);
+        const mpXml = MusicPiece.fromMusicXml('test', xml);
 
-        test('with JSON.stringify', () => {
+        test.each([mpMidi, mpXml])('with JSON.stringify', (mp) => {
             const json = JSON.stringify(mp);
             const recovered = MusicPiece.fromJson(json);
             expect(mp).toStrictEqual(recovered);
         });
-        test('with mp.toJson', () => {
+        test.each([mpMidi, mpXml])('with mp.toJson', (mp) => {
             const json = mp.toJson();
             const recovered = MusicPiece.fromJson(json);
             expect(mp).toStrictEqual(recovered);

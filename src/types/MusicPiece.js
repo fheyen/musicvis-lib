@@ -4,6 +4,7 @@ import { Midi } from '@tonejs/midi';
 import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
 import { preprocessMidiFileData } from '../fileFormats/MidiParser';
 import NoteArray from './NoteArray';
+import GuitarNote from './GuitarNote';
 
 
 
@@ -273,7 +274,11 @@ class MusicPiece {
         const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale));
         const measureTimes = json.measureTimes;
         const tracks = json.tracks.map(track => {
-            const notes = track.notes.map(note => Note.from(note));
+            const notes = track.notes.map(note => {
+                return note.string !== undefined && note.fret !== undefined
+                    ? GuitarNote.from(note)
+                    : Note.from(note);
+            });
             return new Track(track.name, track.instrument, notes, track.tuningPitches);
         });
         return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
