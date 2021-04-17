@@ -28,7 +28,7 @@
 
 
     <title>
-      comparison/Matching
+      index.js
     </title>
 
     <!--[if lt IE 9]>
@@ -100,7 +100,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        comparison/Matching
+        index.js
       </h1>
       
 
@@ -108,1168 +108,88 @@
 
 
 
-
-<section>
-
-
-<header>
-    
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getMatchingError">
-        <a href="#.getMatchingError">#</a>
-        <span class="type-signature">(static) </span>getMatchingError<span class="signature">(matching, addPenalty, missPenalty, timingPenalty, timeThreshold)</span><span class="type-signature"> &rarr; {object}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Calculates the error of a matching by applying penalties and summing up
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>matching</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a matching created by matchGtAndRecordingNotes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>addPenalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">penalty for each additonal note</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>missPenalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">penalty for each missing note</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>timingPenalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">penalty for note timing differences in seconds</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>timeThreshold</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">timing errors below it (absolute) are ignored</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    errors by category
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getMatchingSection">
-        <a href="#.getMatchingSection">#</a>
-        <span class="type-signature">(static) </span>getMatchingSection<span class="signature">(matching, start, end)</span><span class="type-signature"> &rarr; {Map}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Cuts a section from a matching by filtering on the start timesof ground truth, missing, and additonal notes
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>matching</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">matching</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">start time (inclusive)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>end</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">end time (exclusive)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    section of matching
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Map</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getMatchingSliceError">
-        <a href="#.getMatchingSliceError">#</a>
-        <span class="type-signature">(static) </span>getMatchingSliceError<span class="signature">(matching, start, end, addPenalty, missPenalty, timingPenalty)</span><span class="type-signature"> &rarr; {object}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Shortcut for getMatchingSection and getMatchingError,see them for parameter details.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>matching</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">matching</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">start time (inclusive)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>end</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">end time (exclusive)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>addPenalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">penalty for each additonal note</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>missPenalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">penalty for each missing note</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>timingPenalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">penalty for note timing differences in seconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    error by category
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".getMultiMatchingErrorPerNote">
-        <a href="#.getMultiMatchingErrorPerNote">#</a>
-        <span class="type-signature">(static) </span>getMultiMatchingErrorPerNote<span class="signature">(multiMatching, errorThreshold)</span><span class="type-signature"> &rarr; {Map}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Calculates (for each pitch) the average error for each GT note (averagedover all matched notes in the recordings),as well as the maximum of all those average errors.GT notes that have no matched recorded notes will have an error of 0.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>multiMatching</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">matching with a GT and multiple recordings</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>errorThreshold</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">number seconds of deviation above which     to exclude an error</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    error summary Map:pitch->{gtErrorMap, maxError},     gtErrorMap is Map:gtStart->error (error is average over all time     differences between the GT note and matched recNotes)
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Map</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".matchGtAndMultipleRecordings">
-        <a href="#.matchGtAndMultipleRecordings">#</a>
-        <span class="type-signature">(static) </span>matchGtAndMultipleRecordings<span class="signature">(recordings, gtNotes)</span><span class="type-signature"> &rarr; {Map}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Matches all recorded notes from multiple recordings to the nearestground truth (GT) note.Contrary to the matching created by matchGtAndRecordingNotes()missing and additional notes are not considered, so multiple notesfrom a single recording can be matched to the same GT note.Result format:Map:pitch->Map:gtStart->arrayOfMatchedRecNotes
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>recordings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Recording.html">Recording</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">recordings</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>gtNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ground truth notes</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    matching
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Map</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".matchGtAndRecordingNotes">
-        <a href="#.matchGtAndRecordingNotes">#</a>
-        <span class="type-signature">(static) </span>matchGtAndRecordingNotes<span class="signature">(recNotes, gtNotes)</span><span class="type-signature"> &rarr; {Map}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        For one recording, separately for each pitch,matches each recorded note to its closest ground truth note.If there are multiple matches, the best (smallest time difference)will be kept and others will be regarded as additional notes.Ground truth notes without match will be regarded as missing notes.Result format (separated by pitch in a Map):Map:pitch->{   gtRecMap           matched rec. note for each GT note Map:gtNoteStart->recNote,   additionalNotes:   rec. notes without matched GT note   missingNotes:      GT notes without matched rec. note   gtNotes:           all GT notes}
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>recNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">recorded notes of a single recording</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>gtNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ground truth notes</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="comparison_Matching.js.html">comparison/Matching.js</a>, <a href="comparison_Matching.js.html#line29">line 29</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-todo">To Do:</dt>
-            <dd class="tag-todo">
-                <ul>
-                    <li>add max distance?</li>
-                </ul>
-            </dd>
-        </div>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    result
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Map</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
     
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { version } from '../package.json';
+/**
+ * Returns the current version of the library
+ *
+ * @returns {string} version string
+ */
+function getVersion() {
+    return version;
+}
+
+// Types
+import Note from './types/Note';
+import GuitarNote from './types/GuitarNote';
+import NoteArray from './types/NoteArray';
+import Recording from './types/Recording';
+import MusicPiece from './types/MusicPiece';
+import PitchSequence from './types/PitchSequence';
+// File formats
+import * as Midi from './fileFormats/Midi';
+// Graphics
+import * as Canvas from './graphics/Canvas';
+// Input
+import { recordAudio } from './input/AudioRecorder';
+import { recordMidi } from './input/MidiRecorder';
+import MidiInputManager from './input/MidiInputManager';
+// Instruments
+import * as Drums from './instruments/Drums';
+import * as Guitar from './instruments/Guitar';
+import * as Lamellophone from './instruments/Lamellophone';
+import * as Piano from './instruments/Piano';
+// Alignment
+import * as Alignment from './alignment/Alignment';
+import * as DiffAlignment from './alignment/DiffAlignment';
+// Comparison
+import * as Matching from './comparison/Matching';
+import * as Similarity from './comparison/Similarity';
+import * as SimilarSections from './comparison/SimilarSections';
+// Libraries
+import * as Utils from './utils';
+import * as Chords from './chords/Chords';
+import * as StringBased from './stringBased';
+
+export {
+    getVersion,
+    // Types
+    Note,
+    GuitarNote,
+    NoteArray,
+    Recording,
+    MusicPiece,
+    PitchSequence,
+    // File formats
+    Midi,
+    // graphics
+    Canvas,
+    // Input
+    recordAudio,
+    recordMidi,
+    MidiInputManager,
+    // Instruments
+    Drums,
+    Guitar,
+    Lamellophone,
+    Piano,
+    // Alignment
+    Alignment,
+    DiffAlignment,
+    // Comparison
+    Matching,
+    Similarity,
+    SimilarSections,
+    // Libraries
+    Utils,
+    Chords,
+    StringBased,
+};
+</code></pre>
+        </article>
+    </section>
 
 
 
