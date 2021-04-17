@@ -10,16 +10,20 @@ import commonjs from '@rollup/plugin-commonjs';
 const version = `// musicvis-lib v${meta.version} ${meta.homepage}`;
 const input = 'src/index.js';
 
+const outputConfig = {
+    extend: true,
+    banner: version,
+    name: 'musicvislib',
+};
+
 export default [
     {
         input,
         output: {
-            extend: true,
-            banner: version,
+            ...outputConfig,
             file: 'dist/musicvislib.js',
             format: 'umd',
             indent: true,
-            name: 'musicvislib',
         },
         plugins: [
             json({
@@ -37,18 +41,17 @@ export default [
             }),
             jsdoc({
                 args: ['-r', '-d', 'docs'],
-                config: 'jsdoc.conf.json',
+                config: './jsdoc.conf.json',
             }),
         ],
     },
     {
         input,
         output: {
-            extend: true,
+            ...outputConfig,
             file: 'dist/musicvislib.min.js',
             format: 'umd',
             indent: false,
-            name: 'musicvislib',
         },
         plugins: [
             json({
@@ -73,11 +76,10 @@ export default [
     {
         input,
         output: {
-            extend: true,
+            ...outputConfig,
             file: 'dist/musicvislib.esm.js',
             format: 'es',
             indent: false,
-            name: 'musicvislib',
         },
         plugins: [
             json({

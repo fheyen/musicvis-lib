@@ -1,3 +1,13 @@
+import { version } from '../package.json';
+/**
+ * Returns the current version of the library
+ *
+ * @returns {string} version string
+ */
+function getVersion() {
+    return version;
+}
+
 // Types
 import Note from './types/Note';
 import GuitarNote from './types/GuitarNote';
@@ -31,6 +41,7 @@ import * as Chords from './chords/Chords';
 import * as StringBased from './stringBased';
 
 export {
+    getVersion,
     // Types
     Note,
     GuitarNote,

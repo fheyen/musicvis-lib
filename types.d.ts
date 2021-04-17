@@ -802,6 +802,12 @@ declare module "graphics/Canvas" {
 }
 
 /**
+ * Returns the current version of the library
+ * @returns version string
+ */
+declare function getVersion(): string;
+
+/**
  * Allows to record audio blobs.
  * @example
  * Usage (only in async functions):
