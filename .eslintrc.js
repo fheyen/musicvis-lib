@@ -78,6 +78,7 @@ module.exports = {
         'unicorn/no-new-array': 'warn',
         'unicorn/no-array-for-each': 'off',
         'unicorn/prefer-ternary': ['warn', 'only-single-line'],
+        'unicorn/prefer-switch': 'off',
         'unicorn/prevent-abbreviations': [
             'warn',
             {

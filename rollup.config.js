@@ -1,6 +1,5 @@
 import resolve from 'rollup-plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import jsdoc from 'rollup-plugin-jsdoc';
 import json from '@rollup/plugin-json';
 import { babel } from '@rollup/plugin-babel';
 import meta from './package.json';
@@ -16,6 +15,14 @@ const outputConfig = {
     name: 'musicvislib',
 };
 
+const babelConfig = {
+    babelHelpers: 'bundled',
+    plugins: [
+        ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+        ['@babel/plugin-proposal-nullish-coalescing-operator'],
+    ],
+};
+
 export default [
     {
         input,
@@ -26,23 +33,10 @@ export default [
             indent: true,
         },
         plugins: [
-            json({
-                compact: true,
-                exclude: 'node_modules/**',
-            }),
+            json({ compact: true }),
             resolve(),
             commonjs(),
-            babel({
-                babelHelpers: 'bundled',
-                plugins: [
-                    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-                    ['@babel/plugin-proposal-nullish-coalescing-operator'],
-                ],
-            }),
-            jsdoc({
-                args: ['-r', '-d', 'docs'],
-                config: './jsdoc.conf.json',
-            }),
+            babel(babelConfig),
         ],
     },
     {
@@ -54,22 +48,12 @@ export default [
             indent: false,
         },
         plugins: [
-            json({
-                compact: true,
-            }),
+            json({ compact: true }),
             resolve(),
             commonjs(),
-            babel({
-                babelHelpers: 'bundled',
-                plugins: [
-                    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-                    ['@babel/plugin-proposal-nullish-coalescing-operator'],
-                ],
-            }),
+            babel(babelConfig),
             terser({
-                format: {
-                    preamble: version,
-                },
+                format: { preamble: version },
             }),
         ],
     },
@@ -82,22 +66,12 @@ export default [
             indent: false,
         },
         plugins: [
-            json({
-                compact: true,
-            }),
+            json({ compact: true }),
             resolve(),
             commonjs(),
-            babel({
-                babelHelpers: 'bundled',
-                plugins: [
-                    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-                    ['@babel/plugin-proposal-nullish-coalescing-operator'],
-                ],
-            }),
+            babel(babelConfig),
             terser({
-                format: {
-                    preamble: version,
-                },
+                format: { preamble: version },
             }),
         ],
     },
