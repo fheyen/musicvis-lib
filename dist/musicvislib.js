@@ -1,11 +1,11 @@
-// musicvis-lib v0.47.1 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.47.2 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.47.1";
+  var version="0.47.2";
 
   /**
    * Lookup for many MIDI specifications.
@@ -6018,16 +6018,14 @@
      * @param {string} name name if the song
      * @param {Date} date date of the recording
      * @param {Note[]} notes array of Note objects
-     * @param {number} [speed=1] relative speed compared to ground truth, e.g. 0.5
+     * @param {number} speed relative speed compared to ground truth, e.g. 0.5
      *      for half as fast
-     * @param {number} [selectedTrack=0] track number of the ground truth to which
+     * @param {number} selectedTrack track number of the ground truth to which
      *      this recording belongs
-     * @param {number[]|null} [timeSelection=null] time selection of the ground truth
+     * @param {number[]|null} timeSelection time selection of the ground truth
      *      to which this recording belongs, or null if full duration
-     * @param {string} [comment=''] allows for a user defined comment as arbitrary
-     *      text
      */
-    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = '') {
+    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null) {
       super(notes);
       this.name = name;
       this.date = date; // Save formatted date for faster access
@@ -6037,7 +6035,6 @@
       this.selectedTrack = +selectedTrack;
       this.timeSelection = timeSelection;
       this.sortByTime();
-      this.comment = comment;
     }
     /**
      * Returns a copy of the Note object
@@ -6075,10 +6072,6 @@
       }
 
       if (this.selectedTrack !== otherRecording.selectedTrack) {
-        return false;
-      }
-
-      if (this.comment !== otherRecording.comment) {
         return false;
       }
 
@@ -6122,8 +6115,7 @@
         notes: this.getNotes(),
         speed: this.speed,
         selectedTrack: this.selectedTrack,
-        timeSelection: this.timeSelection,
-        comment: this.comment
+        timeSelection: this.timeSelection
       };
     }
     /**
@@ -6159,10 +6151,9 @@
       const {
         speed,
         selectedTrack,
-        timeSelection,
-        comment
+        timeSelection
       } = object;
-      return new Recording(name, date, notes, speed, selectedTrack, timeSelection, comment);
+      return new Recording(name, date, notes, speed, selectedTrack, timeSelection);
     }
 
   }

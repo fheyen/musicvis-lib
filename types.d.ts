@@ -131,7 +131,7 @@ declare module "Chords" {
 declare module "comparison/ErrorClassifier" {
     /**
      * Compares a single recording to a ground truth and labels notes as missing,
-     * extra, early/late, or short/long
+    extra, early/late, or short/long
      * @param gtNotes - ground truth notes
      * @param recNotes - recordings notes
      * @param groupBy - attribute to group notes by
@@ -242,10 +242,10 @@ declare module "comparison/Matching" {
 declare module "comparison/Similarity" {
     /**
      * Given a track, a selected time interval and a threshold,
-     * this function searches for parts in the track that are
-     * similar to the selection.
-     * It uses a sliding window with the size of the selection
-     * and a stride given as argument.
+    this function searches for parts in the track that are
+    similar to the selection.
+    It uses a sliding window with the size of the selection
+    and a stride given as argument.
      * @param track - array of Note objects
      * @param selectedInterval - [startTime, endTime] in seconds
      * @param stride - stride for the sliding window in number of bins
@@ -257,9 +257,9 @@ declare module "comparison/Similarity" {
     function getSimilarParts(track: Note[], selectedInterval: number[], stride: number, threshold: number, secondsPerBin: number, distance: string): any;
     /**
      * Uses calculates the distance between
-     * two discretized tracks, for each pitch separately.
-     * Pitch-wise distances are averaged and a penalty is added to the distance
-     * for pitches that are not occuring in both tracks
+    two discretized tracks, for each pitch separately.
+    Pitch-wise distances are averaged and a penalty is added to the distance
+    for pitches that are not occuring in both tracks
      * @param discrA - discretized track
      * @param discrB - discretized track
      * @param distance - one of: 'euclidean', 'nearest'
@@ -268,10 +268,10 @@ declare module "comparison/Similarity" {
     function getTrackSimilarity(discrA: Map, discrB: Map, distance: string): number;
     /**
      * - Normalizes Note times to be between 0 and (maxTime - minTime),
-     * - discretizes the start and end time by using Math.round to get
-     * the closest time bin (beat) and
-     * - Creates one array for each pitch, where each entry contains
-     * either a 0 (no note at that time bin) or a 1 (note at that time bin)
+    - discretizes the start and end time by using Math.round to get
+    the closest time bin (beat) and
+    - Creates one array for each pitch, where each entry contains
+    either a 0 (no note at that time bin) or a 1 (note at that time bin)
      * @param track - an array of Note objects
      * @param secondsPerBin - time bin size in seconds
      * @returns pitch to binArray
@@ -285,7 +285,7 @@ declare module "comparison/Similarity" {
     function countActiveNoteBins(binArray: number[]): number;
     /**
      * Slices bins out of a discretices track.
-     * This is done for each pitch separately
+    This is done for each pitch separately
      * @param trackMap - Map pitch->binArray
      * @param startBin - index of first bin
      * @param endBin - index of last bin
@@ -294,7 +294,7 @@ declare module "comparison/Similarity" {
     function sliceDiscretizedTrack(trackMap: Map, startBin: number, endBin: number): Map;
     /**
      * Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},
-     * i.e. Euclidean distance but without square root
+    i.e. Euclidean distance but without square root
      * @param A - an array
      * @param B - another array
      * @returns Euclidean distance
@@ -302,10 +302,10 @@ declare module "comparison/Similarity" {
     function euclideanDistanceSquared(A: number[], B: number[]): number;
     /**
      * Given two arrays containing 1s and 0s, this algorithm
-     * goes through all bins and for each bin where one array
-     * has a 1 and the other a 0, it searches for the closest 1
-     * next to the 0.
-     * The distance is then added to the global distance.
+    goes through all bins and for each bin where one array
+    has a 1 and the other a 0, it searches for the closest 1
+    next to the 0.
+    The distance is then added to the global distance.
      * @param A - an array
      * @param B - another array
      * @returns nearest neighbor distance
@@ -1014,28 +1014,28 @@ declare module "instruments/Lamellophone" {
      * Represents a tuning of lamellophone.
      * @param name - name
      * @param notes - array of notes, same order as on instrument
-     *      e.g. [..., 'D4','C4', 'F#4', ...]
+         e.g. [..., 'D4','C4', 'F#4', ...]
      */
     class LamellophoneTuning {
         constructor(name: string, notes: string[]);
         /**
          * Returns an array of the tuning's notes as number representation:
-         * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-         * Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
+        Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+        Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
          * @returns array with tuning notes in number representation
          */
         getNumbers(): string[];
         /**
          * Returns an array of the tuning's notes as letter representation:
-         * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-         * Number format: C,  D,  ... C°, D°, ... C°°, D°°
+        Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+        Number format: C,  D,  ... C°, D°, ... C°°, D°°
          * @returns array with tuning notes in letter representation
          */
         getLetters(): string[];
     }
     /**
      * Tunings.
-     * Notes are in the same order as on the instrument
+    Notes are in the same order as on the instrument
      */
     const lamellophoneTunings: Map<string, Map<string, LamellophoneTuning>>;
     /**
@@ -1052,7 +1052,7 @@ declare module "instruments/Lamellophone" {
      * @param tuning - tuning
      * @param mode - mode
      * @param restSize - number of seconds for a gap between chords to insert
-     *     a line break
+        a line break
      * @returns text tab
      */
     function convertNotesToTab(notes: Note[], tuning: LamellophoneTuning, mode: 'letter' | 'number', restSize: number): string;
@@ -1062,7 +1062,7 @@ declare module "instruments/Lamellophone" {
      * @param tuning - tuning
      * @param mode - mode
      * @param restSize - number of seconds for a gap between chords to insert
-     *     a line break
+        a line break
      * @param colormap - color map function: pitch to color
      * @returns HTML tab
      */
@@ -1076,8 +1076,8 @@ declare module "instruments/Lamellophone" {
     function convertNumbersToLetters(numberTab: string, numberLetterMap: Map<number, string>): string;
     /**
      * Tries to find a transposition s.t. the tuning is able to play all notes.
-     * If not not possible, return the transposition that requires the least keys to
-     * be retuned.
+    If not not possible, return the transposition that requires the least keys to
+    be retuned.
      * @param notes - notes
      * @param tuning - tuning
      * @returns {transpose: number, retune: Map}
@@ -1919,11 +1919,11 @@ declare class PitchSequence {
  * @param date - date of the recording
  * @param notes - array of Note objects
  * @param speed - relative speed compared to ground truth, e.g. 0.5
- *      for half as fast
+     for half as fast
  * @param selectedTrack - track number of the ground truth to which
- *      this recording belongs
+     this recording belongs
  * @param timeSelection - time selection of the ground truth
- *      to which this recording belongs, or null if full duration
+     to which this recording belongs, or null if full duration
  */
 declare class Recording {
     constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack: number, timeSelection: number[] | null);
@@ -2254,17 +2254,17 @@ declare module "utils/RecordingsUtils" {
      * Filters notes of a recording to remove noise from the MIDI device or pickup
      * @param recording - a recording
      * @param velocityThreshold - notes with velocity < velocityThreshold
-     *      are removed
+         are removed
      * @param durationThreshold - notes with duration < velocityThreshold
-     *      are removed (value in seconds)
+         are removed (value in seconds)
      * @returns clone of the recording with filtered notes
      */
     function filterRecordingNoise(recording: Recording, velocityThreshold: number, durationThreshold: number): Recording;
     /**
      * Removes notes from a recordings which are outside the range of the ground
-     * truth and therefore likely noise.
-     * Looks up the pitch range from the track of the GT that the recording was made
-     * for.
+    truth and therefore likely noise.
+    Looks up the pitch range from the track of the GT that the recording was made
+    for.
      * @param recordings - recordings
      * @param groundTruth - ground truth
      * @returns filtered recordings
@@ -2280,13 +2280,13 @@ declare module "utils/RecordingsUtils" {
     function alignNotesToBpm(notes: Note[], bpm: number, timeDivision: number): Note[];
     /**
      * Calculates a heatmap either pitch- or channel-wise.
-     * Pitch-time heatmap:
-     * Calculates a heatmap of multiple recordings, to see the note density in the
-     * pitch-time-space.
-     * Channel-time heatmap:
-     * Calculates a heatmap of multiple recordings, to see the note density in the
-     * channel-time-space. Channel could be a guitar string or left and right hand
-     * for example.
+    Pitch-time heatmap:
+    Calculates a heatmap of multiple recordings, to see the note density in the
+    pitch-time-space.
+    Channel-time heatmap:
+    Calculates a heatmap of multiple recordings, to see the note density in the
+    channel-time-space. Channel could be a guitar string or left and right hand
+    for example.
      * @param recNotes - recordings
      * @param nRecs - number of recordings
      * @param binSize - time bin size in milliseconds
@@ -2296,18 +2296,18 @@ declare module "utils/RecordingsUtils" {
     function recordingsHeatmap(recNotes: Note[], nRecs: number, binSize: number, attribute: string): Map;
     /**
      * 'Averages' multiple recordings of the same piece to get an approximation of
-     * the ground truth.
+    the ground truth.
      * @param heatmapByPitch - haetmap from recordingsHeatmap()
      * @param binSize - size of time bins in milliseconds
      * @param threshold - note is regarded as true when this ratio of
-     *      recordings has a note there
+         recordings has a note there
      * @returns approximated ground truth notes
      */
     function averageRecordings(heatmapByPitch: Map, binSize: number, threshold: number): Note[];
     /**
      * Extracts a probable ground truth from multiple recordings. Uses one KDE for
-     * each note starts and ends, detects maxima in the KDE and thresholds them.
-     * Then uses alternating start end end candidates to create notes.
+    each note starts and ends, detects maxima in the KDE and thresholds them.
+    Then uses alternating start end end candidates to create notes.
      * @param recNotes - recordings notes
      * @param bandwidth - kernel bandwidth
      * @param ticksPerSecond - number of ticks per second
@@ -2317,11 +2317,11 @@ declare module "utils/RecordingsUtils" {
     function averageRecordings2(recNotes: Note[], bandwidth: number, ticksPerSecond: number, threshold: number): Note[];
     /**
      * Returns a Map: pitch->differenceMap, differenceMap is an Array with time bins
-     * and each bin is either
-     *      0 (none, neither GT nor rec have a note here)
-     *      1 (missing, only GT has a note here)
-     *      2 (additional, only rec has a note here)
-     *      3 (both, both have a note here)
+    and each bin is either
+         0 (none, neither GT nor rec have a note here)
+         1 (missing, only GT has a note here)
+         2 (additional, only rec has a note here)
+         3 (both, both have a note here)
      * @param gtNotes - ground truth notes
      * @param recNotes - recrodings notes
      * @param binSize - size of a time bin
@@ -2330,8 +2330,8 @@ declare module "utils/RecordingsUtils" {
     function differenceMap(gtNotes: Note[], recNotes: Note[], binSize: number): Map;
     /**
      * Computes the 'area' of error from a differenceMap normalized by total area.
-     * The area is simply the number of bins with each value, total area is max.
-     * number of bins in all pitches * the number of pitches.
+    The area is simply the number of bins with each value, total area is max.
+    number of bins in all pitches * the number of pitches.
      * @param differenceMap - differenceMap from differenceMap()
      * @returns {missing, additional, correct} area ratio
      */
