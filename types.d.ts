@@ -1918,15 +1918,17 @@ declare class PitchSequence {
  * @param name - name if the song
  * @param date - date of the recording
  * @param notes - array of Note objects
- * @param speed - relative speed compared to ground truth, e.g. 0.5
-     for half as fast
- * @param selectedTrack - track number of the ground truth to which
+ * @param [speed = 1] - relative speed compared to ground truth,
+     e.g. 0.5 for half as fast
+ * @param [selectedTrack = 0] - track number of the ground truth to which
      this recording belongs
- * @param timeSelection - time selection of the ground truth
-     to which this recording belongs, or null if full duration
+ * @param [timeSelection = null] - time selection of the ground
+     truth to which this recording belongs, or null if full duration
+ * @param [comment = ''] - a free-text comment for the user to annotate
+     the recording
  */
 declare class Recording {
-    constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack: number, timeSelection: number[] | null);
+    constructor(name: string, date: Date, notes: Note[], speed?: number, selectedTrack?: number, timeSelection?: number[] | null, comment?: string);
     /**
      * Returns a copy of the Note object
      * @returns new recording

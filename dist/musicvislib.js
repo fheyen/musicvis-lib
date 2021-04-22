@@ -1,11 +1,11 @@
-// musicvis-lib v0.47.2 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.47.3 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.47.2";
+  var version="0.47.3";
 
   /**
    * Lookup for many MIDI specifications.
@@ -6018,14 +6018,16 @@
      * @param {string} name name if the song
      * @param {Date} date date of the recording
      * @param {Note[]} notes array of Note objects
-     * @param {number} speed relative speed compared to ground truth, e.g. 0.5
-     *      for half as fast
-     * @param {number} selectedTrack track number of the ground truth to which
+     * @param {number} [speed=1] relative speed compared to ground truth,
+     *      e.g. 0.5 for half as fast
+     * @param {number} [selectedTrack=0] track number of the ground truth to which
      *      this recording belongs
-     * @param {number[]|null} timeSelection time selection of the ground truth
-     *      to which this recording belongs, or null if full duration
+     * @param {number[]|null} [timeSelection=null] time selection of the ground
+     *      truth to which this recording belongs, or null if full duration
+     * @param {string} [comment=''] a free-text comment for the user to annotate
+     *      the recording
      */
-    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null) {
+    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = '') {
       super(notes);
       this.name = name;
       this.date = date; // Save formatted date for faster access
@@ -6035,6 +6037,7 @@
       this.selectedTrack = +selectedTrack;
       this.timeSelection = timeSelection;
       this.sortByTime();
+      this.comment = comment;
     }
     /**
      * Returns a copy of the Note object
@@ -6044,7 +6047,7 @@
 
 
     clone() {
-      return new Recording(this.name, this.date, this.getNotes().map(d => d.clone()), this.speed, this.selectedTrack, this.timeSelection === null ? null : [...this.timeSelection]);
+      return new Recording(this.name, this.date, this.getNotes().map(d => d.clone()), this.speed, this.selectedTrack, this.timeSelection === null ? null : [...this.timeSelection], this.comment);
     }
     /**
      * Returns true if this Recording and otherRecording have equal attributes.
@@ -6099,6 +6102,10 @@
         }
       }
 
+      if (this.comment !== otherRecording.comment) {
+        return false;
+      }
+
       return true;
     }
     /**
@@ -6115,7 +6122,8 @@
         notes: this.getNotes(),
         speed: this.speed,
         selectedTrack: this.selectedTrack,
-        timeSelection: this.timeSelection
+        timeSelection: this.timeSelection,
+        comment: this.comment
       };
     }
     /**
@@ -6151,9 +6159,10 @@
       const {
         speed,
         selectedTrack,
-        timeSelection
+        timeSelection,
+        comment
       } = object;
-      return new Recording(name, date, notes, speed, selectedTrack, timeSelection);
+      return new Recording(name, date, notes, speed, selectedTrack, timeSelection, comment);
     }
 
   }
