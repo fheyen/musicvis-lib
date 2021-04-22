@@ -8,7 +8,7 @@ const notes = [
     new Note(67, 2.0, 127, 0, 3.0),
 ];
 const date = new Date();
-const rec = new Recording('test', date, notes);
+const rec = new Recording('test', date, notes, 1, 0, null, 'test comment');
 const obj = {
     name: 'test',
     date: date,
@@ -16,6 +16,7 @@ const obj = {
     speed: 1,
     selectedTrack: 0,
     timeSelection: null,
+    comment: 'test comment',
 };
 
 describe('Recording', () => {

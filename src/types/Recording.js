@@ -11,14 +11,16 @@ class Recording extends NoteArray {
      * @param {string} name name if the song
      * @param {Date} date date of the recording
      * @param {Note[]} notes array of Note objects
-     * @param {number} speed relative speed compared to ground truth, e.g. 0.5
-     *      for half as fast
-     * @param {number} selectedTrack track number of the ground truth to which
+     * @param {number} [speed=1] relative speed compared to ground truth,
+     *      e.g. 0.5 for half as fast
+     * @param {number} [selectedTrack=0] track number of the ground truth to which
      *      this recording belongs
-     * @param {number[]|null} timeSelection time selection of the ground truth
-     *      to which this recording belongs, or null if full duration
+     * @param {number[]|null} [timeSelection=null] time selection of the ground
+     *      truth to which this recording belongs, or null if full duration
+     * @param {string} [comment=''] a free-text comment for the user to annotate
+     *      the recording
      */
-    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null) {
+    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = '') {
         super(notes);
         this.name = name;
         this.date = date;
@@ -30,6 +32,7 @@ class Recording extends NoteArray {
         this.selectedTrack = +selectedTrack;
         this.timeSelection = timeSelection;
         this.sortByTime();
+        this.comment = comment;
     }
 
     /**
@@ -45,6 +48,7 @@ class Recording extends NoteArray {
             this.speed,
             this.selectedTrack,
             this.timeSelection === null ? null : [...this.timeSelection],
+            this.comment,
         );
     }
 
@@ -79,6 +83,7 @@ class Recording extends NoteArray {
                 return false;
             }
         }
+        if (this.comment !== otherRecording.comment) { return false; }
         return true;
     }
 
@@ -95,6 +100,7 @@ class Recording extends NoteArray {
             speed: this.speed,
             selectedTrack: this.selectedTrack,
             timeSelection: this.timeSelection,
+            comment: this.comment,
         };
     }
 
@@ -119,7 +125,7 @@ class Recording extends NoteArray {
         if (typeof (date) === 'string') {
             date = new Date(Date.parse(date));
         }
-        const { speed, selectedTrack, timeSelection } = object;
+        const { speed, selectedTrack, timeSelection, comment } = object;
         return new Recording(
             name,
             date,
@@ -127,6 +133,7 @@ class Recording extends NoteArray {
             speed,
             selectedTrack,
             timeSelection,
+            comment,
         );
     }
 }
