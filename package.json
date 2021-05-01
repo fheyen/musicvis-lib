@@ -68,7 +68,7 @@
     "eslint-plugin-jsdoc": "^32.3.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-unicorn": "^30.0.0",
+    "eslint-plugin-unicorn": "^31.0.0",
     "glob": "^7.1.6",
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.1",
