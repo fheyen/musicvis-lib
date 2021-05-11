@@ -22,7 +22,7 @@ declare module "Alignment" {
     function alignNoteArrays3(gt: NoteArray, rec: NoteArray): NoteArray;
     /**
      * Calculates the mean difference between all notes in a and the nearest same-
-     * pitched notes in b
+    pitched notes in b
      * @param a - array with notes
      * @param b - array with notes
      * @returns mean time difference
@@ -492,7 +492,7 @@ declare module "fileFormats/Midi" {
      * A MIDI note
      * @example
      * <caption>Example for a MIDI note</caption>
-     *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
+         { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
      * @property pitch - the MIDI note number e.g. 60 for C4
      * @property name - e.g. C#
      * @property octave - number in [-1, 9]
@@ -515,14 +515,14 @@ declare module "fileFormats/Midi" {
     /**
      * Returns information on the MIDI note with the specified label.
      * @param label - note label, e.g. 'D#0'
-     *      (upper-case and sharp notation necessary)
+         (upper-case and sharp notation necessary)
      * @returns MIDI note information as a {@link MidiNote}
      */
     function getMidiNoteByLabel(label: string): MidiNote;
     /**
      * Returns information on the MIDI note with the specified name and octave.
      * @param name - note name, e.g. 'D#'
-     *      (upper-case and sharp notation necessary)
+         (upper-case and sharp notation necessary)
      * @param octave - octave in [-1, 9]
      * @returns MIDI note information as a {@link MidiNote}
      */
@@ -531,16 +531,16 @@ declare module "fileFormats/Midi" {
      * Returns information on the MIDI instrument with the specified number.
      * @param nr - MIDI instrument number in [0, 127]
      * @returns note info, e.g.
-     *      { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
+         { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
      */
     function getMidiInstrumentByNr(nr: number): any;
     /**
      * Returns information on the MIDI instrument (MIDI level 2) with the
-     * specified number.
+    specified number.
      * @param nr - MIDI instrument number in [0, 127]
      * @param subNr - MIDI instrument sub number in [0, 127]
      * @returns note info, e.g.
-     *      { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
+         { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
      */
     function getMidiInstrumentByNrL2(nr: number, subNr: number): any;
     /**
@@ -557,7 +557,7 @@ declare module "fileFormats/Midi" {
     function isSharp(nr: number): boolean;
     /**
      * Returns a note name such as 'C#' (without octave) for a given MIDI
-     * note number.
+    note number.
      * @param nr - MIDI note number in [0, 127]
      * @returns note name such as 'C#'
      */
@@ -582,16 +582,16 @@ declare module "fileFormats/Midi" {
      * Set of all MIDI notes that are sharp/flat
      * @example
      * <caption>Find out if a note is sharp/flat</caption>
-     *      const midiNr = 42;
-     *      const isSharp = Midi.SHARPS.has(midiNr);
-     *      // true
+         const midiNr = 42;
+         const isSharp = Midi.SHARPS.has(midiNr);
+         // true
      */
     const SHARPS: Set<number>;
     /**
      * A MIDI command
      * @example
      * <caption>Example for a MIDI command</caption>
-     *      { name: 'noteOn', description: 'Note-on', params: ['key', 'velocity'] }],
+         { name: 'noteOn', description: 'Note-on', params: ['key', 'velocity'] }],
      * @property name - e.g. 'noteOn'
      * @property description - e.g. 'Note-on'
      * @property params - additional prameters of that command
@@ -603,8 +603,8 @@ declare module "fileFormats/Midi" {
     };
     /**
      * MIDI commands with code, name, and parameters
-     * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
-     * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
+    From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
+    https://www.midi.org/specifications/item/table-1-summary-of-midi-message
      */
     const MIDI_COMMANDS: Map<number, MidiCommand>;
     const GENERAL_MIDI_DRUM_NOTE_NUMBERS: Map<number, string>;
@@ -616,7 +616,7 @@ declare module "fileFormats/MidiParser" {
      * Parses a MIDI JSON file to get Note objects with absolute time in seconds.
      * @param data - MIDI data in JSON format
      * @param splitFormat0IntoTracks - split MIDI format 0 data into tracks
-     *      instead of using channels?
+         instead of using channels?
      * @param log - set to true to log results etc. to the console
      * @returns including an array of note objects and meta information
      */
@@ -811,11 +811,11 @@ declare function getVersion(): string;
  * Allows to record audio blobs.
  * @example
  * Usage (only in async functions):
- *     const recorder = await recordAudio();
- *     recorder.start();
- *     // ...
- *     const audio = await recorder.stop();
- * stop() returns a Blob with audio data
+    const recorder = await recordAudio();
+    recorder.start();
+    // ...
+    const audio = await recorder.stop();
+stop() returns a Blob with audio data
  */
 declare module "input/AudioRecorder" { }
 
@@ -1501,7 +1501,7 @@ declare function simplify(objectArray: object[], keys: string[]): void;
 declare function getMusicPiecesFromBothFormats(fileBaseName: string): any;
 
 /**
- * Creates a new Note
+ * Creates a new Note. Note.from() is preferred over using the constructor.
  * @param pitch - pitch
  * @param start - start time in seconds
  * @param velocity - velocity
@@ -1511,26 +1511,41 @@ declare function getMusicPiecesFromBothFormats(fileBaseName: string): any;
 declare class Note {
     constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
     /**
-     * Creates a Note object from an object via destructuring
+     * Creates a Note object from an object via destructuring.
+    Use either 'end' or 'duration', if both are specified, end will be used.
      * @example
-     * const n = Note.from({
-     *      pitch: 'C#4'     // e.g. 12 or C#4
-     *      start: 0.5       // start time in seconds
-     *      end: 1.5         // end time in seconds
-     *      velocity: 127    // MIDI velocity
-     *      channel: 0       // MIDI channel
-     *  });
+     * <caption>Using end</caption>
+     const n = Note.from({
+         pitch: 'C#4',     // e.g. 12 or C#4
+         start: 0.5,       // start time in seconds
+         end: 1.5,         // end time in seconds
+         velocity: 127,    // MIDI velocity
+         channel: 0,       // MIDI channel
+     });
+     * @example
+     * <caption>Using duration</caption>
+     const n = Note.from({
+         pitch: 'C#4',
+         start: 0.5,
+         duration: 1.2,
+     });
      * @param object - object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *  }
+     * @param object.pitch - e.G. 12 or C#4
+     * @param object.start - start time in seconds
+     * @param object.end - end time in seconds
+     * @param object.duration - duration in seconds
+     * @param object.velocity - MIDI velocity
+     * @param object.channel - MIDI channel
      * @returns new note
      */
-    static from(object: any): Note;
+    static from(object: {
+        pitch: number | string;
+        start: number;
+        end: number;
+        duration: number;
+        velocity: number;
+        channel: number;
+    }): Note;
     /**
      * Returns a copy of the Note object
      * @returns new note
@@ -1742,7 +1757,8 @@ declare class NoteArray {
     Notes will not be changed, e.g. start time will remain the same.
      * @param startTime - start of the filter range in seconds
      * @param endTime - end of the filter range in seconds (exclusive)
-     * @param mode - controls which note time to consider, one of:
+     * @param [mode = contained] - controls which note time to consider,
+         one of:
          - start: note.start must be inside range
          - end: note.end must be inside range
          - contained: BOTH note.start and note.end must be inside range
@@ -1768,6 +1784,19 @@ declare class NoteArray {
      * @returns time slices
      */
     sliceAtTimes(times: number[], mode: string): Note[][];
+    /**
+     * Segments the NoteArray into smaller ones at times where no note occurs
+    for a specified amount of time.
+    This method is useful for segmenting a recording session into separate
+    songs, riffs, licks, ...
+     * @param gapDuration - duration of seconds for a gap to be used as
+         segmenting time
+     * @param mode - gaps can either be considered as
+         the maximum time between two note's starts or the end of the first
+         and the start of the second note
+     * @returns segments
+     */
+    segmentAtGaps(gapDuration: number, mode: 'start-start' | 'end-start'): Note[][];
     /**
      * Filters the NoteArray like you would filter via Array.filter().
      * @example
@@ -2187,20 +2216,20 @@ declare module "utils/MusicUtils" {
     function bpmToSecondsPerBeat(bpm: number): number;
     /**
      * Turns a chord into an integer that uniquely describes the occuring chroma.
-     * If the same chroma occurs twice this will not make a difference
-     * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
-     *
-     * How it works:
-     * Chord has C, E, and G
-     * x = 000010010001
-     *         G  E   C
+    If the same chroma occurs twice this will not make a difference
+    (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
+    
+    How it works:
+    Chord has C, E, and G
+    x = 000010010001
+            G  E   C
      * @param notes - notes
      * @returns an integer that uniquely identifies this chord's chroma
      */
     function chordToInteger(notes: Note[]): number;
     /**
      * Takes two chord integer representations from chordToInteger() and computes
-     * the Jaccard index
+    the Jaccard index
      * @param chord1 - chord as integer representation
      * @param chord2 - chord as integer representation
      * @returns Jackard index, from 0 for different to 1 for identical
@@ -2208,19 +2237,27 @@ declare module "utils/MusicUtils" {
     function chordIntegerJaccardIndex(chord1: number, chord2: number): number;
     /**
      * Estimates the note type (whole, quarter, ...) and number of dots for dotted
-     * notes
+    notes
      * @param duration - duration of a note
      * @param bpm - tempo of the piece in bpm
      * @returns note type and number of dots
-     *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
-     *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
+         e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
+         e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
      */
     function noteDurationToNoteType(duration: number, bpm: number): any;
     /**
      * Circle of 5ths as
-     * [midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
+    [midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
      */
     const CIRCLE_OF_5THS: any[][];
+    /**
+     * Maps number of semitones to interval name
+    m - minor
+    M - major
+    P - perfect
+    aug - augmented
+     */
+    const INTERVALS: Map<number, string>;
 }
 
 declare module "utils/NoteColorUtils" {
@@ -2272,6 +2309,20 @@ declare module "utils/RecordingsUtils" {
      * @returns filtered recordings
      */
     function clipRecordingsPitchesToGtRange(recordings: Recording[], groundTruth: Note[][]): Recording[];
+    /**
+     * Removes notes from a recordings which are outside the fretboard range of the
+    ground truth and therefore likely noise.
+    Looks up the fretboard position range from the track of the GT that the
+    recording was made for.
+     * @param recordings - recordings
+     * @param groundTruth - ground truth
+     * @param [mode = exact] - mode for which fretboard positions to
+         include: exact will only keep notes that have positions that occur in
+         the GT, area will get a rectangular area of the fretboard that contains
+         all GT positions and fill filter on that.
+     * @returns filtered recordings
+     */
+    function clipRecordingsPitchesToGtFretboardRange(recordings: Recording[], groundTruth: Note[][], mode?: 'exact' | 'area'): Recording[];
     /**
      * Aligns notes to a rhythmic pattern
      * @param notes - notes

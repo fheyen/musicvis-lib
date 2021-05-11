@@ -1,11 +1,11 @@
-// musicvis-lib v0.47.3 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.47.4 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.47.3";
+  var version="0.47.4";
 
   /**
    * Lookup for many MIDI specifications.
@@ -893,25 +893,25 @@
     name: 'E',
     octave: 9,
     label: 'E9',
-    frequency: 10548.08
+    frequency: 10_548.08
   }, {
     pitch: 125,
     name: 'F',
     octave: 9,
     label: 'F9',
-    frequency: 11175.3
+    frequency: 11_175.3
   }, {
     pitch: 126,
     name: 'F#',
     octave: 9,
     label: 'F#9',
-    frequency: 11839.82
+    frequency: 11_839.82
   }, {
     pitch: 127,
     name: 'G',
     octave: 9,
     label: 'G9',
-    frequency: 12543.85
+    frequency: 12_543.85
   }];
   /**
    * Set of all MIDI notes that are sharp/flat
@@ -3117,7 +3117,7 @@
     MidiInstrumentByNumberLev2.set(key, instrument);
   }
 
-  var Midi$1 = /*#__PURE__*/Object.freeze({
+  var Midi$2 = /*#__PURE__*/Object.freeze({
     __proto__: null,
     getMidiNoteByNr: getMidiNoteByNr,
     getMidiNoteByLabel: getMidiNoteByLabel,
@@ -3141,9 +3141,9 @@
    * absolute start and end times in seconds.
    */
 
-  class Note$1 {
+  class Note$2 {
     /**
-     * Creates a new Note
+     * Creates a new Note. Note.from() is preferred over using the constructor.
      *
      * @param {number} pitch pitch
      * @param {number} start start time in seconds
@@ -3170,24 +3170,30 @@
       this.end = end;
     }
     /**
-     * Creates a Note object from an object via destructuring
+     * Creates a Note object from an object via destructuring.
+     * Use either 'end' or 'duration', if both are specified, end will be used.
      *
-     * @example
+     * @example <caption>Using end</caption>
      *  const n = Note.from({
-     *      pitch: 'C#4'     // e.g. 12 or C#4
-     *      start: 0.5       // start time in seconds
-     *      end: 1.5         // end time in seconds
-     *      velocity: 127    // MIDI velocity
-     *      channel: 0       // MIDI channel
+     *      pitch: 'C#4',     // e.g. 12 or C#4
+     *      start: 0.5,       // start time in seconds
+     *      end: 1.5,         // end time in seconds
+     *      velocity: 127,    // MIDI velocity
+     *      channel: 0,       // MIDI channel
+     *  });
+     * @example <caption>Using duration</caption>
+     *  const n = Note.from({
+     *      pitch: 'C#4',
+     *      start: 0.5,
+     *      duration: 1.2,
      *  });
      * @param {object} object object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *  }
+     * @param {number|string} object.pitch e.G. 12 or C#4
+     * @param {number} object.start start time in seconds
+     * @param {number} object.end end time in seconds
+     * @param {number} object.duration duration in seconds
+     * @param {number} object.velocity MIDI velocity
+     * @param {number} object.channel MIDI channel
      * @returns {Note} new note
      * @throws {Error} when pitch is invalid
      */
@@ -3199,8 +3205,9 @@
         start = 0,
         velocity = 127,
         channel = 0,
-        end = null
-      } = object;
+        end = null,
+        duration = null
+      } = object; // Pitch can either be a number or a string
 
       if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
         const note = getMidiNoteByLabel(pitch);
@@ -3210,9 +3217,14 @@
         }
 
         pitch = note.pitch;
+      } // Use either end or duration
+
+
+      if ((end === undefined || end === null) && duration !== null && !Number.isNaN(duration)) {
+        end = start + duration;
       }
 
-      return new Note$1(pitch, start, velocity, channel, end);
+      return new Note$2(pitch, start, velocity, channel, end);
     }
     /**
      * Returns a copy of the Note object
@@ -3222,7 +3234,7 @@
 
 
     clone() {
-      return new Note$1(this.pitch, this.start, this.velocity, this.channel, this.end);
+      return new Note$2(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     /**
      * Returns the duration of this note in seconds
@@ -3333,7 +3345,7 @@
 
 
     equals(otherNote) {
-      if (!(otherNote instanceof Note$1)) {
+      if (!(otherNote instanceof Note$2)) {
         return false;
       }
 
@@ -3365,7 +3377,7 @@
    * @augments Note
    */
 
-  class GuitarNote extends Note$1 {
+  class GuitarNote extends Note$2 {
     /**
      * Creates a new Note
      *
@@ -3446,7 +3458,7 @@
 
 
     toNote() {
-      return new Note$1(this.pitch, this.start, this.velocity, this.channel, this.end);
+      return new Note$2(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     /**
      * Returns a copy of the Note object
@@ -5337,7 +5349,7 @@
           return GuitarNote.from(d);
         }
 
-        return Note$1.from(d);
+        return Note$2.from(d);
       });
     }
     /**
@@ -5619,7 +5631,8 @@
      *
      * @param {number} startTime start of the filter range in seconds
      * @param {number} endTime end of the filter range in seconds (exclusive)
-     * @param {string} mode controls which note time to consider, one of:
+     * @param {string} [mode=contained] controls which note time to consider,
+     *      one of:
      *      - start: note.start must be inside range
      *      - end: note.end must be inside range
      *      - contained: BOTH note.start and note.end must be inside range
@@ -5676,6 +5689,17 @@
 
 
     sliceAtTimes(times, mode) {
+      if (times.length === 0) {
+        return [this._notes];
+      } // Make sure notes at the end are also in a slice
+
+
+      const duration = this.getDuration();
+
+      if (Math.max(...times) <= duration) {
+        times.push(duration + 1);
+      }
+
       const slices = [];
       let lastTime = 0;
 
@@ -5685,6 +5709,90 @@
       }
 
       return slices;
+    }
+    /**
+     * Segments the NoteArray into smaller ones at times where no note occurs
+     * for a specified amount of time.
+     * This method is useful for segmenting a recording session into separate
+     * songs, riffs, licks, ...
+     *
+     * @param {number} gapDuration duration of seconds for a gap to be used as
+     *      segmenting time
+     * @param {'start-start'|'end-start'} mode gaps can either be considered as
+     *      the maximum time between two note's starts or the end of the first
+     *      and the start of the second note
+     * @returns {Note[][]} segments
+     */
+
+
+    segmentAtGaps(gapDuration, mode) {
+      if (this._notes.length < 2) {
+        return [this._notes];
+      }
+
+      if (mode === 'start-start') {
+        const notes = this.clone().sortByTime().getNotes();
+        const cuts = [];
+
+        for (let index = 1; index < notes.length; index++) {
+          if (notes[index].start - notes[index - 1].start >= gapDuration) {
+            cuts.push(notes[index].start);
+          }
+        }
+
+        return this.sliceAtTimes(cuts, 'start');
+      } else {
+        // Get blocks of occupied time in the NoteArray's duration
+        const occupiedTimes = []; // TODO: can probably be made faster in the future
+
+        for (const note of this._notes) {
+          const {
+            start,
+            end
+          } = note; // Check for collision
+
+          const collisions = [];
+
+          for (let index = 0; index < occupiedTimes.length; index++) {
+            // eslint-disable-next-line unicorn/prevent-abbreviations
+            const [s, e] = occupiedTimes[index];
+
+            if (s >= start && s <= end || e >= start && e <= end) {
+              occupiedTimes.splice(index, 1);
+              collisions.push([s, e]);
+            }
+          }
+
+          if (collisions.length === 0) {
+            // Just add note time span
+            occupiedTimes.push([start, end]);
+          } else {
+            // Merge
+            const newStart = Math.min(start, ...collisions.map(d => d[0]));
+            const newEnd = Math.max(end, ...collisions.map(d => d[1]));
+            occupiedTimes.push([newStart, newEnd]);
+          }
+        } // Gaps are just between two following blocks of occupied time
+
+
+        if (occupiedTimes.length === 1) {
+          // One block, so no gaps
+          return [this._notes];
+        }
+
+        const cuts = [];
+
+        for (let index = 1; index < occupiedTimes.length; index++) {
+          const currentStart = occupiedTimes[index][0];
+          const lastEnd = occupiedTimes[index - 1][1];
+
+          if (currentStart - lastEnd >= gapDuration) {
+            cuts.push(currentStart);
+          }
+        }
+
+        return this.sliceAtTimes(cuts, 'start');
+      }
     }
     /**
      * Filters the NoteArray like you would filter via Array.filter().
@@ -5727,7 +5835,7 @@
 
 
     transpose(steps) {
-      this._notes = this._notes.map(n => Note$1.from({ ...n,
+      this._notes = this._notes.map(n => Note$2.from({ ...n,
         pitch: clipValue(n.pitch + steps, 0, 127)
       }));
       return this;
@@ -5741,7 +5849,7 @@
 
 
     removeOctaves() {
-      this._notes = this._notes.map(note => Note$1.from({ ...note,
+      this._notes = this._notes.map(note => Note$2.from({ ...note,
         pitch: note.pitch % 12
       }));
       return this;
@@ -6169,10 +6277,7 @@
 
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-  function createCommonjsModule(fn) {
-    var module = { exports: {} };
-  	return fn(module, module.exports), module.exports;
-  }
+  var main = {exports: {}};
 
   /*
       Project Name : midi-parser-js
@@ -6182,7 +6287,8 @@
       Description  : MidiParser library reads .MID binary files, Base64 encoded MIDI Data,
       or UInt8 Arrays, and outputs as a readable and structured JS object.
   */
-  var main = createCommonjsModule(function (module) {
+
+  (function (module) {
     (function () {
       /**
        * CROSSBROWSER & NODEjs POLYFILL for ATOB() -
@@ -6602,10 +6708,13 @@
 
       module.exports = MidiParser;
     })();
-  });
+  })(main);
 
-  // data can be any array-like object.  It just needs to support .length, .slice, and an element getter []
-  function parseMidi$1(data) {
+  var Midi$1 = {};
+
+  var midiFile = {};
+
+  function parseMidi(data) {
     var p = new Parser(data);
     var headerChunk = p.readChunk();
     if (headerChunk.id != 'MThd') throw "Bad MIDI file.  Expected 'MHdr', got: '" + headerChunk.id + "'";
@@ -6954,14 +7063,14 @@
     };
   };
 
-  var midiParser = parseMidi$1;
+  var midiParser = parseMidi;
 
-  // data should be the same type of format returned by parseMidi
   // for maximum compatibililty, returns an array of byte values, suitable for conversion to Buffer, Uint8Array, etc.
   // opts:
   // - running              reuse previous eventTypeByte when possible, to compress file
   // - useByte9ForNoteOff   use 0x09 for noteOff when velocity is zero
-  function writeMidi$1(data, opts) {
+
+  function writeMidi(data, opts) {
     if (typeof data !== 'object') throw 'Invalid MIDI data';
     opts = opts || {};
     var header = data.header || {};
@@ -7322,15 +7431,20 @@
     this.writeBytes(data);
   };
 
-  var midiWriter = writeMidi$1;
+  var midiWriter = writeMidi;
 
-  var parseMidi = midiParser;
-  var writeMidi = midiWriter;
-  var midiFile = {
-    parseMidi: parseMidi,
-    writeMidi: writeMidi
-  };
+  midiFile.parseMidi = midiParser;
+  midiFile.writeMidi = midiWriter;
 
+  var Encode = {};
+
+  var Header = {};
+
+  var BinarySearch = {};
+
+  Object.defineProperty(BinarySearch, "__esModule", {
+    value: true
+  });
   /**
    * Return the index of the element at or before the given property
    * @hidden
@@ -7380,7 +7494,7 @@
     return -1;
   }
 
-  var search_1 = search;
+  BinarySearch.search = search;
   /**
    * Does a binary search to insert the note
    * in the correct spot in the array
@@ -7400,19 +7514,14 @@
     }
   }
 
-  var insert_1 = insert;
-  var BinarySearch = /*#__PURE__*/Object.defineProperty({
-    search: search_1,
-    insert: insert_1
-  }, '__esModule', {
-    value: true
-  });
+  BinarySearch.insert = insert;
 
-  var Header_1 = createCommonjsModule(function (module, exports) {
+  (function (exports) {
 
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    var BinarySearch_1 = BinarySearch;
     var privatePPQMap = new WeakMap();
     /**
      * @hidden
@@ -7539,7 +7648,7 @@
 
       Header.prototype.ticksToSeconds = function (ticks) {
         // find the relevant position
-        var index = BinarySearch.search(this.tempos, ticks);
+        var index = BinarySearch_1.search(this.tempos, ticks);
 
         if (index !== -1) {
           var tempo = this.tempos[index];
@@ -7558,7 +7667,7 @@
 
 
       Header.prototype.ticksToMeasures = function (ticks) {
-        var index = BinarySearch.search(this.timeSignatures, ticks);
+        var index = BinarySearch_1.search(this.timeSignatures, ticks);
 
         if (index !== -1) {
           var timeSigEvent = this.timeSignatures[index];
@@ -7585,7 +7694,7 @@
 
       Header.prototype.secondsToTicks = function (seconds) {
         // find the relevant position
-        var index = BinarySearch.search(this.tempos, seconds, "time");
+        var index = BinarySearch_1.search(this.tempos, seconds, "time");
 
         if (index !== -1) {
           var tempo = this.tempos[index];
@@ -7661,16 +7770,19 @@
     }();
 
     exports.Header = Header;
-  });
+  })(Header);
+
+  var arrayFlatten = {exports: {}};
 
   /**
    * Expose `arrayFlatten`.
    */
 
-  var arrayFlatten = flatten;
-  var from = flattenFrom;
-  var depth = flattenDepth;
-  var fromDepth = flattenFromDepth;
+
+  arrayFlatten.exports = flatten;
+  arrayFlatten.exports.from = flattenFrom;
+  arrayFlatten.exports.depth = flattenDepth;
+  arrayFlatten.exports.fromDepth = flattenFromDepth;
   /**
    * Flatten an array.
    *
@@ -7775,9 +7887,6 @@
 
     return result;
   }
-  arrayFlatten.from = from;
-  arrayFlatten.depth = depth;
-  arrayFlatten.fromDepth = fromDepth;
 
   var __spreadArrays = commonjsGlobal && commonjsGlobal.__spreadArrays || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
@@ -7793,7 +7902,13 @@
     };
   };
 
-  var array_flatten_1 = __importDefault(arrayFlatten);
+  Object.defineProperty(Encode, "__esModule", {
+    value: true
+  });
+  var midi_file_1$1 = midiFile;
+  var Header_1$1 = Header;
+
+  var array_flatten_1 = __importDefault(arrayFlatten.exports);
 
   function encodeNote(note, channel) {
     return [{
@@ -7907,7 +8022,7 @@
 
 
   function encodeKeySignature(keySig) {
-    var keyIndex = Header_1.keySignatureKeys.indexOf(keySig.key);
+    var keyIndex = Header_1$1.keySignatureKeys.indexOf(keySig.key);
     return {
       absoluteTime: keySig.ticks,
       deltaTime: 0,
@@ -7980,17 +8095,16 @@
       return track;
     }); // return midiData
 
-    return new Uint8Array(midiFile.writeMidi(midiData));
+    return new Uint8Array(midi_file_1$1.writeMidi(midiData));
   }
 
-  var encode_1 = encode$1;
-  var Encode = /*#__PURE__*/Object.defineProperty({
-    encode: encode_1
-  }, '__esModule', {
-    value: true
-  });
+  Encode.encode = encode$1;
 
-  var ControlChange_1 = createCommonjsModule(function (module, exports) {
+  var Track$2 = {};
+
+  var ControlChange = {};
+
+  (function (exports) {
 
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -8097,13 +8211,18 @@
     }();
 
     exports.ControlChange = ControlChange;
-  });
+  })(ControlChange);
 
+  var ControlChanges = {};
+
+  Object.defineProperty(ControlChanges, "__esModule", {
+    value: true
+  });
+  var ControlChange_1$1 = ControlChange;
   /**
    * Automatically creates an alias for named control values using Proxies
    * @hidden
    */
-
 
   function createControlChanges() {
     return new Proxy({}, {
@@ -8111,14 +8230,14 @@
       get: function (target, handler) {
         if (target[handler]) {
           return target[handler];
-        } else if (ControlChange_1.controlChangeIds.hasOwnProperty(handler)) {
-          return target[ControlChange_1.controlChangeIds[handler]];
+        } else if (ControlChange_1$1.controlChangeIds.hasOwnProperty(handler)) {
+          return target[ControlChange_1$1.controlChangeIds[handler]];
         }
       },
       // tslint:disable-next-line: typedef
       set: function (target, handler, value) {
-        if (ControlChange_1.controlChangeIds.hasOwnProperty(handler)) {
-          target[ControlChange_1.controlChangeIds[handler]] = value;
+        if (ControlChange_1$1.controlChangeIds.hasOwnProperty(handler)) {
+          target[ControlChange_1$1.controlChangeIds[handler]] = value;
         } else {
           target[handler] = value;
         }
@@ -8128,13 +8247,13 @@
     });
   }
 
-  var createControlChanges_1 = createControlChanges;
-  var ControlChanges = /*#__PURE__*/Object.defineProperty({
-    createControlChanges: createControlChanges_1
-  }, '__esModule', {
+  ControlChanges.createControlChanges = createControlChanges;
+
+  var PitchBend$1 = {};
+
+  Object.defineProperty(PitchBend$1, "__esModule", {
     value: true
   });
-
   var privateHeaderMap$2 = new WeakMap();
   /**
    * Represents a pitch bend event
@@ -8180,16 +8299,18 @@
     return PitchBend;
   }();
 
-  var PitchBend_2 = PitchBend;
-  var PitchBend_1 = /*#__PURE__*/Object.defineProperty({
-    PitchBend: PitchBend_2
-  }, '__esModule', {
+  PitchBend$1.PitchBend = PitchBend;
+
+  var Instrument$1 = {};
+
+  var InstrumentMaps = {};
+
+  Object.defineProperty(InstrumentMaps, "__esModule", {
     value: true
   });
-
-  var instrumentByPatchID = ["acoustic grand piano", "bright acoustic piano", "electric grand piano", "honky-tonk piano", "electric piano 1", "electric piano 2", "harpsichord", "clavi", "celesta", "glockenspiel", "music box", "vibraphone", "marimba", "xylophone", "tubular bells", "dulcimer", "drawbar organ", "percussive organ", "rock organ", "church organ", "reed organ", "accordion", "harmonica", "tango accordion", "acoustic guitar (nylon)", "acoustic guitar (steel)", "electric guitar (jazz)", "electric guitar (clean)", "electric guitar (muted)", "overdriven guitar", "distortion guitar", "guitar harmonics", "acoustic bass", "electric bass (finger)", "electric bass (pick)", "fretless bass", "slap bass 1", "slap bass 2", "synth bass 1", "synth bass 2", "violin", "viola", "cello", "contrabass", "tremolo strings", "pizzicato strings", "orchestral harp", "timpani", "string ensemble 1", "string ensemble 2", "synthstrings 1", "synthstrings 2", "choir aahs", "voice oohs", "synth voice", "orchestra hit", "trumpet", "trombone", "tuba", "muted trumpet", "french horn", "brass section", "synthbrass 1", "synthbrass 2", "soprano sax", "alto sax", "tenor sax", "baritone sax", "oboe", "english horn", "bassoon", "clarinet", "piccolo", "flute", "recorder", "pan flute", "blown bottle", "shakuhachi", "whistle", "ocarina", "lead 1 (square)", "lead 2 (sawtooth)", "lead 3 (calliope)", "lead 4 (chiff)", "lead 5 (charang)", "lead 6 (voice)", "lead 7 (fifths)", "lead 8 (bass + lead)", "pad 1 (new age)", "pad 2 (warm)", "pad 3 (polysynth)", "pad 4 (choir)", "pad 5 (bowed)", "pad 6 (metallic)", "pad 7 (halo)", "pad 8 (sweep)", "fx 1 (rain)", "fx 2 (soundtrack)", "fx 3 (crystal)", "fx 4 (atmosphere)", "fx 5 (brightness)", "fx 6 (goblins)", "fx 7 (echoes)", "fx 8 (sci-fi)", "sitar", "banjo", "shamisen", "koto", "kalimba", "bag pipe", "fiddle", "shanai", "tinkle bell", "agogo", "steel drums", "woodblock", "taiko drum", "melodic tom", "synth drum", "reverse cymbal", "guitar fret noise", "breath noise", "seashore", "bird tweet", "telephone ring", "helicopter", "applause", "gunshot"];
-  var InstrumentFamilyByID = ["piano", "chromatic percussion", "organ", "guitar", "bass", "strings", "ensemble", "brass", "reed", "pipe", "synth lead", "synth pad", "synth effects", "world", "percussive", "sound effects"];
-  var DrumKitByPatchID = {
+  InstrumentMaps.instrumentByPatchID = ["acoustic grand piano", "bright acoustic piano", "electric grand piano", "honky-tonk piano", "electric piano 1", "electric piano 2", "harpsichord", "clavi", "celesta", "glockenspiel", "music box", "vibraphone", "marimba", "xylophone", "tubular bells", "dulcimer", "drawbar organ", "percussive organ", "rock organ", "church organ", "reed organ", "accordion", "harmonica", "tango accordion", "acoustic guitar (nylon)", "acoustic guitar (steel)", "electric guitar (jazz)", "electric guitar (clean)", "electric guitar (muted)", "overdriven guitar", "distortion guitar", "guitar harmonics", "acoustic bass", "electric bass (finger)", "electric bass (pick)", "fretless bass", "slap bass 1", "slap bass 2", "synth bass 1", "synth bass 2", "violin", "viola", "cello", "contrabass", "tremolo strings", "pizzicato strings", "orchestral harp", "timpani", "string ensemble 1", "string ensemble 2", "synthstrings 1", "synthstrings 2", "choir aahs", "voice oohs", "synth voice", "orchestra hit", "trumpet", "trombone", "tuba", "muted trumpet", "french horn", "brass section", "synthbrass 1", "synthbrass 2", "soprano sax", "alto sax", "tenor sax", "baritone sax", "oboe", "english horn", "bassoon", "clarinet", "piccolo", "flute", "recorder", "pan flute", "blown bottle", "shakuhachi", "whistle", "ocarina", "lead 1 (square)", "lead 2 (sawtooth)", "lead 3 (calliope)", "lead 4 (chiff)", "lead 5 (charang)", "lead 6 (voice)", "lead 7 (fifths)", "lead 8 (bass + lead)", "pad 1 (new age)", "pad 2 (warm)", "pad 3 (polysynth)", "pad 4 (choir)", "pad 5 (bowed)", "pad 6 (metallic)", "pad 7 (halo)", "pad 8 (sweep)", "fx 1 (rain)", "fx 2 (soundtrack)", "fx 3 (crystal)", "fx 4 (atmosphere)", "fx 5 (brightness)", "fx 6 (goblins)", "fx 7 (echoes)", "fx 8 (sci-fi)", "sitar", "banjo", "shamisen", "koto", "kalimba", "bag pipe", "fiddle", "shanai", "tinkle bell", "agogo", "steel drums", "woodblock", "taiko drum", "melodic tom", "synth drum", "reverse cymbal", "guitar fret noise", "breath noise", "seashore", "bird tweet", "telephone ring", "helicopter", "applause", "gunshot"];
+  InstrumentMaps.InstrumentFamilyByID = ["piano", "chromatic percussion", "organ", "guitar", "bass", "strings", "ensemble", "brass", "reed", "pipe", "synth lead", "synth pad", "synth effects", "world", "percussive", "sound effects"];
+  InstrumentMaps.DrumKitByPatchID = {
     0: "standard kit",
     8: "room kit",
     16: "power kit",
@@ -8200,18 +8321,14 @@
     48: "orchestra kit",
     56: "sound fx kit"
   };
-  var InstrumentMaps = /*#__PURE__*/Object.defineProperty({
-    instrumentByPatchID: instrumentByPatchID,
-    InstrumentFamilyByID: InstrumentFamilyByID,
-    DrumKitByPatchID: DrumKitByPatchID
-  }, '__esModule', {
+
+  Object.defineProperty(Instrument$1, "__esModule", {
     value: true
   });
-
+  var InstrumentMaps_1 = InstrumentMaps;
   /**
    * @hidden
    */
-
 
   var privateTrackMap = new WeakMap();
   /**
@@ -8250,13 +8367,13 @@
        */
       get: function () {
         if (this.percussion) {
-          return InstrumentMaps.DrumKitByPatchID[this.number];
+          return InstrumentMaps_1.DrumKitByPatchID[this.number];
         } else {
-          return InstrumentMaps.instrumentByPatchID[this.number];
+          return InstrumentMaps_1.instrumentByPatchID[this.number];
         }
       },
       set: function (n) {
-        var patchNumber = InstrumentMaps.instrumentByPatchID.indexOf(n);
+        var patchNumber = InstrumentMaps_1.instrumentByPatchID.indexOf(n);
 
         if (patchNumber !== -1) {
           this.number = patchNumber;
@@ -8273,7 +8390,7 @@
         if (this.percussion) {
           return "drums";
         } else {
-          return InstrumentMaps.InstrumentFamilyByID[Math.floor(this.number / 8)];
+          return InstrumentMaps_1.InstrumentFamilyByID[Math.floor(this.number / 8)];
         }
       },
       enumerable: true,
@@ -8313,13 +8430,13 @@
     return Instrument;
   }();
 
-  var Instrument_2 = Instrument;
-  var Instrument_1 = /*#__PURE__*/Object.defineProperty({
-    Instrument: Instrument_2
-  }, '__esModule', {
+  Instrument$1.Instrument = Instrument;
+
+  var Note$1 = {};
+
+  Object.defineProperty(Note$1, "__esModule", {
     value: true
   });
-
   /**
    * Convert a midi note into a pitch
    */
@@ -8519,13 +8636,17 @@
     return Note;
   }();
 
-  var Note_2 = Note;
-  var Note_1 = /*#__PURE__*/Object.defineProperty({
-    Note: Note_2
-  }, '__esModule', {
+  Note$1.Note = Note;
+
+  Object.defineProperty(Track$2, "__esModule", {
     value: true
   });
-
+  var BinarySearch_1 = BinarySearch;
+  var ControlChange_1 = ControlChange;
+  var ControlChanges_1 = ControlChanges;
+  var PitchBend_1 = PitchBend$1;
+  var Instrument_1 = Instrument$1;
+  var Note_1 = Note$1;
   var privateHeaderMap = new WeakMap();
   /**
    * A Track is a collection of notes and controlChanges
@@ -8551,7 +8672,7 @@
        * The control change events
        */
 
-      this.controlChanges = ControlChanges.createControlChanges();
+      this.controlChanges = ControlChanges_1.createControlChanges();
       /**
        * The pitch bend events
        */
@@ -8649,7 +8770,7 @@
         velocity: 0
       }, header);
       Object.assign(note, props);
-      BinarySearch.insert(this.notes, note, "ticks");
+      BinarySearch_1.insert(this.notes, note, "ticks");
       return this;
     };
     /**
@@ -8670,7 +8791,7 @@
         this.controlChanges[cc.number] = [];
       }
 
-      BinarySearch.insert(this.controlChanges[cc.number], cc, "ticks");
+      BinarySearch_1.insert(this.controlChanges[cc.number], cc, "ticks");
       return this;
     };
     /**
@@ -8682,7 +8803,7 @@
       var header = privateHeaderMap.get(this);
       var pb = new PitchBend_1.PitchBend({}, header);
       Object.assign(pb, props);
-      BinarySearch.insert(this.pitchBends, pb, "ticks");
+      BinarySearch_1.insert(this.pitchBends, pb, "ticks");
       return this;
     };
 
@@ -8811,12 +8932,7 @@
     return Track;
   }();
 
-  var Track_2$1 = Track$1;
-  var Track_1 = /*#__PURE__*/Object.defineProperty({
-    Track: Track_2$1
-  }, '__esModule', {
-    value: true
-  });
+  Track$2.Track = Track$1;
 
   var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
     function adopt(value) {
@@ -8958,10 +9074,17 @@
       };
     }
   };
+
+  Object.defineProperty(Midi$1, "__esModule", {
+    value: true
+  });
+  var midi_file_1 = midiFile;
+  var Encode_1 = Encode;
+  var Header_1 = Header;
+  var Track_1 = Track$2;
   /**
    * The main midi parsing class
    */
-
 
   var Midi =
   /** @class */
@@ -8980,7 +9103,7 @@
           midiArray = new Uint8Array(midiArray);
         }
 
-        midiData = midiFile.parseMidi(midiArray); // add the absolute times to each of the tracks
+        midiData = midi_file_1.parseMidi(midiArray); // add the absolute times to each of the tracks
 
         midiData.tracks.forEach(function (track) {
           var currentTicks = 0;
@@ -9102,7 +9225,7 @@
 
 
     Midi.prototype.toArray = function () {
-      return Encode.encode(this);
+      return Encode_1.encode(this);
     };
     /**
      * Convert the midi object to JSON.
@@ -9148,11 +9271,11 @@
     return Midi;
   }();
 
-  var Midi_2 = Midi;
-  var Track_2 = Track_1;
-  Track_2.Track;
-  var Header_2 = Header_1;
-  Header_2.Header;
+  var Midi_2 = Midi$1.Midi = Midi;
+  var Track_2 = Track$2;
+  Midi$1.Track = Track_2.Track;
+  var Header_2 = Header;
+  Midi$1.Header = Header_2.Header;
   /**
    * Given a list of MIDI tracks, make sure that each channel corresponds to at
    * most one channel and at most one instrument. This means splitting up tracks
@@ -9463,7 +9586,7 @@
               if (string !== null && fret !== null) {
                 noteObjs.push(new GuitarNote(pitch, startTime, velocity, string, endTime, string, fret));
               } else {
-                noteObjs.push(new Note$1(pitch, startTime, velocity, // MusicXML starts with 1 but MIDI with 0
+                noteObjs.push(new Note$2(pitch, startTime, velocity, // MusicXML starts with 1 but MIDI with 0
                 staff - 1, endTime));
               }
             }
@@ -10088,7 +10211,7 @@
         }
       } else if (type === EVENT_TYPES.noteOn) {
         // Handle note-on
-        const newNote = new Note$1(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION), velocity, channel);
+        const newNote = new Note$2(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION), velocity, channel);
         notes.push(newNote);
         unfinishedNotes.set(key, newNote);
       } else {
@@ -10270,7 +10393,7 @@
 
 
   function getMillisecondsPerTick(tempo, timeDivision) {
-    const milliSecondsPerBeat = 1 / tempo * 60000;
+    const milliSecondsPerBeat = 1 / tempo * 60_000;
     const milliSecondsPerTick = milliSecondsPerBeat / timeDivision;
     return milliSecondsPerTick;
   }
@@ -10299,7 +10422,7 @@
 
         if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.setTempo) {
           const milliSecondsPerQuarter = event.data / 1000;
-          const tempo = Math.round(1 / (milliSecondsPerQuarter / 60000)); // Ignore tempo changes that don't change the tempo
+          const tempo = Math.round(1 / (milliSecondsPerQuarter / 60_000)); // Ignore tempo changes that don't change the tempo
 
           if (tempo !== lastTempo) {
             tempoChanges.push({
@@ -10456,95 +10579,95 @@
    */
 
   const KEY_SIG_MAP = new Map([// major
-  [0xF900, {
+  [0xF9_00, {
     key: 'Cb',
     scale: 'major'
-  }], [0xFA00, {
+  }], [0xFA_00, {
     key: 'Gb',
     scale: 'major'
-  }], [0xFB00, {
+  }], [0xFB_00, {
     key: 'Db',
     scale: 'major'
-  }], [0xFC00, {
+  }], [0xFC_00, {
     key: 'Ab',
     scale: 'major'
-  }], [0xFD00, {
+  }], [0xFD_00, {
     key: 'Eb',
     scale: 'major'
-  }], [0xFE00, {
+  }], [0xFE_00, {
     key: 'Bb',
     scale: 'major'
-  }], [0xFF00, {
+  }], [0xFF_00, {
     key: 'F',
     scale: 'major'
-  }], [0x0000, {
+  }], [0x00_00, {
     key: 'C',
     scale: 'major'
-  }], [0x0100, {
+  }], [0x01_00, {
     key: 'G',
     scale: 'major'
-  }], [0x0200, {
+  }], [0x02_00, {
     key: 'D',
     scale: 'major'
-  }], [0x0300, {
+  }], [0x03_00, {
     key: 'A',
     scale: 'major'
-  }], [0x0400, {
+  }], [0x04_00, {
     key: 'E',
     scale: 'major'
-  }], [0x0500, {
+  }], [0x05_00, {
     key: 'B',
     scale: 'major'
-  }], [0x0600, {
+  }], [0x06_00, {
     key: 'F#',
     scale: 'major'
-  }], [0x0700, {
+  }], [0x07_00, {
     key: 'C#',
     scale: 'major'
   }], // minor
-  [0xF901, {
+  [0xF9_01, {
     key: 'Ab',
     scale: 'minor'
-  }], [0xFA01, {
+  }], [0xFA_01, {
     key: 'Eb',
     scale: 'minor'
-  }], [0xFB01, {
+  }], [0xFB_01, {
     key: 'Bb',
     scale: 'minor'
-  }], [0xFC01, {
+  }], [0xFC_01, {
     key: 'F',
     scale: 'minor'
-  }], [0xFD01, {
+  }], [0xFD_01, {
     key: 'C',
     scale: 'minor'
-  }], [0xFE01, {
+  }], [0xFE_01, {
     key: 'G',
     scale: 'minor'
-  }], [0xFF01, {
+  }], [0xFF_01, {
     key: 'D',
     scale: 'minor'
-  }], [0x0001, {
+  }], [0x00_01, {
     key: 'A',
     scale: 'minor'
-  }], [0x0101, {
+  }], [0x01_01, {
     key: 'E',
     scale: 'minor'
-  }], [0x0201, {
+  }], [0x02_01, {
     key: 'B',
     scale: 'minor'
-  }], [0x0301, {
+  }], [0x03_01, {
     key: 'F#',
     scale: 'minor'
-  }], [0x0401, {
+  }], [0x04_01, {
     key: 'C#',
     scale: 'minor'
-  }], [0x0501, {
+  }], [0x05_01, {
     key: 'G#',
     scale: 'minor'
-  }], [0x0601, {
+  }], [0x06_01, {
     key: 'D#',
     scale: 'minor'
-  }], [0x0701, {
+  }], [0x07_01, {
     key: 'A#',
     scale: 'minor'
   }]]);
@@ -10628,7 +10751,7 @@
         throw new Error('No MIDI file content given');
       }
 
-      const midi = main.parse(midiFile);
+      const midi = main.exports.parse(midiFile);
       const parsed = preprocessMidiFileData(midi);
       let tempos = [];
       let timeSignatures = [];
@@ -10688,7 +10811,7 @@
           continue;
         }
 
-        const notes = track.notes.map(note => Note$1.from({
+        const notes = track.notes.map(note => Note$2.from({
           pitch: note.midi,
           start: note.time,
           end: note.time + note.duration,
@@ -10793,7 +10916,7 @@
       const measureTimes = json.measureTimes;
       const tracks = json.tracks.map(track => {
         const notes = track.notes.map(note => {
-          return note.string !== undefined && note.fret !== undefined ? GuitarNote.from(note) : Note$1.from(note);
+          return note.string !== undefined && note.fret !== undefined ? GuitarNote.from(note) : Note$2.from(note);
         });
         return new Track(track.name, track.instrument, notes, track.tuningPitches);
       });
@@ -11584,7 +11707,7 @@
       }
 
       const options = {
-        audioBitsPerSecond: 128000
+        audioBitsPerSecond: 128_000
       };
       const mediaRecorder = new MediaRecorder(stream, options);
       let audioChunks = []; // Add new data when it arrives
@@ -11757,7 +11880,7 @@
 
 
   function noteOn(currentNotes, device, time, pitch, channel, velocity) {
-    const note = new Note$1(pitch, time / 1000, velocity, channel);
+    const note = new Note$2(pitch, time / 1000, velocity, channel);
     const key = `${device}-${channel}-${pitch}`;
     currentNotes.set(key, note);
   }
@@ -11947,7 +12070,7 @@
      * @param {number} velocity MIDI velocity
      */
     _noteOn(device, time, pitch, channel, velocity) {
-      const note = new Note$1(pitch, time / 1000, velocity, channel); // Add current note
+      const note = new Note$2(pitch, time / 1000, velocity, channel); // Add current note
 
       _classPrivateFieldLooseBase(this, _addCurrentNote)[_addCurrentNote](note); // Update recorded MIDI data
       // TODO: probably better to only update on note-off,
@@ -12268,7 +12391,7 @@
         const end = start + randFloat(0, 1);
         const velocity = randVelocity();
         const pitch = choose(pitches);
-        variation.push(new Note$1(pitch, start, velocity, 0, end));
+        variation.push(new Note$2(pitch, start, velocity, 0, end));
       }
 
       if (randFloat(0, 1) < pRemove) ; else {
@@ -12276,7 +12399,7 @@
         const start = note.start + randTime();
         const end = note.end + randTime(); // Get new note
 
-        const newNote = Note$1.from(note);
+        const newNote = Note$2.from(note);
         newNote.start = Math.min(start, end);
         newNote.end = Math.max(start, end);
         variation.push(newNote);
@@ -12312,7 +12435,7 @@
         newPitch = replacementMap.get(oldPitch).repPitch;
       }
 
-      const newNote = Note$1.from({ ...note,
+      const newNote = Note$2.from({ ...note,
         pitch: newPitch
       });
       return newNote;
@@ -14220,7 +14343,7 @@
 
     const finishNote = () => {
       try {
-        notes.push(Note$1.from({
+        notes.push(Note$2.from({
           pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
           start: currentTime,
           end: currentTime + secondsPerBeat
@@ -15093,8 +15216,8 @@
     const pitchRanges = new Map();
 
     for (const [index, part] of groundTruth.entries()) {
-      const extension = extent(part, d => d.pitch);
-      pitchRanges.set(index, extension);
+      const pitchExtent = extent(part, d => d.pitch);
+      pitchRanges.set(index, pitchExtent);
     }
 
     return recordings.map(recording => {
@@ -15114,7 +15237,7 @@
    */
 
   function alignNotesToBpm(notes, bpm, timeDivision = 16) {
-    const secondsPerBeat = bpmToSecondsPerBeat$1(bpm);
+    const secondsPerBeat = bpmToSecondsPerBeat(bpm);
     const secondsPerDivision = secondsPerBeat / timeDivision;
     return notes.map(note => {
       const n = note.clone();
@@ -15209,7 +15332,7 @@
         // Detect note start
         if (!currentNote && heatmap[bin]) {
           const time = bin * binSize / 1000;
-          currentNote = new Note$1(pitch, time, 127, 0);
+          currentNote = new Note$2(pitch, time, 127, 0);
         } // Detect note end or end of array
 
 
@@ -15272,7 +15395,7 @@
           chosenStarts.shift();
         }
 
-        newNotes.push(new Note$1(pitch, nextStart, 127, 0, nextEnd));
+        newNotes.push(new Note$2(pitch, nextStart, 127, 0, nextEnd));
       }
     } // Sort new notes
 
@@ -16020,14 +16143,14 @@
       console.log(aligned.getNotes().map(n => n.start));
     };
 
-    const a = new NoteArray([new Note$1(69, 0, 127, 0, 1), new Note$1(70, 1, 127, 0, 2), new Note$1(71, 2, 127, 0, 3)]);
+    const a = new NoteArray([new Note$2(69, 0, 127, 0, 1), new Note$2(70, 1, 127, 0, 2), new Note$2(71, 2, 127, 0, 3)]);
     console.log(a.getNotes().map(n => n.start));
     let b;
     b = a.clone().shiftTime(2);
     test(a, b, 'shifted by 2');
     b = a.clone().shiftTime(-2);
     test(a, b, 'shifted by -2');
-    b = a.clone().shiftTime(3).addNotes([new Note$1(72, 2, 127, 0, 3)]);
+    b = a.clone().shiftTime(3).addNotes([new Note$2(72, 2, 127, 0, 3)]);
     test(a, b, 'shifted by 3, added note');
     b = a.clone().repeat(2);
     test(a, b, 'repeated');
@@ -16041,7 +16164,7 @@
 
   function alignmentBenchmark() {
     // Use random seed for reproducability
-    const seed = 0.44871573888282423; // any number in [0, 1)
+    const seed = 0.448_715_738_882_824_23; // any number in [0, 1)
 
     const rand127 = randomInt.source(lcg(seed))(0, 127);
     const maxTime = 500;
@@ -16052,7 +16175,7 @@
       length: 200
     }).fill(0).map(() => {
       const start = randTime();
-      return new Note$1(rand127(), start, 127, 0, start + randDuration());
+      return new Note$2(rand127(), start, 127, 0, start + randDuration());
     });
     const notes = new NoteArray(randomNotes).sortByTime();
     console.log('true notes', notes.getNotes()); // Shift notes by some amount of seconds (this is what alignment should calculate!)
@@ -17482,10 +17605,10 @@
   exports.GuitarNote = GuitarNote;
   exports.Lamellophone = Lamellophone;
   exports.Matching = Matching;
-  exports.Midi = Midi$1;
+  exports.Midi = Midi$2;
   exports.MidiInputManager = MidiInputManager;
   exports.MusicPiece = MusicPiece;
-  exports.Note = Note$1;
+  exports.Note = Note$2;
   exports.NoteArray = NoteArray;
   exports.Piano = Piano;
   exports.PitchSequence = PitchSequence;
