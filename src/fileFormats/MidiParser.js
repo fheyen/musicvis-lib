@@ -324,7 +324,7 @@ function splitFormat0(tracks) {
  * @returns {number} milli seconds per tick
  */
 function getMillisecondsPerTick(tempo, timeDivision) {
-    const milliSecondsPerBeat = 1 / tempo * 60000;
+    const milliSecondsPerBeat = 1 / tempo * 60_000;
     const milliSecondsPerTick = milliSecondsPerBeat / timeDivision;
     return milliSecondsPerTick;
 }
@@ -351,7 +351,7 @@ function getSignatureChanges(tracks) {
             // Tempo change
             if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.setTempo) {
                 const milliSecondsPerQuarter = event.data / 1000;
-                const tempo = Math.round(1 / (milliSecondsPerQuarter / 60000));
+                const tempo = Math.round(1 / (milliSecondsPerQuarter / 60_000));
                 // Ignore tempo changes that don't change the tempo
                 if (tempo !== lastTempo) {
                     tempoChanges.push({
@@ -478,35 +478,35 @@ const META_TYPES = {
  */
 const KEY_SIG_MAP = new Map([
     // major
-    [0xF900, { key: 'Cb', scale: 'major' }],
-    [0xFA00, { key: 'Gb', scale: 'major' }],
-    [0xFB00, { key: 'Db', scale: 'major' }],
-    [0xFC00, { key: 'Ab', scale: 'major' }],
-    [0xFD00, { key: 'Eb', scale: 'major' }],
-    [0xFE00, { key: 'Bb', scale: 'major' }],
-    [0xFF00, { key: 'F', scale: 'major' }],
-    [0x0000, { key: 'C', scale: 'major' }],
-    [0x0100, { key: 'G', scale: 'major' }],
-    [0x0200, { key: 'D', scale: 'major' }],
-    [0x0300, { key: 'A', scale: 'major' }],
-    [0x0400, { key: 'E', scale: 'major' }],
-    [0x0500, { key: 'B', scale: 'major' }],
-    [0x0600, { key: 'F#', scale: 'major' }],
-    [0x0700, { key: 'C#', scale: 'major' }],
+    [0xF9_00, { key: 'Cb', scale: 'major' }],
+    [0xFA_00, { key: 'Gb', scale: 'major' }],
+    [0xFB_00, { key: 'Db', scale: 'major' }],
+    [0xFC_00, { key: 'Ab', scale: 'major' }],
+    [0xFD_00, { key: 'Eb', scale: 'major' }],
+    [0xFE_00, { key: 'Bb', scale: 'major' }],
+    [0xFF_00, { key: 'F', scale: 'major' }],
+    [0x00_00, { key: 'C', scale: 'major' }],
+    [0x01_00, { key: 'G', scale: 'major' }],
+    [0x02_00, { key: 'D', scale: 'major' }],
+    [0x03_00, { key: 'A', scale: 'major' }],
+    [0x04_00, { key: 'E', scale: 'major' }],
+    [0x05_00, { key: 'B', scale: 'major' }],
+    [0x06_00, { key: 'F#', scale: 'major' }],
+    [0x07_00, { key: 'C#', scale: 'major' }],
     // minor
-    [0xF901, { key: 'Ab', scale: 'minor' }],
-    [0xFA01, { key: 'Eb', scale: 'minor' }],
-    [0xFB01, { key: 'Bb', scale: 'minor' }],
-    [0xFC01, { key: 'F', scale: 'minor' }],
-    [0xFD01, { key: 'C', scale: 'minor' }],
-    [0xFE01, { key: 'G', scale: 'minor' }],
-    [0xFF01, { key: 'D', scale: 'minor' }],
-    [0x0001, { key: 'A', scale: 'minor' }],
-    [0x0101, { key: 'E', scale: 'minor' }],
-    [0x0201, { key: 'B', scale: 'minor' }],
-    [0x0301, { key: 'F#', scale: 'minor' }],
-    [0x0401, { key: 'C#', scale: 'minor' }],
-    [0x0501, { key: 'G#', scale: 'minor' }],
-    [0x0601, { key: 'D#', scale: 'minor' }],
-    [0x0701, { key: 'A#', scale: 'minor' }],
+    [0xF9_01, { key: 'Ab', scale: 'minor' }],
+    [0xFA_01, { key: 'Eb', scale: 'minor' }],
+    [0xFB_01, { key: 'Bb', scale: 'minor' }],
+    [0xFC_01, { key: 'F', scale: 'minor' }],
+    [0xFD_01, { key: 'C', scale: 'minor' }],
+    [0xFE_01, { key: 'G', scale: 'minor' }],
+    [0xFF_01, { key: 'D', scale: 'minor' }],
+    [0x00_01, { key: 'A', scale: 'minor' }],
+    [0x01_01, { key: 'E', scale: 'minor' }],
+    [0x02_01, { key: 'B', scale: 'minor' }],
+    [0x03_01, { key: 'F#', scale: 'minor' }],
+    [0x04_01, { key: 'C#', scale: 'minor' }],
+    [0x05_01, { key: 'G#', scale: 'minor' }],
+    [0x06_01, { key: 'D#', scale: 'minor' }],
+    [0x07_01, { key: 'A#', scale: 'minor' }],
 ]);

@@ -1,6 +1,6 @@
 import { scaleLinear, extent, group, max } from 'd3';
 import Note from '../types/Note';
-import { bpmToSecondsPerBeat } from './MiscUtils';
+import { bpmToSecondsPerBeat } from './MusicUtils';
 import { kernelDensityEstimator, kernelEpanechnikov } from './StatisticsUtils';
 import { findLocalMaxima } from './MathUtils';
 import Recording from '../types/Recording'; /* eslint-disable-line no-unused-vars */
@@ -50,14 +50,62 @@ export function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
     // Speed up by getting range only once for all tracks
     const pitchRanges = new Map();
     for (const [index, part] of groundTruth.entries()) {
-        const extension = extent(part, d => d.pitch);
-        pitchRanges.set(index, extension);
+        const pitchExtent = extent(part, d => d.pitch);
+        pitchRanges.set(index, pitchExtent);
     }
     return recordings.map(recording => {
         const track = recording.selectedTrack;
         const [minPitch, maxPitch] = pitchRanges.get(track);
         return recording.clone().filter(note => note.pitch >= minPitch && note.pitch <= maxPitch);
     });
+}
+
+/**
+ * Removes notes from a recordings which are outside the fretboard range of the
+ * ground truth and therefore likely noise.
+ * Looks up the fretboard position range from the track of the GT that the
+ * recording was made for.
+ *
+ * @param {Recording[]} recordings recordings
+ * @param {Note[][]} groundTruth ground truth
+ * @param {'exact'|'area'} [mode=exact] mode for which fretboard positions to
+ *      include: exact will only keep notes that have positions that occur in
+ *      the GT, area will get a rectangular area of the fretboard that contains
+ *      all GT positions and fill filter on that.
+ * @returns {Recording[]} filtered recordings
+ */
+export function clipRecordingsPitchesToGtFretboardRange(recordings, groundTruth, mode = 'exact') {
+    if (mode === 'exact') {
+        // Speed up by getting range only once for all tracks
+        const occuringPositions = new Map();
+        for (const [index, part] of groundTruth.entries()) {
+            const positions = new Set(part.map(note => `${note.string} ${note.fret}`));
+            occuringPositions.set(index, positions);
+        }
+        return recordings.map(recording => {
+            const track = recording.selectedTrack;
+            const validPositions = occuringPositions.get(track);
+            return recording.clone().filter(note => validPositions.has(`${note.string} ${note.fret}`));
+        });
+    } else {
+        // Speed up by getting range only once for all tracks
+        const positionRanges = new Map();
+        for (const [index, part] of groundTruth.entries()) {
+            const stringExtent = extent(part, d => d.string);
+            const fretExtent = extent(part, d => d.fret);
+            positionRanges.set(index, { stringExtent, fretExtent });
+        }
+        return recordings.map(recording => {
+            const track = recording.selectedTrack;
+            const { stringExtent, fretExtent } = positionRanges.get(track);
+            const [minString, maxString] = stringExtent;
+            const [minFret, maxFret] = fretExtent;
+            return recording.clone().filter(note => {
+                return note.string >= minString && note.string <= maxString
+                    && note.fret >= minFret && note.fret <= maxFret;
+            });
+        });
+    }
 }
 
 /**

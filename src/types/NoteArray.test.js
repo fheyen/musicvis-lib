@@ -558,9 +558,17 @@ describe('NoteArray', () => {
             Note.from({ start: 2, end: 3 }),
         ]);
 
+        test('no times given', () => {
+            expect(
+                toSlice.sliceAtTimes([], 'touched')
+            ).toStrictEqual([
+                toSlice.getNotes()
+            ]);
+        });
+
         test('complete piece in one slice', () => {
             expect(
-                toSlice.sliceAtTimes([3], 'touched')
+                toSlice.sliceAtTimes([4], 'touched')
             ).toStrictEqual([
                 toSlice.getNotes()
             ]);
@@ -568,11 +576,125 @@ describe('NoteArray', () => {
 
         test('one chord in each slice', () => {
             expect(
-                toSlice.sliceAtTimes([1, 2, 3], 'start')
+                toSlice.sliceAtTimes([1, 2], 'start')
             ).toStrictEqual([
                 [Note.from({ start: 0, end: 1 })],
                 [Note.from({ start: 1, end: 2 }), Note.from({ start: 1, end: 2 })],
                 [Note.from({ start: 2, end: 3 })],
+            ]);
+        });
+
+        test('last slice time < duration', () => {
+            expect(
+                toSlice.sliceAtTimes([1, 2], 'start')
+            ).toStrictEqual([
+                [Note.from({ start: 0, end: 1 })],
+                [Note.from({ start: 1, end: 2 }), Note.from({ start: 1, end: 2 })],
+                [Note.from({ start: 2, end: 3 })],
+            ]);
+        });
+    });
+
+
+    describe('segmentAtGaps', () => {
+        const naTooFew = new NoteArray([
+            Note.from({ start: 0, duration: 1 }),
+        ]);
+        test('to few notes, start-start', () => {
+            expect(naTooFew.segmentAtGaps(1, 'start-start')).toStrictEqual([naTooFew.getNotes()]);
+        });
+        test('to few notes, end-start', () => {
+            expect(naTooFew.segmentAtGaps(1, 'end-start')).toStrictEqual([naTooFew.getNotes()]);
+        });
+
+        test('no gaps, start-start', () => {
+            // start-start will see gaps when notes don't start at the same time!
+            const naNoGaps = new NoteArray([
+                Note.from({ start: 1 }),
+                Note.from({ start: 1 }),
+                Note.from({ start: 1 }),
+            ]);
+            expect(naNoGaps.segmentAtGaps(1, 'start-start')).toStrictEqual([naNoGaps.getNotes()]);
+        });
+        test('no gaps, end-start', () => {
+            const naNoGaps = new NoteArray([
+                Note.from({ start: 0, end: 1 }),
+                Note.from({ start: 1, end: 2 }),
+                Note.from({ start: 2, end: 3 }),
+            ]);
+            expect(naNoGaps.segmentAtGaps(1, 'end-start')).toStrictEqual([naNoGaps.getNotes()]);
+        });
+
+        test('no large enough gaps, start-start', () => {
+            const naSmallGaps = new NoteArray([
+                Note.from({ start: 0 }),
+                Note.from({ start: 0.5 }),
+                Note.from({ start: 1 }),
+            ]);
+            expect(naSmallGaps.segmentAtGaps(1, 'start-start')).toStrictEqual([naSmallGaps.getNotes()]);
+        });
+        test('no large enough gaps, end-start', () => {
+            const naSmallGaps = new NoteArray([
+                Note.from({ start: 0, end: 1 }),
+                Note.from({ start: 1.5, end: 2 }),
+                Note.from({ start: 2.5, end: 3 }),
+            ]);
+            expect(naSmallGaps.segmentAtGaps(1, 'end-start')).toStrictEqual([naSmallGaps.getNotes()]);
+        });
+
+        test('1 gap, start-start', () => {
+            const na1Gap = new NoteArray([
+                Note.from({ start: 0 }),
+                Note.from({ start: 0 }),
+                Note.from({ start: 3 }),
+            ]);
+            expect(na1Gap.segmentAtGaps(1, 'start-start')).toStrictEqual([
+                [
+                    Note.from({ start: 0 }),
+                    Note.from({ start: 0 }),
+                ],
+                [
+                    Note.from({ start: 3 }),
+                ],
+            ]);
+        });
+        test('1 gap, end-start', () => {
+            const na1Gap = new NoteArray([
+                Note.from({ start: 0, end: 1 }),
+                Note.from({ start: 1.5, end: 2 }),
+                Note.from({ start: 3, end: 4 }),
+            ]);
+            expect(na1Gap.segmentAtGaps(1, 'end-start')).toStrictEqual([
+                [
+                    Note.from({ start: 0, end: 1 }),
+                    Note.from({ start: 1.5, end: 2 }),
+                ],
+                [
+                    Note.from({ start: 3, end: 4 }),
+                ],
+            ]);
+        });
+
+        test('3 gaps, 2 large enough', () => {
+            const naMoreGaps = new NoteArray([
+                Note.from({ start: 0, end: 1 }),
+                Note.from({ start: 1.5, end: 2 }),
+                Note.from({ start: 3, end: 4 }),
+                Note.from({ start: 4.5, end: 5 }),
+                Note.from({ start: 6, end: 7 }),
+            ]);
+            expect(naMoreGaps.segmentAtGaps(1, 'end-start')).toStrictEqual([
+                [
+                    Note.from({ start: 0, end: 1 }),
+                    Note.from({ start: 1.5, end: 2 }),
+                ],
+                [
+                    Note.from({ start: 3, end: 4 }),
+                    Note.from({ start: 4.5, end: 5 }),
+                ],
+                [
+                    Note.from({ start: 6, end: 7 }),
+                ],
             ]);
         });
     });

@@ -200,7 +200,7 @@ export function testAlignment() {
  */
 export function alignmentBenchmark() {
     // Use random seed for reproducability
-    const seed = 0.44871573888282423; // any number in [0, 1)
+    const seed = 0.448_715_738_882_824_23; // any number in [0, 1)
     const rand127 = randomInt.source(randomLcg(seed))(0, 127);
     const maxTime = 500;
     const randTime = randomUniform.source(randomLcg(seed))(0, maxTime);

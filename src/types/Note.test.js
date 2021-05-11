@@ -48,6 +48,27 @@ describe('Note', () => {
             })).toStrictEqual(new Note(12, 0.5, 50, 0, 1.5));
         });
 
+        test('simple with duration', () => {
+            expect(Note.from({
+                pitch: 12,
+                start: 0.5,
+                duration: 1,
+                velocity: 50,
+                channel: 0
+            })).toStrictEqual(new Note(12, 0.5, 50, 0, 1.5));
+        });
+
+        test('simple with end and duration, duration is ignored', () => {
+            expect(Note.from({
+                pitch: 12,
+                start: 0.5,
+                end: 1.5,
+                duration: 2,
+                velocity: 50,
+                channel: 0
+            })).toStrictEqual(new Note(12, 0.5, 50, 0, 1.5));
+        });
+
         test('note name correct', () => {
             expect(Note.from({
                 pitch: 'C0',

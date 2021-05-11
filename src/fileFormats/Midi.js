@@ -293,10 +293,10 @@ export const MIDI_NOTES = [
     { pitch: 121, name: 'C#', octave: 9, label: 'C#9', frequency: 8869.844 },
     { pitch: 122, name: 'D', octave: 9, label: 'D9', frequency: 9397.273 },
     { pitch: 123, name: 'D#', octave: 9, label: 'D#9', frequency: 9956.063 },
-    { pitch: 124, name: 'E', octave: 9, label: 'E9', frequency: 10548.08 },
-    { pitch: 125, name: 'F', octave: 9, label: 'F9', frequency: 11175.3 },
-    { pitch: 126, name: 'F#', octave: 9, label: 'F#9', frequency: 11839.82 },
-    { pitch: 127, name: 'G', octave: 9, label: 'G9', frequency: 12543.85 },
+    { pitch: 124, name: 'E', octave: 9, label: 'E9', frequency: 10_548.08 },
+    { pitch: 125, name: 'F', octave: 9, label: 'F9', frequency: 11_175.3 },
+    { pitch: 126, name: 'F#', octave: 9, label: 'F#9', frequency: 11_839.82 },
+    { pitch: 127, name: 'G', octave: 9, label: 'G9', frequency: 12_543.85 },
 ];
 
 /**

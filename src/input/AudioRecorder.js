@@ -23,7 +23,7 @@ export const recordAudio = () => {
             return;
         }
         const options = {
-            audioBitsPerSecond: 128000,
+            audioBitsPerSecond: 128_000,
         };
         const mediaRecorder = new MediaRecorder(stream, options);
         let audioChunks = [];

@@ -301,7 +301,8 @@ class NoteArray {
      *
      * @param {number} startTime start of the filter range in seconds
      * @param {number} endTime end of the filter range in seconds (exclusive)
-     * @param {string} mode controls which note time to consider, one of:
+     * @param {string} [mode=contained] controls which note time to consider,
+     *      one of:
      *      - start: note.start must be inside range
      *      - end: note.end must be inside range
      *      - contained: BOTH note.start and note.end must be inside range
@@ -358,6 +359,14 @@ class NoteArray {
      *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
      */
     sliceAtTimes(times, mode) {
+        if (times.length === 0) {
+            return [this._notes];
+        }
+        // Make sure notes at the end are also in a slice
+        const duration = this.getDuration();
+        if (Math.max(...times) <= duration) {
+            times.push(duration + 1);
+        }
         const slices = [];
         let lastTime = 0;
         for (const time of times) {
@@ -369,6 +378,78 @@ class NoteArray {
             lastTime = time;
         }
         return slices;
+    }
+
+    /**
+     * Segments the NoteArray into smaller ones at times where no note occurs
+     * for a specified amount of time.
+     * This method is useful for segmenting a recording session into separate
+     * songs, riffs, licks, ...
+     *
+     * @param {number} gapDuration duration of seconds for a gap to be used as
+     *      segmenting time
+     * @param {'start-start'|'end-start'} mode gaps can either be considered as
+     *      the maximum time between two note's starts or the end of the first
+     *      and the start of the second note
+     * @returns {Note[][]} segments
+     */
+    segmentAtGaps(gapDuration, mode) {
+        if (this._notes.length < 2) {
+            return [this._notes];
+        }
+        if (mode === 'start-start') {
+            const notes = this.clone().sortByTime().getNotes();
+            const cuts = [];
+            for (let index = 1; index < notes.length; index++) {
+                if (notes[index].start - notes[index - 1].start >= gapDuration) {
+                    cuts.push(notes[index].start);
+                }
+            }
+            return this.sliceAtTimes(cuts, 'start');
+        } else {
+            // Get blocks of occupied time in the NoteArray's duration
+            const occupiedTimes = [];
+            // TODO: can probably be made faster in the future
+            for (const note of this._notes) {
+                const { start, end } = note;
+                // Check for collision
+                const collisions = [];
+                for (let index = 0; index < occupiedTimes.length; index++) {
+                    // eslint-disable-next-line unicorn/prevent-abbreviations
+                    const [s, e] = occupiedTimes[index];
+                    if (
+                        (s >= start && s <= end)
+                        || (e >= start && e <= end)
+                    ) {
+                        occupiedTimes.splice(index, 1);
+                        collisions.push([s, e]);
+                    }
+                }
+                if (collisions.length === 0) {
+                    // Just add note time span
+                    occupiedTimes.push([start, end]);
+                } else {
+                    // Merge
+                    const newStart = Math.min(start, ...collisions.map(d => d[0]));
+                    const newEnd = Math.max(end, ...collisions.map(d => d[1]));
+                    occupiedTimes.push([newStart, newEnd]);
+                }
+            }
+            // Gaps are just between two following blocks of occupied time
+            if (occupiedTimes.length === 1) {
+                // One block, so no gaps
+                return [this._notes];
+            }
+            const cuts = [];
+            for (let index = 1; index < occupiedTimes.length; index++) {
+                const currentStart = occupiedTimes[index][0];
+                const lastEnd = occupiedTimes[index - 1][1];
+                if (currentStart - lastEnd >= gapDuration) {
+                    cuts.push(currentStart);
+                }
+            }
+            return this.sliceAtTimes(cuts, 'start');
+        }
     }
 
     /**

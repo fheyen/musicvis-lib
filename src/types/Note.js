@@ -6,7 +6,7 @@ import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi';
  */
 class Note {
     /**
-     * Creates a new Note
+     * Creates a new Note. Note.from() is preferred over using the constructor.
      *
      * @param {number} pitch pitch
      * @param {number} start start time in seconds
@@ -38,24 +38,30 @@ class Note {
     }
 
     /**
-     * Creates a Note object from an object via destructuring
+     * Creates a Note object from an object via destructuring.
+     * Use either 'end' or 'duration', if both are specified, end will be used.
      *
-     * @example
+     * @example <caption>Using end</caption>
      *  const n = Note.from({
-     *      pitch: 'C#4'     // e.g. 12 or C#4
-     *      start: 0.5       // start time in seconds
-     *      end: 1.5         // end time in seconds
-     *      velocity: 127    // MIDI velocity
-     *      channel: 0       // MIDI channel
+     *      pitch: 'C#4',     // e.g. 12 or C#4
+     *      start: 0.5,       // start time in seconds
+     *      end: 1.5,         // end time in seconds
+     *      velocity: 127,    // MIDI velocity
+     *      channel: 0,       // MIDI channel
+     *  });
+     * @example <caption>Using duration</caption>
+     *  const n = Note.from({
+     *      pitch: 'C#4',
+     *      start: 0.5,
+     *      duration: 1.2,
      *  });
      * @param {object} object object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *  }
+     * @param {number|string} object.pitch e.G. 12 or C#4
+     * @param {number} object.start start time in seconds
+     * @param {number} object.end end time in seconds
+     * @param {number} object.duration duration in seconds
+     * @param {number} object.velocity MIDI velocity
+     * @param {number} object.channel MIDI channel
      * @returns {Note} new note
      * @throws {Error} when pitch is invalid
      */
@@ -66,13 +72,23 @@ class Note {
             velocity = 127,
             channel = 0,
             end = null,
+            duration = null,
         } = object;
-        if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
+        // Pitch can either be a number or a string
+        if ((typeof pitch === 'string') && Number.isNaN(+pitch)) {
             const note = getMidiNoteByLabel(pitch);
             if (note === null || note === undefined) {
                 throw new Error('Invalid pitch for Note.from()');
             }
             pitch = note.pitch;
+        }
+        // Use either end or duration
+        if (
+            (end === undefined || end === null)
+            && duration !== null
+            && !Number.isNaN(duration)
+        ) {
+            end = start + duration;
         }
         return new Note(pitch, start, velocity, channel, end);
     }

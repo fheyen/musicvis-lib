@@ -1,6 +1,7 @@
 import * as RecUtils from './RecordingsUtils';
 import Note from '../types/Note';
 import Recording from '../types/Recording';
+import GuitarNote from '../types/GuitarNote';
 
 describe('RecordingsUtils', () => {
 
@@ -137,6 +138,47 @@ describe('RecordingsUtils', () => {
         test('track 3 none kept', () => {
             expect(filtered[3].getNotes()).toStrictEqual([]);
         });
+    });
+
+    describe('clipRecordingsPitchesToGtFretboardRange', () => {
+        const notes = [
+            GuitarNote.from({ string: 0, fret: 0 }),
+            GuitarNote.from({ string: 1, fret: 1 }),
+            GuitarNote.from({ string: 2, fret: 2 }),
+            GuitarNote.from({ string: 3, fret: 3 }),
+        ];
+        const notesRemovedByExact = [
+            ...notes,
+            GuitarNote.from({ string: 1, fret: 2 }),
+            GuitarNote.from({ string: 2, fret: 3 }),
+            GuitarNote.from({ string: 8, fret: 3 }),
+        ];
+        const notesRemovedByArea = [
+            ...notes,
+            GuitarNote.from({ string: 4, fret: 2 }),
+            GuitarNote.from({ string: 2, fret: 6 }),
+        ];
+        test('nothing to remove', () => {
+            const recs = [new Recording('', new Date(), notes)];
+            expect(
+                RecUtils.clipRecordingsPitchesToGtFretboardRange(recs, [notes], 'exact')
+            ).toStrictEqual(recs);
+            expect(
+                RecUtils.clipRecordingsPitchesToGtFretboardRange(recs, [notes], 'area')
+            ).toStrictEqual(recs);
+        });
+
+        test('filtering exact', () => {
+            const recs = [new Recording('', new Date(), notesRemovedByExact)];
+            const filteredNotes = RecUtils.clipRecordingsPitchesToGtFretboardRange(recs, [notes], 'exact')[0].getNotes();
+            expect(filteredNotes).toStrictEqual(notes);
+        });
+        test('filtering area', () => {
+            const recs = [new Recording('', new Date(), notesRemovedByArea)];
+            const filteredNotes = RecUtils.clipRecordingsPitchesToGtFretboardRange(recs, [notes], 'area')[0].getNotes();
+            expect(filteredNotes).toStrictEqual(notes);
+        });
+
     });
 
     describe('recordingsHeatmap', () => {

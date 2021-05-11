@@ -129,3 +129,28 @@ export const CIRCLE_OF_5THS = [
     [10, 'A#', 'Bb', 0, 2],
     [5, 'F', 'F', 0, 1],
 ];
+
+/**
+ * Maps number of semitones to interval name
+ * m - minor
+ * M - major
+ * P - perfect
+ * aug - augmented
+ *
+ * @type {Map<number,string>}
+ */
+export const INTERVALS = new Map([
+    [1, 'unison'],
+    [1, 'm2'],
+    [2, 'M2'],
+    [3, 'm3'],
+    [4, 'M3'],
+    [5, 'P4'],
+    [6, 'aug4'],
+    [7, 'P5'],
+    [8, 'm6'],
+    [9, 'M6'],
+    [10, 'm7'],
+    [11, 'M7'],
+    [12, 'P8'],
+]);
