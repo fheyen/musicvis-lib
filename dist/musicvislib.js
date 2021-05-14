@@ -1,11 +1,11 @@
-// musicvis-lib v0.47.4 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.48.0 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.47.4";
+  var version="0.48.0";
 
   /**
    * Lookup for many MIDI specifications.
@@ -5793,6 +5793,32 @@
 
         return this.sliceAtTimes(cuts, 'start');
       }
+    }
+    /**
+     * Segments the NoteArray into Arrays of Notes at given indices
+     *
+     * @param {number[]} indices indices
+     * @returns {Note[][]} segments
+     * @example <caption>Get notes in partions of 4</caption>
+     *      const noteGroups = myNoteArray.segmentAtIndices([4, 8, 12, 16, 20]);
+     *      // noteGroups = [
+     *      //     Array(4),
+     *      //     Array(4),
+     *      //     Array(4),
+     *      // ]
+     */
+
+
+    segmentAtIndices(indices) {
+      const segments = [];
+      let lastIndex = 0;
+
+      for (const index of indices) {
+        segments.push(this._notes.slice(lastIndex, index));
+        lastIndex = index;
+      }
+
+      return segments;
     }
     /**
      * Filters the NoteArray like you would filter via Array.filter().

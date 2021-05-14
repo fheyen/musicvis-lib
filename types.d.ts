@@ -1798,6 +1798,20 @@ declare class NoteArray {
      */
     segmentAtGaps(gapDuration: number, mode: 'start-start' | 'end-start'): Note[][];
     /**
+     * Segments the NoteArray into Arrays of Notes at given indices
+     * @example
+     * <caption>Get notes in partions of 4</caption>
+         const noteGroups = myNoteArray.segmentAtIndices([4, 8, 12, 16, 20]);
+         // noteGroups = [
+         //     Array(4),
+         //     Array(4),
+         //     Array(4),
+         // ]
+     * @param indices - indices
+     * @returns segments
+     */
+    segmentAtIndices(indices: number[]): Note[][];
+    /**
      * Filters the NoteArray like you would filter via Array.filter().
      * @example
      * // Only keep notes longer than 1 second
