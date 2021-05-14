@@ -453,6 +453,29 @@ class NoteArray {
     }
 
     /**
+     * Segments the NoteArray into Arrays of Notes at given indices
+     *
+     * @param {number[]} indices indices
+     * @returns {Note[][]} segments
+     * @example <caption>Get notes in partions of 4</caption>
+     *      const noteGroups = myNoteArray.segmentAtIndices([4, 8, 12, 16, 20]);
+     *      // noteGroups = [
+     *      //     Array(4),
+     *      //     Array(4),
+     *      //     Array(4),
+     *      // ]
+     */
+    segmentAtIndices(indices) {
+        const segments = [];
+        let lastIndex = 0;
+        for (const index of indices) {
+            segments.push(this._notes.slice(lastIndex, index));
+            lastIndex = index;
+        }
+        return segments;
+    }
+
+    /**
      * Filters the NoteArray like you would filter via Array.filter().
      *
      * @param {Function} filterFunction filter function, same signature as

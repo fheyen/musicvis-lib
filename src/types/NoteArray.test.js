@@ -700,6 +700,19 @@ describe('NoteArray', () => {
     });
 
 
+    describe('segmentAtIndices', () => {
+        const na = new NoteArray(Array.from({ length: 20 }).map((d, i) => Note.from({ pitch: i })));
+        test('empty', () => {
+            const segments = new NoteArray().segmentAtIndices([3, 5, 10, 11, 16, 19]);
+            expect(segments.map(d => d.length)).toStrictEqual([0, 0, 0, 0, 0, 0]);
+        });
+        test('simple case', () => {
+            const segments = na.segmentAtIndices([3, 5, 10, 11, 16, 19]);
+            expect(segments.map(d => d.length)).toStrictEqual([3, 2, 5, 1, 5, 3]);
+        });
+    });
+
+
     test('filter', () => {
         const na = new NoteArray([
             new Note(69, 0.0, 127, 0, 1.0),
