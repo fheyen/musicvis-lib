@@ -1,16 +1,46 @@
+import { minIndex } from 'd3';
 
 /**
- * Takes the ground truth and a single recording
+ * Takes the ground truth and a single recording.
+ * Both gtNotes and recNotes must be sorted by note start time ascending.
  *
- * @param {*} gtNotes
- * @param {*} recNotes
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Note[]} recNotes recorded notes
+ * @returns {number[]} for each note the difference in start time to the closest
+ *      recorded note
  */
-export function getErrorPerGtNote(gtNotes, recNotes) {
-
-    const matching = new Map();
-
-
+export function getStartTimeErrorPerGtNote(gtNotes, recNotes) {
+    // TODO: Mapping of gt to rec notes is not optimal! not 1:1!
+    return gtNotes.map(gtNote => {
+        const bestRecMatch = minIndex(recNotes, rec => Math.abs(gtNote.start - rec.start));
+        const matchedRecNote = recNotes[bestRecMatch];
+        return Math.abs(gtNote.start - matchedRecNote.start);
+    });
 }
+
+// /**
+//  * Takes the ground truth and a single recording.
+//  * Both gtNotes and recNotes must be sorted by note start time ascending.
+//  *
+//  * @param {Note[]} gtNotes ground truth notes
+//  * @param {Note[]} recNotes recorded notes
+//  * @returns {object[]} an Array with error types for each note
+//  */
+// export function getErrorTypesPerGtNote(gtNotes, recNotes) {
+//     // TODO: Mapping of gt to rec notes is not optimal! not 1:1!
+//     return gtNotes.map(gtNote => {
+//         const bestRecMatch = minIndex(recNotes, rec => Math.abs(gtNote.start - rec.start));
+//         const matchedRecNote = recNotes[bestRecMatch];
+//         // return Math.abs(gtNote.start - matchedRecNote.start);
+//         const startDiff = matchedRecNote.start - gtNote.start;
+//         return {
+//             missing: Math.abs(startDiff) > 3,
+//             early: startDiff<0,
+//             startDiff,
+//             short: ,
+//         };
+//     });
+// }
 
 
 
@@ -27,17 +57,17 @@ export function getErrorPerGtNote(gtNotes, recNotes) {
 // }
 
 // TODO: not used yet
-const noteErrorTypes = [
-    'note missing',
-    'note extra',
-    'note swapped',
-    'start too early',
-    'start too late',
-    'duration too short',
-    'duration too long',
-    'pitch wrong, chroma correct',
-    'pitch wrong, chroma wrong',
-];
+const noteErrorTypes = {
+    missing: 'note missing',
+    extra: 'note extra',
+    swapped: 'note swapped',
+    early: 'start too early',
+    late: 'start too late',
+    short: 'duration too short',
+    long: 'duration too long',
+    wrongPitch: 'pitch wrong, chroma correct',
+    wrongChroma: 'pitch wrong, chroma wrong',
+};
 
 const chordErrorTypes = [
     'chord missing',

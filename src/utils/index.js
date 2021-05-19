@@ -6,7 +6,7 @@ import { randFloat, choose, clipValue, swapSoSmallerFirst, findLocalMaxima } fro
 import { deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest } from './MiscUtils';
 import { bpmToSecondsPerBeat, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType } from './MusicUtils';
 import { noteColorFromPitch } from './NoteColorUtils';
-import { filterRecordingNoise, clipRecordingsPitchesToGtRange, recordingsHeatmap, averageRecordings, averageRecordings2, differenceMap, differenceMapErrorAreas, alignNotesToBpm } from './RecordingsUtils';
+import { filterRecordingNoise, clipRecordingsPitchesToGtRange, clipRecordingsPitchesToGtFretboardRange, recordingsHeatmap, averageRecordings, averageRecordings2, differenceMap, differenceMapErrorAreas, alignNotesToBpm } from './RecordingsUtils';
 import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from './StatisticsUtils';
 import { pingMidiDevice } from './WebMidiUtils';
 
@@ -54,6 +54,7 @@ export {
     // Recordings
     filterRecordingNoise,
     clipRecordingsPitchesToGtRange,
+    clipRecordingsPitchesToGtFretboardRange,
     recordingsHeatmap,
     averageRecordings,
     averageRecordings2,

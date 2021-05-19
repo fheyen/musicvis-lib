@@ -33,6 +33,7 @@ import * as Alignment from './alignment/Alignment';
 import * as DiffAlignment from './alignment/DiffAlignment';
 // Comparison
 import * as Matching from './comparison/Matching';
+import * as PriorityMatching from './comparison/PriorityMatching';
 import * as Similarity from './comparison/Similarity';
 import * as SimilarSections from './comparison/SimilarSections';
 // Libraries
@@ -67,6 +68,7 @@ export {
     DiffAlignment,
     // Comparison
     Matching,
+    PriorityMatching,
     Similarity,
     SimilarSections,
     // Libraries

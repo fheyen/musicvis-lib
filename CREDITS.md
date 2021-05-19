@@ -2,6 +2,16 @@
 
 The following packages, repositories, and other resources have been used or helpful.
 
+## Utils
+
+- [d3](https://github.com/d3/d3)
+
+## MIDI and Music Theory
+
+- [@tonejs/midi](https://github.com/Tonejs/Midi)
+- [midi-parser-js](https://github.com/colxi/midi-parser-js)
+- [@tonaljs/tonal](https://github.com/tonaljs/tonal)
+
 ## String Algorithms
 
 ### Levenshtein Algorithm
