@@ -7,7 +7,6 @@
  *
  * @see https://gist.github.com/andrei-m/982927#gistcomment-1931258
  * @author https://github.com/kigiri, license: MIT
- *
  * @param {string|Array} a a string
  * @param {string|Array} b another string
  * @param {boolean} normalize when set to true, the distance will be normalized

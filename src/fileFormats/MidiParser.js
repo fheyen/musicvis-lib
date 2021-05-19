@@ -5,7 +5,6 @@ import { roundToNDecimals } from '../utils/MathUtils';
 
 /**
  * @module fileFormats/MidiParser
- *
  * @todo parse pitch bends
  */
 
@@ -436,7 +435,6 @@ function getSignatureChanges(tracks) {
  * Channel Aftertouch 0xD      13              aftertouch value    not used
  * Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
  * Meta               0xFF    255                 parameters depend on meta type
- *
  * @type {object}
  */
 const EVENT_TYPES = {

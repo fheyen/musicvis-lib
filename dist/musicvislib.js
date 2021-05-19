@@ -1,11 +1,11 @@
-// musicvis-lib v0.48.0 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.48.2 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.48.0";
+  var version="0.48.2";
 
   /**
    * Lookup for many MIDI specifications.
@@ -3853,6 +3853,30 @@
 
   function median (values, valueof) {
     return quantile(values, 0.5, valueof);
+  }
+
+  function minIndex(values, valueof) {
+    let min;
+    let minIndex = -1;
+    let index = -1;
+
+    if (valueof === undefined) {
+      for (const value of values) {
+        ++index;
+
+        if (value != null && (min > value || min === undefined && value >= value)) {
+          min = value, minIndex = index;
+        }
+      }
+    } else {
+      for (let value of values) {
+        if ((value = valueof(value, ++index, values)) != null && (min > value || min === undefined && value >= value)) {
+          min = value, minIndex = index;
+        }
+      }
+    }
+
+    return minIndex;
   }
 
   function difference(values, ...others) {
@@ -10058,7 +10082,6 @@
 
   /**
    * @module fileFormats/MidiParser
-   *
    * @todo parse pitch bends
    */
   // Precision in number of digits when rounding seconds
@@ -10561,7 +10584,6 @@
    * Channel Aftertouch 0xD      13              aftertouch value    not used
    * Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
    * Meta               0xFF    255                 parameters depend on meta type
-   *
    * @type {object}
    */
 
@@ -15138,7 +15160,6 @@
    * @param {Function} kernel kernel function
    * @param {number[]} X domain
    * @returns {Function} kernel density estimator
-   *
    */
 
   function kernelDensityEstimator(kernel, X) {
@@ -15251,6 +15272,63 @@
       const [minPitch, maxPitch] = pitchRanges.get(track);
       return recording.clone().filter(note => note.pitch >= minPitch && note.pitch <= maxPitch);
     });
+  }
+  /**
+   * Removes notes from a recordings which are outside the fretboard range of the
+   * ground truth and therefore likely noise.
+   * Looks up the fretboard position range from the track of the GT that the
+   * recording was made for.
+   *
+   * @param {Recording[]} recordings recordings
+   * @param {Note[][]} groundTruth ground truth
+   * @param {'exact'|'area'} [mode=exact] mode for which fretboard positions to
+   *      include: exact will only keep notes that have positions that occur in
+   *      the GT, area will get a rectangular area of the fretboard that contains
+   *      all GT positions and fill filter on that.
+   * @returns {Recording[]} filtered recordings
+   */
+
+  function clipRecordingsPitchesToGtFretboardRange(recordings, groundTruth, mode = 'exact') {
+    if (mode === 'exact') {
+      // Speed up by getting range only once for all tracks
+      const occuringPositions = new Map();
+
+      for (const [index, part] of groundTruth.entries()) {
+        const positions = new Set(part.map(note => `${note.string} ${note.fret}`));
+        occuringPositions.set(index, positions);
+      }
+
+      return recordings.map(recording => {
+        const track = recording.selectedTrack;
+        const validPositions = occuringPositions.get(track);
+        return recording.clone().filter(note => validPositions.has(`${note.string} ${note.fret}`));
+      });
+    } else {
+      // Speed up by getting range only once for all tracks
+      const positionRanges = new Map();
+
+      for (const [index, part] of groundTruth.entries()) {
+        const stringExtent = extent(part, d => d.string);
+        const fretExtent = extent(part, d => d.fret);
+        positionRanges.set(index, {
+          stringExtent,
+          fretExtent
+        });
+      }
+
+      return recordings.map(recording => {
+        const track = recording.selectedTrack;
+        const {
+          stringExtent,
+          fretExtent
+        } = positionRanges.get(track);
+        const [minString, maxString] = stringExtent;
+        const [minFret, maxFret] = fretExtent;
+        return recording.clone().filter(note => {
+          return note.string >= minString && note.string <= maxString && note.fret >= minFret && note.fret <= maxFret;
+        });
+      });
+    }
   }
   /**
    * Aligns notes to a rhythmic pattern
@@ -15507,7 +15585,6 @@
    * @todo move to comparison
    * @todo not used or tested yet
    * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
-   *
    * @param {Map} differenceMap differenceMap from differenceMap()
    * @returns {object} {missing, additional, correct} area ratio
    */
@@ -15637,6 +15714,7 @@
     noteColorFromPitch: noteColorFromPitch,
     filterRecordingNoise: filterRecordingNoise,
     clipRecordingsPitchesToGtRange: clipRecordingsPitchesToGtRange,
+    clipRecordingsPitchesToGtFretboardRange: clipRecordingsPitchesToGtFretboardRange,
     recordingsHeatmap: recordingsHeatmap,
     averageRecordings: averageRecordings,
     averageRecordings2: averageRecordings2,
@@ -16407,6 +16485,139 @@
   });
 
   /**
+   * Idea: Like in hierarchical clustering, take the most similar pair out of the
+   * set of all possible pairs repeatedly, until one array of items is empty.
+   *
+   * @template T1
+   * @template T2
+   * @param {T1[]} itemsA an array with items
+   * @param {T2[]} itemsB an array with items
+   * @param {function(T1, T2): number} distanceFunction distance function for two
+   *      items, must be 0 for equal items and symmetric
+   * @returns {Map<number,number>} with the indices of the matched items
+   */
+
+  function priorityMatching(itemsA, itemsB, distanceFunction) {
+    // Build distance matrix
+    const matrix = Array.from({
+      length: itemsA.length
+    }).map(() => Array.from({
+      length: itemsB.length
+    }));
+
+    for (const [indexA, gtNote] of itemsA.entries()) {
+      for (let indexB = indexA; indexB < itemsB.length; indexB++) {
+        const dist = distanceFunction(gtNote, itemsB[indexB]);
+        matrix[indexA][indexB] = dist;
+
+        if (matrix[indexB] !== undefined) {
+          matrix[indexB][indexA] = dist;
+        }
+      }
+    } // Compute matching pair by pair
+
+
+    const matching = new Map();
+    let numberOfMatches = Math.min(itemsA.length, itemsB.length);
+
+    for (let match = 0; match < numberOfMatches; match++) {
+      // Find most similar pair, i.e. matrix entry with smallest value
+      const [a, b] = getMatrixMinPosition(matrix);
+      matching.set(a, b); // Remove from matrix (just set to null)
+
+      if (match >= numberOfMatches - 1) {
+        break;
+      }
+
+      for (let index = 0; index < itemsA.length; index++) {
+        matrix[index][b] = null;
+      }
+
+      for (let index = 0; index < itemsB.length; index++) {
+        matrix[a][index] = null;
+      }
+    }
+
+    return matching;
+  }
+  /**
+   * First matches GT to rec notes via priorityMatching, then computes the error
+   * for each GT note that has been matched using the same distance function.
+   * The Map will be undefined for GT notes that have not been matched, they can
+   * be considered missing in the recording.
+   *
+   * @param {Note[]} gtNotes ground truth notes
+   * @param {Note[]} recNotes recorded notes
+   * @param {function(Note,Note): number} distanceFunction distance function,
+   *      taking two notes and returning the 'distance', i.e. how different they
+   *      are. See balancedNoteDistance as example.
+   * @returns {Map<Note,number>} a Map from GT note to its error
+   */
+
+  function errorFromPriorityMatching(gtNotes, recNotes, distanceFunction) {
+    const matching = priorityMatching(gtNotes, recNotes, distanceFunction); // Map GT notes to errors
+
+    const errors = new Map();
+
+    for (const [gt, rec] of matching.entries()) {
+      const gtNote = gtNotes[gt];
+      const recNote = recNotes[rec];
+      const error = distanceFunction(gtNotes, recNote);
+      errors.set(gtNote, error);
+    }
+
+    return errors;
+  }
+  /**
+   * Computes a distance (inverse similarity) of two notes, considering pitch,
+   * chroma, start, duration, and channel.
+   *
+   * @param {Note} a a Note
+   * @param {Note} b a Note
+   * @returns {number} distance
+   */
+
+  function balancedNoteDistance(a, b) {
+    let dist = 0; // Pitch
+
+    dist += Math.abs(a.pitch - b.pitch); // Chroma
+
+    dist += Math.abs(a.pitch % 12 - b.pitch % 12); // Start time
+
+    dist += Math.abs(a.start - b.start); // Duration
+
+    dist += 0.5 * Math.abs(a.getDuration() - b.getDuration()); // Channel
+
+    dist += Math.abs(a.channel - b.channel);
+    return dist;
+  }
+  /**
+   * Returns the row and colum indices of the minimum value of the given matrix
+   *
+   * @param {number[][]} matrix matrix
+   * @returns {number[]} [rowIndex, columIndex] of the minimum value
+   */
+
+  function getMatrixMinPosition(matrix) {
+    // Find most similar pair, i.e. matrix entry with smallest value
+    const minPerRow = matrix.map(row => {
+      const minInd = minIndex(row);
+      return [minInd, row[minInd]];
+    });
+    const minRowIndex = minIndex(minPerRow, d => d[1]);
+    const minColIndex = minPerRow[minRowIndex][0];
+    return [minRowIndex, minColIndex];
+  }
+
+  var PriorityMatching = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    priorityMatching: priorityMatching,
+    errorFromPriorityMatching: errorFromPriorityMatching,
+    balancedNoteDistance: balancedNoteDistance,
+    getMatrixMinPosition: getMatrixMinPosition
+  });
+
+  /**
    * @module comparison/Similarity
    */
 
@@ -16483,7 +16694,6 @@
    * for pitches that are not occuring in both tracks
    *
    * @see https://github.com/GordonLesti/dynamic-time-warping
-   *
    * @param {Map} discrA discretized track
    * @param {Map} discrB discretized track
    * @param {string} distance one of: 'euclidean', 'nearest'
@@ -16705,7 +16915,6 @@
    *
    * @see https://gist.github.com/andrei-m/982927#gistcomment-1931258
    * @author https://github.com/kigiri, license: MIT
-   *
    * @param {string|Array} a a string
    * @param {string|Array} b another string
    * @param {boolean} normalize when set to true, the distance will be normalized
@@ -17621,6 +17830,72 @@
   function getVersion() {
     return version;
   } // Types
+  // import Note from './types/Note';
+  // import GuitarNote from './types/GuitarNote';
+  // import NoteArray from './types/NoteArray';
+  // import Recording from './types/Recording';
+  // import MusicPiece from './types/MusicPiece';
+  // import PitchSequence from './types/PitchSequence';
+  // // File formats
+  // import * as Midi from './fileFormats/Midi';
+  // // Graphics
+  // import * as Canvas from './graphics/Canvas';
+  // // Input
+  // import { recordAudio } from './input/AudioRecorder';
+  // import { recordMidi } from './input/MidiRecorder';
+  // import MidiInputManager from './input/MidiInputManager';
+  // // Instruments
+  // import * as Drums from './instruments/Drums';
+  // import * as Guitar from './instruments/Guitar';
+  // import * as Lamellophone from './instruments/Lamellophone';
+  // import * as Piano from './instruments/Piano';
+  // // Alignment
+  // import * as Alignment from './alignment/Alignment';
+  // import * as DiffAlignment from './alignment/DiffAlignment';
+  // // Comparison
+  // import * as Matching from './comparison/Matching';
+  // import * as PriorityMatching from './comparison/PriorityMatching';
+  // import * as Similarity from './comparison/Similarity';
+  // import * as SimilarSections from './comparison/SimilarSections';
+  // // Libraries
+  // import * as Utils from './utils';
+  // import * as Chords from './chords/Chords';
+  // import * as StringBased from './stringBased';
+  // export {
+  //     getVersion,
+  //     // Types
+  //     Note,
+  //     GuitarNote,
+  //     NoteArray,
+  //     Recording,
+  //     MusicPiece,
+  //     PitchSequence,
+  //     // File formats
+  //     Midi,
+  //     // graphics
+  //     Canvas,
+  //     // Input
+  //     recordAudio,
+  //     recordMidi,
+  //     MidiInputManager,
+  //     // Instruments
+  //     Drums,
+  //     Guitar,
+  //     Lamellophone,
+  //     Piano,
+  //     // Alignment
+  //     Alignment,
+  //     DiffAlignment,
+  //     // Comparison
+  //     Matching,
+  //     PriorityMatching,
+  //     Similarity,
+  //     SimilarSections,
+  //     // Libraries
+  //     Utils,
+  //     Chords,
+  //     StringBased,
+  // };
 
   exports.Alignment = Alignment;
   exports.Canvas = Canvas;
@@ -17638,6 +17913,7 @@
   exports.NoteArray = NoteArray;
   exports.Piano = Piano;
   exports.PitchSequence = PitchSequence;
+  exports.PriorityMatching = PriorityMatching;
   exports.Recording = Recording;
   exports.SimilarSections = SimilarSections;
   exports.Similarity = Similarity;

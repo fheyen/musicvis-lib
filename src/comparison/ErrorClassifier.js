@@ -19,7 +19,6 @@ import * as Utils from '../utils';
  * extra, early/late, or short/long
  *
  * @todo generalize to channel/pitch instead of string and fret?
- *
  * @param {Note[]|GuitarNote[]} gtNotes ground truth notes
  * @param {Note[]|GuitarNote[]} recNotes recordings notes
  * @param {string} groupBy attribute to group notes by

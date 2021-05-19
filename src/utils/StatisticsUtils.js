@@ -54,7 +54,6 @@ export function getBoxplotCharacteristics(values) {
  * @param {Function} kernel kernel function
  * @param {number[]} X domain
  * @returns {Function} kernel density estimator
- *
  */
 export function kernelDensityEstimator(kernel, X) {
     /**

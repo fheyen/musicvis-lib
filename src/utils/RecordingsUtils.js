@@ -346,7 +346,6 @@ export function differenceMap(gtNotes, recNotes, binSize) {
  * @todo move to comparison
  * @todo not used or tested yet
  * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
- *
  * @param {Map} differenceMap differenceMap from differenceMap()
  * @returns {object} {missing, additional, correct} area ratio
  */

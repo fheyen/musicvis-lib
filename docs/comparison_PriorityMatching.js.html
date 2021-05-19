@@ -28,7 +28,7 @@
 
 
     <title>
-      NeedlemanWunsch
+      comparison/PriorityMatching.js
     </title>
 
     <!--[if lt IE 9]>
@@ -100,7 +100,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        NeedlemanWunsch
+        comparison/PriorityMatching.js
       </h1>
       
 
@@ -108,713 +108,129 @@
 
 
 
-
-<section>
-
-
-<header>
-    
-        
-        <h2>
-        
-            <span class="ancestors"><a href="module-stringBased_NeedlemanWunsch.html">stringBased/NeedlemanWunsch</a>~</span>
-        
-        NeedlemanWunsch
-        
-        </h2>
-        
-        
-            <div class="class-description">Needleman-Wunsch algorithm</div>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-        <h2>Constructor</h2>
-    
-
-    <h4 class="name" id="NeedlemanWunsch">
-        <a href="#NeedlemanWunsch">#</a>
-        <span class="type-signature"></span>new NeedlemanWunsch<span class="signature">(seq1, seq2, match_score, mismatch_penalty, gap_penalty)</span><span class="type-signature"></span>
-    </h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>seq1</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">a string</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>seq2</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">another string</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>match_score</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last">score for matching characters</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mismatch_penalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">penalty for mismatching characters</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>gap_penalty</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">penalty for a gap</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="stringBased_NeedlemanWunsch.js.html">stringBased/NeedlemanWunsch.js</a>, <a href="stringBased_NeedlemanWunsch.js.html#line14">line 14</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-see">See:</dt>
-            <dd class="tag-see">
-                <ul>
-                    <li><a href="https://github.com/blievrouw/needleman-wunsch/blob/master/src/needleman_wunsch.js">https://github.com/blievrouw/needleman-wunsch/blob/master/src/needleman_wunsch.js</a></li>
-                </ul>
-            </dd>
-        </div>
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-todo">To Do:</dt>
-            <dd class="tag-todo">
-                <ul>
-                    <li>does not support cost matrix</li>
-                
-                    <li>extend by matchMismathFunction</li>
-                </ul>
-            </dd>
-        </div>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="alignmentChildren">
-        <a href="#alignmentChildren">#</a>
-        <span class="type-signature"></span>alignmentChildren<span class="signature">(pos)</span><span class="type-signature"> &rarr; {Array.&lt;object>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Finds next alignment locations (children) from a position in scoring matrix
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pos</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">m- Position in scoring matrix</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="stringBased_NeedlemanWunsch.js.html">stringBased/NeedlemanWunsch.js</a>, <a href="stringBased_NeedlemanWunsch.js.html#line91">line 91</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    children - Children positions and alignment types
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;object></span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="alignmentTraceback">
-        <a href="#alignmentTraceback">#</a>
-        <span class="type-signature"></span>alignmentTraceback<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;object>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="stringBased_NeedlemanWunsch.js.html">stringBased/NeedlemanWunsch.js</a>, <a href="stringBased_NeedlemanWunsch.js.html#line115">line 115</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    e.g. [{ seq1: '-4321', seq2: '54321' }]
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;object></span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="calcScoresAndTracebacks">
-        <a href="#calcScoresAndTracebacks">#</a>
-        <span class="type-signature"></span>calcScoresAndTracebacks<span class="signature">()</span><span class="type-signature"></span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Calculates (intermediate) scores and tracebacks using provided parameters
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="stringBased_NeedlemanWunsch.js.html">stringBased/NeedlemanWunsch.js</a>, <a href="stringBased_NeedlemanWunsch.js.html#line46">line 46</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { minIndex } from 'd3';
+
+/**
+ * Idea: Like in hierarchical clustering, take the most similar pair out of the
+ * set of all possible pairs repeatedly, until one array of items is empty.
+ *
+ * @template T1
+ * @template T2
+ * @param {T1[]} itemsA an array with items
+ * @param {T2[]} itemsB an array with items
+ * @param {function(T1, T2): number} distanceFunction distance function for two
+ *      items, must be 0 for equal items and symmetric
+ * @returns {Map&lt;number,number>} with the indices of the matched items
+ */
+export function priorityMatching(itemsA, itemsB, distanceFunction) {
+    // Build distance matrix
+    const matrix = Array.from({ length: itemsA.length }).map(
+        () => Array.from({ length: itemsB.length }),
+    );
+    for (const [indexA, gtNote] of itemsA.entries()) {
+        for (let indexB = indexA; indexB &lt; itemsB.length; indexB++) {
+            const dist = distanceFunction(gtNote, itemsB[indexB]);
+            matrix[indexA][indexB] = dist;
+            if (matrix[indexB] !== undefined) {
+                matrix[indexB][indexA] = dist;
+            }
+        }
+    }
+    // Compute matching pair by pair
+    const matching = new Map();
+    let numberOfMatches = Math.min(itemsA.length, itemsB.length);
+    for (let match = 0; match &lt; numberOfMatches; match++) {
+        // Find most similar pair, i.e. matrix entry with smallest value
+        const [a, b] = getMatrixMinPosition(matrix);
+        matching.set(a, b);
+        // Remove from matrix (just set to null)
+        if (match >= numberOfMatches - 1) {
+            break;
+        }
+        for (let index = 0; index &lt; itemsA.length; index++) {
+            matrix[index][b] = null;
+        }
+        for (let index = 0; index &lt; itemsB.length; index++) {
+            matrix[a][index] = null;
+        }
+    }
+    return matching;
+}
+
+/**
+ * First matches GT to rec notes via priorityMatching, then computes the error
+ * for each GT note that has been matched using the same distance function.
+ * The Map will be undefined for GT notes that have not been matched, they can
+ * be considered missing in the recording.
+ *
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Note[]} recNotes recorded notes
+ * @param {function(Note,Note): number} distanceFunction distance function,
+ *      taking two notes and returning the 'distance', i.e. how different they
+ *      are. See balancedNoteDistance as example.
+ * @returns {Map&lt;Note,number>} a Map from GT note to its error
+ */
+export function errorFromPriorityMatching(gtNotes, recNotes, distanceFunction) {
+    const matching = priorityMatching(gtNotes, recNotes, distanceFunction);
+    // Map GT notes to errors
+    const errors = new Map();
+    for (const [gt, rec] of matching.entries()) {
+        const gtNote = gtNotes[gt];
+        const recNote = recNotes[rec];
+        const error = distanceFunction(gtNotes, recNote);
+        errors.set(gtNote, error);
+    }
+    return errors;
+}
+
+/**
+ * Computes a distance (inverse similarity) of two notes, considering pitch,
+ * chroma, start, duration, and channel.
+ *
+ * @param {Note} a a Note
+ * @param {Note} b a Note
+ * @returns {number} distance
+ */
+export function balancedNoteDistance(a, b) {
+    let dist = 0;
+    // Pitch
+    dist += Math.abs(a.pitch - b.pitch);
+    // Chroma
+    dist += Math.abs(a.pitch % 12 - b.pitch % 12);
+    // Start time
+    dist += Math.abs(a.start - b.start);
+    // Duration
+    dist += 0.5 * Math.abs(a.getDuration() - b.getDuration());
+    // Channel
+    dist += Math.abs(a.channel - b.channel);
+    return dist;
+}
+
+/**
+ * Returns the row and colum indices of the minimum value of the given matrix
+ *
+ * @param {number[][]} matrix matrix
+ * @returns {number[]} [rowIndex, columIndex] of the minimum value
+ */
+export function getMatrixMinPosition(matrix) {
+    // Find most similar pair, i.e. matrix entry with smallest value
+    const minPerRow = matrix.map(row => {
+        const minInd = minIndex(row);
+        return [
+            minInd,
+            row[minInd],
+        ];
+    });
+    const minRowIndex = minIndex(minPerRow, d => d[1]);
+    const minColIndex = minPerRow[minRowIndex][0];
+    return [minRowIndex, minColIndex];
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

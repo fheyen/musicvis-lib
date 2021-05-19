@@ -8,7 +8,7 @@ import { minIndex } from 'd3';
  * @template T2
  * @param {T1[]} itemsA an array with items
  * @param {T2[]} itemsB an array with items
- * @param {function<(T1, T2): number>} distanceFunction distance function for two
+ * @param {function(T1, T2): number} distanceFunction distance function for two
  *      items, must be 0 for equal items and symmetric
  * @returns {Map<number,number>} with the indices of the matched items
  */
@@ -55,7 +55,7 @@ export function priorityMatching(itemsA, itemsB, distanceFunction) {
  *
  * @param {Note[]} gtNotes ground truth notes
  * @param {Note[]} recNotes recorded notes
- * @param {function<(Note,Note): number>} distanceFunction distance function,
+ * @param {function(Note,Note): number} distanceFunction distance function,
  *      taking two notes and returning the 'distance', i.e. how different they
  *      are. See balancedNoteDistance as example.
  * @returns {Map<Note,number>} a Map from GT note to its error
@@ -94,7 +94,7 @@ export function balancedNoteDistance(a, b) {
     // Channel
     dist += Math.abs(a.channel - b.channel);
     return dist;
-};
+}
 
 /**
  * Returns the row and colum indices of the minimum value of the given matrix

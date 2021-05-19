@@ -131,7 +131,7 @@ declare module "Chords" {
 declare module "comparison/ErrorClassifier" {
     /**
      * Compares a single recording to a ground truth and labels notes as missing,
-    extra, early/late, or short/long
+     * extra, early/late, or short/long
      * @param gtNotes - ground truth notes
      * @param recNotes - recordings notes
      * @param groupBy - attribute to group notes by
@@ -239,6 +239,47 @@ declare module "comparison/Matching" {
     function getMatchingSliceError(matching: Map, start: number, end: number, addPenalty: number, missPenalty: number, timingPenalty: number): any;
 }
 
+/**
+ * Idea: Like in hierarchical clustering, take the most similar pair out of the
+ * set of all possible pairs repeatedly, until one array of items is empty.
+ * @param itemsA - an array with items
+ * @param itemsB - an array with items
+ * @param distanceFunction - distance function for two
+ *      items, must be 0 for equal items and symmetric
+ * @returns with the indices of the matched items
+ */
+declare function priorityMatching(itemsA: T1[], itemsB: T2[], distanceFunction: (...params: any[]) => any): Map<number, number>;
+
+/**
+ * First matches GT to rec notes via priorityMatching, then computes the error
+ * for each GT note that has been matched using the same distance function.
+ * The Map will be undefined for GT notes that have not been matched, they can
+ * be considered missing in the recording.
+ * @param gtNotes - ground truth notes
+ * @param recNotes - recorded notes
+ * @param distanceFunction - distance function,
+ *      taking two notes and returning the 'distance', i.e. how different they
+ *      are. See balancedNoteDistance as example.
+ * @returns a Map from GT note to its error
+ */
+declare function errorFromPriorityMatching(gtNotes: Note[], recNotes: Note[], distanceFunction: (...params: any[]) => any): Map<Note, number>;
+
+/**
+ * Computes a distance (inverse similarity) of two notes, considering pitch,
+ * chroma, start, duration, and channel.
+ * @param a - a Note
+ * @param b - a Note
+ * @returns distance
+ */
+declare function balancedNoteDistance(a: Note, b: Note): number;
+
+/**
+ * Returns the row and colum indices of the minimum value of the given matrix
+ * @param matrix - matrix
+ * @returns [rowIndex, columIndex] of the minimum value
+ */
+declare function getMatrixMinPosition(matrix: number[][]): number[];
+
 declare module "comparison/Similarity" {
     /**
      * Given a track, a selected time interval and a threshold,
@@ -257,9 +298,9 @@ declare module "comparison/Similarity" {
     function getSimilarParts(track: Note[], selectedInterval: number[], stride: number, threshold: number, secondsPerBin: number, distance: string): any;
     /**
      * Uses calculates the distance between
-    two discretized tracks, for each pitch separately.
-    Pitch-wise distances are averaged and a penalty is added to the distance
-    for pitches that are not occuring in both tracks
+     * two discretized tracks, for each pitch separately.
+     * Pitch-wise distances are averaged and a penalty is added to the distance
+     * for pitches that are not occuring in both tracks
      * @param discrA - discretized track
      * @param discrB - discretized track
      * @param distance - one of: 'euclidean', 'nearest'
@@ -335,9 +376,14 @@ declare module "comparison/SimilarSections" {
 }
 
 /**
- * Takes the ground truth and a single recording
+ * Takes the ground truth and a single recording.
+Both gtNotes and recNotes must be sorted by note start time ascending.
+ * @param gtNotes - ground truth notes
+ * @param recNotes - recorded notes
+ * @returns for each note the difference in start time to the closest
+     recorded note
  */
-declare function getErrorPerGtNote(gtNotes: any, recNotes: any): void;
+declare function getStartTimeErrorPerGtNote(gtNotes: Note[], recNotes: Note[]): number[];
 
 /**
  * Creates a track of metronome ticks for a given tempo and meter.
@@ -1859,37 +1905,18 @@ declare class NoteArray {
 
 /**
  * Class that allows to represent pitch-bends from a MIDI file
- * @param pitch - pitch
  * @param start - start time in seconds
- * @param velocity - velocity
+ * @param amount - bend amount
  * @param channel - MIDI channel
- * @param end - end time in seconds
  */
 declare class PitchBend {
-    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number);
+    constructor(start: number, amount: number, channel: number);
     /**
      * Creates a GuitarNote object from an object via destructuring
      * @param object - object with at least {pitch}
      * @returns new note
      */
     static from(object: any): PitchBend;
-    /**
-     * Converts a Note to a GuitarNote
-     * @param note - note
-     * @returns guitar note
-     */
-    static fromNote(note: Note): PitchBend;
-    /**
-     * Returns a copy of the Note object
-     * @returns new note
-     */
-    clone(): PitchBend;
-    /**
-     * Returns true if this note and otherNote have equal attributes.
-     * @param otherNote - another GuitarNote
-     * @returns true if equal
-     */
-    equals(otherNote: PitchBend): boolean;
 }
 
 /**
@@ -2397,8 +2424,8 @@ declare module "utils/RecordingsUtils" {
     function differenceMap(gtNotes: Note[], recNotes: Note[], binSize: number): Map;
     /**
      * Computes the 'area' of error from a differenceMap normalized by total area.
-    The area is simply the number of bins with each value, total area is max.
-    number of bins in all pitches * the number of pitches.
+     * The area is simply the number of bins with each value, total area is max.
+     * number of bins in all pitches * the number of pitches.
      * @param differenceMap - differenceMap from differenceMap()
      * @returns {missing, additional, correct} area ratio
      */

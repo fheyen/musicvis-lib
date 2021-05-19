@@ -75,7 +75,6 @@ export function getSimilarParts(track, selectedInterval, stride, threshold, seco
  * for pitches that are not occuring in both tracks
  *
  * @see https://github.com/GordonLesti/dynamic-time-warping
- *
  * @param {Map} discrA discretized track
  * @param {Map} discrB discretized track
  * @param {string} distance one of: 'euclidean', 'nearest'
