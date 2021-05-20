@@ -67,7 +67,7 @@ export function errorFromPriorityMatching(gtNotes, recNotes, distanceFunction) {
     for (const [gt, rec] of matching.entries()) {
         const gtNote = gtNotes[gt];
         const recNote = recNotes[rec];
-        const error = distanceFunction(gtNotes, recNote);
+        const error = distanceFunction(gtNote, recNote);
         errors.set(gtNote, error);
     }
     return errors;

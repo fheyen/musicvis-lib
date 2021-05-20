@@ -112,9 +112,7 @@ class Recording extends NoteArray {
      * @throws {Error} when name, date, or notes are missing
      */
     static from(object) {
-        // Support old format
-        let { name, date, notes, _notes } = object;
-        if (notes === undefined) { notes = _notes; }
+        let { name, date, notes } = object;
         // Check for undefined
         const values = [name, date, notes];
         const names = ['name', 'date', 'notes'];
