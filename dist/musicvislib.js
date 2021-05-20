@@ -1,11 +1,11 @@
-// musicvis-lib v0.48.2 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.48.3 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.48.2";
+  var version="0.48.3";
 
   /**
    * Lookup for many MIDI specifications.
@@ -6294,11 +6294,18 @@
 
 
     static from(object) {
+      // Support old format
       let {
         name,
         date,
-        notes
-      } = object; // Check for undefined
+        notes,
+        _notes
+      } = object;
+
+      if (notes === undefined) {
+        notes = _notes;
+      } // Check for undefined
+
 
       const values = [name, date, notes];
       const names = ['name', 'date', 'notes'];
@@ -9465,8 +9472,11 @@
     const tempoChanges = [];
     const beatTypeChanges = [];
     const keySignatureChanges = [];
-    const noteObjs = [];
-    const measureLinePositions = [];
+    const noteObjs = []; // Time in seconds of the start of new measures
+
+    const measureLinePositions = []; // Indices of notes where a new measure starts
+
+    const measureIndices = [];
 
     for (const measure of measures) {
       const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION$1); // Try to update metrics (if they are not set, keep the old ones)
@@ -9651,6 +9661,7 @@
 
 
       measureLinePositions.push(roundToNDecimals(currentTime, ROUNDING_PRECISION$1));
+      measureIndices.push(noteObjs.length);
     } // Defaults
 
 
@@ -9681,6 +9692,7 @@
       noteObjs: noteObjs,
       totalTime: currentTime,
       measureLinePositions,
+      measureIndices,
       tempoChanges,
       beatTypeChanges,
       keySignatureChanges,
@@ -9990,13 +10002,12 @@
   const dynamicsMap = new Map([['ppp', 25], ['pp', 38], ['p', 51], ['mp', 64], ['mf', 76], ['f', 89], ['ff', 102], ['fff', 114]]);
 
   /**
-   * @module utils/MiscUtils
+   * @module utils/MusicUtils
    */
 
   /**
    * Converts beats per minute to seconds per beat
    *
-   * @deprecated use MusicUtils.bpmToSecondsPerBeat instead
    * @param {number} bpm tempo in beats per minute
    * @returns {number} seconds per beat
    */
@@ -10005,79 +10016,103 @@
     return 1 / (bpm / 60);
   }
   /**
-   * Clones a map where the values are flat objects,
-   * i.e. values do not contain objects themselfes.
+   * Turns a chord into an integer that uniquely describes the occuring chroma.
+   * If the same chroma occurs twice this will not make a difference
+   * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
    *
-   * @param {Map} map a map with object values
-   * @returns {Map} a copy of the map with copies of the value objects
+   * How it works:
+   * Chord has C, E, and G
+   * x = 000010010001
+   *         G  E   C
+   *
+   * @param {Note[]} notes notes
+   * @returns {number} an integer that uniquely identifies this chord's chroma
    */
 
-  function deepCloneFlatObjectMap(map) {
-    const result = new Map();
+  function chordToInteger(notes) {
+    let value = 0x0;
 
-    for (const [key, value] of map.entries()) {
-      result.set(key, { ...value
+    for (const note of notes) {
+      const chroma = note.pitch % 12; // eslint-disable-next-line no-bitwise
+
+      const noteInteger = 1 << chroma; // eslint-disable-next-line no-bitwise
+
+      value = value | noteInteger;
+    }
+
+    return value;
+  }
+  /**
+   * Takes two chord integer representations from chordToInteger() and computes
+   * the Jaccard index
+   *
+   * @param {number} chord1 chord as integer representation
+   * @param {number} chord2 chord as integer representation
+   * @returns {number} Jackard index, from 0 for different to 1 for identical
+   */
+
+  function chordIntegerJaccardIndex(chord1, chord2) {
+    if (chord1 === chord2) {
+      return 1;
+    } // eslint-disable-next-line no-bitwise
+
+
+    const intersection = chord1 & chord2; // eslint-disable-next-line no-bitwise
+
+    const union = chord1 | chord2;
+    const intersectionSize = countOnesOfBinary(intersection);
+    const unionSize = countOnesOfBinary(union);
+    return intersectionSize / unionSize;
+  }
+  /*
+   * noteTypeDurationRatios
+   * 1 = whole note, 1/2 = half note, ...
+   *
+   * With added dots:
+   * o. has duration of 1.5, o.. 1.75, ...
+   */
+
+  const noteTypeDurationRatios = [];
+  const baseDurations = [2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16, 1 / 32, 1 / 64];
+
+  for (const d of baseDurations) {
+    for (let dots = 0; dots < 4; dots++) {
+      let duration = d;
+      let toAdd = d;
+
+      for (let dot = 0; dot < dots; dot++) {
+        // Each dot after the note adds half of the one before
+        toAdd /= 2;
+        duration += toAdd;
+      }
+
+      noteTypeDurationRatios.push({
+        type: d,
+        dots,
+        duration
       });
     }
-
-    return result;
   }
+
+  noteTypeDurationRatios.sort((a, b) => a.duration - b.duration);
   /**
-   * Groups the Notes from multiple tracks
+   * Estimates the note type (whole, quarter, ...) and number of dots for dotted
+   * notes
    *
-   * @param {Note[][]} tracks array of arrays of Note objects
-   * @returns {Map} grouping
+   * @todo test if corrrectly 'calibrated'
+   * @param {number} duration duration of a note
+   * @param {number} bpm tempo of the piece in bpm
+   * @returns {object} note type and number of dots
+   *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
+   *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
    */
 
-  function groupNotesByPitch(tracks) {
-    const allNotes = tracks.flat();
+  function noteDurationToNoteType(duration, bpm) {
+    const quarterDuration = bpmToSecondsPerBeat$1(bpm);
+    const ratio = duration / quarterDuration / 4; // TODO: round to finest representable step?
+    // Binary search
 
-    if (allNotes.length === 0) {
-      return new Map();
-    }
-
-    return group(allNotes, d => d.pitch);
-  }
-  /**
-   * Reverses a given string.
-   *
-   * @param {string} s string
-   * @returns {string} reversed string
-   */
-
-  function reverseString(s) {
-    return s.split('').reverse().join('');
-  }
-  /**
-   * Given some notes and a target note, finds
-   * the note that has its start time closest to
-   * the one of targetNote
-   *
-   * @todo replace by d3 argmin or sth?
-   * @param {Note[]} notes notes
-   * @param {Note} targetNote target note
-   * @returns {Note} closest note to targetNote
-   */
-
-  function findNearest(notes, targetNote) {
-    if (!notes || notes.length === 0 || !targetNote) {
-      return null;
-    }
-
-    let nearest = null;
-    let dist = Number.POSITIVE_INFINITY;
-    const targetStart = targetNote.start;
-
-    for (const n of notes) {
-      const newDist = Math.abs(n.start - targetStart);
-
-      if (newDist < dist) {
-        dist = newDist;
-        nearest = n;
-      }
-    }
-
-    return nearest;
+    return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
   }
 
   /**
@@ -10401,6 +10436,12 @@
 
     return measureLines;
   }
+  /**
+   * @todo NYI
+   */
+  // function getMeasureIndices() {
+  // }
+
   /**
    * Split MIDI format 0 data into tracks instead of having channels,
    * creates one track for each channel
@@ -14255,6 +14296,97 @@
   });
 
   /**
+   * @module utils/MiscUtils
+   */
+
+  /**
+   * Converts beats per minute to seconds per beat
+   *
+   * @deprecated use MusicUtils.bpmToSecondsPerBeat instead
+   * @param {number} bpm tempo in beats per minute
+   * @returns {number} seconds per beat
+   */
+
+  function bpmToSecondsPerBeat(bpm) {
+    return 1 / (bpm / 60);
+  }
+  /**
+   * Clones a map where the values are flat objects,
+   * i.e. values do not contain objects themselfes.
+   *
+   * @param {Map} map a map with object values
+   * @returns {Map} a copy of the map with copies of the value objects
+   */
+
+  function deepCloneFlatObjectMap(map) {
+    const result = new Map();
+
+    for (const [key, value] of map.entries()) {
+      result.set(key, { ...value
+      });
+    }
+
+    return result;
+  }
+  /**
+   * Groups the Notes from multiple tracks
+   *
+   * @param {Note[][]} tracks array of arrays of Note objects
+   * @returns {Map} grouping
+   */
+
+  function groupNotesByPitch(tracks) {
+    const allNotes = tracks.flat();
+
+    if (allNotes.length === 0) {
+      return new Map();
+    }
+
+    return group(allNotes, d => d.pitch);
+  }
+  /**
+   * Reverses a given string.
+   *
+   * @param {string} s string
+   * @returns {string} reversed string
+   */
+
+  function reverseString(s) {
+    return s.split('').reverse().join('');
+  }
+  /**
+   * Given some notes and a target note, finds
+   * the note that has its start time closest to
+   * the one of targetNote
+   *
+   * @todo replace by d3 argmin or sth?
+   * @param {Note[]} notes notes
+   * @param {Note} targetNote target note
+   * @returns {Note} closest note to targetNote
+   */
+
+  function findNearest(notes, targetNote) {
+    if (!notes || notes.length === 0 || !targetNote) {
+      return null;
+    }
+
+    let nearest = null;
+    let dist = Number.POSITIVE_INFINITY;
+    const targetStart = targetNote.start;
+
+    for (const n of notes) {
+      const newDist = Math.abs(n.start - targetStart);
+
+      if (newDist < dist) {
+        dist = newDist;
+        nearest = n;
+      }
+    }
+
+    return nearest;
+  }
+
+  /**
    * @module instruments/Lamellophone
    */
 
@@ -14380,7 +14512,7 @@
     const noteNamesSet = new Set(noteNames);
     const lowestNote = tuning.pitchesSorted[0];
     const startOct = getMidiNoteByNr(lowestNote).octave;
-    const secondsPerBeat = bpmToSecondsPerBeat$1(tempo);
+    const secondsPerBeat = bpmToSecondsPerBeat(tempo);
     let insideChord = false;
     let insideNote = false;
     let currentTime = 0;
@@ -14907,120 +15039,6 @@
   }
 
   /**
-   * @module utils/MusicUtils
-   */
-
-  /**
-   * Converts beats per minute to seconds per beat
-   *
-   * @param {number} bpm tempo in beats per minute
-   * @returns {number} seconds per beat
-   */
-
-  function bpmToSecondsPerBeat(bpm) {
-    return 1 / (bpm / 60);
-  }
-  /**
-   * Turns a chord into an integer that uniquely describes the occuring chroma.
-   * If the same chroma occurs twice this will not make a difference
-   * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
-   *
-   * How it works:
-   * Chord has C, E, and G
-   * x = 000010010001
-   *         G  E   C
-   *
-   * @param {Note[]} notes notes
-   * @returns {number} an integer that uniquely identifies this chord's chroma
-   */
-
-  function chordToInteger(notes) {
-    let value = 0x0;
-
-    for (const note of notes) {
-      const chroma = note.pitch % 12; // eslint-disable-next-line no-bitwise
-
-      const noteInteger = 1 << chroma; // eslint-disable-next-line no-bitwise
-
-      value = value | noteInteger;
-    }
-
-    return value;
-  }
-  /**
-   * Takes two chord integer representations from chordToInteger() and computes
-   * the Jaccard index
-   *
-   * @param {number} chord1 chord as integer representation
-   * @param {number} chord2 chord as integer representation
-   * @returns {number} Jackard index, from 0 for different to 1 for identical
-   */
-
-  function chordIntegerJaccardIndex(chord1, chord2) {
-    if (chord1 === chord2) {
-      return 1;
-    } // eslint-disable-next-line no-bitwise
-
-
-    const intersection = chord1 & chord2; // eslint-disable-next-line no-bitwise
-
-    const union = chord1 | chord2;
-    const intersectionSize = countOnesOfBinary(intersection);
-    const unionSize = countOnesOfBinary(union);
-    return intersectionSize / unionSize;
-  }
-  /*
-   * noteTypeDurationRatios
-   * 1 = whole note, 1/2 = half note, ...
-   *
-   * With added dots:
-   * o. has duration of 1.5, o.. 1.75, ...
-   */
-
-  const noteTypeDurationRatios = [];
-  const baseDurations = [2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16, 1 / 32, 1 / 64];
-
-  for (const d of baseDurations) {
-    for (let dots = 0; dots < 4; dots++) {
-      let duration = d;
-      let toAdd = d;
-
-      for (let dot = 0; dot < dots; dot++) {
-        // Each dot after the note adds half of the one before
-        toAdd /= 2;
-        duration += toAdd;
-      }
-
-      noteTypeDurationRatios.push({
-        type: d,
-        dots,
-        duration
-      });
-    }
-  }
-
-  noteTypeDurationRatios.sort((a, b) => a.duration - b.duration);
-  /**
-   * Estimates the note type (whole, quarter, ...) and number of dots for dotted
-   * notes
-   *
-   * @todo test if corrrectly 'calibrated'
-   * @param {number} duration duration of a note
-   * @param {number} bpm tempo of the piece in bpm
-   * @returns {object} note type and number of dots
-   *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
-   *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
-   */
-
-  function noteDurationToNoteType(duration, bpm) {
-    const quarterDuration = bpmToSecondsPerBeat(bpm);
-    const ratio = duration / quarterDuration / 4; // TODO: round to finest representable step?
-    // Binary search
-
-    return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
-  }
-
-  /**
    * @module utils/NoteColorUtils
    */
   // TODO: move to colors/ folder?
@@ -15341,7 +15359,7 @@
    */
 
   function alignNotesToBpm(notes, bpm, timeDivision = 16) {
-    const secondsPerBeat = bpmToSecondsPerBeat(bpm);
+    const secondsPerBeat = bpmToSecondsPerBeat$1(bpm);
     const secondsPerDivision = secondsPerBeat / timeDivision;
     return notes.map(note => {
       const n = note.clone();
@@ -15681,6 +15699,10 @@
     }
   }
 
+  /**
+   * @module utils
+   */
+
   var index$1 = /*#__PURE__*/Object.freeze({
     __proto__: null,
     arrayShallowEquals: arrayShallowEquals,
@@ -15707,7 +15729,7 @@
     groupNotesByPitch: groupNotesByPitch,
     reverseString: reverseString,
     findNearest: findNearest,
-    bpmToSecondsPerBeat: bpmToSecondsPerBeat,
+    bpmToSecondsPerBeat: bpmToSecondsPerBeat$1,
     chordToInteger: chordToInteger,
     chordIntegerJaccardIndex: chordIntegerJaccardIndex,
     noteDurationToNoteType: noteDurationToNoteType,
@@ -17812,13 +17834,17 @@
 
   }
 
+  /**
+   * @module stringBased
+   */
+
   var index = /*#__PURE__*/Object.freeze({
     __proto__: null,
     Levenshtein: Levenshtein,
     LongestCommonSubsequence: LongestCommonSubsequence,
     Gotoh: Gotoh,
-    NeedlemanWunsch: NeedlemanWunsch,
-    SuffixTree: SuffixTree$1
+    SuffixTree: SuffixTree$1,
+    NeedlemanWunsch: NeedlemanWunsch
   });
 
   /**
@@ -17830,72 +17856,6 @@
   function getVersion() {
     return version;
   } // Types
-  // import Note from './types/Note';
-  // import GuitarNote from './types/GuitarNote';
-  // import NoteArray from './types/NoteArray';
-  // import Recording from './types/Recording';
-  // import MusicPiece from './types/MusicPiece';
-  // import PitchSequence from './types/PitchSequence';
-  // // File formats
-  // import * as Midi from './fileFormats/Midi';
-  // // Graphics
-  // import * as Canvas from './graphics/Canvas';
-  // // Input
-  // import { recordAudio } from './input/AudioRecorder';
-  // import { recordMidi } from './input/MidiRecorder';
-  // import MidiInputManager from './input/MidiInputManager';
-  // // Instruments
-  // import * as Drums from './instruments/Drums';
-  // import * as Guitar from './instruments/Guitar';
-  // import * as Lamellophone from './instruments/Lamellophone';
-  // import * as Piano from './instruments/Piano';
-  // // Alignment
-  // import * as Alignment from './alignment/Alignment';
-  // import * as DiffAlignment from './alignment/DiffAlignment';
-  // // Comparison
-  // import * as Matching from './comparison/Matching';
-  // import * as PriorityMatching from './comparison/PriorityMatching';
-  // import * as Similarity from './comparison/Similarity';
-  // import * as SimilarSections from './comparison/SimilarSections';
-  // // Libraries
-  // import * as Utils from './utils';
-  // import * as Chords from './chords/Chords';
-  // import * as StringBased from './stringBased';
-  // export {
-  //     getVersion,
-  //     // Types
-  //     Note,
-  //     GuitarNote,
-  //     NoteArray,
-  //     Recording,
-  //     MusicPiece,
-  //     PitchSequence,
-  //     // File formats
-  //     Midi,
-  //     // graphics
-  //     Canvas,
-  //     // Input
-  //     recordAudio,
-  //     recordMidi,
-  //     MidiInputManager,
-  //     // Instruments
-  //     Drums,
-  //     Guitar,
-  //     Lamellophone,
-  //     Piano,
-  //     // Alignment
-  //     Alignment,
-  //     DiffAlignment,
-  //     // Comparison
-  //     Matching,
-  //     PriorityMatching,
-  //     Similarity,
-  //     SimilarSections,
-  //     // Libraries
-  //     Utils,
-  //     Chords,
-  //     StringBased,
-  // };
 
   exports.Alignment = Alignment;
   exports.Canvas = Canvas;

@@ -385,6 +385,24 @@ Both gtNotes and recNotes must be sorted by note start time ascending.
  */
 declare function getStartTimeErrorPerGtNote(gtNotes: Note[], recNotes: Note[]): number[];
 
+declare const noteErrorTypes: any;
+
+/**
+ * @param expectedNote - a note
+ * @param actualNote - a note
+ * @returns errors
+ */
+declare function getNoteErrors(expectedNote: Note, actualNote: Note): string[];
+
+declare const chordErrorTypes: any;
+
+/**
+ * @param expectedChord - a chord
+ * @param actualChord - a chord
+ * @returns errors
+ */
+declare function getChordErrors(expectedChord: Note[], actualChord: Note[]): string[];
+
 /**
  * Creates a track of metronome ticks for a given tempo and meter.
  * @param tempo - tempo in bpm, e.g. 120
