@@ -1,11 +1,11 @@
-// musicvis-lib v0.48.3 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.48.4 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.48.3";
+  var version="0.48.4";
 
   /**
    * Lookup for many MIDI specifications.
@@ -6294,18 +6294,11 @@
 
 
     static from(object) {
-      // Support old format
       let {
         name,
         date,
-        notes,
-        _notes
-      } = object;
-
-      if (notes === undefined) {
-        notes = _notes;
-      } // Check for undefined
-
+        notes
+      } = object; // Check for undefined
 
       const values = [name, date, notes];
       const names = ['name', 'date', 'notes'];
@@ -16584,7 +16577,7 @@
     for (const [gt, rec] of matching.entries()) {
       const gtNote = gtNotes[gt];
       const recNote = recNotes[rec];
-      const error = distanceFunction(gtNotes, recNote);
+      const error = distanceFunction(gtNote, recNote);
       errors.set(gtNote, error);
     }
 
