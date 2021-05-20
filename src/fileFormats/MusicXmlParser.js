@@ -88,7 +88,10 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     const beatTypeChanges = [];
     const keySignatureChanges = [];
     const noteObjs = [];
+    // Time in seconds of the start of new measures
     const measureLinePositions = [];
+    // Indices of notes where a new measure starts
+    const measureIndices = [];
     for (const measure of measures) {
         const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION);
         // Try to update metrics (if they are not set, keep the old ones)
@@ -255,6 +258,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         }
         // Add measure line position
         measureLinePositions.push(roundToNDecimals(currentTime, ROUNDING_PRECISION));
+        measureIndices.push(noteObjs.length);
     }
     // Defaults
     if (tempoChanges.length === 0) {
@@ -270,6 +274,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         noteObjs: noteObjs,
         totalTime: currentTime,
         measureLinePositions,
+        measureIndices,
         tempoChanges,
         beatTypeChanges,
         keySignatureChanges,

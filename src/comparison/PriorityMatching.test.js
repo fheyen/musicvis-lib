@@ -50,6 +50,23 @@ describe('PriorityMatching', () => {
                 ])
             );
         });
+
+        test('different lengths 2', () => {
+            const a = [6, 2, 1, 3, 4, 5, 7];
+            const b = [0, 1, 2, 3, 4];
+            const distanceFunction = (a, b) => Math.abs(a - b);
+            expect(
+                priorityMatching(a, b, distanceFunction)
+            ).toStrictEqual(
+                new Map([
+                    [0, 0],
+                    [1, 2],
+                    [2, 1],
+                    [3, 3],
+                    [4, 4],
+                ])
+            );
+        });
     });
 
     describe('balancedNoteDistance', () => {

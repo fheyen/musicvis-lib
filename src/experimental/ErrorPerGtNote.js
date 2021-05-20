@@ -1,4 +1,4 @@
-import { minIndex } from 'd3';
+import { minIndex, intersection, difference } from 'd3';
 
 /**
  * Takes the ground truth and a single recording.
@@ -57,7 +57,10 @@ export function getStartTimeErrorPerGtNote(gtNotes, recNotes) {
 // }
 
 // TODO: not used yet
-const noteErrorTypes = {
+/**
+ * @type {object}
+ */
+export const noteErrorTypes = {
     missing: 'note missing',
     extra: 'note extra',
     swapped: 'note swapped',
@@ -65,17 +68,82 @@ const noteErrorTypes = {
     late: 'start too late',
     short: 'duration too short',
     long: 'duration too long',
-    wrongPitch: 'pitch wrong, chroma correct',
-    wrongChroma: 'pitch wrong, chroma wrong',
+    wrongPitch: 'pitch wrong',
+    wrongChroma: 'chroma wrong',
 };
 
-const chordErrorTypes = [
-    'chord missing',
-    'chord extra',
-    'chord swapped',
-    'note(s) missing, chord similar',
-    'note(s) missing, chord different',
-    'note(s) extra, chord similar',
-    'note(s) extra, chord different',
-    'notes inversed',
-];
+/**
+ * @todo untested, unused
+ * @param {Note} expectedNote a note
+ * @param {Note} actualNote a note
+ * @returns {string[]} errors
+ */
+export function getNoteErrors(expectedNote, actualNote) {
+    const errors = [];
+    if (expectedNote.start > actualNote.start) {
+        errors.push(noteErrorTypes.early);
+    }
+    if (expectedNote.start < actualNote.start) {
+        errors.push(noteErrorTypes.late);
+    }
+    if (expectedNote.getDuration() < actualNote.getDuration()) {
+        errors.push(noteErrorTypes.short);
+    }
+    if (expectedNote.getDuration() > actualNote.getDuration()) {
+        errors.push(noteErrorTypes.long);
+    }
+    if (expectedNote.pitch !== actualNote.pitch) {
+        errors.push(noteErrorTypes.wrongPitch);
+    }
+    if (expectedNote.pitch % 12 !== actualNote.pitch % 12) {
+        errors.push(noteErrorTypes.wrongChroma);
+    }
+    return errors;
+}
+
+/**
+ * @type {object}
+ */
+export const chordErrorTypes = {
+    missing: 'chord missing',
+    extra: 'chord extra',
+    swapped: 'chord swapped',
+    notesMissingChordSimilar: 'note(s) missing, chord similar',
+    notesMissingChordDifferent: 'note(s) missing, chord different',
+    notesExtraChordSimilar: 'note(s) extra, chord similar',
+    notesExtraChordDifferent: 'note(s) extra, chord different',
+    notesInversed: 'notes inversed',
+    notesOctaved: 'notes octaved',
+};
+
+/**
+ * @todo NYI
+ * @param {Note[]} expectedChord a chord
+ * @param {Note[]} actualChord a chord
+ * @returns {string[]} errors
+ */
+export function getChordErrors(expectedChord, actualChord) {
+    const expectedPitches = expectedChord.map(d => d.pitch);
+    const actualPitches = actualChord.map(d => d.pitch);
+    const expectedChroma = expectedPitches.map(d => d % 12);
+    const actualChroma = actualPitches.map(d => d % 12);
+
+    const errors = [];
+
+    // Missing and extra notes
+    const missing = difference(expectedPitches, actualPitches);
+    if (missing.size > 0) {
+        // TODO: is chord still similar?
+        errors.push(chordErrorTypes.notesMissingChordDifferent);
+    }
+    const extra = difference(actualPitches, expectedPitches);
+    if (extra.size > 0) {
+        // TODO: is chord still similar?
+        errors.push(chordErrorTypes.notesExtraChordDifferent);
+    }
+
+    // TODO: use kendall tau to computed if notes are inversed?
+
+
+    return errors;
+}

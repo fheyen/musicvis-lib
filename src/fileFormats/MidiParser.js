@@ -1,6 +1,6 @@
 import Note from '../types/Note';
 import { group, max } from 'd3';
-import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
+import { bpmToSecondsPerBeat } from '../utils/MusicUtils';
 import { roundToNDecimals } from '../utils/MathUtils';
 
 /**
@@ -286,6 +286,13 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
     }
     return measureLines;
 }
+
+/**
+ * @todo NYI
+ */
+// function getMeasureIndices() {
+
+// }
 
 /**
  * Split MIDI format 0 data into tracks instead of having channels,

@@ -154,16 +154,28 @@ describe('MusicXmlParser', () => {
         ]);
     });
 
-    // TODO: more tests
-    test('measure times', () => {
+    describe('measure positions', () => {
         const xml = readXmlFile('[Test] Tempo change.musicxml');
         const parsed = preprocessMusicXmlData(xml);
-        expect(parsed.parts[0].measureLinePositions).toStrictEqual([
-            2,
-            3.5,
-            4.7,
-            5.7,
-        ]);
+
+        // TODO: more tests
+        test('measure times', () => {
+            expect(parsed.parts[0].measureLinePositions).toStrictEqual([
+                2,
+                3.5,
+                4.7,
+                5.7,
+            ]);
+        });
+
+        test('measure indices', () => {
+            expect(parsed.parts[0].measureIndices).toStrictEqual([
+                4,
+                8,
+                12,
+                16,
+            ]);
+        });
     });
 
     // TODO: multiple tempos whithin a measure do not work

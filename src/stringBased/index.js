@@ -1,17 +1,10 @@
-import * as Levenshtein from './Levenshtein';
-import * as LongestCommonSubsequence from './LongestCommonSubsequence';
-import * as Gotoh from './Gotoh';
-import * as SuffixTree from './SuffixTree';
-import NeedlemanWunsch from './NeedlemanWunsch';
+export * as Levenshtein from './Levenshtein';
+export * as LongestCommonSubsequence from './LongestCommonSubsequence';
+export * as Gotoh from './Gotoh';
+export * as SuffixTree from './SuffixTree';
+export { default as NeedlemanWunsch } from './NeedlemanWunsch';
+
 
 /**
  * @module stringBased
  */
-
-export {
-    Levenshtein,
-    LongestCommonSubsequence,
-    Gotoh,
-    NeedlemanWunsch,
-    SuffixTree,
-};
