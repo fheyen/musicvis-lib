@@ -37,16 +37,22 @@ class NoteArray {
      * Creates a new NoteArray,
      * will make a copy of the passed array and cast all notes
      *
-     * @param {Note[]} notes notes, default: []
+     * @param {Note[]} [notes=[]] notes
+     * @param {boolean} [reUseNotes=false] if true, will directly use the passed notes.
+     *      This can be dangerous if you do not want them to change.
      */
-    constructor(notes = []) {
-        // Parse notes
-        this._notes = notes.map(d => {
-            if (d.string !== undefined && d.fret !== undefined) {
-                return GuitarNote.from(d);
-            }
-            return Note.from(d);
-        });
+    constructor(notes = [], reUseNotes = false) {
+        if (reUseNotes) {
+            this._notes = notes;
+        } else {
+            // Parse notes
+            this._notes = notes.map(d => {
+                if (d.string !== undefined && d.fret !== undefined) {
+                    return GuitarNote.from(d);
+                }
+                return Note.from(d);
+            });
+        }
     }
 
     /**
@@ -354,11 +360,13 @@ class NoteArray {
      * @param {number[]} times points of time at which to slice (in seconds)
      * @param {string} mode see NoteArray.sliceTime()
      * @returns {Note[][]} time slices
+     * @param {boolean} [reUseNotes=false] if true, will not clone notes.
+     *      This can be dangerous if you do not want them to change.
      * @example
      *      // Slice into 1 second slices
      *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
      */
-    sliceAtTimes(times, mode) {
+    sliceAtTimes(times, mode, reUseNotes = false) {
         if (times.length === 0) {
             return [this._notes];
         }
@@ -371,7 +379,8 @@ class NoteArray {
         let lastTime = 0;
         for (const time of times) {
             slices.push(
-                this.clone()
+                // this.clone()
+                new NoteArray(this._notes, reUseNotes)
                     .sliceTime(lastTime, time, mode)
                     .getNotes(),
             );

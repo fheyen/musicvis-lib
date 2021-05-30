@@ -21,6 +21,19 @@ describe('NoteArray', () => {
         expect(na.getNotes()).toStrictEqual(notes);
     });
 
+    test('preserves original notes when reUseNotes===true', () => {
+        const notes = [
+            Note.from({ pitch: 1 }),
+            Note.from({ pitch: 2 }),
+        ];
+        // Should preserve
+        const na1 = new NoteArray(notes, true);
+        expect(na1.getNotes()[1]).toBe(notes[1]);
+        // Should clone
+        const na2 = new NoteArray(notes, false);
+        expect(na2.getNotes()[1]).not.toBe(notes[1]);
+    });
+
     test('is equal to itself', () => {
         expect(na.equals(na)).toBe(true);
     });

@@ -6,7 +6,7 @@
     </work>
   <identification>
     <encoding>
-      <software>https://github.com/fheyen/music-exercise-generator</software>
+      <software>${credit}</software>
       </encoding>
     </identification>
   <credit page="1">
@@ -303,7 +303,7 @@
           </direction-type>
         <sound tempo="120"/>
         </direction>
-        
+
                 <note>
                     <unpitched>
                         <display-step>G</display-step>

@@ -1,4 +1,4 @@
-import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest } from './MiscUtils';
+import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest, delay } from './MiscUtils';
 import Note from '../types/Note';
 
 
@@ -18,6 +18,7 @@ describe('utils/MiscUtils', () => {
         });
     });
 
+
     describe('deepCloneFlatObjectMap', () => {
         test('empty', () => {
             const map = new Map();
@@ -35,6 +36,7 @@ describe('utils/MiscUtils', () => {
             expect(deepCloneFlatObjectMap(map)).toStrictEqual(map);
         });
     });
+
 
     describe('groupNotesByPitch', () => {
         test('empty', () => {
@@ -70,6 +72,7 @@ describe('utils/MiscUtils', () => {
         });
     });
 
+
     describe('reverseString', () => {
         test('hallo', () => {
             expect(reverseString('hallo')).toBe('ollah');
@@ -79,6 +82,7 @@ describe('utils/MiscUtils', () => {
             expect(reverseString(reverseString('hallo'))).toBe('hallo');
         });
     });
+
 
     describe('findNearest', () => {
         test('empty', () => {
@@ -123,6 +127,20 @@ describe('utils/MiscUtils', () => {
             expect(findNearest(notes, note)).toStrictEqual(
                 Note.from({ start: 3 })
             );
+        });
+    });
+
+
+    describe('delay', () => {
+        test('resolves', async () => {
+            return expect(delay(0.1)).resolves.toBe(undefined);
+        });
+        test('time has passed', async () => {
+            const before = new Date();
+            await delay(1);
+            const after = new Date();
+            const diff = after - before;
+            expect(diff >= 1).toBe(true);
         });
     });
 });

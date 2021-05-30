@@ -1,5 +1,6 @@
 import { countOnesOfBinary } from './MathUtils';
 import { binarySearch } from './ArrayUtils';
+import { extent } from 'd3';
 
 /**
  * @module utils/MusicUtils
@@ -13,6 +14,18 @@ import { binarySearch } from './ArrayUtils';
  */
 export function bpmToSecondsPerBeat(bpm) {
     return 1 / (bpm / 60);
+}
+
+/**
+ * Maps any frequency (in Hz) to an approximate MIDI note number. Result can be
+ * rounded to get to the closest MIDI note or used as is for a sound in between
+ * two notes.
+ *
+ * @param {number} frequency a frequency in Hz
+ * @returns {number} MIDI note number (not rounded)
+ */
+export function freqToApproxMidiNr(frequency) {
+    return 12 * Math.log2(frequency / 440) + 69;
 }
 
 /**
@@ -154,3 +167,26 @@ export const INTERVALS = new Map([
     [11, 'M7'],
     [12, 'P8'],
 ]);
+
+
+/**
+ * Estimates a difficulty score for playing a set of notes.
+ * Can be used for an entire piece or measure-by-measure.
+ *
+ * @todo different modi, e.g. for piano or guitar (fingering is different)
+ * @param {Note[]} notes notes
+ * @param {string} mode mode
+ * @param {number[]} fingering finger as number for each note, same order
+ * @returns {number} difficulty, can range within [0, infinity)
+ * @throws {'Invalid mode parameter'} when mode is invalid
+ */
+// export function estimateDifficulty(notes, mode, fingering) {
+//     if (mode === 'noteDensity') {
+//         // Naive mode, only look at density of notes
+//         const startTimeExtent = extent(notes, d => d.start);
+//         return notes.length / startTimeExtent;
+//     } else if (mode === 'fingering') {
+//         // TODO: check complexity of fingering
+//     }
+//     throw new Error('Invalid mode parameter');
+// }

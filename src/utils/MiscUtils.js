@@ -82,3 +82,17 @@ export function findNearest(notes, targetNote) {
     }
     return nearest;
 }
+
+/**
+ * Allows to wait for a number of seconds with async/await
+ * IMPORTANT: This it not exact, it will at *least* wait for X seconds
+ *
+ * @param {number} seconds number of seconds to wait
+ * @returns {Promise} empty Promise that will resolve after the specified amount
+ *      of seconds
+ */
+export function delay(seconds) {
+    return new Promise(resolve => {
+        setTimeout(resolve, seconds * 1000);
+    });
+}

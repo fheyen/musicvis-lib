@@ -1,4 +1,4 @@
-import { minIndex, intersection, difference } from 'd3';
+import { minIndex, difference } from 'd3';
 
 /**
  * Takes the ground truth and a single recording.

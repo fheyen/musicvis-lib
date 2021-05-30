@@ -1,7 +1,40 @@
-import { chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType } from './MusicUtils';
+import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType } from './MusicUtils';
 import Note from '../types/Note';
 
 describe('MusicUtils', () => {
+
+    describe('bpmToSecondsPerBeat', () => {
+        test('30bpm', () => {
+            expect(bpmToSecondsPerBeat(30)).toBe(2);
+        });
+
+        test('60bpm', () => {
+            expect(bpmToSecondsPerBeat(60)).toBe(1);
+        });
+
+        test('120bpm', () => {
+            expect(bpmToSecondsPerBeat(120)).toBe(0.5);
+        });
+    });
+
+
+    describe('freqToApproxMidiNr', () => {
+        test('440', () => {
+            expect(freqToApproxMidiNr(440)).toBe(69);
+        });
+
+        test('880', () => {
+            expect(freqToApproxMidiNr(880)).toBe(81);
+        });
+
+        test('1234', () => {
+            expect(freqToApproxMidiNr(1234).toFixed(3)).toBe('86.853');
+        });
+
+        test('approx. E7', () => {
+            expect(Math.round(freqToApproxMidiNr(2638))).toBe(100);
+        });
+    });
 
 
     describe('chordToInteger', () => {
@@ -37,6 +70,7 @@ describe('MusicUtils', () => {
         });
     });
 
+
     describe('chordIntegerJaccardIndex', () => {
         test.each([
             ['00000000', '00000000', 1],
@@ -50,6 +84,7 @@ describe('MusicUtils', () => {
             expect(chordIntegerJaccardIndex(c1, c2)).toBe(result);
         });
     });
+
 
     describe('noteDurationToNoteType', () => {
         test.skip.each([
