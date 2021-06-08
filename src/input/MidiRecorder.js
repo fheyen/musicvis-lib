@@ -3,15 +3,16 @@ import Note from '../types/Note';
 /**
  * Records incoming MIDI messages from a MIDI device.
  *
+ * @param {Function} [onMessage] a callback function to get notfied of incoming
+ *      messages
  * @module input/MidiRecorder
- * @example
- * Usage (only in async functions):
+ * @example <caption>Usage (only in async functions)</caption>
  *     const recorder = await recordMidi();
  *     recorder.start();
  *     const notes = recorder.stop();
  * @returns {Promise} MIDI recorder
  */
-export const recordMidi = () => {
+export const recordMidi = (onMessage) => {
     return new Promise(async resolve => {
         let midiAccess;
         try {
@@ -22,7 +23,12 @@ export const recordMidi = () => {
         }
         let messages = [];
         // Add new data when it arrives
-        const addMessage = (message) => messages.push(message);
+        const addMessage = (message) => {
+            if (onMessage) {
+                onMessage(message);
+            }
+            messages.push(message);
+        };
         // Starts recording
         const start = () => {
             if (!midiAccess) {
@@ -69,20 +75,20 @@ function processMidiMessagesToNotes(messages) {
         // A velocity value might not be included with a noteOff command
         const velocity = (message.data.length > 2) ? message.data[2] : 0;
         switch (command) {
-        case 128:
-            noteOff(notes, currentNotes, device, time, pitch, channel);
-            break;
-        case 144:
-            if (velocity > 0) {
-                noteOn(currentNotes, device, time, pitch, channel, velocity);
-            } else {
+            case 128:
                 noteOff(notes, currentNotes, device, time, pitch, channel);
-            }
-            break;
-        case 224:
-            // TODO: handle pitch wheel?
-            break;
-        default:
+                break;
+            case 144:
+                if (velocity > 0) {
+                    noteOn(currentNotes, device, time, pitch, channel, velocity);
+                } else {
+                    noteOff(notes, currentNotes, device, time, pitch, channel);
+                }
+                break;
+            case 224:
+                // TODO: handle pitch wheel?
+                break;
+            default:
             // TODO: handle other commands?
         }
     }
