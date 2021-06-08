@@ -1,11 +1,11 @@
-// musicvis-lib v0.48.4 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.49.1 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.48.4";
+  var version="0.49.1";
 
   /**
    * Lookup for many MIDI specifications.
@@ -5363,18 +5363,25 @@
      * Creates a new NoteArray,
      * will make a copy of the passed array and cast all notes
      *
-     * @param {Note[]} notes notes, default: []
+     * @param {Note[]} [notes=[]] notes
+     * @param {boolean} [reUseNotes=false] if true, will directly use the passed notes.
+     *      This can be dangerous if you do not want them to change.
      */
-    constructor(notes = []) {
+    constructor(notes = [], reUseNotes = false) {
       this._notes = void 0;
-      // Parse notes
-      this._notes = notes.map(d => {
-        if (d.string !== undefined && d.fret !== undefined) {
-          return GuitarNote.from(d);
-        }
 
-        return Note$2.from(d);
-      });
+      if (reUseNotes) {
+        this._notes = notes;
+      } else {
+        // Parse notes
+        this._notes = notes.map(d => {
+          if (d.string !== undefined && d.fret !== undefined) {
+            return GuitarNote.from(d);
+          }
+
+          return Note$2.from(d);
+        });
+      }
     }
     /**
      * Returns a simple array with all Note objects.
@@ -5706,13 +5713,15 @@
      * @param {number[]} times points of time at which to slice (in seconds)
      * @param {string} mode see NoteArray.sliceTime()
      * @returns {Note[][]} time slices
+     * @param {boolean} [reUseNotes=false] if true, will not clone notes.
+     *      This can be dangerous if you do not want them to change.
      * @example
      *      // Slice into 1 second slices
      *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
      */
 
 
-    sliceAtTimes(times, mode) {
+    sliceAtTimes(times, mode, reUseNotes = false) {
       if (times.length === 0) {
         return [this._notes];
       } // Make sure notes at the end are also in a slice
@@ -5728,7 +5737,8 @@
       let lastTime = 0;
 
       for (const time of times) {
-        slices.push(this.clone().sliceTime(lastTime, time, mode).getNotes());
+        slices.push( // this.clone()
+        new NoteArray(this._notes, reUseNotes).sliceTime(lastTime, time, mode).getNotes());
         lastTime = time;
       }
 
@@ -10009,6 +10019,18 @@
     return 1 / (bpm / 60);
   }
   /**
+   * Maps any frequency (in Hz) to an approximate MIDI note number. Result can be
+   * rounded to get to the closest MIDI note or used as is for a sound in between
+   * two notes.
+   *
+   * @param {number} frequency a frequency in Hz
+   * @returns {number} MIDI note number (not rounded)
+   */
+
+  function freqToApproxMidiNr(frequency) {
+    return 12 * Math.log2(frequency / 440) + 69;
+  }
+  /**
    * Turns a chord into an integer that uniquely describes the occuring chroma.
    * If the same chroma occurs twice this will not make a difference
    * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
@@ -10107,6 +10129,27 @@
 
     return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
   }
+  /**
+   * Estimates a difficulty score for playing a set of notes.
+   * Can be used for an entire piece or measure-by-measure.
+   *
+   * @todo different modi, e.g. for piano or guitar (fingering is different)
+   * @param {Note[]} notes notes
+   * @param {string} mode mode
+   * @param {number[]} fingering finger as number for each note, same order
+   * @returns {number} difficulty, can range within [0, infinity)
+   * @throws {'Invalid mode parameter'} when mode is invalid
+   */
+  // export function estimateDifficulty(notes, mode, fingering) {
+  //     if (mode === 'noteDensity') {
+  //         // Naive mode, only look at density of notes
+  //         const startTimeExtent = extent(notes, d => d.start);
+  //         return notes.length / startTimeExtent;
+  //     } else if (mode === 'fingering') {
+  //         // TODO: check complexity of fingering
+  //     }
+  //     throw new Error('Invalid mode parameter');
+  // }
 
   /**
    * @module fileFormats/MidiParser
@@ -11764,8 +11807,7 @@
    * Allows to record audio blobs.
    *
    * @module input/AudioRecorder
-   * @example
-   * Usage (only in async functions):
+   * @example <caption>Usage (only in async functions)</caption>
    *     const recorder = await recordAudio();
    *     recorder.start();
    *     // ...
@@ -11842,16 +11884,17 @@
   /**
    * Records incoming MIDI messages from a MIDI device.
    *
+   * @param {Function} [onMessage] a callback function to get notfied of incoming
+   *      messages
    * @module input/MidiRecorder
-   * @example
-   * Usage (only in async functions):
+   * @example <caption>Usage (only in async functions)</caption>
    *     const recorder = await recordMidi();
    *     recorder.start();
    *     const notes = recorder.stop();
    * @returns {Promise} MIDI recorder
    */
 
-  const recordMidi = () => {
+  const recordMidi = onMessage => {
     return new Promise(async resolve => {
       let midiAccess;
 
@@ -11864,7 +11907,13 @@
 
       let messages = []; // Add new data when it arrives
 
-      const addMessage = message => messages.push(message); // Starts recording
+      const addMessage = message => {
+        if (onMessage) {
+          onMessage(message);
+        }
+
+        messages.push(message);
+      }; // Starts recording
 
 
       const start = () => {
@@ -13500,7 +13549,7 @@
     aliases: []
   };
   let dictionary$1 = [];
-  let index$4 = {};
+  let index$5 = {};
   /**
    * Given a chord name or chroma, return the chord properties
    * @param {string} source - chord name or pitch class set chroma
@@ -13510,7 +13559,7 @@
    */
 
   function get$2(type) {
-    return index$4[type] || NoChordType;
+    return index$5[type] || NoChordType;
   }
   /**
    * Return a list of all chord types
@@ -13539,16 +13588,16 @@
     dictionary$1.push(chord);
 
     if (chord.name) {
-      index$4[chord.name] = chord;
+      index$5[chord.name] = chord;
     }
 
-    index$4[chord.setNum] = chord;
-    index$4[chord.chroma] = chord;
+    index$5[chord.setNum] = chord;
+    index$5[chord.chroma] = chord;
     chord.aliases.forEach(alias => addAlias$1(chord, alias));
   }
 
   function addAlias$1(chord, alias) {
-    index$4[alias] = chord;
+    index$5[alias] = chord;
   }
 
   function getQuality(intervals) {
@@ -13625,7 +13674,12 @@
   ["1P 2M 3m 3M 4P 5d 5P 6M 7m", "composite blues"], ["1P 2M 3m 3M 4A 5P 6m 7m 7M", "messiaen's mode #3"], // 10-note scales
   ["1P 2m 2M 3m 4P 4A 5P 6m 6M 7M", "messiaen's mode #7"], // 12-note scales
   ["1P 2m 2M 3m 3M 4P 5d 5P 6m 6M 7m 7M", "chromatic"]];
+  ({ ...EmptyPcset,
+    intervals: [],
+    aliases: []
+  });
   let dictionary = [];
+  let index$4 = {};
   /**
    * Return a list of all scale types
    */
@@ -13648,11 +13702,15 @@
       aliases
     };
     dictionary.push(scale);
-    scale.aliases.forEach(alias => addAlias());
+    index$4[scale.name] = scale;
+    index$4[scale.setNum] = scale;
+    index$4[scale.chroma] = scale;
+    scale.aliases.forEach(alias => addAlias(scale, alias));
     return scale;
   }
 
   function addAlias(scale, alias) {
+    index$4[alias] = scale;
   }
 
   SCALES.forEach(([ivls, name, ...aliases]) => add(ivls.split(" "), name, aliases));
@@ -14377,6 +14435,20 @@
     }
 
     return nearest;
+  }
+  /**
+   * Allows to wait for a number of seconds with async/await
+   * IMPORTANT: This it not exact, it will at *least* wait for X seconds
+   *
+   * @param {number} seconds number of seconds to wait
+   * @returns {Promise} empty Promise that will resolve after the specified amount
+   *      of seconds
+   */
+
+  function delay(seconds) {
+    return new Promise(resolve => {
+      setTimeout(resolve, seconds * 1000);
+    });
   }
 
   /**
@@ -15722,7 +15794,9 @@
     groupNotesByPitch: groupNotesByPitch,
     reverseString: reverseString,
     findNearest: findNearest,
+    delay: delay,
     bpmToSecondsPerBeat: bpmToSecondsPerBeat$1,
+    freqToApproxMidiNr: freqToApproxMidiNr,
     chordToInteger: chordToInteger,
     chordIntegerJaccardIndex: chordIntegerJaccardIndex,
     noteDurationToNoteType: noteDurationToNoteType,

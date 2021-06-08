@@ -28,7 +28,7 @@
 
 
     <title>
-      DiffAlignment
+      exercises/PianoExercises.js
     </title>
 
     <!--[if lt IE 9]>
@@ -100,7 +100,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        DiffAlignment
+        exercises/PianoExercises.js
       </h1>
       
 
@@ -108,909 +108,217 @@
 
 
 
-
-<section>
-
-
-<header>
-    
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".activationMap">
-        <a href="#.activationMap">#</a>
-        <span class="type-signature">(static) </span>activationMap<span class="signature">(allNotes, binSize)</span><span class="type-signature"> &rarr; {Map}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns an activation map, that maps pitch to an array of time bins.
-Each bin contains a 0 when there is no note or a 1 when there is one.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>allNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">time bin size in milliseconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line72">line 72</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    activation map
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Map</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".agreement">
-        <a href="#.agreement">#</a>
-        <span class="type-signature">(static) </span>agreement<span class="signature">(gtActivations, recActivations, offset)</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Given two activation maps, simply counts the number of bins [pitch, time]
-where both have a 1, so an acitve note
-Gtmust be longer than rec
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gtActivations</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">see activationMap()</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>recActivations</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">see activationMap()</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>offset</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">offset for activation2 when comparing</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line102">line 102</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-todo">To Do:</dt>
-            <dd class="tag-todo">
-                <ul>
-                    <li>also count common 0s?</li>
-                </ul>
-            </dd>
-        </div>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    agreement
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".alignGtAndRecToMinimizeDiffError">
-        <a href="#.alignGtAndRecToMinimizeDiffError">#</a>
-        <span class="type-signature">(static) </span>alignGtAndRecToMinimizeDiffError<span class="signature">(gtNotes, recNotes, binSize)</span><span class="type-signature"> &rarr; {Array.&lt;object>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Global alignment.
-
-Returns an array with matches sorted by magnitude of agreement.
-The offsetMilliseconds value describes at what time the first note of the
-recording should start.
-
-Goal: Know which part of ground truth (GT) was played in recording (rec)
-Assumptions:
-- Rec has same tempo as GT
-- Rec does not start before GT
-- Rec does not repeat something that is not repeated in the GT
-- Rec does not have gaps
-Ideas:
-- Brute-force
-- Sliding window
-- Using diff between time-pitch matrix of GT and rec
-- Only compute agreement (correct diff part) for the current overlap
-- For each time position save the agreement magnitude
-- Optionally: repeat around local maxima with finer binSize
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gtNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ground truth notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>recNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">recorded notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">time bin size in milliseconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line34">line 34</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    best offsets with agreements
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;object></span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".alignRecordingToBestFit">
-        <a href="#.alignRecordingToBestFit">#</a>
-        <span class="type-signature">(static) </span>alignRecordingToBestFit<span class="signature">(gtNotes, recording, binSize)</span><span class="type-signature"> &rarr; {<a href="Recording.html">Recording</a>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Aligns the recording to the best fitting position of the ground truth
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gtNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ground truth notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>recording</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Recording.html">Recording</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a Recording object</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">time bin size in milliseconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line141">line 141</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    aligned recording
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Recording.html">Recording</a></span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Scale } from '@tonaljs/tonal';
+import { Midi } from 'musicvis-lib';
+
+/**
+ * Takes a baseline pattern and moves it to the correct position on the fretboard
+ *
+ * @param {string} patternType pattern type
+ * @param {string} [rootNote=C] root note
+ * @param {string} [scaleType=major] see tonaljs scale types
+ * @param {number} [repeat=1] number of repetitions
+ * @param {boolean} [alternate=false] reverse notes every second repetition
+ * @returns {number[][]} array of [string, fret] positions
+ */
+export function generatePattern(
+    patternType,
+    rootNote = 'C',
+    scaleType = 'major',
+    repeat = 1,
+    alternate = false,
+) {
+    let notes = [];
+    if (patternType === 'Scale') {
+        const scale = Scale.get(`${rootNote} ${scaleType}`);
+        for (let octave = 1; octave &lt; 8; octave++) {
+            for (let note of scale.notes) {
+                if (Midi.flatToSharp.has(note)) {
+                    note = Midi.flatToSharp.get(note);
+                }
+                notes.push([note, octave]);
+            }
+        }
+    }
+    // Repeat with or without alternative direction
+    return repeatPattern(repeat, notes, alternate);
+}
+
+/**
+ * Repeats a pattern with or without alternating direction
+ *
+ * @param {number} nRepetitions number of repetitions
+ * @param {Array} pattern pattern
+ * @param {boolean} alternate alternate direction?
+ * @returns {Array} repeated pattern
+ */
+export function repeatPattern(nRepetitions, pattern, alternate) {
+    let result = pattern;
+    if (nRepetitions > 1) {
+        let reversed = [...pattern].reverse();
+        for (let repetition = 1; repetition &lt; nRepetitions; repetition++) {
+            result = alternate &amp;&amp; repetition % 2 === 1 ? [...result, ...reversed] : [...result, ...pattern];
+        }
+    }
+    return result;
+}
+
+/**
+ * Generates MusicXML text from a pattern
+ *
+ * @param {string} name name
+ * @param {number} tempo tempo in bpm
+ * @param {string} timeSig time signature e.g. 4/4
+ * @param {{note:string, octave:number}} notes the output of generatePattern
+ * @returns {string} MusicXML string
+ */
+export function generateXml(name, tempo, timeSig, notes) {
+    const credit = 'github.com/fheyen/musicvis-lib';
+    timeSig = timeSig.split('/').map(d => +d);
+    const notesPerMeasure = timeSig[0];
+    let currentMeasure = 1;
+    let currentNoteInMeasure = 1;
+    let measuresString = '';
+    for (let [note, octave] of notes) {
+        if (currentNoteInMeasure > notesPerMeasure) {
+            // Start new measure
+            currentMeasure++;
+            currentNoteInMeasure = 1;
+            measuresString = `${measuresString}
+            &lt;/measure>
+            &lt;measure number="${currentMeasure}">`;
+        }
+        currentNoteInMeasure++;
+        // Handle sharp / flat
+        // TODO: this assumes C major as signature, but should be fine
+        let alter = 0;
+        if (note.endsWith('#')) {
+            note = note.slice(0, -1);
+            alter = 1;
+        }
+        measuresString = `${measuresString}
+            &lt;note>
+                &lt;pitch>
+                    &lt;step>${note}&lt;/step>${alter === 0 ? '' : `
+                    &lt;alter>${alter}&lt;/alter>`}
+                    &lt;octave>${octave}&lt;/octave>
+                &lt;/pitch>
+                &lt;duration>1&lt;/duration>
+                &lt;voice>1&lt;/voice>
+                &lt;type>quarter&lt;/type>
+            &lt;/note>`;
+    }
+    return `&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+&lt;score-partwise version="3.1">
+  &lt;work>
+    &lt;work-title>${name}&lt;/work-title>
+    &lt;/work>
+  &lt;identification>
+    &lt;creator type="composer">${credit}&lt;/creator>
+    &lt;encoding>
+      &lt;software>${credit}&lt;/software>
+      &lt;encoding-date>2021-02-12&lt;/encoding-date>
+      &lt;supports element="accidental" type="yes"/>
+      &lt;supports element="beam" type="yes"/>
+      &lt;supports element="print" attribute="new-page" type="yes" value="yes"/>
+      &lt;supports element="print" attribute="new-system" type="yes" value="yes"/>
+      &lt;supports element="stem" type="yes"/>
+      &lt;/encoding>
+    &lt;/identification>
+  &lt;defaults>
+    &lt;scaling>
+      &lt;millimeters>7.05556&lt;/millimeters>
+      &lt;tenths>40&lt;/tenths>
+      &lt;/scaling>
+    &lt;page-layout>
+      &lt;page-height>1683.36&lt;/page-height>
+      &lt;page-width>1190.88&lt;/page-width>
+      &lt;page-margins type="even">
+        &lt;left-margin>56.6929&lt;/left-margin>
+        &lt;right-margin>56.6929&lt;/right-margin>
+        &lt;top-margin>56.6929&lt;/top-margin>
+        &lt;bottom-margin>113.386&lt;/bottom-margin>
+        &lt;/page-margins>
+      &lt;page-margins type="odd">
+        &lt;left-margin>56.6929&lt;/left-margin>
+        &lt;right-margin>56.6929&lt;/right-margin>
+        &lt;top-margin>56.6929&lt;/top-margin>
+        &lt;bottom-margin>113.386&lt;/bottom-margin>
+        &lt;/page-margins>
+      &lt;/page-layout>
+    &lt;word-font font-family="FreeSerif" font-size="10"/>
+    &lt;lyric-font font-family="FreeSerif" font-size="11"/>
+    &lt;/defaults>
+  &lt;credit page="1">
+    &lt;credit-words default-x="595.44" default-y="1626.67" justify="center" valign="top" font-size="24">${name}&lt;/credit-words>
+    &lt;/credit>
+  &lt;credit page="1">
+    &lt;credit-words default-x="1134.19" default-y="1526.67" justify="right" valign="bottom" font-size="12">${credit}
+&lt;/credit-words>
+    &lt;/credit>
+  &lt;part-list>
+    &lt;score-part id="P1">
+      &lt;part-name>Piano&lt;/part-name>
+      &lt;part-abbreviation>Pno.&lt;/part-abbreviation>
+      &lt;score-instrument id="P1-I1">
+        &lt;instrument-name>Piano&lt;/instrument-name>
+        &lt;/score-instrument>
+      &lt;midi-device id="P1-I1" port="1">&lt;/midi-device>
+      &lt;midi-instrument id="P1-I1">
+        &lt;midi-channel>1&lt;/midi-channel>
+        &lt;midi-program>1&lt;/midi-program>
+        &lt;volume>78.7402&lt;/volume>
+        &lt;pan>0&lt;/pan>
+        &lt;/midi-instrument>
+      &lt;/score-part>
+    &lt;/part-list>
+  &lt;part id="P1">
+    &lt;measure number="1" width="315.37">
+      &lt;print>
+        &lt;system-layout>
+          &lt;system-margins>
+            &lt;left-margin>0.00&lt;/left-margin>
+            &lt;right-margin>-0.00&lt;/right-margin>
+            &lt;/system-margins>
+          &lt;top-system-distance>170.00&lt;/top-system-distance>
+          &lt;/system-layout>
+        &lt;/print>
+      &lt;attributes>
+        &lt;divisions>1&lt;/divisions>
+        &lt;key>
+          &lt;fifths>0&lt;/fifths>
+          &lt;/key>
+        &lt;time>
+          &lt;beats>${timeSig[0]}&lt;/beats>
+          &lt;beat-type>${timeSig[1]}&lt;/beat-type>
+          &lt;/time>
+        &lt;clef>
+          &lt;sign>G&lt;/sign>
+          &lt;line>2&lt;/line>
+          &lt;/clef>
+        &lt;/attributes>
+      &lt;direction placement="above">
+        &lt;direction-type>
+          &lt;metronome parentheses="no" default-x="-35.96" relative-y="20.00">
+            &lt;beat-unit>quarter&lt;/beat-unit>
+            &lt;per-minute>${tempo}&lt;/per-minute>
+            &lt;/metronome>
+          &lt;/direction-type>
+        &lt;sound tempo="${tempo}"/>
+        &lt;/direction>
+        ${measuresString}
+      &lt;/measure>
+    &lt;/part>
+  &lt;/score-partwise>
+`;
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

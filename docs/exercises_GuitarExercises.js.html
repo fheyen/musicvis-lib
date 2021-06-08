@@ -28,7 +28,7 @@
 
 
     <title>
-      DiffAlignment
+      exercises/GuitarExercises.js
     </title>
 
     <!--[if lt IE 9]>
@@ -100,7 +100,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        DiffAlignment
+        exercises/GuitarExercises.js
       </h1>
       
 
@@ -108,909 +108,438 @@
 
 
 
-
-<section>
-
-
-<header>
-    
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".activationMap">
-        <a href="#.activationMap">#</a>
-        <span class="type-signature">(static) </span>activationMap<span class="signature">(allNotes, binSize)</span><span class="type-signature"> &rarr; {Map}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Returns an activation map, that maps pitch to an array of time bins.
-Each bin contains a 0 when there is no note or a 1 when there is one.
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>allNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">time bin size in milliseconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line72">line 72</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    activation map
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Map</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".agreement">
-        <a href="#.agreement">#</a>
-        <span class="type-signature">(static) </span>agreement<span class="signature">(gtActivations, recActivations, offset)</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Given two activation maps, simply counts the number of bins [pitch, time]
-where both have a 1, so an acitve note
-Gtmust be longer than rec
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gtActivations</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">see activationMap()</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>recActivations</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Map</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">see activationMap()</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>offset</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">offset for activation2 when comparing</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line102">line 102</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-todo">To Do:</dt>
-            <dd class="tag-todo">
-                <ul>
-                    <li>also count common 0s?</li>
-                </ul>
-            </dd>
-        </div>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    agreement
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".alignGtAndRecToMinimizeDiffError">
-        <a href="#.alignGtAndRecToMinimizeDiffError">#</a>
-        <span class="type-signature">(static) </span>alignGtAndRecToMinimizeDiffError<span class="signature">(gtNotes, recNotes, binSize)</span><span class="type-signature"> &rarr; {Array.&lt;object>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Global alignment.
-
-Returns an array with matches sorted by magnitude of agreement.
-The offsetMilliseconds value describes at what time the first note of the
-recording should start.
-
-Goal: Know which part of ground truth (GT) was played in recording (rec)
-Assumptions:
-- Rec has same tempo as GT
-- Rec does not start before GT
-- Rec does not repeat something that is not repeated in the GT
-- Rec does not have gaps
-Ideas:
-- Brute-force
-- Sliding window
-- Using diff between time-pitch matrix of GT and rec
-- Only compute agreement (correct diff part) for the current overlap
-- For each time position save the agreement magnitude
-- Optionally: repeat around local maxima with finer binSize
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gtNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ground truth notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>recNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">recorded notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">time bin size in milliseconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line34">line 34</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    best offsets with agreements
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;object></span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".alignRecordingToBestFit">
-        <a href="#.alignRecordingToBestFit">#</a>
-        <span class="type-signature">(static) </span>alignRecordingToBestFit<span class="signature">(gtNotes, recording, binSize)</span><span class="type-signature"> &rarr; {<a href="Recording.html">Recording</a>}</span>
-    </h4>
-
-    
-
-
-
-    <div class="description">
-        Aligns the recording to the best fitting position of the ground truth
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
-        <strong>Parameters:</strong>
-        
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gtNotes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Note.html">Note</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ground truth notes</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>recording</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Recording.html">Recording</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">a Recording object</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">time bin size in milliseconds</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    </div>
-
-
-
-
-
-
-
-<dl class="details">
-
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class="details-item-container">
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source"><ul class="dummy"><li>
-                <a href="alignment_DiffAlignment.js.html">alignment/DiffAlignment.js</a>, <a href="alignment_DiffAlignment.js.html#line141">line 141</a>
-            </li></ul></dd>
-        </div>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="method-member-container mt-20">
-    <strong>Returns:</strong>
-        
-            
-<div class="param-desc">
-    aligned recording
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Recording.html">Recording</a></span>
-
-
-    </dd>
-</dl>
-
-            
-    </div>
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Guitar } from '../instruments/Guitar';
+import MusicPiece from '../types/MusicPiece';
+
+/**
+ * @todo allow speedup
+ */
+
+/**
+ * Takes a baseline pattern and moves it to the correct position on the fretboard
+ *
+ * @param {string} patternType pattern type
+ * @param {string} rootNote root note
+ * @param {number} [repeat=1] number of repetitions
+ * @param {boolena} [alternate=false] reverse notes every second repetition
+ * @returns {number[][]} array of [string, fret] positions
+ */
+export function generatePattern(patternType, rootNote = 'A', repeat = 1, alternate = false) {
+    const pattern = patterns.get(patternType);
+    const rootPos = pattern.rootNotePositions.indexOf(rootNote);
+    const shiftedToRoot = pattern.positions.map(d => {
+        const [string, fret] = d;
+        return [string, fret + rootPos];
+    });
+    if (repeat === 1) {
+        return shiftedToRoot;
+    }
+    // Repeat with or without alternative direction
+    let result = shiftedToRoot;
+    if (repeat > 1) {
+        let reversed = [...shiftedToRoot].reverse();
+        for (let repetition = 1; repetition &lt; repeat; repetition++) {
+            result = alternate &amp;&amp; repetition % 2 === 1 ? [...result, ...reversed] : [...result, ...shiftedToRoot];
+        }
+    }
+    // console.log(pattern);
+    return result;
+}
+
+// export function generateMusicPiece(
+//     name,
+//     patternType,
+//     tempos = [120],
+//     timeSig = [4, 4],
+//     rootNote = 'A',
+//     repeat = 1,
+//     alternate = false,
+// ) {
+
+//     return new MusicPiece(name, tempoDefs, timeSigs, keySigs, measureTimes, [track]);
+// }
+
+// export function generateMetronomeTrack(
+//     name,
+//     patternType,
+//     tempos = [120],
+//     timeSig = [4, 4],
+//     rootNote = 'A',
+//     repeat = 1,
+//     alternate = false,
+// ) {
+// }
+
+/**
+ * Generates MusicXML text from a pattern
+ *
+ * @param {string} name name
+ * @param {number} tempo tempo in bpm
+ * @param {string} timeSig time signature e.g. 4/4
+ * @param {number[][]} positions the output of generatePattern
+ * @returns {string} MusicXML string
+ */
+export function generateXml(name, tempo, timeSig, positions) {
+    const credit = 'github.com/fheyen/musicvis-lib';
+    timeSig = timeSig.split('/').map(d => +d);
+    const notesPerMeasure = timeSig[0];
+    let currentMeasure = 1;
+    let currentNoteInMeasure = 1;
+    let measuresString = '';
+    for (const [string, fret] of positions) {
+        if (currentNoteInMeasure > notesPerMeasure) {
+            // Start new measure
+            currentMeasure++;
+            currentNoteInMeasure = 1;
+            measuresString = `${measuresString}
+            &lt;/measure>
+            &lt;measure number="${currentMeasure}">`;
+        }
+        currentNoteInMeasure++;
+        // Get note and octave from position
+        const tuning = Guitar.stringedTunings.get('Guitar').get(6)[0];
+        const note = Guitar.getNoteInfoFromFretboardPos(string, fret, tuning);
+        measuresString = `${measuresString}
+            &lt;note>
+                &lt;pitch>
+                    &lt;step>${note.name}&lt;/step>
+                    &lt;octave>${note.octave}&lt;/octave>
+                &lt;/pitch>
+                &lt;notations>
+                    &lt;technical>
+                        &lt;fret>${fret}&lt;/fret>
+                        &lt;string>${string}&lt;/string>
+                    &lt;/technical>
+                &lt;/notations>
+                &lt;voice>1&lt;/voice>
+                &lt;duration>960&lt;/duration>
+                &lt;type>quarter&lt;/type>
+            &lt;/note>`;
+    }
+    return `&lt;?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+&lt;score-partwise>
+    &lt;work>
+        &lt;work-title />
+    &lt;/work>
+    &lt;identification>
+        &lt;encoding>
+            &lt;software>${credit}&lt;/software>
+        &lt;/encoding>
+    &lt;/identification>
+    &lt;part-list>
+        &lt;score-part id="P1">
+            &lt;part-name>${name}&lt;/part-name>
+            &lt;score-instrument id="P1-I1">
+                &lt;instrument-name>Steel String Guitar 1&lt;/instrument-name>
+            &lt;/score-instrument>
+            &lt;midi-instrument id="P1-I1">
+                &lt;midi-channel>1&lt;/midi-channel>
+                &lt;midi-program>26&lt;/midi-program>
+            &lt;/midi-instrument>
+        &lt;/score-part>
+    &lt;/part-list>
+    &lt;part id="P1">
+        &lt;measure number="1">
+            &lt;attributes>
+                &lt;divisions>960&lt;/divisions>
+                &lt;key>
+                    &lt;fifths>0&lt;/fifths>
+                    &lt;mode>major&lt;/mode>
+                &lt;/key>
+                &lt;clef>
+                    &lt;sign>G&lt;/sign>
+                    &lt;line>2&lt;/line>
+                &lt;/clef>
+                &lt;time>
+                    &lt;beats>${timeSig[0]}&lt;/beats>
+                    &lt;beat-type>${timeSig[1]}&lt;/beat-type>
+                &lt;/time>
+                &lt;staff-details>
+                    &lt;staff-lines>6&lt;/staff-lines>
+                    &lt;staff-tuning line="1">
+                        &lt;tuning-step>E&lt;/tuning-step>
+                        &lt;tuning-octave>2&lt;/tuning-octave>
+                    &lt;/staff-tuning>
+                    &lt;staff-tuning line="2">
+                        &lt;tuning-step>A&lt;/tuning-step>
+                        &lt;tuning-octave>2&lt;/tuning-octave>
+                    &lt;/staff-tuning>
+                    &lt;staff-tuning line="3">
+                        &lt;tuning-step>D&lt;/tuning-step>
+                        &lt;tuning-octave>3&lt;/tuning-octave>
+                    &lt;/staff-tuning>
+                    &lt;staff-tuning line="4">
+                        &lt;tuning-step>G&lt;/tuning-step>
+                        &lt;tuning-octave>3&lt;/tuning-octave>
+                    &lt;/staff-tuning>
+                    &lt;staff-tuning line="5">
+                        &lt;tuning-step>B&lt;/tuning-step>
+                        &lt;tuning-octave>3&lt;/tuning-octave>
+                    &lt;/staff-tuning>
+                    &lt;staff-tuning line="6">
+                        &lt;tuning-step>E&lt;/tuning-step>
+                        &lt;tuning-octave>4&lt;/tuning-octave>
+                    &lt;/staff-tuning>
+                &lt;/staff-details>
+            &lt;/attributes>
+            &lt;direction placement="above">
+                &lt;sound tempo="${tempo}" />
+            &lt;/direction>
+           ${measuresString}
+        &lt;/measure>
+    &lt;/part>
+&lt;/score-partwise>
+`;
+}
+
+
+
+
+/**
+ * Contains patterns for exercises, such as scales
+ * TODO: find way to automatically compute patterns from scales, get scales from tonaljs
+ *
+ * @type {Map&lt;string,object>}
+ */
+export const patterns = new Map([
+    ['pentatonic C type', {
+        name: 'Pentatonic scale C type',
+        rootNotePositions: ['A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            [6, 1],
+            [6, 3],
+            [5, 1],
+            [5, 3],
+            [4, 0],
+            [4, 2],
+            [3, 0],
+            [3, 2],
+            [2, 1],
+            [2, 3],
+            [1, 0],
+            [1, 3],
+        ],
+    }],
+    ['pentatonic A type', {
+        name: 'Pentatonic scale A type',
+        rootNotePositions: ['A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            [6, 1],
+            [6, 3],
+            [5, 1],
+            [5, 3],
+            [4, 0],
+            [4, 3],
+            [3, 0],
+            [3, 3],
+            [2, 1],
+            [2, 3],
+            [1, 1],
+            [1, 3],
+        ],
+    }],
+    ['pentatonic G type', {
+        name: 'Pentatonic scale G type',
+        rootNotePositions: ['G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            [6, 0],
+            [6, 3],
+            [5, 0],
+            [5, 2],
+            [4, 0],
+            [4, 2],
+            [3, 0],
+            [3, 2],
+            [2, 0],
+            [2, 3],
+            [1, 0],
+            [1, 3],
+        ],
+    }],
+    ['pentatonic E type', {
+        name: 'Pentatonic scale E type',
+        rootNotePositions: ['F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            [6, 1],
+            [6, 3],
+            [5, 0],
+            [5, 3],
+            [4, 0],
+            [4, 3],
+            [3, 0],
+            [3, 2],
+            [2, 1],
+            [2, 3],
+            [1, 1],
+            [1, 3],
+        ],
+    }],
+    ['pentatonic D type', {
+        name: 'Pentatonic scale D type',
+        rootNotePositions: ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            [6, 1],
+            [6, 3],
+            [5, 1],
+            [5, 3],
+            [4, 1],
+            [4, 3],
+            [3, 0],
+            [3, 3],
+            [2, 1],
+            [2, 4],
+            [1, 1],
+            [1, 3],
+        ],
+    }],
+    ['pentatonic all', {
+        name: 'Pentatonic scale all',
+        rootNotePositions: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            // C
+            [6, 0],
+            [6, 3],
+            [5, 0],
+            [5, 3],
+            [4, 0],
+            [4, 2],
+            [3, 0],
+            [3, 2],
+            [2, 1],
+            [2, 3],
+            [1, 0],
+            [1, 3],
+            // A
+            [6, 3],
+            [6, 5],
+            [5, 3],
+            [5, 5],
+            [4, 2],
+            [4, 5],
+            [3, 2],
+            [3, 5],
+            [2, 3],
+            [2, 5],
+            [1, 3],
+            [1, 5],
+            // G
+            [6, 5],
+            [6, 8],
+            [5, 5],
+            [5, 7],
+            [4, 5],
+            [4, 7],
+            [3, 5],
+            [3, 7],
+            [2, 5],
+            [2, 8],
+            [1, 5],
+            [1, 8],
+            // E
+            [6, 8],
+            [6, 10],
+            [5, 7],
+            [5, 10],
+            [4, 7],
+            [4, 9],
+            [3, 7],
+            [3, 9],
+            [2, 8],
+            [2, 10],
+            [1, 8],
+            [1, 10],
+            // D
+            [6, 10],
+            [6, 12],
+            [5, 10],
+            [5, 12],
+            [4, 10],
+            [4, 12],
+            [3, 9],
+            [3, 12],
+            [2, 10],
+            [2, 13],
+            [1, 10],
+            [1, 12],
+            // C
+            [6, 12],
+            [6, 15],
+            [5, 12],
+            [5, 15],
+            [4, 12],
+            [4, 14],
+            [3, 12],
+            [3, 14],
+            [2, 13],
+            [2, 15],
+            [1, 12],
+            [1, 15],
+        ],
+    }],
+
+    /**
+     * Heptatonic scales
+     */
+    ['haptatonic C type', {
+        name: 'Heptatonic scale C type',
+        rootNotePositions: ['A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A'],
+        // String fret pairs, strings are 0 (E4) to 5 (E2)
+        positions: [
+            [6, 1],
+            [6, 3],
+            [5, 1],
+            [5, 3],
+            [4, 0],
+            [4, 2],
+            [3, 0],
+            [3, 2],
+            [2, 1],
+            [2, 3],
+            [1, 0],
+            [1, 3],
+        ],
+    }],
+
+    // TODO: other heptatonic patterns
+    // TODO: all heptatonic patterns in one
+
+    /**
+     * Rows
+     */
+    ['rows of 4, left-right', {
+        name: 'Rows left-right',
+        rootNotePositions: ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#'],
+        positions: Array.from({ length: 6 }).flatMap((d, string) =>
+            Array.from({ length: 4 }).map((d, fret) => [6 - string, fret]),
+        ),
+    }],
+    ['rows of 4, right-left', {
+        name: 'Rows right-left',
+        rootNotePositions: ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#'],
+        positions: Array.from({ length: 6 }).flatMap((d, string) =>
+            Array.from({ length: 4 }).map((d, fret) => [6 - string, 3 - fret]),
+        ),
+    }],
+    ['rows of 4, left-right and right-left', {
+        name: 'Rows left-right and right-left',
+        rootNotePositions: ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#'],
+        positions: Array.from({ length: 6 }).flatMap((d, string) =>
+            Array.from({ length: 4 }).map((d, fret) => [6 - string, string % 2 === 0 ? fret : 3 - fret]),
+        ),
+    }],
+]);
+</code></pre>
+        </article>
+    </section>
 
 
 
