@@ -2,6 +2,8 @@ import patterns from './Patterns';
 
 /**
  * Maps internal drum names to MusicXML instrument names and note display
+ *
+ * @type {Map<string,object>}
  */
 export const drumInstrumentMap = new Map([
     [
@@ -131,7 +133,6 @@ export const drumInstrumentMap = new Map([
  * Takes a baseline pattern and moves it to the correct position on the fretboard
  *
  * @param {string} patternType pattern type
- * @param {string} rootNote root note
  * @param {number} [repeat=1] number of repeats
  * @returns {number[][]} array of [string, fret] positions
  */

@@ -38,9 +38,9 @@ export function generatePattern(
  * Repeats a pattern with or without alternating direction
  *
  * @param {number} nRepetitions number of repetitions
- * @param {*[]} pattern pattern
+ * @param {Array} pattern pattern
  * @param {boolean} alternate alternate direction?
- * @returns {*[]} repeated pattern
+ * @returns {Array} repeated pattern
  */
 export function repeatPattern(nRepetitions, pattern, alternate) {
     let result = pattern;

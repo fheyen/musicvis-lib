@@ -376,6 +376,84 @@ declare module "comparison/SimilarSections" {
 }
 
 /**
+ * Maps internal drum names to MusicXML instrument names and note display
+ */
+declare const drumInstrumentMap: Map<string, object>;
+
+/**
+ * Takes a baseline pattern and moves it to the correct position on the fretboard
+ * @param patternType - pattern type
+ * @param [repeat = 1] - number of repeats
+ * @returns array of [string, fret] positions
+ */
+declare function generatePattern(patternType: string, repeat?: number): number[][];
+
+/**
+ * Generates MusicXML text from a pattern
+ * @param name - name
+ * @param tempo - tempo in bpm
+ * @param timeSig - time signature e.g. 4/4
+ * @param drumHits - the output of generatePattern
+ * @returns MusicXML string
+ */
+declare function generateXml(name: string, tempo: number, timeSig: string, drumHits: number[][]): string;
+
+/**
+ * Contains patterns for exercises, such as scales
+ */
+declare const patterns: Map<string, object>;
+
+/**
+ * Takes a baseline pattern and moves it to the correct position on the fretboard
+ * @param patternType - pattern type
+ * @param [repeat = 1] - number of repeats
+ * @returns array of [string, fret] positions
+ */
+declare function generatePattern(patternType: string, repeat?: number): number[][];
+
+/**
+ * Generates MusicXML text from a pattern
+ * @param name - name
+ * @param tempo - tempo in bpm
+ * @param timeSig - time signature e.g. 4/4
+ * @param drumHits - the output of generatePattern
+ * @returns MusicXML string
+ */
+declare function generateXml(name: string, tempo: number, timeSig: string, drumHits: number[][]): string;
+
+/**
+ * Contains patterns for exercises, such as scales
+ */
+declare const patterns: Map<string, object>;
+
+/**
+ * Takes a baseline pattern and moves it to the correct position on the fretboard
+ * @param patternType - pattern type
+ * @param [repeat = 1] - number of repeats
+ * @returns array of [string, fret] positions
+ */
+declare function generatePattern(patternType: string, repeat?: number): number[][];
+
+/**
+ * Repeats a pattern with or without alternating direction
+ * @param nRepetitions - number of repetitions
+ * @param pattern - pattern
+ * @param alternate - alternate direction?
+ * @returns repeated pattern
+ */
+declare function repeatPattern(nRepetitions: number, pattern: any[], alternate: boolean): any[];
+
+/**
+ * Generates MusicXML text from a pattern
+ * @param name - name
+ * @param tempo - tempo in bpm
+ * @param timeSig - time signature e.g. 4/4
+ * @param drumHits - the output of generatePattern
+ * @returns MusicXML string
+ */
+declare function generateXml(name: string, tempo: number, timeSig: string, drumHits: number[][]): string;
+
+/**
  * Takes the ground truth and a single recording.
 Both gtNotes and recNotes must be sorted by note start time ascending.
  * @param gtNotes - ground truth notes
@@ -874,7 +952,7 @@ declare function getVersion(): string;
 /**
  * Allows to record audio blobs.
  * @example
- * Usage (only in async functions):
+ * <caption>Usage (only in async functions)</caption>
     const recorder = await recordAudio();
     recorder.start();
     // ...
@@ -926,7 +1004,7 @@ declare module "input/MidiInputManager" {
 /**
  * Records incoming MIDI messages from a MIDI device.
  * @example
- * Usage (only in async functions):
+ * <caption>Usage (only in async functions)</caption>
  *     const recorder = await recordMidi();
  *     recorder.start();
  *     const notes = recorder.stop();
@@ -1697,10 +1775,12 @@ will make a copy of the passed array and cast all notes
   for (const note of noteArr) {
       console.log(note);
   }
- * @param notes - notes, default: []
+ * @param [notes = []] - notes
+ * @param [reUseNotes = false] - if true, will directly use the passed notes.
+     This can be dangerous if you do not want them to change.
  */
 declare class NoteArray {
-    constructor(notes: Note[]);
+    constructor(notes?: Note[], reUseNotes?: boolean);
     /**
      * Returns a simple array with all Note objects.
      * @example
@@ -1845,9 +1925,11 @@ declare class NoteArray {
          const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
      * @param times - points of time at which to slice (in seconds)
      * @param mode - see NoteArray.sliceTime()
+     * @param [reUseNotes = false] - if true, will not clone notes.
+         This can be dangerous if you do not want them to change.
      * @returns time slices
      */
-    sliceAtTimes(times: number[], mode: string): Note[][];
+    sliceAtTimes(times: number[], mode: string, reUseNotes?: boolean): Note[][];
     /**
      * Segments the NoteArray into smaller ones at times where no note occurs
     for a specified amount of time.
@@ -2264,6 +2346,14 @@ declare module "utils/MiscUtils" {
      * @returns closest note to targetNote
      */
     function findNearest(notes: Note[], targetNote: Note): Note;
+    /**
+     * Allows to wait for a number of seconds with async/await
+    IMPORTANT: This it not exact, it will at *least* wait for X seconds
+     * @param seconds - number of seconds to wait
+     * @returns empty Promise that will resolve after the specified amount
+         of seconds
+     */
+    function delay(seconds: number): Promise;
 }
 
 declare module "utils/MusicUtils" {
@@ -2273,6 +2363,14 @@ declare module "utils/MusicUtils" {
      * @returns seconds per beat
      */
     function bpmToSecondsPerBeat(bpm: number): number;
+    /**
+     * Maps any frequency (in Hz) to an approximate MIDI note number. Result can be
+    rounded to get to the closest MIDI note or used as is for a sound in between
+    two notes.
+     * @param frequency - a frequency in Hz
+     * @returns MIDI note number (not rounded)
+     */
+    function freqToApproxMidiNr(frequency: number): number;
     /**
      * Turns a chord into an integer that uniquely describes the occuring chroma.
     If the same chroma occurs twice this will not make a difference

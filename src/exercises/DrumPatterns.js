@@ -1,5 +1,7 @@
 /**
  * Contains patterns for exercises, such as scales
+ *
+ * @type {Map<string,object>}
  */
 const patterns = new Map([
     ['Snare only', {
