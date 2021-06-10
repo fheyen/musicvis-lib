@@ -1,11 +1,11 @@
-// musicvis-lib v0.49.1 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.50.0 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.49.1";
+  var version="0.50.0";
 
   /**
    * Lookup for many MIDI specifications.
@@ -10152,6 +10152,91 @@
   // }
 
   /**
+   * Creates a track of metronome ticks for a given tempo and meter.
+   *
+   * @param {number} tempo tempo in bpm, e.g. 120
+   * @param {number[]} meter e.g. [4, 4]
+   * @param {number} duration duration of the resulting track in seconds
+   * @returns {object[]} metronome track with {time: number, accent: boolean}
+   */
+
+  function metronomeTrackFromTempoAndMeter(tempo = 120, meter = [4, 4], duration = 60) {
+    const track = [];
+    const secondsPerBeat = bpmToSecondsPerBeat$1(tempo) / (meter[1] / 4);
+    let currentTime = 0;
+
+    while (currentTime <= duration) {
+      for (let beat = 0; beat < meter[0]; beat++) {
+        track.push({
+          time: currentTime,
+          accent: beat % meter[0] === 0
+        });
+        currentTime += secondsPerBeat;
+
+        if (currentTime > duration) {
+          return track;
+        }
+      }
+    }
+  }
+  /**
+   * Creates a track of metronome ticks for a given music piece.
+   *
+   * @todo not tested yet
+   * @param {MusicPiece} musicPiece music piece
+   * @param {number} [tempoFactor=1] rescale the tempo of the metronome, e.g. 2
+   *      for twice the speed
+   * @returns {object[]} metronome track with {time: number, accent: boolean}
+   */
+
+  function metronomeTrackFromMusicPiece(musicPiece, tempoFactor = 1) {
+    const {
+      duration,
+      tempos,
+      timeSignatures
+    } = musicPiece;
+    const track = [];
+    let currentTime = 0;
+    let currentTempo;
+    let currentTimeSignature;
+
+    while (currentTime <= duration) {
+      // TODO: always use the most recent tempo and meter
+      for (const tempo of tempos) {
+        if (tempo.time > currentTime) {
+          break;
+        }
+
+        currentTempo = tempo.bpm;
+      }
+
+      for (const sig of timeSignatures) {
+        if (sig.time > currentTime) {
+          break;
+        }
+
+        currentTimeSignature = sig.signature;
+      }
+
+      const secondsPerBeat = bpmToSecondsPerBeat$1(currentTempo) / (currentTimeSignature[1] / 4);
+
+      for (let beat = 0; beat < currentTimeSignature[0]; beat++) {
+        track.push({
+          time: currentTime / tempoFactor,
+          accent: beat % currentTimeSignature[0] === 0
+        });
+        currentTime += secondsPerBeat;
+
+        if (currentTime > duration) {
+          return track;
+        }
+      }
+    }
+
+    return track;
+  }
+
+  /**
    * @module fileFormats/MidiParser
    * @todo parse pitch bends
    */
@@ -11290,7 +11375,7 @@
    * @todo implement keepOnlyHighestConcurrentNotes
    */
 
-  var _pitches = _classPrivateFieldLooseKey("pitches");
+  var _pitches = /*#__PURE__*/_classPrivateFieldLooseKey("pitches");
 
   class PitchSequence {
     /**
@@ -12049,13 +12134,13 @@
    * @module input/MidiInputManager
    */
 
-  var _getMidiLiveData = _classPrivateFieldLooseKey("getMidiLiveData");
+  var _getMidiLiveData = /*#__PURE__*/_classPrivateFieldLooseKey("getMidiLiveData");
 
-  var _setMidiLiveData = _classPrivateFieldLooseKey("setMidiLiveData");
+  var _setMidiLiveData = /*#__PURE__*/_classPrivateFieldLooseKey("setMidiLiveData");
 
-  var _addCurrentNote = _classPrivateFieldLooseKey("addCurrentNote");
+  var _addCurrentNote = /*#__PURE__*/_classPrivateFieldLooseKey("addCurrentNote");
 
-  var _removeCurrentNote = _classPrivateFieldLooseKey("removeCurrentNote");
+  var _removeCurrentNote = /*#__PURE__*/_classPrivateFieldLooseKey("removeCurrentNote");
 
   class MidiInputManager {
     /**
@@ -15800,6 +15885,8 @@
     chordToInteger: chordToInteger,
     chordIntegerJaccardIndex: chordIntegerJaccardIndex,
     noteDurationToNoteType: noteDurationToNoteType,
+    metronomeTrackFromTempoAndMeter: metronomeTrackFromTempoAndMeter,
+    metronomeTrackFromMusicPiece: metronomeTrackFromMusicPiece,
     noteColorFromPitch: noteColorFromPitch,
     filterRecordingNoise: filterRecordingNoise,
     clipRecordingsPitchesToGtRange: clipRecordingsPitchesToGtRange,
@@ -17726,6 +17813,74 @@
     'default': SuffixTree
   });
 
+  /**
+   * Calculates all n-grams with a specified length
+   *
+   * @param {string} string a string
+   * @param {number} length length (n) of n-grams
+   * @returns {Map<string,number>} maps n-gram to its number of occurences
+   */
+  function getNGrams(string, length) {
+    if (length <= 0) {
+      return new Map();
+    }
+
+    length = Math.min(length, string.length);
+    const nGrams = new Map();
+
+    for (let index = 0; index < string.length - length + 1; index++) {
+      const subString = string.slice(index, index + length);
+
+      if (nGrams.has(subString)) {
+        nGrams.set(subString, nGrams.get(subString) + 1);
+      } else {
+        nGrams.set(subString, 1);
+      }
+    }
+
+    return nGrams;
+  }
+  /**
+   * Calculates all n-grams with a specified length
+   *
+   * @param {Array} array an array of primitive data types
+   * @param {number} length length (n) of n-grams
+   * @returns {Map<string,object>} maps n-gram, joined with ' ', to its number of
+   * occurences and value
+   */
+
+  function getNGramsForArray(array, length) {
+    if (length <= 0) {
+      return new Map();
+    }
+
+    length = Math.min(length, array.length);
+    const nGrams = new Map();
+
+    for (let index = 0; index < array.length - length + 1; index++) {
+      const subArray = array.slice(index, index + length);
+      const key = subArray.join(' ');
+      let count = 1;
+
+      if (nGrams.has(key)) {
+        count = nGrams.get(key).count + 1;
+      }
+
+      nGrams.set(key, {
+        value: subArray,
+        count
+      });
+    }
+
+    return nGrams;
+  }
+
+  var NGrams = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    getNGrams: getNGrams,
+    getNGramsForArray: getNGramsForArray
+  });
+
   /* eslint-disable unicorn/prefer-spread */
 
   /**
@@ -17911,6 +18066,7 @@
     LongestCommonSubsequence: LongestCommonSubsequence,
     Gotoh: Gotoh,
     SuffixTree: SuffixTree$1,
+    NGrams: NGrams,
     NeedlemanWunsch: NeedlemanWunsch
   });
 

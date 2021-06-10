@@ -481,39 +481,6 @@ declare const chordErrorTypes: any;
  */
 declare function getChordErrors(expectedChord: Note[], actualChord: Note[]): string[];
 
-/**
- * Creates a track of metronome ticks for a given tempo and meter.
- * @param tempo - tempo in bpm, e.g. 120
- * @param meter - e.g. [4, 4]
- * @param duration - duration of the resulting track in seconds
- * @returns metronome track with {time: number, accent: boolean}
- */
-declare function metronomeTrackFromTempoAndMeter(tempo: number, meter: number[], duration: number): object[];
-
-/**
- * Creates a track of metronome ticks for a given music piece.
- * @param musicPiece - music piece
- * @returns metronome track with {time: number, accent: boolean}
- */
-declare function metronomeTrackFromMusicPiece(musicPiece: MusicPiece): object[];
-
-/**
- * Calculates all n-grams with a specified length
- * @param string - a string
- * @param length - length (n) of n-grams
- * @returns maps n-gram to its number of occurences
- */
-declare function getNGrams(string: string, length: number): Map<string, number>;
-
-/**
- * Calculates all n-grams with a specified length
- * @param array - an array of primitive data types
- * @param length - length (n) of n-grams
- * @returns maps n-gram, joined with ' ', to its number of
- * occurences and value
- */
-declare function getNGramsForArray(array: any[], length: number): Map<string, object>;
-
 declare module "instruments/StringedFingering" {
     /**
      * Represents a positon as {string, fret}
@@ -1364,6 +1331,23 @@ declare module "stringBased/NeedlemanWunsch" {
         alignmentTraceback(): object[];
     }
 }
+
+/**
+ * Calculates all n-grams with a specified length
+ * @param string - a string
+ * @param length - length (n) of n-grams
+ * @returns maps n-gram to its number of occurences
+ */
+declare function getNGrams(string: string, length: number): Map<string, number>;
+
+/**
+ * Calculates all n-grams with a specified length
+ * @param array - an array of primitive data types
+ * @param length - length (n) of n-grams
+ * @returns maps n-gram, joined with ' ', to its number of
+ * occurences and value
+ */
+declare function getNGramsForArray(array: any[], length: number): Map<string, object>;
 
 declare module "stringBased/SuffixTree" {
     /**
@@ -2415,6 +2399,22 @@ declare module "utils/MusicUtils" {
     aug - augmented
      */
     const INTERVALS: Map<number, string>;
+    /**
+     * Creates a track of metronome ticks for a given tempo and meter.
+     * @param tempo - tempo in bpm, e.g. 120
+     * @param meter - e.g. [4, 4]
+     * @param duration - duration of the resulting track in seconds
+     * @returns metronome track with {time: number, accent: boolean}
+     */
+    function metronomeTrackFromTempoAndMeter(tempo: number, meter: number[], duration: number): object[];
+    /**
+     * Creates a track of metronome ticks for a given music piece.
+     * @param musicPiece - music piece
+     * @param [tempoFactor = 1] - rescale the tempo of the metronome, e.g. 2
+         for twice the speed
+     * @returns metronome track with {time: number, accent: boolean}
+     */
+    function metronomeTrackFromMusicPiece(musicPiece: MusicPiece, tempoFactor?: number): object[];
 }
 
 declare module "utils/NoteColorUtils" {
