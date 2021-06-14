@@ -1,5 +1,6 @@
 /* eslint-disable linebreak-style */
 module.exports = {
+    // export default {
     env: {
         browser: true,
         node: true,

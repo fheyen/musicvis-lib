@@ -1,11 +1,11 @@
-// musicvis-lib v0.50.0 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.50.1 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.50.0";
+  var version="0.50.1";
 
   /**
    * Lookup for many MIDI specifications.
@@ -3653,6 +3653,79 @@
     return [min, max];
   }
 
+  class InternMap extends Map {
+    constructor(entries, key = keyof) {
+      super();
+      Object.defineProperties(this, {
+        _intern: {
+          value: new Map()
+        },
+        _key: {
+          value: key
+        }
+      });
+      if (entries != null) for (const [key, value] of entries) this.set(key, value);
+    }
+
+    get(key) {
+      return super.get(intern_get(this, key));
+    }
+
+    has(key) {
+      return super.has(intern_get(this, key));
+    }
+
+    set(key, value) {
+      return super.set(intern_set(this, key), value);
+    }
+
+    delete(key) {
+      return super.delete(intern_delete(this, key));
+    }
+
+  }
+
+  function intern_get({
+    _intern,
+    _key
+  }, value) {
+    const key = _key(value);
+
+    return _intern.has(key) ? _intern.get(key) : value;
+  }
+
+  function intern_set({
+    _intern,
+    _key
+  }, value) {
+    const key = _key(value);
+
+    if (_intern.has(key)) return _intern.get(key);
+
+    _intern.set(key, value);
+
+    return value;
+  }
+
+  function intern_delete({
+    _intern,
+    _key
+  }, value) {
+    const key = _key(value);
+
+    if (_intern.has(key)) {
+      value = _intern.get(value);
+
+      _intern.delete(key);
+    }
+
+    return value;
+  }
+
+  function keyof(value) {
+    return value !== null && typeof value === "object" ? value.valueOf() : value;
+  }
+
   function identity$2 (x) {
     return x;
   }
@@ -3664,7 +3737,7 @@
   function nest(values, map, reduce, keys) {
     return function regroup(values, i) {
       if (i >= keys.length) return reduce(values);
-      const groups = new Map();
+      const groups = new InternMap();
       const keyof = keys[i++];
       let index = -1;
 
@@ -3697,18 +3770,22 @@
     if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
 
     if (step > 0) {
-      start = Math.ceil(start / step);
-      stop = Math.floor(stop / step);
-      ticks = new Array(n = Math.ceil(stop - start + 1));
+      let r0 = Math.round(start / step),
+          r1 = Math.round(stop / step);
+      if (r0 * step < start) ++r0;
+      if (r1 * step > stop) --r1;
+      ticks = new Array(n = r1 - r0 + 1);
 
-      while (++i < n) ticks[i] = (start + i) * step;
+      while (++i < n) ticks[i] = (r0 + i) * step;
     } else {
       step = -step;
-      start = Math.ceil(start * step);
-      stop = Math.floor(stop * step);
-      ticks = new Array(n = Math.ceil(stop - start + 1));
+      let r0 = Math.round(start * step),
+          r1 = Math.round(stop * step);
+      if (r0 / step < start) ++r0;
+      if (r1 / step > stop) --r1;
+      ticks = new Array(n = r1 - r0 + 1);
 
-      while (++i < n) ticks[i] = (start + i) / step;
+      while (++i < n) ticks[i] = (r0 + i) / step;
     }
 
     if (reverse) ticks.reverse();
@@ -5049,7 +5126,7 @@
     }
 
     function scale(x) {
-      return isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+      return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
     }
 
     scale.invert = function (y) {
@@ -5402,6 +5479,18 @@
 
     getNotes() {
       return this._notes;
+    }
+    /**
+     * Overwrite the NoteArray's notes with another Array of Notes
+     *
+     * @param {Note[]} notes notes
+     * @returns {NoteArray} itself
+     */
+
+
+    setNotes(notes) {
+      this._notes = notes;
+      return this;
     }
     /**
      * Makes this class iterable
@@ -9668,23 +9757,23 @@
     } // Defaults
 
 
-    if (tempoChanges.length === 0) {
-      tempoChanges.push({
+    if (tempoChanges.length === 0 || tempoChanges[0].time > 0) {
+      tempoChanges.unshift({
         tempo: 120,
         time: 0
       });
     }
 
-    if (beatTypeChanges.length === 0) {
-      beatTypeChanges.push({
+    if (beatTypeChanges.length === 0 || beatTypeChanges[0].time > 0) {
+      beatTypeChanges.unshift({
         beats: 4,
         beatType: 4,
         time: 0
       });
     }
 
-    if (keySignatureChanges.length === 0) {
-      keySignatureChanges.push({
+    if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
+      keySignatureChanges.unshift({
         key: 'C',
         scale: 'major',
         time: 0
@@ -9852,11 +9941,12 @@
         break;
       }
     } // If some notes have string and fret information, remove all the others
+    // Do *not* remove rests!
 
 
     if (hasStringFretNotes) {
       for (const note of notes) {
-        if (note.querySelectorAll('fret').length === 0) {
+        if (note.querySelectorAll('rest').length === 0 && note.querySelectorAll('fret').length === 0) {
           note.remove();
         }
       } // Also remove <backup> tags which were only there due to having to
@@ -10168,7 +10258,7 @@
     while (currentTime <= duration) {
       for (let beat = 0; beat < meter[0]; beat++) {
         track.push({
-          time: currentTime,
+          time: roundToNDecimals(currentTime, 4),
           accent: beat % meter[0] === 0
         });
         currentTime += secondsPerBeat;
@@ -10182,7 +10272,6 @@
   /**
    * Creates a track of metronome ticks for a given music piece.
    *
-   * @todo not tested yet
    * @param {MusicPiece} musicPiece music piece
    * @param {number} [tempoFactor=1] rescale the tempo of the metronome, e.g. 2
    *      for twice the speed
@@ -10197,11 +10286,11 @@
     } = musicPiece;
     const track = [];
     let currentTime = 0;
-    let currentTempo;
-    let currentTimeSignature;
+    let currentTempo = 120;
+    let currentTimeSignature = [4, 4];
 
     while (currentTime <= duration) {
-      // TODO: always use the most recent tempo and meter
+      // Always use the most recent tempo and meter
       for (const tempo of tempos) {
         if (tempo.time > currentTime) {
           break;
@@ -10218,11 +10307,12 @@
         currentTimeSignature = sig.signature;
       }
 
-      const secondsPerBeat = bpmToSecondsPerBeat$1(currentTempo) / (currentTimeSignature[1] / 4);
+      const beatType = currentTimeSignature[1];
+      const secondsPerBeat = bpmToSecondsPerBeat$1(currentTempo) / (beatType / 4);
 
       for (let beat = 0; beat < currentTimeSignature[0]; beat++) {
         track.push({
-          time: currentTime / tempoFactor,
+          time: roundToNDecimals(currentTime / tempoFactor, 10),
           accent: beat % currentTimeSignature[0] === 0
         });
         currentTime += secondsPerBeat;
@@ -10704,23 +10794,23 @@
     } // Default values
 
 
-    if (tempoChanges.length === 0) {
-      tempoChanges.push({
+    if (tempoChanges.length === 0 || tempoChanges[0].time > 0) {
+      tempoChanges.unshift({
         tempo: 120,
         time: 0
       });
     }
 
-    if (beatTypeChanges.length === 0) {
-      beatTypeChanges.push({
+    if (beatTypeChanges.length === 0 || beatTypeChanges[0].time > 0) {
+      beatTypeChanges.unshift({
         beats: 4,
         beatType: 4,
         time: 0
       });
     }
 
-    if (keySignatureChanges.length === 0) {
-      keySignatureChanges.push({
+    if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
+      keySignatureChanges.unshift({
         key: 'C',
         scale: 'major',
         time: 0
@@ -16508,6 +16598,48 @@
    */
 
   /**
+   * Aligns the recording to the best fitting position of the ground truth
+   *
+   * @param {Note[]} gtNotes ground truth notes
+   * @param {Recording} recording a Recording object
+   * @param {number} binSize time bin size in milliseconds
+   * @returns {Recording} aligned recording
+   */
+
+  function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
+    const recNotes = recording.getNotes();
+    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
+    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
+    return newRec;
+  }
+  /**
+   * Splits the recording at gaps > gapDuration and then aligns each section to
+   * the best fitting position of the ground truth.
+   *
+   * @param {Note[]} gtNotes ground truth notes
+   * @param {Recording} recording a Recording object
+   * @param {number} binSize time bin size in milliseconds
+   * @param {number} gapDuration duration of seconds for a gap to be used as
+   *      segmenting time
+   * @param {'start-start'|'end-start'} gapMode gaps can either be considered as
+   *      the maximum time between two note's starts or the end of the first
+   *      and the start of the second note
+   * @returns {Recording} aligned recording
+   */
+
+  function alignRecordingSectionsToBestFit(gtNotes, recording, binSize, gapDuration = 3, gapMode = 'start-start') {
+    // Cut into sections when there are gaps
+    const sections = Recording.segmentAtGaps(gapDuration, gapMode);
+    const alignedSections = sections.map(section => {
+      // TODO: avoid overlaps?
+      const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, section, binSize)[0];
+      return bestFit;
+    });
+    const newRec = recording.clone();
+    newRec.setNotes(alignedSections.flat());
+    return newRec;
+  }
+  /**
    * Global alignment.
    *
    * Returns an array with matches sorted by magnitude of agreement.
@@ -16636,28 +16768,14 @@
 
     return agreement;
   }
-  /**
-   * Aligns the recording to the best fitting position of the ground truth
-   *
-   * @param {Note[]} gtNotes ground truth notes
-   * @param {Recording} recording a Recording object
-   * @param {number} binSize time bin size in milliseconds
-   * @returns {Recording} aligned recording
-   */
-
-  function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
-    const recNotes = recording.getNotes();
-    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
-    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
-    return newRec;
-  }
 
   var DiffAlignment = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    alignRecordingToBestFit: alignRecordingToBestFit,
+    alignRecordingSectionsToBestFit: alignRecordingSectionsToBestFit,
     alignGtAndRecToMinimizeDiffError: alignGtAndRecToMinimizeDiffError,
     activationMap: activationMap,
-    agreement: agreement,
-    alignRecordingToBestFit: alignRecordingToBestFit
+    agreement: agreement
   });
 
   /**

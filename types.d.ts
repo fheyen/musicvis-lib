@@ -37,6 +37,28 @@ declare module "Alignment" {
 
 declare module "DiffAlignment" {
     /**
+     * Aligns the recording to the best fitting position of the ground truth
+     * @param gtNotes - ground truth notes
+     * @param recording - a Recording object
+     * @param binSize - time bin size in milliseconds
+     * @returns aligned recording
+     */
+    function alignRecordingToBestFit(gtNotes: Note[], recording: Recording, binSize: number): Recording;
+    /**
+     * Splits the recording at gaps > gapDuration and then aligns each section to
+     * the best fitting position of the ground truth.
+     * @param gtNotes - ground truth notes
+     * @param recording - a Recording object
+     * @param binSize - time bin size in milliseconds
+     * @param gapDuration - duration of seconds for a gap to be used as
+     *      segmenting time
+     * @param gapMode - gaps can either be considered as
+     *      the maximum time between two note's starts or the end of the first
+     *      and the start of the second note
+     * @returns aligned recording
+     */
+    function alignRecordingSectionsToBestFit(gtNotes: Note[], recording: Recording, binSize: number, gapDuration: number, gapMode: 'start-start' | 'end-start'): Recording;
+    /**
      * Global alignment.
      *
      * Returns an array with matches sorted by magnitude of agreement.
@@ -80,14 +102,6 @@ declare module "DiffAlignment" {
      * @returns agreement
      */
     function agreement(gtActivations: Map, recActivations: Map, offset: number): number;
-    /**
-     * Aligns the recording to the best fitting position of the ground truth
-     * @param gtNotes - ground truth notes
-     * @param recording - a Recording object
-     * @param binSize - time bin size in milliseconds
-     * @returns aligned recording
-     */
-    function alignRecordingToBestFit(gtNotes: Note[], recording: Recording, binSize: number): Recording;
 }
 
 declare module "Chords" {
@@ -1782,6 +1796,12 @@ declare class NoteArray {
      * @returns array with Note objects
      */
     getNotes(): Note[];
+    /**
+     * Overwrite the NoteArray's notes with another Array of Notes
+     * @param notes - notes
+     * @returns itself
+     */
+    setNotes(notes: Note[]): NoteArray;
     /**
      * Appends notes to this NoteArray
      * @param notes - notes
