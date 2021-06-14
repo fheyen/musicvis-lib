@@ -1,11 +1,11 @@
-// musicvis-lib v0.50.1 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.50.2 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.50.1";
+  var version="0.50.2";
 
   /**
    * Lookup for many MIDI specifications.
@@ -9946,7 +9946,12 @@
 
     if (hasStringFretNotes) {
       for (const note of notes) {
-        if (note.querySelectorAll('rest').length === 0 && note.querySelectorAll('fret').length === 0) {
+        var _note$querySelectorAl6;
+
+        const voice = (_note$querySelectorAl6 = note.querySelectorAll('voice')[0]) !== null && _note$querySelectorAl6 !== void 0 ? _note$querySelectorAl6 : '1';
+        const isFirstVoiceRest = note.querySelectorAll('rest').length > 0 && voice === '1';
+
+        if (!isFirstVoiceRest && note.querySelectorAll('fret').length === 0) {
           note.remove();
         }
       } // Also remove <backup> tags which were only there due to having to
