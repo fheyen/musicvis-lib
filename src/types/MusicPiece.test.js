@@ -254,13 +254,15 @@ describe('MusicPiece', () => {
 
         test.each(
             // TODO: pickup measure does not work yet
-            files.filter(d => d !== '[Test] Pickup Measure')
+            files.filter(d => d !== '[Test] Pickup Measure' && d !== '[Test] Increasing tempo for metronome track')
         )('time signature %s', (file) => {
             const { mpMidi, mpXml } = getMusicPiecesFromBothFormats(file, TEST_DIR);
             expect(mpMidi.timeSignatures).toStrictEqual(mpXml.timeSignatures);
         });
 
-        test.each(files)('key signature %s', (file) => {
+        test.each(
+            files.filter(d => d !== '[Test] Increasing tempo for metronome track')
+        )('key signature %s', (file) => {
             const { mpMidi, mpXml } = getMusicPiecesFromBothFormats(file, TEST_DIR);
             expect(mpMidi.keySignatures).toStrictEqual(mpXml.keySignatures);
         });

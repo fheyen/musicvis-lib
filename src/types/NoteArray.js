@@ -75,6 +75,17 @@ class NoteArray {
     }
 
     /**
+     * Overwrite the NoteArray's notes with another Array of Notes
+     *
+     * @param {Note[]} notes notes
+     * @returns {NoteArray} itself
+     */
+    setNotes(notes) {
+        this._notes = notes;
+        return this;
+    }
+
+    /**
      * Makes this class iterable
      *
      * @yields {Note} note

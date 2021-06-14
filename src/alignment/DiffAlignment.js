@@ -1,9 +1,61 @@
 import NoteArray from '../types/NoteArray';
+import Recording from '../types/Recording';
 import { group, max } from 'd3';
 
 /**
  * @module DiffAlignment
  */
+
+
+/**
+ * Aligns the recording to the best fitting position of the ground truth
+ *
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Recording} recording a Recording object
+ * @param {number} binSize time bin size in milliseconds
+ * @returns {Recording} aligned recording
+ */
+export function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
+    const recNotes = recording.getNotes();
+    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
+    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
+    return newRec;
+}
+
+/**
+ * Splits the recording at gaps > gapDuration and then aligns each section to
+ * the best fitting position of the ground truth.
+ *
+ * @param {Note[]} gtNotes ground truth notes
+ * @param {Recording} recording a Recording object
+ * @param {number} binSize time bin size in milliseconds
+ * @param {number} gapDuration duration of seconds for a gap to be used as
+ *      segmenting time
+ * @param {'start-start'|'end-start'} gapMode gaps can either be considered as
+ *      the maximum time between two note's starts or the end of the first
+ *      and the start of the second note
+ * @returns {Recording} aligned recording
+ */
+export function alignRecordingSectionsToBestFit(
+    gtNotes,
+    recording,
+    binSize,
+    gapDuration = 3,
+    gapMode = 'start-start',
+) {
+    // Cut into sections when there are gaps
+    const sections = Recording.segmentAtGaps(gapDuration, gapMode);
+
+    const alignedSections = sections.map(section => {
+        // TODO: avoid overlaps?
+        const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, section, binSize)[0];
+        return bestFit;
+    });
+
+    const newRec = recording.clone();
+    newRec.setNotes(alignedSections.flat());
+    return newRec;
+}
 
 /**
  * Global alignment.
@@ -128,19 +180,4 @@ export function agreement(gtActivations, recActivations, offset) {
         }
     }
     return agreement;
-}
-
-/**
- * Aligns the recording to the best fitting position of the ground truth
- *
- * @param {Note[]} gtNotes ground truth notes
- * @param {Recording} recording a Recording object
- * @param {number} binSize time bin size in milliseconds
- * @returns {Recording} aligned recording
- */
-export function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
-    const recNotes = recording.getNotes();
-    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
-    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
-    return newRec;
 }

@@ -5,6 +5,7 @@ import path from 'path';
 import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece } from './MusicUtils';
 import Note from '../types/Note';
 import MusicPiece from '../types/MusicPiece';
+import { readXmlFile } from '../../test/testTools/readTestAssetFiles';
 
 const GT_DIR = path.join(__dirname, '..', '..', 'test', '_test_assets');
 
@@ -319,7 +320,49 @@ describe('MusicUtils', () => {
             });
         });
 
+
         describe('from music piece', () => {
+            test('MIDI and XML are equal', () => {
+                const midi = readMidiFile('[Test] Increasing tempo for metronome track.mid');
+                const xml = readXmlFile('[Test] Increasing tempo for metronome track.musicxml', GT_DIR);
+                const mp1 = MusicPiece.fromMidi('test', midi);
+                const mp2 = MusicPiece.fromMusicXml('test', xml);
+                expect(
+                    metronomeTrackFromMusicPiece(mp1)
+                ).toStrictEqual(
+                    metronomeTrackFromMusicPiece(mp2)
+                );
+            });
+
+            test('[Test] Increasing tempo for metronome track.musicxml', () => {
+                const xml = readXmlFile('[Test] Increasing tempo for metronome track.musicxml', GT_DIR);
+                const mp = MusicPiece.fromMusicXml('test', xml);
+                // console.log(mp.measureTimes);
+                // console.log(mp.tracks[0].notes.map(d => d.start));
+                expect(
+                    metronomeTrackFromMusicPiece(mp).map(d => d.time)
+                ).toStrictEqual([
+                    0,
+                    0.5,
+                    1,
+                    1.5,
+                    2,
+                    2.25,
+                    2.5,
+                    2.75,
+                    3,
+                    3.5,
+                    4,
+                    4.5,
+                    5,
+                    5.25,
+                    5.5,
+                    5.75,
+                    6,
+                ]);
+            });
+
+
             test('3-4 meter.mid', () => {
                 const midi = readMidiFile('[Test] 3-4 meter.mid');
                 const mp = MusicPiece.fromMidi('test', midi);
@@ -673,5 +716,7 @@ describe('MusicUtils', () => {
                 ]);
             });
         });
+
+
     });
 });

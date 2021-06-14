@@ -678,6 +678,103 @@ describe('MusicXmlParser', () => {
         expect(parsed.parts[0].noteObjs.length).toBe(256);
     });
 
+    test('Guitar sheet rests works', () => {
+        const xml = readXmlFile('[Test] Guitar tab with rests.musicxml');
+        const parsed = preprocessMusicXmlData(xml);
+        expect(parsed.parts[0].noteObjs).toEqual([
+            {
+                "channel": 6,
+                "end": 0.5,
+                "fret": 1,
+                "name": "F2",
+                "pitch": 41,
+                "start": 0,
+                "string": 6,
+                "velocity": 76,
+            },
+            {
+                "channel": 6,
+                "end": 1,
+                "fret": 2,
+                "name": "F#2",
+                "pitch": 42,
+                "start": 0.5,
+                "string": 6,
+                "velocity": 76,
+            },
+            {
+                "channel": 6,
+                "end": 1.5,
+                "fret": 3,
+                "name": "G2",
+                "pitch": 43,
+                "start": 1,
+                "string": 6,
+                "velocity": 76,
+            },
+            {
+                "channel": 6,
+                "end": 2,
+                "fret": 4,
+                "name": "G#2",
+                "pitch": 44,
+                "start": 1.5,
+                "string": 6,
+                "velocity": 76,
+            },
+            {
+                "channel": 4,
+                "end": 8,
+                "fret": 5,
+                "name": "G3",
+                "pitch": 55,
+                "start": 6,
+                "string": 4,
+                "velocity": 76,
+            },
+            {
+                "channel": 4,
+                "end": 10,
+                "fret": 5,
+                "name": "G3",
+                "pitch": 55,
+                "start": 8,
+                "string": 4,
+                "velocity": 76,
+            },
+            {
+                "channel": 4,
+                "end": 13,
+                "fret": 6,
+                "name": "G#3",
+                "pitch": 56,
+                "start": 12,
+                "string": 4,
+                "velocity": 76,
+            },
+            {
+                "channel": 4,
+                "end": 14,
+                "fret": 8,
+                "name": "A#3",
+                "pitch": 58,
+                "start": 13,
+                "string": 4,
+                "velocity": 76,
+            },
+            {
+                "channel": 4,
+                "end": 15,
+                "fret": 9,
+                "name": "B3",
+                "pitch": 59,
+                "start": 14,
+                "string": 4,
+                "velocity": 76,
+            },
+        ]);
+    });
+
     test('Piano sheet with two staves leads to Notes with different channels', () => {
         const xml = readXmlFile('[Test] Piano Left and Right Hand Staves.musicxml');
         const parsed = preprocessMusicXmlData(xml);

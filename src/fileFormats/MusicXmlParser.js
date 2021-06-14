@@ -261,14 +261,14 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         measureIndices.push(noteObjs.length);
     }
     // Defaults
-    if (tempoChanges.length === 0) {
-        tempoChanges.push({ tempo: 120, time: 0 });
+    if (tempoChanges.length === 0 || tempoChanges[0].time > 0) {
+        tempoChanges.unshift({ tempo: 120, time: 0 });
     }
-    if (beatTypeChanges.length === 0) {
-        beatTypeChanges.push({ beats: 4, beatType: 4, time: 0 });
+    if (beatTypeChanges.length === 0 || beatTypeChanges[0].time > 0) {
+        beatTypeChanges.unshift({ beats: 4, beatType: 4, time: 0 });
     }
-    if (keySignatureChanges.length === 0) {
-        keySignatureChanges.push({ key: 'C', scale: 'major', time: 0 });
+    if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
+        keySignatureChanges.unshift({ key: 'C', scale: 'major', time: 0 });
     }
     const result = {
         noteObjs: noteObjs,
@@ -420,9 +420,13 @@ function handleStaveAndTab(track) {
         }
     }
     // If some notes have string and fret information, remove all the others
+    // Do *not* remove rests!
     if (hasStringFretNotes) {
         for (const note of notes) {
-            if (note.querySelectorAll('fret').length === 0) {
+            if (
+                note.querySelectorAll('rest').length === 0
+                && note.querySelectorAll('fret').length === 0
+            ) {
                 note.remove();
             }
         }

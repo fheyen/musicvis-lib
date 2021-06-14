@@ -1,4 +1,4 @@
-import { countOnesOfBinary } from './MathUtils';
+import { countOnesOfBinary, roundToNDecimals } from './MathUtils';
 import { binarySearch } from './ArrayUtils';
 
 /**
@@ -206,7 +206,7 @@ export function metronomeTrackFromTempoAndMeter(tempo = 120, meter = [4, 4], dur
     while (currentTime <= duration) {
         for (let beat = 0; beat < meter[0]; beat++) {
             track.push({
-                time: currentTime,
+                time: roundToNDecimals(currentTime, 4),
                 accent: beat % meter[0] === 0,
             });
             currentTime += secondsPerBeat;
@@ -220,7 +220,6 @@ export function metronomeTrackFromTempoAndMeter(tempo = 120, meter = [4, 4], dur
 /**
  * Creates a track of metronome ticks for a given music piece.
  *
- * @todo not tested yet
  * @param {MusicPiece} musicPiece music piece
  * @param {number} [tempoFactor=1] rescale the tempo of the metronome, e.g. 2
  *      for twice the speed
@@ -230,10 +229,10 @@ export function metronomeTrackFromMusicPiece(musicPiece, tempoFactor = 1) {
     const { duration, tempos, timeSignatures } = musicPiece;
     const track = [];
     let currentTime = 0;
-    let currentTempo;
-    let currentTimeSignature;
+    let currentTempo = 120;
+    let currentTimeSignature = [4, 4];
     while (currentTime <= duration) {
-        // TODO: always use the most recent tempo and meter
+        // Always use the most recent tempo and meter
         for (const tempo of tempos) {
             if (tempo.time > currentTime) {
                 break;
@@ -246,10 +245,11 @@ export function metronomeTrackFromMusicPiece(musicPiece, tempoFactor = 1) {
             }
             currentTimeSignature = sig.signature;
         }
-        const secondsPerBeat = bpmToSecondsPerBeat(currentTempo) / (currentTimeSignature[1] / 4);
+        const beatType = currentTimeSignature[1];
+        const secondsPerBeat = bpmToSecondsPerBeat(currentTempo) / (beatType / 4);
         for (let beat = 0; beat < currentTimeSignature[0]; beat++) {
             track.push({
-                time: currentTime / tempoFactor,
+                time: roundToNDecimals(currentTime / tempoFactor, 10),
                 accent: beat % currentTimeSignature[0] === 0,
             });
             currentTime += secondsPerBeat;
