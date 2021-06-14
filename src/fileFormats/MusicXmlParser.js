@@ -423,8 +423,11 @@ function handleStaveAndTab(track) {
     // Do *not* remove rests!
     if (hasStringFretNotes) {
         for (const note of notes) {
+            const voice = note.querySelectorAll('voice')[0] ?? '1';
+            const isFirstVoiceRest = note.querySelectorAll('rest').length > 0
+                && voice === '1';
             if (
-                note.querySelectorAll('rest').length === 0
+                !isFirstVoiceRest
                 && note.querySelectorAll('fret').length === 0
             ) {
                 note.remove();
