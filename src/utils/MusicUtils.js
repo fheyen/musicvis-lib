@@ -229,28 +229,37 @@ export function metronomeTrackFromMusicPiece(musicPiece, tempoFactor = 1) {
     const { duration, tempos, timeSignatures } = musicPiece;
     const track = [];
     let currentTime = 0;
-    let currentTempo = 120;
-    let currentTimeSignature = [4, 4];
+    // Time signatures
+    let initialTimeSig = timeSignatures[0].signature ?? [4, 4];
+    let [beatCount, beatType] = initialTimeSig;
+    const timeSigsTodo = timeSignatures.slice(1);
+    // Tempi
+    let initialTempo = tempos[0].bpm ?? 120;
+    let secondsPerBeat = bpmToSecondsPerBeat(initialTempo) / (beatType / 4);
+    const temposTodo = tempos.slice(1);
     while (currentTime <= duration) {
         // Always use the most recent tempo and meter
-        for (const tempo of tempos) {
-            if (tempo.time > currentTime) {
-                break;
-            }
-            currentTempo = tempo.bpm;
+        const lookahead = currentTime + secondsPerBeat;
+        if (timeSigsTodo.length > 0 && timeSigsTodo[0].time <= lookahead) {
+            // console.log(
+            //     'timesig change to', timeSigsTodo[0].signature,
+            //     'after', track.length,
+            //     'beeps, at', currentTime);
+            [beatCount, beatType] = timeSigsTodo[0].signature;
+            timeSigsTodo.shift();
         }
-        for (const sig of timeSignatures) {
-            if (sig.time > currentTime) {
-                break;
-            }
-            currentTimeSignature = sig.signature;
+        if (temposTodo.length > 0 && temposTodo[0].time <= lookahead) {
+            // console.log(
+            //     'tempo change to', temposTodo[0].bpm,
+            //     'after', track.length,
+            //     'beeps, at', currentTime);
+            secondsPerBeat = bpmToSecondsPerBeat(temposTodo[0].bpm) / (beatType / 4);
+            temposTodo.shift();
         }
-        const beatType = currentTimeSignature[1];
-        const secondsPerBeat = bpmToSecondsPerBeat(currentTempo) / (beatType / 4);
-        for (let beat = 0; beat < currentTimeSignature[0]; beat++) {
+        for (let beat = 0; beat < beatCount; beat++) {
             track.push({
-                time: roundToNDecimals(currentTime / tempoFactor, 10),
-                accent: beat % currentTimeSignature[0] === 0,
+                time: roundToNDecimals(currentTime / tempoFactor, 3),
+                accent: beat === 0,
             });
             currentTime += secondsPerBeat;
             if (currentTime > duration) {

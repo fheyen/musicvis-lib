@@ -45,6 +45,7 @@ export const stringedTunings = new Map([
             new StringedTuning('Drop C', ['C2', 'G2', 'C3', 'F3', 'A3', 'D4']),
             new StringedTuning('1/2 down', ['D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']),
             new StringedTuning('1 down', ['D2', 'G2', 'C3', 'F3', 'A3', 'D4']),
+            new StringedTuning('1 1/2 down', ['C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']),
             new StringedTuning('2 down', ['C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']),
             new StringedTuning('DADGAG', ['D2', 'A2', 'D3', 'G3', 'A3', 'D4']),
         ]],
@@ -53,6 +54,7 @@ export const stringedTunings = new Map([
             new StringedTuning('Drop A', ['A1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']),
             new StringedTuning('1/2 down', ['A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']),
             new StringedTuning('1 down', ['A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']),
+            new StringedTuning('1 1/2 down', ['G#1', 'C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']),
             new StringedTuning('2 down', ['G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']),
         ]],
         [8, [
@@ -60,6 +62,7 @@ export const stringedTunings = new Map([
             new StringedTuning('Drop E', ['E1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']),
             new StringedTuning('1/2 down', ['F1', 'A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']),
             new StringedTuning('1 down', ['E1', 'A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']),
+            new StringedTuning('1 1/2 down', ['D#1', 'G#1', 'C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']),
             new StringedTuning('2 down', ['D1', 'G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']),
         ]],
     ])],
@@ -69,6 +72,7 @@ export const stringedTunings = new Map([
             new StringedTuning('Drop D', ['D1', 'A1', 'D2', 'G2']),
             new StringedTuning('1/2 down', ['D#1', 'G#1', 'C#2', 'F#2']),
             new StringedTuning('1 down', ['D1', 'G1', 'C2', 'F2']),
+            new StringedTuning('1 1/2 down', ['C#1', 'F#1', 'B1', 'E2']),
             new StringedTuning('2 down', ['C1', 'F1', 'A#1', 'D#2']),
         ]],
         [5, [
@@ -76,6 +80,7 @@ export const stringedTunings = new Map([
             new StringedTuning('Drop A', ['A0', 'D1', 'A1', 'D2', 'G2']),
             new StringedTuning('1/2 down', ['A#0', 'D#1', 'G#1', 'C#2', 'F#2']),
             new StringedTuning('1 down', ['A0', 'D1', 'G1', 'C2', 'F2']),
+            new StringedTuning('1 1/2 down', ['G#0', 'C#1', 'F#1', 'B1', 'E2']),
             new StringedTuning('2 down', ['G0', 'C1', 'F1', 'A#1', 'D#2']),
         ]],
         [6, [
@@ -83,6 +88,7 @@ export const stringedTunings = new Map([
             new StringedTuning('Drop E', ['E0', 'A0', 'D1', 'A1', 'D2', 'G2']),
             new StringedTuning('1/2 down', ['F0', 'A#0', 'D#1', 'G#1', 'C#2', 'F#2']),
             new StringedTuning('1 down', ['E1', 'A0', 'D1', 'G1', 'C2', 'F2']),
+            new StringedTuning('1 1/2 down', ['D#0', 'G#0', 'C#1', 'F#1', 'B1', 'E2']),
             new StringedTuning('2 down', ['D0', 'G0', 'C1', 'F1', 'A#1', 'D#2']),
         ]],
     ])],

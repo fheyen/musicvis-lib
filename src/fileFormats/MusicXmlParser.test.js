@@ -672,106 +672,27 @@ describe('MusicXmlParser', () => {
         ].map(d => Note.from(d)));
     });
 
-    test('Guitar sheet with stave and tab do not lead to duplicate notes', () => {
+    test('Guitar sheet with stave and tab does not lead to duplicate notes', () => {
         const xml = readXmlFile('[Test] Guitar Stave and Tab.musicxml');
         const parsed = preprocessMusicXmlData(xml);
         expect(parsed.parts[0].noteObjs.length).toBe(256);
     });
 
-    test('Guitar sheet rests works', () => {
+    test('Guitar sheet with rests works', () => {
         const xml = readXmlFile('[Test] Guitar tab with rests.musicxml');
         const parsed = preprocessMusicXmlData(xml);
-        expect(parsed.parts[0].noteObjs).toEqual([
-            {
-                "channel": 6,
-                "end": 0.5,
-                "fret": 1,
-                "name": "F2",
-                "pitch": 41,
-                "start": 0,
-                "string": 6,
-                "velocity": 76,
-            },
-            {
-                "channel": 6,
-                "end": 1,
-                "fret": 2,
-                "name": "F#2",
-                "pitch": 42,
-                "start": 0.5,
-                "string": 6,
-                "velocity": 76,
-            },
-            {
-                "channel": 6,
-                "end": 1.5,
-                "fret": 3,
-                "name": "G2",
-                "pitch": 43,
-                "start": 1,
-                "string": 6,
-                "velocity": 76,
-            },
-            {
-                "channel": 6,
-                "end": 2,
-                "fret": 4,
-                "name": "G#2",
-                "pitch": 44,
-                "start": 1.5,
-                "string": 6,
-                "velocity": 76,
-            },
-            {
-                "channel": 4,
-                "end": 4,
-                "fret": 5,
-                "name": "G3",
-                "pitch": 55,
-                "start": 2,
-                "string": 4,
-                "velocity": 76,
-            },
-            {
-                "channel": 4,
-                "end": 6,
-                "fret": 5,
-                "name": "G3",
-                "pitch": 55,
-                "start": 4,
-                "string": 4,
-                "velocity": 76,
-            },
-            {
-                "channel": 4,
-                "end": 7,
-                "fret": 6,
-                "name": "G#3",
-                "pitch": 56,
-                "start": 6,
-                "string": 4,
-                "velocity": 76,
-            },
-            {
-                "channel": 4,
-                "end": 8,
-                "fret": 8,
-                "name": "A#3",
-                "pitch": 58,
-                "start": 7,
-                "string": 4,
-                "velocity": 76,
-            },
-            {
-                "channel": 4,
-                "end": 9,
-                "fret": 9,
-                "name": "B3",
-                "pitch": 59,
-                "start": 8,
-                "string": 4,
-                "velocity": 76,
-            },
+        expect(
+            parsed.parts[0].noteObjs.map(d => d.start)
+        ).toEqual([
+            0,
+            0.5,
+            1,
+            1.5,
+            4,
+            6,
+            9,
+            10,
+            11,
         ]);
     });
 

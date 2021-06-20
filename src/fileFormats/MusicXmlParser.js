@@ -420,12 +420,12 @@ function handleStaveAndTab(track) {
         }
     }
     // If some notes have string and fret information, remove all the others
-    // Do *not* remove rests!
+    // Do *not* remove all rests, keep the one in the first voice!
     if (hasStringFretNotes) {
         for (const note of notes) {
-            const voice = note.querySelectorAll('voice')[0] ?? '1';
+            const voice = +(note.querySelectorAll('voice')[0].innerHTML ?? 1);
             const isFirstVoiceRest = note.querySelectorAll('rest').length > 0
-                && voice === '1';
+                && voice === 1;
             if (
                 !isFirstVoiceRest
                 && note.querySelectorAll('fret').length === 0
@@ -433,7 +433,7 @@ function handleStaveAndTab(track) {
                 note.remove();
             }
         }
-        // Also remove <backup> tags which were only there due to having to
+        // Also remove <backup> tags which were only there due to having two
         // staves
         const backups = track.querySelectorAll('backup');
         for (const backup of backups) {

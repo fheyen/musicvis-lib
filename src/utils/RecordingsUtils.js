@@ -286,8 +286,10 @@ export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, t
  * @todo move to comparison
  * @param {Note[]} gtNotes ground truth notes
  * @param {Note[]} recNotes recrodings notes
- * @param {number} binSize size of a time bin
+ * @param {number} binSize size of a time bin in milliseconds
  * @returns {Map} pitch->differenceMap; differenceMap is number[] for all time slices
+ * @example
+ *      const diffMap = differenceMap(gtNotes, recNotes, 10);
  */
 export function differenceMap(gtNotes, recNotes, binSize) {
     const recHeatmap = recordingsHeatmap(recNotes, 1, binSize);
@@ -347,7 +349,11 @@ export function differenceMap(gtNotes, recNotes, binSize) {
  * @todo not used or tested yet
  * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
  * @param {Map} differenceMap differenceMap from differenceMap()
- * @returns {object} {missing, additional, correct} area ratio
+ * @returns {object} {missing, additional, correct} area ratios
+ * @example
+ *      const diffMap = differenceMap(gtNotes, recNotes, 10);
+ *      const diffMapErrors = differenceMapErrorAreas(diffMap);
+ *      const {missing, additional, correct} = diffMapErrors;
  */
 export function differenceMapErrorAreas(differenceMap) {
     // Count bins for each error type

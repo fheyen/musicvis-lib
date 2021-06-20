@@ -13,8 +13,7 @@ For ideas, hints, or if you just don't have time or resources to do pull request
    4. [Documentation](#documentation)
    5. [Deployment](#deployment)
    6. [More](#more)
-      1. [Structure and Dependencies](#structure-and-dependencies)
-      2. [TODO](#todo)
+      1. [Structure and Internal Dependencies](#structure-and-internal-dependencies)
 
 ## Testing
 
@@ -22,6 +21,7 @@ Using Jest.
 
 - `npm test` for complete test and coverage
 - `npm run testch` for a test of only the changed files or test
+- `npx jest -t 'my test'` runs a single test
 
 ## Linting
 
@@ -59,17 +59,6 @@ Run `npm run deploy` (will first run `predeploy`) to also create a tag and commi
 
 ## More
 
-### Structure and Dependencies
+### Structure and Internal Dependencies
 
 In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser).
-
-### TODO
-
-- Add
-  - Benchmarks and tests for matching, alignment, and comparison algorithms
-  - FOGSAA algorithm for string matching / distance
-    - [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3638164/)
-    - [https://github.com/kjenova/fogsaa](https://github.com/kjenova/fogsaa)
-- Improve
-  - Parsing of MIDI and MusicXML
-    - Add type/PitchBend.js

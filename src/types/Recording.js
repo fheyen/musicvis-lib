@@ -31,8 +31,8 @@ class Recording extends NoteArray {
         this.speed = +speed;
         this.selectedTrack = +selectedTrack;
         this.timeSelection = timeSelection;
-        this.sortByTime();
         this.comment = comment;
+        this.sortByTime();
     }
 
     /**
