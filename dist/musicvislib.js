@@ -1,11 +1,11 @@
-// musicvis-lib v0.50.2 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.50.3 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.50.2";
+  var version="0.50.3";
 
   /**
    * Lookup for many MIDI specifications.
@@ -6293,8 +6293,8 @@
       this.speed = +speed;
       this.selectedTrack = +selectedTrack;
       this.timeSelection = timeSelection;
-      this.sortByTime();
       this.comment = comment;
+      this.sortByTime();
     }
     /**
      * Returns a copy of the Note object
@@ -9941,20 +9941,20 @@
         break;
       }
     } // If some notes have string and fret information, remove all the others
-    // Do *not* remove rests!
+    // Do *not* remove all rests, keep the one in the first voice!
 
 
     if (hasStringFretNotes) {
       for (const note of notes) {
         var _note$querySelectorAl6;
 
-        const voice = (_note$querySelectorAl6 = note.querySelectorAll('voice')[0]) !== null && _note$querySelectorAl6 !== void 0 ? _note$querySelectorAl6 : '1';
-        const isFirstVoiceRest = note.querySelectorAll('rest').length > 0 && voice === '1';
+        const voice = +((_note$querySelectorAl6 = note.querySelectorAll('voice')[0].innerHTML) !== null && _note$querySelectorAl6 !== void 0 ? _note$querySelectorAl6 : 1);
+        const isFirstVoiceRest = note.querySelectorAll('rest').length > 0 && voice === 1;
 
         if (!isFirstVoiceRest && note.querySelectorAll('fret').length === 0) {
           note.remove();
         }
-      } // Also remove <backup> tags which were only there due to having to
+      } // Also remove <backup> tags which were only there due to having two
       // staves
 
 
@@ -10284,41 +10284,50 @@
    */
 
   function metronomeTrackFromMusicPiece(musicPiece, tempoFactor = 1) {
+    var _timeSignatures$0$sig, _tempos$0$bpm;
+
     const {
       duration,
       tempos,
       timeSignatures
     } = musicPiece;
     const track = [];
-    let currentTime = 0;
-    let currentTempo = 120;
-    let currentTimeSignature = [4, 4];
+    let currentTime = 0; // Time signatures
+
+    let initialTimeSig = (_timeSignatures$0$sig = timeSignatures[0].signature) !== null && _timeSignatures$0$sig !== void 0 ? _timeSignatures$0$sig : [4, 4];
+    let [beatCount, beatType] = initialTimeSig;
+    const timeSigsTodo = timeSignatures.slice(1); // Tempi
+
+    let initialTempo = (_tempos$0$bpm = tempos[0].bpm) !== null && _tempos$0$bpm !== void 0 ? _tempos$0$bpm : 120;
+    let secondsPerBeat = bpmToSecondsPerBeat$1(initialTempo) / (beatType / 4);
+    const temposTodo = tempos.slice(1);
 
     while (currentTime <= duration) {
       // Always use the most recent tempo and meter
-      for (const tempo of tempos) {
-        if (tempo.time > currentTime) {
-          break;
-        }
+      const lookahead = currentTime + secondsPerBeat;
 
-        currentTempo = tempo.bpm;
+      if (timeSigsTodo.length > 0 && timeSigsTodo[0].time <= lookahead) {
+        // console.log(
+        //     'timesig change to', timeSigsTodo[0].signature,
+        //     'after', track.length,
+        //     'beeps, at', currentTime);
+        [beatCount, beatType] = timeSigsTodo[0].signature;
+        timeSigsTodo.shift();
       }
 
-      for (const sig of timeSignatures) {
-        if (sig.time > currentTime) {
-          break;
-        }
-
-        currentTimeSignature = sig.signature;
+      if (temposTodo.length > 0 && temposTodo[0].time <= lookahead) {
+        // console.log(
+        //     'tempo change to', temposTodo[0].bpm,
+        //     'after', track.length,
+        //     'beeps, at', currentTime);
+        secondsPerBeat = bpmToSecondsPerBeat$1(temposTodo[0].bpm) / (beatType / 4);
+        temposTodo.shift();
       }
 
-      const beatType = currentTimeSignature[1];
-      const secondsPerBeat = bpmToSecondsPerBeat$1(currentTempo) / (beatType / 4);
-
-      for (let beat = 0; beat < currentTimeSignature[0]; beat++) {
+      for (let beat = 0; beat < beatCount; beat++) {
         track.push({
-          time: roundToNDecimals(currentTime / tempoFactor, 10),
-          accent: beat % currentTimeSignature[0] === 0
+          time: roundToNDecimals(currentTime / tempoFactor, 3),
+          accent: beat === 0
         });
         currentTime += secondsPerBeat;
 
@@ -12821,7 +12830,7 @@
    *      stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
    */
 
-  const stringedTunings = new Map([['Guitar', new Map([[6, [new StringedTuning('E stand.', ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop D', ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop C', ['C2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1/2 down', ['D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('2 down', ['C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']), new StringedTuning('DADGAG', ['D2', 'A2', 'D3', 'G3', 'A3', 'D4'])]], [7, [new StringedTuning('B stand.', ['B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop A', ['A1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('1/2 down', ['A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('2 down', ['G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4'])]], [8, [new StringedTuning('F# stand.', ['F#1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop E', ['E1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('1/2 down', ['F1', 'A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['E1', 'A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('2 down', ['D1', 'G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4'])]]])], ['Bass', new Map([[4, [new StringedTuning('E stand.', ['E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop D', ['D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['D1', 'G1', 'C2', 'F2']), new StringedTuning('2 down', ['C1', 'F1', 'A#1', 'D#2'])]], [5, [new StringedTuning('B stand.', ['B0', 'E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop A', ['A0', 'D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['A#0', 'D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['A0', 'D1', 'G1', 'C2', 'F2']), new StringedTuning('2 down', ['G0', 'C1', 'F1', 'A#1', 'D#2'])]], [6, [new StringedTuning('F# stand.', ['F#0', 'B0', 'E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop E', ['E0', 'A0', 'D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['F0', 'A#0', 'D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['E1', 'A0', 'D1', 'G1', 'C2', 'F2']), new StringedTuning('2 down', ['D0', 'G0', 'C1', 'F1', 'A#1', 'D#2'])]]])], ['Ukulele', new Map([[4, [new StringedTuning('Hawaii', ['G4', 'C4', 'E4', 'A4']), new StringedTuning('Low G', ['G3', 'C4', 'E4', 'A4']), new StringedTuning('D-tuning', ['A4', 'D4', 'F#4', 'B4']), new StringedTuning('Canadian', ['A3', 'D4', 'F#4', 'B4']), new StringedTuning('Bariton', ['D3', 'G3', 'B3', 'E4'])]]])]]);
+  const stringedTunings = new Map([['Guitar', new Map([[6, [new StringedTuning('E stand.', ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop D', ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop C', ['C2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1/2 down', ['D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1 1/2 down', ['C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']), new StringedTuning('2 down', ['C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']), new StringedTuning('DADGAG', ['D2', 'A2', 'D3', 'G3', 'A3', 'D4'])]], [7, [new StringedTuning('B stand.', ['B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop A', ['A1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('1/2 down', ['A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1 1/2 down', ['G#1', 'C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']), new StringedTuning('2 down', ['G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4'])]], [8, [new StringedTuning('F# stand.', ['F#1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop E', ['E1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('1/2 down', ['F1', 'A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['E1', 'A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1 1/2 down', ['D#1', 'G#1', 'C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']), new StringedTuning('2 down', ['D1', 'G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4'])]]])], ['Bass', new Map([[4, [new StringedTuning('E stand.', ['E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop D', ['D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['D1', 'G1', 'C2', 'F2']), new StringedTuning('1 1/2 down', ['C#1', 'F#1', 'B1', 'E2']), new StringedTuning('2 down', ['C1', 'F1', 'A#1', 'D#2'])]], [5, [new StringedTuning('B stand.', ['B0', 'E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop A', ['A0', 'D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['A#0', 'D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['A0', 'D1', 'G1', 'C2', 'F2']), new StringedTuning('1 1/2 down', ['G#0', 'C#1', 'F#1', 'B1', 'E2']), new StringedTuning('2 down', ['G0', 'C1', 'F1', 'A#1', 'D#2'])]], [6, [new StringedTuning('F# stand.', ['F#0', 'B0', 'E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop E', ['E0', 'A0', 'D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['F0', 'A#0', 'D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['E1', 'A0', 'D1', 'G1', 'C2', 'F2']), new StringedTuning('1 1/2 down', ['D#0', 'G#0', 'C#1', 'F#1', 'B1', 'E2']), new StringedTuning('2 down', ['D0', 'G0', 'C1', 'F1', 'A#1', 'D#2'])]]])], ['Ukulele', new Map([[4, [new StringedTuning('Hawaii', ['G4', 'C4', 'E4', 'A4']), new StringedTuning('Low G', ['G3', 'C4', 'E4', 'A4']), new StringedTuning('D-tuning', ['A4', 'D4', 'F#4', 'B4']), new StringedTuning('Canadian', ['A3', 'D4', 'F#4', 'B4']), new StringedTuning('Bariton', ['D3', 'G3', 'B3', 'E4'])]]])]]);
   /**
    * For Notes that have a guitar string encoded in their channel, this function
    * allows to convert them to a GuitarNote.
@@ -15781,8 +15790,10 @@
    * @todo move to comparison
    * @param {Note[]} gtNotes ground truth notes
    * @param {Note[]} recNotes recrodings notes
-   * @param {number} binSize size of a time bin
+   * @param {number} binSize size of a time bin in milliseconds
    * @returns {Map} pitch->differenceMap; differenceMap is number[] for all time slices
+   * @example
+   *      const diffMap = differenceMap(gtNotes, recNotes, 10);
    */
 
   function differenceMap(gtNotes, recNotes, binSize) {
@@ -15849,7 +15860,11 @@
    * @todo not used or tested yet
    * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
    * @param {Map} differenceMap differenceMap from differenceMap()
-   * @returns {object} {missing, additional, correct} area ratio
+   * @returns {object} {missing, additional, correct} area ratios
+   * @example
+   *      const diffMap = differenceMap(gtNotes, recNotes, 10);
+   *      const diffMapErrors = differenceMapErrorAreas(diffMap);
+   *      const {missing, additional, correct} = diffMapErrors;
    */
 
   function differenceMapErrorAreas(differenceMap) {

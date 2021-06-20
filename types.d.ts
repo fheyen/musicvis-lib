@@ -2552,18 +2552,24 @@ declare module "utils/RecordingsUtils" {
          1 (missing, only GT has a note here)
          2 (additional, only rec has a note here)
          3 (both, both have a note here)
+     * @example
+     * const diffMap = differenceMap(gtNotes, recNotes, 10);
      * @param gtNotes - ground truth notes
      * @param recNotes - recrodings notes
-     * @param binSize - size of a time bin
+     * @param binSize - size of a time bin in milliseconds
      * @returns pitch->differenceMap; differenceMap is number[] for all time slices
      */
     function differenceMap(gtNotes: Note[], recNotes: Note[], binSize: number): Map;
     /**
      * Computes the 'area' of error from a differenceMap normalized by total area.
-     * The area is simply the number of bins with each value, total area is max.
-     * number of bins in all pitches * the number of pitches.
+    The area is simply the number of bins with each value, total area is max.
+    number of bins in all pitches * the number of pitches.
+     * @example
+     * const diffMap = differenceMap(gtNotes, recNotes, 10);
+         const diffMapErrors = differenceMapErrorAreas(diffMap);
+         const {missing, additional, correct} = diffMapErrors;
      * @param differenceMap - differenceMap from differenceMap()
-     * @returns {missing, additional, correct} area ratio
+     * @returns {missing, additional, correct} area ratios
      */
     function differenceMapErrorAreas(differenceMap: Map): any;
 }
