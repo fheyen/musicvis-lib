@@ -45,7 +45,7 @@
     "types": "jsdoc -t node_modules/tsd-jsdoc/dist -r src -d .",
     "lint": "eslint --fix src; remark .",
     "predeploy": "eslint --fix src && npm run types && npm run build && jest --silent && npm run doc",
-    "deploy": "npm publish && git add . && git commit -m 'new version build'&& git push origin --tags"
+    "deploy": "npm publish && git add . && git commit -m 'new version build'; git push origin && git push origin --tags"
   },
   "dependencies": {
     "@tonaljs/tonal": "^4.6.0",
