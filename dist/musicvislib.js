@@ -1,11 +1,11 @@
-// musicvis-lib v0.50.5 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.51.0 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 }(this, (function (exports) { 'use strict';
 
-  var version="0.50.5";
+  var version="0.51.0";
 
   /**
    * Lookup for many MIDI specifications.
@@ -10110,7 +10110,7 @@
    * @returns {number} seconds per beat
    */
 
-  function bpmToSecondsPerBeat$1(bpm) {
+  function bpmToSecondsPerBeat(bpm) {
     return 1 / (bpm / 60);
   }
   /**
@@ -10218,7 +10218,7 @@
    */
 
   function noteDurationToNoteType(duration, bpm) {
-    const quarterDuration = bpmToSecondsPerBeat$1(bpm);
+    const quarterDuration = bpmToSecondsPerBeat(bpm);
     const ratio = duration / quarterDuration / 4; // TODO: round to finest representable step?
     // Binary search
 
@@ -10257,7 +10257,7 @@
 
   function metronomeTrackFromTempoAndMeter(tempo = 120, meter = [4, 4], duration = 60) {
     const track = [];
-    const secondsPerBeat = bpmToSecondsPerBeat$1(tempo) / (meter[1] / 4);
+    const secondsPerBeat = bpmToSecondsPerBeat(tempo) / (meter[1] / 4);
     let currentTime = 0;
 
     while (currentTime <= duration) {
@@ -10299,7 +10299,7 @@
     const timeSigsTodo = timeSignatures.slice(1); // Tempi
 
     let initialTempo = (_tempos$0$bpm = tempos[0].bpm) !== null && _tempos$0$bpm !== void 0 ? _tempos$0$bpm : 120;
-    let secondsPerBeat = bpmToSecondsPerBeat$1(initialTempo) / (beatType / 4);
+    let secondsPerBeat = bpmToSecondsPerBeat(initialTempo) / (beatType / 4);
     const temposTodo = tempos.slice(1);
 
     while (currentTime <= duration) {
@@ -10320,7 +10320,7 @@
         //     'tempo change to', temposTodo[0].bpm,
         //     'after', track.length,
         //     'beeps, at', currentTime);
-        secondsPerBeat = bpmToSecondsPerBeat$1(temposTodo[0].bpm) / (beatType / 4);
+        secondsPerBeat = bpmToSecondsPerBeat(temposTodo[0].bpm) / (beatType / 4);
         temposTodo.shift();
       }
 
@@ -10648,7 +10648,7 @@
 
 
       currentBeatsInMeasure++;
-      const secondsPerBeat = bpmToSecondsPerBeat$1(tempo) / (beatType / 4);
+      const secondsPerBeat = bpmToSecondsPerBeat(tempo) / (beatType / 4);
       timeSinceLastTempoChange += secondsPerBeat;
       currentTime = timeOfLastTempoChange + timeSinceLastTempoChange;
 
@@ -14536,111 +14536,6 @@
   });
 
   /**
-   * @module utils/MiscUtils
-   */
-
-  /**
-   * Converts beats per minute to seconds per beat
-   *
-   * @deprecated use MusicUtils.bpmToSecondsPerBeat instead
-   * @param {number} bpm tempo in beats per minute
-   * @returns {number} seconds per beat
-   */
-
-  function bpmToSecondsPerBeat(bpm) {
-    return 1 / (bpm / 60);
-  }
-  /**
-   * Clones a map where the values are flat objects,
-   * i.e. values do not contain objects themselfes.
-   *
-   * @param {Map} map a map with object values
-   * @returns {Map} a copy of the map with copies of the value objects
-   */
-
-  function deepCloneFlatObjectMap(map) {
-    const result = new Map();
-
-    for (const [key, value] of map.entries()) {
-      result.set(key, { ...value
-      });
-    }
-
-    return result;
-  }
-  /**
-   * Groups the Notes from multiple tracks
-   *
-   * @param {Note[][]} tracks array of arrays of Note objects
-   * @returns {Map} grouping
-   */
-
-  function groupNotesByPitch(tracks) {
-    const allNotes = tracks.flat();
-
-    if (allNotes.length === 0) {
-      return new Map();
-    }
-
-    return group(allNotes, d => d.pitch);
-  }
-  /**
-   * Reverses a given string.
-   *
-   * @param {string} s string
-   * @returns {string} reversed string
-   */
-
-  function reverseString(s) {
-    return s.split('').reverse().join('');
-  }
-  /**
-   * Given some notes and a target note, finds
-   * the note that has its start time closest to
-   * the one of targetNote
-   *
-   * @todo replace by d3 argmin or sth?
-   * @param {Note[]} notes notes
-   * @param {Note} targetNote target note
-   * @returns {Note} closest note to targetNote
-   */
-
-  function findNearest(notes, targetNote) {
-    if (!notes || notes.length === 0 || !targetNote) {
-      return null;
-    }
-
-    let nearest = null;
-    let dist = Number.POSITIVE_INFINITY;
-    const targetStart = targetNote.start;
-
-    for (const n of notes) {
-      const newDist = Math.abs(n.start - targetStart);
-
-      if (newDist < dist) {
-        dist = newDist;
-        nearest = n;
-      }
-    }
-
-    return nearest;
-  }
-  /**
-   * Allows to wait for a number of seconds with async/await
-   * IMPORTANT: This it not exact, it will at *least* wait for X seconds
-   *
-   * @param {number} seconds number of seconds to wait
-   * @returns {Promise} empty Promise that will resolve after the specified amount
-   *      of seconds
-   */
-
-  function delay(seconds) {
-    return new Promise(resolve => {
-      setTimeout(resolve, seconds * 1000);
-    });
-  }
-
-  /**
    * @module instruments/Lamellophone
    */
 
@@ -15293,6 +15188,96 @@
   }
 
   /**
+   * Clones a map where the values are flat objects,
+   * i.e. values do not contain objects themselfes.
+   *
+   * @param {Map} map a map with object values
+   * @returns {Map} a copy of the map with copies of the value objects
+   */
+
+  function deepCloneFlatObjectMap(map) {
+    const result = new Map();
+
+    for (const [key, value] of map.entries()) {
+      result.set(key, { ...value
+      });
+    }
+
+    return result;
+  }
+  /**
+   * Groups the Notes from multiple tracks
+   *
+   * @param {Note[][]} tracks array of arrays of Note objects
+   * @returns {Map} grouping
+   */
+
+  function groupNotesByPitch(tracks) {
+    const allNotes = tracks.flat();
+
+    if (allNotes.length === 0) {
+      return new Map();
+    }
+
+    return group(allNotes, d => d.pitch);
+  }
+  /**
+   * Reverses a given string.
+   *
+   * @param {string} s string
+   * @returns {string} reversed string
+   */
+
+  function reverseString(s) {
+    return s.split('').reverse().join('');
+  }
+  /**
+   * Given some notes and a target note, finds
+   * the note that has its start time closest to
+   * the one of targetNote
+   *
+   * @todo replace by d3 argmin or sth?
+   * @param {Note[]} notes notes
+   * @param {Note} targetNote target note
+   * @returns {Note} closest note to targetNote
+   */
+
+  function findNearest(notes, targetNote) {
+    if (!notes || notes.length === 0 || !targetNote) {
+      return null;
+    }
+
+    let nearest = null;
+    let dist = Number.POSITIVE_INFINITY;
+    const targetStart = targetNote.start;
+
+    for (const n of notes) {
+      const newDist = Math.abs(n.start - targetStart);
+
+      if (newDist < dist) {
+        dist = newDist;
+        nearest = n;
+      }
+    }
+
+    return nearest;
+  }
+  /**
+   * Allows to wait for a number of seconds with async/await
+   * IMPORTANT: This it not exact, it will at *least* wait for X seconds
+   *
+   * @param {number} seconds number of seconds to wait
+   * @returns {Promise} empty Promise that will resolve after the specified amount
+   *      of seconds
+   */
+
+  function delay(seconds) {
+    return new Promise(resolve => {
+      setTimeout(resolve, seconds * 1000);
+    });
+  }
+
+  /**
    * @module utils/NoteColorUtils
    */
   // TODO: move to colors/ folder?
@@ -15613,7 +15598,7 @@
    */
 
   function alignNotesToBpm(notes, bpm, timeDivision = 16) {
-    const secondsPerBeat = bpmToSecondsPerBeat$1(bpm);
+    const secondsPerBeat = bpmToSecondsPerBeat(bpm);
     const secondsPerDivision = secondsPerBeat / timeDivision;
     return notes.map(note => {
       const n = note.clone();
@@ -15990,7 +15975,7 @@
     reverseString: reverseString,
     findNearest: findNearest,
     delay: delay,
-    bpmToSecondsPerBeat: bpmToSecondsPerBeat$1,
+    bpmToSecondsPerBeat: bpmToSecondsPerBeat,
     freqToApproxMidiNr: freqToApproxMidiNr,
     chordToInteger: chordToInteger,
     chordIntegerJaccardIndex: chordIntegerJaccardIndex,

@@ -111,20 +111,20 @@ class MidiInputManager {
         // A velocity value might not be included with a noteOff command
         const velocity = (message.data.length > 2) ? message.data[2] : 0;
         switch (command) {
-            case 128:
+        case 128:
+            this._noteOff(device, time, pitch, channel);
+            break;
+        case 144:
+            if (velocity > 0) {
+                this._noteOn(device, time, pitch, channel, velocity);
+            } else {
                 this._noteOff(device, time, pitch, channel);
-                break;
-            case 144:
-                if (velocity > 0) {
-                    this._noteOn(device, time, pitch, channel, velocity);
-                } else {
-                    this._noteOff(device, time, pitch, channel);
-                }
-                break;
-            case 224:
-                // TODO: handle pitch wheel?
-                break;
-            default:
+            }
+            break;
+        case 224:
+            // TODO: handle pitch wheel?
+            break;
+        default:
             // TODO: handle other commands?
         }
     };

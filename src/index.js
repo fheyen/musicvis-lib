@@ -38,6 +38,6 @@ export * as PriorityMatching from './comparison/PriorityMatching.js';
 export * as Similarity from './comparison/Similarity.js';
 export * as SimilarSections from './comparison/SimilarSections.js';
 // Libraries
-export * as Utils from './utils.js';
+export * as Utils from './utils';
 export * as Chords from './chords/Chords.js';
-export * as StringBased from './stringBased.js';
+export * as StringBased from './stringBased';

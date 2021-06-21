@@ -145,7 +145,7 @@ declare module "Chords" {
 declare module "comparison/ErrorClassifier" {
     /**
      * Compares a single recording to a ground truth and labels notes as missing,
-     * extra, early/late, or short/long
+    extra, early/late, or short/long
      * @param gtNotes - ground truth notes
      * @param recNotes - recordings notes
      * @param groupBy - attribute to group notes by
@@ -312,9 +312,9 @@ declare module "comparison/Similarity" {
     function getSimilarParts(track: Note[], selectedInterval: number[], stride: number, threshold: number, secondsPerBin: number, distance: string): any;
     /**
      * Uses calculates the distance between
-     * two discretized tracks, for each pitch separately.
-     * Pitch-wise distances are averaged and a penalty is added to the distance
-     * for pitches that are not occuring in both tracks
+    two discretized tracks, for each pitch separately.
+    Pitch-wise distances are averaged and a penalty is added to the distance
+    for pitches that are not occuring in both tracks
      * @param discrA - discretized track
      * @param discrB - discretized track
      * @param distance - one of: 'euclidean', 'nearest'

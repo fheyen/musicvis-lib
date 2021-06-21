@@ -44,10 +44,13 @@
     "doc": "jsdoc -c jsdoc.conf.json",
     "types": "jsdoc -t node_modules/tsd-jsdoc/dist -r src -d .",
     "lint": "eslint --fix src; remark .",
-    "git:commit:push": "git add . && git commit -m 'new version build'; git push",
-    "git:push:tags": "git push origin --tags",
+    "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
+    "git:add": "git add .",
+    "git:commit": "git commit -m \"new version build\"",
+    "git:push": "git push",
+    "git:pushtags": "git push origin --tags",
     "predeploy": "eslint --fix src && npm run types && npm run build && jest --silent && npm run doc",
-    "deploy": "npm publish && npm run git:commit:push && npm run git:push:tags"
+    "deploy": "npm publish && npm run git:all"
   },
   "dependencies": {
     "@tonaljs/tonal": "^4.6.0",
