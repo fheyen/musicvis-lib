@@ -1,5 +1,5 @@
 import { group } from 'd3';
-import * as Utils from '../utils';
+import * as Utils from '../utils/index.js';
 import Note from '../types/Note.js'; /* eslint-disable-line no-unused-vars */
 
 /**
