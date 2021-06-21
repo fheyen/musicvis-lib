@@ -1,4 +1,4 @@
-import PitchBend from './PitchBend';
+import PitchBend from './PitchBend.js';
 
 describe('PitchBend', () => {
 

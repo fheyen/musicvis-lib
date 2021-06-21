@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prefer-spread */
-import { arrayShallowEquals } from '../utils/ArrayUtils';
+import { arrayShallowEquals } from '../utils/ArrayUtils.js';
 
 /**
  * @module stringBased/SuffixTree

@@ -1,5 +1,5 @@
-import { Guitar } from '../instruments/Guitar';
-import MusicPiece from '../types/MusicPiece';
+import { Guitar } from '../instruments/Guitar.js';
+// import MusicPiece from '../types/MusicPiece';
 
 /**
  * @todo allow speedup

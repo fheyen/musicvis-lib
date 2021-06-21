@@ -1,4 +1,4 @@
-import { formatTime, formatDate, formatSongTitle } from './FormattingUtils';
+import { formatTime, formatDate, formatSongTitle } from './FormattingUtils.js';
 
 describe('FormattingUtils', () => {
 

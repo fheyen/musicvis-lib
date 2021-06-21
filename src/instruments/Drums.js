@@ -1,6 +1,6 @@
-import { choose, randFloat } from '../utils/MathUtils';
-import Note from '../types/Note';
 import { randomNormal, randomInt, group } from 'd3';
+import { choose, randFloat } from '../utils/MathUtils.js';
+import Note from '../types/Note.js';
 
 /**
  * @module instruments/Drums

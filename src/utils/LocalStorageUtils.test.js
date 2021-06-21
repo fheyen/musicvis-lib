@@ -1,4 +1,4 @@
-import { storeObjectInLocalStorage, getObjectFromLocalStorage } from './LocalStorageUtils';
+import { storeObjectInLocalStorage, getObjectFromLocalStorage } from './LocalStorageUtils.js';
 // import { spyOn } from 'jest';
 
 // beforeEach(() => {});

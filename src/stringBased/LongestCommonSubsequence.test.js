@@ -1,4 +1,4 @@
-import { lcs, lcsLength, normalizedLcsLength } from './LongestCommonSubsequence';
+import { lcs, lcsLength, normalizedLcsLength } from './LongestCommonSubsequence.js';
 
 
 describe('LongestCommonSubsequence', () => {

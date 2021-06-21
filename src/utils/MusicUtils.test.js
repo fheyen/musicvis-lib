@@ -2,10 +2,10 @@
 /* eslint-disable comma-dangle */
 import fs from 'fs';
 import path from 'path';
-import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece } from './MusicUtils';
-import Note from '../types/Note';
-import MusicPiece from '../types/MusicPiece';
-import { readXmlFile } from '../../test/testTools/readTestAssetFiles';
+import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece } from './MusicUtils.js';
+import Note from '../types/Note.js';
+import MusicPiece from '../types/MusicPiece.js';
+import { readXmlFile } from '../../test/testTools/readTestAssetFiles.js';
 
 const GT_DIR = path.join(__dirname, '..', '..', 'test', '_test_assets');
 

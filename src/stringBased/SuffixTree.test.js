@@ -1,4 +1,4 @@
-import SuffixTree from './SuffixTree';
+import SuffixTree from './SuffixTree.js';
 
 describe('SuffixTree', () => {
 

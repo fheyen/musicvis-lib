@@ -1,6 +1,6 @@
-import NoteArray from './NoteArray';
-import Note from './Note';
-import GuitarNote from './GuitarNote';
+import NoteArray from './NoteArray.js';
+import Note from './Note.js';
+import GuitarNote from './GuitarNote.js';
 
 const na = new NoteArray([
     new Note(69, 0.0, 127, 0, 1.0),

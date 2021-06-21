@@ -1,7 +1,7 @@
-import { preprocessMidiFileData } from './MidiParser';
 import fs from 'fs';
 import path from 'path';
 import midiParser from 'midi-parser-js';
+import { preprocessMidiFileData } from './MidiParser.js';
 
 
 function listMidiFiles() {

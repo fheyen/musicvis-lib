@@ -1,5 +1,5 @@
-import { priorityMatching, getMatrixMinPosition, balancedNoteDistance, errorFromPriorityMatching } from './PriorityMatching';
-import Note from '../types/Note';
+import { priorityMatching, getMatrixMinPosition, balancedNoteDistance, errorFromPriorityMatching } from './PriorityMatching.js';
+import Note from '../types/Note.js';
 
 describe('PriorityMatching', () => {
     describe('priorityMatching', () => {

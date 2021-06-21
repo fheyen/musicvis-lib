@@ -1,4 +1,4 @@
-import { getMidiNoteByNr } from '../fileFormats/Midi';
+import { getMidiNoteByNr } from '../fileFormats/Midi.js';
 
 /**
  * Stores a sequence of pitches and provides some methods to simplify and

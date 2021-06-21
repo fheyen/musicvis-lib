@@ -1,7 +1,7 @@
-import * as RecUtils from './RecordingsUtils';
-import Note from '../types/Note';
-import Recording from '../types/Recording';
-import GuitarNote from '../types/GuitarNote';
+import * as RecUtils from './RecordingsUtils.js';
+import Note from '../types/Note.js';
+import Recording from '../types/Recording.js';
+import GuitarNote from '../types/GuitarNote.js';
 
 describe('RecordingsUtils', () => {
 

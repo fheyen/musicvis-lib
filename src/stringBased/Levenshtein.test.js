@@ -1,4 +1,4 @@
-import { levenshtein, damerauLevenshtein, normalizedLevenshtein } from './Levenshtein';
+import { levenshtein, damerauLevenshtein } from './Levenshtein.js';
 
 describe('levenshtein', () => {
     test('both empty: 0', () => {

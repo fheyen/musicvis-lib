@@ -1,7 +1,7 @@
-import { preprocessMusicXmlData } from './MusicXmlParser';
 import fs from 'fs';
 import path from 'path';
-import Note from '../types/Note';
+import { preprocessMusicXmlData } from './MusicXmlParser.js';
+import Note from '../types/Note.js';
 
 const parser = new DOMParser();
 

@@ -1,4 +1,4 @@
-import * as Piano from './Piano';
+import * as Piano from './Piano.js';
 
 describe('Piano', () => {
 

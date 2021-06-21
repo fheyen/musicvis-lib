@@ -1,4 +1,4 @@
-import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi';
+import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi.js';
 
 /**
  * Note class that reflects MIDI properties but has

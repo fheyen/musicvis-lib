@@ -1,8 +1,8 @@
 import { difference, extent, intersection, max } from 'd3';
-import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi';
-import { detectChordsByExactStart } from '../chords/Chords';
-import Note from '../types/Note';
-import { bpmToSecondsPerBeat } from '../utils/MiscUtils';
+import { getMidiNoteByLabel, getMidiNoteByNr } from '../fileFormats/Midi.js';
+import { detectChordsByExactStart } from '../chords/Chords.js';
+import Note from '../types/Note.js';
+import { bpmToSecondsPerBeat } from '../utils/MusicUtils.js';
 
 /**
  * @module instruments/Lamellophone

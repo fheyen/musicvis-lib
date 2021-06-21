@@ -1,5 +1,5 @@
 import { Scale } from '@tonaljs/tonal';
-import { Midi } from 'musicvis-lib';
+import { Midi } from '../fileFormats/Midi.js';
 
 /**
  * Takes a baseline pattern and moves it to the correct position on the fretboard
@@ -12,26 +12,26 @@ import { Midi } from 'musicvis-lib';
  * @returns {number[][]} array of [string, fret] positions
  */
 export function generatePattern(
-    patternType,
-    rootNote = 'C',
-    scaleType = 'major',
-    repeat = 1,
-    alternate = false,
+  patternType,
+  rootNote = 'C',
+  scaleType = 'major',
+  repeat = 1,
+  alternate = false,
 ) {
-    let notes = [];
-    if (patternType === 'Scale') {
-        const scale = Scale.get(`${rootNote} ${scaleType}`);
-        for (let octave = 1; octave < 8; octave++) {
-            for (let note of scale.notes) {
-                if (Midi.flatToSharp.has(note)) {
-                    note = Midi.flatToSharp.get(note);
-                }
-                notes.push([note, octave]);
-            }
+  let notes = [];
+  if (patternType === 'Scale') {
+    const scale = Scale.get(`${rootNote} ${scaleType}`);
+    for (let octave = 1; octave < 8; octave++) {
+      for (let note of scale.notes) {
+        if (Midi.flatToSharp.has(note)) {
+          note = Midi.flatToSharp.get(note);
         }
+        notes.push([note, octave]);
+      }
     }
-    // Repeat with or without alternative direction
-    return repeatPattern(repeat, notes, alternate);
+  }
+  // Repeat with or without alternative direction
+  return repeatPattern(repeat, notes, alternate);
 }
 
 /**
@@ -43,14 +43,14 @@ export function generatePattern(
  * @returns {Array} repeated pattern
  */
 export function repeatPattern(nRepetitions, pattern, alternate) {
-    let result = pattern;
-    if (nRepetitions > 1) {
-        let reversed = [...pattern].reverse();
-        for (let repetition = 1; repetition < nRepetitions; repetition++) {
-            result = alternate && repetition % 2 === 1 ? [...result, ...reversed] : [...result, ...pattern];
-        }
+  let result = pattern;
+  if (nRepetitions > 1) {
+    let reversed = [...pattern].reverse();
+    for (let repetition = 1; repetition < nRepetitions; repetition++) {
+      result = alternate && repetition % 2 === 1 ? [...result, ...reversed] : [...result, ...pattern];
     }
-    return result;
+  }
+  return result;
 }
 
 /**
@@ -63,30 +63,30 @@ export function repeatPattern(nRepetitions, pattern, alternate) {
  * @returns {string} MusicXML string
  */
 export function generateXml(name, tempo, timeSig, notes) {
-    const credit = 'github.com/fheyen/musicvis-lib';
-    timeSig = timeSig.split('/').map(d => +d);
-    const notesPerMeasure = timeSig[0];
-    let currentMeasure = 1;
-    let currentNoteInMeasure = 1;
-    let measuresString = '';
-    for (let [note, octave] of notes) {
-        if (currentNoteInMeasure > notesPerMeasure) {
-            // Start new measure
-            currentMeasure++;
-            currentNoteInMeasure = 1;
-            measuresString = `${measuresString}
+  const credit = 'github.com/fheyen/musicvis-lib';
+  timeSig = timeSig.split('/').map(d => +d);
+  const notesPerMeasure = timeSig[0];
+  let currentMeasure = 1;
+  let currentNoteInMeasure = 1;
+  let measuresString = '';
+  for (let [note, octave] of notes) {
+    if (currentNoteInMeasure > notesPerMeasure) {
+      // Start new measure
+      currentMeasure++;
+      currentNoteInMeasure = 1;
+      measuresString = `${measuresString}
             </measure>
             <measure number="${currentMeasure}">`;
-        }
-        currentNoteInMeasure++;
-        // Handle sharp / flat
-        // TODO: this assumes C major as signature, but should be fine
-        let alter = 0;
-        if (note.endsWith('#')) {
-            note = note.slice(0, -1);
-            alter = 1;
-        }
-        measuresString = `${measuresString}
+    }
+    currentNoteInMeasure++;
+    // Handle sharp / flat
+    // TODO: this assumes C major as signature, but should be fine
+    let alter = 0;
+    if (note.endsWith('#')) {
+      note = note.slice(0, -1);
+      alter = 1;
+    }
+    measuresString = `${measuresString}
             <note>
                 <pitch>
                     <step>${note}</step>${alter === 0 ? '' : `
@@ -97,8 +97,8 @@ export function generateXml(name, tempo, timeSig, notes) {
                 <voice>1</voice>
                 <type>quarter</type>
             </note>`;
-    }
-    return `<?xml version="1.0" encoding="UTF-8"?>
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.1">
   <work>

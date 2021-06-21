@@ -1,9 +1,9 @@
 import { scaleLinear, extent, group, max } from 'd3';
-import Note from '../types/Note';
-import { bpmToSecondsPerBeat } from './MusicUtils';
-import { kernelDensityEstimator, kernelEpanechnikov } from './StatisticsUtils';
-import { findLocalMaxima } from './MathUtils';
-import Recording from '../types/Recording'; /* eslint-disable-line no-unused-vars */
+import Note from '../types/Note.js';
+import { bpmToSecondsPerBeat } from './MusicUtils.js';
+import { kernelDensityEstimator, kernelEpanechnikov } from './StatisticsUtils.js';
+import { findLocalMaxima } from './MathUtils.js';
+import Recording from '../types/Recording.js'; /* eslint-disable-line no-unused-vars */
 
 /**
  * @module utils/RecordingsUtils

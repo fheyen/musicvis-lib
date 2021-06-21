@@ -1,5 +1,5 @@
-import * as Chords from './Chords';
-import Note from '../types/Note';
+import * as Chords from './Chords.js';
+import Note from '../types/Note.js';
 
 
 describe('Chords', () => {

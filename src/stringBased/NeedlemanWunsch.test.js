@@ -1,4 +1,4 @@
-import NeedlemanWunsch from './NeedlemanWunsch';
+import NeedlemanWunsch from './NeedlemanWunsch.js';
 
 describe('NeedlemanWunsch', () => {
     test('both empty: 0', () => {

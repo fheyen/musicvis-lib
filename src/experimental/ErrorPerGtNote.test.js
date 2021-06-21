@@ -1,4 +1,4 @@
-import { getStartTimeErrorPerGtNote } from './ErrorPerGtNote';
+import { getStartTimeErrorPerGtNote } from './ErrorPerGtNote.js';
 
 
 describe('ErrorPerGtNote', () => {

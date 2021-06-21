@@ -1,5 +1,5 @@
-import Note from './Note';
-import GuitarNote from './GuitarNote';
+import Note from './Note.js';
+import GuitarNote from './GuitarNote.js';
 
 
 const note1 = new GuitarNote(0, 0.0, 127, 0, 3.0, 0, 0);

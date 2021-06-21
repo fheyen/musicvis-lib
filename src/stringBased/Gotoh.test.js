@@ -1,4 +1,4 @@
-import { gotoh, normalizedGotoh, matchMissmatchSimilarity, differenceSimilarity } from './Gotoh';
+import { gotoh, normalizedGotoh, matchMissmatchSimilarity, differenceSimilarity } from './Gotoh.js';
 
 describe('Gotoh', () => {
     describe('matchMissmatchSimilarity', () => {

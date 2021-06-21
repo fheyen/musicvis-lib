@@ -1,5 +1,6 @@
-import { bpmToSecondsPerBeat, deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest, delay } from './MiscUtils';
-import Note from '../types/Note';
+import { deepCloneFlatObjectMap, groupNotesByPitch, reverseString, findNearest, delay } from './MiscUtils.js';
+import { bpmToSecondsPerBeat } from './MusicUtils.js';
+import Note from '../types/Note.js';
 
 
 describe('utils/MiscUtils', () => {

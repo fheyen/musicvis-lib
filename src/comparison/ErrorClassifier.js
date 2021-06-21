@@ -4,7 +4,7 @@
  */
 
 import { group } from 'd3';
-import { GuitarNote } from '../types/GuitarNote'; /* eslint-disable-line no-unused-vars */
+import { GuitarNote } from '../types/GuitarNote.js'; /* eslint-disable-line no-unused-vars */
 import { Note } from '../types/Note'; /* eslint-disable-line no-unused-vars */
 import * as Utils from '../utils';
 

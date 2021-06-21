@@ -1,8 +1,8 @@
-import { randFloat } from '../utils/MathUtils';
-import { getMidiNoteByNr, getMidiNoteByLabel } from '../fileFormats/Midi';
-import GuitarNote from '../types/GuitarNote';
 import { randomInt, extent } from 'd3';
-import { arrayShallowEquals } from '../utils/ArrayUtils';
+import { randFloat } from '../utils/MathUtils.js';
+import { getMidiNoteByNr, getMidiNoteByLabel } from '../fileFormats/Midi.js';
+import GuitarNote from '../types/GuitarNote.js';
+import { arrayShallowEquals } from '../utils/ArrayUtils.js';
 
 /**
  * @module instruments/Guitar

@@ -1,4 +1,4 @@
-import { generateMusicPiece } from './GuitarExercises';
+import { generateMusicPiece } from './GuitarExercises.js';
 
 describe('GuitarExercises', () => {
     describe('generateMusicPiece', () => {

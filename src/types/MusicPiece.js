@@ -1,10 +1,10 @@
-import Note from './Note';
 import * as midiParser from 'midi-parser-js';
 import { Midi } from '@tonejs/midi';
-import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser';
-import { preprocessMidiFileData } from '../fileFormats/MidiParser';
-import NoteArray from './NoteArray';
-import GuitarNote from './GuitarNote';
+import Note from './Note.js';
+import { preprocessMusicXmlData } from '../fileFormats/MusicXmlParser.js';
+import { preprocessMidiFileData } from '../fileFormats/MidiParser.js';
+import NoteArray from './NoteArray.js';
+import GuitarNote from './GuitarNote.js';
 
 
 

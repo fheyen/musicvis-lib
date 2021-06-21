@@ -1,9 +1,9 @@
-export * as Levenshtein from './Levenshtein';
-export * as LongestCommonSubsequence from './LongestCommonSubsequence';
-export * as Gotoh from './Gotoh';
-export * as SuffixTree from './SuffixTree';
-export * as NGrams from './NGrams';
-export { default as NeedlemanWunsch } from './NeedlemanWunsch';
+export * as Levenshtein from './Levenshtein.js';
+export * as LongestCommonSubsequence from './LongestCommonSubsequence.js';
+export * as Gotoh from './Gotoh.js';
+export * as SuffixTree from './SuffixTree.js';
+export * as NGrams from './NGrams.js';
+export { default as NeedlemanWunsch } from './NeedlemanWunsch.js';
 
 
 /**

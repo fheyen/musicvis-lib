@@ -1,5 +1,5 @@
 import 'jest-canvas-mock';
-import * as Canv from './Canvas';
+import * as Canv from './Canvas.js';
 
 describe('Canvas', () => {
     // const canvas = HTMLCanvasElement();

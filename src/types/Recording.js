@@ -1,5 +1,5 @@
-import NoteArray from './NoteArray';
-import { arrayShallowEquals } from '../utils/ArrayUtils';
+import NoteArray from './NoteArray.js';
+import { arrayShallowEquals } from '../utils/ArrayUtils.js';
 
 /**
  * Class for storing recorded notes alongside meta information.

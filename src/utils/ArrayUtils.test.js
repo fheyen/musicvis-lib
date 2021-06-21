@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch, kendallTau } from './ArrayUtils';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch, kendallTau } from './ArrayUtils.js';
 
 describe('ArrayUtils', () => {
 

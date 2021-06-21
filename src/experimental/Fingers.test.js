@@ -1,4 +1,4 @@
-import Fingers from './Fingers';
+import Fingers from './Fingers.js';
 
 describe('Fingers', () => {
 

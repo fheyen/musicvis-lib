@@ -1,8 +1,8 @@
-import Note from '../types/Note';
-import GuitarNote from '../types/GuitarNote';
-import { getMidiNoteByNameAndOctave } from './Midi';
 import { max } from 'd3';
-import { roundToNDecimals } from '../utils/MathUtils';
+import Note from '../types/Note.js';
+import GuitarNote from '../types/GuitarNote.js';
+import { getMidiNoteByNameAndOctave } from './Midi.js';
+import { roundToNDecimals } from '../utils/MathUtils.js';
 
 /**
  * @module fileFormats/MusicXmlParser

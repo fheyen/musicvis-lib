@@ -1,4 +1,4 @@
-import { getNGrams, getNGramsForArray } from './NGrams';
+import { getNGrams, getNGramsForArray } from './NGrams.js';
 
 describe('NGrams', () => {
     describe('string', () => {

@@ -1,6 +1,6 @@
-import * as Lamellophone from './Lamellophone';
-import Note from '../types/Note';
-import { noteColorFromPitch } from '../utils/NoteColorUtils';
+import * as Lamellophone from './Lamellophone.js';
+import Note from '../types/Note.js';
+import { noteColorFromPitch } from '../utils/NoteColorUtils.js';
 
 const tuning = Lamellophone.lamellophoneTunings?.get('Kalimba')?.get('17 C Major');
 

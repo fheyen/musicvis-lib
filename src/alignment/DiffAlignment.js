@@ -1,5 +1,5 @@
-import NoteArray from '../types/NoteArray';
-import Recording from '../types/Recording';
+import NoteArray from '../types/NoteArray.js';
+import Recording from '../types/Recording.js';
 import { group, max } from 'd3';
 
 /**

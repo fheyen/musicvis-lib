@@ -7,23 +7,23 @@ export {
     getMatrixMax,
     formatMatrix,
     binarySearch,
-} from './ArrayUtils';
+} from './ArrayUtils.js';
 
 export {
     blobToBase64,
     blobToFileExtension,
-} from './BlobUtils';
+} from './BlobUtils.js';
 
 export {
     formatDate,
     formatTime,
     formatSongTitle,
-} from './FormattingUtils';
+} from './FormattingUtils.js';
 
 export {
     storeObjectInLocalStorage,
     getObjectFromLocalStorage,
-} from './LocalStorageUtils';
+} from './LocalStorageUtils.js';
 
 export {
     randFloat,
@@ -31,7 +31,7 @@ export {
     clipValue,
     swapSoSmallerFirst,
     findLocalMaxima,
-} from './MathUtils';
+} from './MathUtils.js';
 
 export {
     deepCloneFlatObjectMap,
@@ -39,7 +39,7 @@ export {
     reverseString,
     findNearest,
     delay,
-} from './MiscUtils';
+} from './MiscUtils.js';
 
 export {
     bpmToSecondsPerBeat,
@@ -49,9 +49,9 @@ export {
     noteDurationToNoteType,
     metronomeTrackFromTempoAndMeter,
     metronomeTrackFromMusicPiece,
-} from './MusicUtils';
+} from './MusicUtils.js';
 
-export { noteColorFromPitch } from './NoteColorUtils';
+export { noteColorFromPitch } from './NoteColorUtils.js';
 
 export {
     filterRecordingNoise,
@@ -63,7 +63,7 @@ export {
     differenceMap,
     differenceMapErrorAreas,
     alignNotesToBpm,
-} from './RecordingsUtils';
+} from './RecordingsUtils.js';
 
 export {
     confidenceInterval,
@@ -71,9 +71,9 @@ export {
     kernelDensityEstimator,
     kernelEpanechnikov,
     kernelGauss,
-} from './StatisticsUtils';
+} from './StatisticsUtils.js';
 
-export { pingMidiDevice } from './WebMidiUtils';
+export { pingMidiDevice } from './WebMidiUtils.js';
 
 /**
  * @module utils

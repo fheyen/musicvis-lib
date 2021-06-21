@@ -1,8 +1,8 @@
-import MusicPiece, { Track, TempoDefinition, TimeSignature, KeySignature } from './MusicPiece';
 import path from 'path';
-import GuitarNote from './GuitarNote';
-import Note from './Note';
-import { readFile, readMidiFile, readXmlFile, listFiles, getAllNotesFromMidi, getAllNotesFromXml, getSongsWithMidiAndXml } from '../../test/testTools/readTestAssetFiles';
+import MusicPiece, { Track, TempoDefinition, TimeSignature, KeySignature } from './MusicPiece.js';
+import GuitarNote from './GuitarNote.js';
+import Note from './Note.js';
+import { readFile, readMidiFile, readXmlFile, listFiles, getAllNotesFromMidi, getAllNotesFromXml, getSongsWithMidiAndXml } from '../../test/testTools/readTestAssetFiles.js';
 
 const TEST_DIR = path.join(__dirname, '..', '..', 'test', '_test_assets');
 const TEST_DIR_PRIVATE = path.join(__dirname, '..', '..', 'test', '_test_assets_private');

@@ -1,8 +1,8 @@
-import { alignGtAndRecToMinimizeDiffError, agreement, alignRecordingToBestFit } from './DiffAlignment';
-import Note from '../types/Note';
-import NoteArray from '../types/NoteArray';
-import Recording from '../types/Recording';
-import { getAllNotesFromMidi } from '../../test/testTools/readTestAssetFiles';
+import { alignGtAndRecToMinimizeDiffError, agreement, alignRecordingToBestFit } from './DiffAlignment.js';
+import Note from '../types/Note.js';
+import NoteArray from '../types/NoteArray.js';
+import Recording from '../types/Recording.js';
+import { getAllNotesFromMidi } from '../../test/testTools/readTestAssetFiles.js';
 import path from 'path';
 
 describe('DiffAlignment', () => {

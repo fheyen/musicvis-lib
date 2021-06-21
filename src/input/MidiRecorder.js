@@ -1,4 +1,4 @@
-import Note from '../types/Note';
+import Note from '../types/Note.js';
 
 /**
  * Records incoming MIDI messages from a MIDI device.
@@ -75,20 +75,20 @@ function processMidiMessagesToNotes(messages) {
         // A velocity value might not be included with a noteOff command
         const velocity = (message.data.length > 2) ? message.data[2] : 0;
         switch (command) {
-        case 128:
-            noteOff(notes, currentNotes, device, time, pitch, channel);
-            break;
-        case 144:
-            if (velocity > 0) {
-                noteOn(currentNotes, device, time, pitch, channel, velocity);
-            } else {
+            case 128:
                 noteOff(notes, currentNotes, device, time, pitch, channel);
-            }
-            break;
-        case 224:
-            // TODO: handle pitch wheel?
-            break;
-        default:
+                break;
+            case 144:
+                if (velocity > 0) {
+                    noteOn(currentNotes, device, time, pitch, channel, velocity);
+                } else {
+                    noteOff(notes, currentNotes, device, time, pitch, channel);
+                }
+                break;
+            case 224:
+                // TODO: handle pitch wheel?
+                break;
+            default:
             // TODO: handle other commands?
         }
     }

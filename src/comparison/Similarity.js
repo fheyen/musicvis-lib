@@ -1,7 +1,7 @@
 import { max, min } from 'd3';
 // import DynamicTimeWarping from 'dynamic-time-warping-2';
 // eslint-disable-next-line no-unused-vars
-import Note from '../types/Note';
+import Note from '../types/Note.js';
 
 /**
  * @module comparison/Similarity

@@ -1,5 +1,5 @@
-import { getMidiNoteByLabel } from '../fileFormats/Midi';
-import Note from './Note';
+import { getMidiNoteByLabel } from '../fileFormats/Midi.js';
+import Note from './Note.js';
 
 
 /**

@@ -1,4 +1,4 @@
-import Note from './Note';
+import Note from './Note.js';
 // import NoteArray from './NoteArray';
 
 const note1 = new Note(0, 0.0, 127, 0, 3.0);

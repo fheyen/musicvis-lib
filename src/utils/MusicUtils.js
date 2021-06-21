@@ -1,5 +1,5 @@
-import { countOnesOfBinary, roundToNDecimals } from './MathUtils';
-import { binarySearch } from './ArrayUtils';
+import { countOnesOfBinary, roundToNDecimals } from './MathUtils.js';
+import { binarySearch } from './ArrayUtils.js';
 
 /**
  * @module utils/MusicUtils

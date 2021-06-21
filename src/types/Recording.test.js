@@ -1,5 +1,5 @@
-import Note from './Note';
-import Recording from './Recording';
+import Note from './Note.js';
+import Recording from './Recording.js';
 
 const notes = [
     new Note(69, 0.0, 127, 0, 1.0),

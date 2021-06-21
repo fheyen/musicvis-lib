@@ -1,7 +1,7 @@
-import Note from '../types/Note';
 import { group, max } from 'd3';
-import { bpmToSecondsPerBeat } from '../utils/MusicUtils';
-import { roundToNDecimals } from '../utils/MathUtils';
+import Note from '../types/Note.js';
+import { bpmToSecondsPerBeat } from '../utils/MusicUtils.js';
+import { roundToNDecimals } from '../utils/MathUtils.js';
 
 /**
  * @module fileFormats/MidiParser

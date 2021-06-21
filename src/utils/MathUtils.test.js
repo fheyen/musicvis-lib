@@ -1,4 +1,4 @@
-import { randFloat, clipValue, roundToNDecimals, choose, swapSoSmallerFirst, countOnesOfBinary, findLocalMaxima } from './MathUtils';
+import { randFloat, clipValue, roundToNDecimals, choose, swapSoSmallerFirst, countOnesOfBinary, findLocalMaxima } from './MathUtils.js';
 
 
 

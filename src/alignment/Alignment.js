@@ -1,8 +1,8 @@
-import { matchGtAndRecordingNotes } from '../comparison/Matching';
+import { matchGtAndRecordingNotes } from '../comparison/Matching.js';
 import { randomInt, randomLcg, randomUniform, median } from 'd3';
-import * as Drums from '../instruments/Drums';
-import Note from '../types/Note';
-import NoteArray from '../types/NoteArray';
+import * as Drums from '../instruments/Drums.js';
+import Note from '../types/Note.js';
+import NoteArray from '../types/NoteArray.js';
 
 /**
  * @module Alignment

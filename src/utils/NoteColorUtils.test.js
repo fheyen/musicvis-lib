@@ -1,4 +1,4 @@
-import { noteColorFromPitch } from './NoteColorUtils';
+import { noteColorFromPitch } from './NoteColorUtils.js';
 
 
 describe('NoteColorUtils', () => {
