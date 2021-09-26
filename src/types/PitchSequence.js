@@ -41,7 +41,7 @@ class PitchSequence {
      */
     static fromCharString(string) {
         if (!string || string.length === 0) { return new PitchSequence(); }
-        const pitches = string.split('').map((d, index) => string.charCodeAt(index));
+        const pitches = [...string].map((d, index) => string.charCodeAt(index));
         return new PitchSequence(pitches);
     }
 
