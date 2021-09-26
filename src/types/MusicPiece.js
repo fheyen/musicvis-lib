@@ -410,7 +410,13 @@ export class Track {
      * @param {number[]} [measureIndices=null] note indices where new measures start
      * @throws {'Notes are undefined or not an array'} for invalid notes
      */
-    constructor(name, instrument, notes, tuningPitches = null, measureIndices = null) {
+    constructor(
+        name,
+        instrument,
+        notes,
+        tuningPitches = null,
+        measureIndices = null,
+    ) {
         name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
         this.name = name;
         this.instrument = instrument;
@@ -451,13 +457,27 @@ export class Track {
      * @param {Note[]} notes parsed MusicXML track's notes
      * @param {number} channel channel
      * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
+     * @param {number[]} [measureIndices=null] note indices where new measures start
      * @returns {Track} new Track
      */
-    static fromMusicXml(name, instrument, notes, channel, tuningPitches = null) {
+    static fromMusicXml(
+        name,
+        instrument,
+        notes,
+        channel,
+        tuningPitches = null,
+        measureIndices = null,
+    ) {
         for (const n of notes) {
             n.channel = channel;
         }
-        return new Track(name, instrument, notes, tuningPitches);
+        return new Track(
+            name,
+            instrument,
+            notes,
+            tuningPitches,
+            measureIndices,
+        );
     }
 }
 
