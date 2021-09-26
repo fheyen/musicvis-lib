@@ -95,7 +95,7 @@ declare module "DiffAlignment" {
     /**
      * Given two activation maps, simply counts the number of bins [pitch, time]
      * where both have a 1, so an acitve note
-     * Gtmust be longer than rec
+     * GT must be longer than rec
      * @param gtActivations - see activationMap()
      * @param recActivations - see activationMap()
      * @param offset - offset for activation2 when comparing
@@ -494,6 +494,8 @@ declare const chordErrorTypes: any;
  * @returns errors
  */
 declare function getChordErrors(expectedChord: Note[], actualChord: Note[]): string[];
+
+declare function compareToRhythm(notes: any, bpm: any, options: any): void;
 
 declare module "instruments/StringedFingering" {
     /**

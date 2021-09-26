@@ -1,11 +1,11 @@
-// musicvis-lib v0.51.1 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.51.3 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
-}(this, (function (exports) { 'use strict';
+})(this, (function (exports) { 'use strict';
 
-  var version="0.51.1";
+  var version="0.51.3";
 
   /**
    * Lookup for many MIDI specifications.
@@ -3585,6 +3585,7 @@
   const ascendingBisect = bisector(ascending);
   const bisectRight = ascendingBisect.right;
   bisector(number$1).center;
+  var bisect = bisectRight;
 
   function variance(values, valueof) {
     let count = 0;
@@ -4040,7 +4041,7 @@
           n = T.length; // If no callback was specified, return the callback of the given type and name.
 
       if (arguments.length < 2) {
-        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$4(_[t], typename.name))) return t;
+        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$5(_[t], typename.name))) return t;
 
         return;
       } // If a type was specified, set the callback for the given type and name.
@@ -4076,7 +4077,7 @@
     }
   };
 
-  function get$4(type, name) {
+  function get$5(type, name) {
     for (var i = 0, n = type.length, c; i < n; ++i) {
       if ((c = type[i]).name === name) {
         return c.value;
@@ -5000,10 +5001,10 @@
 
         if (x != null) y = x, x = null; // Otherwise, generate a new x and y.
         else do {
-            x = source() * 2 - 1;
-            y = source() * 2 - 1;
-            r = x * x + y * y;
-          } while (!r || r > 1);
+          x = source() * 2 - 1;
+          y = source() * 2 - 1;
+          r = x * x + y * y;
+        } while (!r || r > 1);
         return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
       };
     }
@@ -5097,7 +5098,7 @@
     }
 
     return function (x) {
-      var i = bisectRight(domain, x, 1, j) - 1;
+      var i = bisect(domain, x, 1, j) - 1;
       return r[i](d[i](x));
     };
   }
@@ -5782,8 +5783,7 @@
         filterFunc = n => n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end;
       } else if (mode === 'touched-included') {
         filterFunc = n => // like touched
-        n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end || // filter range inside note range
-        n.end !== null && n.start <= start && n.end >= end;
+        n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end || n.end !== null && n.start <= start && n.end >= end;
       } else {
         throw new Error('Invalid slicing mode');
       } // eslint-disable-next-line unicorn/no-array-callback-reference
@@ -6674,12 +6674,12 @@
 
               if (statusByte === -1) break; // EOF
               else if (statusByte >= 128) laststatusByte = statusByte; // NEW STATUS BYTE DETECTED
-                else {
-                    // 'RUNNING STATUS' situation detected
-                    statusByte = laststatusByte; // apply last loop, Status Byte
+              else {
+                // 'RUNNING STATUS' situation detected
+                statusByte = laststatusByte; // apply last loop, Status Byte
 
-                    file.movePointer(-1); // move back the pointer (cause readed byte is not status byte)
-                  } //
+                file.movePointer(-1); // move back the pointer (cause readed byte is not status byte)
+              } //
               // ** IS META EVENT
               //
 
@@ -6764,80 +6764,80 @@
               // IS REGULAR EVENT
               //
               else {
-                  // MIDI Control Events OR System Exclusive Events
-                  statusByte = statusByte.toString(16).split(''); // split the status byte HEX representation, to obtain 4 bits values
+                // MIDI Control Events OR System Exclusive Events
+                statusByte = statusByte.toString(16).split(''); // split the status byte HEX representation, to obtain 4 bits values
 
-                  if (!statusByte[1]) statusByte.unshift('0'); // force 2 digits
+                if (!statusByte[1]) statusByte.unshift('0'); // force 2 digits
 
-                  MIDI.track[t - 1].event[e - 1].type = parseInt(statusByte[0], 16); // first byte is EVENT TYPE ID
+                MIDI.track[t - 1].event[e - 1].type = parseInt(statusByte[0], 16); // first byte is EVENT TYPE ID
 
-                  MIDI.track[t - 1].event[e - 1].channel = parseInt(statusByte[1], 16); // second byte is channel
+                MIDI.track[t - 1].event[e - 1].channel = parseInt(statusByte[1], 16); // second byte is channel
 
-                  switch (MIDI.track[t - 1].event[e - 1].type) {
-                    case 0xF:
-                      {
-                        // System Exclusive Events
-                        // if user provided a custom interpreter, call it
-                        // and assign to event the returned data
-                        if (this.customInterpreter !== null) {
-                          MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].type, file, false);
-                        } // if no customInterpretr is provided, or returned
-                        // false (=apply default), perform default action
-
-
-                        if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
-                          let event_length = file.readIntVLV();
-                          MIDI.track[t - 1].event[e - 1].data = file.readInt(event_length);
-                          if (this.debug) console.info('Unimplemented 0xF exclusive events! data block readed as Integer');
-                        }
-
-                        break;
-                      }
-
-                    case 0xA: // Note Aftertouch
-
-                    case 0xB: // Controller
-
-                    case 0xE: // Pitch Bend Event
-
-                    case 0x8: // Note off
-
-                    case 0x9:
-                      // Note On
-                      MIDI.track[t - 1].event[e - 1].data = [];
-                      MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
-                      MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
-                      break;
-
-                    case 0xC: // Program Change
-
-                    case 0xD:
-                      // Channel Aftertouch
-                      MIDI.track[t - 1].event[e - 1].data = file.readInt(1);
-                      break;
-
-                    case -1:
-                      // EOF
-                      endOfTrack = true; // change FLAG to force track reading loop breaking
-
-                      break;
-
-                    default:
+                switch (MIDI.track[t - 1].event[e - 1].type) {
+                  case 0xF:
+                    {
+                      // System Exclusive Events
                       // if user provided a custom interpreter, call it
                       // and assign to event the returned data
                       if (this.customInterpreter !== null) {
-                        MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].metaType, file, false);
+                        MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].type, file, false);
                       } // if no customInterpretr is provided, or returned
                       // false (=apply default), perform default action
 
 
                       if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
-                        console.log('Unknown EVENT detected... reading cancelled!');
-                        return false;
+                        let event_length = file.readIntVLV();
+                        MIDI.track[t - 1].event[e - 1].data = file.readInt(event_length);
+                        if (this.debug) console.info('Unimplemented 0xF exclusive events! data block readed as Integer');
                       }
 
-                  }
+                      break;
+                    }
+
+                  case 0xA: // Note Aftertouch
+
+                  case 0xB: // Controller
+
+                  case 0xE: // Pitch Bend Event
+
+                  case 0x8: // Note off
+
+                  case 0x9:
+                    // Note On
+                    MIDI.track[t - 1].event[e - 1].data = [];
+                    MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
+                    MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
+                    break;
+
+                  case 0xC: // Program Change
+
+                  case 0xD:
+                    // Channel Aftertouch
+                    MIDI.track[t - 1].event[e - 1].data = file.readInt(1);
+                    break;
+
+                  case -1:
+                    // EOF
+                    endOfTrack = true; // change FLAG to force track reading loop breaking
+
+                    break;
+
+                  default:
+                    // if user provided a custom interpreter, call it
+                    // and assign to event the returned data
+                    if (this.customInterpreter !== null) {
+                      MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].metaType, file, false);
+                    } // if no customInterpretr is provided, or returned
+                    // false (=apply default), perform default action
+
+
+                    if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
+                      console.log('Unknown EVENT detected... reading cancelled!');
+                      return false;
+                    }
+
                 }
+              }
             }
           }
 
@@ -7679,9 +7679,7 @@
     exports.keySignatureKeys = ["Cb", "Gb", "Db", "Ab", "Eb", "Bb", "F", "C", "G", "D", "A", "E", "B", "F#", "C#"];
     /** The parsed midi file header */
 
-    var Header =
-    /** @class */
-    function () {
+    var Header = function () {
       function Header(midiData) {
         // look through all the tracks for tempo changes
         var _this = this;
@@ -8293,9 +8291,7 @@
      * Represents a control change event
      */
 
-    var ControlChange =
-    /** @class */
-    function () {
+    var ControlChange = function () {
       /**
        * @param event
        * @param header
@@ -8408,9 +8404,7 @@
    * Represents a pitch bend event
    */
 
-  var PitchBend =
-  /** @class */
-  function () {
+  var PitchBend = function () {
     /**
      * @param event
      * @param header
@@ -8484,9 +8478,7 @@
    * Describes the midi instrument of a track
    */
 
-  var Instrument =
-  /** @class */
-  function () {
+  var Instrument = function () {
     /**
      * @param trackData
      * @param track
@@ -8673,9 +8665,7 @@
    * A Note consists of a noteOn and noteOff event
    */
 
-  var Note =
-  /** @class */
-  function () {
+  var Note = function () {
     function Note(noteOn, noteOff, header) {
       privateHeaderMap$1.set(this, header);
       this.midi = noteOn.midi;
@@ -8801,9 +8791,7 @@
    * A Track is a collection of notes and controlChanges
    */
 
-  var Track$1 =
-  /** @class */
-  function () {
+  var Track$1 = function () {
     function Track(trackData, header) {
       var _this = this;
       /**
@@ -9235,9 +9223,7 @@
    * The main midi parsing class
    */
 
-  var Midi =
-  /** @class */
-  function () {
+  var Midi = function () {
     /**
      * Parse the midi data
      */
@@ -11207,7 +11193,7 @@
       } // Tracks
 
 
-      const tracks = parsed.parts.map((t, index) => Track.fromMusicXml(parsed.partNames[index], parsed.instruments[index], t.noteObjs, index, t.tuning));
+      const tracks = parsed.parts.map((t, index) => Track.fromMusicXml(parsed.partNames[index], parsed.instruments[index], t.noteObjs, index, t.tuning, t.measureIndices));
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
@@ -11232,7 +11218,7 @@
         const notes = track.notes.map(note => {
           return note.string !== undefined && note.fret !== undefined ? GuitarNote.from(note) : Note$2.from(note);
         });
-        return new Track(track.name, track.instrument, notes, track.tuningPitches);
+        return new Track(track.name, track.instrument, notes, track.tuningPitches, track.measureIndices);
       });
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
@@ -11325,7 +11311,7 @@
           tuning = track.tuningPitches.map(d => d + steps);
         }
 
-        return new Track(track.name, track.instrument, na.getNotes(), tuning);
+        return new Track(track.name, track.instrument, na.getNotes(), tuning, track.measureIndices);
       });
       return new MusicPiece(this.name, [...this.tempos], [...this.timeSignatures], [...this.keySignatures], [...this.measureTimes], newTracks);
     }
@@ -11346,10 +11332,11 @@
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
-     * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
+     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's tuning
+     * @param {number[]} [measureIndices=null] note indices where new measures start
      * @throws {'Notes are undefined or not an array'} for invalid notes
      */
-    constructor(name, instrument, notes, tuningPitches = null) {
+    constructor(name, instrument, notes, tuningPitches = null, measureIndices = null) {
       var _name;
 
       name = !((_name = name) !== null && _name !== void 0 && _name.length) ? 'unnamed' : name.replace('\u0000', '');
@@ -11361,7 +11348,8 @@
       }
 
       this.notes = notes.sort((a, b) => a.start - b.start);
-      this.tuningPitches = tuningPitches; // Computed properties
+      this.tuningPitches = tuningPitches;
+      this.measureIndices = measureIndices; // Computed properties
 
       this.duration = new NoteArray(notes).getDuration();
       this.hasStringFret = false;
@@ -11521,7 +11509,7 @@
         return new PitchSequence();
       }
 
-      const pitches = string.split('').map((d, index) => string.charCodeAt(index));
+      const pitches = [...string].map((d, index) => string.charCodeAt(index));
       return new PitchSequence(pitches);
     }
     /**
@@ -13229,7 +13217,7 @@
       return cached;
     }
 
-    const value = typeof src === "string" ? parse(src) : isPitch(src) ? note(pitchName(src)) : isNamed(src) ? note(src.name) : NoNote;
+    const value = typeof src === "string" ? parse$1(src) : isPitch(src) ? note(pitchName$1(src)) : isNamed(src) ? note(src.name) : NoNote;
     cache$1.set(src, value);
     return value;
   }
@@ -13256,7 +13244,7 @@
 
   const SEMI = [0, 2, 4, 5, 7, 9, 11];
 
-  function parse(noteName) {
+  function parse$1(noteName) {
     const tokens = tokenizeNote(noteName);
 
     if (tokens[0] === "" || tokens[3] !== "") {
@@ -13297,7 +13285,7 @@
     };
   }
 
-  function pitchName(props) {
+  function pitchName$1(props) {
     const {
       step,
       alt,
@@ -13322,13 +13310,13 @@
   const INTERVAL_TONAL_REGEX = "([-+]?\\d+)(d{1,4}|m|M|P|A{1,4})"; // standard shorthand notation (with quality before number)
 
   const INTERVAL_SHORTHAND_REGEX = "(AA|A|P|M|m|d|dd)([-+]?\\d+)";
-  const REGEX$1$1 = new RegExp("^" + INTERVAL_TONAL_REGEX + "|" + INTERVAL_SHORTHAND_REGEX + "$");
+  const REGEX$2 = new RegExp("^" + INTERVAL_TONAL_REGEX + "|" + INTERVAL_SHORTHAND_REGEX + "$");
   /**
    * @private
    */
 
   function tokenizeInterval(str) {
-    const m = REGEX$1$1.exec(`${str}`);
+    const m = REGEX$2.exec(`${str}`);
 
     if (m === null) {
       return ["", ""];
@@ -13337,7 +13325,7 @@
     return m[1] ? [m[1], m[2]] : [m[4], m[3]];
   }
 
-  const cache$1$1 = {};
+  const cache$2 = {};
   /**
    * Get interval properties. It returns an object with:
    *
@@ -13360,13 +13348,13 @@
    */
 
   function interval(src) {
-    return typeof src === "string" ? cache$1$1[src] || (cache$1$1[src] = parse$1(src)) : isPitch(src) ? interval(pitchName$1(src)) : isNamed(src) ? interval(src.name) : NoInterval;
+    return typeof src === "string" ? cache$2[src] || (cache$2[src] = parse(src)) : isPitch(src) ? interval(pitchName(src)) : isNamed(src) ? interval(src.name) : NoInterval;
   }
 
   const SIZES = [0, 2, 4, 5, 7, 9, 11];
   const TYPES = "PMMPPMM";
 
-  function parse$1(str) {
+  function parse(str) {
     const tokens = tokenizeInterval(str);
 
     if (tokens[0] === "") {
@@ -13414,13 +13402,15 @@
   }
   /**
    * @private
+   *
+   * forceDescending is used in the case of unison (#243)
    */
 
 
-  function coordToInterval(coord) {
+  function coordToInterval(coord, forceDescending) {
     const [f, o = 0] = coord;
     const isDescending = f * 7 + o * 12 < 0;
-    const ivl = isDescending ? [-f, -o, -1] : [f, o, 1];
+    const ivl = forceDescending || isDescending ? [-f, -o, -1] : [f, o, 1];
     return interval(decode(ivl));
   }
 
@@ -13429,7 +13419,7 @@
   } // return the interval name of a pitch
 
 
-  function pitchName$1(props) {
+  function pitchName(props) {
     const {
       step,
       alt,
@@ -13441,7 +13431,9 @@
       return "";
     }
 
-    const num = step + 1 + 7 * oct;
+    const calcNum = step + 1 + 7 * oct; // this is an edge case: descending pitch class unison (see #243)
+
+    const num = calcNum === 0 ? step + 1 : calcNum;
     const d = dir < 0 ? "-" : "";
     const type = TYPES[step] === "M" ? "majorable" : "perfectable";
     const name = d + num + altToQ(type, alt);
@@ -13510,8 +13502,10 @@
     const fcoord = from.coord;
     const tcoord = to.coord;
     const fifths = tcoord[0] - fcoord[0];
-    const octs = fcoord.length === 2 && tcoord.length === 2 ? tcoord[1] - fcoord[1] : -Math.floor(fifths * 7 / 12);
-    return coordToInterval([fifths, octs]).name;
+    const octs = fcoord.length === 2 && tcoord.length === 2 ? tcoord[1] - fcoord[1] : -Math.floor(fifths * 7 / 12); // If it's unison and not pitch class, it can be descending interval (#243)
+
+    const forceDescending = to.height === from.height && to.midi !== null && from.midi !== null && from.step > to.step;
+    return coordToInterval([fifths, octs], forceDescending).name;
   }
 
   // ascending range
@@ -13578,7 +13572,7 @@
    * Get the pitch class set of a collection of notes or set number or chroma
    */
 
-  function get$3(src) {
+  function get$4(src) {
     const chroma = isChroma(src) ? src : isPcsetNum(src) ? setNumToChroma(src) : Array.isArray(src) ? listToChroma(src) : isPcset(src) ? src.chroma : EmptyPcset.chroma;
     return cache[chroma] = cache[chroma] || chromaToPcset(chroma);
   }
@@ -13619,7 +13613,7 @@
 
 
   function modes$1(set, normalize = true) {
-    const pcs = get$3(set);
+    const pcs = get$4(set);
     const binary = pcs.chroma.split("");
     return compact(binary.map((_, i) => {
       const r = rotate(i, binary);
@@ -13644,9 +13638,9 @@
 
 
   function isSubsetOf(set) {
-    const s = get$3(set).setNum;
+    const s = get$4(set).setNum;
     return notes => {
-      const o = get$3(notes).setNum; // tslint:disable-next-line: no-bitwise
+      const o = get$4(notes).setNum; // tslint:disable-next-line: no-bitwise
 
       return s && s !== o && (o & s) === o;
     };
@@ -13666,9 +13660,9 @@
 
 
   function isSupersetOf(set) {
-    const s = get$3(set).setNum;
+    const s = get$4(set).setNum;
     return notes => {
-      const o = get$3(notes).setNum; // tslint:disable-next-line: no-bitwise
+      const o = get$4(notes).setNum; // tslint:disable-next-line: no-bitwise
 
       return s && s !== o && (o | s) === o;
     };
@@ -13747,7 +13741,7 @@
    * get('major') // => { name: 'major', ... }
    */
 
-  function get$2(type) {
+  function get$3(type) {
     return index$5[type] || NoChordType;
   }
   /**
@@ -13768,7 +13762,7 @@
 
   function add$1(intervals, aliases, fullName) {
     const quality = getQuality(intervals);
-    const chord = { ...get$3(intervals),
+    const chord = { ...get$4(intervals),
       name: fullName || "",
       quality,
       intervals,
@@ -13858,17 +13852,31 @@
   const SCALES = [// 5-note scales
   ["1P 2M 3M 5P 6M", "major pentatonic", "pentatonic"], ["1P 3M 4P 5P 7M", "ionian pentatonic"], ["1P 3M 4P 5P 7m", "mixolydian pentatonic", "indian"], ["1P 2M 4P 5P 6M", "ritusen"], ["1P 2M 4P 5P 7m", "egyptian"], ["1P 3M 4P 5d 7m", "neopolitan major pentatonic"], ["1P 3m 4P 5P 6m", "vietnamese 1"], ["1P 2m 3m 5P 6m", "pelog"], ["1P 2m 4P 5P 6m", "kumoijoshi"], ["1P 2M 3m 5P 6m", "hirajoshi"], ["1P 2m 4P 5d 7m", "iwato"], ["1P 2m 4P 5P 7m", "in-sen"], ["1P 3M 4A 5P 7M", "lydian pentatonic", "chinese"], ["1P 3m 4P 6m 7m", "malkos raga"], ["1P 3m 4P 5d 7m", "locrian pentatonic", "minor seven flat five pentatonic"], ["1P 3m 4P 5P 7m", "minor pentatonic", "vietnamese 2"], ["1P 3m 4P 5P 6M", "minor six pentatonic"], ["1P 2M 3m 5P 6M", "flat three pentatonic", "kumoi"], ["1P 2M 3M 5P 6m", "flat six pentatonic"], ["1P 2m 3M 5P 6M", "scriabin"], ["1P 3M 5d 6m 7m", "whole tone pentatonic"], ["1P 3M 4A 5A 7M", "lydian #5P pentatonic"], ["1P 3M 4A 5P 7m", "lydian dominant pentatonic"], ["1P 3m 4P 5P 7M", "minor #7M pentatonic"], ["1P 3m 4d 5d 7m", "super locrian pentatonic"], // 6-note scales
   ["1P 2M 3m 4P 5P 7M", "minor hexatonic"], ["1P 2A 3M 5P 5A 7M", "augmented"], ["1P 2M 3m 3M 5P 6M", "major blues"], ["1P 2M 4P 5P 6M 7m", "piongio"], ["1P 2m 3M 4A 6M 7m", "prometheus neopolitan"], ["1P 2M 3M 4A 6M 7m", "prometheus"], ["1P 2m 3M 5d 6m 7m", "mystery #1"], ["1P 2m 3M 4P 5A 6M", "six tone symmetric"], ["1P 2M 3M 4A 5A 7m", "whole tone", "messiaen's mode #1"], ["1P 2m 4P 4A 5P 7M", "messiaen's mode #5"], ["1P 3m 4P 5d 5P 7m", "minor blues", "blues"], // 7-note scales
-  ["1P 2M 3M 4P 5d 6m 7m", "locrian major", "arabian"], ["1P 2m 3M 4A 5P 6m 7M", "double harmonic lydian"], ["1P 2M 3m 4P 5P 6m 7M", "harmonic minor"], ["1P 2m 3m 4d 5d 6m 7m", "altered", "super locrian", "diminished whole tone", "pomeroy"], ["1P 2M 3m 4P 5d 6m 7m", "locrian #2", "half-diminished", "aeolian b5"], ["1P 2M 3M 4P 5P 6m 7m", "mixolydian b6", "melodic minor fifth mode", "hindu"], ["1P 2M 3M 4A 5P 6M 7m", "lydian dominant", "lydian b7", "overtone"], ["1P 2M 3M 4A 5P 6M 7M", "lydian"], ["1P 2M 3M 4A 5A 6M 7M", "lydian augmented"], ["1P 2m 3m 4P 5P 6M 7m", "dorian b2", "phrygian #6", "melodic minor second mode"], ["1P 2M 3m 4P 5P 6M 7M", "melodic minor"], ["1P 2m 3m 4P 5d 6m 7m", "locrian"], ["1P 2m 3m 4d 5d 6m 7d", "ultralocrian", "superlocrian bb7", "·superlocrian diminished"], ["1P 2m 3m 4P 5d 6M 7m", "locrian 6", "locrian natural 6", "locrian sharp 6"], ["1P 2A 3M 4P 5P 5A 7M", "augmented heptatonic"], ["1P 2M 3m 5d 5P 6M 7m", "romanian minor"], ["1P 2M 3m 4A 5P 6M 7m", "dorian #4"], ["1P 2M 3m 4A 5P 6M 7M", "lydian diminished"], ["1P 2m 3m 4P 5P 6m 7m", "phrygian"], ["1P 2M 3M 4A 5A 7m 7M", "leading whole tone"], ["1P 2M 3M 4A 5P 6m 7m", "lydian minor"], ["1P 2m 3M 4P 5P 6m 7m", "phrygian dominant", "spanish", "phrygian major"], ["1P 2m 3m 4P 5P 6m 7M", "balinese"], ["1P 2m 3m 4P 5P 6M 7M", "neopolitan major"], ["1P 2M 3m 4P 5P 6m 7m", "aeolian", "minor"], ["1P 2M 3M 4P 5P 6m 7M", "harmonic major"], ["1P 2m 3M 4P 5P 6m 7M", "double harmonic major", "gypsy"], ["1P 2M 3m 4P 5P 6M 7m", "dorian"], ["1P 2M 3m 4A 5P 6m 7M", "hungarian minor"], ["1P 2A 3M 4A 5P 6M 7m", "hungarian major"], ["1P 2m 3M 4P 5d 6M 7m", "oriental"], ["1P 2m 3m 3M 4A 5P 7m", "flamenco"], ["1P 2m 3m 4A 5P 6m 7M", "todi raga"], ["1P 2M 3M 4P 5P 6M 7m", "mixolydian", "dominant"], ["1P 2m 3M 4P 5d 6m 7M", "persian"], ["1P 2M 3M 4P 5P 6M 7M", "major", "ionian"], ["1P 2m 3M 5d 6m 7m 7M", "enigmatic"], ["1P 2M 3M 4P 5A 6M 7M", "major augmented", "major #5", "ionian augmented", "ionian #5"], ["1P 2A 3M 4A 5P 6M 7M", "lydian #9"], // 8-note scales
+  ["1P 2M 3M 4P 5d 6m 7m", "locrian major", "arabian"], ["1P 2m 3M 4A 5P 6m 7M", "double harmonic lydian"], ["1P 2M 3m 4P 5P 6m 7M", "harmonic minor"], ["1P 2m 2A 3M 4A 6m 7m", "altered", "super locrian", "diminished whole tone", "pomeroy"], ["1P 2M 3m 4P 5d 6m 7m", "locrian #2", "half-diminished", "aeolian b5"], ["1P 2M 3M 4P 5P 6m 7m", "mixolydian b6", "melodic minor fifth mode", "hindu"], ["1P 2M 3M 4A 5P 6M 7m", "lydian dominant", "lydian b7", "overtone"], ["1P 2M 3M 4A 5P 6M 7M", "lydian"], ["1P 2M 3M 4A 5A 6M 7M", "lydian augmented"], ["1P 2m 3m 4P 5P 6M 7m", "dorian b2", "phrygian #6", "melodic minor second mode"], ["1P 2M 3m 4P 5P 6M 7M", "melodic minor"], ["1P 2m 3m 4P 5d 6m 7m", "locrian"], ["1P 2m 3m 4d 5d 6m 7d", "ultralocrian", "superlocrian bb7", "superlocrian diminished"], ["1P 2m 3m 4P 5d 6M 7m", "locrian 6", "locrian natural 6", "locrian sharp 6"], ["1P 2A 3M 4P 5P 5A 7M", "augmented heptatonic"], // Source https://en.wikipedia.org/wiki/Ukrainian_Dorian_scale
+  ["1P 2M 3m 4A 5P 6M 7m", "dorian #4", "ukrainian dorian", "romanian minor", "altered dorian"], ["1P 2M 3m 4A 5P 6M 7M", "lydian diminished"], ["1P 2m 3m 4P 5P 6m 7m", "phrygian"], ["1P 2M 3M 4A 5A 7m 7M", "leading whole tone"], ["1P 2M 3M 4A 5P 6m 7m", "lydian minor"], ["1P 2m 3M 4P 5P 6m 7m", "phrygian dominant", "spanish", "phrygian major"], ["1P 2m 3m 4P 5P 6m 7M", "balinese"], ["1P 2m 3m 4P 5P 6M 7M", "neopolitan major"], ["1P 2M 3m 4P 5P 6m 7m", "aeolian", "minor"], ["1P 2M 3M 4P 5P 6m 7M", "harmonic major"], ["1P 2m 3M 4P 5P 6m 7M", "double harmonic major", "gypsy"], ["1P 2M 3m 4P 5P 6M 7m", "dorian"], ["1P 2M 3m 4A 5P 6m 7M", "hungarian minor"], ["1P 2A 3M 4A 5P 6M 7m", "hungarian major"], ["1P 2m 3M 4P 5d 6M 7m", "oriental"], ["1P 2m 3m 3M 4A 5P 7m", "flamenco"], ["1P 2m 3m 4A 5P 6m 7M", "todi raga"], ["1P 2M 3M 4P 5P 6M 7m", "mixolydian", "dominant"], ["1P 2m 3M 4P 5d 6m 7M", "persian"], ["1P 2M 3M 4P 5P 6M 7M", "major", "ionian"], ["1P 2m 3M 5d 6m 7m 7M", "enigmatic"], ["1P 2M 3M 4P 5A 6M 7M", "major augmented", "major #5", "ionian augmented", "ionian #5"], ["1P 2A 3M 4A 5P 6M 7M", "lydian #9"], // 8-note scales
   ["1P 2m 2M 4P 4A 5P 6m 7M", "messiaen's mode #4"], ["1P 2m 3M 4P 4A 5P 6m 7M", "purvi raga"], ["1P 2m 3m 3M 4P 5P 6m 7m", "spanish heptatonic"], ["1P 2M 3M 4P 5P 6M 7m 7M", "bebop"], ["1P 2M 3m 3M 4P 5P 6M 7m", "bebop minor"], ["1P 2M 3M 4P 5P 5A 6M 7M", "bebop major"], ["1P 2m 3m 4P 5d 5P 6m 7m", "bebop locrian"], ["1P 2M 3m 4P 5P 6m 7m 7M", "minor bebop"], ["1P 2M 3m 4P 5d 6m 6M 7M", "diminished", "whole-half diminished"], ["1P 2M 3M 4P 5d 5P 6M 7M", "ichikosucho"], ["1P 2M 3m 4P 5P 6m 6M 7M", "minor six diminished"], ["1P 2m 3m 3M 4A 5P 6M 7m", "half-whole diminished", "dominant diminished", "messiaen's mode #2"], ["1P 3m 3M 4P 5P 6M 7m 7M", "kafi raga"], ["1P 2M 3M 4P 4A 5A 6A 7M", "messiaen's mode #6"], // 9-note scales
   ["1P 2M 3m 3M 4P 5d 5P 6M 7m", "composite blues"], ["1P 2M 3m 3M 4A 5P 6m 7m 7M", "messiaen's mode #3"], // 10-note scales
   ["1P 2m 2M 3m 4P 4A 5P 6m 6M 7M", "messiaen's mode #7"], // 12-note scales
   ["1P 2m 2M 3m 3M 4P 5d 5P 6m 6M 7m 7M", "chromatic"]];
-  ({ ...EmptyPcset,
+  const NoScaleType = { ...EmptyPcset,
     intervals: [],
     aliases: []
-  });
+  };
   let dictionary = [];
   let index$4 = {};
+  /**
+   * Given a scale name or chroma, return the scale properties
+   *
+   * @param {string} type - scale name or pitch class set chroma
+   * @example
+   * import { get } from 'tonaljs/scale-type'
+   * get('major') // => { name: 'major', ... }
+   */
+
+
+  function get$2(type) {
+    return index$4[type] || NoScaleType;
+  }
   /**
    * Return a list of all scale types
    */
@@ -13885,7 +13893,7 @@
 
 
   function add(intervals, name, aliases = []) {
-    const scale = { ...get$3(intervals),
+    const scale = { ...get$4(intervals),
       name,
       intervals,
       aliases
@@ -13991,7 +13999,7 @@
 
 
   function getChord(typeName, optionalTonic, optionalRoot) {
-    const type = get$2(typeName);
+    const type = get$3(typeName);
     const tonic = note(optionalTonic || "");
     const root = note(optionalRoot || "");
 
@@ -14156,7 +14164,7 @@
     const [modeNum, setNum, alt, name, triad, seventh, alias] = mode;
     const aliases = alias ? [alias] : [];
     const chroma = Number(setNum).toString(2);
-    const intervals = chromaToIntervals(chroma);
+    const intervals = get$2(name).intervals;
     return {
       empty: false,
       intervals,
@@ -15229,7 +15237,7 @@
    */
 
   function reverseString(s) {
-    return s.split('').reverse().join('');
+    return [...s].reverse().join('');
   }
   /**
    * Given some notes and a target note, finds
@@ -16739,7 +16747,7 @@
   /**
    * Given two activation maps, simply counts the number of bins [pitch, time]
    * where both have a 1, so an acitve note
-   * Gtmust be longer than rec
+   * GT must be longer than rec
    *
    * @todo also count common 0s?
    * @param {Map} gtActivations see activationMap()
@@ -18231,4 +18239,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
