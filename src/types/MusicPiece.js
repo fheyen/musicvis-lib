@@ -246,6 +246,7 @@ class MusicPiece {
                 t.noteObjs,
                 index,
                 t.tuning,
+                t.measureIndices,
             ));
         return new MusicPiece(
             name,
@@ -279,7 +280,13 @@ class MusicPiece {
                     ? GuitarNote.from(note)
                     : Note.from(note);
             });
-            return new Track(track.name, track.instrument, notes, track.tuningPitches);
+            return new Track(
+                track.name,
+                track.instrument,
+                notes,
+                track.tuningPitches,
+                track.measureIndices,
+            );
         });
         return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
@@ -372,6 +379,7 @@ class MusicPiece {
                 track.instrument,
                 na.getNotes(),
                 tuning,
+                track.measureIndices,
             );
         });
         return new MusicPiece(
@@ -398,10 +406,11 @@ export class Track {
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
-     * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
+     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's tuning
+     * @param {number[]} [measureIndices=null] note indices where new measures start
      * @throws {'Notes are undefined or not an array'} for invalid notes
      */
-    constructor(name, instrument, notes, tuningPitches = null) {
+    constructor(name, instrument, notes, tuningPitches = null, measureIndices = null) {
         name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
         this.name = name;
         this.instrument = instrument;
@@ -410,6 +419,7 @@ export class Track {
         }
         this.notes = notes.sort((a, b) => a.start - b.start);
         this.tuningPitches = tuningPitches;
+        this.measureIndices = measureIndices;
         // Computed properties
         this.duration = new NoteArray(notes).getDuration();
         this.hasStringFret = false;

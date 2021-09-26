@@ -143,7 +143,7 @@ export function activationMap(allNotes, binSize = 100) {
 /**
  * Given two activation maps, simply counts the number of bins [pitch, time]
  * where both have a 1, so an acitve note
- * Gtmust be longer than rec
+ * GT must be longer than rec
  *
  * @todo also count common 0s?
  * @param {Map} gtActivations see activationMap()
