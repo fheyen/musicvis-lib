@@ -1,11 +1,11 @@
-// musicvis-lib v0.51.3 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.51.4 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.51.3";
+  var version="0.51.4";
 
   /**
    * Lookup for many MIDI specifications.
@@ -11382,16 +11382,17 @@
      * @param {Note[]} notes parsed MusicXML track's notes
      * @param {number} channel channel
      * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
+     * @param {number[]} [measureIndices=null] note indices where new measures start
      * @returns {Track} new Track
      */
 
 
-    static fromMusicXml(name, instrument, notes, channel, tuningPitches = null) {
+    static fromMusicXml(name, instrument, notes, channel, tuningPitches = null, measureIndices = null) {
       for (const n of notes) {
         n.channel = channel;
       }
 
-      return new Track(name, instrument, notes, tuningPitches);
+      return new Track(name, instrument, notes, tuningPitches, measureIndices);
     }
 
   }
