@@ -1,5 +1,6 @@
 /**
  * @module graphics/Canvas
+ * @todo combine multiple canvases into one, by drawing over common background
  * @todo save canvas as file https://www.digitalocean.com/community/tutorials/js-canvas-toblob
  */
 
@@ -263,9 +264,10 @@ export function drawCornerLine(context, x1, y1, x2, y2, xFirst = true) {
 }
 
 /**
- * Draws a rounded version of drawCornerLine()
+ * Draws a rounded version of drawCornerLine().
+ * Only works for dendrograms drawn from top-dowm, use
+ * drawRoundedCornerLineRightLeft for right-to-left dendrograms.
  *
- * @todo only works for dendrograms drawn from top-dowm
  * @param {CanvasRenderingContext2D} context canvas rendering context
  * @param {number} x1 x coordinate of start
  * @param {number} y1 y coordinate of start
@@ -291,7 +293,42 @@ export function drawRoundedCornerLine(context, x1, y1, x2, y2, maxRadius = 25) {
 }
 
 /**
- * Draws a hexagon
+ * Draws a rounded version of drawRoundedCornerLine for right-to-left
+ * dendrograms.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of start
+ * @param {number} y1 y coordinate of start
+ * @param {number} x2 x coordinate of end
+ * @param {number} y2 y coordinate of end
+ * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
+ */
+export function drawRoundedCornerLineRightLeft(
+    context,
+    x1,
+    y1,
+    x2,
+    y2,
+    maxRadius = 25,
+) {
+    const xDist = Math.abs(x2 - x1);
+    const yDist = Math.abs(y2 - y1);
+    const radius = Math.min(xDist, yDist, maxRadius);
+    const cx = x1 < x2 ? x1 + radius : x1 - radius;
+    const cy = y1 < y2 ? y2 - radius : y2 + radius;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    if (y1 < y2) {
+        context.arc(cx, cy, radius, 0, 0.5 * Math.PI);
+    } else {
+        context.arc(cx, cy, radius, 0, 1.5 * Math.PI, true);
+    }
+    context.lineTo(x2, y2);
+    context.stroke();
+}
+
+/**
+ * Draws a hexagon, call context.fill() or context.stroke() afterwards.
  *
  * @param {CanvasRenderingContext2D} context canvas rendering context
  * @param {number} cx center x
@@ -312,4 +349,102 @@ export function drawHexagon(context, cx, cy, radius) {
         }
     }
     context.closePath();
+}
+
+/**
+ * Draws a Bezier curve to connect to points in X direction.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of the first point
+ * @param {number} y1 y coordinate of the first point
+ * @param {number} x2 x coordinate of the second point
+ * @param {number} y2 y coordinate of the second point
+ */
+export function drawBezierConnectorX(context, x1, y1, x2, y2) {
+    const deltaX = (x2 - x1) / 2;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.bezierCurveTo(x1 + deltaX, y1, x1 + deltaX, y2, x2, y2);
+    context.stroke();
+}
+
+/**
+ * Draws a Bezier curve to connect to points in Y direction.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of the first point
+ * @param {number} y1 y coordinate of the first point
+ * @param {number} x2 x coordinate of the second point
+ * @param {number} y2 y coordinate of the second point
+ */
+export function drawBezierConnectorY(context, x1, y1, x2, y2) {
+    const deltaY = (y2 - y1) / 2;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.bezierCurveTo(x1, y1 + deltaY, x2, y1 + deltaY, x2, y2);
+    context.stroke();
+}
+
+/**
+ * Draws a rounded corner, requires x and y distances between points to be
+ * equal.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of the first point
+ * @param {number} y1 y coordinate of the first point
+ * @param {number} x2 x coordinate of the second point
+ * @param {number} y2 y coordinate of the second point
+ * @param {boolean} turnLeft true for left turn, false for right turn
+ * @param {number} roundness corner roundness between 0 (sharp) and 1 (round)
+ */
+export function drawRoundedCorner(context, x1, y1, x2, y2, turnLeft = true, roundness = 1) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+    if (x1 === x2 || y1 === y2) {
+        context.lineTo(x2, y2);
+        context.stroke();
+        return;
+    }
+    const radius = Math.abs(x2 - x1) * roundness;
+    let cx;
+    let cy;
+    if (turnLeft) {
+        if (x1 < x2 && y1 < y2) {
+            cx = x1 + radius;
+            cy = y2 - radius;
+            context.arc(cx, cy, radius, 1 * Math.PI, 0.5 * Math.PI, true);
+        } else if (x1 > x2 && y1 < y2) {
+            cx = x2 + radius;
+            cy = y1 + radius;
+            context.arc(cx, cy, radius, 1.5 * Math.PI, 1 * Math.PI, true);
+        } else if (x1 > x2 && y1 > y2) {
+            cx = x1 - radius;
+            cy = y2 + radius;
+            context.arc(cx, cy, radius, 0, 1.5 * Math.PI, true);
+        } else {
+            cx = x2 - radius;
+            cy = y1 - radius;
+            context.arc(cx, cy, radius, 0.5 * Math.PI, 0, true);
+        }
+    } else {
+        if (x1 < x2 && y1 < y2) {
+            cx = x2 - radius;
+            cy = y1 + radius;
+            context.arc(cx, cy, radius, 1.5 * Math.PI, 0);
+        } else if (x1 > x2 && y1 < y2) {
+            cx = x1 - radius;
+            cy = y2 - radius;
+            context.arc(cx, cy, radius, 0, 0.5 * Math.PI);
+        } else if (x1 > x2 && y1 > y2) {
+            cx = x2 + radius;
+            cy = y1 - radius;
+            context.arc(cx, cy, radius, 0.5 * Math.PI, 1 * Math.PI, false);
+        } else {
+            cx = x1 + radius;
+            cy = y2 + radius;
+            context.arc(cx, cy, radius, Math.PI, 1.5 * Math.PI, false);
+        }
+    }
+    context.lineTo(x2, y2);
+    context.stroke();
 }

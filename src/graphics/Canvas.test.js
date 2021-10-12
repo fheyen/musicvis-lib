@@ -69,8 +69,39 @@ describe('Canvas', () => {
         expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 10, 200)).not.toThrow();
         expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 0, 0)).not.toThrow();
     });
+    test('drawRoundedCornerLineRightLeft', () => {
+        expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 100, 200)).not.toThrow();
+        expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 100, 200, 10)).not.toThrow();
+        expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 10, 200)).not.toThrow();
+        expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 0, 0)).not.toThrow();
+    });
 
     test('draw hexagon', () => {
         expect(() => Canv.drawHexagon(ctx, 50, 50, 10)).not.toThrow();
+    });
+
+    test('draw bezier x', () => {
+        expect(() => Canv.drawBezierConnectorX(ctx, 50, 50, 60, 60)).not.toThrow();
+        expect(() => Canv.drawBezierConnectorX(ctx, 60, 60, 50, 50)).not.toThrow();
+    });
+    test('draw bezier y', () => {
+        expect(() => Canv.drawBezierConnectorY(ctx, 50, 50, 60, 60)).not.toThrow();
+        expect(() => Canv.drawBezierConnectorY(ctx, 60, 60, 50, 50)).not.toThrow();
+    });
+
+    test('drawRoundedCorner', () => {
+        for (const x1 of [-10, 0, 10]) {
+            for (const x2 of [-10, 0, 10]) {
+                for (const y1 of [-10, 0, 10]) {
+                    for (const y2 of [-10, 0, 10]) {
+                        for (const turnLeft of [-10, 0, 10]) {
+                            for (const roundness of [0, 0.1, 0.5, 1]) {
+                                expect(() => Canv.drawRoundedCorner(ctx, x1, y1, x2, y2, turnLeft, roundness)).not.toThrow();
+                            }
+                        }
+                    }
+                }
+            }
+        }
     });
 });
