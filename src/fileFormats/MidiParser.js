@@ -6,6 +6,8 @@ import { roundToNDecimals } from '../utils/MathUtils.js';
 /**
  * @module fileFormats/MidiParser
  * @todo parse pitch bends
+ * @todo after tempo changes notes and measure time do not align,
+ *       see "[Test] Tempo change.mid"
  */
 
 
@@ -24,7 +26,6 @@ const ROUNDING_PRECISION = 5;
  */
 export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log = false) {
     if (data === null || data === undefined) {
-        // console.warn('[MidiParser] MIDI data is null');
         return;
     }
     if (!data.track) {
@@ -37,8 +38,6 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
     // Parse notes
     let parsedTracks = [];
     const { tempoChanges, beatTypeChanges, keySignatureChanges } = getSignatureChanges(data.track);
-    // for (let index = 0; index < data.track.length; index++) {
-    //     const track = data.track[index];
     for (const track of data.track) {
         const t = parseMidiTrack(
             track,
@@ -59,6 +58,11 @@ export function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log 
     // Generate measure lines from tempo and beat type changes
     const totalTime = max(parsedTracks, d => d?.totalTime ?? 0);
     const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime);
+    // Get measure indices, the note's index where a new measure starts, for each track
+    for (const track of parsedTracks) {
+        track.measureIndices = getMeasureIndices(track.noteObjs, measureLinePositions);
+    }
+    // Resulting track
     const result = {
         tracks: parsedTracks,
         totalTime,
@@ -196,10 +200,8 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
             instrument,
             instrumentName: instrumentName ?? 'Unknown instrument',
         };
-        // console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
         return parsedTrack;
     } else {
-        // console.log('Empty track');
         return null;
     }
 }
@@ -288,11 +290,24 @@ function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
 }
 
 /**
- * @todo NYI
+ * For the notes of one track, computes the notes' indices where new measures
+ * start.
+ *
+ * @param {Note[]} notes notes of a track
+ * @param {numer[]} measureTimes times in seconds where new measures start
+ * @returns {number[]} measure indices
  */
-// function getMeasureIndices() {
-
-// }
+function getMeasureIndices(notes, measureTimes) {
+    const measureIndices = [];
+    const todo = [...measureTimes];
+    for (const [index, note] of notes.entries()) {
+        if (note.start >= todo[0]) {
+            todo.shift();
+            measureIndices.push(index);
+        }
+    }
+    return measureIndices;
+}
 
 /**
  * Split MIDI format 0 data into tracks instead of having channels,

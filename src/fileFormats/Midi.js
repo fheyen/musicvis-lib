@@ -164,6 +164,27 @@ export const NOTE_NAMES = [
 ];
 
 /**
+ * Names of notes, indexed like MIDI numbers, i.e. C is 0, with flats instead of
+ * sharps.
+ *
+ * @type {string[]}
+ */
+export const NOTE_NAMES_FLAT = [
+    'C',
+    'Db',
+    'D',
+    'Eb',
+    'E',
+    'F',
+    'Gb',
+    'G',
+    'Ab',
+    'A',
+    'Bb',
+    'B',
+];
+
+/**
  * Index equals MIDI note number
  *
  * @type {Array<MidiNote>}

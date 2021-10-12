@@ -261,15 +261,25 @@ describe('MidiFileParser', () => {
     });
 
     // TODO: more tests
-    test('measure times', () => {
-        const midi = readMidiFile('[Test] Tempo Change.mid');
-        const parsed = preprocessMidiFileData(midi);
-        expect(parsed.measureLinePositions).toStrictEqual([
-            2,
-            3.5,
-            4.7,
-            5.7,
-        ]);
+    describe('measure times and indices', () => {
+        test('times', () => {
+            const midi = readMidiFile('[Test] Tempo Change.mid');
+            const parsed = preprocessMidiFileData(midi);
+            expect(parsed.measureLinePositions).toStrictEqual([
+                2,
+                3.5,
+                4.7,
+                5.7,
+            ]);
+        });
+
+        test('indices', () => {
+            const midi = readMidiFile('[Test] 3-4 meter.mid');
+            const parsed = preprocessMidiFileData(midi);
+            expect(parsed.tracks[0].measureIndices).toStrictEqual([
+                3, 6
+            ]);
+        });
     });
 
     // Worked
