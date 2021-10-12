@@ -1,4 +1,4 @@
-import { randomInt } from 'd3';
+import * as d3 from 'd3';
 
 /**
  * @module utils/MathUtils
@@ -22,7 +22,7 @@ export function randFloat(min = 0, max = 1) {
  * @returns {any} random element from the array
  */
 export function choose(array) {
-    const index = randomInt(0, array.length)();
+    const index = d3.randomInt(0, array.length)();
     return array[index];
 }
 

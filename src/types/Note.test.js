@@ -4,6 +4,17 @@ import Note from './Note.js';
 const note1 = new Note(0, 0.0, 127, 0, 3.0);
 
 describe('Note', () => {
+    // describe('duration', () => {
+    //     test('note without start', () => {
+    //         const newNote = new Note(0, 0, 0, 0);
+    //         expect(newNote.duration).toBe(0);
+    //     });
+    //     test('note witout start', () => {
+    //         const newNote = new Note(0, 0, 0, 0, 1);
+    //         expect(newNote.duration).toBe(1);
+    //     });
+    // });
+
     test('note is equal to itself', () => {
         expect(note1.equals(note1)).toBe(true);
     });

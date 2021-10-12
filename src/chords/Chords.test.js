@@ -103,6 +103,15 @@ describe('Chords', () => {
         });
     });
 
+    // TODO: test more thouroughfully
+    describe('detectChordsByExactStart', () => {
+        expect(Chords.detectChordsBySimilarStart(
+            [{ start: 0 }, { start: 0.5 }, { start: 1 }, { start: 1.5 }, { start: 2 }],
+            1
+        )).toStrictEqual([
+            [{ start: 0, },], [{ start: 1.5, },],]);
+    });
+
     describe('detectChordsByOverlap', () => {
         test('no note', () => {
             expect(Chords.detectChordsByOverlap()).toStrictEqual([]);

@@ -11,7 +11,7 @@ import Note from '../types/Note.js'; /* eslint-disable-line no-unused-vars */
 /**
  * Detects chords as those notes that have the exact same start time, only works
  * for ground truth (since recordings are not exact)
- * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
+ * Does only work if ground truth is aligned! TuxGuitar produces unaligned MIDI.
  *
  * @param {Note[]} notes notes
  * @returns {Note[][]} array of chord arrays
@@ -24,6 +24,44 @@ export function detectChordsByExactStart(notes) {
         .sort((a, b) => a[0].start - b[0].start)
         // Sort notes in each chord by pitch
         .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
+    return chords;
+}
+
+/**
+ * Detects chords by taking a note as new chord then adding all notes close
+ * after it to the chord, until the next note is farther away than the given
+ * `threshold`. Then, the next chord is started with this note.
+ *
+ * @param {Note[]} notes notes
+ * @param {number} threshold threshold
+ * @returns {Note[][]} chords
+ */
+export function detectChordsBySimilarStart(notes, threshold = 0.02) {
+    const chords = [];
+    let currentChord = [];
+    let currentChordStartTime = 0;
+    let currentChordPitches = new Set();
+    for (const note of notes) {
+        // Note belongs to current chord
+        if (note.start - currentChordStartTime <= threshold) {
+            // Do not allow the same note twice in a chord
+            if (!currentChordPitches.has(note.pitch)) {
+                currentChord.push(note);
+                currentChordPitches.add(note.pitch);
+            }
+        } else {
+            // Start new chord
+            if (currentChord.length > 0) {
+                chords.push(currentChord);
+            }
+            currentChord = [note];
+            currentChordStartTime = note.start;
+            currentChordPitches = new Set([note.pitch]);
+        }
+    }
+    if (currentChord.length > 0) {
+        chords.push(currentChord);
+    }
     return chords;
 }
 

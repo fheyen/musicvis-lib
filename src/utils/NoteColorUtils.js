@@ -1,4 +1,4 @@
-import { hsl, interpolateRgb } from 'd3';
+import * as d3 from 'd3';
 
 /**
  * @module utils/NoteColorUtils
@@ -28,7 +28,7 @@ const noteColormap = [
     '#ff00fd',
 ].map(d => {
     // Make colors less saturated
-    const c = hsl(d);
+    const c = d3.hsl(d);
     c.s = 0.5;
     return c.toString();
 });
@@ -69,7 +69,7 @@ const noteColormapAccessible = [
     '#0000cc',
 ];
 
-const colorInterpolator = interpolateRgb('black', 'steelblue');
+const colorInterpolator = d3.interpolateRgb('black', 'steelblue');
 /**
  * Gradient color map from black to steelblue
  *
@@ -88,11 +88,11 @@ const noteColormapGradientArray = Array.from({ length: 12 })
  */
 export function noteColorFromPitch(pitch, colormap = 'default') {
     switch (colormap) {
-    case 'accessible':
-        return noteColormapAccessible[pitch % 12];
-    case 'gradient':
-        return noteColormapGradientArray[pitch % 12];
-    default:
-        return noteColormap[pitch % 12];
+        case 'accessible':
+            return noteColormapAccessible[pitch % 12];
+        case 'gradient':
+            return noteColormapGradientArray[pitch % 12];
+        default:
+            return noteColormap[pitch % 12];
     }
 }

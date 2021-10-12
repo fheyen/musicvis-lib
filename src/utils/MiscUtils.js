@@ -1,4 +1,4 @@
-import { group } from 'd3';
+import * as d3 from 'd3';
 
 /**
  * @module utils/MiscUtils
@@ -41,7 +41,7 @@ export function groupNotesByPitch(tracks) {
     if (allNotes.length === 0) {
         return new Map();
     }
-    return group(allNotes, d => d.pitch);
+    return d3.group(allNotes, d => d.pitch);
 }
 
 /**

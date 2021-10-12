@@ -35,6 +35,9 @@ class Note {
         this.velocity = velocity;
         this.channel = channel;
         this.end = end;
+        // TODO: breaks tests
+        // const duration = end - start;
+        // this.duration = Number.isNaN(duration) ? null : duration;
     }
 
     /**

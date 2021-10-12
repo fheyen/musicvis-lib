@@ -27,7 +27,7 @@ class MusicPiece {
      */
     constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
         if (!tracks || tracks.length === 0) {
-            throw new Error('No or invalid tracks given');
+            throw new Error('No or invalid tracks given! Use .fromMidi or .fromMusicXml?');
         }
         this.name = name;
         this.measureTimes = measureTimes;
@@ -104,6 +104,7 @@ class MusicPiece {
             t.instrumentName,
             t.noteObjs,
             index,
+            t.measureIndices,
         ));
         return new MusicPiece(
             name,
@@ -355,6 +356,7 @@ class MusicPiece {
      * (semitone) steps.
      * Will return a new MusicPiece instance.
      * Note pitches will be clipped to [0, 127].
+     * Will not change playing instructions such as string and fret.
      *
      * @param {number} steps number of semitones to transpose (can be negative)
      * @param {'all'|number|number[]} tracks tracks to transpose
@@ -443,10 +445,11 @@ export class Track {
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes parsed MusicXML track's notes
+     * @param {number[]} [measureIndices=null] note indices where new measures start
      * @returns {Track} new Track
      */
-    static fromMidi(name, instrument, notes) {
-        return new Track(name, instrument, notes);
+    static fromMidi(name, instrument, notes, measureIndices) {
+        return new Track(name, instrument, notes, null, measureIndices);
     }
 
     /**

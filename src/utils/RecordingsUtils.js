@@ -1,4 +1,4 @@
-import { scaleLinear, extent, group, max } from 'd3';
+import * as d3 from 'd3';
 import Note from '../types/Note.js';
 import { bpmToSecondsPerBeat } from './MusicUtils.js';
 import { kernelDensityEstimator, kernelEpanechnikov } from './StatisticsUtils.js';
@@ -50,7 +50,7 @@ export function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
     // Speed up by getting range only once for all tracks
     const pitchRanges = new Map();
     for (const [index, part] of groundTruth.entries()) {
-        const pitchExtent = extent(part, d => d.pitch);
+        const pitchExtent = d3.extent(part, d => d.pitch);
         pitchRanges.set(index, pitchExtent);
     }
     return recordings.map(recording => {
@@ -91,8 +91,8 @@ export function clipRecordingsPitchesToGtFretboardRange(recordings, groundTruth,
         // Speed up by getting range only once for all tracks
         const positionRanges = new Map();
         for (const [index, part] of groundTruth.entries()) {
-            const stringExtent = extent(part, d => d.string);
-            const fretExtent = extent(part, d => d.fret);
+            const stringExtent = d3.extent(part, d => d.string);
+            const fretExtent = d3.extent(part, d => d.fret);
             positionRanges.set(index, { stringExtent, fretExtent });
         }
         return recordings.map(recording => {
@@ -148,9 +148,9 @@ export function alignNotesToBpm(notes, bpm, timeDivision = 16) {
 export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pitch') {
     let groupedByAttribute;
     if (attribute === 'pitch') {
-        groupedByAttribute = group(recNotes, d => d.pitch);
+        groupedByAttribute = d3.group(recNotes, d => d.pitch);
     } else if (attribute === 'channel') {
-        groupedByAttribute = group(recNotes, d => d.channel);
+        groupedByAttribute = d3.group(recNotes, d => d.channel);
     } else {
         console.warn(`Invalid attribute parameter '${attribute}'`);
     }
@@ -158,7 +158,7 @@ export function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pi
     const heatmapByAttribute = new Map();
     for (const [attribute_, notes] of groupedByAttribute.entries()) {
         // Calculate heatmap
-        const maxTime = max(notes, d => d.end);
+        const maxTime = d3.max(notes, d => d.end);
         const nBins = Math.ceil((maxTime * 1000) / binSize) + 1;
         const heatmap = Array.from({ length: nBins }).fill(0);
         for (const note of notes) {
@@ -230,15 +230,15 @@ export function averageRecordings(heatmapByPitch, binSize, threshold = 0.8) {
  * @returns {Note[]} new notes
  */
 export function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, threshold) {
-    const groupedByPitch = group(recNotes, d => d.pitch);
+    const groupedByPitch = d3.group(recNotes, d => d.pitch);
     const newNotes = [];
     for (const [pitch, notes] of groupedByPitch.entries()) {
         const starts = notes.map(d => d.start);
         const ends = notes.map(d => d.end);
         // Create KDE
-        const duration = max(ends);
+        const duration = d3.max(ends);
         const ticks = Math.ceil(ticksPerSecond * duration);
-        const x = scaleLinear()
+        const x = d3.scaleLinear()
             .domain([0, duration])
             .range([0, duration]);
         const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), x.ticks(ticks));
@@ -370,7 +370,7 @@ export function differenceMapErrorAreas(differenceMap) {
     }
 
     // Normalize
-    const maxLength = max([...differenceMap], d => d[1].length);
+    const maxLength = d3.max([...differenceMap], d => d[1].length);
     const totalArea = differenceMap.size * maxLength;
 
     return {
