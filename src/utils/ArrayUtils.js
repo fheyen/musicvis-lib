@@ -2,7 +2,7 @@
  * @module utils/ArrayUtils
  */
 
-import { intersection, union } from 'd3';
+import * as d3 from 'd3';
 
 /**
  * Shallow compares two arrays
@@ -22,8 +22,6 @@ export function arrayShallowEquals(a, b) {
     }
     return true;
 }
-
-// TODO: use https://github.com/d3/d3-array/blob/master/README.md#intersection etc
 
 /**
  * Checks if two arrays contain the same elements,
@@ -67,14 +65,15 @@ export function jaccardIndex(set1, set2) {
     if (set1.length === 0 && set2.length === 0) {
         return 1;
     }
-    return intersection(set1, set2).size / union(set1, set2).size;
+    return d3.intersection(set1, set2).size / d3.union(set1, set2).size;
 }
 
 /**
  * Kendall Tau distance
  *
  * @see https://en.wikipedia.org/wiki/Kendall_tau_distance
- * @todo naive implementation, can be sped up with hints on Wikipedia, see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
+ * @todo naive implementation, can be sped up with hints on Wikipedia,
+ *    see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
  * @param {number[]} ranking1 a ranking, i.e. for each entry the rank
  * @param {number[]} ranking2 a ranking, i.e. for each entry the rank
  * @param {boolean} [normalize=true] normalize to [0, 1]?
@@ -156,6 +155,37 @@ export function getMatrixMax(matrix) {
 }
 
 /**
+ * Normalizes by dividing all entries by the maximum.
+ * Only for positive values!
+ *
+ * @param {Array} array nD array with arbitrary depth and structure
+ * @returns {Array} normalized array
+ */
+export function normalizeNdArray(array) {
+    const max = d3.max(array.flat(Number.POSITIVE_INFINITY));
+    const normalize = (array_, maxValue) =>
+        array_.map((d) => {
+            return d.length !== undefined ? normalize(d, maxValue) : d / maxValue;
+        });
+    return normalize(array, max);
+}
+
+
+/**
+ * Assumes same shape of matrices.
+ *
+ * @param {number[][]} matrixA a matrix
+ * @param {number[][]} matrixB a matrix
+ * @returns {number} Euclidean distance of the two matrices
+ */
+export function euclideanDistance(matrixA, matrixB) {
+    const valuesA = matrixA.flat();
+    const valuesB = matrixB.flat();
+    const diffs = valuesA.map((d, i) => d - valuesB[i]);
+    return Math.hypot(...diffs);
+}
+
+/**
  * Stringifies a 2D array / matrix for logging onto the console.
  *
  * @param {any[][]} matrix the matrix
@@ -182,7 +212,6 @@ export function formatMatrix(matrix, colSeparator = ', ', rowSeparator = '\n', f
  * @returns {*} value in array closest to value
  */
 export function binarySearch(array, value, accessor = d => d) {
-    // console.log('search', array, 'for', value);
     // Handle short arrays
     if (array.length <= 3) {
         let closest = null;

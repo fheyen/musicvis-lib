@@ -2,7 +2,7 @@
 /* eslint-disable comma-dangle */
 import fs from 'fs';
 import path from 'path';
-import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece } from './MusicUtils.js';
+import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece, midiToFrequency } from './MusicUtils.js';
 import Note from '../types/Note.js';
 import MusicPiece from '../types/MusicPiece.js';
 import { readXmlFile } from '../../test/testTools/readTestAssetFiles.js';
@@ -46,6 +46,14 @@ describe('MusicUtils', () => {
 
         test('approx. E7', () => {
             expect(Math.round(freqToApproxMidiNr(2638))).toBe(100);
+        });
+    });
+
+
+    describe('midiToFrequency', () => {
+        test('cases from freqToApproxMidi', () => {
+            expect(midiToFrequency(69)).toBe(440);
+            expect(freqToApproxMidiNr(880)).toBe(81);
         });
     });
 

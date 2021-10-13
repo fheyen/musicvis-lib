@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch, kendallTau } from './ArrayUtils.js';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance } from './ArrayUtils.js';
 
 describe('ArrayUtils', () => {
 
@@ -244,6 +244,59 @@ describe('ArrayUtils', () => {
             expect(getMatrixMax(matrix)).toBe(7);
         });
     });
+
+
+    describe('normalizeNdArray', () => {
+        test('empty', () => {
+            expect(normalizeNdArray([])).toStrictEqual([]);
+            expect(normalizeNdArray([[], []])).toStrictEqual([[], []]);
+        });
+        test('simple', () => {
+            expect(normalizeNdArray([1, 2, 4])).toStrictEqual([0.25, 0.5, 1]);
+        });
+        test('rectangular', () => {
+            expect(normalizeNdArray([
+                [1, 2, 4],
+                [1, 2, 4],
+                [1, 2, 4],
+            ])).toStrictEqual([
+                [0.25, 0.5, 1],
+                [0.25, 0.5, 1],
+                [0.25, 0.5, 1],
+            ]);
+        });
+        test('irregular', () => {
+            expect(normalizeNdArray([
+                [1, 2, 4],
+                [1, 2],
+                [1],
+            ])).toStrictEqual([
+                [0.25, 0.5, 1],
+                [0.25, 0.5],
+                [0.25],
+            ]);
+        });
+    });
+
+
+    describe('euclideanDistance', () => {
+        test('empty', () => {
+            expect(euclideanDistance([], [])).toBe(0);
+        });
+        test('vector', () => {
+            expect(euclideanDistance([0, 1], [1, 0])).toBe(Math.sqrt(2));
+        });
+        test('matrix', () => {
+            const matrix = [
+                [1, 2, 3],
+                [1, 2, 3],
+                [1, 2, 3],
+            ];
+            expect(euclideanDistance(matrix, matrix)).toBe(0);
+        });
+    });
+
+
 
     describe('printMatrix', () => {
         test('empty', () => {

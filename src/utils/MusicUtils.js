@@ -28,6 +28,17 @@ export function freqToApproxMidiNr(frequency) {
 }
 
 /**
+ * Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to its
+ * frequency.
+ *
+ * @param {number} midi MIDI note number
+ * @returns {number} frequency in Hz
+ */
+export function midiToFrequency(midi) {
+    return 2 ** ((midi - 69) / 12) * 440;
+}
+
+/**
  * Turns a chord into an integer that uniquely describes the occuring chroma.
  * If the same chroma occurs twice this will not make a difference
  * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
