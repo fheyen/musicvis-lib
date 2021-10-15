@@ -11,7 +11,7 @@ export function getVersion() {
 // Types
 export { default as Note } from './types/Note.js';
 export { default as GuitarNote } from './types/GuitarNote.js';
-
+export { default as HarmonicaNote } from './types/HarmonicaNote.js';
 export { default as NoteArray } from './types/NoteArray.js';
 export { default as Recording } from './types/Recording.js';
 export { default as MusicPiece } from './types/MusicPiece.js';

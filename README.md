@@ -31,6 +31,8 @@ Or download [dist/musicvislib.js](https://raw.githubusercontent.com/fheyen/music
 
 ## Documentation
 
+See [Observable](https://observablehq.com/collection/@fheyen/musicvis-lib) for examples.
+
 [See here](https://fheyen.github.io/musicvis-lib/) for the full documentation.
 
 ## How to use

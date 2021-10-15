@@ -18,7 +18,8 @@ const outputConfig = {
 const babelConfig = {
     babelHelpers: 'bundled',
     plugins: [
-        ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+        // ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+        ['@babel/plugin-proposal-class-properties'],
         ['@babel/plugin-proposal-nullish-coalescing-operator'],
     ],
 };

@@ -3505,6 +3505,63 @@
 
   }
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function _classPrivateFieldGet(receiver, privateMap) {
+    var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get");
+
+    return _classApplyDescriptorGet(receiver, descriptor);
+  }
+
+  function _classPrivateFieldSet(receiver, privateMap, value) {
+    var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set");
+
+    _classApplyDescriptorSet(receiver, descriptor, value);
+
+    return value;
+  }
+
+  function _classExtractFieldDescriptor(receiver, privateMap, action) {
+    if (!privateMap.has(receiver)) {
+      throw new TypeError("attempted to " + action + " private field on non-instance");
+    }
+
+    return privateMap.get(receiver);
+  }
+
+  function _classApplyDescriptorGet(receiver, descriptor) {
+    if (descriptor.get) {
+      return descriptor.get.call(receiver);
+    }
+
+    return descriptor.value;
+  }
+
+  function _classApplyDescriptorSet(receiver, descriptor, value) {
+    if (descriptor.set) {
+      descriptor.set.call(receiver, value);
+    } else {
+      if (!descriptor.writable) {
+        throw new TypeError("attempted to set read only private field");
+      }
+
+      descriptor.value = value;
+    }
+  }
+
   function ascending (a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
@@ -5446,7 +5503,7 @@
      *      This can be dangerous if you do not want them to change.
      */
     constructor(notes = [], reUseNotes = false) {
-      this._notes = void 0;
+      _defineProperty(this, "_notes", void 0);
 
       if (reUseNotes) {
         this._notes = notes;
@@ -10329,6 +10386,8 @@
   /**
    * @module fileFormats/MidiParser
    * @todo parse pitch bends
+   * @todo after tempo changes notes and measure time do not align,
+   *       see "[Test] Tempo change.mid"
    */
   // Precision in number of digits when rounding seconds
 
@@ -10346,7 +10405,6 @@
 
   function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log = false) {
     if (data === null || data === undefined) {
-      // console.warn('[MidiParser] MIDI data is null');
       return;
     }
 
@@ -10365,8 +10423,7 @@
       tempoChanges,
       beatTypeChanges,
       keySignatureChanges
-    } = getSignatureChanges(data.track); // for (let index = 0; index < data.track.length; index++) {
-    //     const track = data.track[index];
+    } = getSignatureChanges(data.track);
 
     for (const track of data.track) {
       const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log);
@@ -10387,7 +10444,13 @@
 
       return (_d$totalTime = d === null || d === void 0 ? void 0 : d.totalTime) !== null && _d$totalTime !== void 0 ? _d$totalTime : 0;
     });
-    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime);
+    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime); // Get measure indices, the note's index where a new measure starts, for each track
+
+    for (const track of parsedTracks) {
+      track.measureIndices = getMeasureIndices(track.noteObjs, measureLinePositions);
+    } // Resulting track
+
+
     const result = {
       tracks: parsedTracks,
       totalTime,
@@ -10543,11 +10606,9 @@
         trackName: trackName !== null && trackName !== void 0 ? trackName : 'Track',
         instrument,
         instrumentName: instrumentName !== null && instrumentName !== void 0 ? instrumentName : 'Unknown instrument'
-      }; // console.log(`Got part with ${notes.length} notes,\n`, parsedTrack);
-
+      };
       return parsedTrack;
     } else {
-      // console.log('Empty track');
       return null;
     }
   }
@@ -10648,11 +10709,28 @@
     return measureLines;
   }
   /**
-   * @todo NYI
+   * For the notes of one track, computes the notes' indices where new measures
+   * start.
+   *
+   * @param {Note[]} notes notes of a track
+   * @param {numer[]} measureTimes times in seconds where new measures start
+   * @returns {number[]} measure indices
    */
-  // function getMeasureIndices() {
-  // }
 
+
+  function getMeasureIndices(notes, measureTimes) {
+    const measureIndices = [];
+    const todo = [...measureTimes];
+
+    for (const [index, note] of notes.entries()) {
+      if (note.start >= todo[0]) {
+        todo.shift();
+        measureIndices.push(index);
+      }
+    }
+
+    return measureIndices;
+  }
   /**
    * Split MIDI format 0 data into tracks instead of having channels,
    * creates one track for each channel
@@ -11070,7 +11148,7 @@
       } // Tracks
 
 
-      const tracks = parsed.tracks.map((t, index) => Track.fromMidi(t.trackName, t.instrumentName, t.noteObjs, index));
+      const tracks = parsed.tracks.map((t, index) => Track.fromMidi(t.trackName, t.instrumentName, t.noteObjs, index, t.measureIndices));
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
@@ -11367,12 +11445,13 @@
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes parsed MusicXML track's notes
+     * @param {number[]} [measureIndices=null] note indices where new measures start
      * @returns {Track} new Track
      */
 
 
-    static fromMidi(name, instrument, notes) {
-      return new Track(name, instrument, notes);
+    static fromMidi(name, instrument, notes, measureIndices) {
+      return new Track(name, instrument, notes, null, measureIndices);
     }
     /**
      * Creates a new Track from a MusicXML track
@@ -11447,20 +11526,6 @@
 
   }
 
-  var id = 0;
-
-  function _classPrivateFieldLooseKey(name) {
-    return "__private_" + id++ + "_" + name;
-  }
-
-  function _classPrivateFieldLooseBase(receiver, privateKey) {
-    if (!Object.prototype.hasOwnProperty.call(receiver, privateKey)) {
-      throw new TypeError("attempted to use private field on non-instance");
-    }
-
-    return receiver;
-  }
-
   /**
    * Stores a sequence of pitches and provides some methods to simplify and
    * manipulate it.
@@ -11468,18 +11533,19 @@
    * @todo implement keepOnlyHighestConcurrentNotes
    */
 
-  var _pitches = /*#__PURE__*/_classPrivateFieldLooseKey("pitches");
+  var _pitches = /*#__PURE__*/new WeakMap();
 
   class PitchSequence {
     /**
      * @param {number[]} pitches pitches
      */
     constructor(pitches = []) {
-      Object.defineProperty(this, _pitches, {
+      _pitches.set(this, {
         writable: true,
         value: []
       });
-      _classPrivateFieldLooseBase(this, _pitches)[_pitches] = pitches;
+
+      _classPrivateFieldSet(this, _pitches, pitches);
     }
     /**
      * Creates a pitch sequence from an array of Notes
@@ -11519,7 +11585,7 @@
 
 
     getPitches() {
-      return _classPrivateFieldLooseBase(this, _pitches)[_pitches];
+      return _classPrivateFieldGet(this, _pitches);
     }
     /**
      * @returns {number} number of pitches
@@ -11527,7 +11593,7 @@
 
 
     length() {
-      return _classPrivateFieldLooseBase(this, _pitches)[_pitches].length;
+      return _classPrivateFieldGet(this, _pitches).length;
     }
     /**
      * Turns pitch sequence into a string by turning each  pitch into a character
@@ -11538,11 +11604,11 @@
 
 
     toCharString() {
-      if (!_classPrivateFieldLooseBase(this, _pitches)[_pitches] || _classPrivateFieldLooseBase(this, _pitches)[_pitches].length === 0) {
+      if (!_classPrivateFieldGet(this, _pitches) || _classPrivateFieldGet(this, _pitches).length === 0) {
         return '';
       }
 
-      return String.fromCharCode(..._classPrivateFieldLooseBase(this, _pitches)[_pitches]);
+      return String.fromCharCode(..._classPrivateFieldGet(this, _pitches));
     }
     /**
      * @returns {string} a string with the notes' names
@@ -11550,7 +11616,7 @@
 
 
     toNoteNameString() {
-      return _classPrivateFieldLooseBase(this, _pitches)[_pitches].map(p => getMidiNoteByNr(p).label).join(' ');
+      return _classPrivateFieldGet(this, _pitches).map(p => getMidiNoteByNr(p).label).join(' ');
     }
     /**
      * Reverses the order of pitches in this PitchSequence
@@ -11560,7 +11626,8 @@
 
 
     reverse() {
-      _classPrivateFieldLooseBase(this, _pitches)[_pitches] = _classPrivateFieldLooseBase(this, _pitches)[_pitches].reverse();
+      _classPrivateFieldSet(this, _pitches, _classPrivateFieldGet(this, _pitches).reverse());
+
       return this;
     }
     /**
@@ -11571,7 +11638,8 @@
 
 
     removeOctaves() {
-      _classPrivateFieldLooseBase(this, _pitches)[_pitches] = _classPrivateFieldLooseBase(this, _pitches)[_pitches].map(d => d % 12);
+      _classPrivateFieldSet(this, _pitches, _classPrivateFieldGet(this, _pitches).map(d => d % 12));
+
       return this;
     }
     /**
@@ -11583,7 +11651,7 @@
 
 
     toIntervals() {
-      const p = _classPrivateFieldLooseBase(this, _pitches)[_pitches];
+      const p = _classPrivateFieldGet(this, _pitches);
 
       if (!p || p.length === 0 || p.length < 2) {
         return [];
@@ -11605,7 +11673,7 @@
 
 
     clone() {
-      return new PitchSequence(_classPrivateFieldLooseBase(this, _pitches)[_pitches]);
+      return new PitchSequence(_classPrivateFieldGet(this, _pitches));
     }
     /**
      * Returns true if this NoteArray and otherNoteArray have equal attributes.
@@ -11622,12 +11690,12 @@
 
       const p = otherPitchSequence.getPitches();
 
-      if (_classPrivateFieldLooseBase(this, _pitches)[_pitches].length !== p.length) {
+      if (_classPrivateFieldGet(this, _pitches).length !== p.length) {
         return false;
       }
 
       for (const [index, element] of p.entries()) {
-        if (_classPrivateFieldLooseBase(this, _pitches)[_pitches][index] !== element) {
+        if (_classPrivateFieldGet(this, _pitches)[index] !== element) {
           return false;
         }
       }
@@ -11905,9 +11973,10 @@
     context.stroke();
   }
   /**
-   * Draws a rounded version of drawCornerLine()
+   * Draws a rounded version of drawCornerLine().
+   * Only works for dendrograms drawn from top-dowm, use
+   * drawRoundedCornerLineRightLeft for right-to-left dendrograms.
    *
-   * @todo only works for dendrograms drawn from top-dowm
    * @param {CanvasRenderingContext2D} context canvas rendering context
    * @param {number} x1 x coordinate of start
    * @param {number} y1 y coordinate of start
@@ -11929,6 +11998,36 @@
       context.arc(cx, cy, radius, 1.5 * Math.PI, 2 * Math.PI);
     } else {
       context.arc(cx, cy, radius, 1.5 * Math.PI, Math.PI, true);
+    }
+
+    context.lineTo(x2, y2);
+    context.stroke();
+  }
+  /**
+   * Draws a rounded version of drawRoundedCornerLine for right-to-left
+   * dendrograms.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} x1 x coordinate of start
+   * @param {number} y1 y coordinate of start
+   * @param {number} x2 x coordinate of end
+   * @param {number} y2 y coordinate of end
+   * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
+   */
+
+  function drawRoundedCornerLineRightLeft(context, x1, y1, x2, y2, maxRadius = 25) {
+    const xDist = Math.abs(x2 - x1);
+    const yDist = Math.abs(y2 - y1);
+    const radius = Math.min(xDist, yDist, maxRadius);
+    const cx = x1 < x2 ? x1 + radius : x1 - radius;
+    const cy = y1 < y2 ? y2 - radius : y2 + radius;
+    context.beginPath();
+    context.moveTo(x1, y1);
+
+    if (y1 < y2) {
+      context.arc(cx, cy, radius, 0, 0.5 * Math.PI);
+    } else {
+      context.arc(cx, cy, radius, 0, 1.5 * Math.PI, true);
     }
 
     context.lineTo(x2, y2);
@@ -11978,6 +12077,7 @@
     drawRoundedRect: drawRoundedRect,
     drawCornerLine: drawCornerLine,
     drawRoundedCornerLine: drawRoundedCornerLine,
+    drawRoundedCornerLineRightLeft: drawRoundedCornerLineRightLeft,
     drawHexagon: drawHexagon
   });
 
@@ -12227,13 +12327,13 @@
    * @module input/MidiInputManager
    */
 
-  var _getMidiLiveData = /*#__PURE__*/_classPrivateFieldLooseKey("getMidiLiveData");
+  var _getMidiLiveData = /*#__PURE__*/new WeakMap();
 
-  var _setMidiLiveData = /*#__PURE__*/_classPrivateFieldLooseKey("setMidiLiveData");
+  var _setMidiLiveData = /*#__PURE__*/new WeakMap();
 
-  var _addCurrentNote = /*#__PURE__*/_classPrivateFieldLooseKey("addCurrentNote");
+  var _addCurrentNote = /*#__PURE__*/new WeakMap();
 
-  var _removeCurrentNote = /*#__PURE__*/_classPrivateFieldLooseKey("removeCurrentNote");
+  var _removeCurrentNote = /*#__PURE__*/new WeakMap();
 
   class MidiInputManager {
     /**
@@ -12269,24 +12369,27 @@
      *          }
      */
     constructor(getMidiLiveData, setMidiLiveData, addCurrentNote = () => {}, removeCurrentNote = () => {}) {
-      Object.defineProperty(this, _getMidiLiveData, {
-        writable: true,
-        value: void 0
-      });
-      Object.defineProperty(this, _setMidiLiveData, {
-        writable: true,
-        value: void 0
-      });
-      Object.defineProperty(this, _addCurrentNote, {
-        writable: true,
-        value: void 0
-      });
-      Object.defineProperty(this, _removeCurrentNote, {
+      _getMidiLiveData.set(this, {
         writable: true,
         value: void 0
       });
 
-      this._onMIDISuccess = midiAccess => {
+      _setMidiLiveData.set(this, {
+        writable: true,
+        value: void 0
+      });
+
+      _addCurrentNote.set(this, {
+        writable: true,
+        value: void 0
+      });
+
+      _removeCurrentNote.set(this, {
+        writable: true,
+        value: void 0
+      });
+
+      _defineProperty(this, "_onMIDISuccess", midiAccess => {
         // console.log(midiAccess);
         console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} input devices`);
 
@@ -12300,9 +12403,9 @@
         //     console.log(` - ${output.name}`);
         // }
         // console.groupEnd();
-      };
+      });
 
-      this._handleMIDIMessage = message => {
+      _defineProperty(this, "_handleMIDIMessage", message => {
         // console.log(message);
         const device = message.target.name;
         const commandAndChannel = message.data[0];
@@ -12329,12 +12432,16 @@
             break;
 
         }
-      };
+      });
 
-      _classPrivateFieldLooseBase(this, _getMidiLiveData)[_getMidiLiveData] = getMidiLiveData;
-      _classPrivateFieldLooseBase(this, _setMidiLiveData)[_setMidiLiveData] = setMidiLiveData;
-      _classPrivateFieldLooseBase(this, _addCurrentNote)[_addCurrentNote] = addCurrentNote;
-      _classPrivateFieldLooseBase(this, _removeCurrentNote)[_removeCurrentNote] = removeCurrentNote; // Request MIDI access
+      _classPrivateFieldSet(this, _getMidiLiveData, getMidiLiveData);
+
+      _classPrivateFieldSet(this, _setMidiLiveData, setMidiLiveData);
+
+      _classPrivateFieldSet(this, _addCurrentNote, addCurrentNote);
+
+      _classPrivateFieldSet(this, _removeCurrentNote, removeCurrentNote); // Request MIDI access
+
 
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this._onMIDISuccess, this._onMIDIFailure);
@@ -12381,18 +12488,18 @@
     _noteOn(device, time, pitch, channel, velocity) {
       const note = new Note$2(pitch, time / 1000, velocity, channel); // Add current note
 
-      _classPrivateFieldLooseBase(this, _addCurrentNote)[_addCurrentNote](note); // Update recorded MIDI data
+      _classPrivateFieldGet(this, _addCurrentNote).call(this, note); // Update recorded MIDI data
       // TODO: probably better to only update on note-off,
       // Then we need internal cache
       // But this might be good, since only 'unfinished' notes need to be checked on note-off,
       // so we can remove finished notes from the cache
 
 
-      let midiData = _classPrivateFieldLooseBase(this, _getMidiLiveData)[_getMidiLiveData]();
+      let midiData = _classPrivateFieldGet(this, _getMidiLiveData).call(this);
 
       midiData = [...midiData, note];
 
-      _classPrivateFieldLooseBase(this, _setMidiLiveData)[_setMidiLiveData](midiData);
+      _classPrivateFieldGet(this, _setMidiLiveData).call(this, midiData);
     }
     /**
      * Handles note-off messages by updating the end time of the corresponding
@@ -12407,7 +12514,7 @@
 
 
     _noteOff(device, time, pitch, channel) {
-      const midiData = _classPrivateFieldLooseBase(this, _getMidiLiveData)[_getMidiLiveData]();
+      const midiData = _classPrivateFieldGet(this, _getMidiLiveData).call(this);
 
       if (midiData.length === 0) {
         // If we have to wait for the setState to process, try again
@@ -12430,9 +12537,9 @@
         // Note successfully found, update data
         midiData[index].end = time / 1000;
 
-        _classPrivateFieldLooseBase(this, _setMidiLiveData)[_setMidiLiveData](midiData);
+        _classPrivateFieldGet(this, _setMidiLiveData).call(this, midiData);
 
-        _classPrivateFieldLooseBase(this, _removeCurrentNote)[_removeCurrentNote](pitch);
+        _classPrivateFieldGet(this, _removeCurrentNote).call(this, pitch);
       }
     }
 
