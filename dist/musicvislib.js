@@ -1,11 +1,11 @@
-// musicvis-lib v0.51.4 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.52.0 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.51.4";
+  var version="0.52.0";
 
   /**
    * Lookup for many MIDI specifications.
@@ -138,6 +138,14 @@
    */
 
   const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  /**
+   * Names of notes, indexed like MIDI numbers, i.e. C is 0, with flats instead of
+   * sharps.
+   *
+   * @type {string[]}
+   */
+
+  const NOTE_NAMES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
   /**
    * Index equals MIDI note number
    *
@@ -3130,6 +3138,7 @@
     flatToSharp: flatToSharp,
     sharpToFlat: sharpToFlat,
     NOTE_NAMES: NOTE_NAMES,
+    NOTE_NAMES_FLAT: NOTE_NAMES_FLAT,
     MIDI_NOTES: MIDI_NOTES,
     SHARPS: SHARPS,
     MIDI_COMMANDS: MIDI_COMMANDS,
@@ -3167,7 +3176,9 @@
       this.start = start;
       this.velocity = velocity;
       this.channel = channel;
-      this.end = end;
+      this.end = end; // TODO: breaks tests
+      // const duration = end - start;
+      // this.duration = Number.isNaN(duration) ? null : duration;
     }
     /**
      * Creates a Note object from an object via destructuring.
@@ -3501,6 +3512,142 @@
       }
 
       return `GuitarNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
+    }
+
+  }
+
+  /**
+   * Harmonica note class that reflects MIDI properties but has
+   * absolute start and end times in seconds and
+   * information on how to play it.
+   *
+   * @augments Note
+   */
+
+  class HarmonicaNote extends Note$2 {
+    /**
+     * Creates a new Note
+     *
+     * @param {number} pitch pitch
+     * @param {number} start start time in seconds
+     * @param {number} velocity velocity
+     * @param {number} channel MIDI channel
+     * @param {number} end end time in seconds
+     * @param {number} hole harmonica hole
+     * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
+     */
+    constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null, // This is different to the base Note class
+    hole = null, instruction = null) {
+      super(pitch, start, velocity, channel, end);
+      this.hole = hole;
+      this.instruction = instruction;
+    }
+    /**
+     * Creates a HarmonicaNote object from an object via destructuring
+     *
+     * @param {object} object object with at least {pitch}
+     *  {
+     *      pitch: number|string    e.g. 12 or C#4
+     *      start: number           start time in seconds
+     *      end: number             end time in seconds
+     *      velocity: number        MIDI velocity
+     *      channel: number         MIDI channel
+     *      hole: number            harmonica hole
+     *      instruction: string     instruction, e.g., blow or draw
+     *  }
+     * @returns {HarmonicaNote} new note
+     * @throws {Error} when pitch is invalid
+     */
+
+
+    static from(object) {
+      let {
+        pitch = 0,
+        start = 0,
+        velocity = 127,
+        channel = 0,
+        end = null,
+        // This is different to the base Note class
+        hole = null,
+        instruction = null
+      } = object;
+
+      if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
+        const note = getMidiNoteByLabel(pitch);
+
+        if (note === null || note === undefined) {
+          throw new Error('Invalid pitch for HarmonicaNote.from()');
+        }
+
+        pitch = note.pitch;
+      }
+
+      return new HarmonicaNote(pitch, start, velocity, channel, end, hole, instruction);
+    }
+    /**
+     * Converts a Note to a Harmonica
+     *
+     * @param {Note} note note
+     * @param {number} hole harmonica hole
+     * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
+     * @returns {HarmonicaNote} harmonica note
+     */
+
+
+    static fromNote(note, hole, instruction) {
+      return new HarmonicaNote(note.pitch, note.start, note.velocity, note.channel, note.end, hole, instruction);
+    }
+    /**
+     * Simplifies the HarmonicaNote to a Note
+     *
+     * @returns {Note} note
+     */
+
+
+    toNote() {
+      return new Note$2(this.pitch, this.start, this.velocity, this.channel, this.end);
+    }
+    /**
+     * Returns a copy of the Note object
+     *
+     * @returns {GuitarNote} new note
+     */
+
+
+    clone() {
+      return new HarmonicaNote(this.pitch, this.start, this.velocity, this.channel, this.end, // This is different to the base Note class
+      this.hole, this.instruction);
+    }
+    /**
+     * Returns true if this note and otherNote have equal attributes.
+     *
+     * @param {GuitarNote} otherNote another GuitarNote
+     * @returns {boolean} true if equal
+     */
+
+
+    equals(otherNote) {
+      if (!(otherNote instanceof HarmonicaNote)) {
+        return false;
+      }
+
+      return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end && // This is different to the base Note class
+      this.hole === otherNote.hole && this.instruction === otherNote.instruction;
+    }
+    /**
+     * Human-readable string representation of this HarmonicaNote
+     *
+     * @param {boolean} short if true, attribute names will be shortened
+     * @returns {string} string representation
+     */
+
+
+    toString(short = false) {
+      if (short) {
+        return `HarmonicaNote(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, h: ${this.hole}, i: ${this.instruction})`;
+      }
+
+      return `HarmonicaNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, hole: ${this.hole}, instruction: ${this.instruction})`;
     }
 
   }
@@ -6143,8 +6290,7 @@
     }
 
     return true;
-  } // TODO: use https://github.com/d3/d3-array/blob/master/README.md#intersection etc
-
+  }
   /**
    * Checks if two arrays contain the same elements,
    * ignoring their ordering in each array.
@@ -6284,7 +6430,6 @@
    */
 
   function binarySearch(array, value, accessor = d => d) {
-    // console.log('search', array, 'for', value);
     // Handle short arrays
     if (array.length <= 3) {
       let closest = null;
@@ -11069,7 +11214,7 @@
      */
     constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
       if (!tracks || tracks.length === 0) {
-        throw new Error('No or invalid tracks given');
+        throw new Error('No or invalid tracks given! Use .fromMidi or .fromMusicXml?');
       }
 
       this.name = name;
@@ -11370,6 +11515,7 @@
      * (semitone) steps.
      * Will return a new MusicPiece instance.
      * Note pitches will be clipped to [0, 127].
+     * Will not change playing instructions such as string and fret.
      *
      * @param {number} steps number of semitones to transpose (can be negative)
      * @param {'all'|number|number[]} tracks tracks to transpose
@@ -11707,6 +11853,7 @@
 
   /**
    * @module graphics/Canvas
+   * @todo combine multiple canvases into one, by drawing over common background
    * @todo save canvas as file https://www.digitalocean.com/community/tutorials/js-canvas-toblob
    */
 
@@ -12034,7 +12181,7 @@
     context.stroke();
   }
   /**
-   * Draws a hexagon
+   * Draws a hexagon, call context.fill() or context.stroke() afterwards.
    *
    * @param {CanvasRenderingContext2D} context canvas rendering context
    * @param {number} cx center x
@@ -12060,6 +12207,108 @@
 
     context.closePath();
   }
+  /**
+   * Draws a Bezier curve to connect to points in X direction.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} x1 x coordinate of the first point
+   * @param {number} y1 y coordinate of the first point
+   * @param {number} x2 x coordinate of the second point
+   * @param {number} y2 y coordinate of the second point
+   */
+
+  function drawBezierConnectorX(context, x1, y1, x2, y2) {
+    const deltaX = (x2 - x1) / 2;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.bezierCurveTo(x1 + deltaX, y1, x1 + deltaX, y2, x2, y2);
+    context.stroke();
+  }
+  /**
+   * Draws a Bezier curve to connect to points in Y direction.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} x1 x coordinate of the first point
+   * @param {number} y1 y coordinate of the first point
+   * @param {number} x2 x coordinate of the second point
+   * @param {number} y2 y coordinate of the second point
+   */
+
+  function drawBezierConnectorY(context, x1, y1, x2, y2) {
+    const deltaY = (y2 - y1) / 2;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.bezierCurveTo(x1, y1 + deltaY, x2, y1 + deltaY, x2, y2);
+    context.stroke();
+  }
+  /**
+   * Draws a rounded corner, requires x and y distances between points to be
+   * equal.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} x1 x coordinate of the first point
+   * @param {number} y1 y coordinate of the first point
+   * @param {number} x2 x coordinate of the second point
+   * @param {number} y2 y coordinate of the second point
+   * @param {boolean} turnLeft true for left turn, false for right turn
+   * @param {number} roundness corner roundness between 0 (sharp) and 1 (round)
+   */
+
+  function drawRoundedCorner(context, x1, y1, x2, y2, turnLeft = true, roundness = 1) {
+    context.beginPath();
+    context.moveTo(x1, y1);
+
+    if (x1 === x2 || y1 === y2) {
+      context.lineTo(x2, y2);
+      context.stroke();
+      return;
+    }
+
+    const radius = Math.abs(x2 - x1) * roundness;
+    let cx;
+    let cy;
+
+    if (turnLeft) {
+      if (x1 < x2 && y1 < y2) {
+        cx = x1 + radius;
+        cy = y2 - radius;
+        context.arc(cx, cy, radius, 1 * Math.PI, 0.5 * Math.PI, true);
+      } else if (x1 > x2 && y1 < y2) {
+        cx = x2 + radius;
+        cy = y1 + radius;
+        context.arc(cx, cy, radius, 1.5 * Math.PI, 1 * Math.PI, true);
+      } else if (x1 > x2 && y1 > y2) {
+        cx = x1 - radius;
+        cy = y2 + radius;
+        context.arc(cx, cy, radius, 0, 1.5 * Math.PI, true);
+      } else {
+        cx = x2 - radius;
+        cy = y1 - radius;
+        context.arc(cx, cy, radius, 0.5 * Math.PI, 0, true);
+      }
+    } else {
+      if (x1 < x2 && y1 < y2) {
+        cx = x2 - radius;
+        cy = y1 + radius;
+        context.arc(cx, cy, radius, 1.5 * Math.PI, 0);
+      } else if (x1 > x2 && y1 < y2) {
+        cx = x1 - radius;
+        cy = y2 - radius;
+        context.arc(cx, cy, radius, 0, 0.5 * Math.PI);
+      } else if (x1 > x2 && y1 > y2) {
+        cx = x2 + radius;
+        cy = y1 - radius;
+        context.arc(cx, cy, radius, 0.5 * Math.PI, 1 * Math.PI, false);
+      } else {
+        cx = x1 + radius;
+        cy = y2 + radius;
+        context.arc(cx, cy, radius, Math.PI, 1.5 * Math.PI, false);
+      }
+    }
+
+    context.lineTo(x2, y2);
+    context.stroke();
+  }
 
   var Canvas = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -12078,7 +12327,10 @@
     drawCornerLine: drawCornerLine,
     drawRoundedCornerLine: drawRoundedCornerLine,
     drawRoundedCornerLineRightLeft: drawRoundedCornerLineRightLeft,
-    drawHexagon: drawHexagon
+    drawHexagon: drawHexagon,
+    drawBezierConnectorX: drawBezierConnectorX,
+    drawBezierConnectorY: drawBezierConnectorY,
+    drawRoundedCorner: drawRoundedCorner
   });
 
   /**
@@ -14310,7 +14562,7 @@
   /**
    * Detects chords as those notes that have the exact same start time, only works
    * for ground truth (since recordings are not exact)
-   * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
+   * Does only work if ground truth is aligned! TuxGuitar produces unaligned MIDI.
    *
    * @param {Note[]} notes notes
    * @returns {Note[][]} array of chord arrays
@@ -14321,6 +14573,48 @@
     const chords = [...grouped].map(d => d[1]) // Sort chords by time
     .sort((a, b) => a[0].start - b[0].start) // Sort notes in each chord by pitch
     .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
+    return chords;
+  }
+  /**
+   * Detects chords by taking a note as new chord then adding all notes close
+   * after it to the chord, until the next note is farther away than the given
+   * `threshold`. Then, the next chord is started with this note.
+   *
+   * @param {Note[]} notes notes
+   * @param {number} threshold threshold
+   * @returns {Note[][]} chords
+   */
+
+  function detectChordsBySimilarStart(notes, threshold = 0.02) {
+    const chords = [];
+    let currentChord = [];
+    let currentChordStartTime = 0;
+    let currentChordPitches = new Set();
+
+    for (const note of notes) {
+      // Note belongs to current chord
+      if (note.start - currentChordStartTime <= threshold) {
+        // Do not allow the same note twice in a chord
+        if (!currentChordPitches.has(note.pitch)) {
+          currentChord.push(note);
+          currentChordPitches.add(note.pitch);
+        }
+      } else {
+        // Start new chord
+        if (currentChord.length > 0) {
+          chords.push(currentChord);
+        }
+
+        currentChord = [note];
+        currentChordStartTime = note.start;
+        currentChordPitches = new Set([note.pitch]);
+      }
+    }
+
+    if (currentChord.length > 0) {
+      chords.push(currentChord);
+    }
+
     return chords;
   }
   /**
@@ -14646,6 +14940,7 @@
   var Chords = /*#__PURE__*/Object.freeze({
     __proto__: null,
     detectChordsByExactStart: detectChordsByExactStart,
+    detectChordsBySimilarStart: detectChordsBySimilarStart,
     detectChordsByOverlap: detectChordsByOverlap,
     getChordType: getChordType,
     getChordName: getChordName
@@ -18326,6 +18621,7 @@
   exports.Drums = Drums;
   exports.Guitar = Guitar;
   exports.GuitarNote = GuitarNote;
+  exports.HarmonicaNote = HarmonicaNote;
   exports.Lamellophone = Lamellophone;
   exports.Matching = Matching;
   exports.Midi = Midi$2;

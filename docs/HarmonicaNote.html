@@ -28,7 +28,7 @@
 
 
     <title>
-      stringBased/index.js
+      HarmonicaNote
     </title>
 
     <!--[if lt IE 9]>
@@ -99,7 +99,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        stringBased/index.js
+        HarmonicaNote
       </h1>
       
 
@@ -107,23 +107,2616 @@
 
 
 
+
+<section>
+
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>export * as Levenshtein from './Levenshtein.js';
-export * as LongestCommonSubsequence from './LongestCommonSubsequence.js';
-export * as Gotoh from './Gotoh.js';
-export * as SuffixTree from './SuffixTree.js';
-export * as NGrams from './NGrams.js';
-export { default as NeedlemanWunsch } from './NeedlemanWunsch.js';
+        
+        <h2>
+        
+        HarmonicaNote
+        
+        </h2>
+        
+        
+            <div class="class-description">Harmonica note class that reflects MIDI properties but has
+absolute start and end times in seconds and
+information on how to play it.</div>
+        
+    
+</header>
 
 
-/**
- * @module stringBased
- */
-</code></pre>
-        </article>
-    </section>
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+        <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="HarmonicaNote">
+        <a href="#HarmonicaNote">#</a>
+        <span class="type-signature"></span>new HarmonicaNote<span class="signature">(pitch, start, velocity, channel, end, hole, instruction)</span><span class="type-signature"></span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Creates a new Note
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pitch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last">pitch</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last">start time in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>velocity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    127
+                
+                </td>
+            
+
+            <td class="description last">velocity</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>channel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+
+            <td class="description last">MIDI channel</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last">end time in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hole</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last">harmonica hole</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instruction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'blow'</span>
+|
+
+<span class="param-type">'draw'</span>
+|
+
+<span class="param-type">'bend'</span>
+|
+
+<span class="param-type">'overblow'</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last">instruction, e.g., blow or draw</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line13">line 13</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="Note.html">Note</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".from">
+        <a href="#.from">#</a>
+        <span class="type-signature">(static) </span>from<span class="signature">(object)</span><span class="type-signature"> &rarr; {<a href="HarmonicaNote.html">HarmonicaNote</a>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Creates a HarmonicaNote object from an object via destructuring
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">object with at least {pitch}
+ {
+     pitch: number|string    e.g. 12 or C#4
+     start: number           start time in seconds
+     end: number             end time in seconds
+     velocity: number        MIDI velocity
+     channel: number         MIDI channel
+     hole: number            harmonica hole
+     instruction: string     instruction, e.g., blow or draw
+ }</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line56">line 56</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Throws:</strong>
+    
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        when pitch is invalid
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+    </div>
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    new note
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="HarmonicaNote.html">HarmonicaNote</a></span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".fromNote">
+        <a href="#.fromNote">#</a>
+        <span class="type-signature">(static) </span>fromNote<span class="signature">(note, hole, instruction)</span><span class="type-signature"> &rarr; {<a href="HarmonicaNote.html">HarmonicaNote</a>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Converts a Note to a Harmonica
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>note</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">note</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hole</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">harmonica hole</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instruction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'blow'</span>
+|
+
+<span class="param-type">'draw'</span>
+|
+
+<span class="param-type">'bend'</span>
+|
+
+<span class="param-type">'overblow'</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">instruction, e.g., blow or draw</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line93">line 93</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    harmonica note
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="HarmonicaNote.html">HarmonicaNote</a></span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="clone">
+        <a href="#clone">#</a>
+        <span class="type-signature"></span>clone<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="GuitarNote.html">GuitarNote</a>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns a copy of the Note object
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#clone">Note#clone</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line125">line 125</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    new note
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="GuitarNote.html">GuitarNote</a></span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="equals">
+        <a href="#equals">#</a>
+        <span class="type-signature"></span>equals<span class="signature">(otherNote)</span><span class="type-signature"> &rarr; {boolean}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns true if this note and otherNote have equal attributes.
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>otherNote</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="GuitarNote.html">GuitarNote</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another GuitarNote</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#equals">Note#equals</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line144">line 144</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    true if equal
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getDuration">
+        <a href="#getDuration">#</a>
+        <span class="type-signature"></span>getDuration<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns the duration of this note in seconds
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#getDuration">Note#getDuration</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line119">line 119</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    note duration
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getLetter">
+        <a href="#getLetter">#</a>
+        <span class="type-signature"></span>getLetter<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns the note's name WITHOUT the octave, e.g. 'C#'
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#getLetter">Note#getLetter</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line140">line 140</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    note name as string
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getName">
+        <a href="#getName">#</a>
+        <span class="type-signature"></span>getName<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns the note's name and octave, e.g. 'C#3'
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#getName">Note#getName</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line131">line 131</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    note name as string
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getOctave">
+        <a href="#getOctave">#</a>
+        <span class="type-signature"></span>getOctave<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns the note's octave
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#getOctave">Note#getOctave</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line149">line 149</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    the note's octave
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="overlapInSeconds">
+        <a href="#overlapInSeconds">#</a>
+        <span class="type-signature"></span>overlapInSeconds<span class="signature">(otherNote)</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns the amount of seconds this Note and otherNote overlap in time.
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>otherNote</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another Note</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#overlapInSeconds">Note#overlapInSeconds</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line196">line 196</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    seconds of overlap
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="overlapsInTime">
+        <a href="#overlapsInTime">#</a>
+        <span class="type-signature"></span>overlapsInTime<span class="signature">(otherNote)</span><span class="type-signature"> &rarr; {boolean}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns true, if this Note and otherNote overlap in time.
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>otherNote</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">another Note</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#overlapsInTime">Note#overlapsInTime</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line185">line 185</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    true if they overlap
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="scaleTime">
+        <a href="#scaleTime">#</a>
+        <span class="type-signature"></span>scaleTime<span class="signature">(factor)</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns a new Note where start and end are multiplied by factor
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">factor to scale start and end with</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#scaleTime">Note#scaleTime</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line172">line 172</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    new note
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="shiftTime">
+        <a href="#shiftTime">#</a>
+        <span class="type-signature"></span>shiftTime<span class="signature">(addedSeconds)</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Returns a new Note where start and end are multiplied by factor
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>addedSeconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">seconds to be added to start and end</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#shiftTime">Note#shiftTime</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_Note.js.html">types/Note.js</a>, <a href="types_Note.js.html#line159">line 159</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    new note
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toNote">
+        <a href="#toNote">#</a>
+        <span class="type-signature"></span>toNote<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Note.html">Note</a>}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Simplifies the HarmonicaNote to a Note
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line110">line 110</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    note
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Note.html">Note</a></span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toString">
+        <a href="#toString">#</a>
+        <span class="type-signature"></span>toString<span class="signature">(short)</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Human-readable string representation of this HarmonicaNote
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>short</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">if true, attribute names will be shortened</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-overrides">Overrides:</dt>
+            <dd class="tag-overrides"><ul class="dummy"><li>
+                <a href="Note.html#toString">Note#toString</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="types_HarmonicaNote.js.html">types/HarmonicaNote.js</a>, <a href="types_HarmonicaNote.js.html#line166">line 166</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    string representation
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

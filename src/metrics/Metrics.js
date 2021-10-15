@@ -195,8 +195,8 @@ export function onsetDiffMeanAndVariance(notes) {
 /**
  * Steps: gioing up or down a single note in scale
  * Jumps: more than a single note in scale
- * @todo how to handle notes outside scale?
  *
+ * @todo how to handle notes outside scale?
  * @param {Note[]} notes notes
  * @param {number[]} scalePitches numbers in [0, 11] that specify the scale
  */

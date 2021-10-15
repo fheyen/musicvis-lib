@@ -88,11 +88,11 @@ const noteColormapGradientArray = Array.from({ length: 12 })
  */
 export function noteColorFromPitch(pitch, colormap = 'default') {
     switch (colormap) {
-        case 'accessible':
-            return noteColormapAccessible[pitch % 12];
-        case 'gradient':
-            return noteColormapGradientArray[pitch % 12];
-        default:
-            return noteColormap[pitch % 12];
+    case 'accessible':
+        return noteColormapAccessible[pitch % 12];
+    case 'gradient':
+        return noteColormapGradientArray[pitch % 12];
+    default:
+        return noteColormap[pitch % 12];
     }
 }

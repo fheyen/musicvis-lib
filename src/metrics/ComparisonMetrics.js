@@ -4,7 +4,7 @@ import * as d3 from 'd3';
  *
  * @param {Note[]} notesA notes
  * @param {Note[]} notesB other notes
- * @returns
+ * @returns {number} difference
  */
 export function noteCountDifference(notesA, notesB) {
     return Math.abs(notesA.length - notesB.length);
@@ -14,7 +14,7 @@ export function noteCountDifference(notesA, notesB) {
  *
  * @param {Note[]} notesA notes
  * @param {Note[]} notesB other notes
- * @returns
+ * @returns {number} difference
  */
 export function durationDifference(notesA, notesB) {
     const durationA = d3.max(notesA, (d) => d.end);

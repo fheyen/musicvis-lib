@@ -107,35 +107,44 @@ declare module "DiffAlignment" {
 declare module "Chords" {
     /**
      * Detects chords as those notes that have the exact same start time, only works
-     * for ground truth (since recordings are not exact)
-     * Does only work if groundtruth is aligned! TuxGuitar produces unaligned MIDI.
+    for ground truth (since recordings are not exact)
+    Does only work if ground truth is aligned! TuxGuitar produces unaligned MIDI.
      * @param notes - notes
      * @returns array of chord arrays
      */
     function detectChordsByExactStart(notes: Note[]): Note[][];
     /**
+     * Detects chords by taking a note as new chord then adding all notes close
+    after it to the chord, until the next note is farther away than the given
+    `threshold`. Then, the next chord is started with this note.
+     * @param notes - notes
+     * @param threshold - threshold
+     * @returns chords
+     */
+    function detectChordsBySimilarStart(notes: Note[], threshold: number): Note[][];
+    /**
      * Detects chords, by simply looking for notes that overlap each other in time.
-     * Example:
-     *    =======
-     *       =========
-     *         ========
-     * Important: Notes must be sorted by start time for this to work correctly.
+    Example:
+       =======
+          =========
+            ========
+    Important: Notes must be sorted by start time for this to work correctly.
      * @param notes - array of Note objects
      * @param sortByPitch - sort chords by pitch? (otherwise sorted
-     *      by note start time)
+         by note start time)
      * @returns array of chord arrays
      */
     function detectChordsByOverlap(notes: Note[], sortByPitch: boolean): Note[][];
     /**
      * Returns chord type, e.g. 'Major', 'Diminished', ...
-     * Important: Notes must be sorted by pitch ascending
+    Important: Notes must be sorted by pitch ascending
      * @param notes - notes (sorted by pitch asc.)
      * @returns chord type
      */
     function getChordType(notes: Note[]): string;
     /**
      * https://github.com/tonaljs/tonal/tree/master/packages/chord
-     * Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
+    Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
      * @param notes - notes
      * @returns possible chord types
      */
@@ -700,6 +709,11 @@ declare module "fileFormats/Midi" {
      */
     const NOTE_NAMES: string[];
     /**
+     * Names of notes, indexed like MIDI numbers, i.e. C is 0, with flats instead of
+    sharps.
+     */
+    const NOTE_NAMES_FLAT: string[];
+    /**
      * Index equals MIDI note number
      */
     const MIDI_NOTES: MidiNote[];
@@ -746,6 +760,14 @@ declare module "fileFormats/MidiParser" {
      * @returns including an array of note objects and meta information
      */
     function preprocessMidiFileData(data: any, splitFormat0IntoTracks: boolean, log: boolean): any;
+    /**
+     * For the notes of one track, computes the notes' indices where new measures
+    start.
+     * @param notes - notes of a track
+     * @param measureTimes - times in seconds where new measures start
+     * @returns measure indices
+     */
+    function getMeasureIndices(notes: Note[], measureTimes: numer[]): number[];
     /**
      * MIDI event types and meta types and their codes
      */
@@ -907,7 +929,9 @@ declare module "graphics/Canvas" {
      */
     function drawCornerLine(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, xFirst?: boolean): void;
     /**
-     * Draws a rounded version of drawCornerLine()
+     * Draws a rounded version of drawCornerLine().
+     * Only works for dendrograms drawn from top-dowm, use
+     * drawRoundedCornerLineRightLeft for right-to-left dendrograms.
      * @param context - canvas rendering context
      * @param x1 - x coordinate of start
      * @param y1 - y coordinate of start
@@ -917,13 +941,54 @@ declare module "graphics/Canvas" {
      */
     function drawRoundedCornerLine(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, maxRadius?: number): void;
     /**
-     * Draws a hexagon
+     * Draws a rounded version of drawRoundedCornerLine for right-to-left
+     * dendrograms.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of start
+     * @param y1 - y coordinate of start
+     * @param x2 - x coordinate of end
+     * @param y2 - y coordinate of end
+     * @param [maxRadius = 25] - maximum radius, fixes possible overlaps
+     */
+    function drawRoundedCornerLineRightLeft(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, maxRadius?: number): void;
+    /**
+     * Draws a hexagon, call context.fill() or context.stroke() afterwards.
      * @param context - canvas rendering context
      * @param cx - center x
      * @param cy - center y
      * @param radius - radius of the circle on which the points are placed
      */
     function drawHexagon(context: CanvasRenderingContext2D, cx: number, cy: number, radius: number): void;
+    /**
+     * Draws a Bezier curve to connect to points in X direction.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of the first point
+     * @param y1 - y coordinate of the first point
+     * @param x2 - x coordinate of the second point
+     * @param y2 - y coordinate of the second point
+     */
+    function drawBezierConnectorX(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number): void;
+    /**
+     * Draws a Bezier curve to connect to points in Y direction.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of the first point
+     * @param y1 - y coordinate of the first point
+     * @param x2 - x coordinate of the second point
+     * @param y2 - y coordinate of the second point
+     */
+    function drawBezierConnectorY(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number): void;
+    /**
+     * Draws a rounded corner, requires x and y distances between points to be
+     * equal.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of the first point
+     * @param y1 - y coordinate of the first point
+     * @param x2 - x coordinate of the second point
+     * @param y2 - y coordinate of the second point
+     * @param turnLeft - true for left turn, false for right turn
+     * @param roundness - corner roundness between 0 (sharp) and 1 (round)
+     */
+    function drawRoundedCorner(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, turnLeft: boolean, roundness: number): void;
 }
 
 /**
@@ -1217,6 +1282,194 @@ declare module "instruments/Piano" {
      */
     const pianoPitchRange: Map<number, object>;
 }
+
+/**
+ * @param notesA - notes
+ * @param notesB - other notes
+ * @returns difference
+ */
+declare function noteCountDifference(notesA: Note[], notesB: Note[]): number;
+
+/**
+ * @param notesA - notes
+ * @param notesB - other notes
+ * @returns difference
+ */
+declare function durationDifference(notesA: Note[], notesB: Note[]): number;
+
+/**
+ * @param notesA - notes
+ * @param notesB - other notes
+ * @returns distance
+ */
+declare function pitchHistogramDistance(notesA: Note[], notesB: Note[]): number;
+
+/**
+ * @param notesA - notes
+ * @param notesB - other notes
+ * @param binSize - bin size in seconds
+ * @returns distance
+ */
+declare function timeBinningDistance(notesA: Note[], notesB: Note[], binSize: number): number;
+
+/**
+ * @param notesA - notes
+ * @param notesB - other notes
+ * @param binSize - bin size in seconds
+ * @returns distance
+ */
+declare function timeBinningDistance2(notesA: Note[], notesB: Note[], binSize: number): number;
+
+/**
+ * Computes the number of notes
+ * @param notes - notes
+ * @returns number of notes
+ */
+declare function notesCount(notes: Note[]): number;
+
+/**
+ * Computes played duration
+ * @param notes - notes
+ * @returns duration
+ */
+declare function duration(notes: Note[]): number;
+
+/**
+ * Computes the number of notes played per second
+ * @param notes - notes
+ * @returns number of notes per second
+ */
+declare function notesPerSecond(notes: Note[]): number;
+
+/**
+ * Computes the number of notes played per relative time (beat)
+ * @param notes - notes
+ * @param [bpm = 120] - tempo in bpm
+ * @returns number of notes per beat
+ */
+declare function notesPerBeat(notes: Note[], bpm?: number): number;
+
+/**
+ * Computes the number of different notes used in different modi.
+- Pitch: note and octave are considered
+- Chroma: only note without octave considered, e.g., C4 == C5
+- Fretboard position: tuple (string, fret) will be compared
+ * @param notes - notes
+ * @param mode - mode
+ * @returns note and usage count
+ */
+declare function differentNotesUsed(notes: Note[], mode: 'pitch' | 'chroma' | 'fretboardPos'): object[];
+
+/**
+ * Computes the ratio of notes that are in the given set.
+Can be used for checking how many notes that were played are part of a
+musical scale, by passing the notes of this scale as set.
+ * @example
+ * const cMaj = new Set(...'CDEFGAB');
+const ratio = ratioNotesInSet(notes, cMaj);
+ * @param notes - notes
+ * @param set - set of note names, e.g. C, D# (no flats)
+ * @returns ratio of notes inside set
+ */
+declare function ratioNotesInSet(notes: Note[], set: Set): number;
+
+/**
+ * Computes the mean and variance of played pitches
+ * @param notes - notes
+ * @returns {mean, variance}
+ */
+declare function pitchMeanAndVariance(notes: Note[]): any;
+
+/**
+ * Computes the mean and variance of played intervals
+ * @param notes - notes
+ * @returns {mean, variance}
+ */
+declare function intervalMeanAndVariance(notes: Note[]): any;
+
+/**
+ * Computes the mean and variance of played dynamics
+ * @param notes - notes
+ * @returns {mean, variance}
+ */
+declare function dynamicsMeanAndVariance(notes: Note[]): any;
+
+/**
+ * Computes the mean and variance of played dynamics
+ * @param notes - notes
+ * @returns {mean, variance}
+ */
+declare function durationMeanAndVariance(notes: Note[]): any;
+
+/**
+ * Computes the mean and variance of onset (start time) differences between
+consecutive notes.
+ * @param notes - notes
+ * @returns {mean, variance}
+ */
+declare function onsetDiffMeanAndVariance(notes: Note[]): any;
+
+/**
+ * Steps: gioing up or down a single note in scale
+Jumps: more than a single note in scale
+ * @param notes - notes
+ * @param scalePitches - numbers in [0, 11] that specify the scale
+ */
+declare function stepsToJumpsRatio(notes: Note[], scalePitches: number[]): void;
+
+/**
+ * Computs the ratio of notes for which one string (or more) where skipped
+between the one before and the current note.
+The `skipped` parameter set the minimum amount of strings between the two
+notes, e.g., going from string 1 to 3 means that one (string 2) was skipped.
+ * @param notes - notes
+ * @param [skipped = 0] - number of strings skipped between notes
+ * @returns ratio of notes where `skipped` string where skipped
+ */
+declare function guitarStringSkips(notes: GuitarNote[], skipped?: number): number;
+
+/**
+ * Computs the ratio of notes for which one fret (or more) where skipped between
+the one before and the current note.
+The `skipped` parameter set the minimum amount of fret between the two
+notes, e.g., going from fret 1 to 3 means that one (fret 2) was skipped.
+ * @param notes - notes
+ * @param [skipped = 0] - number of fret skipped between notes
+ * @returns ratio of notes where `skipped` string where skipped
+ */
+declare function guitarFretSkips(notes: GuitarNote[], skipped?: number): number;
+
+/**
+ * Counts how often harmonies of different sizes occur
+ * @example
+ * // You can use different grouping functions as well, see chords/Chords.js
+ const harmonies = Chords.detectChordsBySimilarStart(notes, theshold);
+ const sizeDistr = harmonySizeDistribution(harmonies);
+ * @param harmonies - groups of notes that belong to harmonies
+ * @returns {size, count}
+ */
+declare function harmonySizeDistribution(harmonies: Note[][]): object[];
+
+/**
+ * Determines the ratio of single notes to multi-note harmonies
+ * @param harmonies - groups of notes that belong to harmonies
+ * @returns ratio of single notes to multi-note harmonies
+ */
+declare function harmonySingleToMultiRatio(harmonies: Note[][]): number;
+
+/**
+ * Computes the pitch intervals between consecutive notes
+ * @param notes - notes
+ * @returns pitch intervals
+ */
+declare function notesToIntervals(notes: Note[]): number[];
+
+/**
+ * Computes the start time differences between consecutive notes
+ * @param notes - notes
+ * @returns start time differences
+ */
+declare function notesToOnsetDifferences(notes: Note[]): number[];
 
 declare module "stringBased/Gotoh" {
     /**
@@ -1523,6 +1776,109 @@ declare class GuitarNote extends Note {
 }
 
 /**
+ * Creates a new Note
+ * @param pitch - pitch
+ * @param start - start time in seconds
+ * @param velocity - velocity
+ * @param channel - MIDI channel
+ * @param end - end time in seconds
+ * @param hole - harmonica hole
+ * @param instruction - instruction, e.g., blow or draw
+ */
+declare class HarmonicaNote extends Note {
+    constructor(pitch: number, start: number, velocity?: number, channel: number, end: number, hole: number, instruction: 'blow' | 'draw' | 'bend' | 'overblow');
+    /**
+     * Creates a HarmonicaNote object from an object via destructuring
+     * @param object - object with at least {pitch}
+     *  {
+     *      pitch: number|string    e.g. 12 or C#4
+     *      start: number           start time in seconds
+     *      end: number             end time in seconds
+     *      velocity: number        MIDI velocity
+     *      channel: number         MIDI channel
+     *      hole: number            harmonica hole
+     *      instruction: string     instruction, e.g., blow or draw
+     *  }
+     * @returns new note
+     */
+    static from(object: any): HarmonicaNote;
+    /**
+     * Converts a Note to a Harmonica
+     * @param note - note
+     * @param hole - harmonica hole
+     * @param instruction - instruction, e.g., blow or draw
+     * @returns harmonica note
+     */
+    static fromNote(note: Note, hole: number, instruction: 'blow' | 'draw' | 'bend' | 'overblow'): HarmonicaNote;
+    /**
+     * Simplifies the HarmonicaNote to a Note
+     * @returns note
+     */
+    toNote(): Note;
+    /**
+     * Returns a copy of the Note object
+     * @returns new note
+     */
+    clone(): GuitarNote;
+    /**
+     * Returns true if this note and otherNote have equal attributes.
+     * @param otherNote - another GuitarNote
+     * @returns true if equal
+     */
+    equals(otherNote: GuitarNote): boolean;
+    /**
+     * Human-readable string representation of this HarmonicaNote
+     * @param short - if true, attribute names will be shortened
+     * @returns string representation
+     */
+    toString(short: boolean): string;
+    /**
+     * Returns the duration of this note in seconds
+     * @returns note duration
+     */
+    getDuration(): number;
+    /**
+     * Returns the note's name and octave, e.g. 'C#3'
+     * @returns note name as string
+     */
+    getName(): string;
+    /**
+     * Returns the note's name WITHOUT the octave, e.g. 'C#'
+     * @returns note name as string
+     */
+    getLetter(): string;
+    /**
+     * Returns the note's octave
+     * @returns the note's octave
+     */
+    getOctave(): number;
+    /**
+     * Returns a new Note where start and end are multiplied by factor
+     * @param addedSeconds - seconds to be added to start and end
+     * @returns new note
+     */
+    shiftTime(addedSeconds: number): Note;
+    /**
+     * Returns a new Note where start and end are multiplied by factor
+     * @param factor - factor to scale start and end with
+     * @returns new note
+     */
+    scaleTime(factor: number): Note;
+    /**
+     * Returns true, if this Note and otherNote overlap in time.
+     * @param otherNote - another Note
+     * @returns true if they overlap
+     */
+    overlapsInTime(otherNote: Note): boolean;
+    /**
+     * Returns the amount of seconds this Note and otherNote overlap in time.
+     * @param otherNote - another Note
+     * @returns seconds of overlap
+     */
+    overlapInSeconds(otherNote: Note): number;
+}
+
+/**
  * Do not use this constructor, but the static methods MusicPiece.fromMidi
 and MusicPiece.fromMusicXml instead.
  * @param name - name (e.g. file name or piece name)
@@ -1620,6 +1976,7 @@ declare class MusicPiece {
     (semitone) steps.
     Will return a new MusicPiece instance.
     Note pitches will be clipped to [0, 127].
+    Will not change playing instructions such as string and fret.
      * @param steps - number of semitones to transpose (can be negative)
      * @param tracks - tracks to transpose
      * @returns a new, transposed MusicPiece
@@ -2184,6 +2541,20 @@ declare module "utils/ArrayUtils" {
      */
     function getMatrixMax(matrix: number[][]): number;
     /**
+     * Normalizes by dividing all entries by the maximum.
+    Only for positive values!
+     * @param array - nD array with arbitrary depth and structure
+     * @returns normalized array
+     */
+    function normalizeNdArray(array: any[]): any[];
+    /**
+     * Assumes same shape of matrices.
+     * @param matrixA - a matrix
+     * @param matrixB - a matrix
+     * @returns Euclidean distance of the two matrices
+     */
+    function euclideanDistance(matrixA: number[][], matrixB: number[][]): number;
+    /**
      * Stringifies a 2D array / matrix for logging onto the console.
      * @param matrix - the matrix
      * @param colSeparator - column separator
@@ -2377,6 +2748,13 @@ declare module "utils/MusicUtils" {
      * @returns MIDI note number (not rounded)
      */
     function freqToApproxMidiNr(frequency: number): number;
+    /**
+     * Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to its
+    frequency.
+     * @param midi - MIDI note number
+     * @returns frequency in Hz
+     */
+    function midiToFrequency(midi: number): number;
     /**
      * Turns a chord into an integer that uniquely describes the occuring chroma.
     If the same chroma occurs twice this will not make a difference
