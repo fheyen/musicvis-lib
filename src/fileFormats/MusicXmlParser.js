@@ -88,6 +88,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     const beatTypeChanges = [];
     const keySignatureChanges = [];
     const noteObjs = [];
+    const noteLyricsMap = new Map();
     // Time in seconds of the start of new measures
     const measureLinePositions = [];
     // Indices of notes where a new measure starts
@@ -208,9 +209,16 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                         const noteEnd = currentTime + durationInSeconds;
                         // Find last note with this pitch and update end
                         for (let index = noteObjs.length - 1; index > 0; index--) {
-                            const n = noteObjs[index];
-                            if (n.pitch === pitch) {
-                                n.end = noteEnd;
+                            const noteObject = noteObjs[index];
+                            if (noteObject.pitch === pitch) {
+                                noteObject.end = noteEnd;
+                                // Read lyrics and add to note
+                                const lyrics = getLyricsFromNote(note);
+                                if (lyrics.length > 0) {
+                                    const oldLyrics = noteLyricsMap.get(index) ?? '';
+                                    const newLyrics = `${oldLyrics} ${lyrics}`;
+                                    noteLyricsMap.set(index, newLyrics);
+                                }
                                 break;
                             }
                         }
@@ -248,6 +256,11 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                                 endTime,
                             ));
                         }
+                        // Read lyrics
+                        const lyrics = getLyricsFromNote(note);
+                        if (lyrics.length > 0) {
+                            noteLyricsMap.set(noteObjs.length - 1, lyrics);
+                        }
                     }
                     lastNoteDuration = durationInSeconds;
                     currentTime += durationInSeconds;
@@ -279,9 +292,26 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         beatTypeChanges,
         keySignatureChanges,
         tuning: getTuningPitches(measures),
+        noteLyricsMap,
     };
     // console.log('[MusicXmlParser] Parsed part: ', result);
     return result;
+}
+
+/**
+ * Reads lyrics from a note element
+ *
+ * @param {HTMLElement} note note element
+ * @returns {string} lyrics for this note
+ */
+function getLyricsFromNote(note) {
+    const lyric = note.querySelectorAll('lyric');
+    let texts = [];
+    for (const l of lyric) {
+        texts.push(l.querySelectorAll('text')[0].textContent);
+    }
+    const text = texts.join(' ');
+    return text;
 }
 
 /**
