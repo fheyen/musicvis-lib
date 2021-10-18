@@ -789,6 +789,12 @@ declare module "fileFormats/MusicXmlParser" {
      */
     function preprocessMusicXmlData(xml: XMLDocument, log: boolean): any;
     /**
+     * Reads lyrics from a note element
+     * @param note - note element
+     * @returns lyrics for this note
+     */
+    function getLyricsFromNote(note: HTMLElement): string;
+    /**
      * Returns a map containing maps, such that result.get(partId).get(instrId)
     gives you the instrument with the ID instrId as defined in the part partId.
     
@@ -1946,7 +1952,7 @@ declare class MusicPiece {
      * @param json - JSON
      * @returns new MusicPiece
      */
-    static fromJson(json: string | JSON): MusicPiece;
+    static fromJson(json: string | any): MusicPiece;
     /**
      * Returns a JSON-serialized representation
      * @example

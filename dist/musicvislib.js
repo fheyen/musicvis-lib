@@ -1,11 +1,11 @@
-// musicvis-lib v0.52.0 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.52.1 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.52.0";
+  var version="0.52.1";
 
   /**
    * Lookup for many MIDI specifications.
@@ -9752,7 +9752,9 @@
     const tempoChanges = [];
     const beatTypeChanges = [];
     const keySignatureChanges = [];
-    const noteObjs = []; // Time in seconds of the start of new measures
+    const noteObjs = [];
+    const measureRehearsalMap = new Map();
+    const noteLyricsMap = new Map(); // Time in seconds of the start of new measures
 
     const measureLinePositions = []; // Indices of notes where a new measure starts
 
@@ -9830,8 +9832,29 @@
           // Handle directions such as dynamics
           for (const direction of child.children) {
             if (direction.nodeName === 'sound' && direction.getAttribute('dynamics')) {
+              // Dynamics
               // Convert number... https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
               velocity = Math.round(velocityFactor * +direction.getAttribute('dynamics'));
+            }
+
+            if (child.querySelectorAll('rehearsal').length > 0) {
+              // Reheasal marks (used as section indicators by GuitarPro)
+              const rehearsals = child.querySelectorAll('rehearsal');
+              const marks = [];
+
+              for (const r of rehearsals) {
+                marks.push(r.textContent);
+              }
+
+              let text = marks.join(' ');
+              const measureIndex = measureIndices.length;
+
+              if (measureRehearsalMap.has(measureIndex)) {
+                const oldText = measureRehearsalMap.get(measureIndex);
+                text = `${oldText} ${text}`;
+              }
+
+              measureRehearsalMap.set(measureIndex, text);
             } // TODO: handle others, e.g. tempo
             // if (direction.nodeName === 'sound' && direction.getAttribute('tempo')) {
             //     const tempoValue = Math.round(+direction.getAttribute('tempo'));
@@ -9898,10 +9921,21 @@
               const noteEnd = currentTime + durationInSeconds; // Find last note with this pitch and update end
 
               for (let index = noteObjs.length - 1; index > 0; index--) {
-                const n = noteObjs[index];
+                const noteObject = noteObjs[index];
 
-                if (n.pitch === pitch) {
-                  n.end = noteEnd;
+                if (noteObject.pitch === pitch) {
+                  noteObject.end = noteEnd; // Read lyrics and add to note
+
+                  const lyrics = getLyricsFromNote(note);
+
+                  if (lyrics.length > 0) {
+                    var _noteLyricsMap$get;
+
+                    const oldLyrics = (_noteLyricsMap$get = noteLyricsMap.get(index)) !== null && _noteLyricsMap$get !== void 0 ? _noteLyricsMap$get : '';
+                    const newLyrics = `${oldLyrics} ${lyrics}`;
+                    noteLyricsMap.set(index, newLyrics);
+                  }
+
                   break;
                 }
               }
@@ -9928,6 +9962,13 @@
               } else {
                 noteObjs.push(new Note$2(pitch, startTime, velocity, // MusicXML starts with 1 but MIDI with 0
                 staff - 1, endTime));
+              } // Read lyrics
+
+
+              const lyrics = getLyricsFromNote(note);
+
+              if (lyrics.length > 0) {
+                noteLyricsMap.set(noteObjs.length - 1, lyrics);
               }
             }
 
@@ -9973,13 +10014,34 @@
       totalTime: currentTime,
       measureLinePositions,
       measureIndices,
+      measureRehearsalMap,
       tempoChanges,
       beatTypeChanges,
       keySignatureChanges,
-      tuning: getTuningPitches(measures)
+      tuning: getTuningPitches(measures),
+      noteLyricsMap
     }; // console.log('[MusicXmlParser] Parsed part: ', result);
 
     return result;
+  }
+  /**
+   * Reads lyrics from a note element
+   *
+   * @param {HTMLElement} note note element
+   * @returns {string} lyrics for this note
+   */
+
+
+  function getLyricsFromNote(note) {
+    const lyric = note.querySelectorAll('lyric');
+    let texts = [];
+
+    for (const l of lyric) {
+      texts.push(l.querySelectorAll('text')[0].textContent);
+    }
+
+    const text = texts.join(' ');
+    return text;
   }
   /**
    * Calculates the duration in seconds of a note, rest or backup
@@ -11293,14 +11355,14 @@
       } // Tracks
 
 
-      const tracks = parsed.tracks.map((t, index) => Track.fromMidi(t.trackName, t.instrumentName, t.noteObjs, index, t.measureIndices));
+      const tracks = parsed.tracks.map(track => new Track(track.trackName, track.instrumentName, track.noteObjs, null, track.measureIndices, new Map(), new Map()));
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
      * Creates a MusicPiece object from a MIDI file binary
      *
-     * @todo on hold until @tonejs/midi adds time in seconds for meta events
      * @deprecated This is not fully implemented yet
+     * @todo on hold until @tonejs/midi adds time in seconds for meta events
      * @todo use @tonejs/midi for parsing, but the same information as with
      * MusicPiece.fromMidi()
      * @see https://github.com/Tonejs/Midi
@@ -11416,13 +11478,19 @@
       } // Tracks
 
 
-      const tracks = parsed.parts.map((t, index) => Track.fromMusicXml(parsed.partNames[index], parsed.instruments[index], t.noteObjs, index, t.tuning, t.measureIndices));
+      const tracks = parsed.parts.map((track, index) => {
+        for (const n of track.noteObjs) {
+          n.channel = index;
+        }
+
+        return new Track(parsed.partNames[index], parsed.instruments[index], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap);
+      });
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
      * Allows to get a MusicPiece from JSON after doing JSON.stringify()
      *
-     * @param {string|JSON} json JSON
+     * @param {string|object} json JSON
      * @returns {MusicPiece} new MusicPiece
      * @example
      *      const jsonString = mp.toJson();
@@ -11437,12 +11505,7 @@
       const timeSignatures = json.timeSignatures.map(d => new TimeSignature(d.time, d.signature));
       const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale));
       const measureTimes = json.measureTimes;
-      const tracks = json.tracks.map(track => {
-        const notes = track.notes.map(note => {
-          return note.string !== undefined && note.fret !== undefined ? GuitarNote.from(note) : Note$2.from(note);
-        });
-        return new Track(track.name, track.instrument, notes, track.tuningPitches, track.measureIndices);
-      });
+      const tracks = json.tracks.map(track => Track.from(track));
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
@@ -11457,7 +11520,10 @@
 
 
     toJson(pretty = false) {
-      return JSON.stringify(this, undefined, pretty ? 2 : 0);
+      const _this = { ...this,
+        tracks: this.tracks.map(d => d.toObject())
+      };
+      return JSON.stringify(_this, undefined, pretty ? 2 : 0);
     }
     /**
      * Returns an array with all notes from all tracks.
@@ -11556,11 +11622,16 @@
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
-     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's tuning
-     * @param {number[]} [measureIndices=null] note indices where new measures start
+     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
+     *  tuning
+     * @param {number[]} [measureIndices=null] note indices where new measures
+     *  start
+     * @param {Map<number,object>} measureRehearsalMap maps measure index to
+     *  rehearsal marks
+     * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
      * @throws {'Notes are undefined or not an array'} for invalid notes
      */
-    constructor(name, instrument, notes, tuningPitches = null, measureIndices = null) {
+    constructor(name, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap) {
       var _name;
 
       name = !((_name = name) !== null && _name !== void 0 && _name.length) ? 'unnamed' : name.replace('\u0000', '');
@@ -11573,7 +11644,9 @@
 
       this.notes = notes.sort((a, b) => a.start - b.start);
       this.tuningPitches = tuningPitches;
-      this.measureIndices = measureIndices; // Computed properties
+      this.measureIndices = measureIndices;
+      this.measureRehearsalMap = measureRehearsalMap;
+      this.noteLyricsMap = noteLyricsMap; // Computed properties
 
       this.duration = new NoteArray(notes).getDuration();
       this.hasStringFret = false;
@@ -11586,38 +11659,36 @@
       }
     }
     /**
-     * Creates a new Track from a MusicXML track
+     * Returns an object representation of this Track, turns Maps into Arrays
+     *  to work with JSON.stringify
      *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number[]} [measureIndices=null] note indices where new measures start
-     * @returns {Track} new Track
+     * @returns {object} object represntation
      */
 
 
-    static fromMidi(name, instrument, notes, measureIndices) {
-      return new Track(name, instrument, notes, null, measureIndices);
+    toObject() {
+      console.log(this.measureRehearsalMap);
+      return { ...this,
+        measureRehearsalMap: [...this.measureRehearsalMap],
+        noteLyricsMap: [...this.noteLyricsMap]
+      };
     }
     /**
-     * Creates a new Track from a MusicXML track
+     * Parses an object into a Track, must have same format as the result of
+     * Track.toObject().
      *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number} channel channel
-     * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
-     * @param {number[]} [measureIndices=null] note indices where new measures start
-     * @returns {Track} new Track
+     * @param {object} object object represntation of a Track
+     * @returns {Track} track
      */
 
 
-    static fromMusicXml(name, instrument, notes, channel, tuningPitches = null, measureIndices = null) {
-      for (const n of notes) {
-        n.channel = channel;
-      }
-
-      return new Track(name, instrument, notes, tuningPitches, measureIndices);
+    static from(object) {
+      const notes = object.notes.map(note => {
+        return note.string !== undefined && note.fret !== undefined ? GuitarNote.from(note) : Note$2.from(note);
+      });
+      const measureRehearsalMap = new Map(object.measureRehearsalMap);
+      const noteLyricsMap = new Map(object.noteLyricsMap);
+      return new Track(object.name, object.instrument, notes, object.tuningPitches, object.measureIndices, measureRehearsalMap, noteLyricsMap);
     }
 
   }
