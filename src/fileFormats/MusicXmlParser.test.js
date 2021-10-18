@@ -812,8 +812,7 @@ describe('MusicXmlParser', () => {
 
 
 
-
-    test('rehearsal makrs', () => {
+    test('rehearsal marks', () => {
         const parsed = readXmlAndProcess('[Test] Rehearsal Marks.musicxml');
         expect(Array.from(parsed.parts[0].measureRehearsalMap)).toStrictEqual([
             [0, 'A'],

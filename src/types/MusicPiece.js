@@ -99,12 +99,14 @@ class MusicPiece {
             measureTimes = parsed.measureLinePositions;
         }
         // Tracks
-        const tracks = parsed.tracks.map((t, index) => Track.fromMidi(
-            t.trackName,
-            t.instrumentName,
-            t.noteObjs,
-            index,
-            t.measureIndices,
+        const tracks = parsed.tracks.map((track) => new Track(
+            track.trackName,
+            track.instrumentName,
+            track.noteObjs,
+            null,
+            track.measureIndices,
+            new Map(),
+            new Map(),
         ));
         return new MusicPiece(
             name,
@@ -119,8 +121,8 @@ class MusicPiece {
     /**
      * Creates a MusicPiece object from a MIDI file binary
      *
-     * @todo on hold until @tonejs/midi adds time in seconds for meta events
      * @deprecated This is not fully implemented yet
+     * @todo on hold until @tonejs/midi adds time in seconds for meta events
      * @todo use @tonejs/midi for parsing, but the same information as with
      * MusicPiece.fromMidi()
      * @see https://github.com/Tonejs/Midi
@@ -241,14 +243,20 @@ class MusicPiece {
         }
         // Tracks
         const tracks = parsed.parts
-            .map((t, index) => Track.fromMusicXml(
-                parsed.partNames[index],
-                parsed.instruments[index],
-                t.noteObjs,
-                index,
-                t.tuning,
-                t.measureIndices,
-            ));
+            .map((track, index) => {
+                for (const n of track.noteObjs) {
+                    n.channel = index;
+                }
+                return new Track(
+                    parsed.partNames[index],
+                    parsed.instruments[index],
+                    track.noteObjs,
+                    track.tuning,
+                    track.measureIndices,
+                    track.measureRehearsalMap,
+                    track.noteLyricsMap,
+                );
+            });
         return new MusicPiece(
             name,
             tempos,
@@ -262,7 +270,7 @@ class MusicPiece {
     /**
      * Allows to get a MusicPiece from JSON after doing JSON.stringify()
      *
-     * @param {string|JSON} json JSON
+     * @param {string|object} json JSON
      * @returns {MusicPiece} new MusicPiece
      * @example
      *      const jsonString = mp.toJson();
@@ -275,20 +283,7 @@ class MusicPiece {
         const timeSignatures = json.timeSignatures.map(d => new TimeSignature(d.time, d.signature));
         const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale));
         const measureTimes = json.measureTimes;
-        const tracks = json.tracks.map(track => {
-            const notes = track.notes.map(note => {
-                return note.string !== undefined && note.fret !== undefined
-                    ? GuitarNote.from(note)
-                    : Note.from(note);
-            });
-            return new Track(
-                track.name,
-                track.instrument,
-                notes,
-                track.tuningPitches,
-                track.measureIndices,
-            );
-        });
+        const tracks = json.tracks.map(track => Track.from(track));
         return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
 
@@ -302,7 +297,11 @@ class MusicPiece {
      *      const recovered = MusicPiece.fromJson(jsonString);
      */
     toJson(pretty = false) {
-        return JSON.stringify(this, undefined, pretty ? 2 : 0);
+        const _this = {
+            ...this,
+            tracks: this.tracks.map(d => d.toObject()),
+        };
+        return JSON.stringify(_this, undefined, pretty ? 2 : 0);
     }
 
     /**
@@ -408,8 +407,13 @@ export class Track {
      * @param {string} name name
      * @param {string} instrument instrument name
      * @param {Note[]} notes notes
-     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's tuning
-     * @param {number[]} [measureIndices=null] note indices where new measures start
+     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
+     *  tuning
+     * @param {number[]} [measureIndices=null] note indices where new measures
+     *  start
+     * @param {Map<number,object>} measureRehearsalMap maps measure index to
+     *  rehearsal marks
+     * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
      * @throws {'Notes are undefined or not an array'} for invalid notes
      */
     constructor(
@@ -418,6 +422,8 @@ export class Track {
         notes,
         tuningPitches = null,
         measureIndices = null,
+        measureRehearsalMap,
+        noteLyricsMap,
     ) {
         name = !name?.length ? 'unnamed' : name.replace('\u0000', '');
         this.name = name;
@@ -428,6 +434,8 @@ export class Track {
         this.notes = notes.sort((a, b) => a.start - b.start);
         this.tuningPitches = tuningPitches;
         this.measureIndices = measureIndices;
+        this.measureRehearsalMap = measureRehearsalMap;
+        this.noteLyricsMap = noteLyricsMap;
         // Computed properties
         this.duration = new NoteArray(notes).getDuration();
         this.hasStringFret = false;
@@ -440,46 +448,43 @@ export class Track {
     }
 
     /**
-     * Creates a new Track from a MusicXML track
+     * Returns an object representation of this Track, turns Maps into Arrays
+     *  to work with JSON.stringify
      *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number[]} [measureIndices=null] note indices where new measures start
-     * @returns {Track} new Track
+     * @returns {object} object represntation
      */
-    static fromMidi(name, instrument, notes, measureIndices) {
-        return new Track(name, instrument, notes, null, measureIndices);
+    toObject() {
+        console.log(this.measureRehearsalMap);
+        return {
+            ...this,
+            measureRehearsalMap: [...this.measureRehearsalMap],
+            noteLyricsMap: [...this.noteLyricsMap],
+        };
     }
 
     /**
-     * Creates a new Track from a MusicXML track
+     * Parses an object into a Track, must have same format as the result of
+     * Track.toObject().
      *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes parsed MusicXML track's notes
-     * @param {number} channel channel
-     * @param {number[]} tuningPitches MIDI note numbers of the track's tuning
-     * @param {number[]} [measureIndices=null] note indices where new measures start
-     * @returns {Track} new Track
+     * @param {object} object object represntation of a Track
+     * @returns {Track} track
      */
-    static fromMusicXml(
-        name,
-        instrument,
-        notes,
-        channel,
-        tuningPitches = null,
-        measureIndices = null,
-    ) {
-        for (const n of notes) {
-            n.channel = channel;
-        }
+    static from(object) {
+        const notes = object.notes.map(note => {
+            return note.string !== undefined && note.fret !== undefined
+                ? GuitarNote.from(note)
+                : Note.from(note);
+        });
+        const measureRehearsalMap = new Map(object.measureRehearsalMap);
+        const noteLyricsMap = new Map(object.noteLyricsMap);
         return new Track(
-            name,
-            instrument,
+            object.name,
+            object.instrument,
             notes,
-            tuningPitches,
-            measureIndices,
+            object.tuningPitches,
+            object.measureIndices,
+            measureRehearsalMap,
+            noteLyricsMap,
         );
     }
 }

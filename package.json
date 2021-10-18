@@ -39,6 +39,7 @@
     "build": "rollup -c",
     "test": "jest --coverage",
     "testch": "jest --coverage --changedFilesWithAncestor",
+    "testfail": "jest --changedFilesWithAncestor --onlyFailures",
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
