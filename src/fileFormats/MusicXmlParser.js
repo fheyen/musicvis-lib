@@ -88,6 +88,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     const beatTypeChanges = [];
     const keySignatureChanges = [];
     const noteObjs = [];
+    const measureRehearsalMap = new Map();
     const noteLyricsMap = new Map();
     // Time in seconds of the start of new measures
     const measureLinePositions = [];
@@ -154,8 +155,24 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                 // Handle directions such as dynamics
                 for (const direction of child.children) {
                     if (direction.nodeName === 'sound' && direction.getAttribute('dynamics')) {
+                        // Dynamics
                         // Convert number... https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
                         velocity = Math.round(velocityFactor * +direction.getAttribute('dynamics'));
+                    }
+                    if (child.querySelectorAll('rehearsal').length > 0) {
+                        // Reheasal marks (used as section indicators by GuitarPro)
+                        const rehearsals = child.querySelectorAll('rehearsal');
+                        const marks = [];
+                        for (const r of rehearsals) {
+                            marks.push(r.textContent);
+                        }
+                        let text = marks.join(' ');
+                        const measureIndex = measureIndices.length;
+                        if (measureRehearsalMap.has(measureIndex)) {
+                            const oldText = measureRehearsalMap.get(measureIndex);
+                            text = `${oldText} ${text}`;
+                        }
+                        measureRehearsalMap.set(measureIndex, text);
                     }
                     // TODO: handle others, e.g. tempo
                     // if (direction.nodeName === 'sound' && direction.getAttribute('tempo')) {
@@ -288,6 +305,7 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         totalTime: currentTime,
         measureLinePositions,
         measureIndices,
+        measureRehearsalMap,
         tempoChanges,
         beatTypeChanges,
         keySignatureChanges,

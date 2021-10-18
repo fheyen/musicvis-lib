@@ -811,29 +811,41 @@ describe('MusicXmlParser', () => {
     });
 
 
-    describe('lyrics', () => {
-        test('lyrics', () => {
-            const parsed = readXmlAndProcess('[Test] Lyrics.musicxml');
-            expect(parsed.parts[0].noteObjs.length).toBe(24);
-            expect(
-                Array.from(parsed.parts[0].noteLyricsMap)
-            ).toStrictEqual([
-                [0, '0'],
-                [1, '1'],
-                [2, '2'],
-                [3, '3'],
-                [4, '4'],
-                [5, '5'],
-                [6, '6'],
-                [7, '7 7b'],
-                [8, '8'],
-                [9, '9 9b'],
-                [10, '10'],
-                [11, '11'],
-                [14, '14'],
-                [15, '15'],
-                [22, '22'],
-            ]);
-        });
+
+
+    test('rehearsal makrs', () => {
+        const parsed = readXmlAndProcess('[Test] Rehearsal Marks.musicxml');
+        expect(Array.from(parsed.parts[0].measureRehearsalMap)).toStrictEqual([
+            [0, 'A'],
+            [1, 'B'],
+            [2, 'C'],
+            [3, 'D E'],
+        ]);
+
+    });
+
+
+    test('lyrics', () => {
+        const parsed = readXmlAndProcess('[Test] Lyrics.musicxml');
+        // expect(parsed.parts[0].noteObjs.length).toBe(24);
+        expect(
+            Array.from(parsed.parts[0].noteLyricsMap)
+        ).toStrictEqual([
+            [0, '0'],
+            [1, '1'],
+            [2, '2'],
+            [3, '3'],
+            [4, '4'],
+            [5, '5'],
+            [6, '6'],
+            [7, '7 7b'],
+            [8, '8'],
+            [9, '9 9b'],
+            [10, '10'],
+            [11, '11'],
+            [14, '14'],
+            [15, '15'],
+            [22, '22'],
+        ]);
     });
 });
