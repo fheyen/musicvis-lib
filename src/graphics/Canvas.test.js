@@ -27,6 +27,10 @@ describe('Canvas', () => {
     test('drawVLine', () => {
         expect(() => Canv.drawVLine(ctx, 30, 50, 10)).not.toThrow();
     });
+    test('drawBowRight', () => {
+        expect(() => Canv.drawBowRight(ctx, 30, 50, 10, 10)).not.toThrow();
+        expect(() => Canv.drawBowRight(ctx, 30, 50, 10, 10, 0)).not.toThrow();
+    });
 
     test('draw filled circle', () => {
         expect(() => Canv.drawFilledCircle(ctx, 50, 50, 10)).not.toThrow();

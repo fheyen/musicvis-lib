@@ -85,6 +85,32 @@ export function drawVLine(context, x, y1, y2) {
 }
 
 /**
+ * Draws a line that bows to the right in the direction of travel, thereby
+ * encoding direction. Useful for node-link graphs.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x1 x coordinate of the start
+ * @param {number} y1 y coordinate of the start
+ * @param {number} x2 x coordinate of end
+ * @param {number} y2 y coordinate of end
+ * @param {number} [strength=0.5] how much the bow deviates from a straight line
+ */
+export function drawBowRight(context, x1, y1, x2, y2, strength = 0.5) {
+    const middleX = (x1 + x2) / 2;
+    const middleY = (y1 + y2) / 2;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const normalX = -dy;
+    const normalY = dx;
+    const cx = middleX + strength * normalX;
+    const cy = middleY + strength * normalY;
+    context.beginPath();
+    context.moveTo(x1, y1);
+    context.bezierCurveTo(cx, cy, cx, cy, x2, y2);
+    context.stroke();
+}
+
+/**
  * Draws a stroked circle.
  *
  * @param {CanvasRenderingContext2D} context canvas rendering context

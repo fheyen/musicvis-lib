@@ -61,4 +61,6 @@ Run `npm run deploy` (will first run `predeploy`) to also create a tag and commi
 
 ### Structure and Internal Dependencies
 
-In VSCode you can generate a dependcy graph via [a plugin](https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser).
+You can see a visual dependency graph [here](https://observablehq.com/@mbostock/package-dependencies?name=musicvis-lib@latest).
+
+In VSCode you can generate such a graph via [a plugin](https://marketplace.visualstudio.com/items?itemName=juanallo.vscode-dependency-cruiser).

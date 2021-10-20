@@ -94,3 +94,17 @@ export function delay(seconds) {
         setTimeout(resolve, seconds * 1000);
     });
 }
+
+/**
+ * Determines the perceptual lightness of an HTML color
+ *
+ * @see https://stackoverflow.com/a/596241 (but normalizing to 0, 100)
+ * @param {string} color HTML color specifier
+ * @returns {number} lightness in [0, 100]
+ */
+export function getColorLightness(color) {
+    const { r, g, b } = d3.color(color).rgb();
+    // eslint-disable-next-line no-bitwise
+    const Y = (r + r + r + b + g + g + g + g) >> 3;
+    return Y / 2.55;
+}
