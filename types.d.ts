@@ -852,6 +852,17 @@ declare module "graphics/Canvas" {
      */
     function drawVLine(context: CanvasRenderingContext2D, x: number, y1: number, y2: number): void;
     /**
+     * Draws a line that bows to the right in the direction of travel, thereby
+     * encoding direction. Useful for node-link graphs.
+     * @param context - canvas rendering context
+     * @param x1 - x coordinate of the start
+     * @param y1 - y coordinate of the start
+     * @param x2 - x coordinate of end
+     * @param y2 - y coordinate of end
+     * @param [strength = 0.5] - how much the bow deviates from a straight line
+     */
+    function drawBowRight(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, strength?: number): void;
+    /**
      * Draws a stroked circle.
      * @param context - canvas rendering context
      * @param x - x coordinate of center
@@ -2737,6 +2748,12 @@ declare module "utils/MiscUtils" {
          of seconds
      */
     function delay(seconds: number): Promise;
+    /**
+     * Determines the perceptual lightness of an HTML color
+     * @param color - HTML color specifier
+     * @returns lightness in [0, 100]
+     */
+    function getColorLightness(color: string): number;
 }
 
 declare module "utils/MusicUtils" {
