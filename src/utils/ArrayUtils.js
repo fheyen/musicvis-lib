@@ -136,22 +136,14 @@ export function arrayContainsArray(a, b) {
 }
 
 /**
- * Returns the maximum numerical value from an array of arrays
+ * Returns the maximum numerical value from an array of arrays with arbitrary
+ * depth and structure.
  *
- * @param {number[][]} matrix matrix
+ * @param {Array} array array
  * @returns {number} maximum value
  */
-export function getMatrixMax(matrix) {
-    let maximum = Number.NEGATIVE_INFINITY;
-    for (const row of matrix) {
-        for (const value of row) {
-            if (Number.isNaN(+value)) { continue; }
-            if (value > maximum) {
-                maximum = value;
-            }
-        }
-    }
-    return maximum;
+export function getArrayMax(array) {
+    return d3.max(array.flat(Number.POSITIVE_INFINITY));
 }
 
 /**

@@ -230,8 +230,6 @@ describe('MusicPiece', () => {
         //     expect(mp).toStrictEqual(recovered);
         // });
         test.each([mpMidi, mpXml])('with mp.toJson', (mp) => {
-            console.log(mp.name);
-
             const json = mp.toJson();
             const recovered = MusicPiece.fromJson(json);
             expect(mp).toStrictEqual(recovered);

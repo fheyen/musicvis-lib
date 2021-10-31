@@ -1,10 +1,13 @@
 export {
     arrayShallowEquals,
     jaccardIndex,
+    kendallTau,
     removeDuplicates,
     arrayContainsArray,
     arrayHasSameElements,
-    getMatrixMax,
+    getArrayMax,
+    normalizeNdArray,
+    euclideanDistance,
     formatMatrix,
     binarySearch,
 } from './ArrayUtils.js';
@@ -13,6 +16,11 @@ export {
     blobToBase64,
     blobToFileExtension,
 } from './BlobUtils.js';
+
+export {
+    getColorLightness,
+    averageColor,
+} from './ColorUtils.js';
 
 export {
     formatDate,

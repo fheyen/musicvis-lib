@@ -85,8 +85,8 @@ export function drawVLine(context, x, y1, y2) {
 }
 
 /**
- * Draws a line that bows to the right in the direction of travel, thereby
- * encoding direction. Useful for node-link graphs.
+ * Draws a line that bows to the right in the direction of travel (looks like a
+ * left turn), thereby encoding direction. Useful for node-link graphs.
  *
  * @param {CanvasRenderingContext2D} context canvas rendering context
  * @param {number} x1 x coordinate of the start
@@ -94,6 +94,7 @@ export function drawVLine(context, x, y1, y2) {
  * @param {number} x2 x coordinate of end
  * @param {number} y2 y coordinate of end
  * @param {number} [strength=0.5] how much the bow deviates from a straight line
+ *      towards the right, negative values will make bows to the left
  */
 export function drawBowRight(context, x1, y1, x2, y2, strength = 0.5) {
     const middleX = (x1 + x2) / 2;
@@ -473,4 +474,58 @@ export function drawRoundedCorner(context, x1, y1, x2, y2, turnLeft = true, roun
     }
     context.lineTo(x2, y2);
     context.stroke();
+}
+
+
+/**
+ * Draws an arc that connects similar parts.
+ * Both parts must have the same width in pixels.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} startX1 x coordinate of the start of the first part
+ * @param {number} startX2 x coordinate of the start of the second part
+ * @param {number} length length in pixels of the parts
+ * @param {number} yBottom bottom baseline y coordinate
+ */
+export function drawArc(context, startX1, startX2, length, yBottom) {
+    // Get center and radius
+    const radius = (startX2 - startX1) / 2;
+    const cx = startX1 + radius + length / 2;
+    context.lineWidth = length;
+    context.beginPath();
+    context.arc(cx, yBottom, radius, Math.PI, 2 * Math.PI);
+    context.stroke();
+}
+
+/**
+ * Draws a more complex path and fills it.
+ * Two arcs: One from startX1 to endX2 on the top, one from endX1 to startX2
+ * below it.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} startX1 x coordinate of the start of the first part
+ * @param {number} endX1 x coordinate of the end of the first part
+ * @param {number} startX2 x coordinate of the start of the second part
+ * @param {number} endX2 x coordinate of the end of the second part
+ * @param {number} yBottom bottom baseline y coordinate
+ */
+export function drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBottom) {
+    // Get center and radius
+    const radiusTop = (endX2 - startX1) / 2;
+    if (radiusTop < 0) {
+        return;
+    }
+    let radiusBottom = (startX2 - endX1) / 2;
+    if (radiusBottom < 0) {
+        radiusBottom = 0;
+    }
+    const cxTop = startX1 + radiusTop;
+    const cxBottom = endX1 + radiusBottom;
+    context.beginPath();
+    context.moveTo(startX1, yBottom);
+    context.arc(cxTop, yBottom, radiusTop, Math.PI, 2 * Math.PI);
+    context.lineTo(startX2, yBottom);
+    context.arc(cxBottom, yBottom, radiusBottom, 2 * Math.PI, Math.PI, true);
+    context.closePath();
+    context.fill();
 }

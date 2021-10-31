@@ -454,7 +454,6 @@ export class Track {
      * @returns {object} object represntation
      */
     toObject() {
-        console.log(this.measureRehearsalMap);
         return {
             ...this,
             measureRehearsalMap: [...this.measureRehearsalMap],

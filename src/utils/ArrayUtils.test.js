@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getMatrixMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance } from './ArrayUtils.js';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getArrayMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance } from './ArrayUtils.js';
 
 describe('ArrayUtils', () => {
 
@@ -200,14 +200,14 @@ describe('ArrayUtils', () => {
         });
     });
 
-    describe('getMatrixMax', () => {
+    describe('getArrayMax', () => {
         test('empty', () => {
-            expect(getMatrixMax([])).toBe(-Infinity);
+            expect(getArrayMax([])).toBe(undefined);
         });
 
         test('1x1 matrix', () => {
             const matrix = [[1]];
-            expect(getMatrixMax(matrix)).toBe(1);
+            expect(getArrayMax(matrix)).toBe(1);
         });
 
         test('sorted matrix', () => {
@@ -216,7 +216,7 @@ describe('ArrayUtils', () => {
                 [4, 5, 6],
                 [7, 8, 9]
             ];
-            expect(getMatrixMax(matrix)).toBe(9);
+            expect(getArrayMax(matrix)).toBe(9);
         });
 
         test('invalid value', () => {
@@ -224,7 +224,7 @@ describe('ArrayUtils', () => {
                 [1, 2, 3],
                 [4, null, 6]
             ];
-            expect(getMatrixMax(matrix)).toBe(6);
+            expect(getArrayMax(matrix)).toBe(6);
         });
 
         test('invalid value 2', () => {
@@ -232,7 +232,7 @@ describe('ArrayUtils', () => {
                 [1, 2, 3],
                 [4, 'hello', 6]
             ];
-            expect(getMatrixMax(matrix)).toBe(6);
+            expect(getArrayMax(matrix)).toBe(6);
         });
 
         test('negative matrix', () => {
@@ -241,7 +241,7 @@ describe('ArrayUtils', () => {
                 [-1, -2, -3],
                 [7, -8, -9]
             ];
-            expect(getMatrixMax(matrix)).toBe(7);
+            expect(getArrayMax(matrix)).toBe(7);
         });
     });
 

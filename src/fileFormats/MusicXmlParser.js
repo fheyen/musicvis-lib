@@ -138,6 +138,12 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
             });
         } catch { }
 
+        // If measure is empty, still increase currentTime
+        if (measure.querySelectorAll('note').length === 0) {
+            const measureDuration = beats * (beatType / 4) * secondsPerBeat;
+            currentTime += measureDuration;
+        }
+
         // Read notes
         let lastNoteDuration = 0;
         for (const child of measure.children) {
