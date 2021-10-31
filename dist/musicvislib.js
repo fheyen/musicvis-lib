@@ -1,11 +1,11 @@
-// musicvis-lib v0.52.2 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.52.3 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.52.2";
+  var version="0.52.3";
 
   /**
    * Lookup for many MIDI specifications.
@@ -6342,6 +6342,48 @@
     return intersection(set1, set2).size / union(set1, set2).size;
   }
   /**
+   * Kendall Tau distance
+   *
+   * @see https://en.wikipedia.org/wiki/Kendall_tau_distance
+   * @todo naive implementation, can be sped up with hints on Wikipedia,
+   *    see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
+   * @param {number[]} ranking1 a ranking, i.e. for each entry the rank
+   * @param {number[]} ranking2 a ranking, i.e. for each entry the rank
+   * @param {boolean} [normalize=true] normalize to [0, 1]?
+   * @returns {number} Kendall tau distance
+   * @throws {'Ranking length must be equal'} if rankings don't have euqal length
+   */
+
+  function kendallTau(ranking1, ranking2, normalize = true) {
+    if (ranking1.length !== ranking2.length) {
+      throw new Error('Ranking length must be equal');
+    }
+
+    if (ranking1.length === 0) {
+      return 0;
+    }
+
+    let inversions = 0;
+    const n = ranking1.length;
+
+    for (let a = 0; a < n; a++) {
+      for (let b = a + 1; b < n; b++) {
+        const r1smaller = ranking1[a] < ranking1[b];
+        const r2smaller = ranking2[a] < ranking2[b];
+
+        if (r1smaller !== r2smaller) {
+          inversions++;
+        }
+      }
+    }
+
+    if (normalize) {
+      inversions /= n * (n - 1) / 2;
+    }
+
+    return inversions;
+  }
+  /**
    * Removes duplicates from an Array by converting to a Set and back
    *
    * @param {Array} array an array
@@ -6375,28 +6417,46 @@
     return true;
   }
   /**
-   * Returns the maximum numerical value from an array of arrays
+   * Returns the maximum numerical value from an array of arrays with arbitrary
+   * depth and structure.
    *
-   * @param {number[][]} matrix matrix
+   * @param {Array} array array
    * @returns {number} maximum value
    */
 
-  function getMatrixMax(matrix) {
-    let maximum = Number.NEGATIVE_INFINITY;
+  function getArrayMax(array) {
+    return max(array.flat(Number.POSITIVE_INFINITY));
+  }
+  /**
+   * Normalizes by dividing all entries by the maximum.
+   * Only for positive values!
+   *
+   * @param {Array} array nD array with arbitrary depth and structure
+   * @returns {Array} normalized array
+   */
 
-    for (const row of matrix) {
-      for (const value of row) {
-        if (Number.isNaN(+value)) {
-          continue;
-        }
+  function normalizeNdArray(array) {
+    const max$1 = max(array.flat(Number.POSITIVE_INFINITY));
 
-        if (value > maximum) {
-          maximum = value;
-        }
-      }
-    }
+    const normalize = (array_, maxValue) => array_.map(d => {
+      return d.length !== undefined ? normalize(d, maxValue) : d / maxValue;
+    });
 
-    return maximum;
+    return normalize(array, max$1);
+  }
+  /**
+   * Assumes same shape of matrices.
+   *
+   * @param {number[][]} matrixA a matrix
+   * @param {number[][]} matrixB a matrix
+   * @returns {number} Euclidean distance of the two matrices
+   */
+
+  function euclideanDistance(matrixA, matrixB) {
+    const valuesA = matrixA.flat();
+    const valuesB = matrixB.flat();
+    const diffs = valuesA.map((d, i) => d - valuesB[i]);
+    return Math.hypot(...diffs);
   }
   /**
    * Stringifies a 2D array / matrix for logging onto the console.
@@ -9812,7 +9872,13 @@
           key,
           scale
         });
-      } catch {} // Read notes
+      } catch {} // If measure is empty, still increase currentTime
+
+
+      if (measure.querySelectorAll('note').length === 0) {
+        const measureDuration = beats * (beatType / 4) * secondsPerBeat;
+        currentTime += measureDuration;
+      } // Read notes
 
 
       let lastNoteDuration = 0;
@@ -11667,7 +11733,6 @@
 
 
     toObject() {
-      console.log(this.measureRehearsalMap);
       return { ...this,
         measureRehearsalMap: [...this.measureRehearsalMap],
         noteLyricsMap: [...this.noteLyricsMap]
@@ -12011,8 +12076,8 @@
     context.stroke();
   }
   /**
-   * Draws a line that bows to the right in the direction of travel, thereby
-   * encoding direction. Useful for node-link graphs.
+   * Draws a line that bows to the right in the direction of travel (looks like a
+   * left turn), thereby encoding direction. Useful for node-link graphs.
    *
    * @param {CanvasRenderingContext2D} context canvas rendering context
    * @param {number} x1 x coordinate of the start
@@ -12020,6 +12085,7 @@
    * @param {number} x2 x coordinate of end
    * @param {number} y2 y coordinate of end
    * @param {number} [strength=0.5] how much the bow deviates from a straight line
+   *      towards the right, negative values will make bows to the left
    */
 
   function drawBowRight(context, x1, y1, x2, y2, strength = 0.5) {
@@ -12406,6 +12472,63 @@
     context.lineTo(x2, y2);
     context.stroke();
   }
+  /**
+   * Draws an arc that connects similar parts.
+   * Both parts must have the same width in pixels.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} startX1 x coordinate of the start of the first part
+   * @param {number} startX2 x coordinate of the start of the second part
+   * @param {number} length length in pixels of the parts
+   * @param {number} yBottom bottom baseline y coordinate
+   */
+
+  function drawArc(context, startX1, startX2, length, yBottom) {
+    // Get center and radius
+    const radius = (startX2 - startX1) / 2;
+    const cx = startX1 + radius + length / 2;
+    context.lineWidth = length;
+    context.beginPath();
+    context.arc(cx, yBottom, radius, Math.PI, 2 * Math.PI);
+    context.stroke();
+  }
+  /**
+   * Draws a more complex path and fills it.
+   * Two arcs: One from startX1 to endX2 on the top, one from endX1 to startX2
+   * below it.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} startX1 x coordinate of the start of the first part
+   * @param {number} endX1 x coordinate of the end of the first part
+   * @param {number} startX2 x coordinate of the start of the second part
+   * @param {number} endX2 x coordinate of the end of the second part
+   * @param {number} yBottom bottom baseline y coordinate
+   */
+
+  function drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBottom) {
+    // Get center and radius
+    const radiusTop = (endX2 - startX1) / 2;
+
+    if (radiusTop < 0) {
+      return;
+    }
+
+    let radiusBottom = (startX2 - endX1) / 2;
+
+    if (radiusBottom < 0) {
+      radiusBottom = 0;
+    }
+
+    const cxTop = startX1 + radiusTop;
+    const cxBottom = endX1 + radiusBottom;
+    context.beginPath();
+    context.moveTo(startX1, yBottom);
+    context.arc(cxTop, yBottom, radiusTop, Math.PI, 2 * Math.PI);
+    context.lineTo(startX2, yBottom);
+    context.arc(cxBottom, yBottom, radiusBottom, 2 * Math.PI, Math.PI, true);
+    context.closePath();
+    context.fill();
+  }
 
   var Canvas = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -12428,7 +12551,9 @@
     drawHexagon: drawHexagon,
     drawBezierConnectorX: drawBezierConnectorX,
     drawBezierConnectorY: drawBezierConnectorY,
-    drawRoundedCorner: drawRoundedCorner
+    drawRoundedCorner: drawRoundedCorner,
+    drawArc: drawArc,
+    drawAssymetricArc: drawAssymetricArc
   });
 
   /**
@@ -15574,6 +15699,53 @@
   }
 
   /**
+   * Determines the perceptual lightness of an HTML color
+   *
+   * @see https://stackoverflow.com/a/596241 (but normalizing to 0, 100)
+   * @param {string} color HTML color specifier
+   * @returns {number} lightness in [0, 100]
+   */
+
+  function getColorLightness(color$1) {
+    const {
+      r,
+      g,
+      b
+    } = color(color$1).rgb(); // eslint-disable-next-line no-bitwise
+
+    const Y = r + r + r + b + g + g + g + g >> 3;
+    return Y / 2.55;
+  }
+  /**
+   * Determines the average of mutliple given colors
+   *
+   * @param {string[]} colors HTML color specifiers
+   * @returns {string} average as RGB string
+   */
+
+  function averageColor(colors) {
+    let mR = 0;
+    let mG = 0;
+    let mB = 0;
+
+    for (const c of colors) {
+      const {
+        r,
+        g,
+        b
+      } = color(c).rgb();
+      mR += r;
+      mG += g;
+      mB += b;
+    }
+
+    mR = Math.round(mR / colors.length);
+    mG = Math.round(mG / colors.length);
+    mB = Math.round(mB / colors.length);
+    return `rgb(${mR}, ${mG}, ${mB})`;
+  }
+
+  /**
    * @module utils/FormattingUtils
    */
 
@@ -16461,14 +16633,19 @@
     __proto__: null,
     arrayShallowEquals: arrayShallowEquals,
     jaccardIndex: jaccardIndex,
+    kendallTau: kendallTau,
     removeDuplicates: removeDuplicates,
     arrayContainsArray: arrayContainsArray,
     arrayHasSameElements: arrayHasSameElements,
-    getMatrixMax: getMatrixMax,
+    getArrayMax: getArrayMax,
+    normalizeNdArray: normalizeNdArray,
+    euclideanDistance: euclideanDistance,
     formatMatrix: formatMatrix,
     binarySearch: binarySearch,
     blobToBase64: blobToBase64,
     blobToFileExtension: blobToFileExtension,
+    getColorLightness: getColorLightness,
+    averageColor: averageColor,
     formatDate: formatDate,
     formatTime: formatTime,
     formatSongTitle: formatSongTitle,

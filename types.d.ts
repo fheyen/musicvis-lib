@@ -852,14 +852,15 @@ declare module "graphics/Canvas" {
      */
     function drawVLine(context: CanvasRenderingContext2D, x: number, y1: number, y2: number): void;
     /**
-     * Draws a line that bows to the right in the direction of travel, thereby
-     * encoding direction. Useful for node-link graphs.
+     * Draws a line that bows to the right in the direction of travel (looks like a
+     * left turn), thereby encoding direction. Useful for node-link graphs.
      * @param context - canvas rendering context
      * @param x1 - x coordinate of the start
      * @param y1 - y coordinate of the start
      * @param x2 - x coordinate of end
      * @param y2 - y coordinate of end
      * @param [strength = 0.5] - how much the bow deviates from a straight line
+     *      towards the right, negative values will make bows to the left
      */
     function drawBowRight(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, strength?: number): void;
     /**
@@ -1006,6 +1007,28 @@ declare module "graphics/Canvas" {
      * @param roundness - corner roundness between 0 (sharp) and 1 (round)
      */
     function drawRoundedCorner(context: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, turnLeft: boolean, roundness: number): void;
+    /**
+     * Draws an arc that connects similar parts.
+     * Both parts must have the same width in pixels.
+     * @param context - canvas rendering context
+     * @param startX1 - x coordinate of the start of the first part
+     * @param startX2 - x coordinate of the start of the second part
+     * @param length - length in pixels of the parts
+     * @param yBottom - bottom baseline y coordinate
+     */
+    function drawArc(context: CanvasRenderingContext2D, startX1: number, startX2: number, length: number, yBottom: number): void;
+    /**
+     * Draws a more complex path and fills it.
+     * Two arcs: One from startX1 to endX2 on the top, one from endX1 to startX2
+     * below it.
+     * @param context - canvas rendering context
+     * @param startX1 - x coordinate of the start of the first part
+     * @param endX1 - x coordinate of the end of the first part
+     * @param startX2 - x coordinate of the start of the second part
+     * @param endX2 - x coordinate of the end of the second part
+     * @param yBottom - bottom baseline y coordinate
+     */
+    function drawAssymetricArc(context: CanvasRenderingContext2D, startX1: number, endX1: number, startX2: number, endX2: number, yBottom: number): void;
 }
 
 /**
@@ -2552,11 +2575,12 @@ declare module "utils/ArrayUtils" {
      */
     function arrayContainsArray(a: any[], b: any[]): boolean;
     /**
-     * Returns the maximum numerical value from an array of arrays
-     * @param matrix - matrix
+     * Returns the maximum numerical value from an array of arrays with arbitrary
+    depth and structure.
+     * @param array - array
      * @returns maximum value
      */
-    function getMatrixMax(matrix: number[][]): number;
+    function getArrayMax(array: any[]): number;
     /**
      * Normalizes by dividing all entries by the maximum.
     Only for positive values!
@@ -2606,6 +2630,20 @@ declare module "utils/BlobUtils" {
      */
     function blobToFileExtension(blob: Blob): string;
 }
+
+/**
+ * Determines the perceptual lightness of an HTML color
+ * @param color - HTML color specifier
+ * @returns lightness in [0, 100]
+ */
+declare function getColorLightness(color: string): number;
+
+/**
+ * Determines the average of mutliple given colors
+ * @param colors - HTML color specifiers
+ * @returns average as RGB string
+ */
+declare function averageColor(colors: string[]): string;
 
 declare module "utils/FormattingUtils" {
     /**
@@ -2748,12 +2786,6 @@ declare module "utils/MiscUtils" {
          of seconds
      */
     function delay(seconds: number): Promise;
-    /**
-     * Determines the perceptual lightness of an HTML color
-     * @param color - HTML color specifier
-     * @returns lightness in [0, 100]
-     */
-    function getColorLightness(color: string): number;
 }
 
 declare module "utils/MusicUtils" {
