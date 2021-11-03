@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getArrayMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance } from './ArrayUtils.js';
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getArrayMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance, arrayIndexOf } from './ArrayUtils.js';
 
 describe('ArrayUtils', () => {
 
@@ -48,6 +48,41 @@ describe('ArrayUtils', () => {
             expect(arrayContainsArray(arr, arr2)).toBe(false);
         });
     });
+
+    describe('arrayIndexOf', () => {
+        const arr = [1, 2, 3, 4, 5, 6, 7];
+
+        test('empty', () => {
+            expect(arrayIndexOf([], arr)).toBe(-1);
+            expect(arrayIndexOf(arr, [])).toBe(-1);
+        });
+
+        test('same', () => {
+            expect(arrayIndexOf(arr, arr)).toBe(0);
+        });
+
+        test('at start', () => {
+            expect(arrayIndexOf(arr, [1, 2, 3])).toBe(0);
+        });
+
+        test('at end', () => {
+            expect(arrayIndexOf(arr, [5, 6, 7])).toBe(4);
+        });
+
+        test('center', () => {
+            expect(arrayIndexOf(arr, [3, 4, 5])).toBe(2);
+        });
+
+        test('not contained', () => {
+            expect(arrayIndexOf(arr, [3, 5])).toBe(-1);
+        });
+
+        test('startIndex', () => {
+            expect(arrayIndexOf([1, 2, 3, 1, 2, 3], [1, 2, 3], 3)).toBe(3);
+        });
+
+    });
+
 
     describe('arrayShallowEquals', () => {
         test('2 empty', () => {

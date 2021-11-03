@@ -4,6 +4,7 @@ export {
     kendallTau,
     removeDuplicates,
     arrayContainsArray,
+    arrayIndexOf,
     arrayHasSameElements,
     getArrayMax,
     normalizeNdArray,

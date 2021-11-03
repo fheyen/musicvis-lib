@@ -136,6 +136,37 @@ export function arrayContainsArray(a, b) {
 }
 
 /**
+ * Finds an array in another array, only shallow comparison
+ *
+ * @param {Array} haystack array to search in
+ * @param {Array} needle array to search for
+ * @param {number} [startIndex=0] index from which to start searching
+ * @returns {number} index or -1 when not found
+ */
+export function arrayIndexOf(haystack, needle, startIndex = 0) {
+    if (needle.length === 0) { return -1; }
+    for (
+        let index = startIndex;
+        index < haystack.length - needle.length + 1;
+        ++index
+    ) {
+        if (haystack[index] === needle[0]) {
+            let found = true;
+            for (let offset = 1; offset < needle.length; ++offset) {
+                if (haystack[index + offset] !== needle[offset]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return index;
+            }
+        }
+    }
+    return -1;
+}
+
+/**
  * Returns the maximum numerical value from an array of arrays with arbitrary
  * depth and structure.
  *
