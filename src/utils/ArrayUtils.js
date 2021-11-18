@@ -136,6 +136,36 @@ export function arrayContainsArray(a, b) {
 }
 
 /**
+ * Compares a slice of a with a slice of b.
+ * Slices start at startA and startB and have the same length
+ *
+ * @param {Array} a an Array
+ * @param {Array} b an Array
+ * @param {number} length slice length
+ * @param {number} [startA=0] start index for the slice in a to compare
+ * @param {number} [startB=0] start index for the slice in b to compare
+ * @returns {boolean} true if slices are equal
+ */
+export function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
+    if (length === null || length === undefined) {
+        throw new Error('undefined length');
+    }
+    if (startA < 0 || startB < 0) {
+        throw new Error('start < 0');
+    }
+    if (a.length < startA + length || b.length < startB + length) {
+        // Array(s) too small for slicing with this start and length
+        return false;
+    }
+    for (let offset = 0; offset < length; offset++) {
+        if (a[startA + offset] !== b[startB + offset]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
  * Finds an array in another array, only shallow comparison
  *
  * @param {Array} haystack array to search in

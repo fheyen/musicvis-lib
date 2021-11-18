@@ -1,4 +1,5 @@
 import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getArrayMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance, arrayIndexOf } from './ArrayUtils.js';
+import * as au from './ArrayUtils.js';
 
 describe('ArrayUtils', () => {
 
@@ -46,6 +47,51 @@ describe('ArrayUtils', () => {
             const arr = [1, 2, 3, 4];
             const arr2 = [1, 20, 3];
             expect(arrayContainsArray(arr, arr2)).toBe(false);
+        });
+    });
+
+
+    describe('arraySlicesEqual', () => {
+        test('undefined length', () => {
+            expect(() => au.arraySlicesEqual([], [])).toThrow('undefined length')
+        });
+
+        test('invalid start', () => {
+            expect(() => au.arraySlicesEqual([], [], 0, -1, 0)).toThrow('start < 0')
+            expect(() => au.arraySlicesEqual([], [], 0, 0, -1)).toThrow('start < 0')
+        });
+
+        test('empty, length == 0', () => {
+            expect(au.arraySlicesEqual([], [1, 2, 3], 0)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3], [], 0)).toBe(true)
+        });
+
+        test('empty, but length > 0', () => {
+            expect(au.arraySlicesEqual([], [1, 2, 3], 1)).toBe(false)
+            expect(au.arraySlicesEqual([1, 2, 3], [], 1)).toBe(false)
+        });
+
+        test('start at 0', () => {
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 0)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 1)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 2)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 3)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 4)).toBe(false)
+        });
+
+        test('start at 1', () => {
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 0, 1, 1)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 1, 1, 1)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 2, 1, 1)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 3, 1, 1)).toBe(false)
+        });
+
+        test('start at different indices', () => {
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [0, 1, 2, 3, 5], 3, 0, 1)).toBe(true)
+        });
+
+        test('start at different indices, no match', () => {
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [0, 1, 7, 3, 5], 3, 0, 1)).toBe(false)
         });
     });
 
