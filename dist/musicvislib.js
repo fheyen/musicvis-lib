@@ -104,7 +104,9 @@
    */
 
   function isSharp(nr) {
-    return SHARPS.has(nr);
+    // return SHARPS.has(nr);
+    const chroma = nr % 12;
+    return chroma === 1 || chroma === 3 || chroma === 6 || chroma === 8 || chroma === 10;
   }
   /**
    * Returns a note name such as 'C#' (without octave) for a given MIDI
@@ -3709,6 +3711,18 @@
     }
   }
 
+  function _checkPrivateRedeclaration(obj, privateCollection) {
+    if (privateCollection.has(obj)) {
+      throw new TypeError("Cannot initialize the same private elements twice on an object");
+    }
+  }
+
+  function _classPrivateFieldInitSpec(obj, privateMap, value) {
+    _checkPrivateRedeclaration(obj, privateMap);
+
+    privateMap.set(obj, value);
+  }
+
   function ascending (a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
@@ -3859,7 +3873,7 @@
   }
 
   class InternMap extends Map {
-    constructor(entries, key = keyof) {
+    constructor(entries = [], key = keyof) {
       super();
       Object.defineProperties(this, {
         _intern: {
@@ -3869,7 +3883,8 @@
           value: key
         }
       });
-      if (entries != null) for (const [key, value] of entries) this.set(key, value);
+
+      for (const [key, value] of entries) this.set(key, value);
     }
 
     get(key) {
@@ -3975,22 +3990,18 @@
     if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
 
     if (step > 0) {
-      let r0 = Math.round(start / step),
-          r1 = Math.round(stop / step);
-      if (r0 * step < start) ++r0;
-      if (r1 * step > stop) --r1;
-      ticks = new Array(n = r1 - r0 + 1);
+      start = Math.ceil(start / step);
+      stop = Math.floor(stop / step);
+      ticks = new Array(n = Math.ceil(stop - start + 1));
 
-      while (++i < n) ticks[i] = (r0 + i) * step;
+      while (++i < n) ticks[i] = (start + i) * step;
     } else {
       step = -step;
-      let r0 = Math.round(start * step),
-          r1 = Math.round(stop * step);
-      if (r0 / step < start) ++r0;
-      if (r1 / step > stop) --r1;
-      ticks = new Array(n = r1 - r0 + 1);
+      start = Math.ceil(start * step);
+      stop = Math.floor(stop * step);
+      ticks = new Array(n = Math.ceil(stop - start + 1));
 
-      while (++i < n) ticks[i] = (r0 + i) / step;
+      while (++i < n) ticks[i] = (start + i) / step;
     }
 
     if (reverse) ticks.reverse();
@@ -5331,7 +5342,7 @@
     }
 
     function scale(x) {
-      return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+      return isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
     }
 
     scale.invert = function (y) {
@@ -5987,7 +5998,8 @@
         filterFunc = n => n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end;
       } else if (mode === 'touched-included') {
         filterFunc = n => // like touched
-        n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end || n.end !== null && n.start <= start && n.end >= end;
+        n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end || // filter range inside note range
+        n.end !== null && n.start <= start && n.end >= end;
       } else {
         throw new Error('Invalid slicing mode');
       } // eslint-disable-next-line unicorn/no-array-callback-reference
@@ -6415,6 +6427,73 @@
     }
 
     return true;
+  }
+  /**
+   * Compares a slice of a with a slice of b.
+   * Slices start at startA and startB and have the same length
+   *
+   * @param {Array} a an Array
+   * @param {Array} b an Array
+   * @param {number} length slice length
+   * @param {number} [startA=0] start index for the slice in a to compare
+   * @param {number} [startB=0] start index for the slice in b to compare
+   * @returns {boolean} true if slices are equal
+   */
+
+  function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
+    if (length === null || length === undefined) {
+      throw new Error('undefined length');
+    }
+
+    if (startA < 0 || startB < 0) {
+      throw new Error('start < 0');
+    }
+
+    if (a.length < startA + length || b.length < startB + length) {
+      // Array(s) too small for slicing with this start and length
+      return false;
+    }
+
+    for (let offset = 0; offset < length; offset++) {
+      if (a[startA + offset] !== b[startB + offset]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+  /**
+   * Finds an array in another array, only shallow comparison
+   *
+   * @param {Array} haystack array to search in
+   * @param {Array} needle array to search for
+   * @param {number} [startIndex=0] index from which to start searching
+   * @returns {number} index or -1 when not found
+   */
+
+  function arrayIndexOf(haystack, needle, startIndex = 0) {
+    if (needle.length === 0) {
+      return -1;
+    }
+
+    for (let index = startIndex; index < haystack.length - needle.length + 1; ++index) {
+      if (haystack[index] === needle[0]) {
+        let found = true;
+
+        for (let offset = 1; offset < needle.length; ++offset) {
+          if (haystack[index + offset] !== needle[offset]) {
+            found = false;
+            break;
+          }
+        }
+
+        if (found) {
+          return index;
+        }
+      }
+    }
+
+    return -1;
   }
   /**
    * Returns the maximum numerical value from an array of arrays with arbitrary
@@ -7941,7 +8020,9 @@
     exports.keySignatureKeys = ["Cb", "Gb", "Db", "Ab", "Eb", "Bb", "F", "C", "G", "D", "A", "E", "B", "F#", "C#"];
     /** The parsed midi file header */
 
-    var Header = function () {
+    var Header =
+    /** @class */
+    function () {
       function Header(midiData) {
         // look through all the tracks for tempo changes
         var _this = this;
@@ -8553,7 +8634,9 @@
      * Represents a control change event
      */
 
-    var ControlChange = function () {
+    var ControlChange =
+    /** @class */
+    function () {
       /**
        * @param event
        * @param header
@@ -8666,7 +8749,9 @@
    * Represents a pitch bend event
    */
 
-  var PitchBend = function () {
+  var PitchBend =
+  /** @class */
+  function () {
     /**
      * @param event
      * @param header
@@ -8740,7 +8825,9 @@
    * Describes the midi instrument of a track
    */
 
-  var Instrument = function () {
+  var Instrument =
+  /** @class */
+  function () {
     /**
      * @param trackData
      * @param track
@@ -8927,7 +9014,9 @@
    * A Note consists of a noteOn and noteOff event
    */
 
-  var Note = function () {
+  var Note =
+  /** @class */
+  function () {
     function Note(noteOn, noteOff, header) {
       privateHeaderMap$1.set(this, header);
       this.midi = noteOn.midi;
@@ -9053,7 +9142,9 @@
    * A Track is a collection of notes and controlChanges
    */
 
-  var Track$1 = function () {
+  var Track$1 =
+  /** @class */
+  function () {
     function Track(trackData, header) {
       var _this = this;
       /**
@@ -9485,7 +9576,9 @@
    * The main midi parsing class
    */
 
-  var Midi = function () {
+  var Midi =
+  /** @class */
+  function () {
     /**
      * Parse the midi data
      */
@@ -11822,7 +11915,7 @@
      * @param {number[]} pitches pitches
      */
     constructor(pitches = []) {
-      _pitches.set(this, {
+      _classPrivateFieldInitSpec(this, _pitches, {
         writable: true,
         value: []
       });
@@ -12844,22 +12937,22 @@
      *          }
      */
     constructor(getMidiLiveData, setMidiLiveData, addCurrentNote = () => {}, removeCurrentNote = () => {}) {
-      _getMidiLiveData.set(this, {
+      _classPrivateFieldInitSpec(this, _getMidiLiveData, {
         writable: true,
         value: void 0
       });
 
-      _setMidiLiveData.set(this, {
+      _classPrivateFieldInitSpec(this, _setMidiLiveData, {
         writable: true,
         value: void 0
       });
 
-      _addCurrentNote.set(this, {
+      _classPrivateFieldInitSpec(this, _addCurrentNote, {
         writable: true,
         value: void 0
       });
 
-      _removeCurrentNote.set(this, {
+      _classPrivateFieldInitSpec(this, _removeCurrentNote, {
         writable: true,
         value: void 0
       });
@@ -16625,23 +16718,13 @@
     }
   }
 
+  // TODO: use export * from '...';
   /**
    * @module utils
    */
 
   var index$1 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    arrayShallowEquals: arrayShallowEquals,
-    jaccardIndex: jaccardIndex,
-    kendallTau: kendallTau,
-    removeDuplicates: removeDuplicates,
-    arrayContainsArray: arrayContainsArray,
-    arrayHasSameElements: arrayHasSameElements,
-    getArrayMax: getArrayMax,
-    normalizeNdArray: normalizeNdArray,
-    euclideanDistance: euclideanDistance,
-    formatMatrix: formatMatrix,
-    binarySearch: binarySearch,
     blobToBase64: blobToBase64,
     blobToFileExtension: blobToFileExtension,
     getColorLightness: getColorLightness,
@@ -16683,7 +16766,20 @@
     kernelDensityEstimator: kernelDensityEstimator,
     kernelEpanechnikov: kernelEpanechnikov,
     kernelGauss: kernelGauss,
-    pingMidiDevice: pingMidiDevice
+    pingMidiDevice: pingMidiDevice,
+    arrayShallowEquals: arrayShallowEquals,
+    arrayHasSameElements: arrayHasSameElements,
+    jaccardIndex: jaccardIndex,
+    kendallTau: kendallTau,
+    removeDuplicates: removeDuplicates,
+    arrayContainsArray: arrayContainsArray,
+    arraySlicesEqual: arraySlicesEqual,
+    arrayIndexOf: arrayIndexOf,
+    getArrayMax: getArrayMax,
+    normalizeNdArray: normalizeNdArray,
+    euclideanDistance: euclideanDistance,
+    formatMatrix: formatMatrix,
+    binarySearch: binarySearch
   });
 
   /* eslint-disable-line no-unused-vars */

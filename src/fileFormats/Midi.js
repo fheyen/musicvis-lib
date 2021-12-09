@@ -99,7 +99,13 @@ export function getMidiDrumNoteByNr(nr) {
  * @returns {boolean} true if sharp, false otherwise
  */
 export function isSharp(nr) {
-    return SHARPS.has(nr);
+    // return SHARPS.has(nr);
+    const chroma = nr % 12;
+    return chroma === 1
+        || chroma === 3
+        || chroma === 6
+        || chroma === 8
+        || chroma === 10;
 }
 
 /**

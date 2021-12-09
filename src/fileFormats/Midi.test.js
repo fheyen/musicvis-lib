@@ -25,8 +25,10 @@ describe('Midi', () => {
     });
 
     test('MIDI isSharp', () => {
+        expect(Midi.isSharp(57)).toBe(false);
         expect(Midi.isSharp(69)).toBe(false);
         expect(Midi.isSharp(70)).toBe(true);
+        expect(Midi.isSharp(82)).toBe(true);
     });
 
     test('MIDI note name from number', () => {

@@ -11,6 +11,10 @@ describe('Node import test with require', () => {
             const result = libDev.StringBased.Levenshtein.levenshtein('abcd', 'abCd');
             expect(result).toBe(1);
         });
+        test('arrayShallowEquals', () => {
+            const result = libDev.Utils.arrayShallowEquals([1, 2, 3], [1, 2, 3]);
+            expect(result).toBe(true);
+        });
     });
 
     describe('production build', () => {
@@ -21,6 +25,10 @@ describe('Node import test with require', () => {
         test('levenshtein', () => {
             const result = libProd.StringBased.Levenshtein.levenshtein('abcd', 'abCd');
             expect(result).toBe(1);
+        });
+        test('arrayShallowEquals', () => {
+            const result = libProd.Utils.arrayShallowEquals([1, 2, 3], [1, 2, 3]);
+            expect(result).toBe(true);
         });
     });
 });
