@@ -170,7 +170,6 @@ export function toString(tree, separator = ' ') {
  * @throws {'Invalid hierarchy'} for invalid hierarchy
  */
 export function compressionRate(compressed) {
-    // eslint-disable-next-line unicorn/explicit-length-check
     if (!compressed?.length || !compressed?.content?.length) {
         throw new Error('Invalid hierarchy');
     }

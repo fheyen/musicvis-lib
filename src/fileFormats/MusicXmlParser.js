@@ -627,7 +627,7 @@ function isPalmMuted(note) {
  * @returns {boolean} true if note is palm-muted
  */
 function isHammeron(note) {
-    return note.querySelectorAll("hammer-on").length > 0;
+    return note.querySelectorAll('hammer-on').length > 0;
 }
 
 /**

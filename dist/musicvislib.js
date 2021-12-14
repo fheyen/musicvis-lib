@@ -1,11 +1,11 @@
-// musicvis-lib v0.52.3 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.53.0 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.52.3";
+  var version="0.53.0";
 
   /**
    * Lookup for many MIDI specifications.
@@ -3873,7 +3873,7 @@
   }
 
   class InternMap extends Map {
-    constructor(entries = [], key = keyof) {
+    constructor(entries, key = keyof) {
       super();
       Object.defineProperties(this, {
         _intern: {
@@ -3883,8 +3883,7 @@
           value: key
         }
       });
-
-      for (const [key, value] of entries) this.set(key, value);
+      if (entries != null) for (const [key, value] of entries) this.set(key, value);
     }
 
     get(key) {
@@ -3990,18 +3989,22 @@
     if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
 
     if (step > 0) {
-      start = Math.ceil(start / step);
-      stop = Math.floor(stop / step);
-      ticks = new Array(n = Math.ceil(stop - start + 1));
+      let r0 = Math.round(start / step),
+          r1 = Math.round(stop / step);
+      if (r0 * step < start) ++r0;
+      if (r1 * step > stop) --r1;
+      ticks = new Array(n = r1 - r0 + 1);
 
-      while (++i < n) ticks[i] = (start + i) * step;
+      while (++i < n) ticks[i] = (r0 + i) * step;
     } else {
       step = -step;
-      start = Math.ceil(start * step);
-      stop = Math.floor(stop * step);
-      ticks = new Array(n = Math.ceil(stop - start + 1));
+      let r0 = Math.round(start * step),
+          r1 = Math.round(stop * step);
+      if (r0 / step < start) ++r0;
+      if (r1 / step > stop) --r1;
+      ticks = new Array(n = r1 - r0 + 1);
 
-      while (++i < n) ticks[i] = (start + i) / step;
+      while (++i < n) ticks[i] = (r0 + i) / step;
     }
 
     if (reverse) ticks.reverse();
@@ -5342,7 +5345,7 @@
     }
 
     function scale(x) {
-      return isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+      return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
     }
 
     scale.invert = function (y) {
@@ -5480,6 +5483,28 @@
     initRange.apply(scale, arguments);
     return linearish(scale);
   }
+
+  function colors (specifier) {
+    var n = specifier.length / 6 | 0,
+        colors = new Array(n),
+        i = 0;
+
+    while (i < n) colors[i] = "#" + specifier.slice(i * 6, ++i * 6);
+
+    return colors;
+  }
+
+  function ramp(range) {
+    var n = range.length;
+    return function (t) {
+      return range[Math.max(0, Math.min(n - 1, Math.floor(t * n)))];
+    };
+  }
+
+  var viridis = ramp(colors("44015444025645045745055946075a46085c460a5d460b5e470d60470e6147106347116447136548146748166848176948186a481a6c481b6d481c6e481d6f481f70482071482173482374482475482576482677482878482979472a7a472c7a472d7b472e7c472f7d46307e46327e46337f463480453581453781453882443983443a83443b84433d84433e85423f854240864241864142874144874045884046883f47883f48893e49893e4a893e4c8a3d4d8a3d4e8a3c4f8a3c508b3b518b3b528b3a538b3a548c39558c39568c38588c38598c375a8c375b8d365c8d365d8d355e8d355f8d34608d34618d33628d33638d32648e32658e31668e31678e31688e30698e306a8e2f6b8e2f6c8e2e6d8e2e6e8e2e6f8e2d708e2d718e2c718e2c728e2c738e2b748e2b758e2a768e2a778e2a788e29798e297a8e297b8e287c8e287d8e277e8e277f8e27808e26818e26828e26828e25838e25848e25858e24868e24878e23888e23898e238a8d228b8d228c8d228d8d218e8d218f8d21908d21918c20928c20928c20938c1f948c1f958b1f968b1f978b1f988b1f998a1f9a8a1e9b8a1e9c891e9d891f9e891f9f881fa0881fa1881fa1871fa28720a38620a48621a58521a68522a78522a88423a98324aa8325ab8225ac8226ad8127ad8128ae8029af7f2ab07f2cb17e2db27d2eb37c2fb47c31b57b32b67a34b67935b77937b87838b9773aba763bbb753dbc743fbc7340bd7242be7144bf7046c06f48c16e4ac16d4cc26c4ec36b50c46a52c56954c56856c66758c7655ac8645cc8635ec96260ca6063cb5f65cb5e67cc5c69cd5b6ccd5a6ece5870cf5773d05675d05477d1537ad1517cd2507fd34e81d34d84d44b86d54989d5488bd6468ed64590d74393d74195d84098d83e9bd93c9dd93ba0da39a2da37a5db36a8db34aadc32addc30b0dd2fb2dd2db5de2bb8de29bade28bddf26c0df25c2df23c5e021c8e020cae11fcde11dd0e11cd2e21bd5e21ad8e219dae319dde318dfe318e2e418e5e419e7e419eae51aece51befe51cf1e51df4e61ef6e620f8e621fbe723fde725"));
+  ramp(colors("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
+  ramp(colors("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
+  ramp(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
 
   /**
    * @module utils/MathUtils
@@ -6438,6 +6463,8 @@
    * @param {number} [startA=0] start index for the slice in a to compare
    * @param {number} [startB=0] start index for the slice in b to compare
    * @returns {boolean} true if slices are equal
+   * @throws {'undefined length'} length is undefined
+   * @throws {'start < 0'} when start is negative
    */
 
   function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
@@ -6603,6 +6630,68 @@
     if (value > pivotValue) {
       return binarySearch(array.slice(pivotPosition - 1), value, accessor);
     }
+  }
+  /**
+   * Finds streaks of values in an array.
+   *
+   * @param {Array} values array
+   * @param {Function} accessor value to compare
+   * @param {Function} equality comparator for equality of two values
+   * @returns {object[]} {startIndex, endIndex, length}[]
+   * @example
+   *   const arr = [1, 1, 2, 3, 3, 3];
+   *   const streaks = findStreaks(arr);
+   */
+
+  function findStreaks(values, accessor = d => d, equality = (a, b) => a === b) {
+    let startIndex = 0;
+    const result = [];
+    let startValue = accessor(values[0]);
+
+    for (const [index, value] of values.entries()) {
+      const v = accessor(value);
+
+      if (!equality(startValue, v)) {
+        result.push({
+          startIndex,
+          endIndex: index - 1,
+          length: index - startIndex
+        });
+        startIndex = index;
+        startValue = v;
+      }
+    } // Finish last streak
+
+
+    if (values.length > 0) {
+      result.push({
+        startIndex,
+        endIndex: values.length - 1,
+        length: values.length - startIndex
+      });
+    }
+
+    return result;
+  }
+  /**
+   * For each element in a sequence, finds the lowest index where an equal element
+   * occurs.
+   *
+   * @param {Array} sequence an Array
+   * @param {Function} equals euqality function
+   * @returns {number[]} result
+   */
+
+  function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
+    return sequence.map(element => {
+      for (const [index2, element2] of sequence.entries()) {
+        if (equals(element, element2)) {
+          return index2;
+        }
+      }
+
+      return null;
+    });
   }
 
   /**
@@ -10042,9 +10131,10 @@
               continue;
             }
 
+            let isUnpitched = note.querySelectorAll('unpitched').length > 0;
             let pitch;
 
-            if (note.querySelectorAll('unpitched').length > 0) {
+            if (isUnpitched) {
               // Handle drum notes
               const instrumentId = note.querySelectorAll('instrument')[0].id;
               pitch = drumInstrumentMap.get(part.id).get(instrumentId);
@@ -10117,7 +10207,19 @@
               } catch {}
 
               if (string !== null && fret !== null) {
-                noteObjs.push(new GuitarNote(pitch, startTime, velocity, string, endTime, string, fret));
+                noteObjs.push(new GuitarNote(pitch, startTime, velocity, string, endTime, string, fret)); // TODO: use drum notes and store part name and action directly
+                // } else if (isUnpitched) {
+                //     const part = '';
+                //     const action = '';
+                //     noteObjs.push(new DrumNote(
+                //         pitch,
+                //         startTime,
+                //         velocity,
+                //         staff - 1,
+                //         endTime,
+                //         part,
+                //         action,
+                //     ));
               } else {
                 noteObjs.push(new Note$2(pitch, startTime, velocity, // MusicXML starts with 1 but MIDI with 0
                 staff - 1, endTime));
@@ -10535,6 +10637,17 @@
     return 12 * Math.log2(frequency / 440) + 69;
   }
   /**
+   * Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to its
+   * frequency.
+   *
+   * @param {number} midi MIDI note number
+   * @returns {number} frequency in Hz
+   */
+
+  function midiToFrequency(midi) {
+    return 2 ** ((midi - 69) / 12) * 440;
+  }
+  /**
    * Turns a chord into an integer that uniquely describes the occuring chroma.
    * If the same chroma occurs twice this will not make a difference
    * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
@@ -10633,6 +10746,26 @@
 
     return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
   }
+  /**
+   * Circle of 5ths as
+   * [midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
+   *
+   * @see https://en.wikipedia.org/wiki/Circle_of_fifths
+   * @type {any[][]}
+   */
+
+  const CIRCLE_OF_5THS = [[0, 'C', 'C', 0, 0], [7, 'G', 'G', 1, 0], [2, 'D', 'D', 2, 0], [9, 'A', 'A', 3, 0], [4, 'E', 'E', 4, 0], [11, 'B', 'B', 5, 7], [6, 'F#', 'Gb', 6, 6], [1, 'C#', 'Db', 7, 5], [8, 'G#', 'Ab', 0, 4], [3, 'D#', 'Eb', 0, 3], [10, 'A#', 'Bb', 0, 2], [5, 'F', 'F', 0, 1]];
+  /**
+   * Maps number of semitones to interval name
+   * m - minor
+   * M - major
+   * P - perfect
+   * aug - augmented
+   *
+   * @type {Map<number,string>}
+   */
+
+  const INTERVALS = new Map([[1, 'unison'], [1, 'm2'], [2, 'M2'], [3, 'm3'], [4, 'M3'], [5, 'P4'], [6, 'aug4'], [7, 'P5'], [8, 'm6'], [9, 'M6'], [10, 'm7'], [11, 'M7'], [12, 'P8']]);
   /**
    * Estimates a difficulty score for playing a set of notes.
    * Can be used for an entire piece or measure-by-measure.
@@ -12092,6 +12225,7 @@
    * @param {HTMLCanvasElement} canvas canvas element
    * @returns {CanvasRenderingContext2D} canvas rendering context
    */
+
   function setupCanvas(canvas) {
     // Fix issues when importing musicvis-lib in Node.js
     if (!window) {
@@ -12622,6 +12756,52 @@
     context.closePath();
     context.fill();
   }
+  /**
+   * Draws a horizontal bracket like this |_____| (bottom)
+   * or this |""""""| (top).
+   * Use a positive h for bottom and a negative one for top.
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number} x x position of the bracket's horizontal lines
+   * @param {number} y y position of the bracket's horizontal lines
+   * @param {number} w width of the bracket's horizontal lines
+   * @param {number} h height of the bracket's vertical ticks
+   */
+
+  function drawBracketH(context, x, y, w, h) {
+    context.beginPath();
+    context.moveTo(x, y + h);
+    context.lineTo(x, y);
+    context.lineTo(x + w, y);
+    context.lineTo(x + w, y + h);
+    context.stroke();
+  }
+  /**
+   * Draws a quadratic matrix onto a canvas
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {number[][]} matrix matrix
+   * @param {number} [x=0] x position of the top left corner
+   * @param {number} [y=0] y position of the top left corner
+   * @param {number} [size=400] width and height in pixel
+   * @param {Function} color colormap from [min, max] to a color
+   */
+
+  function drawMatrix(context, matrix, x = 0, y = 0, size = 400, color = viridis) {
+    const cellSize = size / matrix.length;
+    const paddedSize = cellSize * 1.01;
+    const colorScale = linear().domain(extent(matrix.flat())).range([1, 0]);
+
+    for (let row = 0; row < matrix.length; row++) {
+      for (let col = 0; col < matrix.length; col++) {
+        context.fillStyle = color(colorScale(matrix[row][col]));
+        context.fillRect(x, y, paddedSize, paddedSize);
+        x += cellSize;
+      }
+
+      y += cellSize;
+    }
+  }
 
   var Canvas = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -12646,7 +12826,9 @@
     drawBezierConnectorY: drawBezierConnectorY,
     drawRoundedCorner: drawRoundedCorner,
     drawArc: drawArc,
-    drawAssymetricArc: drawAssymetricArc
+    drawAssymetricArc: drawAssymetricArc,
+    drawBracketH: drawBracketH,
+    drawMatrix: drawMatrix
   });
 
   /**
@@ -13118,6 +13300,122 @@
    */
 
   /**
+   * Drum parts
+   *
+   * @type {object}
+   */
+
+  const DRUM_PARTS = {
+    Agogo: 'DRUM_PARTS.Agogo',
+    Cabasa: 'DRUM_PARTS.Cabasa',
+    Castanets: 'DRUM_PARTS.Castanets',
+    China: 'DRUM_PARTS.China',
+    Claves: 'DRUM_PARTS.Claves',
+    Conga: 'DRUM_PARTS.Conga',
+    Cowbell: 'DRUM_PARTS.Cowbell',
+    Crash: 'DRUM_PARTS.Crash',
+    Cuica: 'DRUM_PARTS.Cuica',
+    Cymbal: 'DRUM_PARTS.Cymbal',
+    Golpe: 'DRUM_PARTS.Golpe',
+    Grancassa: 'DRUM_PARTS.Grancassa',
+    Guiro: 'DRUM_PARTS.Guiro',
+    Hand_Clap: 'DRUM_PARTS.Hand Clap',
+    Hand: 'DRUM_PARTS.Hand',
+    Hi_Hat: 'DRUM_PARTS.Hi Hat',
+    High_Floor_Tom: 'DRUM_PARTS.High Floor Tom',
+    High_Tom: 'DRUM_PARTS.High Tom',
+    Kick: 'DRUM_PARTS.Kick',
+    Low_Floor_Tom: 'DRUM_PARTS.Low Floor Tom',
+    Low_Tom: 'DRUM_PARTS.Low Tom',
+    Mid_Tom: 'DRUM_PARTS.Mid Tom',
+    Pedal_Hi_Hat: 'DRUM_PARTS.Pedal Hi Hat',
+    Ride: 'DRUM_PARTS.Ride',
+    Right_Maraca: 'DRUM_PARTS.Right Maraca',
+    Shaker: 'DRUM_PARTS.Shaker',
+    Snare: 'DRUM_PARTS.Snare',
+    Splash: 'DRUM_PARTS.Splash',
+    Surdo: 'DRUM_PARTS.Surdo',
+    Timbale: 'DRUM_PARTS.Timbale',
+    Tinkle_Bell: 'DRUM_PARTS.Tinkle Bell',
+    Triangle: 'DRUM_PARTS.Triangle',
+    Vibraslap: 'DRUM_PARTS.Vibraslap',
+    Whistle_high: 'DRUM_PARTS.Whistle high',
+    Whistle_low: 'DRUM_PARTS.Whistle low',
+    Woodblock_high: 'DRUM_PARTS.Woodblock high',
+    Woodblock_low: 'DRUM_PARTS.Woodblock low'
+  };
+  /**
+   * Drum actions
+   *
+   * @type {object}
+   */
+
+  const DRUM_ACTIONS = {
+    choke: 'DRUM_ACTIONS.choke',
+    finger: 'DRUM_ACTIONS.finger',
+    hit: 'DRUM_ACTIONS.hit',
+    mute: 'DRUM_ACTIONS.mute',
+    return: 'DRUM_ACTIONS.return',
+    scrapReturn: 'DRUM_ACTIONS.scrapReturn',
+    sideStick: 'DRUM_ACTIONS.sideStick',
+    slap: 'DRUM_ACTIONS.slap'
+  };
+  /**
+   * Drum parts and actions
+   *
+   * @todo still incomplete
+   * @type {object}
+   */
+
+  const DRUM_PARTS_ACTIONS = {
+    Agogo_high_hit: 'DRUM_PARTS_ACTIONS.Agogo high (hit)',
+    Agogo_low_hit: 'DRUM_PARTS_ACTIONS.Agogo low (hit)',
+    Cabasa_return: 'DRUM_PARTS_ACTIONS.Cabasa (return)',
+    Castanets_hit: 'DRUM_PARTS_ACTIONS.Castanets (hit)',
+    China_choke: 'DRUM_PARTS_ACTIONS.China (choke)',
+    Claves_hit: 'DRUM_PARTS_ACTIONS.Claves (hit)',
+    Conga_high_slap: 'DRUM_PARTS_ACTIONS.Conga high (slap)',
+    Conga_low_mute: 'DRUM_PARTS_ACTIONS.Conga low (mute)',
+    Cowbell_high_tip: 'DRUM_PARTS_ACTIONS.Cowbell high (tip)',
+    Crash_medium_choke: 'DRUM_PARTS_ACTIONS.Crash medium (choke)',
+    Cuica_mute: 'DRUM_PARTS_ACTIONS.Cuica (mute)',
+    Cuica_open: 'DRUM_PARTS_ACTIONS.Cuica (open)',
+    Cymbal_hit: 'DRUM_PARTS_ACTIONS.Cymbal (hit)',
+    Golpe_finger: 'DRUM_PARTS_ACTIONS.Golpe (finger)',
+    Grancassa_hit: 'DRUM_PARTS_ACTIONS.Grancassa (hit)',
+    Guiro_hit: 'DRUM_PARTS_ACTIONS.Guiro (hit)',
+    Guiro_scrap_return: 'DRUM_PARTS_ACTIONS.Guiro (scrap-return)',
+    Hand_Clap_hit: 'DRUM_PARTS_ACTIONS.Hand Clap (hit)',
+    Hand_slap: 'DRUM_PARTS_ACTIONS.Hand (slap)',
+    Hi_Hat_closed: 'DRUM_PARTS_ACTIONS.Hi-Hat (closed)',
+    Hi_Hat_open: 'DRUM_PARTS_ACTIONS.Hi-Hat (open)',
+    High_Floor_Tom_hit: 'DRUM_PARTS_ACTIONS.High Floor Tom (hit)',
+    High_Tom_hit: 'DRUM_PARTS_ACTIONS.High Tom (hit)',
+    Kick_hit: 'DRUM_PARTS_ACTIONS.Kick (hit)',
+    Low_Floor_Tom_hit: 'DRUM_PARTS_ACTIONS.Low Floor Tom (hit)',
+    Low_Tom_hit: 'DRUM_PARTS_ACTIONS.Low Tom (hit)',
+    Mid_Tom_hit: 'DRUM_PARTS_ACTIONS.Mid Tom (hit)',
+    Pedal_Hi_Hat_hit: 'DRUM_PARTS_ACTIONS.Pedal Hi-Hat (hit)',
+    Ride_choke: 'DRUM_PARTS_ACTIONS.Ride (choke)',
+    Right_Maraca_return: 'DRUM_PARTS_ACTIONS.Right Maraca (return)',
+    Shaker_return: 'DRUM_PARTS_ACTIONS.Shaker (return)',
+    Snare_hit: 'DRUM_PARTS_ACTIONS.Snare (hit)',
+    Snare_side_stick: 'DRUM_PARTS_ACTIONS.Snare (side stick)',
+    Splash_choke: 'DRUM_PARTS_ACTIONS.Splash (choke)',
+    Surdo_hit: 'DRUM_PARTS_ACTIONS.Surdo (hit)',
+    Surdo_mute: 'DRUM_PARTS_ACTIONS.Surdo (mute)',
+    Timbale_high_hit: 'DRUM_PARTS_ACTIONS.Timbale high (hit)',
+    Timbale_low_hit: 'DRUM_PARTS_ACTIONS.Timbale low (hit)',
+    Tinkle_Bell_hit: 'DRUM_PARTS_ACTIONS.Tinkle Bell (hit)',
+    Triangle_hit: 'DRUM_PARTS_ACTIONS.Triangle (hit)',
+    Triangle_mute: 'DRUM_PARTS_ACTIONS.Triangle (mute)',
+    Vibraslap_hit: 'DRUM_PARTS_ACTIONS.Vibraslap (hit)',
+    Whistle_high_hit: 'DRUM_PARTS_ACTIONS.Whistle high (hit)',
+    Whistle_low_hit: 'DRUM_PARTS_ACTIONS.Whistle low (hit)',
+    Woodblock_high_hit: 'DRUM_PARTS_ACTIONS.Woodblock high (hit)',
+    Woodblock_low_hit: 'DRUM_PARTS_ACTIONS.Woodblock low (hit)'
+  };
+  /**
    * Pitches that are mapped onto themselves are included for other information.
    * Millenium MPS-850 https://www.thomann.de/de/millenium_mps_850_e_drum_set.htm
    *
@@ -13453,6 +13751,9 @@
 
   var Drums = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    DRUM_PARTS: DRUM_PARTS,
+    DRUM_ACTIONS: DRUM_ACTIONS,
+    DRUM_PARTS_ACTIONS: DRUM_PARTS_ACTIONS,
     drumPitchReplacementMapMPS850: drumPitchReplacementMapMPS850,
     generateDrumVariation: generateDrumVariation,
     simplifyDrumPitches: simplifyDrumPitches,
@@ -15962,6 +16263,10 @@
   }
 
   /**
+   * @module utils/MiscUtils
+   */
+
+  /**
    * Clones a map where the values are flat objects,
    * i.e. values do not contain objects themselfes.
    *
@@ -16130,6 +16435,59 @@
    * @module utils/StatisticsUtils
    */
 
+  /**
+   * Computes the Pearson correlation
+   *
+   * @see https://gist.github.com/matt-west/6500993#gistcomment-3718526
+   * @param {number[]} x an array of numbers
+   * @param {number[]} y an array of numbers
+   * @returns {number} correlation
+   * @throws {'Invalid data, must be two arrays with same length'} for invalid
+   *  arguments
+   * @throws {'Invalid data, length must be >= 2'} for invalid arguments
+   */
+
+  function pearsonCorrelation(x, y) {
+    // eslint-disable-next-line unicorn/explicit-length-check
+    if (!x || !y || !x.length || !y.length || x.length !== y.length) {
+      throw new Error('Invalid data, must be two arrays with same length');
+    }
+
+    if (x.length < 2) {
+      throw new Error('Invalid data, length must be >= 2');
+    }
+
+    let n = x.length;
+    let nn = 0;
+
+    for (let i = 0; i < n; i++, nn++) {
+      if (!x[i] && x[i] !== 0 || !y[i] && y[i] !== 0) {
+        nn--;
+        continue;
+      }
+
+      x[nn] = x[i];
+      y[nn] = y[i];
+    }
+
+    if (n !== nn) {
+      x = x.splice(0, nn);
+      y = y.splice(0, nn);
+      n = nn;
+    }
+
+    const mean_x = mean(x);
+    const mean_y = mean(y);
+
+    const calc = (v, mean) => Math.sqrt(v.reduce((s, a) => s + a * a, 0) - n * mean * mean);
+
+    return (// eslint-disable-next-line unicorn/prevent-abbreviations
+      (x.map((e, i) => ({
+        x: e,
+        y: y[i]
+      })).reduce((v, a) => v + a.x * a.y, 0) - n * mean_x * mean_y) / (calc(x, mean_x) * calc(y, mean_y))
+    );
+  }
   /**
    * Calculates a 95% confidence interval
    *
@@ -16718,55 +17076,12 @@
     }
   }
 
-  // TODO: use export * from '...';
   /**
    * @module utils
    */
 
   var index$1 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    blobToBase64: blobToBase64,
-    blobToFileExtension: blobToFileExtension,
-    getColorLightness: getColorLightness,
-    averageColor: averageColor,
-    formatDate: formatDate,
-    formatTime: formatTime,
-    formatSongTitle: formatSongTitle,
-    storeObjectInLocalStorage: storeObjectInLocalStorage,
-    getObjectFromLocalStorage: getObjectFromLocalStorage,
-    randFloat: randFloat,
-    choose: choose,
-    clipValue: clipValue,
-    swapSoSmallerFirst: swapSoSmallerFirst,
-    findLocalMaxima: findLocalMaxima,
-    deepCloneFlatObjectMap: deepCloneFlatObjectMap,
-    groupNotesByPitch: groupNotesByPitch,
-    reverseString: reverseString,
-    findNearest: findNearest,
-    delay: delay,
-    bpmToSecondsPerBeat: bpmToSecondsPerBeat,
-    freqToApproxMidiNr: freqToApproxMidiNr,
-    chordToInteger: chordToInteger,
-    chordIntegerJaccardIndex: chordIntegerJaccardIndex,
-    noteDurationToNoteType: noteDurationToNoteType,
-    metronomeTrackFromTempoAndMeter: metronomeTrackFromTempoAndMeter,
-    metronomeTrackFromMusicPiece: metronomeTrackFromMusicPiece,
-    noteColorFromPitch: noteColorFromPitch,
-    filterRecordingNoise: filterRecordingNoise,
-    clipRecordingsPitchesToGtRange: clipRecordingsPitchesToGtRange,
-    clipRecordingsPitchesToGtFretboardRange: clipRecordingsPitchesToGtFretboardRange,
-    recordingsHeatmap: recordingsHeatmap,
-    averageRecordings: averageRecordings,
-    averageRecordings2: averageRecordings2,
-    differenceMap: differenceMap,
-    differenceMapErrorAreas: differenceMapErrorAreas,
-    alignNotesToBpm: alignNotesToBpm,
-    confidenceInterval: confidenceInterval,
-    getBoxplotCharacteristics: getBoxplotCharacteristics,
-    kernelDensityEstimator: kernelDensityEstimator,
-    kernelEpanechnikov: kernelEpanechnikov,
-    kernelGauss: kernelGauss,
-    pingMidiDevice: pingMidiDevice,
     arrayShallowEquals: arrayShallowEquals,
     arrayHasSameElements: arrayHasSameElements,
     jaccardIndex: jaccardIndex,
@@ -16779,7 +17094,57 @@
     normalizeNdArray: normalizeNdArray,
     euclideanDistance: euclideanDistance,
     formatMatrix: formatMatrix,
-    binarySearch: binarySearch
+    binarySearch: binarySearch,
+    findStreaks: findStreaks,
+    findRepeatedIndices: findRepeatedIndices,
+    blobToBase64: blobToBase64,
+    blobToFileExtension: blobToFileExtension,
+    getColorLightness: getColorLightness,
+    averageColor: averageColor,
+    formatTime: formatTime,
+    formatDate: formatDate,
+    formatSongTitle: formatSongTitle,
+    storeObjectInLocalStorage: storeObjectInLocalStorage,
+    getObjectFromLocalStorage: getObjectFromLocalStorage,
+    randFloat: randFloat,
+    choose: choose,
+    clipValue: clipValue,
+    roundToNDecimals: roundToNDecimals,
+    swapSoSmallerFirst: swapSoSmallerFirst,
+    countOnesOfBinary: countOnesOfBinary,
+    findLocalMaxima: findLocalMaxima,
+    deepCloneFlatObjectMap: deepCloneFlatObjectMap,
+    groupNotesByPitch: groupNotesByPitch,
+    reverseString: reverseString,
+    findNearest: findNearest,
+    delay: delay,
+    bpmToSecondsPerBeat: bpmToSecondsPerBeat,
+    freqToApproxMidiNr: freqToApproxMidiNr,
+    midiToFrequency: midiToFrequency,
+    chordToInteger: chordToInteger,
+    chordIntegerJaccardIndex: chordIntegerJaccardIndex,
+    noteDurationToNoteType: noteDurationToNoteType,
+    CIRCLE_OF_5THS: CIRCLE_OF_5THS,
+    INTERVALS: INTERVALS,
+    metronomeTrackFromTempoAndMeter: metronomeTrackFromTempoAndMeter,
+    metronomeTrackFromMusicPiece: metronomeTrackFromMusicPiece,
+    noteColorFromPitch: noteColorFromPitch,
+    filterRecordingNoise: filterRecordingNoise,
+    clipRecordingsPitchesToGtRange: clipRecordingsPitchesToGtRange,
+    clipRecordingsPitchesToGtFretboardRange: clipRecordingsPitchesToGtFretboardRange,
+    alignNotesToBpm: alignNotesToBpm,
+    recordingsHeatmap: recordingsHeatmap,
+    averageRecordings: averageRecordings,
+    averageRecordings2: averageRecordings2,
+    differenceMap: differenceMap,
+    differenceMapErrorAreas: differenceMapErrorAreas,
+    pearsonCorrelation: pearsonCorrelation,
+    confidenceInterval: confidenceInterval,
+    getBoxplotCharacteristics: getBoxplotCharacteristics,
+    kernelDensityEstimator: kernelDensityEstimator,
+    kernelEpanechnikov: kernelEpanechnikov,
+    kernelGauss: kernelGauss,
+    pingMidiDevice: pingMidiDevice
   });
 
   /* eslint-disable-line no-unused-vars */
@@ -18786,6 +19151,187 @@
     getNGramsForArray: getNGramsForArray
   });
 
+  /* eslint-disable unicorn/prevent-abbreviations */
+  /**
+   * Compresses a sequence by detecting immediately repeating subsequences
+   * hierarchically. Optimal result but high performance complexity.
+   *
+   * @todo Link to observable demo
+   * @param {Array} sequence array with immediately repeating subsequences
+   * @returns {object} compressed hierarchy
+   */
+
+  function compress(sequence) {
+    var _pre$depth, _repetition$depth, _post$depth, _pre$length, _repetition$length, _post$length;
+
+    if (!sequence || sequence.length === 0) {
+      return null;
+    }
+
+    const longestReps = getImmediateRepetitions(sequence);
+
+    if (longestReps === null) {
+      return sequence;
+    } // Get repetition
+
+
+    let {
+      seq,
+      rep,
+      length: len,
+      pos
+    } = longestReps[0]; // Get rest of sequence
+
+    const preSeq = sequence.slice(0, pos);
+    const postSeq = sequence.slice(pos + len * rep); // Recurse with longest repetition
+
+    const repetition = compress(seq); // Recurse with left rest
+
+    const pre = compress(preSeq); // Recurse with right rest
+
+    const post = compress(postSeq); // Get current depth
+
+    const depth = Math.max((_pre$depth = pre === null || pre === void 0 ? void 0 : pre.depth) !== null && _pre$depth !== void 0 ? _pre$depth : 0, (_repetition$depth = repetition === null || repetition === void 0 ? void 0 : repetition.depth) !== null && _repetition$depth !== void 0 ? _repetition$depth : 0 + 1, (_post$depth = post === null || post === void 0 ? void 0 : post.depth) !== null && _post$depth !== void 0 ? _post$depth : 0); // Get current length / width, i.e. compressed sequence length
+
+    const length = ((_pre$length = pre === null || pre === void 0 ? void 0 : pre.length) !== null && _pre$length !== void 0 ? _pre$length : 0) + ((_repetition$length = repetition === null || repetition === void 0 ? void 0 : repetition.length) !== null && _repetition$length !== void 0 ? _repetition$length : 0) + ((_post$length = post === null || post === void 0 ? void 0 : post.length) !== null && _post$length !== void 0 ? _post$length : 0);
+    return {
+      pre,
+      seq: repetition,
+      rep,
+      post: post,
+      // Depth, leaves are 0, root is highest
+      depth,
+      // Compressed length
+      length,
+      // Include complete sequence of this node
+      content: sequence
+    };
+  }
+  /**
+   * Finds all immediate repetitions in a given sequence.
+   *
+   * @param {Array} sequence array with immediately repeating subsequences
+   * @returns {object[]} result
+   */
+
+  function getImmediateRepetitions(sequence = []) {
+    const foundReps = []; // For each length, look for a repetition that has that length
+
+    for (let length = Math.floor(sequence.length / 2); length > 0; --length) {
+      for (let pos = 0; pos < sequence.length - length; ++pos) {
+        let numberOfReps = 0; // eslint-disable-next-line no-constant-condition
+
+        while (true) {
+          // Let's see how often the slice at pos with the current length repeats immediately...
+          const startPos = pos + (numberOfReps + 1) * length;
+          const found = arraySlicesEqual(sequence, sequence, length, pos, startPos);
+
+          if (!found) {
+            // No more repetitions found
+            break;
+          } else {
+            // Continue with searching for more
+            numberOfReps++;
+          } // Did we find any repetitions?
+
+
+          if (numberOfReps > 0) {
+            const rep = numberOfReps + 1;
+            const seq = sequence.slice(pos, pos + length);
+            foundReps.push({
+              length,
+              pos,
+              rep,
+              seq,
+              totalLength: length * rep
+            });
+          }
+        }
+      }
+    }
+
+    if (foundReps.length > 0) {
+      // Prioritize the ones that encompass most of the sequence, i.e., maximum length*rep
+      return foundReps.sort((a, b) => {
+        // If same total length, choose the one with more repetitions
+        // Better 8*a than 4*aa
+        return a.totalLength === b.totalLength ? b.rep - a.rep : b.totalLength - a.totalLength;
+      });
+    }
+
+    return null;
+  }
+  /**
+   * Restores the original array/sequence from the compressed hierarchy.
+   *
+   * @param {object} tree compressed hierarchy
+   * @returns {Array} decompressed sequence
+   */
+
+  function decompress(tree) {
+    if (!tree) {
+      return [];
+    }
+
+    if (tree.join) {
+      return tree;
+    }
+
+    const seq = decompress(tree.seq);
+    const repetition = Array.from({
+      length: tree.rep
+    }).map(() => seq);
+    return [...decompress(tree.pre), ...repetition.flat(), ...decompress(tree.post)];
+  }
+  /**
+   * Formats a compressed hierarchy into a readable string, for example:
+   * "1222333222333" => "1 (2x (3x 2) (3x 3))"
+   *
+   * @param {object} tree compressed hierarchy
+   * @param {string} separator separator
+   * @returns {string} result
+   */
+
+  function toString(tree, separator = ' ') {
+    if (!tree) {
+      return '';
+    }
+
+    if (tree.join) {
+      return tree.join(separator);
+    }
+
+    const seq = toString(tree.seq);
+    const repetition = `(${tree.rep}x ${seq})`;
+    return [toString(tree.pre), repetition, toString(tree.post)].join(separator).trim();
+  }
+  /**
+   * Calculates the compression rate in [0, 1] for a result of compress().
+   *
+   * @param {object} compressed compressed hierachy
+   * @returns {number} compression ratio
+   * @throws {'Invalid hierarchy'} for invalid hierarchy
+   */
+
+  function compressionRate(compressed) {
+    var _compressed$content;
+
+    if (!(compressed !== null && compressed !== void 0 && compressed.length) || !(compressed !== null && compressed !== void 0 && (_compressed$content = compressed.content) !== null && _compressed$content !== void 0 && _compressed$content.length)) {
+      throw new Error('Invalid hierarchy');
+    }
+
+    return compressed.length / compressed.content.length;
+  }
+
+  var ImmediateRepetitionCompression = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    compress: compress,
+    getImmediateRepetitions: getImmediateRepetitions,
+    decompress: decompress,
+    toString: toString,
+    compressionRate: compressionRate
+  });
+
   /* eslint-disable unicorn/prefer-spread */
 
   /**
@@ -18963,6 +19509,7 @@
 
   /**
    * @module stringBased
+   * @todo rename to Sequences
    */
 
   var index = /*#__PURE__*/Object.freeze({
@@ -18972,6 +19519,7 @@
     Gotoh: Gotoh,
     SuffixTree: SuffixTree$1,
     NGrams: NGrams,
+    ImmediateRepetitionCompression: ImmediateRepetitionCompression,
     NeedlemanWunsch: NeedlemanWunsch
   });
 

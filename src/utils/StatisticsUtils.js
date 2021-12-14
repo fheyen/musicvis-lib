@@ -45,6 +45,7 @@ export function pearsonCorrelation(x, y) {
     const calc = (v, mean) =>
         Math.sqrt(v.reduce((s, a) => s + a * a, 0) - n * mean * mean);
     return (
+        // eslint-disable-next-line unicorn/prevent-abbreviations
         (x.map((e, i) => ({ x: e, y: y[i] }))
             .reduce((v, a) => v + a.x * a.y, 0) -
             n * mean_x * mean_y)

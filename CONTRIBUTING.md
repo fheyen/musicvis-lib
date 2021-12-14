@@ -30,13 +30,9 @@ Includes [jest-extended](https://github.com/jest-community/jest-extended) for mo
 
 `npm run lint`
 
-- JavaScript
-  - Using [eslint](https://eslint.org/)
-  - For jsDoc see [here](https://github.com/gajus/eslint-plugin-jsdoc)
-  - See [.eslintrc.js](./.eslintrc.js)
-- Markdown
-  - Using [remark-link](https://github.com/remarkjs/remark-lint)
-  - See [.remarkrc.json](./.remarkrc.json)
+- Using [eslint](https://eslint.org/)
+- For jsDoc see [here](https://github.com/gajus/eslint-plugin-jsdoc)
+- See [.eslintrc.js](./.eslintrc.js)
 
 ## Building
 

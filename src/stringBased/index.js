@@ -9,6 +9,5 @@ export { default as NeedlemanWunsch } from './NeedlemanWunsch.js';
 
 /**
  * @module stringBased
- *
  * @todo rename to Sequences
  */
