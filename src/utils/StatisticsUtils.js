@@ -4,6 +4,55 @@ import * as d3 from 'd3';
  * @module utils/StatisticsUtils
  */
 
+
+
+/**
+ * Computes the Pearson correlation
+ *
+ * @see https://gist.github.com/matt-west/6500993#gistcomment-3718526
+ * @param {number[]} x an array of numbers
+ * @param {number[]} y an array of numbers
+ * @returns {number} correlation
+ * @throws {'Invalid data, must be two arrays with same length'} for invalid
+ *  arguments
+ * @throws {'Invalid data, length must be >= 2'} for invalid arguments
+ */
+export function pearsonCorrelation(x, y) {
+    // eslint-disable-next-line unicorn/explicit-length-check
+    if (!x || !y || !x.length || !y.length || x.length !== y.length) {
+        throw new Error('Invalid data, must be two arrays with same length');
+    }
+    if (x.length < 2) {
+        throw new Error('Invalid data, length must be >= 2');
+    }
+    let n = x.length;
+    let nn = 0;
+    for (let i = 0; i < n; i++, nn++) {
+        if ((!x[i] && x[i] !== 0) || (!y[i] && y[i] !== 0)) {
+            nn--;
+            continue;
+        }
+        x[nn] = x[i];
+        y[nn] = y[i];
+    }
+    if (n !== nn) {
+        x = x.splice(0, nn);
+        y = y.splice(0, nn);
+        n = nn;
+    }
+    const mean_x = d3.mean(x);
+    const mean_y = d3.mean(y);
+    const calc = (v, mean) =>
+        Math.sqrt(v.reduce((s, a) => s + a * a, 0) - n * mean * mean);
+    return (
+        (x.map((e, i) => ({ x: e, y: y[i] }))
+            .reduce((v, a) => v + a.x * a.y, 0) -
+            n * mean_x * mean_y)
+        /
+        (calc(x, mean_x) * calc(y, mean_y))
+    );
+}
+
 /**
  * Calculates a 95% confidence interval
  *

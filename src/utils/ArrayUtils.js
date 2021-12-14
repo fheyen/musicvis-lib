@@ -145,6 +145,8 @@ export function arrayContainsArray(a, b) {
  * @param {number} [startA=0] start index for the slice in a to compare
  * @param {number} [startB=0] start index for the slice in b to compare
  * @returns {boolean} true if slices are equal
+ * @throws {'undefined length'} length is undefined
+ * @throws {'start < 0'} when start is negative
  */
 export function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
     if (length === null || length === undefined) {
@@ -292,4 +294,46 @@ export function binarySearch(array, value, accessor = d => d) {
     if (value > pivotValue) {
         return binarySearch(array.slice(pivotPosition - 1), value, accessor);
     }
+}
+
+/**
+ * Finds streaks of values in an array.
+ *
+ * @param {Array} values array
+ * @param {Function} accessor value to compare
+ * @param {Function} equality comparator for equality of two values
+ * @returns {object[]} {startIndex, endIndex, length}[]
+ * @example
+ *   const arr = [1, 1, 2, 3, 3, 3];
+ *   const streaks = findStreaks(arr);
+ */
+export function findStreaks(
+    values,
+    accessor = (d) => d,
+    equality = (a, b) => a === b,
+) {
+    let startIndex = 0;
+    const result = [];
+    let startValue = accessor(values[0]);
+    for (const [index, value] of values.entries()) {
+        const v = accessor(value);
+        if (!equality(startValue, v)) {
+            result.push({
+                startIndex,
+                endIndex: index - 1,
+                length: index - startIndex,
+            });
+            startIndex = index;
+            startValue = v;
+        }
+    }
+    // Finish last streak
+    if (values.length > 0) {
+        result.push({
+            startIndex,
+            endIndex: values.length - 1,
+            length: values.length - startIndex,
+        });
+    }
+    return result;
 }

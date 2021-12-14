@@ -5,17 +5,6 @@ import * as d3 from 'd3';
  */
 
 /**
- * Converts beats per minute to seconds per beat
- *
- * @deprecated use MusicUtils.bpmToSecondsPerBeat instead
- * @param {number} bpm tempo in beats per minute
- * @returns {number} seconds per beat
- */
-export function bpmToSecondsPerBeat(bpm) {
-    return 1 / (bpm / 60);
-}
-
-/**
  * Clones a map where the values are flat objects,
  * i.e. values do not contain objects themselfes.
  *

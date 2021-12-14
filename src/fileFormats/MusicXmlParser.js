@@ -3,6 +3,7 @@ import Note from '../types/Note.js';
 import GuitarNote from '../types/GuitarNote.js';
 import { getMidiNoteByNameAndOctave } from './Midi.js';
 import { roundToNDecimals } from '../utils/MathUtils.js';
+// import DrumNote from '../types/DrumNote.js';
 
 /**
  * @module fileFormats/MusicXmlParser
@@ -202,8 +203,9 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                         currentTime += durationInSeconds;
                         continue;
                     }
+                    let isUnpitched = note.querySelectorAll('unpitched').length > 0;
                     let pitch;
-                    if (note.querySelectorAll('unpitched').length > 0) {
+                    if (isUnpitched) {
                         // Handle drum notes
                         const instrumentId = note.querySelectorAll('instrument')[0].id;
                         pitch = drumInstrumentMap.get(part.id).get(instrumentId);
@@ -269,6 +271,19 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
                                 string,
                                 fret,
                             ));
+                            // TODO: use drum notes and store part name and action directly
+                            // } else if (isUnpitched) {
+                            //     const part = '';
+                            //     const action = '';
+                            //     noteObjs.push(new DrumNote(
+                            //         pitch,
+                            //         startTime,
+                            //         velocity,
+                            //         staff - 1,
+                            //         endTime,
+                            //         part,
+                            //         action,
+                            //     ));
                         } else {
                             noteObjs.push(new Note(
                                 pitch,
@@ -523,6 +538,46 @@ function getTuningPitches(measures) {
 }
 
 /**
+ * Extracts information about the XML's parts for different instruments
+ *
+ * @param {XMLDocument} xml MusicXML
+ * @returns {object[]} part definitions
+ */
+function getPartDefinitions(xml) {
+    const partDefinitions = xml.querySelectorAll('score-part');
+    const result = [];
+    for (const partDefinition of partDefinitions) {
+        // Instruments (e.g., drum parts have multiple)
+        const instruments = new Map();
+        const instrDefs = partDefinition.querySelectorAll('score-instrument');
+        for (const instrumentDefinition of instrDefs) {
+            const id = instrumentDefinition.getAttribute('id');
+            instruments.set(id, {
+                id,
+                name: instrumentDefinition.querySelectorAll('instrument-name')[0].textContent,
+            });
+        }
+        const instrMidiDefs = partDefinition.querySelectorAll('midi-instrument');
+        for (const instrumentDefinition of instrMidiDefs) {
+            const midiNote = instrumentDefinition.querySelectorAll('midi-unpitched')[0]?.textContent;
+            if (!midiNote) {
+                continue;
+            }
+            const id = instrumentDefinition.getAttribute('id');
+            instruments.get(id).midiNote = +midiNote;
+        }
+        // Parsed part definitions
+        result.push({
+            id: partDefinition.getAttribute('id'),
+            name: partDefinition.querySelectorAll('part-name')[0].textContent,
+            abbr: partDefinition.querySelectorAll('part-abbreviation')[0].textContent,
+            instruments: instruments.size > 0 ? instruments : null,
+        });
+    }
+    return result;
+}
+
+/**
  * Returns a map containing maps, such that result.get(partId).get(instrId)
  * gives you the instrument with the ID instrId as defined in the part partId.
  *
@@ -549,6 +604,30 @@ function getDrumInstrumentMap(xml) {
         partMap.set(partId, instruMap);
     }
     return partMap;
+}
+
+/**
+ * Checks whether a note is palm-muted
+ *
+ * @param {HTMLElement} note note element
+ * @returns {boolean} true if note is palm-muted
+ */
+function isPalmMuted(note) {
+    const mute = note.querySelectorAll('mute');
+    if (mute.length > 0 && mute[0].textContent === 'palm') {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Checks whether a note is palm-muted
+ *
+ * @param {HTMLElement} note note element
+ * @returns {boolean} true if note is palm-muted
+ */
+function isHammeron(note) {
+    return note.querySelectorAll("hammer-on").length > 0;
 }
 
 /**

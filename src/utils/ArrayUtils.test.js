@@ -53,45 +53,45 @@ describe('ArrayUtils', () => {
 
     describe('arraySlicesEqual', () => {
         test('undefined length', () => {
-            expect(() => au.arraySlicesEqual([], [])).toThrow('undefined length')
+            expect(() => au.arraySlicesEqual([], [])).toThrow('undefined length');
         });
 
         test('invalid start', () => {
-            expect(() => au.arraySlicesEqual([], [], 0, -1, 0)).toThrow('start < 0')
-            expect(() => au.arraySlicesEqual([], [], 0, 0, -1)).toThrow('start < 0')
+            expect(() => au.arraySlicesEqual([], [], 0, -1, 0)).toThrow('start < 0');
+            expect(() => au.arraySlicesEqual([], [], 0, 0, -1)).toThrow('start < 0');
         });
 
         test('empty, length == 0', () => {
-            expect(au.arraySlicesEqual([], [1, 2, 3], 0)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3], [], 0)).toBe(true)
+            expect(au.arraySlicesEqual([], [1, 2, 3], 0)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3], [], 0)).toBe(true);
         });
 
         test('empty, but length > 0', () => {
-            expect(au.arraySlicesEqual([], [1, 2, 3], 1)).toBe(false)
-            expect(au.arraySlicesEqual([1, 2, 3], [], 1)).toBe(false)
+            expect(au.arraySlicesEqual([], [1, 2, 3], 1)).toBe(false);
+            expect(au.arraySlicesEqual([1, 2, 3], [], 1)).toBe(false);
         });
 
         test('start at 0', () => {
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 0)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 1)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 2)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 3)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 4)).toBe(false)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 0)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 1)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 2)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 3)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 4)).toBe(false);
         });
 
         test('start at 1', () => {
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 0, 1, 1)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 1, 1, 1)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 2, 1, 1)).toBe(true)
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 3, 1, 1)).toBe(false)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 0, 1, 1)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 1, 1, 1)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 2, 1, 1)).toBe(true);
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [1, 2, 3, 5], 3, 1, 1)).toBe(false);
         });
 
         test('start at different indices', () => {
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [0, 1, 2, 3, 5], 3, 0, 1)).toBe(true)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [0, 1, 2, 3, 5], 3, 0, 1)).toBe(true);
         });
 
         test('start at different indices, no match', () => {
-            expect(au.arraySlicesEqual([1, 2, 3, 4], [0, 1, 7, 3, 5], 3, 0, 1)).toBe(false)
+            expect(au.arraySlicesEqual([1, 2, 3, 4], [0, 1, 7, 3, 5], 3, 0, 1)).toBe(false);
         });
     });
 
@@ -448,6 +448,39 @@ describe('ArrayUtils', () => {
             expect(
                 binarySearch(arrayEven.map(d => d - 0.1), value)
             ).toBe(value - 0.1);
+        });
+    });
+
+
+    describe('findStreaks', () => {
+        test('empty', () => {
+            expect(au.findStreaks([])).toStrictEqual([]);
+        });
+        test('simple', () => {
+            expect(au.findStreaks([1, 1, 2, 3, 3, 3])).toStrictEqual(
+                [
+                    { "startIndex": 0, "endIndex": 1, "length": 2 },
+                    { "startIndex": 2, "endIndex": 2, "length": 1 },
+                    { "startIndex": 3, "endIndex": 5, "length": 3 },
+                ]
+            );
+        });
+        test('no streak', () => {
+            expect(au.findStreaks([1, 2, 3, 4])).toStrictEqual(
+                [
+                    { "startIndex": 0, "endIndex": 0, "length": 1 },
+                    { "startIndex": 1, "endIndex": 1, "length": 1 },
+                    { "startIndex": 2, "endIndex": 2, "length": 1 },
+                    { "startIndex": 3, "endIndex": 3, "length": 1 },
+                ]
+            );
+        });
+        test('all the same', () => {
+            expect(au.findStreaks([1, 1, 1, 1])).toStrictEqual(
+                [
+                    { "startIndex": 0, "endIndex": 3, "length": 4 },
+                ]
+            );
         });
     });
 });

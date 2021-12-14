@@ -1,6 +1,72 @@
 import { confidenceInterval, getBoxplotCharacteristics, kernelDensityEstimator, kernelEpanechnikov, kernelGauss } from './StatisticsUtils.js';
+import * as su from "./StatisticsUtils.js";
+import { roundToNDecimals } from './MathUtils.js';
 
 describe('StatisticsUtils', () => {
+
+    describe('pearsonCorrelation', () => {
+        test('null', () => {
+            expect(
+                () => su.pearsonCorrelation()
+            ).toThrow('Invalid data, must be two arrays with same length');
+            expect(
+                () => su.pearsonCorrelation([1, 2, 3], null)
+            ).toThrow('Invalid data, must be two arrays with same length');
+            expect(
+                () => su.pearsonCorrelation(null, [1, 2, 3])
+            ).toThrow('Invalid data, must be two arrays with same length');
+        });
+
+        test('empty', () => {
+            expect(
+                () => su.pearsonCorrelation([], [])
+            ).toThrow('Invalid data, must be two arrays with same length');
+            expect(
+                () => su.pearsonCorrelation([1, 2, 3], [])
+            ).toThrow('Invalid data, must be two arrays with same length');
+            expect(
+                () => su.pearsonCorrelation([], [1, 2, 3])
+            ).toThrow('Invalid data, must be two arrays with same length');
+        });
+
+        test('single value', () => {
+            expect(
+                () => su.pearsonCorrelation([0], [1])
+            ).toThrow('Invalid data, length must be >= 2');
+            expect(
+                () => su.pearsonCorrelation([1], [1])
+            ).toThrow('Invalid data, length must be >= 2');
+        });
+
+        test('two values', () => {
+            expect(
+                roundToNDecimals(su.pearsonCorrelation([0, 1], [0, 1]), 5)
+            ).toBe(1);
+            expect(
+                su.pearsonCorrelation([1, 1], [1, 1])
+            ).toBe(NaN);
+        });
+
+        test('same', () => {
+            expect(
+                roundToNDecimals(su.pearsonCorrelation([1, 2, 3, 4], [1, 2, 3, 4]), 5)
+            ).toStrictEqual(1);
+            const a = [1, 2, 3, 4, -1, 0.5, -0.3, 0];
+            expect(
+                roundToNDecimals(su.pearsonCorrelation(a, a), 5)
+            ).toStrictEqual(1);
+        });
+
+        test('same but negative', () => {
+            expect(
+                roundToNDecimals(su.pearsonCorrelation([1, 2, 3, 4], [-1, -2, -3, -4]), 5)
+            ).toStrictEqual(-1);
+            const a = [1, 2, 3, 4, -1, 0.5, -0.3, 0];
+            expect(
+                roundToNDecimals(su.pearsonCorrelation(a, a.map(d => -d)), 5)
+            ).toStrictEqual(-1);
+        });
+    });
 
     describe('confidenceInterval', () => {
         test('empty', () => {
@@ -12,6 +78,7 @@ describe('StatisticsUtils', () => {
                 high: NaN,
             });
         });
+
 
         test('single value', () => {
             expect(
