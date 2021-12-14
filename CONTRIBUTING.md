@@ -19,9 +19,12 @@ For ideas, hints, or if you just don't have time or resources to do pull request
 
 Using Jest.
 
-- `npm test` for complete test and coverage
-- `npm run testch` for a test of only the changed files or test
-- `npx jest -t 'my test'` runs a single test
+- `npm test`: complete test and coverage
+- `npm run testch`: test only the changed files or tests
+- `npm run testfail`: test only the failed cases
+- `npx jest -t 'my test'`: run a single test
+
+Includes [jest-extended](https://github.com/jest-community/jest-extended) for more specific matchers.
 
 ## Linting
 

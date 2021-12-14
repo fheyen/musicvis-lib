@@ -337,3 +337,23 @@ export function findStreaks(
     }
     return result;
 }
+
+
+/**
+ * For each element in a sequence, finds the lowest index where an equal element
+ * occurs.
+ *
+ * @param {Array} sequence an Array
+ * @param {Function} equals euqality function
+ * @returns {number[]} result
+ */
+export function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
+    return sequence.map((element) => {
+        for (const [index2, element2] of sequence.entries()) {
+            if (equals(element, element2)) {
+                return index2;
+            }
+        }
+        return null;
+    });
+}

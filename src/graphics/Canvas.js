@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+
 /**
  * @module graphics/Canvas
  * @todo combine multiple canvases into one, by drawing over common background
@@ -528,4 +530,58 @@ export function drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBott
     context.arc(cxBottom, yBottom, radiusBottom, 2 * Math.PI, Math.PI, true);
     context.closePath();
     context.fill();
+}
+
+/**
+ * Draws a horizontal bracket like this |_____| (bottom)
+ * or this |""""""| (top).
+ * Use a positive h for bottom and a negative one for top.
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} x x position of the bracket's horizontal lines
+ * @param {number} y y position of the bracket's horizontal lines
+ * @param {number} w width of the bracket's horizontal lines
+ * @param {number} h height of the bracket's vertical ticks
+ */
+export function drawBracketH(context, x, y, w, h) {
+    context.beginPath();
+    context.moveTo(x, y + h);
+    context.lineTo(x, y);
+    context.lineTo(x + w, y);
+    context.lineTo(x + w, y + h);
+    context.stroke();
+}
+
+/**
+ * Draws a quadratic matrix onto a canvas
+ *
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number[][]} matrix matrix
+ * @param {number} [x=0] x position of the top left corner
+ * @param {number} [y=0] y position of the top left corner
+ * @param {number} [size=400] width and height in pixel
+ * @param {Function} color colormap from [min, max] to a color
+ */
+export function drawMatrix(
+    context,
+    matrix,
+    x = 0,
+    y = 0,
+    size = 400,
+    color = d3.interpolateViridis,
+) {
+    const cellSize = size / matrix.length;
+    const paddedSize = cellSize * 1.01;
+    const colorScale = d3
+        .scaleLinear()
+        .domain(d3.extent(matrix.flat()))
+        .range([1, 0]);
+    for (let row = 0; row < matrix.length; row++) {
+        for (let col = 0; col < matrix.length; col++) {
+            context.fillStyle = color(colorScale(matrix[row][col]));
+            context.fillRect(x, y, paddedSize, paddedSize);
+            x += cellSize;
+        }
+        y += cellSize;
+    }
 }

@@ -108,4 +108,27 @@ describe('Canvas', () => {
             }
         }
     });
+
+    test('drawBracketH', () => {
+        expect(() => Canv.drawBracketH(ctx, 50, 50, 60, 0)).not.toThrow();
+        expect(() => Canv.drawBracketH(ctx, 50, 50, 60, 5)).not.toThrow();
+        expect(() => Canv.drawBracketH(ctx, 60, 60, 50, -5)).not.toThrow();
+    });
+
+    test('drawMatrix', () => {
+        const m0 = [
+            [0, 0],
+            [0, 0],
+        ];
+        const m1 = [
+            [1, 0],
+            [0, 1],
+        ];
+        expect(() => Canv.drawMatrix(ctx, m0, 50, 60, 0)).not.toThrow();
+        expect(() => Canv.drawMatrix(ctx, m0, 50, 60, 100)).not.toThrow();
+        expect(() => Canv.drawMatrix(ctx, m0, 60, 50, 100)).not.toThrow();
+        expect(() => Canv.drawMatrix(ctx, m1, 50, 60, 0)).not.toThrow();
+        expect(() => Canv.drawMatrix(ctx, m1, 50, 60, 100)).not.toThrow();
+        expect(() => Canv.drawMatrix(ctx, m1, 60, 50, 100)).not.toThrow();
+    });
 });

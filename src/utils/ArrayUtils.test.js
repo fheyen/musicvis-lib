@@ -483,4 +483,45 @@ describe('ArrayUtils', () => {
             );
         });
     });
+
+    describe('findRepeatedIndices', () => {
+        test('empty', () => {
+            expect(au.findRepeatedIndices([])).toStrictEqual([]);
+        });
+        test('nothing repeats', () => {
+            expect(
+                au.findRepeatedIndices([0, 1, 2, 3, 4, 5, 6])
+            ).toStrictEqual(
+                [0, 1, 2, 3, 4, 5, 6]
+            );
+        });
+        test('everything repeats', () => {
+            expect(
+                au.findRepeatedIndices([6, 6, 6])
+            ).toStrictEqual(
+                [0, 0, 0]
+            );
+        });
+        test('simple case', () => {
+            expect(
+                au.findRepeatedIndices([1, 2, 3, 1, 2, 3])
+            ).toStrictEqual(
+                [0, 1, 2, 0, 1, 2]
+            );
+        });
+        test('more complex case', () => {
+            expect(
+                au.findRepeatedIndices([1, 2, 3, 0, 1, 2, 3])
+            ).toStrictEqual(
+                [0, 1, 2, 3, 0, 1, 2]
+            );
+        });
+        test('invalid equals', () => {
+            expect(
+                au.findRepeatedIndices([1, 2, 3, 0, 1, 2, 3], () => false)
+            ).toStrictEqual(
+                Array(7).fill(null)
+            );
+        });
+    });
 });
