@@ -2,7 +2,6 @@
  * @module stringBased/Gotoh
  */
 
-
 /**
  * Calculates the SIMILARITY for two strings or arrays.
  * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
@@ -20,57 +19,57 @@
  * @param {number} gapPenaltyExtend cost for continuing a gap (negative)
  * @returns {number} similarity score
  */
-export function gotoh(
-    seqA,
-    seqB,
-    similarityFunction = matchMissmatchSimilarity,
-    gapPenaltyStart = -1,
-    gapPenaltyExtend = -0.1,
+export function gotoh (
+  seqA,
+  seqB,
+  similarityFunction = matchMissmatchSimilarity,
+  gapPenaltyStart = -1,
+  gapPenaltyExtend = -0.1
 ) {
-    // check if strings are empty
-    if (seqA.length === 0 && seqB.length === 0) { return 0; }
-    // gap penalty function
-    const gap = (index) => gapPenaltyStart + (index - 1) * gapPenaltyExtend;
-    const lengthA = seqA.length;
-    const lengthB = seqB.length;
-    // initialize matrices
-    const a = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
-    const b = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
-    const c = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
-    a[0][0] = 0;
-    b[0][0] = 0;
-    c[0][0] = 0;
-    for (let i = 1; i <= lengthA; i++) {
-        a[i][0] = c[i][0] = Number.NEGATIVE_INFINITY;
-        b[i][0] = gap(i);
+  // check if strings are empty
+  if (seqA.length === 0 && seqB.length === 0) { return 0 }
+  // gap penalty function
+  const gap = (index) => gapPenaltyStart + (index - 1) * gapPenaltyExtend
+  const lengthA = seqA.length
+  const lengthB = seqB.length
+  // initialize matrices
+  const a = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }))
+  const b = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }))
+  const c = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }))
+  a[0][0] = 0
+  b[0][0] = 0
+  c[0][0] = 0
+  for (let i = 1; i <= lengthA; i++) {
+    a[i][0] = c[i][0] = Number.NEGATIVE_INFINITY
+    b[i][0] = gap(i)
+  }
+  for (let i = 1; i <= lengthB; i++) {
+    a[0][i] = b[0][i] = Number.NEGATIVE_INFINITY
+    c[0][i] = gap(i)
+  }
+  // compute matrices
+  for (let i = 1; i <= lengthA; i++) {
+    for (let j = 1; j <= lengthB; j++) {
+      const sim = similarityFunction(seqA[i - 1], seqB[j - 1])
+      a[i][j] = Math.max(
+        a[i - 1][j - 1],
+        b[i - 1][j - 1],
+        c[i - 1][j - 1]) + sim
+      b[i][j] = Math.max(
+        a[i - 1][j] + gapPenaltyStart,
+        b[i - 1][j] + gapPenaltyExtend,
+        c[i - 1][j] + gapPenaltyStart)
+      c[i][j] = Math.max(
+        a[i][j - 1] + gapPenaltyStart,
+        b[i][j - 1] + gapPenaltyStart,
+        c[i][j - 1] + gapPenaltyExtend)
     }
-    for (let i = 1; i <= lengthB; i++) {
-        a[0][i] = b[0][i] = Number.NEGATIVE_INFINITY;
-        c[0][i] = gap(i);
-    }
-    // compute matrices
-    for (let i = 1; i <= lengthA; i++) {
-        for (let j = 1; j <= lengthB; j++) {
-            const sim = similarityFunction(seqA[i - 1], seqB[j - 1]);
-            a[i][j] = Math.max(
-                a[i - 1][j - 1],
-                b[i - 1][j - 1],
-                c[i - 1][j - 1]) + sim;
-            b[i][j] = Math.max(
-                a[i - 1][j] + gapPenaltyStart,
-                b[i - 1][j] + gapPenaltyExtend,
-                c[i - 1][j] + gapPenaltyStart);
-            c[i][j] = Math.max(
-                a[i][j - 1] + gapPenaltyStart,
-                b[i][j - 1] + gapPenaltyStart,
-                c[i][j - 1] + gapPenaltyExtend);
-        }
-    }
-    return Math.max(
-        a[lengthA][lengthB],
-        b[lengthA][lengthB],
-        c[lengthA][lengthB],
-    );
+  }
+  return Math.max(
+    a[lengthA][lengthB],
+    b[lengthA][lengthB],
+    c[lengthA][lengthB]
+  )
 }
 
 /**
@@ -90,21 +89,21 @@ export function gotoh(
  * @param {number} gapPenaltyExtend cost for continuing a gap (negative)
  * @returns {number} normalized similarity score
  */
-export function normalizedGotoh(
-    seqA,
-    seqB,
-    similarityFunction = matchMissmatchSimilarity,
-    gapPenaltyStart = -1,
-    gapPenaltyExtend = -0.1,
+export function normalizedGotoh (
+  seqA,
+  seqB,
+  similarityFunction = matchMissmatchSimilarity,
+  gapPenaltyStart = -1,
+  gapPenaltyExtend = -0.1
 ) {
-    const similarity = gotoh(seqA, seqB, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
-    const longer = seqA.length >= seqB.length ? seqA : seqB;
-    const maxSimilarity = gotoh(longer, longer, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
-    if (maxSimilarity === 0) {
-        // TODO: can this happen? what would be reasonable here?
-        return similarity;
-    }
-    return similarity / maxSimilarity;
+  const similarity = gotoh(seqA, seqB, similarityFunction, gapPenaltyStart, gapPenaltyExtend)
+  const longer = seqA.length >= seqB.length ? seqA : seqB
+  const maxSimilarity = gotoh(longer, longer, similarityFunction, gapPenaltyStart, gapPenaltyExtend)
+  if (maxSimilarity === 0) {
+    // TODO: can this happen? what would be reasonable here?
+    return similarity
+  }
+  return similarity / maxSimilarity
 }
 
 /**
@@ -114,8 +113,8 @@ export function normalizedGotoh(
  * @param {any} b some value
  * @returns {number} 1 if equal, -1 otherwise
  */
-export function matchMissmatchSimilarity(a, b) {
-    return a === b ? 1 : -1;
+export function matchMissmatchSimilarity (a, b) {
+  return a === b ? 1 : -1
 }
 
 /**
@@ -126,6 +125,6 @@ export function matchMissmatchSimilarity(a, b) {
  * @param {number} b some value
  * @returns {number} -Math.abs(a - b)
  */
-export function differenceSimilarity(a, b) {
-    return -Math.abs(a - b);
+export function differenceSimilarity (a, b) {
+  return -Math.abs(a - b)
 }

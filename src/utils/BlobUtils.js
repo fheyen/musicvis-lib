@@ -8,12 +8,12 @@
  * @param {Blob} blob Blob
  * @returns {Promise<string,undefined>} base64 string
  */
-export function blobToBase64(blob) {
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-    });
+export function blobToBase64 (blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.readAsDataURL(blob)
+  })
 }
 
 /**
@@ -23,6 +23,6 @@ export function blobToBase64(blob) {
  * @param {Blob} blob Blob
  * @returns {string} file extension
  */
-export function blobToFileExtension(blob) {
-    return blob.type.split('/')[1].split(';')[0];
+export function blobToFileExtension (blob) {
+  return blob.type.split('/')[1].split(';')[0]
 }

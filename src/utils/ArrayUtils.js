@@ -2,7 +2,7 @@
  * @module utils/ArrayUtils
  */
 
-import * as d3 from 'd3';
+import * as d3 from 'd3'
 
 /**
  * Shallow compares two arrays
@@ -11,16 +11,16 @@ import * as d3 from 'd3';
  * @param {Array} b another array
  * @returns {boolean} true iff equal
  */
-export function arrayShallowEquals(a, b) {
-    if (a.length !== b.length) {
-        return false;
+export function arrayShallowEquals (a, b) {
+  if (a.length !== b.length) {
+    return false
+  }
+  for (const [index, element] of a.entries()) {
+    if (element !== b[index]) {
+      return false
     }
-    for (const [index, element] of a.entries()) {
-        if (element !== b[index]) {
-            return false;
-        }
-    }
-    return true;
+  }
+  return true
 }
 
 /**
@@ -32,23 +32,23 @@ export function arrayShallowEquals(a, b) {
  * @param {boolean} checkLength also checks if arrays have the same length
  * @returns {boolean} true iff arrays contain same elements
  */
-export function arrayHasSameElements(a, b, checkLength = true) {
-    if (checkLength && a.length !== b.length) {
-        return false;
+export function arrayHasSameElements (a, b, checkLength = true) {
+  if (checkLength && a.length !== b.length) {
+    return false
+  }
+  const setA = new Set(a)
+  const setB = new Set(b)
+  for (const element of setA) {
+    if (!setB.has(element)) {
+      return false
     }
-    const setA = new Set(a);
-    const setB = new Set(b);
-    for (const element of setA) {
-        if (!setB.has(element)) {
-            return false;
-        }
+  }
+  for (const element of setB) {
+    if (!setA.has(element)) {
+      return false
     }
-    for (const element of setB) {
-        if (!setA.has(element)) {
-            return false;
-        }
-    }
-    return true;
+  }
+  return true
 }
 
 /**
@@ -61,11 +61,11 @@ export function arrayHasSameElements(a, b, checkLength = true) {
  * @param {number[]} set2 set 2
  * @returns {number} similarity in [0, 1]
  */
-export function jaccardIndex(set1, set2) {
-    if (set1.length === 0 && set2.length === 0) {
-        return 1;
-    }
-    return d3.intersection(set1, set2).size / d3.union(set1, set2).size;
+export function jaccardIndex (set1, set2) {
+  if (set1.length === 0 && set2.length === 0) {
+    return 1
+  }
+  return d3.intersection(set1, set2).size / d3.union(set1, set2).size
 }
 
 /**
@@ -80,28 +80,28 @@ export function jaccardIndex(set1, set2) {
  * @returns {number} Kendall tau distance
  * @throws {'Ranking length must be equal'} if rankings don't have euqal length
  */
-export function kendallTau(ranking1, ranking2, normalize = true) {
-    if (ranking1.length !== ranking2.length) {
-        throw new Error('Ranking length must be equal');
+export function kendallTau (ranking1, ranking2, normalize = true) {
+  if (ranking1.length !== ranking2.length) {
+    throw new Error('Ranking length must be equal')
+  }
+  if (ranking1.length === 0) {
+    return 0
+  }
+  let inversions = 0
+  const n = ranking1.length
+  for (let a = 0; a < n; a++) {
+    for (let b = a + 1; b < n; b++) {
+      const r1smaller = ranking1[a] < ranking1[b]
+      const r2smaller = ranking2[a] < ranking2[b]
+      if (r1smaller !== r2smaller) {
+        inversions++
+      }
     }
-    if (ranking1.length === 0) {
-        return 0;
-    }
-    let inversions = 0;
-    const n = ranking1.length;
-    for (let a = 0; a < n; a++) {
-        for (let b = a + 1; b < n; b++) {
-            const r1smaller = ranking1[a] < ranking1[b];
-            const r2smaller = ranking2[a] < ranking2[b];
-            if (r1smaller !== r2smaller) {
-                inversions++;
-            }
-        }
-    }
-    if (normalize) {
-        inversions /= n * (n - 1) / 2;
-    }
-    return inversions;
+  }
+  if (normalize) {
+    inversions /= n * (n - 1) / 2
+  }
+  return inversions
 }
 
 /**
@@ -110,8 +110,8 @@ export function kendallTau(ranking1, ranking2, normalize = true) {
  * @param {Array} array an array
  * @returns {Array} array without duplicates
  */
-export function removeDuplicates(array) {
-    return [...new Set(array)];
+export function removeDuplicates (array) {
+  return [...new Set(array)]
 }
 
 /**
@@ -123,16 +123,16 @@ export function removeDuplicates(array) {
  * @param {Array} b a shorter array
  * @returns {boolean} true iff a contains b
  */
-export function arrayContainsArray(a, b) {
-    if (a.length < b.length) {
-        return false;
+export function arrayContainsArray (a, b) {
+  if (a.length < b.length) {
+    return false
+  }
+  for (const [index, element] of b.entries()) {
+    if (a[index] !== element) {
+      return false
     }
-    for (const [index, element] of b.entries()) {
-        if (a[index] !== element) {
-            return false;
-        }
-    }
-    return true;
+  }
+  return true
 }
 
 /**
@@ -148,23 +148,23 @@ export function arrayContainsArray(a, b) {
  * @throws {'undefined length'} length is undefined
  * @throws {'start < 0'} when start is negative
  */
-export function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
-    if (length === null || length === undefined) {
-        throw new Error('undefined length');
+export function arraySlicesEqual (a, b, length, startA = 0, startB = 0) {
+  if (length === null || length === undefined) {
+    throw new Error('undefined length')
+  }
+  if (startA < 0 || startB < 0) {
+    throw new Error('start < 0')
+  }
+  if (a.length < startA + length || b.length < startB + length) {
+    // Array(s) too small for slicing with this start and length
+    return false
+  }
+  for (let offset = 0; offset < length; offset++) {
+    if (a[startA + offset] !== b[startB + offset]) {
+      return false
     }
-    if (startA < 0 || startB < 0) {
-        throw new Error('start < 0');
-    }
-    if (a.length < startA + length || b.length < startB + length) {
-        // Array(s) too small for slicing with this start and length
-        return false;
-    }
-    for (let offset = 0; offset < length; offset++) {
-        if (a[startA + offset] !== b[startB + offset]) {
-            return false;
-        }
-    }
-    return true;
+  }
+  return true
 }
 
 /**
@@ -175,27 +175,27 @@ export function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
  * @param {number} [startIndex=0] index from which to start searching
  * @returns {number} index or -1 when not found
  */
-export function arrayIndexOf(haystack, needle, startIndex = 0) {
-    if (needle.length === 0) { return -1; }
-    for (
-        let index = startIndex;
-        index < haystack.length - needle.length + 1;
-        ++index
-    ) {
-        if (haystack[index] === needle[0]) {
-            let found = true;
-            for (let offset = 1; offset < needle.length; ++offset) {
-                if (haystack[index + offset] !== needle[offset]) {
-                    found = false;
-                    break;
-                }
-            }
-            if (found) {
-                return index;
-            }
+export function arrayIndexOf (haystack, needle, startIndex = 0) {
+  if (needle.length === 0) { return -1 }
+  for (
+    let index = startIndex;
+    index < haystack.length - needle.length + 1;
+    ++index
+  ) {
+    if (haystack[index] === needle[0]) {
+      let found = true
+      for (let offset = 1; offset < needle.length; ++offset) {
+        if (haystack[index + offset] !== needle[offset]) {
+          found = false
+          break
         }
+      }
+      if (found) {
+        return index
+      }
     }
-    return -1;
+  }
+  return -1
 }
 
 /**
@@ -205,8 +205,8 @@ export function arrayIndexOf(haystack, needle, startIndex = 0) {
  * @param {Array} array array
  * @returns {number} maximum value
  */
-export function getArrayMax(array) {
-    return d3.max(array.flat(Number.POSITIVE_INFINITY));
+export function getArrayMax (array) {
+  return d3.max(array.flat(Number.POSITIVE_INFINITY))
 }
 
 /**
@@ -216,15 +216,14 @@ export function getArrayMax(array) {
  * @param {Array} array nD array with arbitrary depth and structure
  * @returns {Array} normalized array
  */
-export function normalizeNdArray(array) {
-    const max = d3.max(array.flat(Number.POSITIVE_INFINITY));
-    const normalize = (array_, maxValue) =>
-        array_.map((d) => {
-            return d.length !== undefined ? normalize(d, maxValue) : d / maxValue;
-        });
-    return normalize(array, max);
+export function normalizeNdArray (array) {
+  const max = d3.max(array.flat(Number.POSITIVE_INFINITY))
+  const normalize = (array_, maxValue) =>
+    array_.map((d) => {
+      return d.length !== undefined ? normalize(d, maxValue) : d / maxValue
+    })
+  return normalize(array, max)
 }
-
 
 /**
  * Assumes same shape of matrices.
@@ -233,11 +232,11 @@ export function normalizeNdArray(array) {
  * @param {number[][]} matrixB a matrix
  * @returns {number} Euclidean distance of the two matrices
  */
-export function euclideanDistance(matrixA, matrixB) {
-    const valuesA = matrixA.flat();
-    const valuesB = matrixB.flat();
-    const diffs = valuesA.map((d, i) => d - valuesB[i]);
-    return Math.hypot(...diffs);
+export function euclideanDistance (matrixA, matrixB) {
+  const valuesA = matrixA.flat()
+  const valuesB = matrixB.flat()
+  const diffs = valuesA.map((d, i) => d - valuesB[i])
+  return Math.hypot(...diffs)
 }
 
 /**
@@ -249,12 +248,12 @@ export function euclideanDistance(matrixA, matrixB) {
  * @param {Function} formatter formatting for each element
  * @returns {string} stringified matrix
  */
-export function formatMatrix(matrix, colSeparator = ', ', rowSeparator = '\n', formatter) {
-    if (!matrix || matrix.length === 0) { return ''; }
-    if (formatter) {
-        matrix = matrix.map(row => row.map(value => formatter(value)));
-    }
-    return matrix.map(row => row.join(colSeparator)).join(rowSeparator);
+export function formatMatrix (matrix, colSeparator = ', ', rowSeparator = '\n', formatter) {
+  if (!matrix || matrix.length === 0) { return '' }
+  if (formatter) {
+    matrix = matrix.map(row => row.map(value => formatter(value)))
+  }
+  return matrix.map(row => row.join(colSeparator)).join(rowSeparator)
 }
 
 /**
@@ -266,34 +265,34 @@ export function formatMatrix(matrix, colSeparator = ', ', rowSeparator = '\n', f
  * @param {Function} accessor accessor
  * @returns {*} value in array closest to value
  */
-export function binarySearch(array, value, accessor = d => d) {
-    // Handle short arrays
-    if (array.length <= 3) {
-        let closest = null;
-        let diff = Number.POSITIVE_INFINITY;
-        for (const element of array) {
-            const value_ = accessor(element);
-            const diff2 = Math.abs(value - value_);
-            if (diff2 < diff) {
-                closest = element;
-                diff = diff2;
-            }
-        }
-        return closest;
+export function binarySearch (array, value, accessor = d => d) {
+  // Handle short arrays
+  if (array.length <= 3) {
+    let closest = null
+    let diff = Number.POSITIVE_INFINITY
+    for (const element of array) {
+      const value_ = accessor(element)
+      const diff2 = Math.abs(value - value_)
+      if (diff2 < diff) {
+        closest = element
+        diff = diff2
+      }
     }
-    // Split longer array in two for binary search
-    const pivotPosition = Math.floor(array.length / 2);
-    const pivotElement = array[pivotPosition];
-    const pivotValue = accessor(pivotElement);
-    if (value === pivotValue) {
-        return pivotElement;
-    }
-    if (value < pivotValue) {
-        return binarySearch(array.slice(0, pivotPosition + 1), value, accessor);
-    }
-    if (value > pivotValue) {
-        return binarySearch(array.slice(pivotPosition - 1), value, accessor);
-    }
+    return closest
+  }
+  // Split longer array in two for binary search
+  const pivotPosition = Math.floor(array.length / 2)
+  const pivotElement = array[pivotPosition]
+  const pivotValue = accessor(pivotElement)
+  if (value === pivotValue) {
+    return pivotElement
+  }
+  if (value < pivotValue) {
+    return binarySearch(array.slice(0, pivotPosition + 1), value, accessor)
+  }
+  if (value > pivotValue) {
+    return binarySearch(array.slice(pivotPosition - 1), value, accessor)
+  }
 }
 
 /**
@@ -307,37 +306,36 @@ export function binarySearch(array, value, accessor = d => d) {
  *   const arr = [1, 1, 2, 3, 3, 3];
  *   const streaks = findStreaks(arr);
  */
-export function findStreaks(
-    values,
-    accessor = (d) => d,
-    equality = (a, b) => a === b,
+export function findStreaks (
+  values,
+  accessor = (d) => d,
+  equality = (a, b) => a === b
 ) {
-    let startIndex = 0;
-    const result = [];
-    let startValue = accessor(values[0]);
-    for (const [index, value] of values.entries()) {
-        const v = accessor(value);
-        if (!equality(startValue, v)) {
-            result.push({
-                startIndex,
-                endIndex: index - 1,
-                length: index - startIndex,
-            });
-            startIndex = index;
-            startValue = v;
-        }
+  let startIndex = 0
+  const result = []
+  let startValue = accessor(values[0])
+  for (const [index, value] of values.entries()) {
+    const v = accessor(value)
+    if (!equality(startValue, v)) {
+      result.push({
+        startIndex,
+        endIndex: index - 1,
+        length: index - startIndex
+      })
+      startIndex = index
+      startValue = v
     }
-    // Finish last streak
-    if (values.length > 0) {
-        result.push({
-            startIndex,
-            endIndex: values.length - 1,
-            length: values.length - startIndex,
-        });
-    }
-    return result;
+  }
+  // Finish last streak
+  if (values.length > 0) {
+    result.push({
+      startIndex,
+      endIndex: values.length - 1,
+      length: values.length - startIndex
+    })
+  }
+  return result
 }
-
 
 /**
  * For each element in a sequence, finds the lowest index where an equal element
@@ -347,13 +345,13 @@ export function findStreaks(
  * @param {Function} equals euqality function
  * @returns {number[]} result
  */
-export function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
-    return sequence.map((element) => {
-        for (const [index2, element2] of sequence.entries()) {
-            if (equals(element, element2)) {
-                return index2;
-            }
-        }
-        return null;
-    });
+export function findRepeatedIndices (sequence, equals = (a, b) => a === b) {
+  return sequence.map((element) => {
+    for (const [index2, element2] of sequence.entries()) {
+      if (equals(element, element2)) {
+        return index2
+      }
+    }
+    return null
+  })
 }

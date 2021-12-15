@@ -6,7 +6,8 @@
 &nbsp;
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/fheyen/musicvis-lib?label=GitHub)](https://github.com/fheyen/musicvis-lib)
 [![GitHub issues](https://img.shields.io/github/issues-raw/fheyen/musicvis-lib)](https://github.com/fheyen/musicvis-lib/issues)
-[![GitHub issues](https://img.shields.io/github/contributors/fheyen/musicvis-lib?color=%234dc71f)](https://github.com/fheyen/musicvis-lib/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/fheyen/musicvis-lib?color=%234dc71f)](https://github.com/fheyen/musicvis-lib/graphs/contributors)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 
 Goal: Provide data structures and algorithms for music analysis and visualization in JavaScript.
@@ -39,7 +40,7 @@ See [Observable](https://observablehq.com/collection/@fheyen/musicvis-lib) for e
 
 With modules
 ```javascript
-import {Note} from 'musicvis-lib';
+import {Note} from 'musicvis-lib'
 
 const note = Note.from({
   pitch: 65,
@@ -47,13 +48,13 @@ const note = Note.from({
   end: 3.0,
   velocity: 127,
   channel: 0
-});
+})
 ```
 
 With require
 ```javascript
-const musicvislib = require('musicvis-lib');
-const {Note} = musicvislib;
+const musicvislib = require('musicvis-lib')
+const {Note} = musicvislib
 
 const note = Note.from({
   pitch: 65,
@@ -61,7 +62,7 @@ const note = Note.from({
   end: 3.0,
   velocity: 127,
   channel: 0
-});
+})
 ```
 
 In HTML
@@ -71,9 +72,9 @@ In HTML
 <!-- ... or with a downloaded file -->
 <script src="./musicvislib.min.js"></script>
 <script>
-    console.log(musicvislib);
-    console.log(musicvislib.Midi);
-    console.log(musicvislib.Midi.getMidiNoteByNr(0));
+  console.log(musicvislib)
+  console.log(musicvislib.Midi)
+  console.log(musicvislib.Midi.getMidiNoteByNr(0))
 </script>
 ```
 

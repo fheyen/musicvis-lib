@@ -1,4 +1,4 @@
-import patterns from './Patterns.js';
+import patterns from './Patterns.js'
 
 /**
  * Maps internal drum names to MusicXML instrument names and note display
@@ -6,128 +6,127 @@ import patterns from './Patterns.js';
  * @type {Map<string,object>}
  */
 export const drumInstrumentMap = new Map([
-    [
-        'bass', {
-            instr: 'P1-I36',
-            display: ['F', '4'],
-            notehead: '',
-            stem: 'down',
-        },
-    ],
-    [
-        'snare', {
-            instr: 'P1-I39',
-            display: ['C', '5'],
-            notehead: '',
-            stem: 'down',
-        },
-    ],
-    [
-        'hihat-closed', {
-            instr: 'P1-I43',
-            display: ['G', '5'],
-            notehead: 'x',
-            stem: 'up',
-        },
-    ],
-    [
-        'hihat-pedal', {
-            instr: 'P1-I45',
-            display: ['D', '4'],
-            notehead: 'x',
-            stem: 'down',
-        },
-    ],
-    [
-        'hihat-open', {
-            instr: 'P1-I47',
-            display: ['E', '5'],
-            notehead: 'x',
-            stem: 'up',
-        },
-    ],
-    [
-        'cymbal-crash', {
-            instr: 'P1-I50',
-            display: ['A', '5'],
-            notehead: 'x',
-            stem: 'up',
-        },
-    ],
-    [
-        'cymbal-ride', {
-            instr: 'P1-I52',
-            display: ['F', '5'],
-            notehead: 'up',
-            stem: 'x',
-        },
-    ],
-    [
-        'cymbal-chinese', {
-            instr: 'P1-I53',
-            display: ['B', '5'],
-            notehead: 'x',
-            stem: 'up',
-        },
-    ],
-    [
-        'cymbal-splash', {
-            instr: 'P1-I56',
-            display: ['B', '5'],
-            notehead: 'x',
-            stem: 'up',
-        },
-    ],
-    [
-        'tom-hi', {
-            instr: 'P1-I51',
-            display: ['F', '5'],
-            notehead: '',
-            stem: 'up',
-        },
-    ],
-    [
-        'tom-mid-hi', {
-            instr: 'P1-I49',
-            display: ['F', '5'],
-            notehead: '',
-            stem: 'up',
-        },
-    ],
-    [
-        'tom-mid-low', {
-            instr: 'P1-I48',
-            display: ['E', '5'],
-            notehead: '',
-            stem: 'up',
-        },
-    ],
-    [
-        'tom-low', {
-            instr: 'P1-I46',
-            display: ['D', '5'],
-            notehead: '',
-            stem: 'up',
-        },
-    ],
-    [
-        'tom-floor-hi', {
-            instr: 'P1-I44',
-            display: ['A', '4'],
-            notehead: '',
-            stem: 'down',
-        },
-    ],
-    [
-        'tom-floor-low', {
-            instr: 'P1-I42',
-            display: ['A', '4'],
-            notehead: '',
-            stem: 'up',
-        },
-    ],
-]);
-
+  [
+    'bass', {
+      instr: 'P1-I36',
+      display: ['F', '4'],
+      notehead: '',
+      stem: 'down'
+    }
+  ],
+  [
+    'snare', {
+      instr: 'P1-I39',
+      display: ['C', '5'],
+      notehead: '',
+      stem: 'down'
+    }
+  ],
+  [
+    'hihat-closed', {
+      instr: 'P1-I43',
+      display: ['G', '5'],
+      notehead: 'x',
+      stem: 'up'
+    }
+  ],
+  [
+    'hihat-pedal', {
+      instr: 'P1-I45',
+      display: ['D', '4'],
+      notehead: 'x',
+      stem: 'down'
+    }
+  ],
+  [
+    'hihat-open', {
+      instr: 'P1-I47',
+      display: ['E', '5'],
+      notehead: 'x',
+      stem: 'up'
+    }
+  ],
+  [
+    'cymbal-crash', {
+      instr: 'P1-I50',
+      display: ['A', '5'],
+      notehead: 'x',
+      stem: 'up'
+    }
+  ],
+  [
+    'cymbal-ride', {
+      instr: 'P1-I52',
+      display: ['F', '5'],
+      notehead: 'up',
+      stem: 'x'
+    }
+  ],
+  [
+    'cymbal-chinese', {
+      instr: 'P1-I53',
+      display: ['B', '5'],
+      notehead: 'x',
+      stem: 'up'
+    }
+  ],
+  [
+    'cymbal-splash', {
+      instr: 'P1-I56',
+      display: ['B', '5'],
+      notehead: 'x',
+      stem: 'up'
+    }
+  ],
+  [
+    'tom-hi', {
+      instr: 'P1-I51',
+      display: ['F', '5'],
+      notehead: '',
+      stem: 'up'
+    }
+  ],
+  [
+    'tom-mid-hi', {
+      instr: 'P1-I49',
+      display: ['F', '5'],
+      notehead: '',
+      stem: 'up'
+    }
+  ],
+  [
+    'tom-mid-low', {
+      instr: 'P1-I48',
+      display: ['E', '5'],
+      notehead: '',
+      stem: 'up'
+    }
+  ],
+  [
+    'tom-low', {
+      instr: 'P1-I46',
+      display: ['D', '5'],
+      notehead: '',
+      stem: 'up'
+    }
+  ],
+  [
+    'tom-floor-hi', {
+      instr: 'P1-I44',
+      display: ['A', '4'],
+      notehead: '',
+      stem: 'down'
+    }
+  ],
+  [
+    'tom-floor-low', {
+      instr: 'P1-I42',
+      display: ['A', '4'],
+      notehead: '',
+      stem: 'up'
+    }
+  ]
+])
 
 /**
  * Takes a baseline pattern and moves it to the correct position on the fretboard
@@ -136,20 +135,20 @@ export const drumInstrumentMap = new Map([
  * @param {number} [repeat=1] number of repeats
  * @returns {number[][]} array of [string, fret] positions
  */
-export function generatePattern(patternType, repeat = 1) {
-    const pattern = patterns.get(patternType).hits;
-    if (repeat === 1) {
-        return pattern;
+export function generatePattern (patternType, repeat = 1) {
+  const pattern = patterns.get(patternType).hits
+  if (repeat === 1) {
+    return pattern
+  }
+  // Repeat with or without alternative direction
+  let result = pattern
+  if (repeat > 1) {
+    for (let repetition = 1; repetition < repeat; repetition++) {
+      result = [...result, ...pattern]
     }
-    // Repeat with or without alternative direction
-    let result = pattern;
-    if (repeat > 1) {
-        for (let repetition = 1; repetition < repeat; repetition++) {
-            result = [...result, ...pattern];
-        }
-    }
-    // console.log(pattern);
-    return result;
+  }
+  // console.log(pattern);
+  return result
 }
 
 /**
@@ -161,37 +160,37 @@ export function generatePattern(patternType, repeat = 1) {
  * @param {number[][]} drumHits the output of generatePattern
  * @returns {string} MusicXML string
  */
-export function generateXml(name, tempo, timeSig, drumHits) {
-    const credit = 'github.com/fheyen/musicvis-lib';
-    timeSig = timeSig.split('/').map(d => +d);
-    const notesPerMeasure = timeSig[0];
-    let currentMeasure = 1;
-    let currentNoteInMeasure = 1;
-    let measuresString = '';
-    for (const hit of drumHits) {
-        if (currentNoteInMeasure > notesPerMeasure) {
-            // Start new measure
-            currentMeasure++;
-            currentNoteInMeasure = 1;
-            measuresString = `${measuresString}
+export function generateXml (name, tempo, timeSig, drumHits) {
+  const credit = 'github.com/fheyen/musicvis-lib'
+  timeSig = timeSig.split('/').map(d => +d)
+  const notesPerMeasure = timeSig[0]
+  let currentMeasure = 1
+  let currentNoteInMeasure = 1
+  let measuresString = ''
+  for (const hit of drumHits) {
+    if (currentNoteInMeasure > notesPerMeasure) {
+      // Start new measure
+      currentMeasure++
+      currentNoteInMeasure = 1
+      measuresString = `${measuresString}
             </measure>
-            <measure number="${currentMeasure}">`;
-        }
-        currentNoteInMeasure++;
-        // Get instrument etc.
-        if (hit.length === 1) {
-            const drum = hit[0];
-            if (drum === 'rest') {
-                measuresString = `${measuresString}
+            <measure number="${currentMeasure}">`
+    }
+    currentNoteInMeasure++
+    // Get instrument etc.
+    if (hit.length === 1) {
+      const drum = hit[0]
+      if (drum === 'rest') {
+        measuresString = `${measuresString}
                 <note>
                     <rest/>
                     <duration>1</duration>
                     <voice>1</voice>
                     <type>quarter</type>
-                </note>`;
-            } else {
-                const details = drumInstrumentMap.get(drum);
-                measuresString = `${measuresString}
+                </note>`
+      } else {
+        const details = drumInstrumentMap.get(drum)
+        measuresString = `${measuresString}
                 <note>
                     <unpitched>
                         <display-step>${details.display[0]}</display-step>
@@ -201,17 +200,21 @@ export function generateXml(name, tempo, timeSig, drumHits) {
                     <instrument id="${details.instr}"/>
                     <voice>1</voice>
                     <type>quarter</type>
-                    <stem>${details.stem}</stem>${details.notehead === '' ? '' : `
+                    <stem>${details.stem}</stem>${details.notehead === ''
+? ''
+: `
                     <notehead>${details.notehead}</notehead>`}
-                </note>`;
-            }
-        } else {
-            // Handle 'chords'
-            for (const [i, drum] of hit.entries()) {
-                const details = drumInstrumentMap.get(drum);
-                measuresString = `${measuresString}
-                <note>${i > 0 ? `
-                    <chord/>`: ''}
+                </note>`
+      }
+    } else {
+      // Handle 'chords'
+      for (const [i, drum] of hit.entries()) {
+        const details = drumInstrumentMap.get(drum)
+        measuresString = `${measuresString}
+                <note>${i > 0
+? `
+                    <chord/>`
+: ''}
                     <unpitched>
                         <display-step>${details.display[0]}</display-step>
                         <display-octave>${details.display[1]}</display-octave>
@@ -220,14 +223,16 @@ export function generateXml(name, tempo, timeSig, drumHits) {
                     <instrument id="${details.instr}"/>
                     <voice>1</voice>
                     <type>quarter</type>
-                    <stem>${details.stem}</stem>${details.notehead === '' ? '' : `
+                    <stem>${details.stem}</stem>${details.notehead === ''
+? ''
+: `
                     <notehead>${details.notehead}</notehead>`}
-                </note>`;
-            }
-        }
+                </note>`
+      }
     }
+  }
 
-    return `<?xml version="1.0" encoding="UTF-8"?>
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.1">
   <work>
@@ -535,5 +540,5 @@ export function generateXml(name, tempo, timeSig, drumHits) {
         ${measuresString}
       </measure>
     </part>
-  </score-partwise>`;
+  </score-partwise>`
 }

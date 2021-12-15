@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3 from 'd3'
 
 /**
  * Determines the perceptual lightness of an HTML color
@@ -7,11 +7,11 @@ import * as d3 from 'd3';
  * @param {string} color HTML color specifier
  * @returns {number} lightness in [0, 100]
  */
-export function getColorLightness(color) {
-    const { r, g, b } = d3.color(color).rgb();
-    // eslint-disable-next-line no-bitwise
-    const Y = (r + r + r + b + g + g + g + g) >> 3;
-    return Y / 2.55;
+export function getColorLightness (color) {
+  const { r, g, b } = d3.color(color).rgb()
+  // eslint-disable-next-line no-bitwise
+  const Y = (r + r + r + b + g + g + g + g) >> 3
+  return Y / 2.55
 }
 
 /**
@@ -20,18 +20,18 @@ export function getColorLightness(color) {
  * @param {string[]} colors HTML color specifiers
  * @returns {string} average as RGB string
  */
-export function averageColor(colors) {
-    let mR = 0;
-    let mG = 0;
-    let mB = 0;
-    for (const c of colors) {
-        const { r, g, b } = d3.color(c).rgb();
-        mR += r;
-        mG += g;
-        mB += b;
-    }
-    mR = Math.round(mR / colors.length);
-    mG = Math.round(mG / colors.length);
-    mB = Math.round(mB / colors.length);
-    return `rgb(${mR}, ${mG}, ${mB})`;
+export function averageColor (colors) {
+  let mR = 0
+  let mG = 0
+  let mB = 0
+  for (const c of colors) {
+    const { r, g, b } = d3.color(c).rgb()
+    mR += r
+    mG += g
+    mB += b
+  }
+  mR = Math.round(mR / colors.length)
+  mG = Math.round(mG / colors.length)
+  mB = Math.round(mB / colors.length)
+  return `rgb(${mR}, ${mG}, ${mB})`
 }

@@ -1,21 +1,18 @@
-import { bpmToSecondsPerBeat } from '../utils/MusicUtils';
+// import { bpmToSecondsPerBeat } from '../utils/MusicUtils'
 
-/**
- * @param notes
- * @param bpm
- * @param options
- */
-export function compareToRhythm(notes, bpm, options) {
-    const {
-        beatType = 4,
-        smallestStep = 8,
-        allowTriplets,
-    } = options;
+// /**
+//  * @param notes
+//  * @param bpm
+//  * @param options
+//  */
+// export function compareToRhythm (notes, bpm, options) {
+//   const {
+//     beatType = 4,
+//     smallestStep = 8,
+//     allowTriplets
+//   } = options
 
-    // TODO: handle triplets
+//   // TODO: handle triplets
 
-    const secondsPerBeat = bpmToSecondsPerBeat(bpm);
-
-
-
-}
+//   const secondsPerBeat = bpmToSecondsPerBeat(bpm)
+// }

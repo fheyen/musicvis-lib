@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3 from 'd3'
 
 /**
  * @module utils/MathUtils
@@ -11,8 +11,8 @@ import * as d3 from 'd3';
  * @param {number} max maximum
  * @returns {number} random float
  */
-export function randFloat(min = 0, max = 1) {
-    return Math.random() * (max - min) + min;
+export function randFloat (min = 0, max = 1) {
+  return Math.random() * (max - min) + min
 }
 
 /**
@@ -21,9 +21,9 @@ export function randFloat(min = 0, max = 1) {
  * @param {Array} array an array
  * @returns {any} random element from the array
  */
-export function choose(array) {
-    const index = d3.randomInt(0, array.length)();
-    return array[index];
+export function choose (array) {
+  const index = d3.randomInt(0, array.length)()
+  return array[index]
 }
 
 /**
@@ -34,8 +34,8 @@ export function choose(array) {
  * @param {number} maxValue upper limit
  * @returns {number} clipped number
  */
-export function clipValue(value, minValue, maxValue) {
-    return Math.max(minValue, Math.min(maxValue, value));
+export function clipValue (value, minValue, maxValue) {
+  return Math.max(minValue, Math.min(maxValue, value))
 }
 
 /**
@@ -45,8 +45,8 @@ export function clipValue(value, minValue, maxValue) {
  * @param {number} n number of digits
  * @returns {number} rounded number
  */
-export function roundToNDecimals(number, n) {
-    return +number.toFixed(n);
+export function roundToNDecimals (number, n) {
+  return +number.toFixed(n)
 }
 
 /**
@@ -56,11 +56,11 @@ export function roundToNDecimals(number, n) {
  * @param {number} y a number
  * @returns {number[]} array with the smaller number first
  */
-export function swapSoSmallerFirst(x, y) {
-    if (x <= y) {
-        return [x, y];
-    }
-    return [y, x];
+export function swapSoSmallerFirst (x, y) {
+  if (x <= y) {
+    return [x, y]
+  }
+  return [y, x]
 }
 
 /**
@@ -70,14 +70,14 @@ export function swapSoSmallerFirst(x, y) {
  * @param {number} integer an integer number
  * @returns {number} number of 1s
  */
-export function countOnesOfBinary(integer) {
-    let count = 0;
-    while (integer !== 0) {
-        // eslint-disable-next-line no-bitwise
-        integer = integer & (integer - 1);
-        count++;
-    }
-    return count;
+export function countOnesOfBinary (integer) {
+  let count = 0
+  while (integer !== 0) {
+    // eslint-disable-next-line no-bitwise
+    integer = integer & (integer - 1)
+    count++
+  }
+  return count
 }
 
 /**
@@ -89,31 +89,31 @@ export function countOnesOfBinary(integer) {
  * @param {number[]} array array
  * @returns {number[]} array with indices of maxima
  */
-export function findLocalMaxima(array) {
-    if (array.length <= 1) { return []; }
-    if (array.length === 2) {
-        if (array[0] > array[1]) { return [0]; }
-        if (array[1] > array[0]) { return [1]; }
-        return [];
+export function findLocalMaxima (array) {
+  if (array.length <= 1) { return [] }
+  if (array.length === 2) {
+    if (array[0] > array[1]) { return [0] }
+    if (array[1] > array[0]) { return [1] }
+    return []
+  }
+  // General case with 3 or more
+  const maximaIndices = []
+  if (array[0] > array[1]) {
+    maximaIndices.push(0)
+  }
+  let last = array[0]
+  let current = array[1]
+  for (let index = 1; index < array.length - 1; index++) {
+    const next = array[index + 1]
+    if (current > last && current > next) {
+      maximaIndices.push(index)
     }
-    // General case with 3 or more
-    const maximaIndices = [];
-    if (array[0] > array[1]) {
-        maximaIndices.push(0);
-    }
-    let last = array[0];
-    let current = array[1];
-    for (let index = 1; index < array.length - 1; index++) {
-        const next = array[index + 1];
-        if (current > last && current > next) {
-            maximaIndices.push(index);
-        }
-        last = current;
-        current = next;
-    }
-    const lastIndex = array.length - 1;
-    if (array[lastIndex] > array[lastIndex - 1]) {
-        maximaIndices.push(array.length - 1);
-    }
-    return maximaIndices;
+    last = current
+    current = next
+  }
+  const lastIndex = array.length - 1
+  if (array[lastIndex] > array[lastIndex - 1]) {
+    maximaIndices.push(array.length - 1)
+  }
+  return maximaIndices
 }

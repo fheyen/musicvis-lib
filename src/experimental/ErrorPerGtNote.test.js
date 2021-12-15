@@ -1,10 +1,7 @@
-import { getStartTimeErrorPerGtNote } from './ErrorPerGtNote.js';
-
+// import { getStartTimeErrorPerGtNote } from './ErrorPerGtNote.js'
 
 describe('ErrorPerGtNote', () => {
+  test('getStartTimeErrorPerGtNote', () => {
 
-    test('getStartTimeErrorPerGtNote', () => {
-
-    });
-
+  });
 });

@@ -43,14 +43,14 @@
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "lint": "eslint --fix src && remark .",
-    "lint:nofix": "eslint src && remark .",
+    "lint": "standard src",
+    "lint:fix": "standard --fix",
     "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
     "git:add": "git add .",
     "git:commit": "git commit -m \"new version build\"",
     "git:push": "git push",
     "git:pushtags": "git push origin --tags",
-    "predeploy": "eslint --fix src && npm run build && jest --silent && npm run doc",
+    "predeploy": "npm run lint:fix && npm run build && jest --silent && npm run doc",
     "deploy": "npm publish && npm run git:all"
   },
   "dependencies": {
@@ -71,13 +71,6 @@
     "@types/jest": "^27.0.3",
     "babel-eslint": "^10.1.0",
     "clean-jsdoc-theme": "^3.3.1",
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsdoc": "^36.1.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-unicorn": "^36.0.0",
     "glob": "^7.2.0",
     "jest": "^27.4.5",
     "jest-canvas-mock": "^2.3.1",
@@ -86,7 +79,8 @@
     "npm-check-updates": "^12.0.3",
     "rollup": "^2.61.1",
     "rollup-plugin-node-resolve": "^5",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "standard": "^16.0.4"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -99,6 +93,23 @@
     ],
     "setupFilesAfterEnv": [
       "jest-extended/all"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "/dist/",
+      "/docs/"
+    ],
+    "globals": [
+      "MediaRecorder",
+      "Blob",
+      "DOMParser",
+      "CanvasRenderingContext2D",
+      "localStorage",
+      "FileReader"
+    ],
+    "env": [
+      "jest"
     ]
   }
 }

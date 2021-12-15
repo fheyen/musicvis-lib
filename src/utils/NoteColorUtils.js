@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3 from 'd3'
 
 /**
  * @module utils/NoteColorUtils
@@ -14,24 +14,24 @@ import * as d3 from 'd3';
  * @type {string[]}
  */
 const noteColormap = [
-    '#ff0000',
-    '#ff4e00',
-    '#db7b00',
-    '#ffcc00',
-    '#e4ed00',
-    '#81d700',
-    '#00ffb4',
-    '#00ffea',
-    '#00baff',
-    '#3c00ff',
-    '#a800ff',
-    '#ff00fd',
+  '#ff0000',
+  '#ff4e00',
+  '#db7b00',
+  '#ffcc00',
+  '#e4ed00',
+  '#81d700',
+  '#00ffb4',
+  '#00ffea',
+  '#00baff',
+  '#3c00ff',
+  '#a800ff',
+  '#ff00fd'
 ].map(d => {
-    // Make colors less saturated
-    const c = d3.hsl(d);
-    c.s = 0.5;
-    return c.toString();
-});
+  // Make colors less saturated
+  const c = d3.hsl(d)
+  c.s = 0.5
+  return c.toString()
+})
 /**
  * Colorblind save colors from
  * Malandrino et al. - Visualization and Music Harmony: Design, Implementation,
@@ -55,28 +55,28 @@ const noteColormap = [
 //     ['B', '#adebeb'],
 // ]);
 const noteColormapAccessible = [
-    '#6699ff',
-    '#66ffff',
-    '#000000',
-    '#647878',
-    '#993366',
-    '#ff0000',
-    '#ffcc99',
-    '#ffff01',
-    '#ff9900',
-    '#009900',
-    '#66ff99',
-    '#0000cc',
-];
+  '#6699ff',
+  '#66ffff',
+  '#000000',
+  '#647878',
+  '#993366',
+  '#ff0000',
+  '#ffcc99',
+  '#ffff01',
+  '#ff9900',
+  '#009900',
+  '#66ff99',
+  '#0000cc'
+]
 
-const colorInterpolator = d3.interpolateRgb('black', 'steelblue');
+const colorInterpolator = d3.interpolateRgb('black', 'steelblue')
 /**
  * Gradient color map from black to steelblue
  *
  * @type {string[]}
  */
 const noteColormapGradientArray = Array.from({ length: 12 })
-    .map((d, index) => colorInterpolator(index / 11));
+  .map((d, index) => colorInterpolator(index / 11))
 
 /**
  * Returns the note color depending on the given pitch.
@@ -86,13 +86,13 @@ const noteColormapGradientArray = Array.from({ length: 12 })
  * @param {string} colormap one of 'default', 'accessible', 'gradient'
  * @returns {string} color code
  */
-export function noteColorFromPitch(pitch, colormap = 'default') {
-    switch (colormap) {
+export function noteColorFromPitch (pitch, colormap = 'default') {
+  switch (colormap) {
     case 'accessible':
-        return noteColormapAccessible[pitch % 12];
+      return noteColormapAccessible[pitch % 12]
     case 'gradient':
-        return noteColormapGradientArray[pitch % 12];
+      return noteColormapGradientArray[pitch % 12]
     default:
-        return noteColormap[pitch % 12];
-    }
+      return noteColormap[pitch % 12]
+  }
 }

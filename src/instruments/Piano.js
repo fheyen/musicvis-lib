@@ -9,10 +9,10 @@
  * @type {Map<number,object>}
  */
 export const pianoPitchRange = new Map([
-    [72, { minPitch: 24, maxPitch: 95 }],
-    [88, { minPitch: 21, maxPitch: 108 }],
-    [128, { minPitch: 0, maxPitch: 127 }],
-]);
+  [72, { minPitch: 24, maxPitch: 95 }],
+  [88, { minPitch: 21, maxPitch: 108 }],
+  [128, { minPitch: 0, maxPitch: 127 }]
+])
 
 /**
  *
@@ -26,7 +26,5 @@ export const pianoPitchRange = new Map([
 // TODO: alternatively (as fallback) use heuristics
 
 // TODO: or try to do it like humans do when playing
-
-
 
 // }

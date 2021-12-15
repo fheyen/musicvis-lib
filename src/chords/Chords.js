@@ -1,8 +1,7 @@
-import { group } from 'd3';
-import { Chord } from '@tonaljs/tonal';
-import { arrayShallowEquals } from '../utils/ArrayUtils.js';
-import Note from '../types/Note.js'; /* eslint-disable-line no-unused-vars */
-
+import { group } from 'd3'
+import { Chord } from '@tonaljs/tonal'
+import { arrayShallowEquals } from '../utils/ArrayUtils.js'
+import Note from '../types/Note.js' /* eslint-disable-line no-unused-vars */
 
 /**
  * @module Chords
@@ -16,15 +15,15 @@ import Note from '../types/Note.js'; /* eslint-disable-line no-unused-vars */
  * @param {Note[]} notes notes
  * @returns {Note[][]} array of chord arrays
  */
-export function detectChordsByExactStart(notes) {
-    const grouped = group(notes, d => d.start);
-    const chords = [...grouped]
-        .map(d => d[1])
-        // Sort chords by time
-        .sort((a, b) => a[0].start - b[0].start)
-        // Sort notes in each chord by pitch
-        .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
-    return chords;
+export function detectChordsByExactStart (notes) {
+  const grouped = group(notes, d => d.start)
+  const chords = [...grouped]
+    .map(d => d[1])
+    // Sort chords by time
+    .sort((a, b) => a[0].start - b[0].start)
+    // Sort notes in each chord by pitch
+    .map(chord => chord.sort((a, b) => a.pitch - b.pitch))
+  return chords
 }
 
 /**
@@ -36,33 +35,33 @@ export function detectChordsByExactStart(notes) {
  * @param {number} threshold threshold
  * @returns {Note[][]} chords
  */
-export function detectChordsBySimilarStart(notes, threshold = 0.02) {
-    const chords = [];
-    let currentChord = [];
-    let currentChordStartTime = 0;
-    let currentChordPitches = new Set();
-    for (const note of notes) {
-        // Note belongs to current chord
-        if (note.start - currentChordStartTime <= threshold) {
-            // Do not allow the same note twice in a chord
-            if (!currentChordPitches.has(note.pitch)) {
-                currentChord.push(note);
-                currentChordPitches.add(note.pitch);
-            }
-        } else {
-            // Start new chord
-            if (currentChord.length > 0) {
-                chords.push(currentChord);
-            }
-            currentChord = [note];
-            currentChordStartTime = note.start;
-            currentChordPitches = new Set([note.pitch]);
-        }
+export function detectChordsBySimilarStart (notes, threshold = 0.02) {
+  const chords = []
+  let currentChord = []
+  let currentChordStartTime = 0
+  let currentChordPitches = new Set()
+  for (const note of notes) {
+    // Note belongs to current chord
+    if (note.start - currentChordStartTime <= threshold) {
+      // Do not allow the same note twice in a chord
+      if (!currentChordPitches.has(note.pitch)) {
+        currentChord.push(note)
+        currentChordPitches.add(note.pitch)
+      }
+    } else {
+      // Start new chord
+      if (currentChord.length > 0) {
+        chords.push(currentChord)
+      }
+      currentChord = [note]
+      currentChordStartTime = note.start
+      currentChordPitches = new Set([note.pitch])
     }
-    if (currentChord.length > 0) {
-        chords.push(currentChord);
-    }
-    return chords;
+  }
+  if (currentChord.length > 0) {
+    chords.push(currentChord)
+  }
+  return chords
 }
 
 /**
@@ -81,31 +80,31 @@ export function detectChordsBySimilarStart(notes, threshold = 0.02) {
  *      by note start time)
  * @returns {Note[][]} array of chord arrays
  */
-export function detectChordsByOverlap(notes, sortByPitch = true) {
-    if (!notes || notes.length === 0) { return []; }
-    if (notes.length === 1) { return [[notes[0]]]; }
-    const sorted = [...notes].sort((a, b) => { a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch; });
-    const notesTodo = new Set(sorted);
-    const chords = [];
-    // Find all overlaps with brute force
-    while (notesTodo.size > 0) {
-        // Take a new note and make a new chord
-        const note1 = notesTodo.values().next().value;
-        notesTodo.delete(note1);
-        let chord = [note1];
-        // Add all notes that overap note1
-        for (const note2 of notesTodo.values()) {
-            if (note1.overlapInSeconds(note2) >= 0.5 * note1.getDuration()) {
-                chord.push(note2);
-                notesTodo.delete(note2);
-            }
-        }
-        if (sortByPitch) {
-            chord = chord.sort((a, b) => a.pitch - b.pitch);
-        }
-        chords.push(chord);
+export function detectChordsByOverlap (notes, sortByPitch = true) {
+  if (!notes || notes.length === 0) { return [] }
+  if (notes.length === 1) { return [[notes[0]]] }
+  const sorted = [...notes].sort((a, b) => a.start !== b.start ? (a.start - b.start) : a.pitch - b.pitch)
+  const notesTodo = new Set(sorted)
+  const chords = []
+  // Find all overlaps with brute force
+  while (notesTodo.size > 0) {
+    // Take a new note and make a new chord
+    const note1 = notesTodo.values().next().value
+    notesTodo.delete(note1)
+    let chord = [note1]
+    // Add all notes that overap note1
+    for (const note2 of notesTodo.values()) {
+      if (note1.overlapInSeconds(note2) >= 0.5 * note1.getDuration()) {
+        chord.push(note2)
+        notesTodo.delete(note2)
+      }
     }
-    return chords;
+    if (sortByPitch) {
+      chord = chord.sort((a, b) => a.pitch - b.pitch)
+    }
+    chords.push(chord)
+  }
+  return chords
 }
 // export function detectChordsByOverlap(notes, sortByPitch = true) {
 //     if (!notes || !notes.length) { return []; }
@@ -150,77 +149,76 @@ export function detectChordsByOverlap(notes, sortByPitch = true) {
 //     return chords;
 // }
 
-
 /*
  * Maps number of steps (number of notes -1) to possible chord types
  */
 const chordTypes = new Map([
+  [
+    1,
     [
-        1,
-        [
-            // TODO: how to handle inversions?
-            { steps: [5], name: 'Inverted power chord', suffix: '?' },
-            { steps: [7], name: 'Power chord', suffix: '5' },
-        ],
-    ],
+      // TODO: how to handle inversions?
+      { steps: [5], name: 'Inverted power chord', suffix: '?' },
+      { steps: [7], name: 'Power chord', suffix: '5' }
+    ]
+  ],
+  [
+    2,
     [
-        2,
-        [
-            { steps: [2, 7], name: 'Suspended second', suffix: 'sus2' },
-            { steps: [3, 6], name: 'Diminished', suffix: 'dim' },
-            { steps: [3, 7], name: 'Minor', suffix: 'min' },
-            { steps: [4, 10], name: 'Seventh', suffix: '7' },
-            { steps: [4, 7], name: 'Major', suffix: '' },
-            { steps: [4, 8], name: 'Augmented', suffix: 'aug' },
-            { steps: [4, 9], name: 'Sixth', suffix: '6' },
-            { steps: [5, 7], name: 'Suspended fourth', suffix: 'sus4' },
-        ],
-    ],
+      { steps: [2, 7], name: 'Suspended second', suffix: 'sus2' },
+      { steps: [3, 6], name: 'Diminished', suffix: 'dim' },
+      { steps: [3, 7], name: 'Minor', suffix: 'min' },
+      { steps: [4, 10], name: 'Seventh', suffix: '7' },
+      { steps: [4, 7], name: 'Major', suffix: '' },
+      { steps: [4, 8], name: 'Augmented', suffix: 'aug' },
+      { steps: [4, 9], name: 'Sixth', suffix: '6' },
+      { steps: [5, 7], name: 'Suspended fourth', suffix: 'sus4' }
+    ]
+  ],
+  [
+    3,
     [
-        3,
-        [
-            { steps: [2, 3, 7], name: 'Minor, added ninth', suffix: 'm(add9)' },
-            { steps: [2, 4, 7], name: 'Added ninth', suffix: 'add9' },
-            { steps: [3, 6, 10], name: 'Minor seventh, flat fifth', suffix: 'm7b5' },
-            { steps: [3, 7, 10], name: 'Minor seventh', suffix: 'm7' },
-            { steps: [3, 7, 11], name: 'Minor, major seventh', suffix: 'm(Maj7)' },
-            { steps: [3, 7, 8], name: 'Minor, flat sixth', suffix: 'mb6' },
-            { steps: [3, 7, 9], name: 'Minor sixth', suffix: 'm6' },
-            { steps: [4, 5, 11], name: 'Major eleventh (no fifth, no ninth)', suffix: 'Maj11' },
-            { steps: [4, 5, 7], name: 'Added fourth', suffix: 'add4' },
-            { steps: [4, 7, 10], name: 'Dominant seventh', suffix: '7' },
-            { steps: [4, 7, 11], name: 'Major seventh', suffix: 'Maj7' },
-            { steps: [4, 7, 9], name: 'Major Sixth', suffix: 'Maj6' },
-        ],
-    ],
+      { steps: [2, 3, 7], name: 'Minor, added ninth', suffix: 'm(add9)' },
+      { steps: [2, 4, 7], name: 'Added ninth', suffix: 'add9' },
+      { steps: [3, 6, 10], name: 'Minor seventh, flat fifth', suffix: 'm7b5' },
+      { steps: [3, 7, 10], name: 'Minor seventh', suffix: 'm7' },
+      { steps: [3, 7, 11], name: 'Minor, major seventh', suffix: 'm(Maj7)' },
+      { steps: [3, 7, 8], name: 'Minor, flat sixth', suffix: 'mb6' },
+      { steps: [3, 7, 9], name: 'Minor sixth', suffix: 'm6' },
+      { steps: [4, 5, 11], name: 'Major eleventh (no fifth, no ninth)', suffix: 'Maj11' },
+      { steps: [4, 5, 7], name: 'Added fourth', suffix: 'add4' },
+      { steps: [4, 7, 10], name: 'Dominant seventh', suffix: '7' },
+      { steps: [4, 7, 11], name: 'Major seventh', suffix: 'Maj7' },
+      { steps: [4, 7, 9], name: 'Major Sixth', suffix: 'Maj6' }
+    ]
+  ],
+  [
+    4,
     [
-        4,
-        [
-            { steps: [2, 3, 6, 10], name: 'Minor ninth flat fifth', suffix: 'm9b5' },
-            { steps: [2, 3, 7, 10], name: 'Minor ninth', suffix: 'm9' },
-            { steps: [2, 3, 7, 11], name: 'Minor ninth, major seventh', suffix: 'm9(Maj7)' },
-            { steps: [2, 3, 7, 9], name: 'Minor sixth, added ninth', suffix: 'm6/9' },
-            { steps: [2, 4, 7, 11], name: 'Major ninth', suffix: 'Maj9' },
-            { steps: [2, 4, 7, 9], name: 'Sixth, added ninth', suffix: '6/9' },
-            { steps: [4, 5, 7, 11], name: 'Major eleventh (no ninth)', suffix: 'Maj11' },
-            { steps: [4, 6, 7, 10], name: 'Seventh, sharp eleventh', suffix: '7#11' },
-            { steps: [4, 6, 7, 11], name: 'Major seventh, sharp eleventh', suffix: 'Maj7#11' },
-        ],
-    ],
+      { steps: [2, 3, 6, 10], name: 'Minor ninth flat fifth', suffix: 'm9b5' },
+      { steps: [2, 3, 7, 10], name: 'Minor ninth', suffix: 'm9' },
+      { steps: [2, 3, 7, 11], name: 'Minor ninth, major seventh', suffix: 'm9(Maj7)' },
+      { steps: [2, 3, 7, 9], name: 'Minor sixth, added ninth', suffix: 'm6/9' },
+      { steps: [2, 4, 7, 11], name: 'Major ninth', suffix: 'Maj9' },
+      { steps: [2, 4, 7, 9], name: 'Sixth, added ninth', suffix: '6/9' },
+      { steps: [4, 5, 7, 11], name: 'Major eleventh (no ninth)', suffix: 'Maj11' },
+      { steps: [4, 6, 7, 10], name: 'Seventh, sharp eleventh', suffix: '7#11' },
+      { steps: [4, 6, 7, 11], name: 'Major seventh, sharp eleventh', suffix: 'Maj7#11' }
+    ]
+  ],
+  [
+    5,
     [
-        5,
-        [
-            { steps: [2, 4, 5, 7, 11], name: 'Major eleventh', suffix: 'Maj11' },
-            { steps: [2, 4, 7, 9, 11], name: 'Major thirteen', suffix: 'Maj13' },
-        ],
-    ],
+      { steps: [2, 4, 5, 7, 11], name: 'Major eleventh', suffix: 'Maj11' },
+      { steps: [2, 4, 7, 9, 11], name: 'Major thirteen', suffix: 'Maj13' }
+    ]
+  ],
+  [
+    6,
     [
-        6,
-        [
-            { steps: [2, 3, 4, 6, 7, 10], name: 'Minor thirteen', suffix: 'm13' },
-        ],
-    ],
-]);
+      { steps: [2, 3, 4, 6, 7, 10], name: 'Minor thirteen', suffix: 'm13' }
+    ]
+  ]
+])
 
 /**
  * Returns chord type, e.g. 'Major', 'Diminished', ...
@@ -230,34 +228,34 @@ const chordTypes = new Map([
  * @param {Note[]} notes notes (sorted by pitch asc.)
  * @returns {string} chord type
  */
-export function getChordType(notes) {
-    if (!notes || notes.length === 0) { return { name: 'No note' }; }
-    if (notes.length === 1) { return { name: 'Single note' }; }
-    // Get distances in semitones
-    let steps = [];
-    const lowest = notes[0].pitch;
-    for (let index = 1; index < notes.length; index++) {
-        steps.push(notes[index].pitch - lowest);
-    }
-    // Normalize higher than octave
-    steps = steps.map(d => d % 12);
-    // Filter doubles
-    steps = [...new Set(steps)];
-    // Filter octaves
-    steps = steps.filter(d => d !== 0);
-    if (steps.length === 0) { return { name: 'Octave' }; }
-    steps.sort((a, b) => a - b);
+export function getChordType (notes) {
+  if (!notes || notes.length === 0) { return { name: 'No note' } }
+  if (notes.length === 1) { return { name: 'Single note' } }
+  // Get distances in semitones
+  let steps = []
+  const lowest = notes[0].pitch
+  for (let index = 1; index < notes.length; index++) {
+    steps.push(notes[index].pitch - lowest)
+  }
+  // Normalize higher than octave
+  steps = steps.map(d => d % 12)
+  // Filter doubles
+  steps = [...new Set(steps)]
+  // Filter octaves
+  steps = steps.filter(d => d !== 0)
+  if (steps.length === 0) { return { name: 'Octave' } }
+  steps.sort((a, b) => a - b)
 
-    // Now get the chord type
-    const candidates = chordTypes.get(steps.length);
-    if (candidates) {
-        for (const cand of candidates) {
-            if (arrayShallowEquals(steps, cand.steps)) {
-                return cand;
-            }
-        }
+  // Now get the chord type
+  const candidates = chordTypes.get(steps.length)
+  if (candidates) {
+    for (const cand of candidates) {
+      if (arrayShallowEquals(steps, cand.steps)) {
+        return cand
+      }
     }
-    return { name: 'Unknown chord type' };
+  }
+  return { name: 'Unknown chord type' }
 }
 
 /**
@@ -267,12 +265,12 @@ export function getChordType(notes) {
  * @param {Note[]} notes notes
  * @returns {string[]} possible chord types
  */
-export function getChordName(notes) {
-    const noteLetters = notes
-        .sort((a, b) => a.pitch - b.pitch)
-        .map(d => d.getLetter());
-    const chords = Chord.detect(noteLetters);
-    return chords;
+export function getChordName (notes) {
+  const noteLetters = notes
+    .sort((a, b) => a.pitch - b.pitch)
+    .map(d => d.getLetter())
+  const chords = Chord.detect(noteLetters)
+  return chords
 }
 
 // /**

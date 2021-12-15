@@ -1,6 +1,5 @@
-import { getMidiNoteByLabel } from '../fileFormats/Midi.js';
-import Note from './Note.js';
-
+import { getMidiNoteByLabel } from '../fileFormats/Midi.js'
+import Note from './Note.js'
 
 /**
  * Guitar note class that reflects MIDI properties but has
@@ -10,7 +9,7 @@ import Note from './Note.js';
  * @augments Note
  */
 class GuitarNote extends Note {
-    /**
+  /**
      * Creates a new Note
      *
      * @param {number} pitch pitch
@@ -21,22 +20,22 @@ class GuitarNote extends Note {
      * @param {number} string guitar string
      * @param {number} fret guitar fret
      */
-    constructor(
-        pitch = 0,
-        start = 0,
-        velocity = 127,
-        channel = 0,
-        end = null,
-        // This is different to the base Note class
-        string = null,
-        fret = null,
-    ) {
-        super(pitch, start, velocity, channel, end);
-        this.string = string;
-        this.fret = fret;
-    }
+  constructor (
+    pitch = 0,
+    start = 0,
+    velocity = 127,
+    channel = 0,
+    end = null,
+    // This is different to the base Note class
+    string = null,
+    fret = null
+  ) {
+    super(pitch, start, velocity, channel, end)
+    this.string = string
+    this.fret = fret
+  }
 
-    /**
+  /**
      * Creates a GuitarNote object from an object via destructuring
      *
      * @param {object} object object with at least {pitch}
@@ -52,36 +51,36 @@ class GuitarNote extends Note {
      * @returns {GuitarNote} new note
      * @throws {Error} when pitch is invalid
      */
-    static from(object) {
-        let {
-            pitch = 0,
-            start = 0,
-            velocity = 127,
-            channel = 0,
-            end = null,
-            // This is different to the base Note class
-            string = null,
-            fret = null,
-        } = object;
-        if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
-            const note = getMidiNoteByLabel(pitch);
-            if (note === null || note === undefined) {
-                throw new Error('Invalid pitch for GuitarNote.from()');
-            }
-            pitch = note.pitch;
-        }
-        return new GuitarNote(
-            pitch,
-            start,
-            velocity,
-            channel,
-            end,
-            string,
-            fret,
-        );
+  static from (object) {
+    let {
+      pitch = 0,
+      start = 0,
+      velocity = 127,
+      channel = 0,
+      end = null,
+      // This is different to the base Note class
+      string = null,
+      fret = null
+    } = object
+    if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
+      const note = getMidiNoteByLabel(pitch)
+      if (note === null || note === undefined) {
+        throw new Error('Invalid pitch for GuitarNote.from()')
+      }
+      pitch = note.pitch
     }
+    return new GuitarNote(
+      pitch,
+      start,
+      velocity,
+      channel,
+      end,
+      string,
+      fret
+    )
+  }
 
-    /**
+  /**
      * Converts a Note to a GuitarNote
      *
      * @param {Note} note note
@@ -89,63 +88,63 @@ class GuitarNote extends Note {
      * @param {number} fret fret
      * @returns {GuitarNote} guitar note
      */
-    static fromNote(note, string, fret) {
-        return new GuitarNote(
-            note.pitch,
-            note.start,
-            note.velocity,
-            note.channel,
-            note.end,
-            string,
-            fret,
-        );
-    }
+  static fromNote (note, string, fret) {
+    return new GuitarNote(
+      note.pitch,
+      note.start,
+      note.velocity,
+      note.channel,
+      note.end,
+      string,
+      fret
+    )
+  }
 
-    /**
+  /**
      * Simplifies the GuitarNote to a Note
      *
      * @returns {Note} note
      */
-    toNote() {
-        return new Note(
-            this.pitch,
-            this.start,
-            this.velocity,
-            this.channel,
-            this.end,
-        );
-    }
+  toNote () {
+    return new Note(
+      this.pitch,
+      this.start,
+      this.velocity,
+      this.channel,
+      this.end
+    )
+  }
 
-    /**
+  /**
      * Returns a copy of the Note object
      *
      * @returns {GuitarNote} new note
      */
-    clone() {
-        return new GuitarNote(
-            this.pitch,
-            this.start,
-            this.velocity,
-            this.channel,
-            this.end,
-            // This is different to the base Note class
-            this.string,
-            this.fret,
-        );
-    }
+  clone () {
+    return new GuitarNote(
+      this.pitch,
+      this.start,
+      this.velocity,
+      this.channel,
+      this.end,
+      // This is different to the base Note class
+      this.string,
+      this.fret
+    )
+  }
 
-    /**
+  /**
      * Returns true if this note and otherNote have equal attributes.
      *
      * @param {GuitarNote} otherNote another GuitarNote
      * @returns {boolean} true if equal
      */
-    equals(otherNote) {
-        if (!(otherNote instanceof GuitarNote)) {
-            return false;
-        }
-        return (
-            this.pitch === otherNote.pitch &&
+  equals (otherNote) {
+    if (!(otherNote instanceof GuitarNote)) {
+      return false
+    }
+    return (
+      this.pitch === otherNote.pitch &&
             this.start === otherNote.start &&
             this.velocity === otherNote.velocity &&
             this.channel === otherNote.channel &&
@@ -153,21 +152,21 @@ class GuitarNote extends Note {
             // This is different to the base Note class
             this.string === otherNote.string &&
             this.fret === otherNote.fret
-        );
-    }
+    )
+  }
 
-    /**
+  /**
      * Human-readable string representation of this GuitarNote
      *
      * @param {boolean} short if true, attribute names will be shortened
      * @returns {string} string representation
      */
-    toString(short = false) {
-        if (short) {
-            return `GuitarNote(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret})`;
-        }
-        return `GuitarNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
+  toString (short = false) {
+    if (short) {
+      return `GuitarNote(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret})`
     }
+    return `GuitarNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`
+  }
 }
 
-export default GuitarNote;
+export default GuitarNote

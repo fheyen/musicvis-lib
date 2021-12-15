@@ -7,11 +7,6 @@ import Note from '../types/Note.js';
  */
 class MidiInputManager {
 
-    #getMidiLiveData;
-    #setMidiLiveData;
-    #addCurrentNote;
-    #removeCurrentNote;
-
     /**
      * Constructor with callback functions
      *
@@ -50,10 +45,10 @@ class MidiInputManager {
         addCurrentNote = () => { },
         removeCurrentNote = () => { },
     ) {
-        this.#getMidiLiveData = getMidiLiveData;
-        this.#setMidiLiveData = setMidiLiveData;
-        this.#addCurrentNote = addCurrentNote;
-        this.#removeCurrentNote = removeCurrentNote;
+        this._getMidiLiveData = getMidiLiveData;
+        this._setMidiLiveData = setMidiLiveData;
+        this._addCurrentNote = addCurrentNote;
+        this._removeCurrentNote = removeCurrentNote;
         // Request MIDI access
         if (navigator.requestMIDIAccess) {
             navigator.requestMIDIAccess().then(this._onMIDISuccess, this._onMIDIFailure);
@@ -111,20 +106,20 @@ class MidiInputManager {
         // A velocity value might not be included with a noteOff command
         const velocity = (message.data.length > 2) ? message.data[2] : 0;
         switch (command) {
-        case 128:
-            this._noteOff(device, time, pitch, channel);
-            break;
-        case 144:
-            if (velocity > 0) {
-                this._noteOn(device, time, pitch, channel, velocity);
-            } else {
+            case 128:
                 this._noteOff(device, time, pitch, channel);
-            }
-            break;
-        case 224:
-            // TODO: handle pitch wheel?
-            break;
-        default:
+                break;
+            case 144:
+                if (velocity > 0) {
+                    this._noteOn(device, time, pitch, channel, velocity);
+                } else {
+                    this._noteOff(device, time, pitch, channel);
+                }
+                break;
+            case 224:
+                // TODO: handle pitch wheel?
+                break;
+            default:
             // TODO: handle other commands?
         }
     };
@@ -142,15 +137,15 @@ class MidiInputManager {
     _noteOn(device, time, pitch, channel, velocity) {
         const note = new Note(pitch, time / 1000, velocity, channel);
         // Add current note
-        this.#addCurrentNote(note);
+        this._addCurrentNote(note);
         // Update recorded MIDI data
         // TODO: probably better to only update on note-off,
         // Then we need internal cache
         // But this might be good, since only 'unfinished' notes need to be checked on note-off,
         // so we can remove finished notes from the cache
-        let midiData = this.#getMidiLiveData();
+        let midiData = this._getMidiLiveData();
         midiData = [...midiData, note];
-        this.#setMidiLiveData(midiData);
+        this._setMidiLiveData(midiData);
     }
 
     /**
@@ -164,7 +159,7 @@ class MidiInputManager {
      * @param {number} channel MIDI channel
      */
     _noteOff(device, time, pitch, channel) {
-        const midiData = this.#getMidiLiveData();
+        const midiData = this._getMidiLiveData();
         if (midiData.length === 0) {
             // If we have to wait for the setState to process, try again
             setTimeout(() => this._noteOff(time, pitch), 10);
@@ -182,8 +177,8 @@ class MidiInputManager {
         if (index >= 0) {
             // Note successfully found, update data
             midiData[index].end = time / 1000;
-            this.#setMidiLiveData(midiData);
-            this.#removeCurrentNote(pitch);
+            this._setMidiLiveData(midiData);
+            this._removeCurrentNote(pitch);
         }
     }
 }

@@ -9,25 +9,25 @@
  * @param {boolean} includeMillis include milli seconds in string?
  * @returns {string} 0-padded time string <minutes>:<seconds>.<milliseconds>
  */
-export function formatTime(seconds, includeMillis = true) {
-    if (seconds === undefined || seconds === null) {
-        return includeMillis ? '--:--.---' : '--:--';
-    }
-    const s = Math.floor(seconds);
-    let min = (Math.floor(s / 60)).toString();
-    let sec = (s % 60).toString();
-    min = min.length < 2 ? `0${min}` : min;
-    sec = sec.length < 2 ? `0${sec}` : sec;
-    if (!includeMillis) {
-        return `${min}:${sec}`;
-    }
-    let ms = (Math.round((seconds - s) * 1000)).toString();
-    if (ms.length < 2) {
-        ms = `00${ms}`;
-    } else if (ms.length < 3) {
-        ms = `0${ms}`;
-    }
-    return `${min}:${sec}.${ms}`;
+export function formatTime (seconds, includeMillis = true) {
+  if (seconds === undefined || seconds === null) {
+    return includeMillis ? '--:--.---' : '--:--'
+  }
+  const s = Math.floor(seconds)
+  let min = (Math.floor(s / 60)).toString()
+  let sec = (s % 60).toString()
+  min = min.length < 2 ? `0${min}` : min
+  sec = sec.length < 2 ? `0${sec}` : sec
+  if (!includeMillis) {
+    return `${min}:${sec}`
+  }
+  let ms = (Math.round((seconds - s) * 1000)).toString()
+  if (ms.length < 2) {
+    ms = `00${ms}`
+  } else if (ms.length < 3) {
+    ms = `0${ms}`
+  }
+  return `${min}:${sec}.${ms}`
 }
 
 /**
@@ -41,17 +41,17 @@ export function formatTime(seconds, includeMillis = true) {
  * @param {boolean} keepMillis keep milliseconds?
  * @returns {string} formatted date
  */
-export function formatDate(date, replaceT = false, keepMillis = true) {
-    let string = date.toISOString()
-        .split(':')
-        .join('-');
-    if (!keepMillis) {
-        string = string.slice(0, string.indexOf('.'));
-    }
-    if (replaceT) {
-        string = string.replace('T', ' ');
-    }
-    return string;
+export function formatDate (date, replaceT = false, keepMillis = true) {
+  let string = date.toISOString()
+    .split(':')
+    .join('-')
+  if (!keepMillis) {
+    string = string.slice(0, string.indexOf('.'))
+  }
+  if (replaceT) {
+    string = string.replace('T', ' ')
+  }
+  return string
 }
 
 /**
@@ -61,17 +61,17 @@ export function formatDate(date, replaceT = false, keepMillis = true) {
  * @param {number} maxLength shorten to this length
  * @returns {string} formatted song title
  */
-export function formatSongTitle(title, maxLength = 30) {
-    if (!title) {
-        return '[No Song]';
-    }
-    // Remove file extension
-    if (title.lastIndexOf('.') !== -1) {
-        title = title.slice(0, title.lastIndexOf('.'));
-    }
-    // Shorten
-    if (title.length > maxLength) {
-        title = `${title.slice(0, maxLength - 3)}...`;
-    }
-    return title;
+export function formatSongTitle (title, maxLength = 30) {
+  if (!title) {
+    return '[No Song]'
+  }
+  // Remove file extension
+  if (title.lastIndexOf('.') !== -1) {
+    title = title.slice(0, title.lastIndexOf('.'))
+  }
+  // Shorten
+  if (title.length > maxLength) {
+    title = `${title.slice(0, maxLength - 3)}...`
+  }
+  return title
 }

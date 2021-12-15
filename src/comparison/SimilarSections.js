@@ -1,6 +1,5 @@
-import { levenshtein } from '../stringBased/Levenshtein.js';
-import PitchSequence from '../types/PitchSequence.js';
-
+import { levenshtein } from '../stringBased/Levenshtein.js'
+import PitchSequence from '../types/PitchSequence.js'
 
 /**
  * @module comparison/SimilarSections
@@ -16,28 +15,28 @@ import PitchSequence from '../types/PitchSequence.js';
  * @param {number} threshold threshold for normalized Levenshtein distance in [0, 1]
  * @returns {object[]} {index, distance, startTime, endTime}
  */
-export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0.5) {
-    const selectedNotes = notes.filter(d => d.start >= startTime && d.end <= endTime);
-    // Convert to string
-    const dataString = PitchSequence.fromNotes(notes).getPitches();
-    const searchString = PitchSequence.fromNotes(selectedNotes).getPitches();
-    const length = searchString.length;
-    if (length < 3) {
-        return [];
+export function findSimilarNoteSections (notes, startTime, endTime, threshold = 0.5) {
+  const selectedNotes = notes.filter(d => d.start >= startTime && d.end <= endTime)
+  // Convert to string
+  const dataString = PitchSequence.fromNotes(notes).getPitches()
+  const searchString = PitchSequence.fromNotes(selectedNotes).getPitches()
+  const length = searchString.length
+  if (length < 3) {
+    return []
+  }
+  // Find matches
+  const matches = findSimilarStringSections(dataString, searchString, threshold)
+  // Get time spans
+  return matches.map(m => {
+    const { index } = m
+    const note1 = notes[index]
+    const note2 = notes[index + length]
+    return {
+      ...m,
+      startTime: note1.start,
+      endTime: note2.end
     }
-    // Find matches
-    const matches = findSimilarStringSections(dataString, searchString, threshold);
-    // Get time spans
-    return matches.map(m => {
-        const { index } = m;
-        const note1 = notes[index];
-        const note2 = notes[index + length];
-        return {
-            ...m,
-            startTime: note1.start,
-            endTime: note2.end,
-        };
-    });
+  })
 }
 
 /**
@@ -48,39 +47,39 @@ export function findSimilarNoteSections(notes, startTime, endTime, threshold = 0
  * @param {number} threshold threshold for normalized Levenshtein distance in [0, 1]
  * @returns {object[]} {index, distance}
  */
-export function findSimilarStringSections(dataString, searchString, threshold = 0.5) {
-    const length = searchString.length;
-    const matches = [];
-    for (let index = 0; index < dataString.length - length; index++) {
-        const slice = dataString.slice(index, index + length);
-        const distance = levenshtein(searchString, slice) / length;
-        if (distance < threshold) {
-            matches.push({ index: index, distance });
-        }
+export function findSimilarStringSections (dataString, searchString, threshold = 0.5) {
+  const length = searchString.length
+  const matches = []
+  for (let index = 0; index < dataString.length - length; index++) {
+    const slice = dataString.slice(index, index + length)
+    const distance = levenshtein(searchString, slice) / length
+    if (distance < threshold) {
+      matches.push({ index: index, distance })
     }
-    // Filter overlapping matches by removing the ones with larger distances
-    const filtered = [];
-    // Therefore, sort by distance ascending and add them one by one
-    matches.sort((a, b) => a.distance - b.distance);
-    // Speed up hit detection by keeping track of indices that are already occupied
-    const occupied = Array.from({ length: dataString.length }).fill(false);
-    for (const m of matches) {
-        const { index } = m;
-        // Check if occupied
-        let occ = false;
-        for (let i = index; i < index + length; i++) {
-            if (occupied[i]) {
-                occ = true;
-                break;
-            }
-        }
-        // If not occupied, add and occupy
-        if (!occ) {
-            filtered.push(m);
-            for (let i = index; i < index + length; i++) {
-                occupied[i] = true;
-            }
-        }
+  }
+  // Filter overlapping matches by removing the ones with larger distances
+  const filtered = []
+  // Therefore, sort by distance ascending and add them one by one
+  matches.sort((a, b) => a.distance - b.distance)
+  // Speed up hit detection by keeping track of indices that are already occupied
+  const occupied = Array.from({ length: dataString.length }).fill(false)
+  for (const m of matches) {
+    const { index } = m
+    // Check if occupied
+    let occ = false
+    for (let i = index; i < index + length; i++) {
+      if (occupied[i]) {
+        occ = true
+        break
+      }
     }
-    return filtered;
+    // If not occupied, add and occupy
+    if (!occ) {
+      filtered.push(m)
+      for (let i = index; i < index + length; i++) {
+        occupied[i] = true
+      }
+    }
+  }
+  return filtered
 }

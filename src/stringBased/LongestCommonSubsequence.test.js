@@ -1,153 +1,151 @@
-import { lcs, lcsLength, normalizedLcsLength } from './LongestCommonSubsequence.js';
-
+import { lcs, lcsLength, normalizedLcsLength } from './LongestCommonSubsequence.js'
 
 describe('LongestCommonSubsequence', () => {
+  describe('lcsLength', () => {
+    test('both empty: 0', () => {
+      expect(lcsLength('', '')).toBe(0)
+    })
 
-    describe('lcsLength', () => {
-        test('both empty: 0', () => {
-            expect(lcsLength('', '')).toBe(0);
-        });
+    test('left empty: 0', () => {
+      expect(lcsLength('', '123')).toBe(0)
+    })
 
-        test('left empty: 0', () => {
-            expect(lcsLength('', '123')).toBe(0);
-        });
+    test('right empty: 0', () => {
+      expect(lcsLength('1234', '')).toBe(0)
+    })
 
-        test('right empty: 0', () => {
-            expect(lcsLength('1234', '')).toBe(0);
-        });
+    test('same', () => {
+      expect(lcsLength('12345', '12345')).toBe(5)
+    })
 
-        test('same', () => {
-            expect(lcsLength('12345', '12345')).toBe(5);
-        });
+    test('insert end', () => {
+      expect(lcsLength('1234', '12345')).toBe(4)
+    })
 
-        test('insert end', () => {
-            expect(lcsLength('1234', '12345')).toBe(4);
-        });
+    test('insert begin', () => {
+      expect(lcsLength('1234', '01234')).toBe(4)
+    })
 
-        test('insert begin', () => {
-            expect(lcsLength('1234', '01234')).toBe(4);
-        });
+    test('insert middle', () => {
+      expect(lcsLength('1234', '12304')).toBe(4)
+    })
 
-        test('insert middle', () => {
-            expect(lcsLength('1234', '12304')).toBe(4);
-        });
+    test('delete end', () => {
+      expect(lcsLength('12345', '1234')).toBe(4)
+    })
 
-        test('delete end', () => {
-            expect(lcsLength('12345', '1234')).toBe(4);
-        });
+    test('delete begin', () => {
+      expect(lcsLength('01234', '1234')).toBe(4)
+    })
 
-        test('delete begin', () => {
-            expect(lcsLength('01234', '1234')).toBe(4);
-        });
+    test('delete middle', () => {
+      expect(lcsLength('12304', '1234')).toBe(4)
+    })
 
-        test('delete middle', () => {
-            expect(lcsLength('12304', '1234')).toBe(4);
-        });
+    test('numbers', () => {
+      const a = [1, 2, 3, 4]
+      const b = [1, 2, 3, 3, 4, 5]
+      expect(lcsLength(a, b)).toBe(4)
+    })
 
-        test('numbers', () => {
-            const a = [1, 2, 3, 4];
-            const b = [1, 2, 3, 3, 4, 5];
-            expect(lcsLength(a, b)).toBe(4);
-        });
+    test('example1', () => {
+      expect(lcsLength('1234', '1224533324')).toBe(4)
+    })
 
-        test('example1', () => {
-            expect(lcsLength('1234', '1224533324')).toBe(4);
-        });
+    test('example2', () => {
+      expect(lcsLength('thisisatest', 'testing123testing')).toBe(7)
+    })
 
-        test('example2', () => {
-            expect(lcsLength('thisisatest', 'testing123testing')).toBe(7);
-        });
+    test('example3', () => {
+      expect(lcsLength([1, 2, 3, 4], [1, 2, 2, 4, 5, 3, 3, 3, 2, 4])).toBe(4)
+    })
+  })
 
-        test('example3', () => {
-            expect(lcsLength([1, 2, 3, 4], [1, 2, 2, 4, 5, 3, 3, 3, 2, 4])).toBe(4);
-        });
-    });
+  describe('normalizedLcsLength', () => {
+    test('both empty: 0', () => {
+      expect(normalizedLcsLength('', '')).toBe(0)
+    })
 
-    describe('normalizedLcsLength', () => {
-        test('both empty: 0', () => {
-            expect(normalizedLcsLength('', '')).toBe(0);
-        });
+    test('left empty: 0', () => {
+      expect(normalizedLcsLength('', '123')).toBe(0)
+    })
 
-        test('left empty: 0', () => {
-            expect(normalizedLcsLength('', '123')).toBe(0);
-        });
+    test('right empty: 0', () => {
+      expect(normalizedLcsLength('1234', '')).toBe(0)
+    })
 
-        test('right empty: 0', () => {
-            expect(normalizedLcsLength('1234', '')).toBe(0);
-        });
+    test('same', () => {
+      expect(normalizedLcsLength('12345', '12345')).toBe(1)
+    })
 
-        test('same', () => {
-            expect(normalizedLcsLength('12345', '12345')).toBe(1);
-        });
+    test('insert end', () => {
+      expect(normalizedLcsLength('1234', '12345')).toBe(0.8)
+    })
 
-        test('insert end', () => {
-            expect(normalizedLcsLength('1234', '12345')).toBe(0.8);
-        });
+    test('numbers', () => {
+      const a = [1, 2, 3, 4]
+      const b = [1, 2, 3, 3, 4, 5]
+      expect(normalizedLcsLength(a, b)).toBe(4 / 6)
+    })
 
-        test('numbers', () => {
-            const a = [1, 2, 3, 4];
-            const b = [1, 2, 3, 3, 4, 5];
-            expect(normalizedLcsLength(a, b)).toBe(4 / 6);
-        });
+    test('example2', () => {
+      expect(normalizedLcsLength('thisisatest', 'testing123testing')).toBe(7 / 17)
+    })
+  })
 
-        test('example2', () => {
-            expect(normalizedLcsLength('thisisatest', 'testing123testing')).toBe(7 / 17);
-        });
-    });
+  describe('lcs', () => {
+    test('both empty: 0', () => {
+      expect(lcs('', '')).toBe('')
+    })
 
-    describe('lcs', () => {
-        test('both empty: 0', () => {
-            expect(lcs('', '')).toBe('');
-        });
+    test('left empty: 0', () => {
+      expect(lcs('', '123')).toBe('')
+    })
 
-        test('left empty: 0', () => {
-            expect(lcs('', '123')).toBe('');
-        });
+    test('right empty: 0', () => {
+      expect(lcs('1234', '')).toBe('')
+    })
 
-        test('right empty: 0', () => {
-            expect(lcs('1234', '')).toBe('');
-        });
+    test('same', () => {
+      expect(lcs('12345', '12345')).toBe('12345')
+    })
 
-        test('same', () => {
-            expect(lcs('12345', '12345')).toBe('12345');
-        });
+    test('insert end', () => {
+      expect(lcs('1234', '12345')).toBe('1234')
+    })
 
-        test('insert end', () => {
-            expect(lcs('1234', '12345')).toBe('1234');
-        });
+    test('insert begin', () => {
+      expect(lcs('1234', '01234')).toBe('1234')
+    })
 
-        test('insert begin', () => {
-            expect(lcs('1234', '01234')).toBe('1234');
-        });
+    test('insert middle', () => {
+      expect(lcs('1234', '12304')).toBe('1234')
+    })
 
-        test('insert middle', () => {
-            expect(lcs('1234', '12304')).toBe('1234');
-        });
+    test('delete end', () => {
+      expect(lcs('12345', '1234')).toBe('1234')
+    })
 
-        test('delete end', () => {
-            expect(lcs('12345', '1234')).toBe('1234');
-        });
+    test('delete begin', () => {
+      expect(lcs('01234', '1234')).toBe('1234')
+    })
 
-        test('delete begin', () => {
-            expect(lcs('01234', '1234')).toBe('1234');
-        });
+    test('delete middle', () => {
+      expect(lcs('12304', '1234')).toBe('1234')
+    })
 
-        test('delete middle', () => {
-            expect(lcs('12304', '1234')).toBe('1234');
-        });
+    test('numbers', () => {
+      const a = [1, 2, 3, 4]
+      const b = [1, 2, 3, 3, 4, 5]
+      expect(lcs(a, b)).toStrictEqual(a)
+    })
 
-        test('numbers', () => {
-            const a = [1, 2, 3, 4];
-            const b = [1, 2, 3, 3, 4, 5];
-            expect(lcs(a, b)).toStrictEqual(a);
-        });
+    test('example1', () => {
+      expect(lcs('1234', '1224533324')).toBe('1234')
+    })
 
-        test('example1', () => {
-            expect(lcs('1234', '1224533324')).toBe('1234');
-        });
-
-        test('example2', () => {
-            expect(lcs('thisisatest', 'testing123testing')).toBe('tsitest');
-        });
-    });
-});
+    test('example2', () => {
+      expect(lcs('thisisatest', 'testing123testing')).toBe('tsitest')
+    })
+  })
+})

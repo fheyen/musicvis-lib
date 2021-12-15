@@ -1,7 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import MusicPiece from '../../src/types/MusicPiece';
-
+import fs from 'fs'
+import path from 'path'
+import MusicPiece from '../../src/types/MusicPiece'
 
 /**
  * Reads a binary file
@@ -10,9 +9,9 @@ import MusicPiece from '../../src/types/MusicPiece';
  * @param {string} directory directory
  * @returns {Buffer} binary
  */
-export function readFile(fileName, directory) {
-    const file = path.join(directory, fileName);
-    return fs.readFileSync(file);
+export function readFile (fileName, directory) {
+  const file = path.join(directory, fileName)
+  return fs.readFileSync(file)
 }
 
 /**
@@ -22,9 +21,9 @@ export function readFile(fileName, directory) {
  * @param {string} directory directory
  * @returns {Buffer} MIDI binary
  */
-export function readMidiFile(fileName, directory) {
-    const file = path.join(directory, fileName);
-    return fs.readFileSync(file, 'base64');
+export function readMidiFile (fileName, directory) {
+  const file = path.join(directory, fileName)
+  return fs.readFileSync(file, 'base64')
 }
 
 /**
@@ -34,9 +33,9 @@ export function readMidiFile(fileName, directory) {
  * @param {string} directory directory
  * @returns {string} XML text
  */
-export function readXmlFile(fileName, directory) {
-    const file = path.join(directory, fileName);
-    return fs.readFileSync(file, 'utf8');
+export function readXmlFile (fileName, directory) {
+  const file = path.join(directory, fileName)
+  return fs.readFileSync(file, 'utf8')
 }
 
 /**
@@ -46,8 +45,8 @@ export function readXmlFile(fileName, directory) {
  * @param {string} directory directory
  * @returns {string[]} file names
  */
-export function listFiles(directory) {
-    return fs.readdirSync(directory);
+export function listFiles (directory) {
+  return fs.readdirSync(directory)
 }
 
 /**
@@ -57,19 +56,19 @@ export function listFiles(directory) {
  * @param {string} directory directory
  * @returns {string[]} file names (without extension)
  */
-export function getSongsWithMidiAndXml(directory) {
-    const filesPrivate = listFiles(directory);
-    const filesPrivateSet = new Set(filesPrivate);
-    const filesMidiAndMusicXML = [];
-    for (const file of filesPrivate) {
-        if (file.endsWith('.mid')) {
-            const baseName = file.replace('.mid', '');
-            if (filesPrivateSet.has(`${baseName}.musicxml`)) {
-                filesMidiAndMusicXML.push(baseName);
-            }
-        }
+export function getSongsWithMidiAndXml (directory) {
+  const filesPrivate = listFiles(directory)
+  const filesPrivateSet = new Set(filesPrivate)
+  const filesMidiAndMusicXML = []
+  for (const file of filesPrivate) {
+    if (file.endsWith('.mid')) {
+      const baseName = file.replace('.mid', '')
+      if (filesPrivateSet.has(`${baseName}.musicxml`)) {
+        filesMidiAndMusicXML.push(baseName)
+      }
     }
-    return filesMidiAndMusicXML;
+  }
+  return filesMidiAndMusicXML
 }
 
 /**
@@ -79,9 +78,9 @@ export function getSongsWithMidiAndXml(directory) {
  * @param {string} directory directory
  * @returns {Note[]} notes
  */
-export function getAllNotesFromMidi(fileBaseName, directory) {
-    const midi = readMidiFile(`${fileBaseName}.mid`, directory);
-    return MusicPiece.fromMidi(fileBaseName, midi).getAllNotes();
+export function getAllNotesFromMidi (fileBaseName, directory) {
+  const midi = readMidiFile(`${fileBaseName}.mid`, directory)
+  return MusicPiece.fromMidi(fileBaseName, midi).getAllNotes()
 }
 
 /**
@@ -91,7 +90,7 @@ export function getAllNotesFromMidi(fileBaseName, directory) {
  * @param {string} directory directory
  * @returns {Note[]} notes
  */
-export function getAllNotesFromXml(fileBaseName, directory) {
-    const xml = readXmlFile(`${fileBaseName}.musicxml`, directory);
-    return MusicPiece.fromMusicXml(fileBaseName, xml).getAllNotes();
+export function getAllNotesFromXml (fileBaseName, directory) {
+  const xml = readXmlFile(`${fileBaseName}.musicxml`, directory)
+  return MusicPiece.fromMusicXml(fileBaseName, xml).getAllNotes()
 }
