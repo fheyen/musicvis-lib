@@ -13,6 +13,7 @@ import Note from '../types/Note.js'
  * @returns {Promise} MIDI recorder
  */
 export const recordMidi = (onMessage) => {
+  // eslint-disable-next-line
   return new Promise(async resolve => {
     let midiAccess
     try {
@@ -89,7 +90,7 @@ function processMidiMessagesToNotes (messages) {
         // TODO: handle pitch wheel?
         break
       default:
-            // TODO: handle other commands?
+      // TODO: handle other commands?
     }
   }
   // Look for unfinished notes

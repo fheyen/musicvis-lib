@@ -43,7 +43,7 @@
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "lint": "standard src",
+    "lint": "standard",
     "lint:fix": "standard --fix",
     "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
     "git:add": "git add .",

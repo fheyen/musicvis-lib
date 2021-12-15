@@ -1,11 +1,11 @@
-// musicvis-lib v0.53.0 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.53.1 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.53.0";
+  var version="0.53.1";
 
   /**
    * Lookup for many MIDI specifications.
@@ -1542,7 +1542,7 @@
     group: 'Sound Effects',
     label: 'Gunshot'
   }];
-  const MIDI_INSTRUMENTS_Lev2 = [{
+  const MIDI_INSTRUMENTS_LEV2 = [{
     number: 1,
     subnumber: 0,
     group: 'Piano',
@@ -3122,7 +3122,7 @@
     MidiInstrumentByNumber.set(instrument.number, instrument);
   }
 
-  for (const instrument of MIDI_INSTRUMENTS_Lev2) {
+  for (const instrument of MIDI_INSTRUMENTS_LEV2) {
     const key = `${instrument.number}-${instrument.subnumber}`;
     MidiInstrumentByNumberLev2.set(key, instrument);
   }
@@ -3154,14 +3154,14 @@
 
   class Note$2 {
     /**
-     * Creates a new Note. Note.from() is preferred over using the constructor.
-     *
-     * @param {number} pitch pitch
-     * @param {number} start start time in seconds
-     * @param {number} velocity velocity
-     * @param {number} channel MIDI channel
-     * @param {number} end end time in seconds
-     */
+       * Creates a new Note. Note.from() is preferred over using the constructor.
+       *
+       * @param {number} pitch pitch
+       * @param {number} start start time in seconds
+       * @param {number} velocity velocity
+       * @param {number} channel MIDI channel
+       * @param {number} end end time in seconds
+       */
     constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null) {
       // Get note name, e.g. C#4
       if (pitch < 0 || pitch > 127) {
@@ -3183,33 +3183,33 @@
       // this.duration = Number.isNaN(duration) ? null : duration;
     }
     /**
-     * Creates a Note object from an object via destructuring.
-     * Use either 'end' or 'duration', if both are specified, end will be used.
-     *
-     * @example <caption>Using end</caption>
-     *  const n = Note.from({
-     *      pitch: 'C#4',     // e.g. 12 or C#4
-     *      start: 0.5,       // start time in seconds
-     *      end: 1.5,         // end time in seconds
-     *      velocity: 127,    // MIDI velocity
-     *      channel: 0,       // MIDI channel
-     *  });
-     * @example <caption>Using duration</caption>
-     *  const n = Note.from({
-     *      pitch: 'C#4',
-     *      start: 0.5,
-     *      duration: 1.2,
-     *  });
-     * @param {object} object object with at least {pitch}
-     * @param {number|string} object.pitch e.G. 12 or C#4
-     * @param {number} object.start start time in seconds
-     * @param {number} object.end end time in seconds
-     * @param {number} object.duration duration in seconds
-     * @param {number} object.velocity MIDI velocity
-     * @param {number} object.channel MIDI channel
-     * @returns {Note} new note
-     * @throws {Error} when pitch is invalid
-     */
+       * Creates a Note object from an object via destructuring.
+       * Use either 'end' or 'duration', if both are specified, end will be used.
+       *
+       * @example <caption>Using end</caption>
+       *  const n = Note.from({
+       *      pitch: 'C#4',     // e.g. 12 or C#4
+       *      start: 0.5,       // start time in seconds
+       *      end: 1.5,         // end time in seconds
+       *      velocity: 127,    // MIDI velocity
+       *      channel: 0,       // MIDI channel
+       *  });
+       * @example <caption>Using duration</caption>
+       *  const n = Note.from({
+       *      pitch: 'C#4',
+       *      start: 0.5,
+       *      duration: 1.2,
+       *  });
+       * @param {object} object object with at least {pitch}
+       * @param {number|string} object.pitch e.G. 12 or C#4
+       * @param {number} object.start start time in seconds
+       * @param {number} object.end end time in seconds
+       * @param {number} object.duration duration in seconds
+       * @param {number} object.velocity MIDI velocity
+       * @param {number} object.channel MIDI channel
+       * @returns {Note} new note
+       * @throws {Error} when pitch is invalid
+       */
 
 
     static from(object) {
@@ -3240,20 +3240,20 @@
       return new Note$2(pitch, start, velocity, channel, end);
     }
     /**
-     * Returns a copy of the Note object
-     *
-     * @returns {Note} new note
-     */
+       * Returns a copy of the Note object
+       *
+       * @returns {Note} new note
+       */
 
 
     clone() {
       return new Note$2(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     /**
-     * Returns the duration of this note in seconds
-     *
-     * @returns {number} note duration
-     */
+       * Returns the duration of this note in seconds
+       *
+       * @returns {number} note duration
+       */
 
 
     getDuration() {
@@ -3264,41 +3264,41 @@
       return this.end - this.start;
     }
     /**
-     * Returns the note's name and octave, e.g. 'C#3'
-     *
-     * @returns {string} note name as string
-     */
+       * Returns the note's name and octave, e.g. 'C#3'
+       *
+       * @returns {string} note name as string
+       */
 
 
     getName() {
       return this.name;
     }
     /**
-     * Returns the note's name WITHOUT the octave, e.g. 'C#'
-     *
-     * @returns {string} note name as string
-     */
+       * Returns the note's name WITHOUT the octave, e.g. 'C#'
+       *
+       * @returns {string} note name as string
+       */
 
 
     getLetter() {
       return getMidiNoteByNr(this.pitch).name;
     }
     /**
-     * Returns the note's octave
-     *
-     * @returns {number} the note's octave
-     */
+       * Returns the note's octave
+       *
+       * @returns {number} the note's octave
+       */
 
 
     getOctave() {
       return getMidiNoteByNr(this.pitch).octave;
     }
     /**
-     * Returns a new Note where start and end are multiplied by factor
-     *
-     * @param {number} addedSeconds seconds to be added to start and end
-     * @returns {Note} new note
-     */
+       * Returns a new Note where start and end are multiplied by factor
+       *
+       * @param {number} addedSeconds seconds to be added to start and end
+       * @returns {Note} new note
+       */
 
 
     shiftTime(addedSeconds) {
@@ -3308,11 +3308,11 @@
       return n;
     }
     /**
-     * Returns a new Note where start and end are multiplied by factor
-     *
-     * @param {number} factor factor to scale start and end with
-     * @returns {Note} new note
-     */
+       * Returns a new Note where start and end are multiplied by factor
+       *
+       * @param {number} factor factor to scale start and end with
+       * @returns {Note} new note
+       */
 
 
     scaleTime(factor) {
@@ -3322,22 +3322,22 @@
       return n;
     }
     /**
-     * Returns true, if this Note and otherNote overlap in time.
-     *
-     * @param {Note} otherNote another Note
-     * @returns {boolean} true if they overlap
-     */
+       * Returns true, if this Note and otherNote overlap in time.
+       *
+       * @param {Note} otherNote another Note
+       * @returns {boolean} true if they overlap
+       */
 
 
     overlapsInTime(otherNote) {
       return this.start >= otherNote.start && this.start <= otherNote.end || this.end >= otherNote.start && this.end <= otherNote.end;
     }
     /**
-     * Returns the amount of seconds this Note and otherNote overlap in time.
-     *
-     * @param {Note} otherNote another Note
-     * @returns {number} seconds of overlap
-     */
+       * Returns the amount of seconds this Note and otherNote overlap in time.
+       *
+       * @param {Note} otherNote another Note
+       * @returns {number} seconds of overlap
+       */
 
 
     overlapInSeconds(otherNote) {
@@ -3350,11 +3350,11 @@
       return earlierEnd - laterStart;
     }
     /**
-     * Returns true if this note and otherNote have equal attributes.
-     *
-     * @param {Note} otherNote another Note
-     * @returns {boolean} true if equal
-     */
+       * Returns true if this note and otherNote have equal attributes.
+       *
+       * @param {Note} otherNote another Note
+       * @returns {boolean} true if equal
+       */
 
 
     equals(otherNote) {
@@ -3365,11 +3365,11 @@
       return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end;
     }
     /**
-     * Human-readable string representation of this Note
-     *
-     * @param {boolean} short if true, attribute names will be shortened
-     * @returns {string} string representation
-     */
+       * Human-readable string representation of this Note
+       *
+       * @param {boolean} short if true, attribute names will be shortened
+       * @returns {string} string representation
+       */
 
 
     toString(short = false) {
@@ -3392,16 +3392,16 @@
 
   class GuitarNote extends Note$2 {
     /**
-     * Creates a new Note
-     *
-     * @param {number} pitch pitch
-     * @param {number} start start time in seconds
-     * @param {number} velocity velocity
-     * @param {number} channel MIDI channel
-     * @param {number} end end time in seconds
-     * @param {number} string guitar string
-     * @param {number} fret guitar fret
-     */
+       * Creates a new Note
+       *
+       * @param {number} pitch pitch
+       * @param {number} start start time in seconds
+       * @param {number} velocity velocity
+       * @param {number} channel MIDI channel
+       * @param {number} end end time in seconds
+       * @param {number} string guitar string
+       * @param {number} fret guitar fret
+       */
     constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null, // This is different to the base Note class
     string = null, fret = null) {
       super(pitch, start, velocity, channel, end);
@@ -3409,21 +3409,21 @@
       this.fret = fret;
     }
     /**
-     * Creates a GuitarNote object from an object via destructuring
-     *
-     * @param {object} object object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *      string: number          guitar string
-     *      fret: number            guitar fret
-     *  }
-     * @returns {GuitarNote} new note
-     * @throws {Error} when pitch is invalid
-     */
+       * Creates a GuitarNote object from an object via destructuring
+       *
+       * @param {object} object object with at least {pitch}
+       *  {
+       *      pitch: number|string    e.g. 12 or C#4
+       *      start: number           start time in seconds
+       *      end: number             end time in seconds
+       *      velocity: number        MIDI velocity
+       *      channel: number         MIDI channel
+       *      string: number          guitar string
+       *      fret: number            guitar fret
+       *  }
+       * @returns {GuitarNote} new note
+       * @throws {Error} when pitch is invalid
+       */
 
 
     static from(object) {
@@ -3451,33 +3451,33 @@
       return new GuitarNote(pitch, start, velocity, channel, end, string, fret);
     }
     /**
-     * Converts a Note to a GuitarNote
-     *
-     * @param {Note} note note
-     * @param {number} string string
-     * @param {number} fret fret
-     * @returns {GuitarNote} guitar note
-     */
+       * Converts a Note to a GuitarNote
+       *
+       * @param {Note} note note
+       * @param {number} string string
+       * @param {number} fret fret
+       * @returns {GuitarNote} guitar note
+       */
 
 
     static fromNote(note, string, fret) {
       return new GuitarNote(note.pitch, note.start, note.velocity, note.channel, note.end, string, fret);
     }
     /**
-     * Simplifies the GuitarNote to a Note
-     *
-     * @returns {Note} note
-     */
+       * Simplifies the GuitarNote to a Note
+       *
+       * @returns {Note} note
+       */
 
 
     toNote() {
       return new Note$2(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     /**
-     * Returns a copy of the Note object
-     *
-     * @returns {GuitarNote} new note
-     */
+       * Returns a copy of the Note object
+       *
+       * @returns {GuitarNote} new note
+       */
 
 
     clone() {
@@ -3485,11 +3485,11 @@
       this.string, this.fret);
     }
     /**
-     * Returns true if this note and otherNote have equal attributes.
-     *
-     * @param {GuitarNote} otherNote another GuitarNote
-     * @returns {boolean} true if equal
-     */
+       * Returns true if this note and otherNote have equal attributes.
+       *
+       * @param {GuitarNote} otherNote another GuitarNote
+       * @returns {boolean} true if equal
+       */
 
 
     equals(otherNote) {
@@ -3501,11 +3501,11 @@
       this.string === otherNote.string && this.fret === otherNote.fret;
     }
     /**
-     * Human-readable string representation of this GuitarNote
-     *
-     * @param {boolean} short if true, attribute names will be shortened
-     * @returns {string} string representation
-     */
+       * Human-readable string representation of this GuitarNote
+       *
+       * @param {boolean} short if true, attribute names will be shortened
+       * @returns {string} string representation
+       */
 
 
     toString(short = false) {
@@ -3528,16 +3528,16 @@
 
   class HarmonicaNote extends Note$2 {
     /**
-     * Creates a new Note
-     *
-     * @param {number} pitch pitch
-     * @param {number} start start time in seconds
-     * @param {number} velocity velocity
-     * @param {number} channel MIDI channel
-     * @param {number} end end time in seconds
-     * @param {number} hole harmonica hole
-     * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
-     */
+       * Creates a new Note
+       *
+       * @param {number} pitch pitch
+       * @param {number} start start time in seconds
+       * @param {number} velocity velocity
+       * @param {number} channel MIDI channel
+       * @param {number} end end time in seconds
+       * @param {number} hole harmonica hole
+       * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
+       */
     constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null, // This is different to the base Note class
     hole = null, instruction = null) {
       super(pitch, start, velocity, channel, end);
@@ -3545,21 +3545,21 @@
       this.instruction = instruction;
     }
     /**
-     * Creates a HarmonicaNote object from an object via destructuring
-     *
-     * @param {object} object object with at least {pitch}
-     *  {
-     *      pitch: number|string    e.g. 12 or C#4
-     *      start: number           start time in seconds
-     *      end: number             end time in seconds
-     *      velocity: number        MIDI velocity
-     *      channel: number         MIDI channel
-     *      hole: number            harmonica hole
-     *      instruction: string     instruction, e.g., blow or draw
-     *  }
-     * @returns {HarmonicaNote} new note
-     * @throws {Error} when pitch is invalid
-     */
+       * Creates a HarmonicaNote object from an object via destructuring
+       *
+       * @param {object} object object with at least {pitch}
+       *  {
+       *      pitch: number|string    e.g. 12 or C#4
+       *      start: number           start time in seconds
+       *      end: number             end time in seconds
+       *      velocity: number        MIDI velocity
+       *      channel: number         MIDI channel
+       *      hole: number            harmonica hole
+       *      instruction: string     instruction, e.g., blow or draw
+       *  }
+       * @returns {HarmonicaNote} new note
+       * @throws {Error} when pitch is invalid
+       */
 
 
     static from(object) {
@@ -3587,33 +3587,33 @@
       return new HarmonicaNote(pitch, start, velocity, channel, end, hole, instruction);
     }
     /**
-     * Converts a Note to a Harmonica
-     *
-     * @param {Note} note note
-     * @param {number} hole harmonica hole
-     * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
-     * @returns {HarmonicaNote} harmonica note
-     */
+       * Converts a Note to a Harmonica
+       *
+       * @param {Note} note note
+       * @param {number} hole harmonica hole
+       * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
+       * @returns {HarmonicaNote} harmonica note
+       */
 
 
     static fromNote(note, hole, instruction) {
       return new HarmonicaNote(note.pitch, note.start, note.velocity, note.channel, note.end, hole, instruction);
     }
     /**
-     * Simplifies the HarmonicaNote to a Note
-     *
-     * @returns {Note} note
-     */
+       * Simplifies the HarmonicaNote to a Note
+       *
+       * @returns {Note} note
+       */
 
 
     toNote() {
       return new Note$2(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     /**
-     * Returns a copy of the Note object
-     *
-     * @returns {GuitarNote} new note
-     */
+       * Returns a copy of the Note object
+       *
+       * @returns {GuitarNote} new note
+       */
 
 
     clone() {
@@ -3621,11 +3621,11 @@
       this.hole, this.instruction);
     }
     /**
-     * Returns true if this note and otherNote have equal attributes.
-     *
-     * @param {GuitarNote} otherNote another GuitarNote
-     * @returns {boolean} true if equal
-     */
+       * Returns true if this note and otherNote have equal attributes.
+       *
+       * @param {GuitarNote} otherNote another GuitarNote
+       * @returns {boolean} true if equal
+       */
 
 
     equals(otherNote) {
@@ -3637,11 +3637,11 @@
       this.hole === otherNote.hole && this.instruction === otherNote.instruction;
     }
     /**
-     * Human-readable string representation of this HarmonicaNote
-     *
-     * @param {boolean} short if true, attribute names will be shortened
-     * @returns {string} string representation
-     */
+       * Human-readable string representation of this HarmonicaNote
+       *
+       * @param {boolean} short if true, attribute names will be shortened
+       * @returns {string} string representation
+       */
 
 
     toString(short = false) {
@@ -3652,75 +3652,6 @@
       return `HarmonicaNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, hole: ${this.hole}, instruction: ${this.instruction})`;
     }
 
-  }
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function _classPrivateFieldGet(receiver, privateMap) {
-    var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get");
-
-    return _classApplyDescriptorGet(receiver, descriptor);
-  }
-
-  function _classPrivateFieldSet(receiver, privateMap, value) {
-    var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set");
-
-    _classApplyDescriptorSet(receiver, descriptor, value);
-
-    return value;
-  }
-
-  function _classExtractFieldDescriptor(receiver, privateMap, action) {
-    if (!privateMap.has(receiver)) {
-      throw new TypeError("attempted to " + action + " private field on non-instance");
-    }
-
-    return privateMap.get(receiver);
-  }
-
-  function _classApplyDescriptorGet(receiver, descriptor) {
-    if (descriptor.get) {
-      return descriptor.get.call(receiver);
-    }
-
-    return descriptor.value;
-  }
-
-  function _classApplyDescriptorSet(receiver, descriptor, value) {
-    if (descriptor.set) {
-      descriptor.set.call(receiver, value);
-    } else {
-      if (!descriptor.writable) {
-        throw new TypeError("attempted to set read only private field");
-      }
-
-      descriptor.value = value;
-    }
-  }
-
-  function _checkPrivateRedeclaration(obj, privateCollection) {
-    if (privateCollection.has(obj)) {
-      throw new TypeError("Cannot initialize the same private elements twice on an object");
-    }
-  }
-
-  function _classPrivateFieldInitSpec(obj, privateMap, value) {
-    _checkPrivateRedeclaration(obj, privateMap);
-
-    privateMap.set(obj, value);
   }
 
   function ascending (a, b) {
@@ -5646,7 +5577,6 @@
     return maximaIndices;
   }
 
-  let _Symbol$iterator;
   /**
    * This class represents an array of note objects.
    * It can be used to simplify operations on a track.
@@ -5674,20 +5604,16 @@
    *   }
    */
 
-  _Symbol$iterator = Symbol.iterator;
-
   class NoteArray {
     /**
-     * Creates a new NoteArray,
-     * will make a copy of the passed array and cast all notes
-     *
-     * @param {Note[]} [notes=[]] notes
-     * @param {boolean} [reUseNotes=false] if true, will directly use the passed notes.
-     *      This can be dangerous if you do not want them to change.
-     */
+         * Creates a new NoteArray,
+         * will make a copy of the passed array and cast all notes
+         *
+         * @param {Note[]} [notes=[]] notes
+         * @param {boolean} [reUseNotes=false] if true, will directly use the passed notes.
+         *      This can be dangerous if you do not want them to change.
+         */
     constructor(notes = [], reUseNotes = false) {
-      _defineProperty(this, "_notes", void 0);
-
       if (reUseNotes) {
         this._notes = notes;
       } else {
@@ -5702,31 +5628,31 @@
       }
     }
     /**
-     * Returns a simple array with all Note objects.
-     *
-     * @returns {Note[]} array with Note objects
-     * @example <caption>Getting notes as simple Note[]</caption>
-     *      const na = new NoteArray(someNotes);
-     *      const notes = na.getNotes();
-     * @example <caption>Using an iterator instead</caption>
-     *      const na = new NoteArray(someNotes);
-     *      for (const note of na) {
-     *          console.log(note);
-     *      }
-     *      // Or copy all Notes to an array with
-     *      const array = [...na];
-     */
+         * Returns a simple array with all Note objects.
+         *
+         * @returns {Note[]} array with Note objects
+         * @example <caption>Getting notes as simple Note[]</caption>
+         *      const na = new NoteArray(someNotes);
+         *      const notes = na.getNotes();
+         * @example <caption>Using an iterator instead</caption>
+         *      const na = new NoteArray(someNotes);
+         *      for (const note of na) {
+         *          console.log(note);
+         *      }
+         *      // Or copy all Notes to an array with
+         *      const array = [...na];
+         */
 
 
     getNotes() {
       return this._notes;
     }
     /**
-     * Overwrite the NoteArray's notes with another Array of Notes
-     *
-     * @param {Note[]} notes notes
-     * @returns {NoteArray} itself
-     */
+         * Overwrite the NoteArray's notes with another Array of Notes
+         *
+         * @param {Note[]} notes notes
+         * @returns {NoteArray} itself
+         */
 
 
     setNotes(notes) {
@@ -5734,30 +5660,30 @@
       return this;
     }
     /**
-     * Makes this class iterable
-     *
-     * @yields {Note} note
-     * @example <caption>Using an iterator for NoteArray</caption>
-     *      const na = new NoteArray(someNotes);
-     *      for (const note of na) {
-     *          console.log(note);
-     *      }
-     */
+         * Makes this class iterable
+         *
+         * @yields {Note} note
+         * @example <caption>Using an iterator for NoteArray</caption>
+         *      const na = new NoteArray(someNotes);
+         *      for (const note of na) {
+         *          console.log(note);
+         *      }
+         */
 
 
-    *[_Symbol$iterator]() {
+    *[Symbol.iterator]() {
       for (const note of this._notes) {
         yield note;
       }
     }
     /**
-     * Appends notes to this NoteArray
-     *
-     * @param {Note[]} notes notes
-     * @param {boolean} sort iff ture, sorts notes by start timeafter adding
-     *      the new ones (default:true)
-     * @returns {NoteArray} itself
-     */
+         * Appends notes to this NoteArray
+         *
+         * @param {Note[]} notes notes
+         * @param {boolean} sort iff ture, sorts notes by start timeafter adding
+         *      the new ones (default:true)
+         * @returns {NoteArray} itself
+         */
 
 
     addNotes(notes, sort = true) {
@@ -5770,14 +5696,14 @@
       return this;
     }
     /**
-     * Adds the notes from another NoteArray to this NoteArray
-     * IMPORTANT: this does not change the notes or sort them!
-     * Take a look at NoteArray.append() if you want to extend
-     * a track at its end.
-     *
-     * @param {NoteArray} noteArray another NoteArray
-     * @returns {NoteArray} itself
-     */
+         * Adds the notes from another NoteArray to this NoteArray
+         * IMPORTANT: this does not change the notes or sort them!
+         * Take a look at NoteArray.append() if you want to extend
+         * a track at its end.
+         *
+         * @param {NoteArray} noteArray another NoteArray
+         * @returns {NoteArray} itself
+         */
 
 
     concat(noteArray) {
@@ -5785,13 +5711,13 @@
       return this;
     }
     /**
-     * Appends notes to the end of this NoteArray, after shifting them by its
-     * duration. Set gap to something != 0 to create a gap or overlap.
-     *
-     * @param {NoteArray} noteArray another NoteArray
-     * @param {number} gap in seconds between the two parts
-     * @returns {NoteArray} itself
-     */
+         * Appends notes to the end of this NoteArray, after shifting them by its
+         * duration. Set gap to something != 0 to create a gap or overlap.
+         *
+         * @param {NoteArray} noteArray another NoteArray
+         * @param {number} gap in seconds between the two parts
+         * @returns {NoteArray} itself
+         */
 
 
     append(noteArray, gap = 0) {
@@ -5803,11 +5729,11 @@
       return this;
     }
     /**
-     * Repeats the notes of this array by concatenating a time-shifted copy
-     *
-     * @param {number} times number of times to repeat it
-     * @returns {NoteArray} a new NoteArray with the repeated note sequence
-     */
+         * Repeats the notes of this array by concatenating a time-shifted copy
+         *
+         * @param {number} times number of times to repeat it
+         * @returns {NoteArray} a new NoteArray with the repeated note sequence
+         */
 
 
     repeat(times) {
@@ -5827,7 +5753,6 @@
       for (let index = 1; index < times; index++) {
         // Shift notes in time
         copy.shiftTime(duration); // Result is a NoteArray so use .concat
-        // eslint-disable-next-line unicorn/prefer-spread
 
         result.concat(copy);
       }
@@ -5835,31 +5760,31 @@
       return result;
     }
     /**
-     * Returns the number of Note objects in this NoteArray
-     *
-     * @returns {number} note count
-     */
+         * Returns the number of Note objects in this NoteArray
+         *
+         * @returns {number} note count
+         */
 
 
     length() {
       return this._notes.length;
     }
     /**
-     * Returns the start time of the earliest note in this NoteArray
-     *
-     * @returns {number} start time
-     */
+         * Returns the start time of the earliest note in this NoteArray
+         *
+         * @returns {number} start time
+         */
 
 
     getStartTime() {
       return min(this._notes, d => d.start);
     }
     /**
-     * Returns the duration of this note array in seconds from 0 to the end of
-     * the latest note.
-     *
-     * @returns {number} duration
-     */
+         * Returns the duration of this note array in seconds from 0 to the end of
+         * the latest note.
+         *
+         * @returns {number} duration
+         */
 
 
     getDuration() {
@@ -5876,11 +5801,11 @@
       return duration;
     }
     /**
-     * Scales the time of each note by factor
-     *
-     * @param {number} factor factor
-     * @returns {NoteArray} itself
-     */
+         * Scales the time of each note by factor
+         *
+         * @param {number} factor factor
+         * @returns {NoteArray} itself
+         */
 
 
     scaleTime(factor) {
@@ -5888,11 +5813,11 @@
       return this;
     }
     /**
-     * Adds the speicifed number of seconds to each note
-     *
-     * @param {number} addedSeconds time to add in seconds
-     * @returns {NoteArray} itself
-     */
+         * Adds the speicifed number of seconds to each note
+         *
+         * @param {number} addedSeconds time to add in seconds
+         * @returns {NoteArray} itself
+         */
 
 
     shiftTime(addedSeconds) {
@@ -5900,12 +5825,12 @@
       return this;
     }
     /**
-     * Moves all notes s.t. the first starts at <start>
-     * Will sort the notes by start time.
-     *
-     * @param {number} startTime the new start time for the earliest note
-     * @returns {NoteArray} itself
-     */
+         * Moves all notes s.t. the first starts at <start>
+         * Will sort the notes by start time.
+         *
+         * @param {number} startTime the new start time for the earliest note
+         * @returns {NoteArray} itself
+         */
 
 
     shiftToStartAt(startTime) {
@@ -5924,11 +5849,11 @@
       return this;
     }
     /**
-     * Similar to Array.forEach
-     *
-     * @param {Function} func a function
-     * @returns {NoteArray} this
-     */
+         * Similar to Array.forEach
+         *
+         * @param {Function} func a function
+         * @returns {NoteArray} this
+         */
 
 
     forEach(func) {
@@ -5937,11 +5862,11 @@
       return this;
     }
     /**
-     * Sorts the notes
-     *
-     * @param {Function} sortFunction sort function, e.g. (a, b)=>a.start-b.start
-     * @returns {NoteArray} itself
-     */
+         * Sorts the notes
+         *
+         * @param {Function} sortFunction sort function, e.g. (a, b)=>a.start-b.start
+         * @returns {NoteArray} itself
+         */
 
 
     sort(sortFunction) {
@@ -5949,10 +5874,10 @@
       return this;
     }
     /**
-     * Sorts the notes by start time
-     *
-     * @returns {NoteArray} itself
-     */
+         * Sorts the notes by start time
+         *
+         * @returns {NoteArray} itself
+         */
 
 
     sortByTime() {
@@ -5960,12 +5885,12 @@
       return this;
     }
     /**
-     * Maps the notes using some mapping function
-     *
-     * @param {Function} mapFunction mapping function with same signature as
-     *      Array.map()
-     * @returns {NoteArray} itself
-     */
+         * Maps the notes using some mapping function
+         *
+         * @param {Function} mapFunction mapping function with same signature as
+         *      Array.map()
+         * @returns {NoteArray} itself
+         */
 
 
     map(mapFunction) {
@@ -5973,12 +5898,12 @@
       return this;
     }
     /**
-     * Slices the notes by index, like Array.slice()
-     *
-     * @param {number} start start index
-     * @param {number} end end index
-     * @returns {NoteArray} itself
-     */
+         * Slices the notes by index, like Array.slice()
+         *
+         * @param {number} start start index
+         * @param {number} end end index
+         * @returns {NoteArray} itself
+         */
 
 
     slice(start, end) {
@@ -5986,26 +5911,26 @@
       return this;
     }
     /**
-     * Slices the notes by time.
-     * The modes 'end' and 'contained' will remove all notes with end === null!
-     * Notes will not be changed, e.g. start time will remain the same.
-     *
-     * @param {number} startTime start of the filter range in seconds
-     * @param {number} endTime end of the filter range in seconds (exclusive)
-     * @param {string} [mode=contained] controls which note time to consider,
-     *      one of:
-     *      - start: note.start must be inside range
-     *      - end: note.end must be inside range
-     *      - contained: BOTH note.start and note.end must be inside range
-     *      - touched: EITHER start or end (or both) must be inside range)
-     *      - touched-included: like touched, but also includes notes where
-     *          neither start nor end inside range, but range is completely
-     *          inside the note
-     *      (contained is default)
-     * @returns {NoteArray} itself
-     * @throws {'Invalid slicing mode'} When slicing mode is not one of the
-     *      above values
-     */
+         * Slices the notes by time.
+         * The modes 'end' and 'contained' will remove all notes with end === null!
+         * Notes will not be changed, e.g. start time will remain the same.
+         *
+         * @param {number} startTime start of the filter range in seconds
+         * @param {number} endTime end of the filter range in seconds (exclusive)
+         * @param {string} [mode=contained] controls which note time to consider,
+         *      one of:
+         *      - start: note.start must be inside range
+         *      - end: note.end must be inside range
+         *      - contained: BOTH note.start and note.end must be inside range
+         *      - touched: EITHER start or end (or both) must be inside range)
+         *      - touched-included: like touched, but also includes notes where
+         *          neither start nor end inside range, but range is completely
+         *          inside the note
+         *      (contained is default)
+         * @returns {NoteArray} itself
+         * @throws {'Invalid slicing mode'} When slicing mode is not one of the
+         *      above values
+         */
 
 
     sliceTime(startTime, endTime, mode = 'contained') {
@@ -6027,28 +5952,27 @@
         n.end !== null && n.start <= start && n.end >= end;
       } else {
         throw new Error('Invalid slicing mode');
-      } // eslint-disable-next-line unicorn/no-array-callback-reference
-
+      }
 
       this._notes = this._notes.filter(filterFunc);
       return this;
     }
     /**
-     * Slices this NoteArray into slices by the given times. Will not return
-     * NoteArrays but simple Note[][], where each item contains all notes of one
-     * time slice. Do not include 0, it will be assumed as first time to slice.
-     * To make sure notes are not contained twice in different slices use the
-     * mode 'start'.
-     *
-     * @param {number[]} times points of time at which to slice (in seconds)
-     * @param {string} mode see NoteArray.sliceTime()
-     * @returns {Note[][]} time slices
-     * @param {boolean} [reUseNotes=false] if true, will not clone notes.
-     *      This can be dangerous if you do not want them to change.
-     * @example
-     *      // Slice into 1 second slices
-     *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
-     */
+         * Slices this NoteArray into slices by the given times. Will not return
+         * NoteArrays but simple Note[][], where each item contains all notes of one
+         * time slice. Do not include 0, it will be assumed as first time to slice.
+         * To make sure notes are not contained twice in different slices use the
+         * mode 'start'.
+         *
+         * @param {number[]} times points of time at which to slice (in seconds)
+         * @param {string} mode see NoteArray.sliceTime()
+         * @returns {Note[][]} time slices
+         * @param {boolean} [reUseNotes=false] if true, will not clone notes.
+         *      This can be dangerous if you do not want them to change.
+         * @example
+         *      // Slice into 1 second slices
+         *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
+         */
 
 
     sliceAtTimes(times, mode, reUseNotes = false) {
@@ -6075,18 +5999,18 @@
       return slices;
     }
     /**
-     * Segments the NoteArray into smaller ones at times where no note occurs
-     * for a specified amount of time.
-     * This method is useful for segmenting a recording session into separate
-     * songs, riffs, licks, ...
-     *
-     * @param {number} gapDuration duration of seconds for a gap to be used as
-     *      segmenting time
-     * @param {'start-start'|'end-start'} mode gaps can either be considered as
-     *      the maximum time between two note's starts or the end of the first
-     *      and the start of the second note
-     * @returns {Note[][]} segments
-     */
+         * Segments the NoteArray into smaller ones at times where no note occurs
+         * for a specified amount of time.
+         * This method is useful for segmenting a recording session into separate
+         * songs, riffs, licks, ...
+         *
+         * @param {number} gapDuration duration of seconds for a gap to be used as
+         *      segmenting time
+         * @param {'start-start'|'end-start'} mode gaps can either be considered as
+         *      the maximum time between two note's starts or the end of the first
+         *      and the start of the second note
+         * @returns {Note[][]} segments
+         */
 
 
     segmentAtGaps(gapDuration, mode) {
@@ -6118,7 +6042,6 @@
           const collisions = [];
 
           for (let index = 0; index < occupiedTimes.length; index++) {
-            // eslint-disable-next-line unicorn/prevent-abbreviations
             const [s, e] = occupiedTimes[index];
 
             if (s >= start && s <= end || e >= start && e <= end) {
@@ -6159,18 +6082,18 @@
       }
     }
     /**
-     * Segments the NoteArray into Arrays of Notes at given indices
-     *
-     * @param {number[]} indices indices
-     * @returns {Note[][]} segments
-     * @example <caption>Get notes in partions of 4</caption>
-     *      const noteGroups = myNoteArray.segmentAtIndices([4, 8, 12, 16, 20]);
-     *      // noteGroups = [
-     *      //     Array(4),
-     *      //     Array(4),
-     *      //     Array(4),
-     *      // ]
-     */
+         * Segments the NoteArray into Arrays of Notes at given indices
+         *
+         * @param {number[]} indices indices
+         * @returns {Note[][]} segments
+         * @example <caption>Get notes in partions of 4</caption>
+         *      const noteGroups = myNoteArray.segmentAtIndices([4, 8, 12, 16, 20]);
+         *      // noteGroups = [
+         *      //     Array(4),
+         *      //     Array(4),
+         *      //     Array(4),
+         *      // ]
+         */
 
 
     segmentAtIndices(indices) {
@@ -6185,15 +6108,15 @@
       return segments;
     }
     /**
-     * Filters the NoteArray like you would filter via Array.filter().
-     *
-     * @param {Function} filterFunction filter function, same signature as
-     *      Array.filter()
-     * @returns {NoteArray} itself
-     * @example
-     *      // Only keep notes longer than 1 second
-     *      const filtered = noteArray.filter(note=>note.getDuration()>1);
-     */
+         * Filters the NoteArray like you would filter via Array.filter().
+         *
+         * @param {Function} filterFunction filter function, same signature as
+         *      Array.filter()
+         * @returns {NoteArray} itself
+         * @example
+         *      // Only keep notes longer than 1 second
+         *      const filtered = noteArray.filter(note=>note.getDuration()>1);
+         */
 
 
     filter(filterFunction) {
@@ -6201,11 +6124,11 @@
       return this;
     }
     /**
-     * Filters by pitch, keeping only pitches specified in <pitches>
-     *
-     * @param {number[]|Set<number>} pitches array or Set of pitches to keep
-     * @returns {NoteArray} itself
-     */
+         * Filters by pitch, keeping only pitches specified in <pitches>
+         *
+         * @param {number[]|Set<number>} pitches array or Set of pitches to keep
+         * @returns {NoteArray} itself
+         */
 
 
     filterPitches(pitches) {
@@ -6217,11 +6140,11 @@
       return this;
     }
     /**
-     * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
-     *
-     * @param {number} steps number of semitones to transpose, can be negative
-     * @returns {NoteArray} itself
-     */
+         * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
+         *
+         * @param {number} steps number of semitones to transpose, can be negative
+         * @returns {NoteArray} itself
+         */
 
 
     transpose(steps) {
@@ -6231,11 +6154,11 @@
       return this;
     }
     /**
-     * Will set the octave of all notes to -1.
-     * This might cause two notes to exist at the same time and pitch!
-     *
-     * @returns {NoteArray} itself
-     */
+         * Will set the octave of all notes to -1.
+         * This might cause two notes to exist at the same time and pitch!
+         *
+         * @returns {NoteArray} itself
+         */
 
 
     removeOctaves() {
@@ -6245,10 +6168,10 @@
       return this;
     }
     /**
-     * Reverses the note array, such that it can be played backwards.
-     *
-     * @returns {NoteArray} itself
-     */
+         * Reverses the note array, such that it can be played backwards.
+         *
+         * @returns {NoteArray} itself
+         */
 
 
     reverse() {
@@ -6265,11 +6188,11 @@
       return this;
     }
     /**
-     * Returns true if this NoteArray and otherNoteArray have equal attributes.
-     *
-     * @param {NoteArray} otherNoteArray another NoteArray
-     * @returns {boolean} true if equal
-     */
+         * Returns true if this NoteArray and otherNoteArray have equal attributes.
+         *
+         * @param {NoteArray} otherNoteArray another NoteArray
+         * @returns {boolean} true if equal
+         */
 
 
     equals(otherNoteArray) {
@@ -6292,10 +6215,10 @@
       return true;
     }
     /**
-     * Deep clone, all contained notes are cloned as well.
-     *
-     * @returns {NoteArray} clone
-     */
+         * Deep clone, all contained notes are cloned as well.
+         *
+         * @returns {NoteArray} clone
+         */
 
 
     clone() {
@@ -6700,20 +6623,20 @@
 
   class Recording extends NoteArray {
     /**
-     * Creates a new Recording
-     *
-     * @param {string} name name if the song
-     * @param {Date} date date of the recording
-     * @param {Note[]} notes array of Note objects
-     * @param {number} [speed=1] relative speed compared to ground truth,
-     *      e.g. 0.5 for half as fast
-     * @param {number} [selectedTrack=0] track number of the ground truth to which
-     *      this recording belongs
-     * @param {number[]|null} [timeSelection=null] time selection of the ground
-     *      truth to which this recording belongs, or null if full duration
-     * @param {string} [comment=''] a free-text comment for the user to annotate
-     *      the recording
-     */
+       * Creates a new Recording
+       *
+       * @param {string} name name if the song
+       * @param {Date} date date of the recording
+       * @param {Note[]} notes array of Note objects
+       * @param {number} [speed=1] relative speed compared to ground truth,
+       *      e.g. 0.5 for half as fast
+       * @param {number} [selectedTrack=0] track number of the ground truth to which
+       *      this recording belongs
+       * @param {number[]|null} [timeSelection=null] time selection of the ground
+       *      truth to which this recording belongs, or null if full duration
+       * @param {string} [comment=''] a free-text comment for the user to annotate
+       *      the recording
+       */
     constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = '') {
       super(notes);
       this.name = name;
@@ -6727,21 +6650,21 @@
       this.sortByTime();
     }
     /**
-     * Returns a copy of the Note object
-     *
-     * @returns {Recording} new recording
-     */
+       * Returns a copy of the Note object
+       *
+       * @returns {Recording} new recording
+       */
 
 
     clone() {
       return new Recording(this.name, this.date, this.getNotes().map(d => d.clone()), this.speed, this.selectedTrack, this.timeSelection === null ? null : [...this.timeSelection], this.comment);
     }
     /**
-     * Returns true if this Recording and otherRecording have equal attributes.
-     *
-     * @param {Recording} otherRecording another Recording
-     * @returns {boolean} true if equal
-     */
+       * Returns true if this Recording and otherRecording have equal attributes.
+       *
+       * @param {Recording} otherRecording another Recording
+       * @returns {boolean} true if equal
+       */
 
 
     equals(otherRecording) {
@@ -6796,10 +6719,10 @@
       return true;
     }
     /**
-     * Turns the recoring into a simple object with the same properties
-     *
-     * @returns {object} simple object representation of the recording
-     */
+       * Turns the recoring into a simple object with the same properties
+       *
+       * @returns {object} simple object representation of the recording
+       */
 
 
     toSimpleObject() {
@@ -6814,12 +6737,12 @@
       };
     }
     /**
-     * Creates a Note object from an object via destructuring
-     *
-     * @param {object} object object with at least {name, date, notes, speed}
-     * @returns {Recording} new note
-     * @throws {Error} when name, date, or notes are missing
-     */
+       * Creates a Note object from an object via destructuring
+       *
+       * @param {object} object object with at least {name, date, notes, speed}
+       * @returns {Recording} new note
+       * @throws {Error} when name, date, or notes are missing
+       */
 
 
     static from(object) {
@@ -10006,7 +9929,7 @@
       const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION$1); // Try to update metrics (if they are not set, keep the old ones)
 
       try {
-        const soundElements = measure.querySelectorAll('sound');
+        const soundElements = measure.querySelectorAll('sound'); // eslint-disable-next-line
 
         for (const element of soundElements) {
           const tempoValue = element.getAttribute('tempo');
@@ -10131,7 +10054,7 @@
               continue;
             }
 
-            let isUnpitched = note.querySelectorAll('unpitched').length > 0;
+            const isUnpitched = note.querySelectorAll('unpitched').length > 0;
             let pitch;
 
             if (isUnpitched) {
@@ -10295,7 +10218,7 @@
 
   function getLyricsFromNote(note) {
     const lyric = note.querySelectorAll('lyric');
-    let texts = [];
+    const texts = [];
 
     for (const l of lyric) {
       texts.push(l.querySelectorAll('text')[0].textContent);
@@ -10508,6 +10431,46 @@
     return [];
   }
   /**
+   * Extracts information about the XML's parts for different instruments
+   *
+   * @param {XMLDocument} xml MusicXML
+   * @returns {object[]} part definitions
+   */
+  // function getPartDefinitions (xml) {
+  //   const partDefinitions = xml.querySelectorAll('score-part')
+  //   const result = []
+  //   for (const partDefinition of partDefinitions) {
+  //     // Instruments (e.g., drum parts have multiple)
+  //     const instruments = new Map()
+  //     const instrDefs = partDefinition.querySelectorAll('score-instrument')
+  //     for (const instrumentDefinition of instrDefs) {
+  //       const id = instrumentDefinition.getAttribute('id')
+  //       instruments.set(id, {
+  //         id,
+  //         name: instrumentDefinition.querySelectorAll('instrument-name')[0].textContent
+  //       })
+  //     }
+  //     const instrMidiDefs = partDefinition.querySelectorAll('midi-instrument')
+  //     for (const instrumentDefinition of instrMidiDefs) {
+  //       const midiNote = instrumentDefinition.querySelectorAll('midi-unpitched')[0]?.textContent
+  //       if (!midiNote) {
+  //         continue
+  //       }
+  //       const id = instrumentDefinition.getAttribute('id')
+  //       instruments.get(id).midiNote = +midiNote
+  //     }
+  //     // Parsed part definitions
+  //     result.push({
+  //       id: partDefinition.getAttribute('id'),
+  //       name: partDefinition.querySelectorAll('part-name')[0].textContent,
+  //       abbr: partDefinition.querySelectorAll('part-abbreviation')[0].textContent,
+  //       instruments: instruments.size > 0 ? instruments : null
+  //     })
+  //   }
+  //   return result
+  // }
+
+  /**
    * Returns a map containing maps, such that result.get(partId).get(instrId)
    * gives you the instrument with the ID instrId as defined in the part partId.
    *
@@ -10549,6 +10512,30 @@
 
     return partMap;
   }
+  /**
+   * Checks whether a note is palm-muted
+   *
+   * @param {HTMLElement} note note element
+   * @returns {boolean} true if note is palm-muted
+   */
+  // function isPalmMuted (note) {
+  //   const mute = note.querySelectorAll('mute')
+  //   if (mute.length > 0 && mute[0].textContent === 'palm') {
+  //     return true
+  //   }
+  //   return false
+  // }
+
+  /**
+   * Checks whether a note is palm-muted
+   *
+   * @param {HTMLElement} note note element
+   * @returns {boolean} true if note is palm-muted
+   */
+  // function isHammeron (note) {
+  //   return note.querySelectorAll('hammer-on').length > 0
+  // }
+
   /**
    * Map from fiths to key signature
    *
@@ -10836,11 +10823,11 @@
     const track = [];
     let currentTime = 0; // Time signatures
 
-    let initialTimeSig = (_timeSignatures$0$sig = timeSignatures[0].signature) !== null && _timeSignatures$0$sig !== void 0 ? _timeSignatures$0$sig : [4, 4];
+    const initialTimeSig = (_timeSignatures$0$sig = timeSignatures[0].signature) !== null && _timeSignatures$0$sig !== void 0 ? _timeSignatures$0$sig : [4, 4];
     let [beatCount, beatType] = initialTimeSig;
     const timeSigsTodo = timeSignatures.slice(1); // Tempi
 
-    let initialTempo = (_tempos$0$bpm = tempos[0].bpm) !== null && _tempos$0$bpm !== void 0 ? _tempos$0$bpm : 120;
+    const initialTempo = (_tempos$0$bpm = tempos[0].bpm) !== null && _tempos$0$bpm !== void 0 ? _tempos$0$bpm : 120;
     let secondsPerBeat = bpmToSecondsPerBeat(initialTempo) / (beatType / 4);
     const temposTodo = tempos.slice(1);
 
@@ -11555,17 +11542,17 @@
 
   class MusicPiece {
     /**
-     * Do not use this constructor, but the static methods MusicPiece.fromMidi
-     * and MusicPiece.fromMusicXml instead.
-     *
-     * @param {string} name name (e.g. file name or piece name)
-     * @param {TempoDefinition[]} tempos tempos
-     * @param {TimeSignature[]} timeSignatures time signatures
-     * @param {KeySignature[]} keySignatures key signatures
-     * @param {number[]} measureTimes time in seconds for each measure line
-     * @param {Track[]} tracks tracks
-     * @throws {'No or invalid tracks given!'} when invalid tracks are given
-     */
+       * Do not use this constructor, but the static methods MusicPiece.fromMidi
+       * and MusicPiece.fromMusicXml instead.
+       *
+       * @param {string} name name (e.g. file name or piece name)
+       * @param {TempoDefinition[]} tempos tempos
+       * @param {TimeSignature[]} timeSignatures time signatures
+       * @param {KeySignature[]} keySignatures key signatures
+       * @param {number[]} measureTimes time in seconds for each measure line
+       * @param {Track[]} tracks tracks
+       * @throws {'No or invalid tracks given!'} when invalid tracks are given
+       */
     constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
       if (!tracks || tracks.length === 0) {
         throw new Error('No or invalid tracks given! Use .fromMidi or .fromMusicXml?');
@@ -11607,20 +11594,20 @@
       }
     }
     /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     * @example <caption>In Node.js</caption>
-     *      const file = path.join(directory, fileName);
-     *      const data = fs.readFileSync(file, 'base64');
-     *      const mp = MusicPiece.fromMidi(fileName, data);
-     * @example <caption>In the browser</caption>
-     *      const uintArray = new Uint8Array(midiBinary);
-     *      const MP = MusicPiece.fromMidi(filename, uintArray);
-     */
+       * Creates a MusicPiece object from a MIDI file binary
+       *
+       * @param {string} name name
+       * @param {ArrayBuffer} midiFile MIDI file
+       * @returns {MusicPiece} new MusicPiece
+       * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+       * @example <caption>In Node.js</caption>
+       *      const file = path.join(directory, fileName);
+       *      const data = fs.readFileSync(file, 'base64');
+       *      const mp = MusicPiece.fromMidi(fileName, data);
+       * @example <caption>In the browser</caption>
+       *      const uintArray = new Uint8Array(midiBinary);
+       *      const MP = MusicPiece.fromMidi(filename, uintArray);
+       */
 
 
     static fromMidi(name, midiFile) {
@@ -11651,25 +11638,25 @@
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @deprecated This is not fully implemented yet
-     * @todo on hold until @tonejs/midi adds time in seconds for meta events
-     * @todo use @tonejs/midi for parsing, but the same information as with
-     * MusicPiece.fromMidi()
-     * @see https://github.com/Tonejs/Midi
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     * @example <caption>In Node.js</caption>
-     *      const file = path.join(directory, fileName);
-     *      const data = fs.readFileSync(file);
-     *      const mp = MusicPiece.fromMidi(fileName, data);
-     * @example <caption>In the browser</caption>
-     *      const uintArray = new Uint8Array(midiBinary);
-     *      const MP = MusicPiece.fromMidi(filename, uintArray);
-     */
+       * Creates a MusicPiece object from a MIDI file binary
+       *
+       * @deprecated This is not fully implemented yet
+       * @todo on hold until @tonejs/midi adds time in seconds for meta events
+       * @todo use @tonejs/midi for parsing, but the same information as with
+       * MusicPiece.fromMidi()
+       * @see https://github.com/Tonejs/Midi
+       * @param {string} name name
+       * @param {ArrayBuffer} midiFile MIDI file
+       * @returns {MusicPiece} new MusicPiece
+       * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+       * @example <caption>In Node.js</caption>
+       *      const file = path.join(directory, fileName);
+       *      const data = fs.readFileSync(file);
+       *      const mp = MusicPiece.fromMidi(fileName, data);
+       * @example <caption>In the browser</caption>
+       *      const uintArray = new Uint8Array(midiBinary);
+       *      const MP = MusicPiece.fromMidi(filename, uintArray);
+       */
 
 
     static fromMidi2(name, midiFile) {
@@ -11718,22 +11705,22 @@
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
-     * Creates a MusicPiece object from a MusicXML string
-     *
-     * @param {string} name name
-     * @param {string|object} xmlFile MusicXML file content as string or object
-     *      If it is an object, it must behave like a DOM, e.g. provide methods
-     *      such as .querySelectorAll()
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MusicXML file content given'} when MusicXML file is
-     *  undefined or null
-     * @example Parsing a MusicPiece in Node.js
-     *    const jsdom = require('jsdom');
-     *    const xmlFile = fs.readFileSync('My Song.musicxml');
-     *    const dom = new jsdom.JSDOM(xmlFile);
-     *    const xmlDocument = dom.window.document;
-     *    const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
-     */
+       * Creates a MusicPiece object from a MusicXML string
+       *
+       * @param {string} name name
+       * @param {string|object} xmlFile MusicXML file content as string or object
+       *      If it is an object, it must behave like a DOM, e.g. provide methods
+       *      such as .querySelectorAll()
+       * @returns {MusicPiece} new MusicPiece
+       * @throws {'No MusicXML file content given'} when MusicXML file is
+       *  undefined or null
+       * @example Parsing a MusicPiece in Node.js
+       *    const jsdom = require('jsdom');
+       *    const xmlFile = fs.readFileSync('My Song.musicxml');
+       *    const dom = new jsdom.JSDOM(xmlFile);
+       *    const xmlDocument = dom.window.document;
+       *    const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
+       */
 
 
     static fromMusicXml(name, xmlFile) {
@@ -11780,14 +11767,14 @@
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
-     * Allows to get a MusicPiece from JSON after doing JSON.stringify()
-     *
-     * @param {string|object} json JSON
-     * @returns {MusicPiece} new MusicPiece
-     * @example
-     *      const jsonString = mp.toJson();
-     *      const recovered = MusicPiece.fromJson(jsonString);
-     */
+       * Allows to get a MusicPiece from JSON after doing JSON.stringify()
+       *
+       * @param {string|object} json JSON
+       * @returns {MusicPiece} new MusicPiece
+       * @example
+       *      const jsonString = mp.toJson();
+       *      const recovered = MusicPiece.fromJson(jsonString);
+       */
 
 
     static fromJson(json) {
@@ -11801,14 +11788,14 @@
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
     /**
-     * Returns a JSON-serialized representation
-     *
-     * @param {boolean} pretty true for readable (prettified) JSON
-     * @returns {string} JSON as string
-     * @example
-     *      const jsonString = mp.toJson();
-     *      const recovered = MusicPiece.fromJson(jsonString);
-     */
+       * Returns a JSON-serialized representation
+       *
+       * @param {boolean} pretty true for readable (prettified) JSON
+       * @returns {string} JSON as string
+       * @example
+       *      const jsonString = mp.toJson();
+       *      const recovered = MusicPiece.fromJson(jsonString);
+       */
 
 
     toJson(pretty = false) {
@@ -11818,12 +11805,12 @@
       return JSON.stringify(_this, undefined, pretty ? 2 : 0);
     }
     /**
-     * Returns an array with all notes from all tracks.
-     *
-     * @deprecated use getNotesFromTracks('all') instead.
-     * @param {boolean} sortByTime true: sort notes by time
-     * @returns {Note[]} all notes of this piece
-     */
+       * Returns an array with all notes from all tracks.
+       *
+       * @deprecated use getNotesFromTracks('all') instead.
+       * @param {boolean} sortByTime true: sort notes by time
+       * @returns {Note[]} all notes of this piece
+       */
 
 
     getAllNotes(sortByTime = false) {
@@ -11836,14 +11823,14 @@
       return notes;
     }
     /**
-     * Returns an array with notes from the specified tracks.
-     *
-     * @param {'all'|number|number[]} indices either 'all', a number, or an
-     *      Array with numbers
-     * @param {boolean} sortByTime true: sort notes by time (not needed for a
-     *      single track)
-     * @returns {Note[]} Array with all notes from the specified tracks
-     */
+       * Returns an array with notes from the specified tracks.
+       *
+       * @param {'all'|number|number[]} indices either 'all', a number, or an
+       *      Array with numbers
+       * @param {boolean} sortByTime true: sort notes by time (not needed for a
+       *      single track)
+       * @returns {Note[]} Array with all notes from the specified tracks
+       */
 
 
     getNotesFromTracks(indices = 'all', sortByTime = false) {
@@ -11869,16 +11856,16 @@
       return notes;
     }
     /**
-     * Transposes all or only the specified tracks by the specified number of
-     * (semitone) steps.
-     * Will return a new MusicPiece instance.
-     * Note pitches will be clipped to [0, 127].
-     * Will not change playing instructions such as string and fret.
-     *
-     * @param {number} steps number of semitones to transpose (can be negative)
-     * @param {'all'|number|number[]} tracks tracks to transpose
-     * @returns {MusicPiece} a new, transposed MusicPiece
-     */
+       * Transposes all or only the specified tracks by the specified number of
+       * (semitone) steps.
+       * Will return a new MusicPiece instance.
+       * Note pitches will be clipped to [0, 127].
+       * Will not change playing instructions such as string and fret.
+       *
+       * @param {number} steps number of semitones to transpose (can be negative)
+       * @param {'all'|number|number[]} tracks tracks to transpose
+       * @returns {MusicPiece} a new, transposed MusicPiece
+       */
 
 
     transpose(steps = 0, tracks = 'all') {
@@ -11906,23 +11893,23 @@
 
   class Track {
     /**
-     * Do not use this constructor, but the static methods Track.fromMidi
-     * and Track.fromMusicXml instead.
-     *
-     * Notes will be sorted by start time.
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes notes
-     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
-     *  tuning
-     * @param {number[]} [measureIndices=null] note indices where new measures
-     *  start
-     * @param {Map<number,object>} measureRehearsalMap maps measure index to
-     *  rehearsal marks
-     * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
-     * @throws {'Notes are undefined or not an array'} for invalid notes
-     */
+       * Do not use this constructor, but the static methods Track.fromMidi
+       * and Track.fromMusicXml instead.
+       *
+       * Notes will be sorted by start time.
+       *
+       * @param {string} name name
+       * @param {string} instrument instrument name
+       * @param {Note[]} notes notes
+       * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
+       *  tuning
+       * @param {number[]} [measureIndices=null] note indices where new measures
+       *  start
+       * @param {Map<number,object>} measureRehearsalMap maps measure index to
+       *  rehearsal marks
+       * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
+       * @throws {'Notes are undefined or not an array'} for invalid notes
+       */
     constructor(name, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap) {
       var _name;
 
@@ -11951,11 +11938,11 @@
       }
     }
     /**
-     * Returns an object representation of this Track, turns Maps into Arrays
-     *  to work with JSON.stringify
-     *
-     * @returns {object} object represntation
-     */
+       * Returns an object representation of this Track, turns Maps into Arrays
+       *  to work with JSON.stringify
+       *
+       * @returns {object} object represntation
+       */
 
 
     toObject() {
@@ -11965,12 +11952,12 @@
       };
     }
     /**
-     * Parses an object into a Track, must have same format as the result of
-     * Track.toObject().
-     *
-     * @param {object} object object represntation of a Track
-     * @returns {Track} track
-     */
+       * Parses an object into a Track, must have same format as the result of
+       * Track.toObject().
+       *
+       * @param {object} object object represntation of a Track
+       * @returns {Track} track
+       */
 
 
     static from(object) {
@@ -11989,9 +11976,9 @@
 
   class TempoDefinition {
     /**
-     * @param {number} time in seconds
-     * @param {number} bpm tempo in seconds per beat
-     */
+       * @param {number} time in seconds
+       * @param {number} bpm tempo in seconds per beat
+       */
     constructor(time, bpm) {
       this.time = time;
       this.bpm = bpm;
@@ -12005,9 +11992,9 @@
 
   class TimeSignature {
     /**
-     * @param {number} time in seconds
-     * @param {number[]} signature time signature as [beats, beatType]
-     */
+       * @param {number} time in seconds
+       * @param {number[]} signature time signature as [beats, beatType]
+       */
     constructor(time, signature) {
       this.time = time;
       this.signature = signature;
@@ -12021,10 +12008,10 @@
 
   class KeySignature {
     /**
-     * @param {number} time in seconds
-     * @param {string} key key e.g. 'C'
-     * @param {string} scale scale e.g. 'major'
-     */
+       * @param {number} time in seconds
+       * @param {string} key key e.g. 'C'
+       * @param {string} scale scale e.g. 'major'
+       */
     constructor(time, key, scale) {
       this.time = time;
       this.key = key;
@@ -12041,26 +12028,19 @@
    * @todo implement keepOnlyHighestConcurrentNotes
    */
 
-  var _pitches = /*#__PURE__*/new WeakMap();
-
   class PitchSequence {
     /**
-     * @param {number[]} pitches pitches
-     */
+       * @param {number[]} pitches pitches
+       */
     constructor(pitches = []) {
-      _classPrivateFieldInitSpec(this, _pitches, {
-        writable: true,
-        value: []
-      });
-
-      _classPrivateFieldSet(this, _pitches, pitches);
+      this._pitches = pitches;
     }
     /**
-     * Creates a pitch sequence from an array of Notes
-     *
-     * @param {Note[]} notes notes
-     * @returns {PitchSequence} pitch sequence
-     */
+       * Creates a pitch sequence from an array of Notes
+       *
+       * @param {Note[]} notes notes
+       * @returns {PitchSequence} pitch sequence
+       */
 
 
     static fromNotes(notes = []) {
@@ -12074,9 +12054,9 @@
       return new PitchSequence(pitches);
     }
     /**
-     * @param {string} string a string of Unicode characters
-     * @returns {PitchSequence} pitch sequence
-     */
+       * @param {string} string a string of Unicode characters
+       * @returns {PitchSequence} pitch sequence
+       */
 
 
     static fromCharString(string) {
@@ -12088,78 +12068,76 @@
       return new PitchSequence(pitches);
     }
     /**
-     * @returns {number[]} pitches
-     */
+       * @returns {number[]} pitches
+       */
 
 
     getPitches() {
-      return _classPrivateFieldGet(this, _pitches);
+      return this._pitches;
     }
     /**
-     * @returns {number} number of pitches
-     */
+       * @returns {number} number of pitches
+       */
 
 
     length() {
-      return _classPrivateFieldGet(this, _pitches).length;
+      return this._pitches.length;
     }
     /**
-     * Turns pitch sequence into a string by turning each  pitch into a character
-     * (based on Unicode index)
-     *
-     * @returns {string} string representation of note pitches
-     */
+       * Turns pitch sequence into a string by turning each  pitch into a character
+       * (based on Unicode index)
+       *
+       * @returns {string} string representation of note pitches
+       */
 
 
     toCharString() {
-      if (!_classPrivateFieldGet(this, _pitches) || _classPrivateFieldGet(this, _pitches).length === 0) {
+      if (!this._pitches || this._pitches.length === 0) {
         return '';
       }
 
-      return String.fromCharCode(..._classPrivateFieldGet(this, _pitches));
+      return String.fromCharCode(...this._pitches);
     }
     /**
-     * @returns {string} a string with the notes' names
-     */
+       * @returns {string} a string with the notes' names
+       */
 
 
     toNoteNameString() {
-      return _classPrivateFieldGet(this, _pitches).map(p => getMidiNoteByNr(p).label).join(' ');
+      return this._pitches.map(p => getMidiNoteByNr(p).label).join(' ');
     }
     /**
-     * Reverses the order of pitches in this PitchSequence
-     *
-     * @returns {PitchSequence} this
-     */
+       * Reverses the order of pitches in this PitchSequence
+       *
+       * @returns {PitchSequence} this
+       */
 
 
     reverse() {
-      _classPrivateFieldSet(this, _pitches, _classPrivateFieldGet(this, _pitches).reverse());
-
+      this._pitches = this._pitches.reverse();
       return this;
     }
     /**
-     * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
-     *
-     * @returns {PitchSequence} this
-     */
+       * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
+       *
+       * @returns {PitchSequence} this
+       */
 
 
     removeOctaves() {
-      _classPrivateFieldSet(this, _pitches, _classPrivateFieldGet(this, _pitches).map(d => d % 12));
-
+      this._pitches = this._pitches.map(d => d % 12);
       return this;
     }
     /**
-     * Transforms note pitches to intervals, i.e. diffrences between to subsequent
-     * notes: C, C#, C, D => 1, -1, 2
-     *
-     * @returns {number[]} intervals
-     */
+       * Transforms note pitches to intervals, i.e. diffrences between to subsequent
+       * notes: C, C#, C, D => 1, -1, 2
+       *
+       * @returns {number[]} intervals
+       */
 
 
     toIntervals() {
-      const p = _classPrivateFieldGet(this, _pitches);
+      const p = this._pitches;
 
       if (!p || p.length === 0 || p.length < 2) {
         return [];
@@ -12176,19 +12154,19 @@
       return result;
     }
     /**
-     * @returns {PitchSequence} clone
-     */
+       * @returns {PitchSequence} clone
+       */
 
 
     clone() {
-      return new PitchSequence(_classPrivateFieldGet(this, _pitches));
+      return new PitchSequence(this._pitches);
     }
     /**
-     * Returns true if this NoteArray and otherNoteArray have equal attributes.
-     *
-     * @param {NoteArray} otherPitchSequence another NoteArray
-     * @returns {boolean} true if equal
-     */
+       * Returns true if this NoteArray and otherNoteArray have equal attributes.
+       *
+       * @param {NoteArray} otherPitchSequence another NoteArray
+       * @returns {boolean} true if equal
+       */
 
 
     equals(otherPitchSequence) {
@@ -12198,12 +12176,12 @@
 
       const p = otherPitchSequence.getPitches();
 
-      if (_classPrivateFieldGet(this, _pitches).length !== p.length) {
+      if (this._pitches.length !== p.length) {
         return false;
       }
 
       for (const [index, element] of p.entries()) {
-        if (_classPrivateFieldGet(this, _pitches)[index] !== element) {
+        if (this._pitches[index] !== element) {
           return false;
         }
       }
@@ -12846,6 +12824,7 @@
    * @returns {Promise} audio recorder
    */
   const recordAudio = () => {
+    // eslint-disable-next-line
     return new Promise(async resolve => {
       let stream;
 
@@ -12923,6 +12902,7 @@
    */
 
   const recordMidi = onMessage => {
+    // eslint-disable-next-line
     return new Promise(async resolve => {
       let midiAccess;
 
@@ -13077,194 +13057,162 @@
    * @module input/MidiInputManager
    */
 
-  var _getMidiLiveData = /*#__PURE__*/new WeakMap();
-
-  var _setMidiLiveData = /*#__PURE__*/new WeakMap();
-
-  var _addCurrentNote = /*#__PURE__*/new WeakMap();
-
-  var _removeCurrentNote = /*#__PURE__*/new WeakMap();
-
   class MidiInputManager {
     /**
-     * Constructor with callback functions
-     *
-     * @param {Function} getMidiLiveData a function called by this object to get
-     *      the currently recorded MIDI notes from App.js, where the
-     *      MidiInputManager instance should be created
-     *      Example for how to defined getMidiLiveData as method in App.js:
-     *          getMidiLiveData = () => this.state.midiLiveData;
-     * @param {Function} setMidiLiveData a function called by this object to
-     *      update the currently MIDI notes in App.js
-     *      Example:
-     *          setMidiLiveData = (data) => {
-     *              // Work-around so note_off event handling can
-     *              // immediately find the note_on event
-     *              this.state.midiLiveData = data;
-     *              this.setState({ midiLiveData: data });
-     *          };
-     * @param {Function} addCurrentNote a function called by this object to add
-     *      a currently played note (e.g. currently pressed piano key)
-     *      Example:
-     *          addCurrentNote = (note) => {
-     *              const newMap = new Map(this.state.currentNotes).set(note.pitch, note);
-     *              this.setState({ currentNotes: newMap });
-     *          }
-     * @param {Function} removeCurrentNote a function called by this object to
-     *      remove a currently played note
-     *      Example:
-     *          removeCurrentNote = (pitch) => {
-     *              const newMap = new Map(this.state.currentNotes).delete(pitch);
-     *              this.setState({ currentNotes: newMap });
-     *          }
-     */
+         * Constructor with callback functions
+         *
+         * @param {Function} getMidiLiveData a function called by this object to get
+         *      the currently recorded MIDI notes from App.js, where the
+         *      MidiInputManager instance should be created
+         *      Example for how to defined getMidiLiveData as method in App.js:
+         *          getMidiLiveData = () => this.state.midiLiveData;
+         * @param {Function} setMidiLiveData a function called by this object to
+         *      update the currently MIDI notes in App.js
+         *      Example:
+         *          setMidiLiveData = (data) => {
+         *              // Work-around so note_off event handling can
+         *              // immediately find the note_on event
+         *              this.state.midiLiveData = data;
+         *              this.setState({ midiLiveData: data });
+         *          };
+         * @param {Function} addCurrentNote a function called by this object to add
+         *      a currently played note (e.g. currently pressed piano key)
+         *      Example:
+         *          addCurrentNote = (note) => {
+         *              const newMap = new Map(this.state.currentNotes).set(note.pitch, note);
+         *              this.setState({ currentNotes: newMap });
+         *          }
+         * @param {Function} removeCurrentNote a function called by this object to
+         *      remove a currently played note
+         *      Example:
+         *          removeCurrentNote = (pitch) => {
+         *              const newMap = new Map(this.state.currentNotes).delete(pitch);
+         *              this.setState({ currentNotes: newMap });
+         *          }
+         */
     constructor(getMidiLiveData, setMidiLiveData, addCurrentNote = () => {}, removeCurrentNote = () => {}) {
-      _classPrivateFieldInitSpec(this, _getMidiLiveData, {
-        writable: true,
-        value: void 0
-      });
-
-      _classPrivateFieldInitSpec(this, _setMidiLiveData, {
-        writable: true,
-        value: void 0
-      });
-
-      _classPrivateFieldInitSpec(this, _addCurrentNote, {
-        writable: true,
-        value: void 0
-      });
-
-      _classPrivateFieldInitSpec(this, _removeCurrentNote, {
-        writable: true,
-        value: void 0
-      });
-
-      _defineProperty(this, "_onMIDISuccess", midiAccess => {
-        // console.log(midiAccess);
-        console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} input devices`);
-
-        for (const input of midiAccess.inputs.values()) {
-          console.log(` - ${input.name}`);
-          input.onmidimessage = this._handleMIDIMessage;
-        }
-
-        console.groupEnd(); // console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} output devices`);
-        // for (let output of midiAccess.outputs.values()) {
-        //     console.log(` - ${output.name}`);
-        // }
-        // console.groupEnd();
-      });
-
-      _defineProperty(this, "_handleMIDIMessage", message => {
-        // console.log(message);
-        const device = message.target.name;
-        const commandAndChannel = message.data[0];
-        const channel = commandAndChannel % 16;
-        const command = commandAndChannel - channel;
-        const time = message.timeStamp;
-        const pitch = message.data[1]; // A velocity value might not be included with a noteOff command
-
-        const velocity = message.data.length > 2 ? message.data[2] : 0;
-
-        switch (command) {
-          case 128:
-            this._noteOff(device, time, pitch, channel);
-
-            break;
-
-          case 144:
-            if (velocity > 0) {
-              this._noteOn(device, time, pitch, channel, velocity);
-            } else {
-              this._noteOff(device, time, pitch, channel);
-            }
-
-            break;
-
-        }
-      });
-
-      _classPrivateFieldSet(this, _getMidiLiveData, getMidiLiveData);
-
-      _classPrivateFieldSet(this, _setMidiLiveData, setMidiLiveData);
-
-      _classPrivateFieldSet(this, _addCurrentNote, addCurrentNote);
-
-      _classPrivateFieldSet(this, _removeCurrentNote, removeCurrentNote); // Request MIDI access
-
+      this._getMidiLiveData = getMidiLiveData;
+      this._setMidiLiveData = setMidiLiveData;
+      this._addCurrentNote = addCurrentNote;
+      this._removeCurrentNote = removeCurrentNote; // Request MIDI access
 
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this._onMIDISuccess, this._onMIDIFailure);
       } else {
         console.error('[MidiInput] WebMIDI is not supported in this browser.');
-        alert('You browser does not support WebMIDI');
+        throw new Error('Browser does not support WebMIDI');
       }
     }
     /**
-     * Handles a successful MIDI access request
-     *
-     * @private
-     * @param {*} midiAccess MIDI access
-     */
+         * Handles a successful MIDI access request
+         *
+         * @private
+         * @param {*} midiAccess MIDI access
+         */
 
+
+    _onMIDISuccess(midiAccess) {
+      // console.log(midiAccess);
+      console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} input devices`);
+
+      for (const input of midiAccess.inputs.values()) {
+        console.log(` - ${input.name}`);
+        input.onmidimessage = this._handleMIDIMessage;
+      }
+
+      console.groupEnd(); // console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} output devices`);
+      // for (let output of midiAccess.outputs.values()) {
+      //     console.log(` - ${output.name}`);
+      // }
+      // console.groupEnd();
+    }
 
     /**
-     * Handles MIDI access errors
-     *
-     * @private
-     * @param {*} error error
-     */
+         * Handles MIDI access errors
+         *
+         * @private
+         * @param {*} error error
+         */
     _onMIDIFailure(error) {
       console.error('[MidiInput] Cannot access MIDI devices.', error);
     }
     /**
-     * Handles incoming MIDI messages
-     *
-     * @private
-     * @param {*} message MIDI message
-     */
+         * Handles incoming MIDI messages
+         *
+         * @private
+         * @param {*} message MIDI message
+         */
 
+
+    _handleMIDIMessage(message) {
+      // console.log(message);
+      const device = message.target.name;
+      const commandAndChannel = message.data[0];
+      const channel = commandAndChannel % 16;
+      const command = commandAndChannel - channel;
+      const time = message.timeStamp;
+      const pitch = message.data[1]; // A velocity value might not be included with a noteOff command
+
+      const velocity = message.data.length > 2 ? message.data[2] : 0;
+
+      switch (command) {
+        case 128:
+          this._noteOff(device, time, pitch, channel);
+
+          break;
+
+        case 144:
+          if (velocity > 0) {
+            this._noteOn(device, time, pitch, channel, velocity);
+          } else {
+            this._noteOff(device, time, pitch, channel);
+          }
+
+          break;
+
+      }
+    }
 
     /**
-     * Handles note-on messages
-     *
-     * @private
-     * @param {string} device device name
-     * @param {number} time time stamp of the message
-     * @param {number} pitch MIDI pitch in [0, 127]
-     * @param {number} channel MIDI channel
-     * @param {number} velocity MIDI velocity
-     */
+         * Handles note-on messages
+         *
+         * @private
+         * @param {string} device device name
+         * @param {number} time time stamp of the message
+         * @param {number} pitch MIDI pitch in [0, 127]
+         * @param {number} channel MIDI channel
+         * @param {number} velocity MIDI velocity
+         */
     _noteOn(device, time, pitch, channel, velocity) {
       const note = new Note$2(pitch, time / 1000, velocity, channel); // Add current note
 
-      _classPrivateFieldGet(this, _addCurrentNote).call(this, note); // Update recorded MIDI data
+      this._addCurrentNote(note); // Update recorded MIDI data
       // TODO: probably better to only update on note-off,
       // Then we need internal cache
       // But this might be good, since only 'unfinished' notes need to be checked on note-off,
       // so we can remove finished notes from the cache
 
 
-      let midiData = _classPrivateFieldGet(this, _getMidiLiveData).call(this);
+      let midiData = this._getMidiLiveData();
 
       midiData = [...midiData, note];
 
-      _classPrivateFieldGet(this, _setMidiLiveData).call(this, midiData);
+      this._setMidiLiveData(midiData);
     }
     /**
-     * Handles note-off messages by updating the end time of the corresponding
-     * note
-     *
-     * @private
-     * @param {string} device device name
-     * @param {number} time time stamp of the message
-     * @param {number} pitch MIDI pitch in [0, 127]
-     * @param {number} channel MIDI channel
-     */
+         * Handles note-off messages by updating the end time of the corresponding
+         * note
+         *
+         * @private
+         * @param {string} device device name
+         * @param {number} time time stamp of the message
+         * @param {number} pitch MIDI pitch in [0, 127]
+         * @param {number} channel MIDI channel
+         */
 
 
     _noteOff(device, time, pitch, channel) {
-      const midiData = _classPrivateFieldGet(this, _getMidiLiveData).call(this);
+      const midiData = this._getMidiLiveData();
 
       if (midiData.length === 0) {
         // If we have to wait for the setState to process, try again
@@ -13287,9 +13235,9 @@
         // Note successfully found, update data
         midiData[index].end = time / 1000;
 
-        _classPrivateFieldGet(this, _setMidiLiveData).call(this, midiData);
+        this._setMidiLiveData(midiData);
 
-        _classPrivateFieldGet(this, _removeCurrentNote).call(this, pitch);
+        this._removeCurrentNote(pitch);
       }
     }
 
@@ -13698,12 +13646,12 @@
    * @param {Note[]} notes notes
    * @param {Map} replacementMap a map pitch->replacementPitch
    * @returns {Notes[]} notes with replaced pitches
-   * @throws {Error} when replacementMap is missing
+   * @throws {'No replacement map given!'} when replacementMap is missing
    */
 
   function simplifyDrumPitches(notes, replacementMap) {
     if (!replacementMap || !(replacementMap instanceof Map)) {
-      throw 'No replacement map given!';
+      throw new Error('No replacement map given!');
     }
 
     const errors = new Set();
@@ -13770,11 +13718,11 @@
 
   class StringedTuning {
     /**
-     * Represents a tuning of a fretted string instrument.
-     *
-     * @param {string} name name
-     * @param {string[]} notes array of notes, e.g. ['E2', 'A2', 'D3', ...]
-     */
+       * Represents a tuning of a fretted string instrument.
+       *
+       * @param {string} name name
+       * @param {string[]} notes array of notes, e.g. ['E2', 'A2', 'D3', ...]
+       */
     constructor(name, notes) {
       this.name = name;
       this.notes = notes;
@@ -15260,9 +15208,7 @@
       return [[notes[0]]];
     }
 
-    const sorted = [...notes].sort((a, b) => {
-      a.start !== b.start ? a.start - b.start : a.pitch - b.pitch;
-    });
+    const sorted = [...notes].sort((a, b) => a.start !== b.start ? a.start - b.start : a.pitch - b.pitch);
     const notesTodo = new Set(sorted);
     const chords = []; // Find all overlaps with brute force
 
@@ -15573,12 +15519,12 @@
 
   class LamellophoneTuning {
     /**
-     * Represents a tuning of lamellophone.
-     *
-     * @param {string} name name
-     * @param {string[]} notes array of notes, same order as on instrument
-     *      e.g. [..., 'D4','C4', 'F#4', ...]
-     */
+       * Represents a tuning of lamellophone.
+       *
+       * @param {string} name name
+       * @param {string[]} notes array of notes, same order as on instrument
+       *      e.g. [..., 'D4','C4', 'F#4', ...]
+       */
     constructor(name, notes) {
       this.name = name;
       this.notes = notes;
@@ -15588,12 +15534,12 @@
       this.keyCount = notes.length;
     }
     /**
-     * Returns an array of the tuning's notes as number representation:
-     * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-     * Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
-     *
-     * @returns {string[]} array with tuning notes in number representation
-     */
+       * Returns an array of the tuning's notes as number representation:
+       * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+       * Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
+       *
+       * @returns {string[]} array with tuning notes in number representation
+       */
 
 
     getNumbers() {
@@ -15620,12 +15566,12 @@
       return [...numbers.values()].map(d => d.numberString);
     }
     /**
-     * Returns an array of the tuning's notes as letter representation:
-     * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-     * Number format: C,  D,  ... C°, D°, ... C°°, D°°
-     *
-     * @returns {string[]} array with tuning notes in letter representation
-     */
+       * Returns an array of the tuning's notes as letter representation:
+       * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+       * Number format: C,  D,  ... C°, D°, ... C°°, D°°
+       *
+       * @returns {string[]} array with tuning notes in letter representation
+       */
 
 
     getLetters() {
@@ -15935,7 +15881,7 @@
       };
     }
 
-    const [minPitch, maxPitch] = extent(notePitches); // eslint-disable-next-line unicorn/consistent-function-scoping
+    const [minPitch, maxPitch] = extent(notePitches);
 
     const transpose = (array, steps) => array.map(d => d + steps); // Just brute force through all transpositions
 
@@ -16448,7 +16394,6 @@
    */
 
   function pearsonCorrelation(x, y) {
-    // eslint-disable-next-line unicorn/explicit-length-check
     if (!x || !y || !x.length || !y.length || x.length !== y.length) {
       throw new Error('Invalid data, must be two arrays with same length');
     }
@@ -16476,17 +16421,15 @@
       n = nn;
     }
 
-    const mean_x = mean(x);
-    const mean_y = mean(y);
+    const meanX = mean(x);
+    const meanY = mean(y);
 
     const calc = (v, mean) => Math.sqrt(v.reduce((s, a) => s + a * a, 0) - n * mean * mean);
 
-    return (// eslint-disable-next-line unicorn/prevent-abbreviations
-      (x.map((e, i) => ({
-        x: e,
-        y: y[i]
-      })).reduce((v, a) => v + a.x * a.y, 0) - n * mean_x * mean_y) / (calc(x, mean_x) * calc(y, mean_y))
-    );
+    return (x.map((e, i) => ({
+      x: e,
+      y: y[i]
+    })).reduce((v, a) => v + a.x * a.y, 0) - n * meanX * meanY) / (calc(x, meanX) * calc(y, meanY));
   }
   /**
    * Calculates a 95% confidence interval
@@ -16553,13 +16496,13 @@
 
   function kernelDensityEstimator(kernel, X) {
     /**
-     * Kernel desity estimator
-     * For each value of X it computes the estimated density of the data values
-     * in V. The result has the form [ [x1, est1], [x2, est2], ... ]
-     *
-     * @param {number[]} V values
-     * @returns {number[][]} estimates for points of X
-     */
+         * Kernel desity estimator
+         * For each value of X it computes the estimated density of the data values
+         * in V. The result has the form [ [x1, est1], [x2, est2], ... ]
+         *
+         * @param {number[]} V values
+         * @returns {number[][]} estimates for points of X
+         */
     const estimator = V => {
       return X.map(x => [x, mean(V, v => kernel(x - v))]);
     };
@@ -16575,11 +16518,11 @@
 
   function kernelEpanechnikov(k) {
     /**
-     * Epanechnokov kernel function
-     *
-     * @param {number} v value
-     * @returns {number} result
-     */
+         * Epanechnokov kernel function
+         *
+         * @param {number} v value
+         * @returns {number} result
+         */
     const epKernel = v => Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
 
     return epKernel;
@@ -16593,11 +16536,11 @@
 
   function kernelGauss(k) {
     /**
-     * Gaussian kernel function
-     *
-     * @param {number} v value
-     * @returns {number} result
-     */
+         * Gaussian kernel function
+         *
+         * @param {number} v value
+         * @returns {number} result
+         */
     const gaKernel = v => Math.abs(v / k) <= 1 ? 1 / Math.sqrt(2 * Math.PI) * Math.E ** (-1 / 2 * v * v) : 0;
 
     return gaKernel;
@@ -17905,7 +17848,6 @@
         // Compare both bins for each time slice
         const gtA = gtActivations.get(pitch);
         const recA = recActivations.get(pitch); // Go through full rec, and compare to current section of GT
-        // eslint-disable-next-line unicorn/no-for-loop
 
         for (let index = 0; index < recA.length; index++) {
           const gtValue = gtA[index + offset] || 0;
@@ -17964,7 +17906,7 @@
 
 
     const matching = new Map();
-    let numberOfMatches = Math.min(itemsA.length, itemsB.length);
+    const numberOfMatches = Math.min(itemsA.length, itemsB.length);
 
     for (let match = 0; match < numberOfMatches; match++) {
       // Find most similar pair, i.e. matrix entry with smallest value
@@ -18215,8 +18157,7 @@
       const startBin = Math.round((note.start - minTime) / secondsPerBin);
       const endBin = Math.round((note.end - minTime) / secondsPerBin);
       const pitch = note.pitch;
-      let binArray;
-      binArray = result.has(pitch) ? result.get(pitch) : Array.from({
+      const binArray = result.has(pitch) ? result.get(pitch) : Array.from({
         length: binCount
       }).fill(0);
 
@@ -18619,12 +18560,12 @@
       return b;
     }
 
-    let i,
-        j,
-        row = [],
-        left,
-        diagonal,
-        latch;
+    let i;
+    let j;
+    let row = [];
+    let left;
+    let diagonal;
+    let latch;
     const lcs = [];
     const c = []; // Build the c-table
 
@@ -18654,6 +18595,7 @@
 
     while (i > -1 && j > -1) {
       switch (c[i][j]) {
+        // eslint-disable-next-line
         default:
           j--;
           lcs.unshift(a[i]);
@@ -18697,12 +18639,12 @@
       return 0;
     }
 
-    let i,
-        j,
-        row = [],
-        left,
-        diagonal,
-        latch;
+    let i;
+    let j;
+    let row = [];
+    let left;
+    let diagonal;
+    let latch;
     const c = []; // Build the c-table
 
     for (j = 0; j < n; row[j++] = 0);
@@ -18892,7 +18834,6 @@
     differenceSimilarity: differenceSimilarity
   });
 
-  /* eslint-disable unicorn/prefer-spread */
   /**
    * @module stringBased/SuffixTree
    */
@@ -18905,10 +18846,10 @@
 
   class SuffixTree {
     /**
-     * SuffixTree for strings or Arrays
-     *
-     * @param {string|Array} array string or Array to process
-     */
+       * SuffixTree for strings or Arrays
+       *
+       * @param {string|Array} array string or Array to process
+       */
     constructor(array) {
       // Split string to array
       if (typeof array === 'string') {
@@ -18924,30 +18865,30 @@
       }
     }
     /**
-     * Returns the longest repeated substring
-     *
-     * @returns {Array} longest repeated substring
-     */
+       * Returns the longest repeated substring
+       *
+       * @returns {Array} longest repeated substring
+       */
 
 
     getLongestRepeatedSubString() {
       return this.node.getLongestRepeatedSubString();
     }
     /**
-     * Returns a readable string format of this tree
-     *
-     * @returns {string} string
-     */
+       * Returns a readable string format of this tree
+       *
+       * @returns {string} string
+       */
 
 
     toString() {
       return this.node.toString();
     }
     /**
-     * Returns a JSON representation of this tree
-     *
-     * @returns {string} JSON
-     */
+       * Returns a JSON representation of this tree
+       *
+       * @returns {string} JSON
+       */
 
 
     toJson() {
@@ -18962,17 +18903,17 @@
 
   class TreeNode {
     /**
-     *
-     */
+       *
+       */
     constructor() {
       this.value = [];
       this.leaves = [];
       this.nodes = [];
     }
     /**
-     * @param {string|Array} suf suffix
-     * @returns {boolean} true if first entry of suf equals the value of a child
-     */
+       * @param {string|Array} suf suffix
+       * @returns {boolean} true if first entry of suf equals the value of a child
+       */
 
 
     checkNodes(suf) {
@@ -18990,8 +18931,8 @@
       return false;
     }
     /**
-     * @param {string|Array} suf suffix
-     */
+       * @param {string|Array} suf suffix
+       */
 
 
     checkLeaves(suf) {
@@ -19014,8 +18955,8 @@
       this.leaves.push(suf);
     }
     /**
-     * @param {string|Array} suf suffix
-     */
+       * @param {string|Array} suf suffix
+       */
 
 
     addSuffix(suf) {
@@ -19028,10 +18969,10 @@
       }
     }
     /**
-     * Returns the longest repeated substring
-     *
-     * @returns {Array} longest substring
-     */
+       * Returns the longest repeated substring
+       *
+       * @returns {Array} longest substring
+       */
 
 
     getLongestRepeatedSubString() {
@@ -19049,11 +18990,11 @@
       return this.value.concat(array);
     }
     /**
-     * Readable string representation of this node and its children
-     *
-     * @param {number} indent indentation
-     * @returns {string} string representation
-     */
+       * Readable string representation of this node and its children
+       *
+       * @param {number} indent indentation
+       * @returns {string} string representation
+       */
 
 
     toString(indent = 1) {
@@ -19151,7 +19092,6 @@
     getNGramsForArray: getNGramsForArray
   });
 
-  /* eslint-disable unicorn/prevent-abbreviations */
   /**
    * Compresses a sequence by detecting immediately repeating subsequences
    * hierarchically. Optimal result but high performance complexity.
@@ -19175,7 +19115,7 @@
     } // Get repetition
 
 
-    let {
+    const {
       seq,
       rep,
       length: len,
@@ -19332,8 +19272,6 @@
     compressionRate: compressionRate
   });
 
-  /* eslint-disable unicorn/prefer-spread */
-
   /**
    * @module stringBased/NeedlemanWunsch
    */
@@ -19347,20 +19285,20 @@
    */
   class NeedlemanWunsch {
     /**
-     * @param {string|Array} seq1 a string
-     * @param {string|Array} seq2 another string
-     * @param {number} match_score score for matching characters
-     * @param {number} mismatch_penalty penalty for mismatching characters
-     * @param {number} gap_penalty penalty for a gap
-     */
-    constructor(seq1, seq2, match_score = 1, mismatch_penalty = -1, gap_penalty = -1) {
+       * @param {string|Array} seq1 a string
+       * @param {string|Array} seq2 another string
+       * @param {number} matchScore score for matching characters
+       * @param {number} mismatchPenalty penalty for mismatching characters
+       * @param {number} gapPenalty penalty for a gap
+       */
+    constructor(seq1, seq2, matchScore = 1, mismatchPenalty = -1, gapPenalty = -1) {
       // Compared sequences
       this.seq1 = seq1;
       this.seq2 = seq2; // Scoring parameters
 
-      this.match_score = match_score;
-      this.mismatch_penalty = mismatch_penalty;
-      this.gap_penalty = gap_penalty; // Intermediate scores matrix (scores for [`insert`, `match`, `delete`] positions)
+      this.matchScore = matchScore;
+      this.mismatchPenalty = mismatchPenalty;
+      this.gapPenalty = gapPenalty; // Intermediate scores matrix (scores for [`insert`, `match`, `delete`] positions)
 
       this.I = []; // Score matrix (best score out of intermediate scores)
 
@@ -19373,8 +19311,8 @@
       this.calcScoresAndTracebacks();
     }
     /**
-     * Calculates (intermediate) scores and tracebacks using provided parameters
-     */
+       * Calculates (intermediate) scores and tracebacks using provided parameters
+       */
 
 
     calcScoresAndTracebacks() {
@@ -19383,30 +19321,29 @@
       this.T.push([[false, false, false]]); // Calculate scores and traceback on first row
 
       for (let i = 1; i < this.seq2.length + 1; i++) {
-        this.S[0].push(this.S[0][this.S[0].length - 1] + this.gap_penalty);
+        this.S[0].push(this.S[0][this.S[0].length - 1] + this.gapPenalty);
         this.I[0].push([null, null, null]);
         this.T[0].push([true, false, false]);
       } // Generate other rows
 
 
       for (let i = 1; i < this.seq1.length + 1; i++) {
-        this.S.push([this.S[i - 1][0] + this.gap_penalty]);
+        this.S.push([this.S[i - 1][0] + this.gapPenalty]);
         this.I.push([[null, null, null]]);
         this.T.push([[false, false, true]]);
 
         for (let j = 1; j < this.seq2.length + 1; j++) {
-          const insert = this.S[i][j - 1] + this.gap_penalty;
-          const del = this.S[i - 1][j] + this.gap_penalty; // similarity
+          const insert = this.S[i][j - 1] + this.gapPenalty;
+          const del = this.S[i - 1][j] + this.gapPenalty; // similarity
           // TODO: support function here
 
-          let sim_score;
-          sim_score = this.seq1[i - 1] === this.seq2[j - 1] ? this.match_score : this.mismatch_penalty;
-          const match = this.S[i - 1][j - 1] + sim_score;
-          const intermediate_scores = [insert, match, del];
-          const score = Math.max(...intermediate_scores);
-          const tracebackTypeStatus = intermediate_scores.map(entry => entry === score);
+          const simScore = this.seq1[i - 1] === this.seq2[j - 1] ? this.matchScore : this.mismatchPenalty;
+          const match = this.S[i - 1][j - 1] + simScore;
+          const intermediateScores = [insert, match, del];
+          const score = Math.max(...intermediateScores);
+          const tracebackTypeStatus = intermediateScores.map(entry => entry === score);
           this.S[i].push(score);
-          this.I[i].push(intermediate_scores);
+          this.I[i].push(intermediateScores);
           this.T[i].push(tracebackTypeStatus);
         }
       } // set best match score
@@ -19416,19 +19353,19 @@
       this.score = lastRow[lastRow.length - 1];
     }
     /**
-     * Finds next alignment locations (children) from a position in scoring matrix
-     *
-     * @param {number[]} pos m- Position in scoring matrix
-     * @returns {object[]} children - Children positions and alignment types
-     */
+       * Finds next alignment locations (children) from a position in scoring matrix
+       *
+       * @param {number[]} pos m- Position in scoring matrix
+       * @returns {object[]} children - Children positions and alignment types
+       */
 
 
     alignmentChildren(pos) {
       const [i, j] = pos;
       const children = [];
-      const traceback_type_status = this.T[i][j];
+      const tracebackTypeStatus = this.T[i][j];
 
-      if (traceback_type_status[0]) {
+      if (tracebackTypeStatus[0]) {
         // insert
         children.push({
           pos: [i, j - 1],
@@ -19436,7 +19373,7 @@
         });
       }
 
-      if (traceback_type_status[1]) {
+      if (tracebackTypeStatus[1]) {
         // match
         children.push({
           pos: [i - 1, j - 1],
@@ -19444,7 +19381,7 @@
         });
       }
 
-      if (traceback_type_status[2]) {
+      if (tracebackTypeStatus[2]) {
         // delete
         children.push({
           pos: [i - 1, j],
@@ -19455,10 +19392,10 @@
       return children;
     }
     /**
-     * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
-     *
-     * @returns {object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
-     */
+       * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
+       *
+       * @returns {object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
+       */
 
 
     alignmentTraceback() {

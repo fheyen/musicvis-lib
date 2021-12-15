@@ -3,5 +3,5 @@
 describe('ErrorPerGtNote', () => {
   test('getStartTimeErrorPerGtNote', () => {
 
-  });
-});
+  })
+})

@@ -45,6 +45,7 @@ export function lcs (a, b) {
   // Recover the lcs from the table
   while (i > -1 && j > -1) {
     switch (c[i][j]) {
+      // eslint-disable-next-line
       default:
         j--
         lcs.unshift(a[i])

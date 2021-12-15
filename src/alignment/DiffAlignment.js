@@ -1,6 +1,6 @@
-import NoteArray from '../types/NoteArray.js';
-import Recording from '../types/Recording.js';
-import { group, max } from 'd3';
+import NoteArray from '../types/NoteArray.js'
+import Recording from '../types/Recording.js'
+import { group, max } from 'd3'
 
 /**
  * @module DiffAlignment
@@ -14,11 +14,11 @@ import { group, max } from 'd3';
  * @param {number} binSize time bin size in milliseconds
  * @returns {Recording} aligned recording
  */
-export function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
-  const recNotes = recording.getNotes();
-  const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
-  const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
-  return newRec;
+export function alignRecordingToBestFit (gtNotes, recording, binSize = 100) {
+  const recNotes = recording.getNotes()
+  const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0]
+  const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000)
+  return newRec
 }
 
 /**
@@ -35,7 +35,7 @@ export function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
  *      and the start of the second note
  * @returns {Recording} aligned recording
  */
-export function alignRecordingSectionsToBestFit(
+export function alignRecordingSectionsToBestFit (
   gtNotes,
   recording,
   binSize,
@@ -43,17 +43,17 @@ export function alignRecordingSectionsToBestFit(
   gapMode = 'start-start'
 ) {
   // Cut into sections when there are gaps
-  const sections = Recording.segmentAtGaps(gapDuration, gapMode);
+  const sections = Recording.segmentAtGaps(gapDuration, gapMode)
 
   const alignedSections = sections.map(section => {
     // TODO: avoid overlaps?
-    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, section, binSize)[0];
-    return bestFit;
-  });
+    const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, section, binSize)[0]
+    return bestFit
+  })
 
-  const newRec = recording.clone();
-  newRec.setNotes(alignedSections.flat());
-  return newRec;
+  const newRec = recording.clone()
+  newRec.setNotes(alignedSections.flat())
+  return newRec
 }
 
 /**
@@ -82,34 +82,34 @@ export function alignRecordingSectionsToBestFit(
  * @param {number} binSize time bin size in milliseconds
  * @returns {object[]} best offsets with agreements
  */
-export function alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize) {
-  gtNotes = new NoteArray(gtNotes);
-  recNotes = new NoteArray(recNotes).shiftToStartAt(0);
-  const gtDuration = gtNotes.getDuration();
-  const recDuration = recNotes.getDuration();
-  const nBins = Math.ceil((gtDuration * 1000) / binSize) + 1;
-  const nRecBins = Math.ceil((recDuration * 1000) / binSize) + 1;
+export function alignGtAndRecToMinimizeDiffError (gtNotes, recNotes, binSize) {
+  gtNotes = new NoteArray(gtNotes)
+  recNotes = new NoteArray(recNotes).shiftToStartAt(0)
+  const gtDuration = gtNotes.getDuration()
+  const recDuration = recNotes.getDuration()
+  const nBins = Math.ceil((gtDuration * 1000) / binSize) + 1
+  const nRecBins = Math.ceil((recDuration * 1000) / binSize) + 1
   // TODO: just switch them around?
   if (nRecBins > nBins) {
-    console.warn('Cannot compare GT and rec if rec is longer');
+    console.warn('Cannot compare GT and rec if rec is longer')
   }
   // Get activation maps
-  const gtActivation = activationMap(gtNotes.getNotes(), binSize);
-  const recActivation = activationMap(recNotes.getNotes(), binSize);
+  const gtActivation = activationMap(gtNotes.getNotes(), binSize)
+  const recActivation = activationMap(recNotes.getNotes(), binSize)
   // Compare with sliding window
-  const agreementsPerOffset = [];
+  const agreementsPerOffset = []
   for (let offset = 0; offset < nBins - nRecBins + 1; offset++) {
-    const currentAgreement = agreement(gtActivation, recActivation, offset);
+    const currentAgreement = agreement(gtActivation, recActivation, offset)
     // console.log(`Comparing gt bins ${offset}...${offset + nRecBins} to rec\nGot agreement ${currentAgreement}`);
     agreementsPerOffset.push({
       offsetBins: offset,
       offsetMilliseconds: offset * binSize,
       agreement: currentAgreement
-    });
+    })
   }
   // Sort by best match
-  const sorted = agreementsPerOffset.sort((a, b) => b.agreement - a.agreement);
-  return sorted;
+  const sorted = agreementsPerOffset.sort((a, b) => b.agreement - a.agreement)
+  return sorted
 }
 
 /**
@@ -120,23 +120,23 @@ export function alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize) {
  * @param {number} binSize time bin size in milliseconds
  * @returns {Map} activation map
  */
-export function activationMap(allNotes, binSize = 100) {
-  const activationMap = new Map();
+export function activationMap (allNotes, binSize = 100) {
+  const activationMap = new Map()
   for (const [pitch, notes] of group(allNotes, d => d.pitch).entries()) {
-    const maxTime = max(notes, d => d.end);
-    const nBins = Math.ceil((maxTime * 1000) / binSize) + 1;
-    const pitchActivationMap = Array.from({ length: nBins }).fill(0);
+    const maxTime = max(notes, d => d.end)
+    const nBins = Math.ceil((maxTime * 1000) / binSize) + 1
+    const pitchActivationMap = Array.from({ length: nBins }).fill(0)
     // Calculate heatmap by writing 1 where a note is active
     for (const note of notes) {
-      const start = Math.round(note.start * 1000 / binSize);
-      const end = Math.round(note.end * 1000 / binSize);
+      const start = Math.round(note.start * 1000 / binSize)
+      const end = Math.round(note.end * 1000 / binSize)
       for (let bin = start; bin <= end; bin++) {
-        pitchActivationMap[bin] = 1;
+        pitchActivationMap[bin] = 1
       }
     }
-    activationMap.set(pitch, pitchActivationMap);
+    activationMap.set(pitch, pitchActivationMap)
   }
-  return activationMap;
+  return activationMap
 }
 
 /**
@@ -150,12 +150,12 @@ export function activationMap(allNotes, binSize = 100) {
  * @param {number} offset offset for activation2 when comparing
  * @returns {number} agreement
  */
-export function agreement(gtActivations, recActivations, offset) {
+export function agreement (gtActivations, recActivations, offset) {
   const allPitches = [...new Set([
     ...gtActivations.keys(),
     ...recActivations.keys()
-  ])];
-  let agreement = 0;
+  ])]
+  let agreement = 0
   for (const pitch of allPitches) {
     // Handle pitches that occur only in one of both
     if (!gtActivations.has(pitch)) {
@@ -164,17 +164,17 @@ export function agreement(gtActivations, recActivations, offset) {
       // All notes are additional
     } else {
       // Compare both bins for each time slice
-      const gtA = gtActivations.get(pitch);
-      const recA = recActivations.get(pitch);
+      const gtA = gtActivations.get(pitch)
+      const recA = recActivations.get(pitch)
       // Go through full rec, and compare to current section of GT
       for (let index = 0; index < recA.length; index++) {
-        const gtValue = gtA[index + offset] || 0;
-        const recValue = recA[index] || 0;
+        const gtValue = gtA[index + offset] || 0
+        const recValue = recA[index] || 0
         if (gtValue === 1 && recValue === 1) {
-          agreement++;
+          agreement++
         }
       }
     }
   }
-  return agreement;
+  return agreement
 }

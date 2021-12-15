@@ -13,6 +13,7 @@
  * @returns {Promise} audio recorder
  */
 export const recordAudio = () => {
+  // eslint-disable-next-line
   return new Promise(async resolve => {
     let stream
     try {
