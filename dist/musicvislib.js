@@ -1,11 +1,11 @@
-// musicvis-lib v0.53.1 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.53.2 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.53.1";
+  var version="0.53.2";
 
   /**
    * Lookup for many MIDI specifications.
