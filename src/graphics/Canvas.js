@@ -559,7 +559,7 @@ export function drawBracketH (context, x, y, w, h) {
  * @param {number} [x=0] x position of the top left corner
  * @param {number} [y=0] y position of the top left corner
  * @param {number} [size=400] width and height in pixel
- * @param {Function} color colormap from [min, max] to a color
+ * @param {Function} colorMap colormap from [min, max] to a color
  */
 export function drawMatrix (
   context,
@@ -567,20 +567,35 @@ export function drawMatrix (
   x = 0,
   y = 0,
   size = 400,
-  color = d3.interpolateViridis
+  colorScale,
+  colorMap = d3.interpolateViridis
 ) {
   const cellSize = size / matrix.length
   const paddedSize = cellSize * 1.01
-  const colorScale = d3
+  colorScale = colorScale || d3
     .scaleLinear()
     .domain(d3.extent(matrix.flat()))
     .range([1, 0])
   for (let row = 0; row < matrix.length; row++) {
     for (let col = 0; col < matrix.length; col++) {
-      context.fillStyle = color(colorScale(matrix[row][col]))
+      context.fillStyle = colorMap(colorScale(matrix[row][col]))
       context.fillRect(x, y, paddedSize, paddedSize)
       x += cellSize
     }
     y += cellSize
+  }
+}
+
+/**
+ *
+* @param {CanvasRenderingContext2D} context canvas rendering context
+* @param {Function} colorMap colormap from [min, max] to a color
+* @returns
+*/
+export function drawColorRamp (context, w = 100, h = 10, colorMap = d3.interpolateRainbow) {
+  const scaleColor = d3.scaleLinear().domain([0, w])
+  for (let x = 0; x < w; ++x) {
+    context.fillStyle = colorMap(scaleColor(x))
+    context.fillRect(x, 0, 1.1, h)
   }
 }

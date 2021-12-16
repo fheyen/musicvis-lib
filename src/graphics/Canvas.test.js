@@ -1,5 +1,5 @@
 import 'jest-canvas-mock'
-import * as Canv from './Canvas.js'
+import * as cv from './Canvas.js'
 
 describe('Canvas', () => {
   // const canvas = HTMLCanvasElement();
@@ -15,82 +15,82 @@ describe('Canvas', () => {
   })
 
   test('draw circle', () => {
-    expect(() => Canv.drawCircle(ctx, 50, 50, 10)).not.toThrow()
+    expect(() => cv.drawCircle(ctx, 50, 50, 10)).not.toThrow()
   })
 
   test('drawLine', () => {
-    expect(() => Canv.drawLine(ctx, 30, 50, 10, 20)).not.toThrow()
+    expect(() => cv.drawLine(ctx, 30, 50, 10, 20)).not.toThrow()
   })
   test('drawHLine', () => {
-    expect(() => Canv.drawHLine(ctx, 30, 50, 10)).not.toThrow()
+    expect(() => cv.drawHLine(ctx, 30, 50, 10)).not.toThrow()
   })
   test('drawVLine', () => {
-    expect(() => Canv.drawVLine(ctx, 30, 50, 10)).not.toThrow()
+    expect(() => cv.drawVLine(ctx, 30, 50, 10)).not.toThrow()
   })
   test('drawBowRight', () => {
-    expect(() => Canv.drawBowRight(ctx, 30, 50, 10, 10)).not.toThrow()
-    expect(() => Canv.drawBowRight(ctx, 30, 50, 10, 10, 0)).not.toThrow()
+    expect(() => cv.drawBowRight(ctx, 30, 50, 10, 10)).not.toThrow()
+    expect(() => cv.drawBowRight(ctx, 30, 50, 10, 10, 0)).not.toThrow()
   })
 
   test('draw filled circle', () => {
-    expect(() => Canv.drawFilledCircle(ctx, 50, 50, 10)).not.toThrow()
+    expect(() => cv.drawFilledCircle(ctx, 50, 50, 10)).not.toThrow()
   })
 
   test('draw x', () => {
-    expect(() => Canv.drawX(ctx, 50, 50, 10)).not.toThrow()
+    expect(() => cv.drawX(ctx, 50, 50, 10)).not.toThrow()
   })
 
   test('draw diamond', () => {
-    expect(() => Canv.drawDiamond(ctx, 50, 50, 10)).not.toThrow()
+    expect(() => cv.drawDiamond(ctx, 50, 50, 10)).not.toThrow()
   })
 
   test('draw triangle', () => {
-    expect(() => Canv.drawTriangle(ctx, 50, 50, 10)).not.toThrow()
+    expect(() => cv.drawTriangle(ctx, 50, 50, 10)).not.toThrow()
   })
 
   test('draw note trap', () => {
-    expect(() => Canv.drawNoteTrapezoid(ctx, 50, 50, 100, 20, 10)).not.toThrow()
+    expect(() => cv.drawNoteTrapezoid(ctx, 50, 50, 100, 20, 10)).not.toThrow()
   })
 
   test('draw note trap upwards', () => {
-    expect(() => Canv.drawNoteTrapezoidUpwards(ctx, 50, 50, 20, 100, 10)).not.toThrow()
+    expect(() => cv.drawNoteTrapezoidUpwards(ctx, 50, 50, 20, 100, 10)).not.toThrow()
   })
 
   test('draw rounded rect', () => {
-    expect(() => Canv.drawRoundedRect(ctx, 50, 50, 100, 200, 20)).not.toThrow()
-    expect(() => Canv.drawRoundedRect(ctx, 50, 50, -1, 200, 20)).not.toThrow()
+    expect(() => cv.drawRoundedRect(ctx, 50, 50, 100, 200, 20)).not.toThrow()
+    expect(() => cv.drawRoundedRect(ctx, 50, 50, -1, 200, 20)).not.toThrow()
   })
 
   test('drawCornerLine', () => {
-    expect(() => Canv.drawCornerLine(ctx, 50, 50, 100, 200)).not.toThrow()
-    expect(() => Canv.drawCornerLine(ctx, 50, 50, 100, 200, true)).not.toThrow()
-    expect(() => Canv.drawCornerLine(ctx, 50, 50, 100, 200, false)).not.toThrow()
-    expect(() => Canv.drawCornerLine(ctx, 50, 50, 0, 20)).not.toThrow()
+    expect(() => cv.drawCornerLine(ctx, 50, 50, 100, 200)).not.toThrow()
+    expect(() => cv.drawCornerLine(ctx, 50, 50, 100, 200, true)).not.toThrow()
+    expect(() => cv.drawCornerLine(ctx, 50, 50, 100, 200, false)).not.toThrow()
+    expect(() => cv.drawCornerLine(ctx, 50, 50, 0, 20)).not.toThrow()
   })
   test('drawRoundedCornerLine', () => {
-    expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 100, 200)).not.toThrow()
-    expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 100, 200, 10)).not.toThrow()
-    expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 10, 200)).not.toThrow()
-    expect(() => Canv.drawRoundedCornerLine(ctx, 50, 50, 0, 0)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLine(ctx, 50, 50, 100, 200)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLine(ctx, 50, 50, 100, 200, 10)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLine(ctx, 50, 50, 10, 200)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLine(ctx, 50, 50, 0, 0)).not.toThrow()
   })
   test('drawRoundedCornerLineRightLeft', () => {
-    expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 100, 200)).not.toThrow()
-    expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 100, 200, 10)).not.toThrow()
-    expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 10, 200)).not.toThrow()
-    expect(() => Canv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 0, 0)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 100, 200)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 100, 200, 10)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 10, 200)).not.toThrow()
+    expect(() => cv.drawRoundedCornerLineRightLeft(ctx, 50, 50, 0, 0)).not.toThrow()
   })
 
   test('draw hexagon', () => {
-    expect(() => Canv.drawHexagon(ctx, 50, 50, 10)).not.toThrow()
+    expect(() => cv.drawHexagon(ctx, 50, 50, 10)).not.toThrow()
   })
 
   test('draw bezier x', () => {
-    expect(() => Canv.drawBezierConnectorX(ctx, 50, 50, 60, 60)).not.toThrow()
-    expect(() => Canv.drawBezierConnectorX(ctx, 60, 60, 50, 50)).not.toThrow()
+    expect(() => cv.drawBezierConnectorX(ctx, 50, 50, 60, 60)).not.toThrow()
+    expect(() => cv.drawBezierConnectorX(ctx, 60, 60, 50, 50)).not.toThrow()
   })
   test('draw bezier y', () => {
-    expect(() => Canv.drawBezierConnectorY(ctx, 50, 50, 60, 60)).not.toThrow()
-    expect(() => Canv.drawBezierConnectorY(ctx, 60, 60, 50, 50)).not.toThrow()
+    expect(() => cv.drawBezierConnectorY(ctx, 50, 50, 60, 60)).not.toThrow()
+    expect(() => cv.drawBezierConnectorY(ctx, 60, 60, 50, 50)).not.toThrow()
   })
 
   test('drawRoundedCorner', () => {
@@ -100,7 +100,7 @@ describe('Canvas', () => {
           for (const y2 of [-10, 0, 10]) {
             for (const turnLeft of [-10, 0, 10]) {
               for (const roundness of [0, 0.1, 0.5, 1]) {
-                expect(() => Canv.drawRoundedCorner(ctx, x1, y1, x2, y2, turnLeft, roundness)).not.toThrow()
+                expect(() => cv.drawRoundedCorner(ctx, x1, y1, x2, y2, turnLeft, roundness)).not.toThrow()
               }
             }
           }
@@ -110,9 +110,9 @@ describe('Canvas', () => {
   })
 
   test('drawBracketH', () => {
-    expect(() => Canv.drawBracketH(ctx, 50, 50, 60, 0)).not.toThrow()
-    expect(() => Canv.drawBracketH(ctx, 50, 50, 60, 5)).not.toThrow()
-    expect(() => Canv.drawBracketH(ctx, 60, 60, 50, -5)).not.toThrow()
+    expect(() => cv.drawBracketH(ctx, 50, 50, 60, 0)).not.toThrow()
+    expect(() => cv.drawBracketH(ctx, 50, 50, 60, 5)).not.toThrow()
+    expect(() => cv.drawBracketH(ctx, 60, 60, 50, -5)).not.toThrow()
   })
 
   test('drawMatrix', () => {
@@ -124,11 +124,18 @@ describe('Canvas', () => {
       [1, 0],
       [0, 1]
     ]
-    expect(() => Canv.drawMatrix(ctx, m0, 50, 60, 0)).not.toThrow()
-    expect(() => Canv.drawMatrix(ctx, m0, 50, 60, 100)).not.toThrow()
-    expect(() => Canv.drawMatrix(ctx, m0, 60, 50, 100)).not.toThrow()
-    expect(() => Canv.drawMatrix(ctx, m1, 50, 60, 0)).not.toThrow()
-    expect(() => Canv.drawMatrix(ctx, m1, 50, 60, 100)).not.toThrow()
-    expect(() => Canv.drawMatrix(ctx, m1, 60, 50, 100)).not.toThrow()
+    expect(() => cv.drawMatrix(ctx, m0, 50, 60, 0)).not.toThrow()
+    expect(() => cv.drawMatrix(ctx, m0, 50, 60, 100)).not.toThrow()
+    expect(() => cv.drawMatrix(ctx, m0, 60, 50, 100)).not.toThrow()
+    expect(() => cv.drawMatrix(ctx, m1, 50, 60, 0)).not.toThrow()
+    expect(() => cv.drawMatrix(ctx, m1, 50, 60, 100)).not.toThrow()
+    expect(() => cv.drawMatrix(ctx, m1, 60, 50, 100)).not.toThrow()
+  })
+
+  test('drawColorRamp', () => {
+    expect(() => cv.drawColorRamp(ctx)).not.toThrow()
+    expect(() => cv.drawColorRamp(ctx, 50)).not.toThrow()
+    expect(() => cv.drawColorRamp(ctx, 50, 10)).not.toThrow()
+    expect(() => cv.drawColorRamp(ctx, 50, 10, (d) => `rgb(0, 0, ${Math.round(d * 255)})`)).not.toThrow()
   })
 })

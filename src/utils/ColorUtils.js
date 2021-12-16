@@ -35,3 +35,16 @@ export function averageColor (colors) {
   mB = Math.round(mB / colors.length)
   return `rgb(${mR}, ${mG}, ${mB})`
 }
+
+/**
+ * Sets a color's opacity.
+ * Does not support colors in rgba format.
+ *
+ * @param {string} color valid HTML color identifier
+ * @param {number} [opacity=1] opacity from 0 to 1
+ * @returns
+ */
+export function setOpacity (color, opacity = 1) {
+  const { r, g, b } = d3.color(color).rgb()
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`
+}
