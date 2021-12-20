@@ -13,6 +13,7 @@
     "url": "https://github.com/fheyen/musicvis-lib/issues"
   },
   "keywords": [
+    "visualization",
     "music visualization",
     "visual analytics",
     "JavaScript",
@@ -43,15 +44,16 @@
     "testclear": "jest --clearCache",
     "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
-    "lint": "standard",
-    "lint:fix": "standard --fix",
+    "lint": "standard --verbose",
+    "lint:fix": "standard --fix --verbose",
     "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
     "git:add": "git add .",
     "git:commit": "git commit -m \"new version build\"",
     "git:push": "git push",
     "git:pushtags": "git push origin --tags",
     "predeploy": "npm run lint:fix && npm run build && jest --silent && npm run doc",
-    "deploy": "npm publish && npm run git:all"
+    "deploy": "npm publish && npm run git:all",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@tonaljs/tonal": "^4.6.5",
@@ -80,7 +82,8 @@
     "rollup": "^2.61.1",
     "rollup-plugin-node-resolve": "^5",
     "rollup-plugin-terser": "^7.0.2",
-    "standard": "^16.0.4"
+    "standard": "^16.0.4",
+    "husky": "^7.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom",

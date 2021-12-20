@@ -10,9 +10,10 @@ For ideas, hints, or if you just don't have time or resources to do pull request
    1. [Testing](#testing)
    2. [Linting](#linting)
    3. [Building](#building)
-   4. [Documentation](#documentation)
-   5. [Deployment](#deployment)
-   6. [More](#more)
+   4. [Pre-Commit Hooks](#pre-commit-hooks)
+   5. [Documentation](#documentation)
+   6. [Deployment](#deployment)
+   7. [More](#more)
       1. [Structure and Internal Dependencies](#structure-and-internal-dependencies)
 
 ## Testing
@@ -39,6 +40,10 @@ Using [standard](https://standardjs.com/)
 Using webpack, see [webpack.dev.js](./webpack.dev.js) and [webpack.prod.js](./webpack.prod.js)
 
 Using [source-map-loader](https://github.com/webpack-contrib/source-map-loader)
+
+## Pre-Commit Hooks
+
+With [husky](https://typicode.github.io/husky/)
 
 ## Documentation
 
