@@ -70,10 +70,12 @@
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
+    "@types/d3": "^7.1.0",
     "@types/jest": "^27.0.3",
     "babel-eslint": "^10.1.0",
     "clean-jsdoc-theme": "^3.3.1",
     "glob": "^7.2.0",
+    "husky": "^7.0.0",
     "jest": "^27.4.5",
     "jest-canvas-mock": "^2.3.1",
     "jest-extended": "^1.2.0",
@@ -82,8 +84,7 @@
     "rollup": "^2.61.1",
     "rollup-plugin-node-resolve": "^5",
     "rollup-plugin-terser": "^7.0.2",
-    "standard": "^16.0.4",
-    "husky": "^7.0.0"
+    "standard": "^16.0.4"
   },
   "jest": {
     "testEnvironment": "jsdom",

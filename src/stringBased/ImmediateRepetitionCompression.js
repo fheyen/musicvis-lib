@@ -60,6 +60,9 @@ export function compress (sequence) {
 /**
  * Finds all immediate repetitions in a given sequence.
  *
+ * @todo implement a mode that just looks for the best one, instead of later
+ * sorting all found ones (will be faster since less sequence.slice() happens)
+ * Still needs to keep all results with the same score
  * @param {Array} sequence array with immediately repeating subsequences
  * @returns {object[]} result
  */
