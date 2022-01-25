@@ -69,8 +69,7 @@ export function confidenceInterval (values) {
 }
 
 /**
- * Given an array of Note objects, returns the numbers
- * that are drawn in a box plot (of the Note.start property)
+ * Given an array of numbers, computes the proportions of a boxplot.
  *
  * @param {number[]} values values
  * @returns {object} { q1, q2, q3, r0, r1 }
