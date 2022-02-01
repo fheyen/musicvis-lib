@@ -52,6 +52,30 @@ describe('ImmediateRepetitionCompression', () => {
     })
   })
 
+  describe('summary', () => {
+    test('null', () => {
+      expect(
+        compr.summary(compr.compress())
+      ).toStrictEqual(
+        []
+      )
+    })
+    test('empty', () => {
+      expect(
+        compr.summary(compr.compress([]))
+      ).toStrictEqual(
+        []
+      )
+    })
+    test('12312345656', () => {
+      expect(
+        compr.summary(compr.compress('12312345656'.split('')))
+      ).toStrictEqual(
+        '123456'.split('')
+      )
+    })
+  })
+
   describe('toString', () => {
     test('null', () => {
       expect(compr.toString(compr.compress())).toBe('')

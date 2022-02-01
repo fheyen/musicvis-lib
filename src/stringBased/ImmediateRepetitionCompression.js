@@ -141,6 +141,31 @@ export function decompress (tree) {
 }
 
 /**
+ * Returns the summary of a hierachy, leaving out information about repetitions.
+ *
+ * @param {object} tree compressed hierarchy
+ * @returns {Array} summary
+ * @example
+ *  const arr = '12312345656'.split('')
+ *  const h = compress(arr)
+ *  summary(h).join('')
+ *  // '123456'
+ */
+export function summary (tree) {
+  if (!tree) {
+    return []
+  }
+  if (tree.join) {
+    return tree
+  }
+  return [
+    ...summary(tree.pre),
+    ...summary(tree.seq),
+    ...summary(tree.post)
+  ]
+}
+
+/**
  * Formats a compressed hierarchy into a readable string, for example:
  * "1222333222333" => "1 (2x (3x 2) (3x 3))"
  *
