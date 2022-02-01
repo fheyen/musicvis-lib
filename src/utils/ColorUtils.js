@@ -42,7 +42,7 @@ export function averageColor (colors) {
  *
  * @param {string} color valid HTML color identifier
  * @param {number} [opacity=1] opacity from 0 to 1
- * @returns
+ * @returns {string} color as RGBA string
  */
 export function setOpacity (color, opacity = 1) {
   const { r, g, b } = d3.color(color).rgb()

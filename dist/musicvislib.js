@@ -1,11 +1,11 @@
-// musicvis-lib v0.53.2 https://fheyen.github.io/musicvis-lib
+// musicvis-lib v0.53.3 https://fheyen.github.io/musicvis-lib
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
 })(this, (function (exports) { 'use strict';
 
-  var version="0.53.2";
+  var version="0.53.3";
 
   /**
    * Lookup for many MIDI specifications.
@@ -4603,6 +4603,61 @@
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
   }
 
+  const radians = Math.PI / 180;
+  const degrees = 180 / Math.PI;
+
+  var A = -0.14861,
+      B = +1.78277,
+      C = -0.29227,
+      D = -0.90649,
+      E = +1.97294,
+      ED = E * D,
+      EB = E * B,
+      BC_DA = B * C - D * A;
+
+  function cubehelixConvert(o) {
+    if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
+        bl = b - l,
+        k = (E * (g - l) - C * bl) / D,
+        s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)),
+        // NaN if l=0 or l=1
+    h = s ? Math.atan2(k, bl) * degrees - 120 : NaN;
+    return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
+  }
+
+  function cubehelix$1(h, s, l, opacity) {
+    return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
+  }
+  function Cubehelix(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+  define(Cubehelix, cubehelix$1, extend(Color, {
+    brighter: function (k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function () {
+      var h = isNaN(this.h) ? 0 : (this.h + 120) * radians,
+          l = +this.l,
+          a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
+          cosh = Math.cos(h),
+          sinh = Math.sin(h);
+      return new Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
+    }
+  }));
+
   var constant = (x => () => x);
 
   function linear$1(a, d) {
@@ -4615,6 +4670,11 @@
     return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function (t) {
       return Math.pow(a + t * b, y);
     };
+  }
+
+  function hue(a, b) {
+    var d = b - a;
+    return d ? linear$1(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant(isNaN(a) ? b : a);
   }
   function gamma(y) {
     return (y = +y) === 1 ? nogamma : function (a, b) {
@@ -4799,6 +4859,32 @@
       return Math.round(a * (1 - t) + b * t);
     };
   }
+
+  function cubehelix(hue) {
+    return function cubehelixGamma(y) {
+      y = +y;
+
+      function cubehelix(start, end) {
+        var h = hue((start = cubehelix$1(start)).h, (end = cubehelix$1(end)).h),
+            s = nogamma(start.s, end.s),
+            l = nogamma(start.l, end.l),
+            opacity = nogamma(start.opacity, end.opacity);
+        return function (t) {
+          start.h = h(t);
+          start.s = s(t);
+          start.l = l(Math.pow(t, y));
+          start.opacity = opacity(t);
+          return start + "";
+        };
+      }
+
+      cubehelix.gamma = cubehelixGamma;
+      return cubehelix;
+    }(1);
+  }
+
+  cubehelix(hue);
+  var cubehelixLong = cubehelix(nogamma);
 
   dispatch("start", "end", "cancel", "interrupt");
 
@@ -5423,6 +5509,18 @@
     while (i < n) colors[i] = "#" + specifier.slice(i * 6, ++i * 6);
 
     return colors;
+  }
+
+  cubehelixLong(cubehelix$1(-100, 0.75, 0.35), cubehelix$1(80, 1.50, 0.8));
+  cubehelixLong(cubehelix$1(260, 0.75, 0.35), cubehelix$1(80, 1.50, 0.8));
+  var c = cubehelix$1();
+  function rainbow (t) {
+    if (t < 0 || t > 1) t -= Math.floor(t);
+    var ts = Math.abs(t - 0.5);
+    c.h = 360 * t - 100;
+    c.s = 1.5 - 1.5 * ts;
+    c.l = 0.8 - 0.9 * ts;
+    return c + "";
   }
 
   function ramp(range) {
@@ -12762,22 +12860,37 @@
    * @param {number} [x=0] x position of the top left corner
    * @param {number} [y=0] y position of the top left corner
    * @param {number} [size=400] width and height in pixel
-   * @param {Function} color colormap from [min, max] to a color
+   * @param {Function} colorMap colormap from [min, max] to a color
    */
 
-  function drawMatrix(context, matrix, x = 0, y = 0, size = 400, color = viridis) {
+  function drawMatrix(context, matrix, x = 0, y = 0, size = 400, colorScale, colorMap = viridis) {
     const cellSize = size / matrix.length;
     const paddedSize = cellSize * 1.01;
-    const colorScale = linear().domain(extent(matrix.flat())).range([1, 0]);
+    colorScale = colorScale || linear().domain(extent(matrix.flat())).range([1, 0]);
 
     for (let row = 0; row < matrix.length; row++) {
       for (let col = 0; col < matrix.length; col++) {
-        context.fillStyle = color(colorScale(matrix[row][col]));
+        context.fillStyle = colorMap(colorScale(matrix[row][col]));
         context.fillRect(x, y, paddedSize, paddedSize);
         x += cellSize;
       }
 
       y += cellSize;
+    }
+  }
+  /**
+   * Draws a color ramp
+   *
+   * @param {CanvasRenderingContext2D} context canvas rendering context
+   * @param {Function} colorMap colormap from [min, max] to a color
+   */
+
+  function drawColorRamp(context, w = 100, h = 10, colorMap = rainbow) {
+    const scaleColor = linear().domain([0, w]);
+
+    for (let x = 0; x < w; ++x) {
+      context.fillStyle = colorMap(scaleColor(x));
+      context.fillRect(x, 0, 1.1, h);
     }
   }
 
@@ -12806,7 +12919,8 @@
     drawArc: drawArc,
     drawAssymetricArc: drawAssymetricArc,
     drawBracketH: drawBracketH,
-    drawMatrix: drawMatrix
+    drawMatrix: drawMatrix,
+    drawColorRamp: drawColorRamp
   });
 
   /**
@@ -16084,6 +16198,23 @@
     mB = Math.round(mB / colors.length);
     return `rgb(${mR}, ${mG}, ${mB})`;
   }
+  /**
+   * Sets a color's opacity.
+   * Does not support colors in rgba format.
+   *
+   * @param {string} color valid HTML color identifier
+   * @param {number} [opacity=1] opacity from 0 to 1
+   * @returns {string} color as RGBA string
+   */
+
+  function setOpacity(color$1, opacity = 1) {
+    const {
+      r,
+      g,
+      b
+    } = color(color$1).rgb();
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
 
   /**
    * @module utils/FormattingUtils
@@ -16456,8 +16587,7 @@
     };
   }
   /**
-   * Given an array of Note objects, returns the numbers
-   * that are drawn in a box plot (of the Note.start property)
+   * Given an array of numbers, computes the proportions of a boxplot.
    *
    * @param {number[]} values values
    * @returns {object} { q1, q2, q3, r0, r1 }
@@ -17044,6 +17174,7 @@
     blobToFileExtension: blobToFileExtension,
     getColorLightness: getColorLightness,
     averageColor: averageColor,
+    setOpacity: setOpacity,
     formatTime: formatTime,
     formatDate: formatDate,
     formatSongTitle: formatSongTitle,
@@ -19150,6 +19281,9 @@
   /**
    * Finds all immediate repetitions in a given sequence.
    *
+   * @todo implement a mode that just looks for the best one, instead of later
+   * sorting all found ones (will be faster since less sequence.slice() happens)
+   * Still needs to keep all results with the same score
    * @param {Array} sequence array with immediately repeating subsequences
    * @returns {object[]} result
    */
@@ -19224,6 +19358,29 @@
     return [...decompress(tree.pre), ...repetition.flat(), ...decompress(tree.post)];
   }
   /**
+   * Returns the summary of a hierachy, leaving out information about repetitions.
+   *
+   * @param {object} tree compressed hierarchy
+   * @returns {Array} summary
+   * @example
+   *  const arr = '12312345656'.split('')
+   *  const h = compress(arr)
+   *  summary(h).join('')
+   *  // '123456'
+   */
+
+  function summary(tree) {
+    if (!tree) {
+      return [];
+    }
+
+    if (tree.join) {
+      return tree;
+    }
+
+    return [...summary(tree.pre), ...summary(tree.seq), ...summary(tree.post)];
+  }
+  /**
    * Formats a compressed hierarchy into a readable string, for example:
    * "1222333222333" => "1 (2x (3x 2) (3x 3))"
    *
@@ -19268,6 +19425,7 @@
     compress: compress,
     getImmediateRepetitions: getImmediateRepetitions,
     decompress: decompress,
+    summary: summary,
     toString: toString,
     compressionRate: compressionRate
   });

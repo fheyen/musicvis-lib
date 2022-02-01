@@ -587,11 +587,11 @@ export function drawMatrix (
 }
 
 /**
+ * Draws a color ramp
  *
-* @param {CanvasRenderingContext2D} context canvas rendering context
-* @param {Function} colorMap colormap from [min, max] to a color
-* @returns
-*/
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {Function} colorMap colormap from [min, max] to a color
+ */
 export function drawColorRamp (context, w = 100, h = 10, colorMap = d3.interpolateRainbow) {
   const scaleColor = d3.scaleLinear().domain([0, w])
   for (let x = 0; x < w; ++x) {
