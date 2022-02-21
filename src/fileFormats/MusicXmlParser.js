@@ -176,15 +176,19 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
             const rehearsals = child.querySelectorAll('rehearsal')
             const marks = []
             for (const r of rehearsals) {
-              marks.push(r.textContent)
+              if (r.textContent !== "") {
+                marks.push(r.textContent)
+              }
             }
-            let text = marks.join(' ')
-            const measureIndex = measureIndices.length
-            if (measureRehearsalMap.has(measureIndex)) {
-              const oldText = measureRehearsalMap.get(measureIndex)
-              text = `${oldText} ${text}`
+            if (marks.length > 0) {
+              let text = marks.join(' ')
+              const measureIndex = measureIndices.length
+              if (measureRehearsalMap.has(measureIndex)) {
+                const oldText = measureRehearsalMap.get(measureIndex)
+                text = `${oldText} ${text}`
+              }
+              measureRehearsalMap.set(measureIndex, text)
             }
-            measureRehearsalMap.set(measureIndex, text)
           }
           // TODO: handle others, e.g. tempo
           // if (direction.nodeName === 'sound' && direction.getAttribute('tempo')) {

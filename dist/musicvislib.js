@@ -1,4007 +1,1677 @@
-// musicvis-lib v0.54.0 https://fheyen.github.io/musicvis-lib
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.musicvislib = global.musicvislib || {}));
-})(this, (function (exports) { 'use strict';
+var musicvislib = (() => {
+  var __create = Object.create;
+  var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __getProtoOf = Object.getPrototypeOf;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+  var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
+  var __commonJS = (cb, mod2) => function __require() {
+    return mod2 || (0, cb[__getOwnPropNames(cb)[0]])((mod2 = { exports: {} }).exports, mod2), mod2.exports;
+  };
+  var __export = (target, all4) => {
+    for (var name in all4)
+      __defProp(target, name, { get: all4[name], enumerable: true });
+  };
+  var __reExport = (target, module, copyDefault, desc) => {
+    if (module && typeof module === "object" || typeof module === "function") {
+      for (let key of __getOwnPropNames(module))
+        if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
+          __defProp(target, key, { get: () => module[key], enumerable: !(desc = __getOwnPropDesc(module, key)) || desc.enumerable });
+    }
+    return target;
+  };
+  var __toESM = (module, isNodeMode) => {
+    return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", !isNodeMode && module && module.__esModule ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
+  };
+  var __toCommonJS = /* @__PURE__ */ ((cache4) => {
+    return (module, temp) => {
+      return cache4 && cache4.get(module) || (temp = __reExport(__markAsModule({}), module, 1), cache4 && cache4.set(module, temp), temp);
+    };
+  })(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
 
-  var version="0.54.0";
+  // node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js
+  var require_main = __commonJS({
+    "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports, module) {
+      (function() {
+        "use strict";
+        const _atob = function(string) {
+          let b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+          let b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
+          string = string.replace(/^.*?base64,/, "");
+          string = String(string).replace(/[\t\n\f\r ]+/g, "");
+          if (!b64re.test(string))
+            throw new TypeError("Failed to execute _atob() : The string to be decoded is not correctly encoded.");
+          string += "==".slice(2 - (string.length & 3));
+          let bitmap, result = "";
+          let r1, r2, i = 0;
+          for (; i < string.length; ) {
+            bitmap = b64.indexOf(string.charAt(i++)) << 18 | b64.indexOf(string.charAt(i++)) << 12 | (r1 = b64.indexOf(string.charAt(i++))) << 6 | (r2 = b64.indexOf(string.charAt(i++)));
+            result += r1 === 64 ? String.fromCharCode(bitmap >> 16 & 255) : r2 === 64 ? String.fromCharCode(bitmap >> 16 & 255, bitmap >> 8 & 255) : String.fromCharCode(bitmap >> 16 & 255, bitmap >> 8 & 255, bitmap & 255);
+          }
+          return result;
+        };
+        const MidiParser = {
+          debug: false,
+          parse: function(input, _callback) {
+            if (input instanceof Uint8Array)
+              return MidiParser.Uint8(input);
+            else if (typeof input === "string")
+              return MidiParser.Base64(input);
+            else if (input instanceof HTMLElement && input.type === "file")
+              return MidiParser.addListener(input, _callback);
+            else
+              throw new Error("MidiParser.parse() : Invalid input provided");
+          },
+          addListener: function(_fileElement, _callback) {
+            if (!File || !FileReader)
+              throw new Error("The File|FileReader APIs are not supported in this browser. Use instead MidiParser.Base64() or MidiParser.Uint8()");
+            if (_fileElement === void 0 || !(_fileElement instanceof HTMLElement) || _fileElement.tagName !== "INPUT" || _fileElement.type.toLowerCase() !== "file") {
+              console.warn("MidiParser.addListener() : Provided element is not a valid FILE INPUT element");
+              return false;
+            }
+            _callback = _callback || function() {
+            };
+            _fileElement.addEventListener("change", function(InputEvt) {
+              if (!InputEvt.target.files.length)
+                return false;
+              console.log("MidiParser.addListener() : File detected in INPUT ELEMENT processing data..");
+              let reader = new FileReader();
+              reader.readAsArrayBuffer(InputEvt.target.files[0]);
+              reader.onload = function(e) {
+                _callback(MidiParser.Uint8(new Uint8Array(e.target.result)));
+              };
+            });
+          },
+          Base64: function(b64String) {
+            b64String = String(b64String);
+            let raw = _atob(b64String);
+            let rawLength = raw.length;
+            let t_array = new Uint8Array(new ArrayBuffer(rawLength));
+            for (let i = 0; i < rawLength; i++)
+              t_array[i] = raw.charCodeAt(i);
+            return MidiParser.Uint8(t_array);
+          },
+          Uint8: function(FileAsUint8Array) {
+            let file = {
+              data: null,
+              pointer: 0,
+              movePointer: function(_bytes) {
+                this.pointer += _bytes;
+                return this.pointer;
+              },
+              readInt: function(_bytes) {
+                _bytes = Math.min(_bytes, this.data.byteLength - this.pointer);
+                if (_bytes < 1)
+                  return -1;
+                let value = 0;
+                if (_bytes > 1) {
+                  for (let i = 1; i <= _bytes - 1; i++) {
+                    value += this.data.getUint8(this.pointer) * Math.pow(256, _bytes - i);
+                    this.pointer++;
+                  }
+                }
+                value += this.data.getUint8(this.pointer);
+                this.pointer++;
+                return value;
+              },
+              readStr: function(_bytes) {
+                let text = "";
+                for (let char = 1; char <= _bytes; char++)
+                  text += String.fromCharCode(this.readInt(1));
+                return text;
+              },
+              readIntVLV: function() {
+                let value = 0;
+                if (this.pointer >= this.data.byteLength) {
+                  return -1;
+                } else if (this.data.getUint8(this.pointer) < 128) {
+                  value = this.readInt(1);
+                } else {
+                  let FirstBytes = [];
+                  while (this.data.getUint8(this.pointer) >= 128) {
+                    FirstBytes.push(this.readInt(1) - 128);
+                  }
+                  let lastByte = this.readInt(1);
+                  for (let dt = 1; dt <= FirstBytes.length; dt++) {
+                    value += FirstBytes[FirstBytes.length - dt] * Math.pow(128, dt);
+                  }
+                  value += lastByte;
+                }
+                return value;
+              }
+            };
+            file.data = new DataView(FileAsUint8Array.buffer, FileAsUint8Array.byteOffset, FileAsUint8Array.byteLength);
+            if (file.readInt(4) !== 1297377380) {
+              console.warn("Header validation failed (not MIDI standard or file corrupt.)");
+              return false;
+            }
+            let headerSize = file.readInt(4);
+            let MIDI = {};
+            MIDI.formatType = file.readInt(2);
+            MIDI.tracks = file.readInt(2);
+            MIDI.track = [];
+            let timeDivisionByte1 = file.readInt(1);
+            let timeDivisionByte2 = file.readInt(1);
+            if (timeDivisionByte1 >= 128) {
+              MIDI.timeDivision = [];
+              MIDI.timeDivision[0] = timeDivisionByte1 - 128;
+              MIDI.timeDivision[1] = timeDivisionByte2;
+            } else
+              MIDI.timeDivision = timeDivisionByte1 * 256 + timeDivisionByte2;
+            for (let t = 1; t <= MIDI.tracks; t++) {
+              MIDI.track[t - 1] = { event: [] };
+              let headerValidation = file.readInt(4);
+              if (headerValidation === -1)
+                break;
+              if (headerValidation !== 1297379947)
+                return false;
+              file.readInt(4);
+              let e = 0;
+              let endOfTrack = false;
+              let statusByte;
+              let laststatusByte;
+              while (!endOfTrack) {
+                e++;
+                MIDI.track[t - 1].event[e - 1] = {};
+                MIDI.track[t - 1].event[e - 1].deltaTime = file.readIntVLV();
+                statusByte = file.readInt(1);
+                if (statusByte === -1)
+                  break;
+                else if (statusByte >= 128)
+                  laststatusByte = statusByte;
+                else {
+                  statusByte = laststatusByte;
+                  file.movePointer(-1);
+                }
+                if (statusByte === 255) {
+                  MIDI.track[t - 1].event[e - 1].type = 255;
+                  MIDI.track[t - 1].event[e - 1].metaType = file.readInt(1);
+                  let metaEventLength = file.readIntVLV();
+                  switch (MIDI.track[t - 1].event[e - 1].metaType) {
+                    case 47:
+                    case -1:
+                      endOfTrack = true;
+                      break;
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 7:
+                    case 6:
+                      MIDI.track[t - 1].event[e - 1].data = file.readStr(metaEventLength);
+                      break;
+                    case 33:
+                    case 89:
+                    case 81:
+                      MIDI.track[t - 1].event[e - 1].data = file.readInt(metaEventLength);
+                      break;
+                    case 84:
+                      MIDI.track[t - 1].event[e - 1].data = [];
+                      MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[2] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[3] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[4] = file.readInt(1);
+                      break;
+                    case 88:
+                      MIDI.track[t - 1].event[e - 1].data = [];
+                      MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[2] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[3] = file.readInt(1);
+                      break;
+                    default:
+                      if (this.customInterpreter !== null) {
+                        MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].metaType, file, metaEventLength);
+                      }
+                      if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
+                        file.readInt(metaEventLength);
+                        MIDI.track[t - 1].event[e - 1].data = file.readInt(metaEventLength);
+                        if (this.debug)
+                          console.info("Unimplemented 0xFF meta event! data block readed as Integer");
+                      }
+                  }
+                } else {
+                  statusByte = statusByte.toString(16).split("");
+                  if (!statusByte[1])
+                    statusByte.unshift("0");
+                  MIDI.track[t - 1].event[e - 1].type = parseInt(statusByte[0], 16);
+                  MIDI.track[t - 1].event[e - 1].channel = parseInt(statusByte[1], 16);
+                  switch (MIDI.track[t - 1].event[e - 1].type) {
+                    case 15: {
+                      if (this.customInterpreter !== null) {
+                        MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].type, file, false);
+                      }
+                      if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
+                        let event_length = file.readIntVLV();
+                        MIDI.track[t - 1].event[e - 1].data = file.readInt(event_length);
+                        if (this.debug)
+                          console.info("Unimplemented 0xF exclusive events! data block readed as Integer");
+                      }
+                      break;
+                    }
+                    case 10:
+                    case 11:
+                    case 14:
+                    case 8:
+                    case 9:
+                      MIDI.track[t - 1].event[e - 1].data = [];
+                      MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
+                      MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
+                      break;
+                    case 12:
+                    case 13:
+                      MIDI.track[t - 1].event[e - 1].data = file.readInt(1);
+                      break;
+                    case -1:
+                      endOfTrack = true;
+                      break;
+                    default:
+                      if (this.customInterpreter !== null) {
+                        MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].metaType, file, false);
+                      }
+                      if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
+                        console.log("Unknown EVENT detected... reading cancelled!");
+                        return false;
+                      }
+                  }
+                }
+              }
+            }
+            return MIDI;
+          },
+          customInterpreter: null
+        };
+        if (typeof module !== "undefined")
+          module.exports = MidiParser;
+        else {
+          let _global = typeof window === "object" && window.self === window && window || typeof self === "object" && self.self === self && self || typeof global === "object" && global.global === global && global;
+          _global.MidiParser = MidiParser;
+        }
+      })();
+    }
+  });
 
-  /**
-   * Lookup for many MIDI specifications.
-   *
-   * @module fileFormats/Midi
-   * @see https://soundprogramming.net/file-formats/
-   */
+  // src/index.js
+  var src_exports = {};
+  __export(src_exports, {
+    Alignment: () => Alignment_exports,
+    Canvas: () => Canvas_exports,
+    Chords: () => Chords_exports,
+    DiffAlignment: () => DiffAlignment_exports,
+    Drums: () => Drums_exports,
+    Guitar: () => Guitar_exports,
+    GuitarNote: () => GuitarNote_default,
+    HarmonicaNote: () => HarmonicaNote_default,
+    Lamellophone: () => Lamellophone_exports,
+    Matching: () => Matching_exports,
+    Midi: () => Midi_exports,
+    MidiInputManager: () => MidiInputManager_default,
+    MusicPiece: () => MusicPiece_default,
+    Note: () => Note_default,
+    NoteArray: () => NoteArray_default,
+    Piano: () => Piano_exports,
+    PitchSequence: () => PitchSequence_default,
+    PriorityMatching: () => PriorityMatching_exports,
+    Recording: () => Recording_default,
+    SimilarSections: () => SimilarSections_exports,
+    Similarity: () => Similarity_exports,
+    StringBased: () => stringBased_exports,
+    Utils: () => utils_exports,
+    getVersion: () => getVersion,
+    recordAudio: () => recordAudio,
+    recordMidi: () => recordMidi
+  });
 
-  /**
-   * @typedef {object} MidiNote A MIDI note
-   * @property {number} pitch the MIDI note number e.g. 60 for C4
-   * @property {string} name e.g. C#
-   * @property {number} octave number in [-1, 9]
-   * @property {string} label name and octave, e.g. C#5
-   * @property {number} frequency physical frequency
-   * @example <caption>Example for a MIDI note</caption>
-   *      { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
-   */
-  const MidiNoteByPitch = new Map();
-  const MidiNoteByLabel = new Map();
-  const MidiInstrumentByNumber = new Map();
-  const MidiInstrumentByNumberLev2 = new Map();
-  /**
-   * Returns information on the MIDI note with the specified number.
-   *
-   * @param {number} nr MIDI note number in [0, 127]
-   * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
-   */
+  // package.json
+  var version = "0.54.0";
 
+  // src/fileFormats/Midi.js
+  var Midi_exports = {};
+  __export(Midi_exports, {
+    MIDI_COMMANDS: () => MIDI_COMMANDS,
+    MIDI_NOTES: () => MIDI_NOTES,
+    MIDI_NOTE_RANGES: () => MIDI_NOTE_RANGES,
+    NOTE_NAMES: () => NOTE_NAMES,
+    NOTE_NAMES_FLAT: () => NOTE_NAMES_FLAT,
+    SHARPS: () => SHARPS,
+    flatToSharp: () => flatToSharp,
+    getMidiDrumNoteByNr: () => getMidiDrumNoteByNr,
+    getMidiInstrumentByNr: () => getMidiInstrumentByNr,
+    getMidiInstrumentByNrL2: () => getMidiInstrumentByNrL2,
+    getMidiNoteByLabel: () => getMidiNoteByLabel,
+    getMidiNoteByNameAndOctave: () => getMidiNoteByNameAndOctave,
+    getMidiNoteByNr: () => getMidiNoteByNr,
+    getNoteNameFromNoteNr: () => getNoteNameFromNoteNr,
+    isSharp: () => isSharp,
+    sharpToFlat: () => sharpToFlat
+  });
+  var MidiNoteByPitch = /* @__PURE__ */ new Map();
+  var MidiNoteByLabel = /* @__PURE__ */ new Map();
+  var MidiInstrumentByNumber = /* @__PURE__ */ new Map();
+  var MidiInstrumentByNumberLev2 = /* @__PURE__ */ new Map();
   function getMidiNoteByNr(nr) {
     return MidiNoteByPitch.get(nr);
   }
-  /**
-   * Returns information on the MIDI note with the specified label.
-   *
-   * @param {string} label note label, e.g. 'D#0'
-   *      (upper-case and sharp notation necessary)
-   * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
-   */
-
   function getMidiNoteByLabel(label) {
     return MidiNoteByLabel.get(label);
   }
-  /**
-   * Returns information on the MIDI note with the specified name and octave.
-   *
-   * @param {string} name note name, e.g. 'D#'
-   *      (upper-case and sharp notation necessary)
-   * @param {number} octave octave in [-1, 9]
-   * @returns {...MidiNote} MIDI note information as a {@link MidiNote}
-   */
-
   function getMidiNoteByNameAndOctave(name, octave) {
     return MidiNoteByLabel.get(`${name}${octave}`);
   }
-  /**
-   * Returns information on the MIDI instrument with the specified number.
-   *
-   * @param {number} nr MIDI instrument number in [0, 127]
-   * @returns {object} note info, e.g.
-   *      { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
-   */
-
   function getMidiInstrumentByNr(nr) {
     return MidiInstrumentByNumber.get(nr);
   }
-  /**
-   * Returns information on the MIDI instrument (MIDI level 2) with the
-   * specified number.
-   *
-   * @param {number} nr MIDI instrument number in [0, 127]
-   * @param {number} subNr MIDI instrument sub number in [0, 127]
-   * @returns {object} note info, e.g.
-   *      { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }
-   */
-
   function getMidiInstrumentByNrL2(nr, subNr) {
     const key = `${nr}-${subNr}`;
     return MidiInstrumentByNumberLev2.get(key);
   }
-  /**
-   * Returns information on the MIDI instrument with the specified number.
-   *
-   * @param {number} nr MIDI drum note number in [27, 87]
-   * @returns {string} note name, e.g. 'Bass Drum 1
-   */
-
   function getMidiDrumNoteByNr(nr) {
     return GENERAL_MIDI_DRUM_NOTE_NUMBERS.get(nr);
   }
-  /**
-   * Returns true if a given MIDI pitch refers to a sharp note.
-   *
-   * @param {number} nr MIDI note number in [0, 127]
-   * @returns {boolean} true if sharp, false otherwise
-   */
-
   function isSharp(nr) {
-    // return SHARPS.has(nr);
     const chroma = nr % 12;
     return chroma === 1 || chroma === 3 || chroma === 6 || chroma === 8 || chroma === 10;
   }
-  /**
-   * Returns a note name such as 'C#' (without octave) for a given MIDI
-   * note number.
-   *
-   * @param {number} nr MIDI note number in [0, 127]
-   * @returns {string} note name such as 'C#'
-   */
-
   function getNoteNameFromNoteNr(nr) {
     return NOTE_NAMES[nr % 12];
   }
-  /**
-   * Maps flats to sharps, e.g. flatToSharp.get('Db') === 'C#'
-   *
-   * @type {Map<string,string>}
-   */
-
-  const flatToSharp = new Map([['Cb', 'B'], ['Db', 'C#'], ['Eb', 'D#'], ['Fb', 'E'], ['Gb', 'F#'], ['Ab', 'G#'], ['Bb', 'A#']]);
-  /**
-   * Maps shaprs to flats, e.g. sharpToFlat.get('C#') === 'Db'
-   *
-   * @type {Map<string,string>}
-   */
-
-  const sharpToFlat = new Map([['C#', 'Db'], ['D#', 'Eb'], ['E#', 'F'], ['F#', 'Gb'], ['G#', 'Ab'], ['A#', 'Bb'], ['B#', 'C']]);
-  /**
-   * Names of notes, indexed like MIDI numbers, i.e. C is 0
-   *
-   * @type {string[]}
-   */
-
-  const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-  /**
-   * Names of notes, indexed like MIDI numbers, i.e. C is 0, with flats instead of
-   * sharps.
-   *
-   * @type {string[]}
-   */
-
-  const NOTE_NAMES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-  /**
-   * Index equals MIDI note number
-   *
-   * @type {Array<MidiNote>}
-   */
-
-  const MIDI_NOTES = [{
-    pitch: 0,
-    name: 'C',
-    octave: -1,
-    label: 'C-1',
-    frequency: 8.176
-  }, {
-    pitch: 1,
-    name: 'C#',
-    octave: -1,
-    label: 'C#-1',
-    frequency: 8.662
-  }, {
-    pitch: 2,
-    name: 'D',
-    octave: -1,
-    label: 'D-1',
-    frequency: 9.177
-  }, {
-    pitch: 3,
-    name: 'D#',
-    octave: -1,
-    label: 'D#-1',
-    frequency: 9.723
-  }, {
-    pitch: 4,
-    name: 'E',
-    octave: -1,
-    label: 'E-1',
-    frequency: 10.301
-  }, {
-    pitch: 5,
-    name: 'F',
-    octave: -1,
-    label: 'F-1',
-    frequency: 10.913
-  }, {
-    pitch: 6,
-    name: 'F#',
-    octave: -1,
-    label: 'F#-1',
-    frequency: 11.562
-  }, {
-    pitch: 7,
-    name: 'G',
-    octave: -1,
-    label: 'G-1',
-    frequency: 12.25
-  }, {
-    pitch: 8,
-    name: 'G#',
-    octave: -1,
-    label: 'G#-1',
-    frequency: 12.978
-  }, {
-    pitch: 9,
-    name: 'A',
-    octave: -1,
-    label: 'A-1',
-    frequency: 13.75
-  }, {
-    pitch: 10,
-    name: 'A#',
-    octave: -1,
-    label: 'A#-1',
-    frequency: 14.568
-  }, {
-    pitch: 11,
-    name: 'B',
-    octave: -1,
-    label: 'B-1',
-    frequency: 15.434
-  }, {
-    pitch: 12,
-    name: 'C',
-    octave: 0,
-    label: 'C0',
-    frequency: 16.352
-  }, {
-    pitch: 13,
-    name: 'C#',
-    octave: 0,
-    label: 'C#0',
-    frequency: 17.324
-  }, {
-    pitch: 14,
-    name: 'D',
-    octave: 0,
-    label: 'D0',
-    frequency: 18.354
-  }, {
-    pitch: 15,
-    name: 'D#',
-    octave: 0,
-    label: 'D#0',
-    frequency: 19.445
-  }, {
-    pitch: 16,
-    name: 'E',
-    octave: 0,
-    label: 'E0',
-    frequency: 20.602
-  }, {
-    pitch: 17,
-    name: 'F',
-    octave: 0,
-    label: 'F0',
-    frequency: 21.827
-  }, {
-    pitch: 18,
-    name: 'F#',
-    octave: 0,
-    label: 'F#0',
-    frequency: 23.125
-  }, {
-    pitch: 19,
-    name: 'G',
-    octave: 0,
-    label: 'G0',
-    frequency: 24.5
-  }, {
-    pitch: 20,
-    name: 'G#',
-    octave: 0,
-    label: 'G#0',
-    frequency: 25.957
-  }, {
-    pitch: 21,
-    name: 'A',
-    octave: 0,
-    label: 'A0',
-    frequency: 27.5
-  }, {
-    pitch: 22,
-    name: 'A#',
-    octave: 0,
-    label: 'A#0',
-    frequency: 29.135
-  }, {
-    pitch: 23,
-    name: 'B',
-    octave: 0,
-    label: 'B0',
-    frequency: 30.868
-  }, {
-    pitch: 24,
-    name: 'C',
-    octave: 1,
-    label: 'C1',
-    frequency: 32.703
-  }, {
-    pitch: 25,
-    name: 'C#',
-    octave: 1,
-    label: 'C#1',
-    frequency: 34.648
-  }, {
-    pitch: 26,
-    name: 'D',
-    octave: 1,
-    label: 'D1',
-    frequency: 36.708
-  }, {
-    pitch: 27,
-    name: 'D#',
-    octave: 1,
-    label: 'D#1',
-    frequency: 38.891
-  }, {
-    pitch: 28,
-    name: 'E',
-    octave: 1,
-    label: 'E1',
-    frequency: 41.203
-  }, {
-    pitch: 29,
-    name: 'F',
-    octave: 1,
-    label: 'F1',
-    frequency: 43.654
-  }, {
-    pitch: 30,
-    name: 'F#',
-    octave: 1,
-    label: 'F#1',
-    frequency: 46.249
-  }, {
-    pitch: 31,
-    name: 'G',
-    octave: 1,
-    label: 'G1',
-    frequency: 48.999
-  }, {
-    pitch: 32,
-    name: 'G#',
-    octave: 1,
-    label: 'G#1',
-    frequency: 51.913
-  }, {
-    pitch: 33,
-    name: 'A',
-    octave: 1,
-    label: 'A1',
-    frequency: 55
-  }, {
-    pitch: 34,
-    name: 'A#',
-    octave: 1,
-    label: 'A#1',
-    frequency: 58.27
-  }, {
-    pitch: 35,
-    name: 'B',
-    octave: 1,
-    label: 'B1',
-    frequency: 61.735
-  }, {
-    pitch: 36,
-    name: 'C',
-    octave: 2,
-    label: 'C2',
-    frequency: 65.406
-  }, {
-    pitch: 37,
-    name: 'C#',
-    octave: 2,
-    label: 'C#2',
-    frequency: 69.296
-  }, {
-    pitch: 38,
-    name: 'D',
-    octave: 2,
-    label: 'D2',
-    frequency: 73.416
-  }, {
-    pitch: 39,
-    name: 'D#',
-    octave: 2,
-    label: 'D#2',
-    frequency: 77.782
-  }, {
-    pitch: 40,
-    name: 'E',
-    octave: 2,
-    label: 'E2',
-    frequency: 82.407
-  }, {
-    pitch: 41,
-    name: 'F',
-    octave: 2,
-    label: 'F2',
-    frequency: 87.307
-  }, {
-    pitch: 42,
-    name: 'F#',
-    octave: 2,
-    label: 'F#2',
-    frequency: 92.499
-  }, {
-    pitch: 43,
-    name: 'G',
-    octave: 2,
-    label: 'G2',
-    frequency: 97.999
-  }, {
-    pitch: 44,
-    name: 'G#',
-    octave: 2,
-    label: 'G#2',
-    frequency: 103.826
-  }, {
-    pitch: 45,
-    name: 'A',
-    octave: 2,
-    label: 'A2',
-    frequency: 110
-  }, {
-    pitch: 46,
-    name: 'A#',
-    octave: 2,
-    label: 'A#2',
-    frequency: 116.541
-  }, {
-    pitch: 47,
-    name: 'B',
-    octave: 2,
-    label: 'B2',
-    frequency: 123.471
-  }, {
-    pitch: 48,
-    name: 'C',
-    octave: 3,
-    label: 'C3',
-    frequency: 130.813
-  }, {
-    pitch: 49,
-    name: 'C#',
-    octave: 3,
-    label: 'C#3',
-    frequency: 138.591
-  }, {
-    pitch: 50,
-    name: 'D',
-    octave: 3,
-    label: 'D3',
-    frequency: 146.832
-  }, {
-    pitch: 51,
-    name: 'D#',
-    octave: 3,
-    label: 'D#3',
-    frequency: 155.563
-  }, {
-    pitch: 52,
-    name: 'E',
-    octave: 3,
-    label: 'E3',
-    frequency: 164.814
-  }, {
-    pitch: 53,
-    name: 'F',
-    octave: 3,
-    label: 'F3',
-    frequency: 174.614
-  }, {
-    pitch: 54,
-    name: 'F#',
-    octave: 3,
-    label: 'F#3',
-    frequency: 184.997
-  }, {
-    pitch: 55,
-    name: 'G',
-    octave: 3,
-    label: 'G3',
-    frequency: 195.998
-  }, {
-    pitch: 56,
-    name: 'G#',
-    octave: 3,
-    label: 'G#3',
-    frequency: 207.652
-  }, {
-    pitch: 57,
-    name: 'A',
-    octave: 3,
-    label: 'A3',
-    frequency: 220
-  }, {
-    pitch: 58,
-    name: 'A#',
-    octave: 3,
-    label: 'A#3',
-    frequency: 233.082
-  }, {
-    pitch: 59,
-    name: 'B',
-    octave: 3,
-    label: 'B3',
-    frequency: 246.942
-  }, {
-    pitch: 60,
-    name: 'C',
-    octave: 4,
-    label: 'C4',
-    frequency: 261.626
-  }, {
-    pitch: 61,
-    name: 'C#',
-    octave: 4,
-    label: 'C#4',
-    frequency: 277.183
-  }, {
-    pitch: 62,
-    name: 'D',
-    octave: 4,
-    label: 'D4',
-    frequency: 293.665
-  }, {
-    pitch: 63,
-    name: 'D#',
-    octave: 4,
-    label: 'D#4',
-    frequency: 311.127
-  }, {
-    pitch: 64,
-    name: 'E',
-    octave: 4,
-    label: 'E4',
-    frequency: 329.628
-  }, {
-    pitch: 65,
-    name: 'F',
-    octave: 4,
-    label: 'F4',
-    frequency: 349.228
-  }, {
-    pitch: 66,
-    name: 'F#',
-    octave: 4,
-    label: 'F#4',
-    frequency: 369.994
-  }, {
-    pitch: 67,
-    name: 'G',
-    octave: 4,
-    label: 'G4',
-    frequency: 391.995
-  }, {
-    pitch: 68,
-    name: 'G#',
-    octave: 4,
-    label: 'G#4',
-    frequency: 415.305
-  }, {
-    pitch: 69,
-    name: 'A',
-    octave: 4,
-    label: 'A4',
-    frequency: 440
-  }, {
-    pitch: 70,
-    name: 'A#',
-    octave: 4,
-    label: 'A#4',
-    frequency: 466.164
-  }, {
-    pitch: 71,
-    name: 'B',
-    octave: 4,
-    label: 'B4',
-    frequency: 493.883
-  }, {
-    pitch: 72,
-    name: 'C',
-    octave: 5,
-    label: 'C5',
-    frequency: 523.251
-  }, {
-    pitch: 73,
-    name: 'C#',
-    octave: 5,
-    label: 'C#5',
-    frequency: 554.365
-  }, {
-    pitch: 74,
-    name: 'D',
-    octave: 5,
-    label: 'D5',
-    frequency: 587.33
-  }, {
-    pitch: 75,
-    name: 'D#',
-    octave: 5,
-    label: 'D#5',
-    frequency: 622.254
-  }, {
-    pitch: 76,
-    name: 'E',
-    octave: 5,
-    label: 'E5',
-    frequency: 659.255
-  }, {
-    pitch: 77,
-    name: 'F',
-    octave: 5,
-    label: 'F5',
-    frequency: 698.456
-  }, {
-    pitch: 78,
-    name: 'F#',
-    octave: 5,
-    label: 'F#5',
-    frequency: 739.989
-  }, {
-    pitch: 79,
-    name: 'G',
-    octave: 5,
-    label: 'G5',
-    frequency: 783.991
-  }, {
-    pitch: 80,
-    name: 'G#',
-    octave: 5,
-    label: 'G#5',
-    frequency: 830.609
-  }, {
-    pitch: 81,
-    name: 'A',
-    octave: 5,
-    label: 'A5',
-    frequency: 880
-  }, {
-    pitch: 82,
-    name: 'A#',
-    octave: 5,
-    label: 'A#5',
-    frequency: 932.328
-  }, {
-    pitch: 83,
-    name: 'B',
-    octave: 5,
-    label: 'B5',
-    frequency: 987.767
-  }, {
-    pitch: 84,
-    name: 'C',
-    octave: 6,
-    label: 'C6',
-    frequency: 1046.502
-  }, {
-    pitch: 85,
-    name: 'C#',
-    octave: 6,
-    label: 'C#6',
-    frequency: 1108.731
-  }, {
-    pitch: 86,
-    name: 'D',
-    octave: 6,
-    label: 'D6',
-    frequency: 1174.659
-  }, {
-    pitch: 87,
-    name: 'D#',
-    octave: 6,
-    label: 'D#6',
-    frequency: 1244.508
-  }, {
-    pitch: 88,
-    name: 'E',
-    octave: 6,
-    label: 'E6',
-    frequency: 1318.51
-  }, {
-    pitch: 89,
-    name: 'F',
-    octave: 6,
-    label: 'F6',
-    frequency: 1396.913
-  }, {
-    pitch: 90,
-    name: 'F#',
-    octave: 6,
-    label: 'F#6',
-    frequency: 1479.978
-  }, {
-    pitch: 91,
-    name: 'G',
-    octave: 6,
-    label: 'G6',
-    frequency: 1567.982
-  }, {
-    pitch: 92,
-    name: 'G#',
-    octave: 6,
-    label: 'G#6',
-    frequency: 1661.219
-  }, {
-    pitch: 93,
-    name: 'A',
-    octave: 6,
-    label: 'A6',
-    frequency: 1760
-  }, {
-    pitch: 94,
-    name: 'A#',
-    octave: 6,
-    label: 'A#6',
-    frequency: 1864.655
-  }, {
-    pitch: 95,
-    name: 'B',
-    octave: 6,
-    label: 'B6',
-    frequency: 1975.533
-  }, {
-    pitch: 96,
-    name: 'C',
-    octave: 7,
-    label: 'C7',
-    frequency: 2093.005
-  }, {
-    pitch: 97,
-    name: 'C#',
-    octave: 7,
-    label: 'C#7',
-    frequency: 2217.461
-  }, {
-    pitch: 98,
-    name: 'D',
-    octave: 7,
-    label: 'D7',
-    frequency: 2349.318
-  }, {
-    pitch: 99,
-    name: 'D#',
-    octave: 7,
-    label: 'D#7',
-    frequency: 2489.016
-  }, {
-    pitch: 100,
-    name: 'E',
-    octave: 7,
-    label: 'E7',
-    frequency: 2637.02
-  }, {
-    pitch: 101,
-    name: 'F',
-    octave: 7,
-    label: 'F7',
-    frequency: 2793.826
-  }, {
-    pitch: 102,
-    name: 'F#',
-    octave: 7,
-    label: 'F#7',
-    frequency: 2959.955
-  }, {
-    pitch: 103,
-    name: 'G',
-    octave: 7,
-    label: 'G7',
-    frequency: 3135.963
-  }, {
-    pitch: 104,
-    name: 'G#',
-    octave: 7,
-    label: 'G#7',
-    frequency: 3322.438
-  }, {
-    pitch: 105,
-    name: 'A',
-    octave: 7,
-    label: 'A7',
-    frequency: 3520
-  }, {
-    pitch: 106,
-    name: 'A#',
-    octave: 7,
-    label: 'A#7',
-    frequency: 3729.31
-  }, {
-    pitch: 107,
-    name: 'B',
-    octave: 7,
-    label: 'B7',
-    frequency: 3951.066
-  }, {
-    pitch: 108,
-    name: 'C',
-    octave: 8,
-    label: 'C8',
-    frequency: 4186.009
-  }, {
-    pitch: 109,
-    name: 'C#',
-    octave: 8,
-    label: 'C#8',
-    frequency: 4434.922
-  }, {
-    pitch: 110,
-    name: 'D',
-    octave: 8,
-    label: 'D8',
-    frequency: 4698.636
-  }, {
-    pitch: 111,
-    name: 'D#',
-    octave: 8,
-    label: 'D#8',
-    frequency: 4978.032
-  }, {
-    pitch: 112,
-    name: 'E',
-    octave: 8,
-    label: 'E8',
-    frequency: 5274.041
-  }, {
-    pitch: 113,
-    name: 'F',
-    octave: 8,
-    label: 'F8',
-    frequency: 5587.652
-  }, {
-    pitch: 114,
-    name: 'F#',
-    octave: 8,
-    label: 'F#8',
-    frequency: 5919.911
-  }, {
-    pitch: 115,
-    name: 'G',
-    octave: 8,
-    label: 'G8',
-    frequency: 6271.927
-  }, {
-    pitch: 116,
-    name: 'G#',
-    octave: 8,
-    label: 'G#8',
-    frequency: 6644.875
-  }, {
-    pitch: 117,
-    name: 'A',
-    octave: 8,
-    label: 'A8',
-    frequency: 7040
-  }, {
-    pitch: 118,
-    name: 'A#',
-    octave: 8,
-    label: 'A#8',
-    frequency: 7458.62
-  }, {
-    pitch: 119,
-    name: 'B',
-    octave: 8,
-    label: 'B8',
-    frequency: 7902.133
-  }, {
-    pitch: 120,
-    name: 'C',
-    octave: 9,
-    label: 'C9',
-    frequency: 8372.018
-  }, {
-    pitch: 121,
-    name: 'C#',
-    octave: 9,
-    label: 'C#9',
-    frequency: 8869.844
-  }, {
-    pitch: 122,
-    name: 'D',
-    octave: 9,
-    label: 'D9',
-    frequency: 9397.273
-  }, {
-    pitch: 123,
-    name: 'D#',
-    octave: 9,
-    label: 'D#9',
-    frequency: 9956.063
-  }, {
-    pitch: 124,
-    name: 'E',
-    octave: 9,
-    label: 'E9',
-    frequency: 10_548.08
-  }, {
-    pitch: 125,
-    name: 'F',
-    octave: 9,
-    label: 'F9',
-    frequency: 11_175.3
-  }, {
-    pitch: 126,
-    name: 'F#',
-    octave: 9,
-    label: 'F#9',
-    frequency: 11_839.82
-  }, {
-    pitch: 127,
-    name: 'G',
-    octave: 9,
-    label: 'G9',
-    frequency: 12_543.85
-  }];
-  /**
-   * Set of all MIDI notes that are sharp/flat
-   *
-   * @type {Set<number>}
-   * @example <caption>Find out if a note is sharp/flat</caption>
-   *      const midiNr = 42;
-   *      const isSharp = Midi.SHARPS.has(midiNr);
-   *      // true
-   */
-
-  const SHARPS = new Set([1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27, 30, 32, 34, 37, 39, 42, 44, 46, 49, 51, 54, 56, 58, 61, 63, 66, 68, 70, 73, 75, 78, 80, 82, 85, 87, 90, 92, 94, 97, 99, 102, 104, 106, 109, 111, 114, 116, 118, 121, 123, 126]);
-  /**
-   * @typedef {object} MidiCommand A MIDI command
-   * @property {string} name e.g. 'noteOn'
-   * @property {string} description e.g. 'Note-on'
-   * @property {string[]|undefined} params additional prameters of that command
-   * @example <caption>Example for a MIDI command</caption>
-   *      { name: 'noteOn', description: 'Note-on', params: ['key', 'velocity'] }],
-   */
-
-  /**
-   * MIDI commands with code, name, and parameters
-   * From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
-   * https://www.midi.org/specifications/item/table-1-summary-of-midi-message
-   *
-   * @type {Map<number,MidiCommand>}
-   */
-
-  const MIDI_COMMANDS = new Map([[0x80, {
-    name: 'noteOff',
-    description: 'Note-off',
-    params: ['key', 'velocity']
-  }], [0x90, {
-    name: 'noteOn',
-    description: 'Note-on',
-    params: ['key', 'velocity']
-  }], [0xA0, {
-    name: 'aftertouch',
-    description: 'Aftertouch',
-    params: ['key', 'touch']
-  }], [0xB0, {
-    name: 'continuousController',
-    description: 'Continuous controller',
-    params: ['controller #', 'controller value']
-  }], [0xC0, {
-    name: 'patchChange',
-    description: 'Patch change',
-    params: ['instrument number', 'instrument number']
-  }], [0xD0, {
-    name: 'channelPressure',
-    description: 'Channel Pressure',
-    params: ['pressure']
-  }], [0xE0, {
-    name: 'pitchBend',
-    description: 'Pitch bend',
-    params: ['lsb (7 bits)', 'msb (7 bits)']
-  }], [0xF0, {
-    name: 'sysExStart',
-    description: 'start of system exclusive message'
-  }], [0xF1, {
-    name: 'timeCodeQuarter',
-    description: 'MIDI Time Code Quarter Frame (Sys Common)'
-  }], [0xF2, {
-    name: 'posPointer',
-    description: 'Song Position Pointer (Sys Common)'
-  }], [0xF3, {
-    name: 'songSelect',
-    description: 'Song Select (Sys Common)'
-  }], [0xF4, {
-    name: 'unknown1',
-    description: '???'
-  }], [0xF5, {
-    name: 'unknown2',
-    description: '???'
-  }], [0xF6, {
-    name: 'tuneRequest',
-    description: 'Tune Request (Sys Common)'
-  }], [0xF7, {
-    name: 'syExEnd',
-    description: 'end of system exclusive message 0'
-  }], [0xF8, {
-    name: 'timingClock',
-    description: 'Timing Clock (Sys Realtime)'
-  }], [0xFA, {
-    name: 'start',
-    description: 'Start (Sys Realtime)'
-  }], [0xFB, {
-    name: 'continue',
-    description: 'Continue (Sys Realtime)'
-  }], [0xFC, {
-    name: 'stop',
-    description: 'Stop (Sys Realtime)'
-  }], [0xFD, {
-    name: 'unknwon3',
-    description: '???'
-  }], [0xFE, {
-    name: 'activeSensing',
-    description: 'Active Sensing (Sys Realtime)'
-  }], [0xFF, {
-    name: 'systemReset',
-    description: 'System Reset (Sys Realtime)'
-  }]]);
-  /*
-   * MIDI instruments with number, group, and label
-   */
-
-  const MIDI_INSTRUMENTS = [{
-    number: 0,
-    group: 'Piano',
-    label: 'Acoustic Grand Piano'
-  }, {
-    number: 1,
-    group: 'Piano',
-    label: 'Bright Acoustic Piano'
-  }, {
-    number: 2,
-    group: 'Piano',
-    label: 'Electric Grand Piano'
-  }, {
-    number: 3,
-    group: 'Piano',
-    label: 'Honky-tonk Piano'
-  }, {
-    number: 4,
-    group: 'Piano',
-    label: 'Electric Piano 1'
-  }, {
-    number: 5,
-    group: 'Piano',
-    label: 'Electric Piano 2'
-  }, {
-    number: 6,
-    group: 'Piano',
-    label: 'Harpsichord'
-  }, {
-    number: 7,
-    group: 'Piano',
-    label: 'Clavinet'
-  }, {
-    number: 8,
-    group: 'Chromatic Percussion',
-    label: 'Celesta'
-  }, {
-    number: 9,
-    group: 'Chromatic Percussion',
-    label: 'Glockenspiel'
-  }, {
-    number: 10,
-    group: 'Chromatic Percussion',
-    label: 'Music Box'
-  }, {
-    number: 11,
-    group: 'Chromatic Percussion',
-    label: 'Vibraphone'
-  }, {
-    number: 12,
-    group: 'Chromatic Percussion',
-    label: 'Marimba'
-  }, {
-    number: 13,
-    group: 'Chromatic Percussion',
-    label: 'Xylophone'
-  }, {
-    number: 14,
-    group: 'Chromatic Percussion',
-    label: 'Tubular Bells'
-  }, {
-    number: 15,
-    group: 'Chromatic Percussion',
-    label: 'Dulcimer'
-  }, {
-    number: 16,
-    group: 'Organ',
-    label: 'Drawbar Organ'
-  }, {
-    number: 17,
-    group: 'Organ',
-    label: 'Percussive Organ'
-  }, {
-    number: 18,
-    group: 'Organ',
-    label: 'Rock Organ'
-  }, {
-    number: 19,
-    group: 'Organ',
-    label: 'Church Organ'
-  }, {
-    number: 20,
-    group: 'Organ',
-    label: 'Reed Organ'
-  }, {
-    number: 21,
-    group: 'Organ',
-    label: 'Accordion'
-  }, {
-    number: 22,
-    group: 'Organ',
-    label: 'Harmonica'
-  }, {
-    number: 23,
-    group: 'Organ',
-    label: 'Tango Accordion'
-  }, {
-    number: 24,
-    group: 'Guitar',
-    label: 'Acoustic Guitar(nylon)'
-  }, {
-    number: 25,
-    group: 'Guitar',
-    label: 'Acoustic Guitar(steel)'
-  }, {
-    number: 26,
-    group: 'Guitar',
-    label: 'Electric Guitar(jazz)'
-  }, {
-    number: 27,
-    group: 'Guitar',
-    label: 'Electric Guitar(clean)'
-  }, {
-    number: 28,
-    group: 'Guitar',
-    label: 'Electric Guitar(muted)'
-  }, {
-    number: 29,
-    group: 'Guitar',
-    label: 'Overdriven Guitar'
-  }, {
-    number: 30,
-    group: 'Guitar',
-    label: 'Distortion Guitar'
-  }, {
-    number: 31,
-    group: 'Guitar',
-    label: 'Guitar harmonics'
-  }, {
-    number: 32,
-    group: 'Bass',
-    label: 'Acoustic Bass'
-  }, {
-    number: 33,
-    group: 'Bass',
-    label: 'Electric Bass(finger)'
-  }, {
-    number: 34,
-    group: 'Bass',
-    label: 'Electric Bass(pick)'
-  }, {
-    number: 35,
-    group: 'Bass',
-    label: 'Fretless Bass'
-  }, {
-    number: 36,
-    group: 'Bass',
-    label: 'Slap Bass 1'
-  }, {
-    number: 37,
-    group: 'Bass',
-    label: 'Slap Bass 2'
-  }, {
-    number: 38,
-    group: 'Bass',
-    label: 'Synth Bass 1'
-  }, {
-    number: 39,
-    group: 'Bass',
-    label: 'Synth Bass 2'
-  }, {
-    number: 40,
-    group: 'Strings',
-    label: 'Violin'
-  }, {
-    number: 41,
-    group: 'Strings',
-    label: 'Viola'
-  }, {
-    number: 42,
-    group: 'Strings',
-    label: 'Cello'
-  }, {
-    number: 43,
-    group: 'Strings',
-    label: 'Contrabass'
-  }, {
-    number: 44,
-    group: 'Strings',
-    label: 'Tremolo Strings'
-  }, {
-    number: 45,
-    group: 'Strings',
-    label: 'Pizzicato Strings'
-  }, {
-    number: 46,
-    group: 'Strings',
-    label: 'Orchestral Harp'
-  }, {
-    number: 47,
-    group: 'Strings',
-    label: 'Timpani'
-  }, {
-    number: 48,
-    group: 'Strings (continued)',
-    label: 'String Ensemble 1'
-  }, {
-    number: 49,
-    group: 'Strings (continued)',
-    label: 'String Ensemble 2'
-  }, {
-    number: 50,
-    group: 'Strings (continued)',
-    label: 'Synth Strings 1'
-  }, {
-    number: 51,
-    group: 'Strings (continued)',
-    label: 'Synth Strings 2'
-  }, {
-    number: 52,
-    group: 'Strings (continued)',
-    label: 'Choir Aahs'
-  }, {
-    number: 53,
-    group: 'Strings (continued)',
-    label: 'Voice Oohs'
-  }, {
-    number: 54,
-    group: 'Strings (continued)',
-    label: 'Synth Voice'
-  }, {
-    number: 55,
-    group: 'Strings (continued)',
-    label: 'Orchestra Hit'
-  }, {
-    number: 56,
-    group: 'Brass',
-    label: 'Trumpet'
-  }, {
-    number: 57,
-    group: 'Brass',
-    label: 'Trombone'
-  }, {
-    number: 58,
-    group: 'Brass',
-    label: 'Tuba'
-  }, {
-    number: 59,
-    group: 'Brass',
-    label: 'Muted Trumpet'
-  }, {
-    number: 60,
-    group: 'Brass',
-    label: 'French Horn'
-  }, {
-    number: 61,
-    group: 'Brass',
-    label: 'Brass Section'
-  }, {
-    number: 62,
-    group: 'Brass',
-    label: 'Synth Brass 1'
-  }, {
-    number: 63,
-    group: 'Brass',
-    label: 'Synth Brass 2'
-  }, {
-    number: 64,
-    group: 'Reed',
-    label: 'Soprano Sax'
-  }, {
-    number: 65,
-    group: 'Reed',
-    label: 'Alto Sax'
-  }, {
-    number: 66,
-    group: 'Reed',
-    label: 'Tenor Sax'
-  }, {
-    number: 67,
-    group: 'Reed',
-    label: 'Baritone Sax'
-  }, {
-    number: 68,
-    group: 'Reed',
-    label: 'Oboe'
-  }, {
-    number: 69,
-    group: 'Reed',
-    label: 'English Horn'
-  }, {
-    number: 70,
-    group: 'Reed',
-    label: 'Bassoon'
-  }, {
-    number: 71,
-    group: 'Reed',
-    label: 'Clarinet'
-  }, {
-    number: 72,
-    group: 'Pipe',
-    label: 'Piccolo'
-  }, {
-    number: 73,
-    group: 'Pipe',
-    label: 'Flute'
-  }, {
-    number: 74,
-    group: 'Pipe',
-    label: 'Recorder'
-  }, {
-    number: 75,
-    group: 'Pipe',
-    label: 'Pan Flute'
-  }, {
-    number: 76,
-    group: 'Pipe',
-    label: 'Blown Bottle'
-  }, {
-    number: 77,
-    group: 'Pipe',
-    label: 'Shakuhachi'
-  }, {
-    number: 78,
-    group: 'Pipe',
-    label: 'Whistle'
-  }, {
-    number: 79,
-    group: 'Pipe',
-    label: 'Ocarina'
-  }, {
-    number: 80,
-    group: 'Synth Lead',
-    label: 'Lead 1(square)'
-  }, {
-    number: 81,
-    group: 'Synth Lead',
-    label: 'Lead 2(sawtooth)'
-  }, {
-    number: 82,
-    group: 'Synth Lead',
-    label: 'Lead 3(calliope)'
-  }, {
-    number: 83,
-    group: 'Synth Lead',
-    label: 'Lead 4(chiff)'
-  }, {
-    number: 84,
-    group: 'Synth Lead',
-    label: 'Lead 5(charang)'
-  }, {
-    number: 85,
-    group: 'Synth Lead',
-    label: 'Lead 6(voice)'
-  }, {
-    number: 86,
-    group: 'Synth Lead',
-    label: 'Lead 7(fifths)'
-  }, {
-    number: 87,
-    group: 'Synth Lead',
-    label: 'Lead 8(bass + lead)'
-  }, {
-    number: 88,
-    group: 'Synth Pad',
-    label: 'Pad 1(new age)'
-  }, {
-    number: 89,
-    group: 'Synth Pad',
-    label: 'Pad 2(warm)'
-  }, {
-    number: 90,
-    group: 'Synth Pad',
-    label: 'Pad 3(polysynth)'
-  }, {
-    number: 91,
-    group: 'Synth Pad',
-    label: 'Pad 4(choir)'
-  }, {
-    number: 92,
-    group: 'Synth Pad',
-    label: 'Pad 5(bowed)'
-  }, {
-    number: 93,
-    group: 'Synth Pad',
-    label: 'Pad 6(metallic)'
-  }, {
-    number: 94,
-    group: 'Synth Pad',
-    label: 'Pad 7(halo)'
-  }, {
-    number: 95,
-    group: 'Synth Pad',
-    label: 'Pad 8(sweep)'
-  }, {
-    number: 96,
-    group: 'Synth Effects',
-    label: 'FX 1(rain)'
-  }, {
-    number: 97,
-    group: 'Synth Effects',
-    label: 'FX 2(soundtrack)'
-  }, {
-    number: 98,
-    group: 'Synth Effects',
-    label: 'FX 3(crystal)'
-  }, {
-    number: 99,
-    group: 'Synth Effects',
-    label: 'FX 4(atmosphere)'
-  }, {
-    number: 100,
-    group: 'Synth Effects',
-    label: 'FX 5(brightness)'
-  }, {
-    number: 101,
-    group: 'Synth Effects',
-    label: 'FX 6(goblins)'
-  }, {
-    number: 102,
-    group: 'Synth Effects',
-    label: 'FX 7(echoes)'
-  }, {
-    number: 103,
-    group: 'Synth Effects',
-    label: 'FX 8(sci-fi)'
-  }, {
-    number: 104,
-    group: 'Ethnic',
-    label: 'Sitar'
-  }, {
-    number: 105,
-    group: 'Ethnic',
-    label: 'Banjo'
-  }, {
-    number: 106,
-    group: 'Ethnic',
-    label: 'Shamisen'
-  }, {
-    number: 107,
-    group: 'Ethnic',
-    label: 'Koto'
-  }, {
-    number: 108,
-    group: 'Ethnic',
-    label: 'Kalimba'
-  }, {
-    number: 109,
-    group: 'Ethnic',
-    label: 'Bag pipe'
-  }, {
-    number: 110,
-    group: 'Ethnic',
-    label: 'Fiddle'
-  }, {
-    number: 111,
-    group: 'Ethnic',
-    label: 'Shanai'
-  }, {
-    number: 112,
-    group: 'Percussive',
-    label: 'Tinkle Bell'
-  }, {
-    number: 113,
-    group: 'Percussive',
-    label: 'Agogo'
-  }, {
-    number: 114,
-    group: 'Percussive',
-    label: 'Steel Drums'
-  }, {
-    number: 115,
-    group: 'Percussive',
-    label: 'Woodblock'
-  }, {
-    number: 116,
-    group: 'Percussive',
-    label: 'Taiko Drum'
-  }, {
-    number: 117,
-    group: 'Percussive',
-    label: 'Melodic Tom'
-  }, {
-    number: 118,
-    group: 'Percussive',
-    label: 'Synth Drum'
-  }, {
-    number: 119,
-    group: 'Sound Effects',
-    label: 'Reverse Cymbal'
-  }, {
-    number: 120,
-    group: 'Sound Effects',
-    label: 'Guitar Fret Noise'
-  }, {
-    number: 121,
-    group: 'Sound Effects',
-    label: 'Breath Noise'
-  }, {
-    number: 122,
-    group: 'Sound Effects',
-    label: 'Seashore'
-  }, {
-    number: 123,
-    group: 'Sound Effects',
-    label: 'Bird Tweet'
-  }, {
-    number: 124,
-    group: 'Sound Effects',
-    label: 'Telephone Ring'
-  }, {
-    number: 125,
-    group: 'Sound Effects',
-    label: 'Helicopter'
-  }, {
-    number: 126,
-    group: 'Sound Effects',
-    label: 'Applause'
-  }, {
-    number: 127,
-    group: 'Sound Effects',
-    label: 'Gunshot'
-  }];
-  const MIDI_INSTRUMENTS_LEV2 = [{
-    number: 1,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Acoustic Grand Piano'
-  }, {
-    number: 1,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Wide Acoustic Grand'
-  }, {
-    number: 1,
-    subnumber: 2,
-    group: 'Piano',
-    label: 'Dark Acoustic Grand'
-  }, {
-    number: 2,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Bright Acoustic Piano'
-  }, {
-    number: 2,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Wide Bright Acoustic'
-  }, {
-    number: 3,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Electric Grand Piano'
-  }, {
-    number: 3,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Wide Electric Grand'
-  }, {
-    number: 4,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Honky-tonk Piano'
-  }, {
-    number: 4,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Wide Honky-tonk'
-  }, {
-    number: 5,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Rhodes Piano'
-  }, {
-    number: 5,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Detuned Electric Piano 1'
-  }, {
-    number: 5,
-    subnumber: 2,
-    group: 'Piano',
-    label: 'Electric Piano 1 Variation'
-  }, {
-    number: 5,
-    subnumber: 3,
-    group: 'Piano',
-    label: '60\'s Electric Piano'
-  }, {
-    number: 6,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Chorused Electric Piano'
-  }, {
-    number: 6,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Detuned Electric Piano 2'
-  }, {
-    number: 6,
-    subnumber: 2,
-    group: 'Piano',
-    label: 'Electric Piano 2 Variation'
-  }, {
-    number: 6,
-    subnumber: 3,
-    group: 'Piano',
-    label: 'Electric Piano Legend'
-  }, {
-    number: 6,
-    subnumber: 4,
-    group: 'Piano',
-    label: 'Electric Piano Phase'
-  }, {
-    number: 7,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Harpsichord'
-  }, {
-    number: 7,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Coupled Harpsichord'
-  }, {
-    number: 7,
-    subnumber: 2,
-    group: 'Piano',
-    label: 'Wide Harpsichord'
-  }, {
-    number: 7,
-    subnumber: 3,
-    group: 'Piano',
-    label: 'Open Harpsichord'
-  }, {
-    number: 8,
-    subnumber: 0,
-    group: 'Piano',
-    label: 'Clavinet'
-  }, {
-    number: 8,
-    subnumber: 1,
-    group: 'Piano',
-    label: 'Pulse Clavinet'
-  }, {
-    number: 9,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Celesta'
-  }, {
-    number: 10,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Glockenspiel'
-  }, {
-    number: 11,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Music Box'
-  }, {
-    number: 12,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Vibraphone'
-  }, {
-    number: 12,
-    subnumber: 1,
-    group: 'Chromatic Percussion',
-    label: 'Wet Vibraphone'
-  }, {
-    number: 13,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Marimba'
-  }, {
-    number: 13,
-    subnumber: 1,
-    group: 'Chromatic Percussion',
-    label: 'Wide Marimba'
-  }, {
-    number: 14,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Xylophone'
-  }, {
-    number: 15,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Tubular Bells'
-  }, {
-    number: 15,
-    subnumber: 1,
-    group: 'Chromatic Percussion',
-    label: 'Church Bells'
-  }, {
-    number: 15,
-    subnumber: 2,
-    group: 'Chromatic Percussion',
-    label: 'Carillon'
-  }, {
-    number: 16,
-    subnumber: 0,
-    group: 'Chromatic Percussion',
-    label: 'Dulcimer / Santur'
-  }, {
-    number: 17,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Hammond Organ'
-  }, {
-    number: 17,
-    subnumber: 1,
-    group: 'Organ',
-    label: 'Detuned Organ 1'
-  }, {
-    number: 17,
-    subnumber: 2,
-    group: 'Organ',
-    label: '60\'s Organ 1'
-  }, {
-    number: 17,
-    subnumber: 3,
-    group: 'Organ',
-    label: 'Organ 4'
-  }, {
-    number: 18,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Percussive Organ'
-  }, {
-    number: 18,
-    subnumber: 1,
-    group: 'Organ',
-    label: 'Detuned Organ 2'
-  }, {
-    number: 18,
-    subnumber: 2,
-    group: 'Organ',
-    label: 'Organ 5'
-  }, {
-    number: 19,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Rock Organ'
-  }, {
-    number: 20,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Church Organ 1'
-  }, {
-    number: 20,
-    subnumber: 1,
-    group: 'Organ',
-    label: 'Church Organ 2'
-  }, {
-    number: 20,
-    subnumber: 2,
-    group: 'Organ',
-    label: 'Church Organ 3'
-  }, {
-    number: 21,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Reed Organ'
-  }, {
-    number: 21,
-    subnumber: 1,
-    group: 'Organ',
-    label: 'Puff Organ'
-  }, {
-    number: 22,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'French Accordion'
-  }, {
-    number: 22,
-    subnumber: 1,
-    group: 'Organ',
-    label: 'Italian Accordion'
-  }, {
-    number: 23,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Harmonica'
-  }, {
-    number: 24,
-    subnumber: 0,
-    group: 'Organ',
-    label: 'Bandoneon'
-  }, {
-    number: 25,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Nylon-String Guitar'
-  }, {
-    number: 25,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Ukelele'
-  }, {
-    number: 25,
-    subnumber: 2,
-    group: 'Guitar',
-    label: 'Open Nylon Guitar'
-  }, {
-    number: 25,
-    subnumber: 3,
-    group: 'Guitar',
-    label: 'Nylon Guitar 2'
-  }, {
-    number: 26,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Steel-String Guitar'
-  }, {
-    number: 26,
-    subnumber: 1,
-    group: 'Guitar',
-    label: '12-String Guitar'
-  }, {
-    number: 26,
-    subnumber: 2,
-    group: 'Guitar',
-    label: 'Mandolin'
-  }, {
-    number: 26,
-    subnumber: 3,
-    group: 'Guitar',
-    label: 'Steel + Body'
-  }, {
-    number: 27,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Jazz Guitar'
-  }, {
-    number: 27,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Hawaiian Guitar'
-  }, {
-    number: 28,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Clean Electric Guitar'
-  }, {
-    number: 28,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Chorus Guitar'
-  }, {
-    number: 28,
-    subnumber: 2,
-    group: 'Guitar',
-    label: 'Mid Tone Guitar'
-  }, {
-    number: 29,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Muted Electric Guitar'
-  }, {
-    number: 29,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Funk Guitar'
-  }, {
-    number: 29,
-    subnumber: 2,
-    group: 'Guitar',
-    label: 'Funk Guitar 2'
-  }, {
-    number: 29,
-    subnumber: 3,
-    group: 'Guitar',
-    label: 'Jazz Man'
-  }, {
-    number: 30,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Overdriven Guitar'
-  }, {
-    number: 30,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Guitar Pinch'
-  }, {
-    number: 31,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Distortion Guitar'
-  }, {
-    number: 31,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Feedback Guitar'
-  }, {
-    number: 31,
-    subnumber: 2,
-    group: 'Guitar',
-    label: 'Distortion Rtm Guitar'
-  }, {
-    number: 32,
-    subnumber: 0,
-    group: 'Guitar',
-    label: 'Guitar Harmonics'
-  }, {
-    number: 32,
-    subnumber: 1,
-    group: 'Guitar',
-    label: 'Guitar Feedback'
-  }, {
-    number: 33,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Acoustic Bass'
-  }, {
-    number: 34,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Fingered Bass'
-  }, {
-    number: 34,
-    subnumber: 1,
-    group: 'Bass',
-    label: 'Finger Slap'
-  }, {
-    number: 35,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Picked Bass'
-  }, {
-    number: 36,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Fretless Bass'
-  }, {
-    number: 37,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Slap Bass 1'
-  }, {
-    number: 38,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Slap Bass 2'
-  }, {
-    number: 39,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Synth Bass 1'
-  }, {
-    number: 39,
-    subnumber: 1,
-    group: 'Bass',
-    label: 'Synth Bass 101'
-  }, {
-    number: 39,
-    subnumber: 2,
-    group: 'Bass',
-    label: 'Synth Bass 3'
-  }, {
-    number: 39,
-    subnumber: 3,
-    group: 'Bass',
-    label: 'Clavi Bass'
-  }, {
-    number: 39,
-    subnumber: 4,
-    group: 'Bass',
-    label: 'Hammer'
-  }, {
-    number: 40,
-    subnumber: 0,
-    group: 'Bass',
-    label: 'Synth Bass 2'
-  }, {
-    number: 40,
-    subnumber: 1,
-    group: 'Bass',
-    label: 'Synth Bass 4'
-  }, {
-    number: 40,
-    subnumber: 2,
-    group: 'Bass',
-    label: 'Rubber Bass'
-  }, {
-    number: 40,
-    subnumber: 3,
-    group: 'Bass',
-    label: 'Attack Pulse'
-  }, {
-    number: 41,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Violin'
-  }, {
-    number: 41,
-    subnumber: 1,
-    group: 'Strings',
-    label: 'Slow Violin'
-  }, {
-    number: 42,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Viola'
-  }, {
-    number: 43,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Cello'
-  }, {
-    number: 44,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Contrabass'
-  }, {
-    number: 45,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Tremolo Strings'
-  }, {
-    number: 46,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Pizzicato Strings'
-  }, {
-    number: 47,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Harp'
-  }, {
-    number: 47,
-    subnumber: 1,
-    group: 'Strings',
-    label: 'Yang Qin'
-  }, {
-    number: 48,
-    subnumber: 0,
-    group: 'Strings',
-    label: 'Timpani'
-  }, {
-    number: 49,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'String Ensemble'
-  }, {
-    number: 49,
-    subnumber: 1,
-    group: 'Orchestral Ensemble',
-    label: 'Orchestra Strings'
-  }, {
-    number: 49,
-    subnumber: 2,
-    group: 'Orchestral Ensemble',
-    label: '60\'s Strings'
-  }, {
-    number: 50,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Slow String Ensemble'
-  }, {
-    number: 51,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Synth Strings 1'
-  }, {
-    number: 51,
-    subnumber: 1,
-    group: 'Orchestral Ensemble',
-    label: 'Synth Strings 3'
-  }, {
-    number: 52,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Synth Strings 2'
-  }, {
-    number: 53,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Choir Aahs'
-  }, {
-    number: 53,
-    subnumber: 1,
-    group: 'Orchestral Ensemble',
-    label: 'Choir Aahs 2'
-  }, {
-    number: 54,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Voice Oohs'
-  }, {
-    number: 54,
-    subnumber: 1,
-    group: 'Orchestral Ensemble',
-    label: 'Humming'
-  }, {
-    number: 55,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Synth Voice'
-  }, {
-    number: 55,
-    subnumber: 1,
-    group: 'Orchestral Ensemble',
-    label: 'Analog Voice'
-  }, {
-    number: 56,
-    subnumber: 0,
-    group: 'Orchestral Ensemble',
-    label: 'Orchestra Hit'
-  }, {
-    number: 56,
-    subnumber: 1,
-    group: 'Orchestral Ensemble',
-    label: 'Bass Hit'
-  }, {
-    number: 56,
-    subnumber: 2,
-    group: 'Orchestral Ensemble',
-    label: '6th Hit'
-  }, {
-    number: 56,
-    subnumber: 3,
-    group: 'Orchestral Ensemble',
-    label: 'Euro Hit'
-  }, {
-    number: 57,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Trumpet'
-  }, {
-    number: 57,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'Dark Trumpet'
-  }, {
-    number: 58,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Trombone'
-  }, {
-    number: 58,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'Trombone 2'
-  }, {
-    number: 58,
-    subnumber: 2,
-    group: 'Brass',
-    label: 'Bright Trombone'
-  }, {
-    number: 59,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Tuba'
-  }, {
-    number: 60,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Muted Trumpet'
-  }, {
-    number: 60,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'Muted Trumpet 2'
-  }, {
-    number: 61,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'French Horn'
-  }, {
-    number: 61,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'French Horn 2'
-  }, {
-    number: 62,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Brass Section'
-  }, {
-    number: 62,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'Brass Section'
-  }, {
-    number: 63,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Synth Brass 1'
-  }, {
-    number: 63,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'Synth Brass 3'
-  }, {
-    number: 63,
-    subnumber: 2,
-    group: 'Brass',
-    label: 'Analog Brass 1'
-  }, {
-    number: 63,
-    subnumber: 3,
-    group: 'Brass',
-    label: 'Jump Brass'
-  }, {
-    number: 64,
-    subnumber: 0,
-    group: 'Brass',
-    label: 'Synth Brass 2'
-  }, {
-    number: 64,
-    subnumber: 1,
-    group: 'Brass',
-    label: 'Synth Brass 4'
-  }, {
-    number: 64,
-    subnumber: 2,
-    group: 'Brass',
-    label: 'Analog Brass 2'
-  }, {
-    number: 65,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Soprano Sax'
-  }, {
-    number: 66,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Alto Sax'
-  }, {
-    number: 67,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Tenor Sax'
-  }, {
-    number: 68,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Baritone Sax'
-  }, {
-    number: 69,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Oboe'
-  }, {
-    number: 70,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'English Horn'
-  }, {
-    number: 71,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Bassoon'
-  }, {
-    number: 72,
-    subnumber: 0,
-    group: 'Reed',
-    label: 'Clarinet'
-  }, {
-    number: 73,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Piccolo'
-  }, {
-    number: 74,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Flute'
-  }, {
-    number: 75,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Recorder'
-  }, {
-    number: 76,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Pan Flute'
-  }, {
-    number: 77,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Blown Bottle'
-  }, {
-    number: 78,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Shakuhachi'
-  }, {
-    number: 79,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Whistle'
-  }, {
-    number: 80,
-    subnumber: 0,
-    group: 'Wind',
-    label: 'Ocarina'
-  }, {
-    number: 81,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Square Lead'
-  }, {
-    number: 81,
-    subnumber: 1,
-    group: 'Lead',
-    label: 'Square Wave'
-  }, {
-    number: 81,
-    subnumber: 2,
-    group: 'Lead',
-    label: 'Sine Wave'
-  }, {
-    number: 82,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Saw Lead'
-  }, {
-    number: 82,
-    subnumber: 1,
-    group: 'Lead',
-    label: 'Saw Wave'
-  }, {
-    number: 82,
-    subnumber: 2,
-    group: 'Lead',
-    label: 'Doctor Solo'
-  }, {
-    number: 82,
-    subnumber: 3,
-    group: 'Lead',
-    label: 'Natural Lead'
-  }, {
-    number: 82,
-    subnumber: 4,
-    group: 'Lead',
-    label: 'Sequenced Saw'
-  }, {
-    number: 83,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Synth Calliope'
-  }, {
-    number: 84,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Chiffer Lead'
-  }, {
-    number: 85,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Charang'
-  }, {
-    number: 85,
-    subnumber: 1,
-    group: 'Lead',
-    label: 'Wire Lead'
-  }, {
-    number: 86,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Solo Synth Vox'
-  }, {
-    number: 87,
-    subnumber: 0,
-    group: 'Lead',
-    label: '5th Saw Wave'
-  }, {
-    number: 88,
-    subnumber: 0,
-    group: 'Lead',
-    label: 'Bass & Lead'
-  }, {
-    number: 88,
-    subnumber: 1,
-    group: 'Lead',
-    label: 'Delayed Lead'
-  }, {
-    number: 89,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Fantasia Pad'
-  }, {
-    number: 90,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Warm Pad'
-  }, {
-    number: 90,
-    subnumber: 1,
-    group: 'Synth Pad',
-    label: 'Sine Pad'
-  }, {
-    number: 91,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Polysynth Pad'
-  }, {
-    number: 92,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Space Voice Pad'
-  }, {
-    number: 92,
-    subnumber: 1,
-    group: 'Synth Pad',
-    label: 'Itopia'
-  }, {
-    number: 93,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Bowed Glass Pad'
-  }, {
-    number: 94,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Metal Pad'
-  }, {
-    number: 95,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Halo Pad'
-  }, {
-    number: 96,
-    subnumber: 0,
-    group: 'Synth Pad',
-    label: 'Sweep Pad'
-  }, {
-    number: 97,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Ice Rain'
-  }, {
-    number: 98,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Soundtrack'
-  }, {
-    number: 99,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Crystal'
-  }, {
-    number: 99,
-    subnumber: 1,
-    group: 'Synth Effects',
-    label: 'Synth Mallet'
-  }, {
-    number: 100,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Atmosphere'
-  }, {
-    number: 101,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Brightness'
-  }, {
-    number: 102,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Goblin'
-  }, {
-    number: 103,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Echo Drops'
-  }, {
-    number: 103,
-    subnumber: 1,
-    group: 'Synth Effects',
-    label: 'Echo Bell'
-  }, {
-    number: 103,
-    subnumber: 2,
-    group: 'Synth Effects',
-    label: 'Echo Pan'
-  }, {
-    number: 104,
-    subnumber: 0,
-    group: 'Synth Effects',
-    label: 'Star Theme'
-  }, {
-    number: 105,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Sitar'
-  }, {
-    number: 105,
-    subnumber: 1,
-    group: 'Ethnic',
-    label: 'Sitar 2'
-  }, {
-    number: 106,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Banjo'
-  }, {
-    number: 107,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Shamisen'
-  }, {
-    number: 108,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Koto'
-  }, {
-    number: 108,
-    subnumber: 1,
-    group: 'Ethnic',
-    label: 'Taisho Koto'
-  }, {
-    number: 109,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Kalimba'
-  }, {
-    number: 110,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Bagpipe'
-  }, {
-    number: 111,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Fiddle'
-  }, {
-    number: 112,
-    subnumber: 0,
-    group: 'Ethnic',
-    label: 'Shanai'
-  }, {
-    number: 113,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Tinkle Bell'
-  }, {
-    number: 114,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Agogo'
-  }, {
-    number: 115,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Steel Drums'
-  }, {
-    number: 116,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Woodblock'
-  }, {
-    number: 116,
-    subnumber: 1,
-    group: 'Percussive',
-    label: 'Castanets'
-  }, {
-    number: 117,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Taiko Drum'
-  }, {
-    number: 117,
-    subnumber: 1,
-    group: 'Percussive',
-    label: 'Concert Bass Drum'
-  }, {
-    number: 118,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Melodic Tom 1'
-  }, {
-    number: 118,
-    subnumber: 1,
-    group: 'Percussive',
-    label: 'Melodic Tom 2'
-  }, {
-    number: 119,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Synth Drum'
-  }, {
-    number: 119,
-    subnumber: 1,
-    group: 'Percussive',
-    label: '808 Tom'
-  }, {
-    number: 119,
-    subnumber: 2,
-    group: 'Percussive',
-    label: 'Electric Percussion'
-  }, {
-    number: 120,
-    subnumber: 0,
-    group: 'Percussive',
-    label: 'Reverse Cymbal'
-  }, {
-    number: 121,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Guitar Fret Noise'
-  }, {
-    number: 121,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Guitar Cut Noise'
-  }, {
-    number: 121,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'String Slap'
-  }, {
-    number: 122,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Breath Noise'
-  }, {
-    number: 122,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Flute Key Click'
-  }, {
-    number: 123,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Seashore'
-  }, {
-    number: 123,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Rain'
-  }, {
-    number: 123,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'Thunder'
-  }, {
-    number: 123,
-    subnumber: 3,
-    group: 'Sound Effects',
-    label: 'Wind'
-  }, {
-    number: 123,
-    subnumber: 4,
-    group: 'Sound Effects',
-    label: 'Stream'
-  }, {
-    number: 123,
-    subnumber: 5,
-    group: 'Sound Effects',
-    label: 'Bubble'
-  }, {
-    number: 124,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Bird Tweet'
-  }, {
-    number: 124,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Dog'
-  }, {
-    number: 124,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'Horse Gallop'
-  }, {
-    number: 124,
-    subnumber: 3,
-    group: 'Sound Effects',
-    label: 'Bird 2'
-  }, {
-    number: 125,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Telephone 1'
-  }, {
-    number: 125,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Telephone 2'
-  }, {
-    number: 125,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'Door Creaking'
-  }, {
-    number: 125,
-    subnumber: 3,
-    group: 'Sound Effects',
-    label: 'Door Closing'
-  }, {
-    number: 125,
-    subnumber: 4,
-    group: 'Sound Effects',
-    label: 'Scratch'
-  }, {
-    number: 125,
-    subnumber: 5,
-    group: 'Sound Effects',
-    label: 'Wind Chimes'
-  }, {
-    number: 126,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Helicopter'
-  }, {
-    number: 126,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Car Engine'
-  }, {
-    number: 126,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'Car Stop'
-  }, {
-    number: 126,
-    subnumber: 3,
-    group: 'Sound Effects',
-    label: 'Car Pass'
-  }, {
-    number: 126,
-    subnumber: 4,
-    group: 'Sound Effects',
-    label: 'Car Crash'
-  }, {
-    number: 126,
-    subnumber: 5,
-    group: 'Sound Effects',
-    label: 'Siren'
-  }, {
-    number: 126,
-    subnumber: 6,
-    group: 'Sound Effects',
-    label: 'Train'
-  }, {
-    number: 126,
-    subnumber: 7,
-    group: 'Sound Effects',
-    label: 'Jetplane'
-  }, {
-    number: 126,
-    subnumber: 8,
-    group: 'Sound Effects',
-    label: 'Starship'
-  }, {
-    number: 126,
-    subnumber: 9,
-    group: 'Sound Effects',
-    label: 'Burst Noise'
-  }, {
-    number: 127,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Applause'
-  }, {
-    number: 127,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Laughing'
-  }, {
-    number: 127,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'Screaming'
-  }, {
-    number: 127,
-    subnumber: 3,
-    group: 'Sound Effects',
-    label: 'Punch'
-  }, {
-    number: 127,
-    subnumber: 4,
-    group: 'Sound Effects',
-    label: 'Heart Beat'
-  }, {
-    number: 127,
-    subnumber: 5,
-    group: 'Sound Effects',
-    label: 'Footsteps'
-  }, {
-    number: 128,
-    subnumber: 0,
-    group: 'Sound Effects',
-    label: 'Gun Shot'
-  }, {
-    number: 128,
-    subnumber: 1,
-    group: 'Sound Effects',
-    label: 'Machine Gun'
-  }, {
-    number: 128,
-    subnumber: 2,
-    group: 'Sound Effects',
-    label: 'Lasergun'
-  }, {
-    number: 128,
-    subnumber: 3,
-    group: 'Sound Effects',
-    label: 'Explosion'
-  }];
-  /**
-   * @type {Map<number,string>}
-   */
-
-  const GENERAL_MIDI_DRUM_NOTE_NUMBERS = new Map([[27, 'High Q(GM2)'], [28, 'Slap(GM2)'], [29, 'Scratch Push(GM2)'], [30, 'Scratch Pull(GM2)'], [31, 'Sticks(GM2)'], [32, 'Square Click(GM2)'], [33, 'Metronome Click(GM2)'], [34, 'Metronome Bell(GM2)'], [35, 'Bass Drum 2'], [36, 'Bass Drum 1'], [37, 'Side Stick'], [38, 'Snare Drum 1'], [39, 'Hand Clap'], [40, 'Snare Drum 2'], [41, 'Low Tom 2'], [42, 'Closed Hi-hat'], [43, 'Low Tom 1'], [44, 'Pedal Hi-hat'], [45, 'Mid Tom 2'], [46, 'Open Hi-hat'], [47, 'Mid Tom 1'], [48, 'High Tom 2'], [49, 'Crash Cymbal 1'], [50, 'High Tom 1'], [51, 'Ride Cymbal 1'], [52, 'Chinese Cymbal'], [53, 'Ride Bell'], [54, 'Tambourine'], [55, 'Splash Cymbal'], [56, 'Cowbell'], [57, 'Crash Cymbal 2'], [58, 'Vibra Slap'], [59, 'Ride Cymbal 2'], [60, 'High Bongo'], [61, 'Low Bongo'], [62, 'Mute High Conga'], [63, 'Open High Conga'], [64, 'Low Conga'], [65, 'High Timbale'], [66, 'Low Timbale'], [67, 'High Agogo'], [68, 'Low Agogo'], [69, 'Cabasa'], [70, 'Maracas'], [71, 'Short Whistle'], [72, 'Long Whistle'], [73, 'Short Guiro'], [74, 'Long Guiro'], [75, 'Claves'], [76, 'High Wood Block'], [77, 'Low Wood Block'], [78, 'Mute Cuica'], [79, 'Open Cuica'], [80, 'Mute Triangle'], [81, 'Open Triangle'], [82, 'Shaker(GM2)'], [83, 'Jingle Bell(GM2)'], [84, 'Belltree(GM2)'], [85, 'Castanets(GM2)'], [86, 'Mute Surdo(GM2)'], [87, 'Open Surdo(GM2)']]);
-  /**
-   * @type {object[]}
-   * @todo add instrument numbers
-   * @todo This might be useful, e.g. to check which notes Player can play
-   */
-
-  const MIDI_NOTE_RANGES = [// Strings
-  {
-    instrNr: 40,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Violin',
-    min: 55,
-    max: 103
-  }, {
-    instrNr: 41,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Viola',
-    min: 48,
-    max: 91
-  }, {
-    instrNr: 42,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Cello',
-    min: 36,
-    max: 76
-  }, {
-    instrNr: -1,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Double Bass',
-    min: 28,
-    max: 67
-  }, {
-    instrNr: -1,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Bass Guitar',
-    min: 28,
-    max: 67
-  }, {
-    instrNr: -1,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Acoustic Guitar',
-    min: 40,
-    max: 88
-  }, // Brass
-  {
-    instrNr: 58,
-    nrL2: 59,
-    subNrL2: 0,
-    label: 'Tuba',
-    min: 28,
-    max: 58
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Bass Trombone',
-    min: 34,
-    max: 67
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'French Horn',
-    min: 34,
-    max: 77
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Trombone',
-    min: 40,
-    max: 72
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Trumpet',
-    min: 55,
-    max: 82
-  }, // Woodwinds
-  {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Piccolo',
-    min: 74,
-    max: 102
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Flute',
-    min: 60,
-    max: 96
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Oboe',
-    min: 58,
-    max: 91
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Alto Flute',
-    min: 55,
-    max: 91
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Cor Anglais (English Horn)',
-    min: 52,
-    max: 81
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Clarinet',
-    min: 50,
-    max: 94
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Bass Clarinet',
-    min: 38,
-    max: 77
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Bassoon',
-    min: 34,
-    max: 75
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Contrabassoon',
-    min: 22,
-    max: 53
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Soprano Recorder',
-    min: 72,
-    max: 98
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Alto Recorder',
-    min: 65,
-    max: 91
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Tenor Recorder',
-    min: 60,
-    max: 86
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Bass Recorder',
-    min: 53,
-    max: 79
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Baritone Sax',
-    min: 36,
-    max: 69
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Tenor Sax',
-    min: 44,
-    max: 76
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Alto Sax',
-    min: 49,
-    max: 81
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Soprano Sax',
-    min: 56,
-    max: 88
-  }, // Tuned Percussion
-  {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Glockenspiel',
-    min: 79,
-    max: 108
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Xylophone',
-    min: 65,
-    max: 108
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Vibraphone',
-    min: 53,
-    max: 89
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Marimba',
-    min: 45,
-    max: 96
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Bass Marimba',
-    min: 33,
-    max: 81
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Celeste',
-    min: 60,
-    max: 108
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Tubular Bells',
-    min: 60,
-    max: 77
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Timpani',
-    min: 40,
-    max: 55
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Harpsichord',
-    min: 29,
-    max: 89
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Kalimba',
-    min: 60,
-    max: 88
-  }, {
-    instrNr: 0,
-    nrL2: -1,
-    subNrL2: -1,
-    label: 'Harp',
-    min: 24,
-    max: 103
-  }]; // Build lookup maps
-
-  for (const note of MIDI_NOTES) {
-    MidiNoteByPitch.set(note.pitch, note);
-    MidiNoteByLabel.set(note.label, note);
+  var flatToSharp = /* @__PURE__ */ new Map([
+    ["Cb", "B"],
+    ["Db", "C#"],
+    ["Eb", "D#"],
+    ["Fb", "E"],
+    ["Gb", "F#"],
+    ["Ab", "G#"],
+    ["Bb", "A#"]
+  ]);
+  var sharpToFlat = /* @__PURE__ */ new Map([
+    ["C#", "Db"],
+    ["D#", "Eb"],
+    ["E#", "F"],
+    ["F#", "Gb"],
+    ["G#", "Ab"],
+    ["A#", "Bb"],
+    ["B#", "C"]
+  ]);
+  var NOTE_NAMES = [
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#",
+    "A",
+    "A#",
+    "B"
+  ];
+  var NOTE_NAMES_FLAT = [
+    "C",
+    "Db",
+    "D",
+    "Eb",
+    "E",
+    "F",
+    "Gb",
+    "G",
+    "Ab",
+    "A",
+    "Bb",
+    "B"
+  ];
+  var MIDI_NOTES = [
+    { pitch: 0, name: "C", octave: -1, label: "C-1", frequency: 8.176 },
+    { pitch: 1, name: "C#", octave: -1, label: "C#-1", frequency: 8.662 },
+    { pitch: 2, name: "D", octave: -1, label: "D-1", frequency: 9.177 },
+    { pitch: 3, name: "D#", octave: -1, label: "D#-1", frequency: 9.723 },
+    { pitch: 4, name: "E", octave: -1, label: "E-1", frequency: 10.301 },
+    { pitch: 5, name: "F", octave: -1, label: "F-1", frequency: 10.913 },
+    { pitch: 6, name: "F#", octave: -1, label: "F#-1", frequency: 11.562 },
+    { pitch: 7, name: "G", octave: -1, label: "G-1", frequency: 12.25 },
+    { pitch: 8, name: "G#", octave: -1, label: "G#-1", frequency: 12.978 },
+    { pitch: 9, name: "A", octave: -1, label: "A-1", frequency: 13.75 },
+    { pitch: 10, name: "A#", octave: -1, label: "A#-1", frequency: 14.568 },
+    { pitch: 11, name: "B", octave: -1, label: "B-1", frequency: 15.434 },
+    { pitch: 12, name: "C", octave: 0, label: "C0", frequency: 16.352 },
+    { pitch: 13, name: "C#", octave: 0, label: "C#0", frequency: 17.324 },
+    { pitch: 14, name: "D", octave: 0, label: "D0", frequency: 18.354 },
+    { pitch: 15, name: "D#", octave: 0, label: "D#0", frequency: 19.445 },
+    { pitch: 16, name: "E", octave: 0, label: "E0", frequency: 20.602 },
+    { pitch: 17, name: "F", octave: 0, label: "F0", frequency: 21.827 },
+    { pitch: 18, name: "F#", octave: 0, label: "F#0", frequency: 23.125 },
+    { pitch: 19, name: "G", octave: 0, label: "G0", frequency: 24.5 },
+    { pitch: 20, name: "G#", octave: 0, label: "G#0", frequency: 25.957 },
+    { pitch: 21, name: "A", octave: 0, label: "A0", frequency: 27.5 },
+    { pitch: 22, name: "A#", octave: 0, label: "A#0", frequency: 29.135 },
+    { pitch: 23, name: "B", octave: 0, label: "B0", frequency: 30.868 },
+    { pitch: 24, name: "C", octave: 1, label: "C1", frequency: 32.703 },
+    { pitch: 25, name: "C#", octave: 1, label: "C#1", frequency: 34.648 },
+    { pitch: 26, name: "D", octave: 1, label: "D1", frequency: 36.708 },
+    { pitch: 27, name: "D#", octave: 1, label: "D#1", frequency: 38.891 },
+    { pitch: 28, name: "E", octave: 1, label: "E1", frequency: 41.203 },
+    { pitch: 29, name: "F", octave: 1, label: "F1", frequency: 43.654 },
+    { pitch: 30, name: "F#", octave: 1, label: "F#1", frequency: 46.249 },
+    { pitch: 31, name: "G", octave: 1, label: "G1", frequency: 48.999 },
+    { pitch: 32, name: "G#", octave: 1, label: "G#1", frequency: 51.913 },
+    { pitch: 33, name: "A", octave: 1, label: "A1", frequency: 55 },
+    { pitch: 34, name: "A#", octave: 1, label: "A#1", frequency: 58.27 },
+    { pitch: 35, name: "B", octave: 1, label: "B1", frequency: 61.735 },
+    { pitch: 36, name: "C", octave: 2, label: "C2", frequency: 65.406 },
+    { pitch: 37, name: "C#", octave: 2, label: "C#2", frequency: 69.296 },
+    { pitch: 38, name: "D", octave: 2, label: "D2", frequency: 73.416 },
+    { pitch: 39, name: "D#", octave: 2, label: "D#2", frequency: 77.782 },
+    { pitch: 40, name: "E", octave: 2, label: "E2", frequency: 82.407 },
+    { pitch: 41, name: "F", octave: 2, label: "F2", frequency: 87.307 },
+    { pitch: 42, name: "F#", octave: 2, label: "F#2", frequency: 92.499 },
+    { pitch: 43, name: "G", octave: 2, label: "G2", frequency: 97.999 },
+    { pitch: 44, name: "G#", octave: 2, label: "G#2", frequency: 103.826 },
+    { pitch: 45, name: "A", octave: 2, label: "A2", frequency: 110 },
+    { pitch: 46, name: "A#", octave: 2, label: "A#2", frequency: 116.541 },
+    { pitch: 47, name: "B", octave: 2, label: "B2", frequency: 123.471 },
+    { pitch: 48, name: "C", octave: 3, label: "C3", frequency: 130.813 },
+    { pitch: 49, name: "C#", octave: 3, label: "C#3", frequency: 138.591 },
+    { pitch: 50, name: "D", octave: 3, label: "D3", frequency: 146.832 },
+    { pitch: 51, name: "D#", octave: 3, label: "D#3", frequency: 155.563 },
+    { pitch: 52, name: "E", octave: 3, label: "E3", frequency: 164.814 },
+    { pitch: 53, name: "F", octave: 3, label: "F3", frequency: 174.614 },
+    { pitch: 54, name: "F#", octave: 3, label: "F#3", frequency: 184.997 },
+    { pitch: 55, name: "G", octave: 3, label: "G3", frequency: 195.998 },
+    { pitch: 56, name: "G#", octave: 3, label: "G#3", frequency: 207.652 },
+    { pitch: 57, name: "A", octave: 3, label: "A3", frequency: 220 },
+    { pitch: 58, name: "A#", octave: 3, label: "A#3", frequency: 233.082 },
+    { pitch: 59, name: "B", octave: 3, label: "B3", frequency: 246.942 },
+    { pitch: 60, name: "C", octave: 4, label: "C4", frequency: 261.626 },
+    { pitch: 61, name: "C#", octave: 4, label: "C#4", frequency: 277.183 },
+    { pitch: 62, name: "D", octave: 4, label: "D4", frequency: 293.665 },
+    { pitch: 63, name: "D#", octave: 4, label: "D#4", frequency: 311.127 },
+    { pitch: 64, name: "E", octave: 4, label: "E4", frequency: 329.628 },
+    { pitch: 65, name: "F", octave: 4, label: "F4", frequency: 349.228 },
+    { pitch: 66, name: "F#", octave: 4, label: "F#4", frequency: 369.994 },
+    { pitch: 67, name: "G", octave: 4, label: "G4", frequency: 391.995 },
+    { pitch: 68, name: "G#", octave: 4, label: "G#4", frequency: 415.305 },
+    { pitch: 69, name: "A", octave: 4, label: "A4", frequency: 440 },
+    { pitch: 70, name: "A#", octave: 4, label: "A#4", frequency: 466.164 },
+    { pitch: 71, name: "B", octave: 4, label: "B4", frequency: 493.883 },
+    { pitch: 72, name: "C", octave: 5, label: "C5", frequency: 523.251 },
+    { pitch: 73, name: "C#", octave: 5, label: "C#5", frequency: 554.365 },
+    { pitch: 74, name: "D", octave: 5, label: "D5", frequency: 587.33 },
+    { pitch: 75, name: "D#", octave: 5, label: "D#5", frequency: 622.254 },
+    { pitch: 76, name: "E", octave: 5, label: "E5", frequency: 659.255 },
+    { pitch: 77, name: "F", octave: 5, label: "F5", frequency: 698.456 },
+    { pitch: 78, name: "F#", octave: 5, label: "F#5", frequency: 739.989 },
+    { pitch: 79, name: "G", octave: 5, label: "G5", frequency: 783.991 },
+    { pitch: 80, name: "G#", octave: 5, label: "G#5", frequency: 830.609 },
+    { pitch: 81, name: "A", octave: 5, label: "A5", frequency: 880 },
+    { pitch: 82, name: "A#", octave: 5, label: "A#5", frequency: 932.328 },
+    { pitch: 83, name: "B", octave: 5, label: "B5", frequency: 987.767 },
+    { pitch: 84, name: "C", octave: 6, label: "C6", frequency: 1046.502 },
+    { pitch: 85, name: "C#", octave: 6, label: "C#6", frequency: 1108.731 },
+    { pitch: 86, name: "D", octave: 6, label: "D6", frequency: 1174.659 },
+    { pitch: 87, name: "D#", octave: 6, label: "D#6", frequency: 1244.508 },
+    { pitch: 88, name: "E", octave: 6, label: "E6", frequency: 1318.51 },
+    { pitch: 89, name: "F", octave: 6, label: "F6", frequency: 1396.913 },
+    { pitch: 90, name: "F#", octave: 6, label: "F#6", frequency: 1479.978 },
+    { pitch: 91, name: "G", octave: 6, label: "G6", frequency: 1567.982 },
+    { pitch: 92, name: "G#", octave: 6, label: "G#6", frequency: 1661.219 },
+    { pitch: 93, name: "A", octave: 6, label: "A6", frequency: 1760 },
+    { pitch: 94, name: "A#", octave: 6, label: "A#6", frequency: 1864.655 },
+    { pitch: 95, name: "B", octave: 6, label: "B6", frequency: 1975.533 },
+    { pitch: 96, name: "C", octave: 7, label: "C7", frequency: 2093.005 },
+    { pitch: 97, name: "C#", octave: 7, label: "C#7", frequency: 2217.461 },
+    { pitch: 98, name: "D", octave: 7, label: "D7", frequency: 2349.318 },
+    { pitch: 99, name: "D#", octave: 7, label: "D#7", frequency: 2489.016 },
+    { pitch: 100, name: "E", octave: 7, label: "E7", frequency: 2637.02 },
+    { pitch: 101, name: "F", octave: 7, label: "F7", frequency: 2793.826 },
+    { pitch: 102, name: "F#", octave: 7, label: "F#7", frequency: 2959.955 },
+    { pitch: 103, name: "G", octave: 7, label: "G7", frequency: 3135.963 },
+    { pitch: 104, name: "G#", octave: 7, label: "G#7", frequency: 3322.438 },
+    { pitch: 105, name: "A", octave: 7, label: "A7", frequency: 3520 },
+    { pitch: 106, name: "A#", octave: 7, label: "A#7", frequency: 3729.31 },
+    { pitch: 107, name: "B", octave: 7, label: "B7", frequency: 3951.066 },
+    { pitch: 108, name: "C", octave: 8, label: "C8", frequency: 4186.009 },
+    { pitch: 109, name: "C#", octave: 8, label: "C#8", frequency: 4434.922 },
+    { pitch: 110, name: "D", octave: 8, label: "D8", frequency: 4698.636 },
+    { pitch: 111, name: "D#", octave: 8, label: "D#8", frequency: 4978.032 },
+    { pitch: 112, name: "E", octave: 8, label: "E8", frequency: 5274.041 },
+    { pitch: 113, name: "F", octave: 8, label: "F8", frequency: 5587.652 },
+    { pitch: 114, name: "F#", octave: 8, label: "F#8", frequency: 5919.911 },
+    { pitch: 115, name: "G", octave: 8, label: "G8", frequency: 6271.927 },
+    { pitch: 116, name: "G#", octave: 8, label: "G#8", frequency: 6644.875 },
+    { pitch: 117, name: "A", octave: 8, label: "A8", frequency: 7040 },
+    { pitch: 118, name: "A#", octave: 8, label: "A#8", frequency: 7458.62 },
+    { pitch: 119, name: "B", octave: 8, label: "B8", frequency: 7902.133 },
+    { pitch: 120, name: "C", octave: 9, label: "C9", frequency: 8372.018 },
+    { pitch: 121, name: "C#", octave: 9, label: "C#9", frequency: 8869.844 },
+    { pitch: 122, name: "D", octave: 9, label: "D9", frequency: 9397.273 },
+    { pitch: 123, name: "D#", octave: 9, label: "D#9", frequency: 9956.063 },
+    { pitch: 124, name: "E", octave: 9, label: "E9", frequency: 10548.08 },
+    { pitch: 125, name: "F", octave: 9, label: "F9", frequency: 11175.3 },
+    { pitch: 126, name: "F#", octave: 9, label: "F#9", frequency: 11839.82 },
+    { pitch: 127, name: "G", octave: 9, label: "G9", frequency: 12543.85 }
+  ];
+  var SHARPS = /* @__PURE__ */ new Set([
+    1,
+    3,
+    6,
+    8,
+    10,
+    13,
+    15,
+    18,
+    20,
+    22,
+    25,
+    27,
+    30,
+    32,
+    34,
+    37,
+    39,
+    42,
+    44,
+    46,
+    49,
+    51,
+    54,
+    56,
+    58,
+    61,
+    63,
+    66,
+    68,
+    70,
+    73,
+    75,
+    78,
+    80,
+    82,
+    85,
+    87,
+    90,
+    92,
+    94,
+    97,
+    99,
+    102,
+    104,
+    106,
+    109,
+    111,
+    114,
+    116,
+    118,
+    121,
+    123,
+    126
+  ]);
+  var MIDI_COMMANDS = /* @__PURE__ */ new Map([
+    [128, { name: "noteOff", description: "Note-off", params: ["key", "velocity"] }],
+    [144, { name: "noteOn", description: "Note-on", params: ["key", "velocity"] }],
+    [160, { name: "aftertouch", description: "Aftertouch", params: ["key", "touch"] }],
+    [176, { name: "continuousController", description: "Continuous controller", params: ["controller #", "controller value"] }],
+    [192, { name: "patchChange", description: "Patch change", params: ["instrument number", "instrument number"] }],
+    [208, { name: "channelPressure", description: "Channel Pressure", params: ["pressure"] }],
+    [224, { name: "pitchBend", description: "Pitch bend", params: ["lsb (7 bits)", "msb (7 bits)"] }],
+    [240, { name: "sysExStart", description: "start of system exclusive message" }],
+    [241, { name: "timeCodeQuarter", description: "MIDI Time Code Quarter Frame (Sys Common)" }],
+    [242, { name: "posPointer", description: "Song Position Pointer (Sys Common)" }],
+    [243, { name: "songSelect", description: "Song Select (Sys Common)" }],
+    [244, { name: "unknown1", description: "???" }],
+    [245, { name: "unknown2", description: "???" }],
+    [246, { name: "tuneRequest", description: "Tune Request (Sys Common)" }],
+    [247, { name: "syExEnd", description: "end of system exclusive message 0" }],
+    [248, { name: "timingClock", description: "Timing Clock (Sys Realtime)" }],
+    [250, { name: "start", description: "Start (Sys Realtime)" }],
+    [251, { name: "continue", description: "Continue (Sys Realtime)" }],
+    [252, { name: "stop", description: "Stop (Sys Realtime)" }],
+    [253, { name: "unknwon3", description: "???" }],
+    [254, { name: "activeSensing", description: "Active Sensing (Sys Realtime)" }],
+    [255, { name: "systemReset", description: "System Reset (Sys Realtime)" }]
+  ]);
+  var MIDI_INSTRUMENTS = [
+    { number: 0, group: "Piano", label: "Acoustic Grand Piano" },
+    { number: 1, group: "Piano", label: "Bright Acoustic Piano" },
+    { number: 2, group: "Piano", label: "Electric Grand Piano" },
+    { number: 3, group: "Piano", label: "Honky-tonk Piano" },
+    { number: 4, group: "Piano", label: "Electric Piano 1" },
+    { number: 5, group: "Piano", label: "Electric Piano 2" },
+    { number: 6, group: "Piano", label: "Harpsichord" },
+    { number: 7, group: "Piano", label: "Clavinet" },
+    { number: 8, group: "Chromatic Percussion", label: "Celesta" },
+    { number: 9, group: "Chromatic Percussion", label: "Glockenspiel" },
+    { number: 10, group: "Chromatic Percussion", label: "Music Box" },
+    { number: 11, group: "Chromatic Percussion", label: "Vibraphone" },
+    { number: 12, group: "Chromatic Percussion", label: "Marimba" },
+    { number: 13, group: "Chromatic Percussion", label: "Xylophone" },
+    { number: 14, group: "Chromatic Percussion", label: "Tubular Bells" },
+    { number: 15, group: "Chromatic Percussion", label: "Dulcimer" },
+    { number: 16, group: "Organ", label: "Drawbar Organ" },
+    { number: 17, group: "Organ", label: "Percussive Organ" },
+    { number: 18, group: "Organ", label: "Rock Organ" },
+    { number: 19, group: "Organ", label: "Church Organ" },
+    { number: 20, group: "Organ", label: "Reed Organ" },
+    { number: 21, group: "Organ", label: "Accordion" },
+    { number: 22, group: "Organ", label: "Harmonica" },
+    { number: 23, group: "Organ", label: "Tango Accordion" },
+    { number: 24, group: "Guitar", label: "Acoustic Guitar(nylon)" },
+    { number: 25, group: "Guitar", label: "Acoustic Guitar(steel)" },
+    { number: 26, group: "Guitar", label: "Electric Guitar(jazz)" },
+    { number: 27, group: "Guitar", label: "Electric Guitar(clean)" },
+    { number: 28, group: "Guitar", label: "Electric Guitar(muted)" },
+    { number: 29, group: "Guitar", label: "Overdriven Guitar" },
+    { number: 30, group: "Guitar", label: "Distortion Guitar" },
+    { number: 31, group: "Guitar", label: "Guitar harmonics" },
+    { number: 32, group: "Bass", label: "Acoustic Bass" },
+    { number: 33, group: "Bass", label: "Electric Bass(finger)" },
+    { number: 34, group: "Bass", label: "Electric Bass(pick)" },
+    { number: 35, group: "Bass", label: "Fretless Bass" },
+    { number: 36, group: "Bass", label: "Slap Bass 1" },
+    { number: 37, group: "Bass", label: "Slap Bass 2" },
+    { number: 38, group: "Bass", label: "Synth Bass 1" },
+    { number: 39, group: "Bass", label: "Synth Bass 2" },
+    { number: 40, group: "Strings", label: "Violin" },
+    { number: 41, group: "Strings", label: "Viola" },
+    { number: 42, group: "Strings", label: "Cello" },
+    { number: 43, group: "Strings", label: "Contrabass" },
+    { number: 44, group: "Strings", label: "Tremolo Strings" },
+    { number: 45, group: "Strings", label: "Pizzicato Strings" },
+    { number: 46, group: "Strings", label: "Orchestral Harp" },
+    { number: 47, group: "Strings", label: "Timpani" },
+    { number: 48, group: "Strings (continued)", label: "String Ensemble 1" },
+    { number: 49, group: "Strings (continued)", label: "String Ensemble 2" },
+    { number: 50, group: "Strings (continued)", label: "Synth Strings 1" },
+    { number: 51, group: "Strings (continued)", label: "Synth Strings 2" },
+    { number: 52, group: "Strings (continued)", label: "Choir Aahs" },
+    { number: 53, group: "Strings (continued)", label: "Voice Oohs" },
+    { number: 54, group: "Strings (continued)", label: "Synth Voice" },
+    { number: 55, group: "Strings (continued)", label: "Orchestra Hit" },
+    { number: 56, group: "Brass", label: "Trumpet" },
+    { number: 57, group: "Brass", label: "Trombone" },
+    { number: 58, group: "Brass", label: "Tuba" },
+    { number: 59, group: "Brass", label: "Muted Trumpet" },
+    { number: 60, group: "Brass", label: "French Horn" },
+    { number: 61, group: "Brass", label: "Brass Section" },
+    { number: 62, group: "Brass", label: "Synth Brass 1" },
+    { number: 63, group: "Brass", label: "Synth Brass 2" },
+    { number: 64, group: "Reed", label: "Soprano Sax" },
+    { number: 65, group: "Reed", label: "Alto Sax" },
+    { number: 66, group: "Reed", label: "Tenor Sax" },
+    { number: 67, group: "Reed", label: "Baritone Sax" },
+    { number: 68, group: "Reed", label: "Oboe" },
+    { number: 69, group: "Reed", label: "English Horn" },
+    { number: 70, group: "Reed", label: "Bassoon" },
+    { number: 71, group: "Reed", label: "Clarinet" },
+    { number: 72, group: "Pipe", label: "Piccolo" },
+    { number: 73, group: "Pipe", label: "Flute" },
+    { number: 74, group: "Pipe", label: "Recorder" },
+    { number: 75, group: "Pipe", label: "Pan Flute" },
+    { number: 76, group: "Pipe", label: "Blown Bottle" },
+    { number: 77, group: "Pipe", label: "Shakuhachi" },
+    { number: 78, group: "Pipe", label: "Whistle" },
+    { number: 79, group: "Pipe", label: "Ocarina" },
+    { number: 80, group: "Synth Lead", label: "Lead 1(square)" },
+    { number: 81, group: "Synth Lead", label: "Lead 2(sawtooth)" },
+    { number: 82, group: "Synth Lead", label: "Lead 3(calliope)" },
+    { number: 83, group: "Synth Lead", label: "Lead 4(chiff)" },
+    { number: 84, group: "Synth Lead", label: "Lead 5(charang)" },
+    { number: 85, group: "Synth Lead", label: "Lead 6(voice)" },
+    { number: 86, group: "Synth Lead", label: "Lead 7(fifths)" },
+    { number: 87, group: "Synth Lead", label: "Lead 8(bass + lead)" },
+    { number: 88, group: "Synth Pad", label: "Pad 1(new age)" },
+    { number: 89, group: "Synth Pad", label: "Pad 2(warm)" },
+    { number: 90, group: "Synth Pad", label: "Pad 3(polysynth)" },
+    { number: 91, group: "Synth Pad", label: "Pad 4(choir)" },
+    { number: 92, group: "Synth Pad", label: "Pad 5(bowed)" },
+    { number: 93, group: "Synth Pad", label: "Pad 6(metallic)" },
+    { number: 94, group: "Synth Pad", label: "Pad 7(halo)" },
+    { number: 95, group: "Synth Pad", label: "Pad 8(sweep)" },
+    { number: 96, group: "Synth Effects", label: "FX 1(rain)" },
+    { number: 97, group: "Synth Effects", label: "FX 2(soundtrack)" },
+    { number: 98, group: "Synth Effects", label: "FX 3(crystal)" },
+    { number: 99, group: "Synth Effects", label: "FX 4(atmosphere)" },
+    { number: 100, group: "Synth Effects", label: "FX 5(brightness)" },
+    { number: 101, group: "Synth Effects", label: "FX 6(goblins)" },
+    { number: 102, group: "Synth Effects", label: "FX 7(echoes)" },
+    { number: 103, group: "Synth Effects", label: "FX 8(sci-fi)" },
+    { number: 104, group: "Ethnic", label: "Sitar" },
+    { number: 105, group: "Ethnic", label: "Banjo" },
+    { number: 106, group: "Ethnic", label: "Shamisen" },
+    { number: 107, group: "Ethnic", label: "Koto" },
+    { number: 108, group: "Ethnic", label: "Kalimba" },
+    { number: 109, group: "Ethnic", label: "Bag pipe" },
+    { number: 110, group: "Ethnic", label: "Fiddle" },
+    { number: 111, group: "Ethnic", label: "Shanai" },
+    { number: 112, group: "Percussive", label: "Tinkle Bell" },
+    { number: 113, group: "Percussive", label: "Agogo" },
+    { number: 114, group: "Percussive", label: "Steel Drums" },
+    { number: 115, group: "Percussive", label: "Woodblock" },
+    { number: 116, group: "Percussive", label: "Taiko Drum" },
+    { number: 117, group: "Percussive", label: "Melodic Tom" },
+    { number: 118, group: "Percussive", label: "Synth Drum" },
+    { number: 119, group: "Sound Effects", label: "Reverse Cymbal" },
+    { number: 120, group: "Sound Effects", label: "Guitar Fret Noise" },
+    { number: 121, group: "Sound Effects", label: "Breath Noise" },
+    { number: 122, group: "Sound Effects", label: "Seashore" },
+    { number: 123, group: "Sound Effects", label: "Bird Tweet" },
+    { number: 124, group: "Sound Effects", label: "Telephone Ring" },
+    { number: 125, group: "Sound Effects", label: "Helicopter" },
+    { number: 126, group: "Sound Effects", label: "Applause" },
+    { number: 127, group: "Sound Effects", label: "Gunshot" }
+  ];
+  var MIDI_INSTRUMENTS_LEV2 = [
+    { number: 1, subnumber: 0, group: "Piano", label: "Acoustic Grand Piano" },
+    { number: 1, subnumber: 1, group: "Piano", label: "Wide Acoustic Grand" },
+    { number: 1, subnumber: 2, group: "Piano", label: "Dark Acoustic Grand" },
+    { number: 2, subnumber: 0, group: "Piano", label: "Bright Acoustic Piano" },
+    { number: 2, subnumber: 1, group: "Piano", label: "Wide Bright Acoustic" },
+    { number: 3, subnumber: 0, group: "Piano", label: "Electric Grand Piano" },
+    { number: 3, subnumber: 1, group: "Piano", label: "Wide Electric Grand" },
+    { number: 4, subnumber: 0, group: "Piano", label: "Honky-tonk Piano" },
+    { number: 4, subnumber: 1, group: "Piano", label: "Wide Honky-tonk" },
+    { number: 5, subnumber: 0, group: "Piano", label: "Rhodes Piano" },
+    { number: 5, subnumber: 1, group: "Piano", label: "Detuned Electric Piano 1" },
+    { number: 5, subnumber: 2, group: "Piano", label: "Electric Piano 1 Variation" },
+    { number: 5, subnumber: 3, group: "Piano", label: "60's Electric Piano" },
+    { number: 6, subnumber: 0, group: "Piano", label: "Chorused Electric Piano" },
+    { number: 6, subnumber: 1, group: "Piano", label: "Detuned Electric Piano 2" },
+    { number: 6, subnumber: 2, group: "Piano", label: "Electric Piano 2 Variation" },
+    { number: 6, subnumber: 3, group: "Piano", label: "Electric Piano Legend" },
+    { number: 6, subnumber: 4, group: "Piano", label: "Electric Piano Phase" },
+    { number: 7, subnumber: 0, group: "Piano", label: "Harpsichord" },
+    { number: 7, subnumber: 1, group: "Piano", label: "Coupled Harpsichord" },
+    { number: 7, subnumber: 2, group: "Piano", label: "Wide Harpsichord" },
+    { number: 7, subnumber: 3, group: "Piano", label: "Open Harpsichord" },
+    { number: 8, subnumber: 0, group: "Piano", label: "Clavinet" },
+    { number: 8, subnumber: 1, group: "Piano", label: "Pulse Clavinet" },
+    { number: 9, subnumber: 0, group: "Chromatic Percussion", label: "Celesta" },
+    { number: 10, subnumber: 0, group: "Chromatic Percussion", label: "Glockenspiel" },
+    { number: 11, subnumber: 0, group: "Chromatic Percussion", label: "Music Box" },
+    { number: 12, subnumber: 0, group: "Chromatic Percussion", label: "Vibraphone" },
+    { number: 12, subnumber: 1, group: "Chromatic Percussion", label: "Wet Vibraphone" },
+    { number: 13, subnumber: 0, group: "Chromatic Percussion", label: "Marimba" },
+    { number: 13, subnumber: 1, group: "Chromatic Percussion", label: "Wide Marimba" },
+    { number: 14, subnumber: 0, group: "Chromatic Percussion", label: "Xylophone" },
+    { number: 15, subnumber: 0, group: "Chromatic Percussion", label: "Tubular Bells" },
+    { number: 15, subnumber: 1, group: "Chromatic Percussion", label: "Church Bells" },
+    { number: 15, subnumber: 2, group: "Chromatic Percussion", label: "Carillon" },
+    { number: 16, subnumber: 0, group: "Chromatic Percussion", label: "Dulcimer / Santur" },
+    { number: 17, subnumber: 0, group: "Organ", label: "Hammond Organ" },
+    { number: 17, subnumber: 1, group: "Organ", label: "Detuned Organ 1" },
+    { number: 17, subnumber: 2, group: "Organ", label: "60's Organ 1" },
+    { number: 17, subnumber: 3, group: "Organ", label: "Organ 4" },
+    { number: 18, subnumber: 0, group: "Organ", label: "Percussive Organ" },
+    { number: 18, subnumber: 1, group: "Organ", label: "Detuned Organ 2" },
+    { number: 18, subnumber: 2, group: "Organ", label: "Organ 5" },
+    { number: 19, subnumber: 0, group: "Organ", label: "Rock Organ" },
+    { number: 20, subnumber: 0, group: "Organ", label: "Church Organ 1" },
+    { number: 20, subnumber: 1, group: "Organ", label: "Church Organ 2" },
+    { number: 20, subnumber: 2, group: "Organ", label: "Church Organ 3" },
+    { number: 21, subnumber: 0, group: "Organ", label: "Reed Organ" },
+    { number: 21, subnumber: 1, group: "Organ", label: "Puff Organ" },
+    { number: 22, subnumber: 0, group: "Organ", label: "French Accordion" },
+    { number: 22, subnumber: 1, group: "Organ", label: "Italian Accordion" },
+    { number: 23, subnumber: 0, group: "Organ", label: "Harmonica" },
+    { number: 24, subnumber: 0, group: "Organ", label: "Bandoneon" },
+    { number: 25, subnumber: 0, group: "Guitar", label: "Nylon-String Guitar" },
+    { number: 25, subnumber: 1, group: "Guitar", label: "Ukelele" },
+    { number: 25, subnumber: 2, group: "Guitar", label: "Open Nylon Guitar" },
+    { number: 25, subnumber: 3, group: "Guitar", label: "Nylon Guitar 2" },
+    { number: 26, subnumber: 0, group: "Guitar", label: "Steel-String Guitar" },
+    { number: 26, subnumber: 1, group: "Guitar", label: "12-String Guitar" },
+    { number: 26, subnumber: 2, group: "Guitar", label: "Mandolin" },
+    { number: 26, subnumber: 3, group: "Guitar", label: "Steel + Body" },
+    { number: 27, subnumber: 0, group: "Guitar", label: "Jazz Guitar" },
+    { number: 27, subnumber: 1, group: "Guitar", label: "Hawaiian Guitar" },
+    { number: 28, subnumber: 0, group: "Guitar", label: "Clean Electric Guitar" },
+    { number: 28, subnumber: 1, group: "Guitar", label: "Chorus Guitar" },
+    { number: 28, subnumber: 2, group: "Guitar", label: "Mid Tone Guitar" },
+    { number: 29, subnumber: 0, group: "Guitar", label: "Muted Electric Guitar" },
+    { number: 29, subnumber: 1, group: "Guitar", label: "Funk Guitar" },
+    { number: 29, subnumber: 2, group: "Guitar", label: "Funk Guitar 2" },
+    { number: 29, subnumber: 3, group: "Guitar", label: "Jazz Man" },
+    { number: 30, subnumber: 0, group: "Guitar", label: "Overdriven Guitar" },
+    { number: 30, subnumber: 1, group: "Guitar", label: "Guitar Pinch" },
+    { number: 31, subnumber: 0, group: "Guitar", label: "Distortion Guitar" },
+    { number: 31, subnumber: 1, group: "Guitar", label: "Feedback Guitar" },
+    { number: 31, subnumber: 2, group: "Guitar", label: "Distortion Rtm Guitar" },
+    { number: 32, subnumber: 0, group: "Guitar", label: "Guitar Harmonics" },
+    { number: 32, subnumber: 1, group: "Guitar", label: "Guitar Feedback" },
+    { number: 33, subnumber: 0, group: "Bass", label: "Acoustic Bass" },
+    { number: 34, subnumber: 0, group: "Bass", label: "Fingered Bass" },
+    { number: 34, subnumber: 1, group: "Bass", label: "Finger Slap" },
+    { number: 35, subnumber: 0, group: "Bass", label: "Picked Bass" },
+    { number: 36, subnumber: 0, group: "Bass", label: "Fretless Bass" },
+    { number: 37, subnumber: 0, group: "Bass", label: "Slap Bass 1" },
+    { number: 38, subnumber: 0, group: "Bass", label: "Slap Bass 2" },
+    { number: 39, subnumber: 0, group: "Bass", label: "Synth Bass 1" },
+    { number: 39, subnumber: 1, group: "Bass", label: "Synth Bass 101" },
+    { number: 39, subnumber: 2, group: "Bass", label: "Synth Bass 3" },
+    { number: 39, subnumber: 3, group: "Bass", label: "Clavi Bass" },
+    { number: 39, subnumber: 4, group: "Bass", label: "Hammer" },
+    { number: 40, subnumber: 0, group: "Bass", label: "Synth Bass 2" },
+    { number: 40, subnumber: 1, group: "Bass", label: "Synth Bass 4" },
+    { number: 40, subnumber: 2, group: "Bass", label: "Rubber Bass" },
+    { number: 40, subnumber: 3, group: "Bass", label: "Attack Pulse" },
+    { number: 41, subnumber: 0, group: "Strings", label: "Violin" },
+    { number: 41, subnumber: 1, group: "Strings", label: "Slow Violin" },
+    { number: 42, subnumber: 0, group: "Strings", label: "Viola" },
+    { number: 43, subnumber: 0, group: "Strings", label: "Cello" },
+    { number: 44, subnumber: 0, group: "Strings", label: "Contrabass" },
+    { number: 45, subnumber: 0, group: "Strings", label: "Tremolo Strings" },
+    { number: 46, subnumber: 0, group: "Strings", label: "Pizzicato Strings" },
+    { number: 47, subnumber: 0, group: "Strings", label: "Harp" },
+    { number: 47, subnumber: 1, group: "Strings", label: "Yang Qin" },
+    { number: 48, subnumber: 0, group: "Strings", label: "Timpani" },
+    { number: 49, subnumber: 0, group: "Orchestral Ensemble", label: "String Ensemble" },
+    { number: 49, subnumber: 1, group: "Orchestral Ensemble", label: "Orchestra Strings" },
+    { number: 49, subnumber: 2, group: "Orchestral Ensemble", label: "60's Strings" },
+    { number: 50, subnumber: 0, group: "Orchestral Ensemble", label: "Slow String Ensemble" },
+    { number: 51, subnumber: 0, group: "Orchestral Ensemble", label: "Synth Strings 1" },
+    { number: 51, subnumber: 1, group: "Orchestral Ensemble", label: "Synth Strings 3" },
+    { number: 52, subnumber: 0, group: "Orchestral Ensemble", label: "Synth Strings 2" },
+    { number: 53, subnumber: 0, group: "Orchestral Ensemble", label: "Choir Aahs" },
+    { number: 53, subnumber: 1, group: "Orchestral Ensemble", label: "Choir Aahs 2" },
+    { number: 54, subnumber: 0, group: "Orchestral Ensemble", label: "Voice Oohs" },
+    { number: 54, subnumber: 1, group: "Orchestral Ensemble", label: "Humming" },
+    { number: 55, subnumber: 0, group: "Orchestral Ensemble", label: "Synth Voice" },
+    { number: 55, subnumber: 1, group: "Orchestral Ensemble", label: "Analog Voice" },
+    { number: 56, subnumber: 0, group: "Orchestral Ensemble", label: "Orchestra Hit" },
+    { number: 56, subnumber: 1, group: "Orchestral Ensemble", label: "Bass Hit" },
+    { number: 56, subnumber: 2, group: "Orchestral Ensemble", label: "6th Hit" },
+    { number: 56, subnumber: 3, group: "Orchestral Ensemble", label: "Euro Hit" },
+    { number: 57, subnumber: 0, group: "Brass", label: "Trumpet" },
+    { number: 57, subnumber: 1, group: "Brass", label: "Dark Trumpet" },
+    { number: 58, subnumber: 0, group: "Brass", label: "Trombone" },
+    { number: 58, subnumber: 1, group: "Brass", label: "Trombone 2" },
+    { number: 58, subnumber: 2, group: "Brass", label: "Bright Trombone" },
+    { number: 59, subnumber: 0, group: "Brass", label: "Tuba" },
+    { number: 60, subnumber: 0, group: "Brass", label: "Muted Trumpet" },
+    { number: 60, subnumber: 1, group: "Brass", label: "Muted Trumpet 2" },
+    { number: 61, subnumber: 0, group: "Brass", label: "French Horn" },
+    { number: 61, subnumber: 1, group: "Brass", label: "French Horn 2" },
+    { number: 62, subnumber: 0, group: "Brass", label: "Brass Section" },
+    { number: 62, subnumber: 1, group: "Brass", label: "Brass Section" },
+    { number: 63, subnumber: 0, group: "Brass", label: "Synth Brass 1" },
+    { number: 63, subnumber: 1, group: "Brass", label: "Synth Brass 3" },
+    { number: 63, subnumber: 2, group: "Brass", label: "Analog Brass 1" },
+    { number: 63, subnumber: 3, group: "Brass", label: "Jump Brass" },
+    { number: 64, subnumber: 0, group: "Brass", label: "Synth Brass 2" },
+    { number: 64, subnumber: 1, group: "Brass", label: "Synth Brass 4" },
+    { number: 64, subnumber: 2, group: "Brass", label: "Analog Brass 2" },
+    { number: 65, subnumber: 0, group: "Reed", label: "Soprano Sax" },
+    { number: 66, subnumber: 0, group: "Reed", label: "Alto Sax" },
+    { number: 67, subnumber: 0, group: "Reed", label: "Tenor Sax" },
+    { number: 68, subnumber: 0, group: "Reed", label: "Baritone Sax" },
+    { number: 69, subnumber: 0, group: "Reed", label: "Oboe" },
+    { number: 70, subnumber: 0, group: "Reed", label: "English Horn" },
+    { number: 71, subnumber: 0, group: "Reed", label: "Bassoon" },
+    { number: 72, subnumber: 0, group: "Reed", label: "Clarinet" },
+    { number: 73, subnumber: 0, group: "Wind", label: "Piccolo" },
+    { number: 74, subnumber: 0, group: "Wind", label: "Flute" },
+    { number: 75, subnumber: 0, group: "Wind", label: "Recorder" },
+    { number: 76, subnumber: 0, group: "Wind", label: "Pan Flute" },
+    { number: 77, subnumber: 0, group: "Wind", label: "Blown Bottle" },
+    { number: 78, subnumber: 0, group: "Wind", label: "Shakuhachi" },
+    { number: 79, subnumber: 0, group: "Wind", label: "Whistle" },
+    { number: 80, subnumber: 0, group: "Wind", label: "Ocarina" },
+    { number: 81, subnumber: 0, group: "Lead", label: "Square Lead" },
+    { number: 81, subnumber: 1, group: "Lead", label: "Square Wave" },
+    { number: 81, subnumber: 2, group: "Lead", label: "Sine Wave" },
+    { number: 82, subnumber: 0, group: "Lead", label: "Saw Lead" },
+    { number: 82, subnumber: 1, group: "Lead", label: "Saw Wave" },
+    { number: 82, subnumber: 2, group: "Lead", label: "Doctor Solo" },
+    { number: 82, subnumber: 3, group: "Lead", label: "Natural Lead" },
+    { number: 82, subnumber: 4, group: "Lead", label: "Sequenced Saw" },
+    { number: 83, subnumber: 0, group: "Lead", label: "Synth Calliope" },
+    { number: 84, subnumber: 0, group: "Lead", label: "Chiffer Lead" },
+    { number: 85, subnumber: 0, group: "Lead", label: "Charang" },
+    { number: 85, subnumber: 1, group: "Lead", label: "Wire Lead" },
+    { number: 86, subnumber: 0, group: "Lead", label: "Solo Synth Vox" },
+    { number: 87, subnumber: 0, group: "Lead", label: "5th Saw Wave" },
+    { number: 88, subnumber: 0, group: "Lead", label: "Bass & Lead" },
+    { number: 88, subnumber: 1, group: "Lead", label: "Delayed Lead" },
+    { number: 89, subnumber: 0, group: "Synth Pad", label: "Fantasia Pad" },
+    { number: 90, subnumber: 0, group: "Synth Pad", label: "Warm Pad" },
+    { number: 90, subnumber: 1, group: "Synth Pad", label: "Sine Pad" },
+    { number: 91, subnumber: 0, group: "Synth Pad", label: "Polysynth Pad" },
+    { number: 92, subnumber: 0, group: "Synth Pad", label: "Space Voice Pad" },
+    { number: 92, subnumber: 1, group: "Synth Pad", label: "Itopia" },
+    { number: 93, subnumber: 0, group: "Synth Pad", label: "Bowed Glass Pad" },
+    { number: 94, subnumber: 0, group: "Synth Pad", label: "Metal Pad" },
+    { number: 95, subnumber: 0, group: "Synth Pad", label: "Halo Pad" },
+    { number: 96, subnumber: 0, group: "Synth Pad", label: "Sweep Pad" },
+    { number: 97, subnumber: 0, group: "Synth Effects", label: "Ice Rain" },
+    { number: 98, subnumber: 0, group: "Synth Effects", label: "Soundtrack" },
+    { number: 99, subnumber: 0, group: "Synth Effects", label: "Crystal" },
+    { number: 99, subnumber: 1, group: "Synth Effects", label: "Synth Mallet" },
+    { number: 100, subnumber: 0, group: "Synth Effects", label: "Atmosphere" },
+    { number: 101, subnumber: 0, group: "Synth Effects", label: "Brightness" },
+    { number: 102, subnumber: 0, group: "Synth Effects", label: "Goblin" },
+    { number: 103, subnumber: 0, group: "Synth Effects", label: "Echo Drops" },
+    { number: 103, subnumber: 1, group: "Synth Effects", label: "Echo Bell" },
+    { number: 103, subnumber: 2, group: "Synth Effects", label: "Echo Pan" },
+    { number: 104, subnumber: 0, group: "Synth Effects", label: "Star Theme" },
+    { number: 105, subnumber: 0, group: "Ethnic", label: "Sitar" },
+    { number: 105, subnumber: 1, group: "Ethnic", label: "Sitar 2" },
+    { number: 106, subnumber: 0, group: "Ethnic", label: "Banjo" },
+    { number: 107, subnumber: 0, group: "Ethnic", label: "Shamisen" },
+    { number: 108, subnumber: 0, group: "Ethnic", label: "Koto" },
+    { number: 108, subnumber: 1, group: "Ethnic", label: "Taisho Koto" },
+    { number: 109, subnumber: 0, group: "Ethnic", label: "Kalimba" },
+    { number: 110, subnumber: 0, group: "Ethnic", label: "Bagpipe" },
+    { number: 111, subnumber: 0, group: "Ethnic", label: "Fiddle" },
+    { number: 112, subnumber: 0, group: "Ethnic", label: "Shanai" },
+    { number: 113, subnumber: 0, group: "Percussive", label: "Tinkle Bell" },
+    { number: 114, subnumber: 0, group: "Percussive", label: "Agogo" },
+    { number: 115, subnumber: 0, group: "Percussive", label: "Steel Drums" },
+    { number: 116, subnumber: 0, group: "Percussive", label: "Woodblock" },
+    { number: 116, subnumber: 1, group: "Percussive", label: "Castanets" },
+    { number: 117, subnumber: 0, group: "Percussive", label: "Taiko Drum" },
+    { number: 117, subnumber: 1, group: "Percussive", label: "Concert Bass Drum" },
+    { number: 118, subnumber: 0, group: "Percussive", label: "Melodic Tom 1" },
+    { number: 118, subnumber: 1, group: "Percussive", label: "Melodic Tom 2" },
+    { number: 119, subnumber: 0, group: "Percussive", label: "Synth Drum" },
+    { number: 119, subnumber: 1, group: "Percussive", label: "808 Tom" },
+    { number: 119, subnumber: 2, group: "Percussive", label: "Electric Percussion" },
+    { number: 120, subnumber: 0, group: "Percussive", label: "Reverse Cymbal" },
+    { number: 121, subnumber: 0, group: "Sound Effects", label: "Guitar Fret Noise" },
+    { number: 121, subnumber: 1, group: "Sound Effects", label: "Guitar Cut Noise" },
+    { number: 121, subnumber: 2, group: "Sound Effects", label: "String Slap" },
+    { number: 122, subnumber: 0, group: "Sound Effects", label: "Breath Noise" },
+    { number: 122, subnumber: 1, group: "Sound Effects", label: "Flute Key Click" },
+    { number: 123, subnumber: 0, group: "Sound Effects", label: "Seashore" },
+    { number: 123, subnumber: 1, group: "Sound Effects", label: "Rain" },
+    { number: 123, subnumber: 2, group: "Sound Effects", label: "Thunder" },
+    { number: 123, subnumber: 3, group: "Sound Effects", label: "Wind" },
+    { number: 123, subnumber: 4, group: "Sound Effects", label: "Stream" },
+    { number: 123, subnumber: 5, group: "Sound Effects", label: "Bubble" },
+    { number: 124, subnumber: 0, group: "Sound Effects", label: "Bird Tweet" },
+    { number: 124, subnumber: 1, group: "Sound Effects", label: "Dog" },
+    { number: 124, subnumber: 2, group: "Sound Effects", label: "Horse Gallop" },
+    { number: 124, subnumber: 3, group: "Sound Effects", label: "Bird 2" },
+    { number: 125, subnumber: 0, group: "Sound Effects", label: "Telephone 1" },
+    { number: 125, subnumber: 1, group: "Sound Effects", label: "Telephone 2" },
+    { number: 125, subnumber: 2, group: "Sound Effects", label: "Door Creaking" },
+    { number: 125, subnumber: 3, group: "Sound Effects", label: "Door Closing" },
+    { number: 125, subnumber: 4, group: "Sound Effects", label: "Scratch" },
+    { number: 125, subnumber: 5, group: "Sound Effects", label: "Wind Chimes" },
+    { number: 126, subnumber: 0, group: "Sound Effects", label: "Helicopter" },
+    { number: 126, subnumber: 1, group: "Sound Effects", label: "Car Engine" },
+    { number: 126, subnumber: 2, group: "Sound Effects", label: "Car Stop" },
+    { number: 126, subnumber: 3, group: "Sound Effects", label: "Car Pass" },
+    { number: 126, subnumber: 4, group: "Sound Effects", label: "Car Crash" },
+    { number: 126, subnumber: 5, group: "Sound Effects", label: "Siren" },
+    { number: 126, subnumber: 6, group: "Sound Effects", label: "Train" },
+    { number: 126, subnumber: 7, group: "Sound Effects", label: "Jetplane" },
+    { number: 126, subnumber: 8, group: "Sound Effects", label: "Starship" },
+    { number: 126, subnumber: 9, group: "Sound Effects", label: "Burst Noise" },
+    { number: 127, subnumber: 0, group: "Sound Effects", label: "Applause" },
+    { number: 127, subnumber: 1, group: "Sound Effects", label: "Laughing" },
+    { number: 127, subnumber: 2, group: "Sound Effects", label: "Screaming" },
+    { number: 127, subnumber: 3, group: "Sound Effects", label: "Punch" },
+    { number: 127, subnumber: 4, group: "Sound Effects", label: "Heart Beat" },
+    { number: 127, subnumber: 5, group: "Sound Effects", label: "Footsteps" },
+    { number: 128, subnumber: 0, group: "Sound Effects", label: "Gun Shot" },
+    { number: 128, subnumber: 1, group: "Sound Effects", label: "Machine Gun" },
+    { number: 128, subnumber: 2, group: "Sound Effects", label: "Lasergun" },
+    { number: 128, subnumber: 3, group: "Sound Effects", label: "Explosion" }
+  ];
+  var GENERAL_MIDI_DRUM_NOTE_NUMBERS = /* @__PURE__ */ new Map([
+    [27, "High Q(GM2)"],
+    [28, "Slap(GM2)"],
+    [29, "Scratch Push(GM2)"],
+    [30, "Scratch Pull(GM2)"],
+    [31, "Sticks(GM2)"],
+    [32, "Square Click(GM2)"],
+    [33, "Metronome Click(GM2)"],
+    [34, "Metronome Bell(GM2)"],
+    [35, "Bass Drum 2"],
+    [36, "Bass Drum 1"],
+    [37, "Side Stick"],
+    [38, "Snare Drum 1"],
+    [39, "Hand Clap"],
+    [40, "Snare Drum 2"],
+    [41, "Low Tom 2"],
+    [42, "Closed Hi-hat"],
+    [43, "Low Tom 1"],
+    [44, "Pedal Hi-hat"],
+    [45, "Mid Tom 2"],
+    [46, "Open Hi-hat"],
+    [47, "Mid Tom 1"],
+    [48, "High Tom 2"],
+    [49, "Crash Cymbal 1"],
+    [50, "High Tom 1"],
+    [51, "Ride Cymbal 1"],
+    [52, "Chinese Cymbal"],
+    [53, "Ride Bell"],
+    [54, "Tambourine"],
+    [55, "Splash Cymbal"],
+    [56, "Cowbell"],
+    [57, "Crash Cymbal 2"],
+    [58, "Vibra Slap"],
+    [59, "Ride Cymbal 2"],
+    [60, "High Bongo"],
+    [61, "Low Bongo"],
+    [62, "Mute High Conga"],
+    [63, "Open High Conga"],
+    [64, "Low Conga"],
+    [65, "High Timbale"],
+    [66, "Low Timbale"],
+    [67, "High Agogo"],
+    [68, "Low Agogo"],
+    [69, "Cabasa"],
+    [70, "Maracas"],
+    [71, "Short Whistle"],
+    [72, "Long Whistle"],
+    [73, "Short Guiro"],
+    [74, "Long Guiro"],
+    [75, "Claves"],
+    [76, "High Wood Block"],
+    [77, "Low Wood Block"],
+    [78, "Mute Cuica"],
+    [79, "Open Cuica"],
+    [80, "Mute Triangle"],
+    [81, "Open Triangle"],
+    [82, "Shaker(GM2)"],
+    [83, "Jingle Bell(GM2)"],
+    [84, "Belltree(GM2)"],
+    [85, "Castanets(GM2)"],
+    [86, "Mute Surdo(GM2)"],
+    [87, "Open Surdo(GM2)"]
+  ]);
+  var MIDI_NOTE_RANGES = [
+    { instrNr: 40, nrL2: -1, subNrL2: -1, label: "Violin", min: 55, max: 103 },
+    { instrNr: 41, nrL2: -1, subNrL2: -1, label: "Viola", min: 48, max: 91 },
+    { instrNr: 42, nrL2: -1, subNrL2: -1, label: "Cello", min: 36, max: 76 },
+    { instrNr: -1, nrL2: -1, subNrL2: -1, label: "Double Bass", min: 28, max: 67 },
+    { instrNr: -1, nrL2: -1, subNrL2: -1, label: "Bass Guitar", min: 28, max: 67 },
+    { instrNr: -1, nrL2: -1, subNrL2: -1, label: "Acoustic Guitar", min: 40, max: 88 },
+    { instrNr: 58, nrL2: 59, subNrL2: 0, label: "Tuba", min: 28, max: 58 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Bass Trombone", min: 34, max: 67 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "French Horn", min: 34, max: 77 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Trombone", min: 40, max: 72 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Trumpet", min: 55, max: 82 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Piccolo", min: 74, max: 102 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Flute", min: 60, max: 96 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Oboe", min: 58, max: 91 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Alto Flute", min: 55, max: 91 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Cor Anglais (English Horn)", min: 52, max: 81 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Clarinet", min: 50, max: 94 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Bass Clarinet", min: 38, max: 77 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Bassoon", min: 34, max: 75 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Contrabassoon", min: 22, max: 53 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Soprano Recorder", min: 72, max: 98 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Alto Recorder", min: 65, max: 91 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Tenor Recorder", min: 60, max: 86 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Bass Recorder", min: 53, max: 79 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Baritone Sax", min: 36, max: 69 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Tenor Sax", min: 44, max: 76 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Alto Sax", min: 49, max: 81 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Soprano Sax", min: 56, max: 88 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Glockenspiel", min: 79, max: 108 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Xylophone", min: 65, max: 108 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Vibraphone", min: 53, max: 89 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Marimba", min: 45, max: 96 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Bass Marimba", min: 33, max: 81 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Celeste", min: 60, max: 108 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Tubular Bells", min: 60, max: 77 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Timpani", min: 40, max: 55 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Harpsichord", min: 29, max: 89 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Kalimba", min: 60, max: 88 },
+    { instrNr: 0, nrL2: -1, subNrL2: -1, label: "Harp", min: 24, max: 103 }
+  ];
+  for (const note2 of MIDI_NOTES) {
+    MidiNoteByPitch.set(note2.pitch, note2);
+    MidiNoteByLabel.set(note2.label, note2);
   }
-
   for (const instrument of MIDI_INSTRUMENTS) {
     MidiInstrumentByNumber.set(instrument.number, instrument);
   }
-
   for (const instrument of MIDI_INSTRUMENTS_LEV2) {
     const key = `${instrument.number}-${instrument.subnumber}`;
     MidiInstrumentByNumberLev2.set(key, instrument);
   }
 
-  var Midi = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    getMidiNoteByNr: getMidiNoteByNr,
-    getMidiNoteByLabel: getMidiNoteByLabel,
-    getMidiNoteByNameAndOctave: getMidiNoteByNameAndOctave,
-    getMidiInstrumentByNr: getMidiInstrumentByNr,
-    getMidiInstrumentByNrL2: getMidiInstrumentByNrL2,
-    getMidiDrumNoteByNr: getMidiDrumNoteByNr,
-    isSharp: isSharp,
-    getNoteNameFromNoteNr: getNoteNameFromNoteNr,
-    flatToSharp: flatToSharp,
-    sharpToFlat: sharpToFlat,
-    NOTE_NAMES: NOTE_NAMES,
-    NOTE_NAMES_FLAT: NOTE_NAMES_FLAT,
-    MIDI_NOTES: MIDI_NOTES,
-    SHARPS: SHARPS,
-    MIDI_COMMANDS: MIDI_COMMANDS,
-    MIDI_NOTE_RANGES: MIDI_NOTE_RANGES
-  });
-
-  /**
-   * Note class that reflects MIDI properties but has
-   * absolute start and end times in seconds.
-   */
-
-  class Note {
-    /**
-       * Creates a new Note. Note.from() is preferred over using the constructor.
-       *
-       * @param {number} pitch pitch
-       * @param {number} start start time in seconds
-       * @param {number} velocity velocity
-       * @param {number} channel MIDI channel
-       * @param {number} end end time in seconds
-       */
-    constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null) {
-      // Get note name, e.g. C#4
+  // src/types/Note.js
+  var Note = class {
+    constructor(pitch = 0, start2 = 0, velocity = 127, channel = 0, end = null) {
       if (pitch < 0 || pitch > 127) {
         throw new Error(`Invalid pitch ${pitch}`);
       }
-
       try {
         this.name = getMidiNoteByNr(pitch).label;
       } catch {
         throw new Error(`Invalid pitch ${pitch}`);
       }
-
       this.pitch = pitch;
-      this.start = start;
+      this.start = start2;
       this.velocity = velocity;
       this.channel = channel;
-      this.end = end; // TODO: breaks tests
-      // const duration = end - start;
-      // this.duration = Number.isNaN(duration) ? null : duration;
+      this.end = end;
     }
-    /**
-       * Creates a Note object from an object via destructuring.
-       * Use either 'end' or 'duration', if both are specified, end will be used.
-       *
-       * @example <caption>Using end</caption>
-       *  const n = Note.from({
-       *      pitch: 'C#4',     // e.g. 12 or C#4
-       *      start: 0.5,       // start time in seconds
-       *      end: 1.5,         // end time in seconds
-       *      velocity: 127,    // MIDI velocity
-       *      channel: 0,       // MIDI channel
-       *  });
-       * @example <caption>Using duration</caption>
-       *  const n = Note.from({
-       *      pitch: 'C#4',
-       *      start: 0.5,
-       *      duration: 1.2,
-       *  });
-       * @param {object} object object with at least {pitch}
-       * @param {number|string} object.pitch e.G. 12 or C#4
-       * @param {number} object.start start time in seconds
-       * @param {number} object.end end time in seconds
-       * @param {number} object.duration duration in seconds
-       * @param {number} object.velocity MIDI velocity
-       * @param {number} object.channel MIDI channel
-       * @returns {Note} new note
-       * @throws {Error} when pitch is invalid
-       */
-
-
     static from(object) {
       let {
         pitch = 0,
-        start = 0,
+        start: start2 = 0,
         velocity = 127,
         channel = 0,
         end = null,
         duration = null
-      } = object; // Pitch can either be a number or a string
-
-      if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
-        const note = getMidiNoteByLabel(pitch);
-
-        if (note === null || note === undefined) {
-          throw new Error('Invalid pitch for Note.from()');
+      } = object;
+      if (typeof pitch === "string" && Number.isNaN(+pitch)) {
+        const note2 = getMidiNoteByLabel(pitch);
+        if (note2 === null || note2 === void 0) {
+          throw new Error("Invalid pitch for Note.from()");
         }
-
-        pitch = note.pitch;
-      } // Use either end or duration
-
-
-      if ((end === undefined || end === null) && duration !== null && !Number.isNaN(duration)) {
-        end = start + duration;
+        pitch = note2.pitch;
       }
-
-      return new Note(pitch, start, velocity, channel, end);
+      if ((end === void 0 || end === null) && duration !== null && !Number.isNaN(duration)) {
+        end = start2 + duration;
+      }
+      return new Note(pitch, start2, velocity, channel, end);
     }
-    /**
-       * Returns a copy of the Note object
-       *
-       * @returns {Note} new note
-       */
-
-
     clone() {
       return new Note(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
-    /**
-       * Returns the duration of this note in seconds
-       *
-       * @returns {number} note duration
-       */
-
-
     getDuration() {
       if (this.end === null) {
         return 0;
       }
-
       return this.end - this.start;
     }
-    /**
-       * Returns the note's name and octave, e.g. 'C#3'
-       *
-       * @returns {string} note name as string
-       */
-
-
     getName() {
       return this.name;
     }
-    /**
-       * Returns the note's name WITHOUT the octave, e.g. 'C#'
-       *
-       * @returns {string} note name as string
-       */
-
-
     getLetter() {
       return getMidiNoteByNr(this.pitch).name;
     }
-    /**
-       * Returns the note's octave
-       *
-       * @returns {number} the note's octave
-       */
-
-
     getOctave() {
       return getMidiNoteByNr(this.pitch).octave;
     }
-    /**
-       * Returns a new Note where start and end are multiplied by factor
-       *
-       * @param {number} addedSeconds seconds to be added to start and end
-       * @returns {Note} new note
-       */
-
-
     shiftTime(addedSeconds) {
       const n = this.clone();
       n.start += addedSeconds;
       n.end = n.end === null ? null : n.end + addedSeconds;
       return n;
     }
-    /**
-       * Returns a new Note where start and end are multiplied by factor
-       *
-       * @param {number} factor factor to scale start and end with
-       * @returns {Note} new note
-       */
-
-
     scaleTime(factor) {
       const n = this.clone();
       n.start *= factor;
       n.end = n.end === null ? null : n.end * factor;
       return n;
     }
-    /**
-       * Returns true, if this Note and otherNote overlap in time.
-       *
-       * @param {Note} otherNote another Note
-       * @returns {boolean} true if they overlap
-       */
-
-
     overlapsInTime(otherNote) {
       return this.start >= otherNote.start && this.start <= otherNote.end || this.end >= otherNote.start && this.end <= otherNote.end;
     }
-    /**
-       * Returns the amount of seconds this Note and otherNote overlap in time.
-       *
-       * @param {Note} otherNote another Note
-       * @returns {number} seconds of overlap
-       */
-
-
     overlapInSeconds(otherNote) {
       if (!this.overlapsInTime(otherNote)) {
         return 0;
       }
-
       const laterStart = Math.max(this.start, otherNote.start);
       const earlierEnd = Math.min(this.end, otherNote.end);
       return earlierEnd - laterStart;
     }
-    /**
-       * Returns true if this note and otherNote have equal attributes.
-       *
-       * @param {Note} otherNote another Note
-       * @returns {boolean} true if equal
-       */
-
-
     equals(otherNote) {
       if (!(otherNote instanceof Note)) {
         return false;
       }
-
       return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end;
     }
-    /**
-       * Human-readable string representation of this Note
-       *
-       * @param {boolean} short if true, attribute names will be shortened
-       * @returns {string} string representation
-       */
-
-
     toString(short = false) {
       if (short) {
         return `Note(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel})`;
       }
-
       return `Note(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel})`;
     }
+  };
+  var Note_default = Note;
 
-  }
-
-  /**
-   * Guitar note class that reflects MIDI properties but has
-   * absolute start and end times in seconds and
-   * information on how to play it.
-   *
-   * @augments Note
-   */
-
-  class GuitarNote extends Note {
-    /**
-       * Creates a new Note
-       *
-       * @param {number} pitch pitch
-       * @param {number} start start time in seconds
-       * @param {number} velocity velocity
-       * @param {number} channel MIDI channel
-       * @param {number} end end time in seconds
-       * @param {number} string guitar string
-       * @param {number} fret guitar fret
-       */
-    constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null, // This is different to the base Note class
-    string = null, fret = null) {
-      super(pitch, start, velocity, channel, end);
+  // src/types/GuitarNote.js
+  var GuitarNote = class extends Note_default {
+    constructor(pitch = 0, start2 = 0, velocity = 127, channel = 0, end = null, string = null, fret = null) {
+      super(pitch, start2, velocity, channel, end);
       this.string = string;
       this.fret = fret;
     }
-    /**
-       * Creates a GuitarNote object from an object via destructuring
-       *
-       * @param {object} object object with at least {pitch}
-       *  {
-       *      pitch: number|string    e.g. 12 or C#4
-       *      start: number           start time in seconds
-       *      end: number             end time in seconds
-       *      velocity: number        MIDI velocity
-       *      channel: number         MIDI channel
-       *      string: number          guitar string
-       *      fret: number            guitar fret
-       *  }
-       * @returns {GuitarNote} new note
-       * @throws {Error} when pitch is invalid
-       */
-
-
     static from(object) {
       let {
         pitch = 0,
-        start = 0,
+        start: start2 = 0,
         velocity = 127,
         channel = 0,
         end = null,
-        // This is different to the base Note class
         string = null,
         fret = null
       } = object;
-
-      if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
-        const note = getMidiNoteByLabel(pitch);
-
-        if (note === null || note === undefined) {
-          throw new Error('Invalid pitch for GuitarNote.from()');
+      if (typeof pitch === "string" && Number.isNaN(+pitch)) {
+        const note2 = getMidiNoteByLabel(pitch);
+        if (note2 === null || note2 === void 0) {
+          throw new Error("Invalid pitch for GuitarNote.from()");
         }
-
-        pitch = note.pitch;
+        pitch = note2.pitch;
       }
-
-      return new GuitarNote(pitch, start, velocity, channel, end, string, fret);
+      return new GuitarNote(pitch, start2, velocity, channel, end, string, fret);
     }
-    /**
-       * Converts a Note to a GuitarNote
-       *
-       * @param {Note} note note
-       * @param {number} string string
-       * @param {number} fret fret
-       * @returns {GuitarNote} guitar note
-       */
-
-
-    static fromNote(note, string, fret) {
-      return new GuitarNote(note.pitch, note.start, note.velocity, note.channel, note.end, string, fret);
+    static fromNote(note2, string, fret) {
+      return new GuitarNote(note2.pitch, note2.start, note2.velocity, note2.channel, note2.end, string, fret);
     }
-    /**
-       * Simplifies the GuitarNote to a Note
-       *
-       * @returns {Note} note
-       */
-
-
     toNote() {
-      return new Note(this.pitch, this.start, this.velocity, this.channel, this.end);
+      return new Note_default(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
-    /**
-       * Returns a copy of the Note object
-       *
-       * @returns {GuitarNote} new note
-       */
-
-
     clone() {
-      return new GuitarNote(this.pitch, this.start, this.velocity, this.channel, this.end, // This is different to the base Note class
-      this.string, this.fret);
+      return new GuitarNote(this.pitch, this.start, this.velocity, this.channel, this.end, this.string, this.fret);
     }
-    /**
-       * Returns true if this note and otherNote have equal attributes.
-       *
-       * @param {GuitarNote} otherNote another GuitarNote
-       * @returns {boolean} true if equal
-       */
-
-
     equals(otherNote) {
       if (!(otherNote instanceof GuitarNote)) {
         return false;
       }
-
-      return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end && // This is different to the base Note class
-      this.string === otherNote.string && this.fret === otherNote.fret;
+      return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end && this.string === otherNote.string && this.fret === otherNote.fret;
     }
-    /**
-       * Human-readable string representation of this GuitarNote
-       *
-       * @param {boolean} short if true, attribute names will be shortened
-       * @returns {string} string representation
-       */
-
-
     toString(short = false) {
       if (short) {
         return `GuitarNote(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, s: ${this.string}, f: ${this.fret})`;
       }
-
       return `GuitarNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, string: ${this.string}, fret: ${this.fret})`;
     }
+  };
+  var GuitarNote_default = GuitarNote;
 
-  }
-
-  /**
-   * Harmonica note class that reflects MIDI properties but has
-   * absolute start and end times in seconds and
-   * information on how to play it.
-   *
-   * @augments Note
-   */
-
-  class HarmonicaNote extends Note {
-    /**
-       * Creates a new Note
-       *
-       * @param {number} pitch pitch
-       * @param {number} start start time in seconds
-       * @param {number} velocity velocity
-       * @param {number} channel MIDI channel
-       * @param {number} end end time in seconds
-       * @param {number} hole harmonica hole
-       * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
-       */
-    constructor(pitch = 0, start = 0, velocity = 127, channel = 0, end = null, // This is different to the base Note class
-    hole = null, instruction = null) {
-      super(pitch, start, velocity, channel, end);
+  // src/types/HarmonicaNote.js
+  var HarmonicaNote = class extends Note_default {
+    constructor(pitch = 0, start2 = 0, velocity = 127, channel = 0, end = null, hole = null, instruction = null) {
+      super(pitch, start2, velocity, channel, end);
       this.hole = hole;
       this.instruction = instruction;
     }
-    /**
-       * Creates a HarmonicaNote object from an object via destructuring
-       *
-       * @param {object} object object with at least {pitch}
-       *  {
-       *      pitch: number|string    e.g. 12 or C#4
-       *      start: number           start time in seconds
-       *      end: number             end time in seconds
-       *      velocity: number        MIDI velocity
-       *      channel: number         MIDI channel
-       *      hole: number            harmonica hole
-       *      instruction: string     instruction, e.g., blow or draw
-       *  }
-       * @returns {HarmonicaNote} new note
-       * @throws {Error} when pitch is invalid
-       */
-
-
     static from(object) {
       let {
         pitch = 0,
-        start = 0,
+        start: start2 = 0,
         velocity = 127,
         channel = 0,
         end = null,
-        // This is different to the base Note class
         hole = null,
         instruction = null
       } = object;
-
-      if (typeof pitch === 'string' && Number.isNaN(+pitch)) {
-        const note = getMidiNoteByLabel(pitch);
-
-        if (note === null || note === undefined) {
-          throw new Error('Invalid pitch for HarmonicaNote.from()');
+      if (typeof pitch === "string" && Number.isNaN(+pitch)) {
+        const note2 = getMidiNoteByLabel(pitch);
+        if (note2 === null || note2 === void 0) {
+          throw new Error("Invalid pitch for HarmonicaNote.from()");
         }
-
-        pitch = note.pitch;
+        pitch = note2.pitch;
       }
-
-      return new HarmonicaNote(pitch, start, velocity, channel, end, hole, instruction);
+      return new HarmonicaNote(pitch, start2, velocity, channel, end, hole, instruction);
     }
-    /**
-       * Converts a Note to a Harmonica
-       *
-       * @param {Note} note note
-       * @param {number} hole harmonica hole
-       * @param {'blow'|'draw'|'bend'|'overblow'} instruction instruction, e.g., blow or draw
-       * @returns {HarmonicaNote} harmonica note
-       */
-
-
-    static fromNote(note, hole, instruction) {
-      return new HarmonicaNote(note.pitch, note.start, note.velocity, note.channel, note.end, hole, instruction);
+    static fromNote(note2, hole, instruction) {
+      return new HarmonicaNote(note2.pitch, note2.start, note2.velocity, note2.channel, note2.end, hole, instruction);
     }
-    /**
-       * Simplifies the HarmonicaNote to a Note
-       *
-       * @returns {Note} note
-       */
-
-
     toNote() {
-      return new Note(this.pitch, this.start, this.velocity, this.channel, this.end);
+      return new Note_default(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
-    /**
-       * Returns a copy of the Note object
-       *
-       * @returns {GuitarNote} new note
-       */
-
-
     clone() {
-      return new HarmonicaNote(this.pitch, this.start, this.velocity, this.channel, this.end, // This is different to the base Note class
-      this.hole, this.instruction);
+      return new HarmonicaNote(this.pitch, this.start, this.velocity, this.channel, this.end, this.hole, this.instruction);
     }
-    /**
-       * Returns true if this note and otherNote have equal attributes.
-       *
-       * @param {GuitarNote} otherNote another GuitarNote
-       * @returns {boolean} true if equal
-       */
-
-
     equals(otherNote) {
       if (!(otherNote instanceof HarmonicaNote)) {
         return false;
       }
-
-      return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end && // This is different to the base Note class
-      this.hole === otherNote.hole && this.instruction === otherNote.instruction;
+      return this.pitch === otherNote.pitch && this.start === otherNote.start && this.velocity === otherNote.velocity && this.channel === otherNote.channel && this.end === otherNote.end && this.hole === otherNote.hole && this.instruction === otherNote.instruction;
     }
-    /**
-       * Human-readable string representation of this HarmonicaNote
-       *
-       * @param {boolean} short if true, attribute names will be shortened
-       * @returns {string} string representation
-       */
-
-
     toString(short = false) {
       if (short) {
         return `HarmonicaNote(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel}, h: ${this.hole}, i: ${this.instruction})`;
       }
-
       return `HarmonicaNote(name: ${this.name}, pitch: ${this.pitch}, start: ${this.start}, end: ${this.end}, velocity: ${this.velocity}, channel: ${this.channel}, hole: ${this.hole}, instruction: ${this.instruction})`;
     }
+  };
+  var HarmonicaNote_default = HarmonicaNote;
 
-  }
-
-  function ascending (a, b) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/ascending.js
+  function ascending_default(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
-  function bisector (f) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/bisector.js
+  function bisector_default(f) {
     let delta = f;
     let compare = f;
-
     if (f.length === 1) {
       delta = (d, x) => f(d) - x;
-
       compare = ascendingComparator(f);
     }
-
     function left(a, x, lo, hi) {
-      if (lo == null) lo = 0;
-      if (hi == null) hi = a.length;
-
+      if (lo == null)
+        lo = 0;
+      if (hi == null)
+        hi = a.length;
       while (lo < hi) {
         const mid = lo + hi >>> 1;
-        if (compare(a[mid], x) < 0) lo = mid + 1;else hi = mid;
+        if (compare(a[mid], x) < 0)
+          lo = mid + 1;
+        else
+          hi = mid;
       }
-
       return lo;
     }
-
     function right(a, x, lo, hi) {
-      if (lo == null) lo = 0;
-      if (hi == null) hi = a.length;
-
+      if (lo == null)
+        lo = 0;
+      if (hi == null)
+        hi = a.length;
       while (lo < hi) {
         const mid = lo + hi >>> 1;
-        if (compare(a[mid], x) > 0) hi = mid;else lo = mid + 1;
+        if (compare(a[mid], x) > 0)
+          hi = mid;
+        else
+          lo = mid + 1;
       }
-
       return lo;
     }
-
     function center(a, x, lo, hi) {
-      if (lo == null) lo = 0;
-      if (hi == null) hi = a.length;
+      if (lo == null)
+        lo = 0;
+      if (hi == null)
+        hi = a.length;
       const i = left(a, x, lo, hi - 1);
       return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
     }
-
-    return {
-      left,
-      center,
-      right
-    };
+    return { left, center, right };
   }
-
   function ascendingComparator(f) {
-    return (d, x) => ascending(f(d), x);
+    return (d, x) => ascending_default(f(d), x);
   }
 
-  function number$1 (x) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/number.js
+  function number_default(x) {
     return x === null ? NaN : +x;
   }
   function* numbers(values, valueof) {
-    if (valueof === undefined) {
+    if (valueof === void 0) {
       for (let value of values) {
         if (value != null && (value = +value) >= value) {
           yield value;
         }
       }
     } else {
-      let index = -1;
-
+      let index16 = -1;
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null && (value = +value) >= value) {
+        if ((value = valueof(value, ++index16, values)) != null && (value = +value) >= value) {
           yield value;
         }
       }
     }
   }
 
-  const ascendingBisect = bisector(ascending);
-  const bisectRight = ascendingBisect.right;
-  bisector(number$1).center;
-  var bisect = bisectRight;
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/bisect.js
+  var ascendingBisect = bisector_default(ascending_default);
+  var bisectRight = ascendingBisect.right;
+  var bisectLeft = ascendingBisect.left;
+  var bisectCenter = bisector_default(number_default).center;
+  var bisect_default = bisectRight;
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/variance.js
   function variance(values, valueof) {
     let count = 0;
     let delta;
-    let mean = 0;
+    let mean2 = 0;
     let sum = 0;
-
-    if (valueof === undefined) {
+    if (valueof === void 0) {
       for (let value of values) {
         if (value != null && (value = +value) >= value) {
-          delta = value - mean;
-          mean += delta / ++count;
-          sum += delta * (value - mean);
+          delta = value - mean2;
+          mean2 += delta / ++count;
+          sum += delta * (value - mean2);
         }
       }
     } else {
-      let index = -1;
-
+      let index16 = -1;
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null && (value = +value) >= value) {
-          delta = value - mean;
-          mean += delta / ++count;
-          sum += delta * (value - mean);
+        if ((value = valueof(value, ++index16, values)) != null && (value = +value) >= value) {
+          delta = value - mean2;
+          mean2 += delta / ++count;
+          sum += delta * (value - mean2);
         }
       }
     }
-
-    if (count > 1) return sum / (count - 1);
+    if (count > 1)
+      return sum / (count - 1);
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/deviation.js
   function deviation(values, valueof) {
     const v = variance(values, valueof);
     return v ? Math.sqrt(v) : v;
   }
 
-  function extent (values, valueof) {
-    let min;
-    let max;
-
-    if (valueof === undefined) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/extent.js
+  function extent_default(values, valueof) {
+    let min3;
+    let max3;
+    if (valueof === void 0) {
       for (const value of values) {
         if (value != null) {
-          if (min === undefined) {
-            if (value >= value) min = max = value;
+          if (min3 === void 0) {
+            if (value >= value)
+              min3 = max3 = value;
           } else {
-            if (min > value) min = value;
-            if (max < value) max = value;
+            if (min3 > value)
+              min3 = value;
+            if (max3 < value)
+              max3 = value;
           }
         }
       }
     } else {
-      let index = -1;
-
+      let index16 = -1;
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null) {
-          if (min === undefined) {
-            if (value >= value) min = max = value;
+        if ((value = valueof(value, ++index16, values)) != null) {
+          if (min3 === void 0) {
+            if (value >= value)
+              min3 = max3 = value;
           } else {
-            if (min > value) min = value;
-            if (max < value) max = value;
+            if (min3 > value)
+              min3 = value;
+            if (max3 < value)
+              max3 = value;
           }
         }
       }
     }
-
-    return [min, max];
+    return [min3, max3];
   }
 
-  class InternMap extends Map {
-    constructor(entries, key = keyof) {
+  // node_modules/.pnpm/internmap@1.0.1/node_modules/internmap/src/index.js
+  var InternMap = class extends Map {
+    constructor(entries4, key = keyof) {
       super();
-      Object.defineProperties(this, {
-        _intern: {
-          value: new Map()
-        },
-        _key: {
-          value: key
-        }
-      });
-      if (entries != null) for (const [key, value] of entries) this.set(key, value);
+      Object.defineProperties(this, { _intern: { value: /* @__PURE__ */ new Map() }, _key: { value: key } });
+      if (entries4 != null)
+        for (const [key2, value] of entries4)
+          this.set(key2, value);
     }
-
     get(key) {
       return super.get(intern_get(this, key));
     }
-
     has(key) {
       return super.has(intern_get(this, key));
     }
-
     set(key, value) {
       return super.set(intern_set(this, key), value);
     }
-
     delete(key) {
       return super.delete(intern_delete(this, key));
     }
-
-  }
-
-  function intern_get({
-    _intern,
-    _key
-  }, value) {
+  };
+  function intern_get({ _intern, _key }, value) {
     const key = _key(value);
-
     return _intern.has(key) ? _intern.get(key) : value;
   }
-
-  function intern_set({
-    _intern,
-    _key
-  }, value) {
+  function intern_set({ _intern, _key }, value) {
     const key = _key(value);
-
-    if (_intern.has(key)) return _intern.get(key);
-
+    if (_intern.has(key))
+      return _intern.get(key);
     _intern.set(key, value);
-
     return value;
   }
-
-  function intern_delete({
-    _intern,
-    _key
-  }, value) {
+  function intern_delete({ _intern, _key }, value) {
     const key = _key(value);
-
     if (_intern.has(key)) {
       value = _intern.get(value);
-
       _intern.delete(key);
     }
-
     return value;
   }
-
   function keyof(value) {
     return value !== null && typeof value === "object" ? value.valueOf() : value;
   }
 
-  function identity$2 (x) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/identity.js
+  function identity_default(x) {
     return x;
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/group.js
   function group(values, ...keys) {
-    return nest(values, identity$2, identity$2, keys);
+    return nest(values, identity_default, identity_default, keys);
   }
-
-  function nest(values, map, reduce, keys) {
-    return function regroup(values, i) {
-      if (i >= keys.length) return reduce(values);
-      const groups = new InternMap();
-      const keyof = keys[i++];
-      let index = -1;
-
-      for (const value of values) {
-        const key = keyof(value, ++index, values);
-        const group = groups.get(key);
-        if (group) group.push(value);else groups.set(key, [value]);
+  function nest(values, map2, reduce, keys) {
+    return function regroup(values2, i) {
+      if (i >= keys.length)
+        return reduce(values2);
+      const groups2 = new InternMap();
+      const keyof2 = keys[i++];
+      let index16 = -1;
+      for (const value of values2) {
+        const key = keyof2(value, ++index16, values2);
+        const group2 = groups2.get(key);
+        if (group2)
+          group2.push(value);
+        else
+          groups2.set(key, [value]);
       }
-
-      for (const [key, values] of groups) {
-        groups.set(key, regroup(values, i));
+      for (const [key, values3] of groups2) {
+        groups2.set(key, regroup(values3, i));
       }
-
-      return map(groups);
+      return map2(groups2);
     }(values, 0);
   }
 
-  var e10 = Math.sqrt(50),
-      e5 = Math.sqrt(10),
-      e2 = Math.sqrt(2);
-  function ticks (start, stop, count) {
-    var reverse,
-        i = -1,
-        n,
-        ticks,
-        step;
-    stop = +stop, start = +start, count = +count;
-    if (start === stop && count > 0) return [start];
-    if (reverse = stop < start) n = start, start = stop, stop = n;
-    if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
-
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/ticks.js
+  var e10 = Math.sqrt(50);
+  var e5 = Math.sqrt(10);
+  var e2 = Math.sqrt(2);
+  function ticks_default(start2, stop, count) {
+    var reverse, i = -1, n, ticks, step;
+    stop = +stop, start2 = +start2, count = +count;
+    if (start2 === stop && count > 0)
+      return [start2];
+    if (reverse = stop < start2)
+      n = start2, start2 = stop, stop = n;
+    if ((step = tickIncrement(start2, stop, count)) === 0 || !isFinite(step))
+      return [];
     if (step > 0) {
-      let r0 = Math.round(start / step),
-          r1 = Math.round(stop / step);
-      if (r0 * step < start) ++r0;
-      if (r1 * step > stop) --r1;
+      let r0 = Math.round(start2 / step), r1 = Math.round(stop / step);
+      if (r0 * step < start2)
+        ++r0;
+      if (r1 * step > stop)
+        --r1;
       ticks = new Array(n = r1 - r0 + 1);
-
-      while (++i < n) ticks[i] = (r0 + i) * step;
+      while (++i < n)
+        ticks[i] = (r0 + i) * step;
     } else {
       step = -step;
-      let r0 = Math.round(start * step),
-          r1 = Math.round(stop * step);
-      if (r0 / step < start) ++r0;
-      if (r1 / step > stop) --r1;
+      let r0 = Math.round(start2 * step), r1 = Math.round(stop * step);
+      if (r0 / step < start2)
+        ++r0;
+      if (r1 / step > stop)
+        --r1;
       ticks = new Array(n = r1 - r0 + 1);
-
-      while (++i < n) ticks[i] = (r0 + i) / step;
+      while (++i < n)
+        ticks[i] = (r0 + i) / step;
     }
-
-    if (reverse) ticks.reverse();
+    if (reverse)
+      ticks.reverse();
     return ticks;
   }
-  function tickIncrement(start, stop, count) {
-    var step = (stop - start) / Math.max(0, count),
-        power = Math.floor(Math.log(step) / Math.LN10),
-        error = step / Math.pow(10, power);
+  function tickIncrement(start2, stop, count) {
+    var step = (stop - start2) / Math.max(0, count), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
     return power >= 0 ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power) : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
   }
-  function tickStep(start, stop, count) {
-    var step0 = Math.abs(stop - start) / Math.max(0, count),
-        step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
-        error = step0 / step1;
-    if (error >= e10) step1 *= 10;else if (error >= e5) step1 *= 5;else if (error >= e2) step1 *= 2;
-    return stop < start ? -step1 : step1;
+  function tickStep(start2, stop, count) {
+    var step0 = Math.abs(stop - start2) / Math.max(0, count), step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)), error = step0 / step1;
+    if (error >= e10)
+      step1 *= 10;
+    else if (error >= e5)
+      step1 *= 5;
+    else if (error >= e2)
+      step1 *= 2;
+    return stop < start2 ? -step1 : step1;
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/max.js
   function max(values, valueof) {
-    let max;
-
-    if (valueof === undefined) {
+    let max3;
+    if (valueof === void 0) {
       for (const value of values) {
-        if (value != null && (max < value || max === undefined && value >= value)) {
-          max = value;
+        if (value != null && (max3 < value || max3 === void 0 && value >= value)) {
+          max3 = value;
         }
       }
     } else {
-      let index = -1;
-
+      let index16 = -1;
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null && (max < value || max === undefined && value >= value)) {
-          max = value;
+        if ((value = valueof(value, ++index16, values)) != null && (max3 < value || max3 === void 0 && value >= value)) {
+          max3 = value;
         }
       }
     }
-
-    return max;
+    return max3;
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/min.js
   function min(values, valueof) {
-    let min;
-
-    if (valueof === undefined) {
+    let min3;
+    if (valueof === void 0) {
       for (const value of values) {
-        if (value != null && (min > value || min === undefined && value >= value)) {
-          min = value;
+        if (value != null && (min3 > value || min3 === void 0 && value >= value)) {
+          min3 = value;
         }
       }
     } else {
-      let index = -1;
-
+      let index16 = -1;
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null && (min > value || min === undefined && value >= value)) {
-          min = value;
+        if ((value = valueof(value, ++index16, values)) != null && (min3 > value || min3 === void 0 && value >= value)) {
+          min3 = value;
         }
       }
     }
-
-    return min;
+    return min3;
   }
 
-  // ISC license, Copyright 2018 Vladimir Agafonkin.
-
-  function quickselect(array, k, left = 0, right = array.length - 1, compare = ascending) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/quickselect.js
+  function quickselect(array, k, left = 0, right = array.length - 1, compare = ascending_default) {
     while (right > left) {
       if (right - left > 600) {
         const n = right - left + 1;
@@ -4013,474 +1683,1264 @@
         const newRight = Math.min(right, Math.floor(k + (n - m) * s / n + sd));
         quickselect(array, k, newLeft, newRight, compare);
       }
-
       const t = array[k];
       let i = left;
       let j = right;
       swap(array, left, k);
-      if (compare(array[right], t) > 0) swap(array, left, right);
-
+      if (compare(array[right], t) > 0)
+        swap(array, left, right);
       while (i < j) {
         swap(array, i, j), ++i, --j;
-
-        while (compare(array[i], t) < 0) ++i;
-
-        while (compare(array[j], t) > 0) --j;
+        while (compare(array[i], t) < 0)
+          ++i;
+        while (compare(array[j], t) > 0)
+          --j;
       }
-
-      if (compare(array[left], t) === 0) swap(array, left, j);else ++j, swap(array, j, right);
-      if (j <= k) left = j + 1;
-      if (k <= j) right = j - 1;
+      if (compare(array[left], t) === 0)
+        swap(array, left, j);
+      else
+        ++j, swap(array, j, right);
+      if (j <= k)
+        left = j + 1;
+      if (k <= j)
+        right = j - 1;
     }
-
     return array;
   }
-
   function swap(array, i, j) {
     const t = array[i];
     array[i] = array[j];
     array[j] = t;
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/quantile.js
   function quantile(values, p, valueof) {
     values = Float64Array.from(numbers(values, valueof));
-    if (!(n = values.length)) return;
-    if ((p = +p) <= 0 || n < 2) return min(values);
-    if (p >= 1) return max(values);
-    var n,
-        i = (n - 1) * p,
-        i0 = Math.floor(i),
-        value0 = max(quickselect(values, i0).subarray(0, i0 + 1)),
-        value1 = min(values.subarray(i0 + 1));
+    if (!(n = values.length))
+      return;
+    if ((p = +p) <= 0 || n < 2)
+      return min(values);
+    if (p >= 1)
+      return max(values);
+    var n, i = (n - 1) * p, i0 = Math.floor(i), value0 = max(quickselect(values, i0).subarray(0, i0 + 1)), value1 = min(values.subarray(i0 + 1));
     return value0 + (value1 - value0) * (i - i0);
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/mean.js
   function mean(values, valueof) {
     let count = 0;
     let sum = 0;
-
-    if (valueof === undefined) {
+    if (valueof === void 0) {
       for (let value of values) {
         if (value != null && (value = +value) >= value) {
           ++count, sum += value;
         }
       }
     } else {
-      let index = -1;
-
+      let index16 = -1;
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null && (value = +value) >= value) {
+        if ((value = valueof(value, ++index16, values)) != null && (value = +value) >= value) {
           ++count, sum += value;
         }
       }
     }
-
-    if (count) return sum / count;
+    if (count)
+      return sum / count;
   }
 
-  function median (values, valueof) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/median.js
+  function median_default(values, valueof) {
     return quantile(values, 0.5, valueof);
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/minIndex.js
   function minIndex(values, valueof) {
-    let min;
-    let minIndex = -1;
-    let index = -1;
-
-    if (valueof === undefined) {
+    let min3;
+    let minIndex2 = -1;
+    let index16 = -1;
+    if (valueof === void 0) {
       for (const value of values) {
-        ++index;
-
-        if (value != null && (min > value || min === undefined && value >= value)) {
-          min = value, minIndex = index;
+        ++index16;
+        if (value != null && (min3 > value || min3 === void 0 && value >= value)) {
+          min3 = value, minIndex2 = index16;
         }
       }
     } else {
       for (let value of values) {
-        if ((value = valueof(value, ++index, values)) != null && (min > value || min === undefined && value >= value)) {
-          min = value, minIndex = index;
+        if ((value = valueof(value, ++index16, values)) != null && (min3 > value || min3 === void 0 && value >= value)) {
+          min3 = value, minIndex2 = index16;
         }
       }
     }
-
-    return minIndex;
+    return minIndex2;
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/difference.js
   function difference(values, ...others) {
     values = new Set(values);
-
     for (const other of others) {
       for (const value of other) {
         values.delete(value);
       }
     }
-
     return values;
   }
 
-  function set$1(values) {
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/set.js
+  function set(values) {
     return values instanceof Set ? values : new Set(values);
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/intersection.js
   function intersection(values, ...others) {
     values = new Set(values);
-    others = others.map(set$1);
-
-    out: for (const value of values) {
-      for (const other of others) {
-        if (!other.has(value)) {
-          values.delete(value);
-          continue out;
+    others = others.map(set);
+    out:
+      for (const value of values) {
+        for (const other of others) {
+          if (!other.has(value)) {
+            values.delete(value);
+            continue out;
+          }
         }
       }
-    }
-
     return values;
   }
 
+  // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/union.js
   function union(...others) {
-    const set = new Set();
-
+    const set4 = /* @__PURE__ */ new Set();
     for (const other of others) {
       for (const o of other) {
-        set.add(o);
+        set4.add(o);
       }
     }
-
-    return set;
+    return set4;
   }
 
-  var noop = {
-    value: () => {}
-  };
-
+  // node_modules/.pnpm/d3-dispatch@2.0.0/node_modules/d3-dispatch/src/dispatch.js
+  var noop = { value: () => {
+  } };
   function dispatch() {
     for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
-      if (!(t = arguments[i] + "") || t in _ || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
+      if (!(t = arguments[i] + "") || t in _ || /[\s.]/.test(t))
+        throw new Error("illegal type: " + t);
       _[t] = [];
     }
-
     return new Dispatch(_);
   }
-
   function Dispatch(_) {
     this._ = _;
   }
-
   function parseTypenames(typenames, types) {
-    return typenames.trim().split(/^|\s+/).map(function (t) {
-      var name = "",
-          i = t.indexOf(".");
-      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
-      if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
-      return {
-        type: t,
-        name: name
-      };
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0)
+        name = t.slice(i + 1), t = t.slice(0, i);
+      if (t && !types.hasOwnProperty(t))
+        throw new Error("unknown type: " + t);
+      return { type: t, name };
     });
   }
-
   Dispatch.prototype = dispatch.prototype = {
     constructor: Dispatch,
-    on: function (typename, callback) {
-      var _ = this._,
-          T = parseTypenames(typename + "", _),
-          t,
-          i = -1,
-          n = T.length; // If no callback was specified, return the callback of the given type and name.
-
+    on: function(typename, callback) {
+      var _ = this._, T = parseTypenames(typename + "", _), t, i = -1, n = T.length;
       if (arguments.length < 2) {
-        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$5(_[t], typename.name))) return t;
-
+        while (++i < n)
+          if ((t = (typename = T[i]).type) && (t = get(_[t], typename.name)))
+            return t;
         return;
-      } // If a type was specified, set the callback for the given type and name.
-      // Otherwise, if a null callback was specified, remove callbacks of the given name.
-
-
-      if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
-
-      while (++i < n) {
-        if (t = (typename = T[i]).type) _[t] = set(_[t], typename.name, callback);else if (callback == null) for (t in _) _[t] = set(_[t], typename.name, null);
       }
-
+      if (callback != null && typeof callback !== "function")
+        throw new Error("invalid callback: " + callback);
+      while (++i < n) {
+        if (t = (typename = T[i]).type)
+          _[t] = set2(_[t], typename.name, callback);
+        else if (callback == null)
+          for (t in _)
+            _[t] = set2(_[t], typename.name, null);
+      }
       return this;
     },
-    copy: function () {
-      var copy = {},
-          _ = this._;
-
-      for (var t in _) copy[t] = _[t].slice();
-
-      return new Dispatch(copy);
+    copy: function() {
+      var copy2 = {}, _ = this._;
+      for (var t in _)
+        copy2[t] = _[t].slice();
+      return new Dispatch(copy2);
     },
-    call: function (type, that) {
-      if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
-      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-
-      for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    call: function(type2, that) {
+      if ((n = arguments.length - 2) > 0)
+        for (var args = new Array(n), i = 0, n, t; i < n; ++i)
+          args[i] = arguments[i + 2];
+      if (!this._.hasOwnProperty(type2))
+        throw new Error("unknown type: " + type2);
+      for (t = this._[type2], i = 0, n = t.length; i < n; ++i)
+        t[i].value.apply(that, args);
     },
-    apply: function (type, that, args) {
-      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-
-      for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    apply: function(type2, that, args) {
+      if (!this._.hasOwnProperty(type2))
+        throw new Error("unknown type: " + type2);
+      for (var t = this._[type2], i = 0, n = t.length; i < n; ++i)
+        t[i].value.apply(that, args);
     }
   };
-
-  function get$5(type, name) {
-    for (var i = 0, n = type.length, c; i < n; ++i) {
-      if ((c = type[i]).name === name) {
-        return c.value;
+  function get(type2, name) {
+    for (var i = 0, n = type2.length, c2; i < n; ++i) {
+      if ((c2 = type2[i]).name === name) {
+        return c2.value;
       }
     }
   }
-
-  function set(type, name, callback) {
-    for (var i = 0, n = type.length; i < n; ++i) {
-      if (type[i].name === name) {
-        type[i] = noop, type = type.slice(0, i).concat(type.slice(i + 1));
+  function set2(type2, name, callback) {
+    for (var i = 0, n = type2.length; i < n; ++i) {
+      if (type2[i].name === name) {
+        type2[i] = noop, type2 = type2.slice(0, i).concat(type2.slice(i + 1));
         break;
       }
     }
+    if (callback != null)
+      type2.push({ name, value: callback });
+    return type2;
+  }
+  var dispatch_default = dispatch;
 
-    if (callback != null) type.push({
-      name: name,
-      value: callback
-    });
-    return type;
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/namespaces.js
+  var xhtml = "http://www.w3.org/1999/xhtml";
+  var namespaces_default = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/namespace.js
+  function namespace_default(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns")
+      name = name.slice(i + 1);
+    return namespaces_default.hasOwnProperty(prefix) ? { space: namespaces_default[prefix], local: name } : name;
   }
 
-  function define (constructor, factory, prototype) {
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/creator.js
+  function creatorInherit(name) {
+    return function() {
+      var document2 = this.ownerDocument, uri = this.namespaceURI;
+      return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name) : document2.createElementNS(uri, name);
+    };
+  }
+  function creatorFixed(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+  function creator_default(name) {
+    var fullname = namespace_default(name);
+    return (fullname.local ? creatorFixed : creatorInherit)(fullname);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selector.js
+  function none() {
+  }
+  function selector_default(selector) {
+    return selector == null ? none : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/select.js
+  function select_default(select) {
+    if (typeof select !== "function")
+      select = selector_default(select);
+    for (var groups2 = this._groups, m = groups2.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group2[i]) && (subnode = select.call(node, node.__data__, i, group2))) {
+          if ("__data__" in node)
+            subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+    return new Selection(subgroups, this._parents);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/array.js
+  function array_default(x) {
+    return typeof x === "object" && "length" in x ? x : Array.from(x);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selectorAll.js
+  function empty() {
+    return [];
+  }
+  function selectorAll_default(selector) {
+    return selector == null ? empty : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/selectAll.js
+  function arrayAll(select) {
+    return function() {
+      var group2 = select.apply(this, arguments);
+      return group2 == null ? [] : array_default(group2);
+    };
+  }
+  function selectAll_default(select) {
+    if (typeof select === "function")
+      select = arrayAll(select);
+    else
+      select = selectorAll_default(select);
+    for (var groups2 = this._groups, m = groups2.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
+        if (node = group2[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group2));
+          parents.push(node);
+        }
+      }
+    }
+    return new Selection(subgroups, parents);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/matcher.js
+  function matcher_default(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+  function childMatcher(selector) {
+    return function(node) {
+      return node.matches(selector);
+    };
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/selectChild.js
+  var find = Array.prototype.find;
+  function childFind(match) {
+    return function() {
+      return find.call(this.children, match);
+    };
+  }
+  function childFirst() {
+    return this.firstElementChild;
+  }
+  function selectChild_default(match) {
+    return this.select(match == null ? childFirst : childFind(typeof match === "function" ? match : childMatcher(match)));
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/selectChildren.js
+  var filter = Array.prototype.filter;
+  function children() {
+    return this.children;
+  }
+  function childrenFilter(match) {
+    return function() {
+      return filter.call(this.children, match);
+    };
+  }
+  function selectChildren_default(match) {
+    return this.selectAll(match == null ? children : childrenFilter(typeof match === "function" ? match : childMatcher(match)));
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/filter.js
+  function filter_default(match) {
+    if (typeof match !== "function")
+      match = matcher_default(match);
+    for (var groups2 = this._groups, m = groups2.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group2[i]) && match.call(node, node.__data__, i, group2)) {
+          subgroup.push(node);
+        }
+      }
+    }
+    return new Selection(subgroups, this._parents);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/sparse.js
+  function sparse_default(update) {
+    return new Array(update.length);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/enter.js
+  function enter_default() {
+    return new Selection(this._enter || this._groups.map(sparse_default), this._parents);
+  }
+  function EnterNode(parent, datum2) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum2;
+  }
+  EnterNode.prototype = {
+    constructor: EnterNode,
+    appendChild: function(child) {
+      return this._parent.insertBefore(child, this._next);
+    },
+    insertBefore: function(child, next) {
+      return this._parent.insertBefore(child, next);
+    },
+    querySelector: function(selector) {
+      return this._parent.querySelector(selector);
+    },
+    querySelectorAll: function(selector) {
+      return this._parent.querySelectorAll(selector);
+    }
+  };
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/constant.js
+  function constant_default(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/data.js
+  function bindIndex(parent, group2, enter, update, exit, data) {
+    var i = 0, node, groupLength = group2.length, dataLength = data.length;
+    for (; i < dataLength; ++i) {
+      if (node = group2[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode(parent, data[i]);
+      }
+    }
+    for (; i < groupLength; ++i) {
+      if (node = group2[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+  function bindKey(parent, group2, enter, update, exit, data, key) {
+    var i, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group2.length, dataLength = data.length, keyValues = new Array(groupLength), keyValue;
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group2[i]) {
+        keyValues[i] = keyValue = key.call(node, node.__data__, i, group2) + "";
+        if (nodeByKeyValue.has(keyValue)) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue.set(keyValue, node);
+        }
+      }
+    }
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = key.call(parent, data[i], i, data) + "";
+      if (node = nodeByKeyValue.get(keyValue)) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue.delete(keyValue);
+      } else {
+        enter[i] = new EnterNode(parent, data[i]);
+      }
+    }
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group2[i]) && nodeByKeyValue.get(keyValues[i]) === node) {
+        exit[i] = node;
+      }
+    }
+  }
+  function datum(node) {
+    return node.__data__;
+  }
+  function data_default(value, key) {
+    if (!arguments.length)
+      return Array.from(this, datum);
+    var bind = key ? bindKey : bindIndex, parents = this._parents, groups2 = this._groups;
+    if (typeof value !== "function")
+      value = constant_default(value);
+    for (var m = groups2.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j], group2 = groups2[j], groupLength = group2.length, data = array_default(value.call(parent, parent && parent.__data__, j, parents)), dataLength = data.length, enterGroup = enter[j] = new Array(dataLength), updateGroup = update[j] = new Array(dataLength), exitGroup = exit[j] = new Array(groupLength);
+      bind(parent, group2, enterGroup, updateGroup, exitGroup, data, key);
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1)
+            i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength)
+            ;
+          previous._next = next || null;
+        }
+      }
+    }
+    update = new Selection(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/exit.js
+  function exit_default() {
+    return new Selection(this._exit || this._groups.map(sparse_default), this._parents);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/join.js
+  function join_default(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null)
+      update = onupdate(update);
+    if (onexit == null)
+      exit.remove();
+    else
+      onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/merge.js
+  function merge_default(selection2) {
+    if (!(selection2 instanceof Selection))
+      throw new Error("invalid merge");
+    for (var groups0 = this._groups, groups1 = selection2._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+    return new Selection(merges, this._parents);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/order.js
+  function order_default() {
+    for (var groups2 = this._groups, j = -1, m = groups2.length; ++j < m; ) {
+      for (var group2 = groups2[j], i = group2.length - 1, next = group2[i], node; --i >= 0; ) {
+        if (node = group2[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4)
+            next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+    return this;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/sort.js
+  function sort_default(compare) {
+    if (!compare)
+      compare = ascending;
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+    for (var groups2 = this._groups, m = groups2.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group2[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+    return new Selection(sortgroups, this._parents).order();
+  }
+  function ascending(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/call.js
+  function call_default() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/nodes.js
+  function nodes_default() {
+    return Array.from(this);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/node.js
+  function node_default() {
+    for (var groups2 = this._groups, j = 0, m = groups2.length; j < m; ++j) {
+      for (var group2 = groups2[j], i = 0, n = group2.length; i < n; ++i) {
+        var node = group2[i];
+        if (node)
+          return node;
+      }
+    }
+    return null;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/size.js
+  function size_default() {
+    let size = 0;
+    for (const node of this)
+      ++size;
+    return size;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/empty.js
+  function empty_default() {
+    return !this.node();
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/each.js
+  function each_default(callback) {
+    for (var groups2 = this._groups, j = 0, m = groups2.length; j < m; ++j) {
+      for (var group2 = groups2[j], i = 0, n = group2.length, node; i < n; ++i) {
+        if (node = group2[i])
+          callback.call(node, node.__data__, i, group2);
+      }
+    }
+    return this;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/attr.js
+  function attrRemove(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+  function attrRemoveNS(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+  function attrConstant(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+  function attrConstantNS(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+  function attrFunction(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null)
+        this.removeAttribute(name);
+      else
+        this.setAttribute(name, v);
+    };
+  }
+  function attrFunctionNS(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null)
+        this.removeAttributeNS(fullname.space, fullname.local);
+      else
+        this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+  function attr_default(name, value) {
+    var fullname = namespace_default(name);
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local ? node.getAttributeNS(fullname.space, fullname.local) : node.getAttribute(fullname);
+    }
+    return this.each((value == null ? fullname.local ? attrRemoveNS : attrRemove : typeof value === "function" ? fullname.local ? attrFunctionNS : attrFunction : fullname.local ? attrConstantNS : attrConstant)(fullname, value));
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/window.js
+  function window_default(node) {
+    return node.ownerDocument && node.ownerDocument.defaultView || node.document && node || node.defaultView;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/style.js
+  function styleRemove(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+  function styleConstant(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+  function styleFunction(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null)
+        this.style.removeProperty(name);
+      else
+        this.style.setProperty(name, v, priority);
+    };
+  }
+  function style_default(name, value, priority) {
+    return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name, value, priority == null ? "" : priority)) : styleValue(this.node(), name);
+  }
+  function styleValue(node, name) {
+    return node.style.getPropertyValue(name) || window_default(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/property.js
+  function propertyRemove(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+  function propertyConstant(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+  function propertyFunction(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null)
+        delete this[name];
+      else
+        this[name] = v;
+    };
+  }
+  function property_default(name, value) {
+    return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name, value)) : this.node()[name];
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/classed.js
+  function classArray(string) {
+    return string.trim().split(/^|\s+/);
+  }
+  function classList(node) {
+    return node.classList || new ClassList(node);
+  }
+  function ClassList(node) {
+    this._node = node;
+    this._names = classArray(node.getAttribute("class") || "");
+  }
+  ClassList.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+  function classedAdd(node, names2) {
+    var list = classList(node), i = -1, n = names2.length;
+    while (++i < n)
+      list.add(names2[i]);
+  }
+  function classedRemove(node, names2) {
+    var list = classList(node), i = -1, n = names2.length;
+    while (++i < n)
+      list.remove(names2[i]);
+  }
+  function classedTrue(names2) {
+    return function() {
+      classedAdd(this, names2);
+    };
+  }
+  function classedFalse(names2) {
+    return function() {
+      classedRemove(this, names2);
+    };
+  }
+  function classedFunction(names2, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names2);
+    };
+  }
+  function classed_default(name, value) {
+    var names2 = classArray(name + "");
+    if (arguments.length < 2) {
+      var list = classList(this.node()), i = -1, n = names2.length;
+      while (++i < n)
+        if (!list.contains(names2[i]))
+          return false;
+      return true;
+    }
+    return this.each((typeof value === "function" ? classedFunction : value ? classedTrue : classedFalse)(names2, value));
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/text.js
+  function textRemove() {
+    this.textContent = "";
+  }
+  function textConstant(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+  function textFunction(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+  function text_default(value) {
+    return arguments.length ? this.each(value == null ? textRemove : (typeof value === "function" ? textFunction : textConstant)(value)) : this.node().textContent;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/html.js
+  function htmlRemove() {
+    this.innerHTML = "";
+  }
+  function htmlConstant(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+  function htmlFunction(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+  function html_default(value) {
+    return arguments.length ? this.each(value == null ? htmlRemove : (typeof value === "function" ? htmlFunction : htmlConstant)(value)) : this.node().innerHTML;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/raise.js
+  function raise() {
+    if (this.nextSibling)
+      this.parentNode.appendChild(this);
+  }
+  function raise_default() {
+    return this.each(raise);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/lower.js
+  function lower() {
+    if (this.previousSibling)
+      this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+  function lower_default() {
+    return this.each(lower);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/append.js
+  function append_default(name) {
+    var create2 = typeof name === "function" ? name : creator_default(name);
+    return this.select(function() {
+      return this.appendChild(create2.apply(this, arguments));
+    });
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/insert.js
+  function constantNull() {
+    return null;
+  }
+  function insert_default(name, before) {
+    var create2 = typeof name === "function" ? name : creator_default(name), select = before == null ? constantNull : typeof before === "function" ? before : selector_default(before);
+    return this.select(function() {
+      return this.insertBefore(create2.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/remove.js
+  function remove() {
+    var parent = this.parentNode;
+    if (parent)
+      parent.removeChild(this);
+  }
+  function remove_default() {
+    return this.each(remove);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/clone.js
+  function selection_cloneShallow() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+  function selection_cloneDeep() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+  function clone_default(deep) {
+    return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/datum.js
+  function datum_default(value) {
+    return arguments.length ? this.property("__data__", value) : this.node().__data__;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/on.js
+  function contextListener(listener) {
+    return function(event) {
+      listener.call(this, event, this.__data__);
+    };
+  }
+  function parseTypenames2(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0)
+        name = t.slice(i + 1), t = t.slice(0, i);
+      return { type: t, name };
+    });
+  }
+  function onRemove(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on)
+        return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.options);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i)
+        on.length = i;
+      else
+        delete this.__on;
+    };
+  }
+  function onAdd(typename, value, options) {
+    return function() {
+      var on = this.__on, o, listener = contextListener(value);
+      if (on)
+        for (var j = 0, m = on.length; j < m; ++j) {
+          if ((o = on[j]).type === typename.type && o.name === typename.name) {
+            this.removeEventListener(o.type, o.listener, o.options);
+            this.addEventListener(o.type, o.listener = listener, o.options = options);
+            o.value = value;
+            return;
+          }
+        }
+      this.addEventListener(typename.type, listener, options);
+      o = { type: typename.type, name: typename.name, value, listener, options };
+      if (!on)
+        this.__on = [o];
+      else
+        on.push(o);
+    };
+  }
+  function on_default(typename, value, options) {
+    var typenames = parseTypenames2(typename + ""), i, n = typenames.length, t;
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on)
+        for (var j = 0, m = on.length, o; j < m; ++j) {
+          for (i = 0, o = on[j]; i < n; ++i) {
+            if ((t = typenames[i]).type === o.type && t.name === o.name) {
+              return o.value;
+            }
+          }
+        }
+      return;
+    }
+    on = value ? onAdd : onRemove;
+    for (i = 0; i < n; ++i)
+      this.each(on(typenames[i], value, options));
+    return this;
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/dispatch.js
+  function dispatchEvent(node, type2, params) {
+    var window2 = window_default(node), event = window2.CustomEvent;
+    if (typeof event === "function") {
+      event = new event(type2, params);
+    } else {
+      event = window2.document.createEvent("Event");
+      if (params)
+        event.initEvent(type2, params.bubbles, params.cancelable), event.detail = params.detail;
+      else
+        event.initEvent(type2, false, false);
+    }
+    node.dispatchEvent(event);
+  }
+  function dispatchConstant(type2, params) {
+    return function() {
+      return dispatchEvent(this, type2, params);
+    };
+  }
+  function dispatchFunction(type2, params) {
+    return function() {
+      return dispatchEvent(this, type2, params.apply(this, arguments));
+    };
+  }
+  function dispatch_default2(type2, params) {
+    return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type2, params));
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/iterator.js
+  function* iterator_default() {
+    for (var groups2 = this._groups, j = 0, m = groups2.length; j < m; ++j) {
+      for (var group2 = groups2[j], i = 0, n = group2.length, node; i < n; ++i) {
+        if (node = group2[i])
+          yield node;
+      }
+    }
+  }
+
+  // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/index.js
+  var root = [null];
+  function Selection(groups2, parents) {
+    this._groups = groups2;
+    this._parents = parents;
+  }
+  function selection() {
+    return new Selection([[document.documentElement]], root);
+  }
+  function selection_selection() {
+    return this;
+  }
+  Selection.prototype = selection.prototype = {
+    constructor: Selection,
+    select: select_default,
+    selectAll: selectAll_default,
+    selectChild: selectChild_default,
+    selectChildren: selectChildren_default,
+    filter: filter_default,
+    data: data_default,
+    enter: enter_default,
+    exit: exit_default,
+    join: join_default,
+    merge: merge_default,
+    selection: selection_selection,
+    order: order_default,
+    sort: sort_default,
+    call: call_default,
+    nodes: nodes_default,
+    node: node_default,
+    size: size_default,
+    empty: empty_default,
+    each: each_default,
+    attr: attr_default,
+    style: style_default,
+    property: property_default,
+    classed: classed_default,
+    text: text_default,
+    html: html_default,
+    raise: raise_default,
+    lower: lower_default,
+    append: append_default,
+    insert: insert_default,
+    remove: remove_default,
+    clone: clone_default,
+    datum: datum_default,
+    on: on_default,
+    dispatch: dispatch_default2,
+    [Symbol.iterator]: iterator_default
+  };
+  var selection_default = selection;
+
+  // node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/src/define.js
+  function define_default(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
   function extend(parent, definition) {
     var prototype = Object.create(parent.prototype);
-
-    for (var key in definition) prototype[key] = definition[key];
-
+    for (var key in definition)
+      prototype[key] = definition[key];
     return prototype;
   }
 
-  function Color() {}
+  // node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/src/color.js
+  function Color() {
+  }
   var darker = 0.7;
   var brighter = 1 / darker;
-  var reI = "\\s*([+-]?\\d+)\\s*",
-      reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-      reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-      reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-      reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-      reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-      reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+  var reI = "\\s*([+-]?\\d+)\\s*";
+  var reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*";
+  var reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*";
+  var reHex = /^#([0-9a-f]{3,8})$/;
+  var reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$");
+  var reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$");
+  var reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$");
+  var reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$");
+  var reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$");
+  var reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
   var named = {
-    aliceblue: 0xf0f8ff,
-    antiquewhite: 0xfaebd7,
-    aqua: 0x00ffff,
-    aquamarine: 0x7fffd4,
-    azure: 0xf0ffff,
-    beige: 0xf5f5dc,
-    bisque: 0xffe4c4,
-    black: 0x000000,
-    blanchedalmond: 0xffebcd,
-    blue: 0x0000ff,
-    blueviolet: 0x8a2be2,
-    brown: 0xa52a2a,
-    burlywood: 0xdeb887,
-    cadetblue: 0x5f9ea0,
-    chartreuse: 0x7fff00,
-    chocolate: 0xd2691e,
-    coral: 0xff7f50,
-    cornflowerblue: 0x6495ed,
-    cornsilk: 0xfff8dc,
-    crimson: 0xdc143c,
-    cyan: 0x00ffff,
-    darkblue: 0x00008b,
-    darkcyan: 0x008b8b,
-    darkgoldenrod: 0xb8860b,
-    darkgray: 0xa9a9a9,
-    darkgreen: 0x006400,
-    darkgrey: 0xa9a9a9,
-    darkkhaki: 0xbdb76b,
-    darkmagenta: 0x8b008b,
-    darkolivegreen: 0x556b2f,
-    darkorange: 0xff8c00,
-    darkorchid: 0x9932cc,
-    darkred: 0x8b0000,
-    darksalmon: 0xe9967a,
-    darkseagreen: 0x8fbc8f,
-    darkslateblue: 0x483d8b,
-    darkslategray: 0x2f4f4f,
-    darkslategrey: 0x2f4f4f,
-    darkturquoise: 0x00ced1,
-    darkviolet: 0x9400d3,
-    deeppink: 0xff1493,
-    deepskyblue: 0x00bfff,
-    dimgray: 0x696969,
-    dimgrey: 0x696969,
-    dodgerblue: 0x1e90ff,
-    firebrick: 0xb22222,
-    floralwhite: 0xfffaf0,
-    forestgreen: 0x228b22,
-    fuchsia: 0xff00ff,
-    gainsboro: 0xdcdcdc,
-    ghostwhite: 0xf8f8ff,
-    gold: 0xffd700,
-    goldenrod: 0xdaa520,
-    gray: 0x808080,
-    green: 0x008000,
-    greenyellow: 0xadff2f,
-    grey: 0x808080,
-    honeydew: 0xf0fff0,
-    hotpink: 0xff69b4,
-    indianred: 0xcd5c5c,
-    indigo: 0x4b0082,
-    ivory: 0xfffff0,
-    khaki: 0xf0e68c,
-    lavender: 0xe6e6fa,
-    lavenderblush: 0xfff0f5,
-    lawngreen: 0x7cfc00,
-    lemonchiffon: 0xfffacd,
-    lightblue: 0xadd8e6,
-    lightcoral: 0xf08080,
-    lightcyan: 0xe0ffff,
-    lightgoldenrodyellow: 0xfafad2,
-    lightgray: 0xd3d3d3,
-    lightgreen: 0x90ee90,
-    lightgrey: 0xd3d3d3,
-    lightpink: 0xffb6c1,
-    lightsalmon: 0xffa07a,
-    lightseagreen: 0x20b2aa,
-    lightskyblue: 0x87cefa,
-    lightslategray: 0x778899,
-    lightslategrey: 0x778899,
-    lightsteelblue: 0xb0c4de,
-    lightyellow: 0xffffe0,
-    lime: 0x00ff00,
-    limegreen: 0x32cd32,
-    linen: 0xfaf0e6,
-    magenta: 0xff00ff,
-    maroon: 0x800000,
-    mediumaquamarine: 0x66cdaa,
-    mediumblue: 0x0000cd,
-    mediumorchid: 0xba55d3,
-    mediumpurple: 0x9370db,
-    mediumseagreen: 0x3cb371,
-    mediumslateblue: 0x7b68ee,
-    mediumspringgreen: 0x00fa9a,
-    mediumturquoise: 0x48d1cc,
-    mediumvioletred: 0xc71585,
-    midnightblue: 0x191970,
-    mintcream: 0xf5fffa,
-    mistyrose: 0xffe4e1,
-    moccasin: 0xffe4b5,
-    navajowhite: 0xffdead,
-    navy: 0x000080,
-    oldlace: 0xfdf5e6,
-    olive: 0x808000,
-    olivedrab: 0x6b8e23,
-    orange: 0xffa500,
-    orangered: 0xff4500,
-    orchid: 0xda70d6,
-    palegoldenrod: 0xeee8aa,
-    palegreen: 0x98fb98,
-    paleturquoise: 0xafeeee,
-    palevioletred: 0xdb7093,
-    papayawhip: 0xffefd5,
-    peachpuff: 0xffdab9,
-    peru: 0xcd853f,
-    pink: 0xffc0cb,
-    plum: 0xdda0dd,
-    powderblue: 0xb0e0e6,
-    purple: 0x800080,
-    rebeccapurple: 0x663399,
-    red: 0xff0000,
-    rosybrown: 0xbc8f8f,
-    royalblue: 0x4169e1,
-    saddlebrown: 0x8b4513,
-    salmon: 0xfa8072,
-    sandybrown: 0xf4a460,
-    seagreen: 0x2e8b57,
-    seashell: 0xfff5ee,
-    sienna: 0xa0522d,
-    silver: 0xc0c0c0,
-    skyblue: 0x87ceeb,
-    slateblue: 0x6a5acd,
-    slategray: 0x708090,
-    slategrey: 0x708090,
-    snow: 0xfffafa,
-    springgreen: 0x00ff7f,
-    steelblue: 0x4682b4,
-    tan: 0xd2b48c,
-    teal: 0x008080,
-    thistle: 0xd8bfd8,
-    tomato: 0xff6347,
-    turquoise: 0x40e0d0,
-    violet: 0xee82ee,
-    wheat: 0xf5deb3,
-    white: 0xffffff,
-    whitesmoke: 0xf5f5f5,
-    yellow: 0xffff00,
-    yellowgreen: 0x9acd32
+    aliceblue: 15792383,
+    antiquewhite: 16444375,
+    aqua: 65535,
+    aquamarine: 8388564,
+    azure: 15794175,
+    beige: 16119260,
+    bisque: 16770244,
+    black: 0,
+    blanchedalmond: 16772045,
+    blue: 255,
+    blueviolet: 9055202,
+    brown: 10824234,
+    burlywood: 14596231,
+    cadetblue: 6266528,
+    chartreuse: 8388352,
+    chocolate: 13789470,
+    coral: 16744272,
+    cornflowerblue: 6591981,
+    cornsilk: 16775388,
+    crimson: 14423100,
+    cyan: 65535,
+    darkblue: 139,
+    darkcyan: 35723,
+    darkgoldenrod: 12092939,
+    darkgray: 11119017,
+    darkgreen: 25600,
+    darkgrey: 11119017,
+    darkkhaki: 12433259,
+    darkmagenta: 9109643,
+    darkolivegreen: 5597999,
+    darkorange: 16747520,
+    darkorchid: 10040012,
+    darkred: 9109504,
+    darksalmon: 15308410,
+    darkseagreen: 9419919,
+    darkslateblue: 4734347,
+    darkslategray: 3100495,
+    darkslategrey: 3100495,
+    darkturquoise: 52945,
+    darkviolet: 9699539,
+    deeppink: 16716947,
+    deepskyblue: 49151,
+    dimgray: 6908265,
+    dimgrey: 6908265,
+    dodgerblue: 2003199,
+    firebrick: 11674146,
+    floralwhite: 16775920,
+    forestgreen: 2263842,
+    fuchsia: 16711935,
+    gainsboro: 14474460,
+    ghostwhite: 16316671,
+    gold: 16766720,
+    goldenrod: 14329120,
+    gray: 8421504,
+    green: 32768,
+    greenyellow: 11403055,
+    grey: 8421504,
+    honeydew: 15794160,
+    hotpink: 16738740,
+    indianred: 13458524,
+    indigo: 4915330,
+    ivory: 16777200,
+    khaki: 15787660,
+    lavender: 15132410,
+    lavenderblush: 16773365,
+    lawngreen: 8190976,
+    lemonchiffon: 16775885,
+    lightblue: 11393254,
+    lightcoral: 15761536,
+    lightcyan: 14745599,
+    lightgoldenrodyellow: 16448210,
+    lightgray: 13882323,
+    lightgreen: 9498256,
+    lightgrey: 13882323,
+    lightpink: 16758465,
+    lightsalmon: 16752762,
+    lightseagreen: 2142890,
+    lightskyblue: 8900346,
+    lightslategray: 7833753,
+    lightslategrey: 7833753,
+    lightsteelblue: 11584734,
+    lightyellow: 16777184,
+    lime: 65280,
+    limegreen: 3329330,
+    linen: 16445670,
+    magenta: 16711935,
+    maroon: 8388608,
+    mediumaquamarine: 6737322,
+    mediumblue: 205,
+    mediumorchid: 12211667,
+    mediumpurple: 9662683,
+    mediumseagreen: 3978097,
+    mediumslateblue: 8087790,
+    mediumspringgreen: 64154,
+    mediumturquoise: 4772300,
+    mediumvioletred: 13047173,
+    midnightblue: 1644912,
+    mintcream: 16121850,
+    mistyrose: 16770273,
+    moccasin: 16770229,
+    navajowhite: 16768685,
+    navy: 128,
+    oldlace: 16643558,
+    olive: 8421376,
+    olivedrab: 7048739,
+    orange: 16753920,
+    orangered: 16729344,
+    orchid: 14315734,
+    palegoldenrod: 15657130,
+    palegreen: 10025880,
+    paleturquoise: 11529966,
+    palevioletred: 14381203,
+    papayawhip: 16773077,
+    peachpuff: 16767673,
+    peru: 13468991,
+    pink: 16761035,
+    plum: 14524637,
+    powderblue: 11591910,
+    purple: 8388736,
+    rebeccapurple: 6697881,
+    red: 16711680,
+    rosybrown: 12357519,
+    royalblue: 4286945,
+    saddlebrown: 9127187,
+    salmon: 16416882,
+    sandybrown: 16032864,
+    seagreen: 3050327,
+    seashell: 16774638,
+    sienna: 10506797,
+    silver: 12632256,
+    skyblue: 8900331,
+    slateblue: 6970061,
+    slategray: 7372944,
+    slategrey: 7372944,
+    snow: 16775930,
+    springgreen: 65407,
+    steelblue: 4620980,
+    tan: 13808780,
+    teal: 32896,
+    thistle: 14204888,
+    tomato: 16737095,
+    turquoise: 4251856,
+    violet: 15631086,
+    wheat: 16113331,
+    white: 16777215,
+    whitesmoke: 16119285,
+    yellow: 16776960,
+    yellowgreen: 10145074
   };
-  define(Color, color, {
-    copy: function (channels) {
+  define_default(Color, color, {
+    copy: function(channels) {
       return Object.assign(new this.constructor(), this, channels);
     },
-    displayable: function () {
+    displayable: function() {
       return this.rgb().displayable();
     },
     hex: color_formatHex,
-    // Deprecated! Use color.formatHex.
     formatHex: color_formatHex,
     formatHsl: color_formatHsl,
     formatRgb: color_formatRgb,
     toString: color_formatRgb
   });
-
   function color_formatHex() {
     return this.rgb().formatHex();
   }
-
   function color_formatHsl() {
     return hslConvert(this).formatHsl();
   }
-
   function color_formatRgb() {
     return this.rgb().formatRgb();
   }
-
-  function color(format) {
+  function color(format2) {
     var m, l;
-    format = (format + "").trim().toLowerCase();
-    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-    : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
-    : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-    : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
-    : null // invalid hex
-    ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-    : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-    : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-    : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-    : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-    : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-    : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-    : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+    format2 = (format2 + "").trim().toLowerCase();
+    return (m = reHex.exec(format2)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) : l === 3 ? new Rgb(m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, (m & 15) << 4 | m & 15, 1) : l === 8 ? rgba(m >> 24 & 255, m >> 16 & 255, m >> 8 & 255, (m & 255) / 255) : l === 4 ? rgba(m >> 12 & 15 | m >> 8 & 240, m >> 8 & 15 | m >> 4 & 240, m >> 4 & 15 | m & 240, ((m & 15) << 4 | m & 15) / 255) : null) : (m = reRgbInteger.exec(format2)) ? new Rgb(m[1], m[2], m[3], 1) : (m = reRgbPercent.exec(format2)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) : (m = reRgbaInteger.exec(format2)) ? rgba(m[1], m[2], m[3], m[4]) : (m = reRgbaPercent.exec(format2)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) : (m = reHslPercent.exec(format2)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) : (m = reHslaPercent.exec(format2)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) : named.hasOwnProperty(format2) ? rgbn(named[format2]) : format2 === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
   }
-
   function rgbn(n) {
-    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    return new Rgb(n >> 16 & 255, n >> 8 & 255, n & 255, 1);
   }
-
   function rgba(r, g, b, a) {
-    if (a <= 0) r = g = b = NaN;
+    if (a <= 0)
+      r = g = b = NaN;
     return new Rgb(r, g, b, a);
   }
-
   function rgbConvert(o) {
-    if (!(o instanceof Color)) o = color(o);
-    if (!o) return new Rgb();
+    if (!(o instanceof Color))
+      o = color(o);
+    if (!o)
+      return new Rgb();
     o = o.rgb();
     return new Rgb(o.r, o.g, o.b, o.opacity);
   }
@@ -4493,144 +2953,129 @@
     this.b = +b;
     this.opacity = +opacity;
   }
-  define(Rgb, rgb, extend(Color, {
-    brighter: function (k) {
+  define_default(Rgb, rgb, extend(Color, {
+    brighter: function(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    darker: function (k) {
+    darker: function(k) {
       k = k == null ? darker : Math.pow(darker, k);
       return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
     },
-    rgb: function () {
+    rgb: function() {
       return this;
     },
-    displayable: function () {
-      return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    displayable: function() {
+      return -0.5 <= this.r && this.r < 255.5 && (-0.5 <= this.g && this.g < 255.5) && (-0.5 <= this.b && this.b < 255.5) && (0 <= this.opacity && this.opacity <= 1);
     },
     hex: rgb_formatHex,
-    // Deprecated! Use color.formatHex.
     formatHex: rgb_formatHex,
     formatRgb: rgb_formatRgb,
     toString: rgb_formatRgb
   }));
-
   function rgb_formatHex() {
     return "#" + hex(this.r) + hex(this.g) + hex(this.b);
   }
-
   function rgb_formatRgb() {
     var a = this.opacity;
     a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
   }
-
   function hex(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
   }
-
   function hsla(h, s, l, a) {
-    if (a <= 0) h = s = l = NaN;else if (l <= 0 || l >= 1) h = s = NaN;else if (s <= 0) h = NaN;
+    if (a <= 0)
+      h = s = l = NaN;
+    else if (l <= 0 || l >= 1)
+      h = s = NaN;
+    else if (s <= 0)
+      h = NaN;
     return new Hsl(h, s, l, a);
   }
-
   function hslConvert(o) {
-    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color)) o = color(o);
-    if (!o) return new Hsl();
-    if (o instanceof Hsl) return o;
+    if (o instanceof Hsl)
+      return new Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color))
+      o = color(o);
+    if (!o)
+      return new Hsl();
+    if (o instanceof Hsl)
+      return o;
     o = o.rgb();
-    var r = o.r / 255,
-        g = o.g / 255,
-        b = o.b / 255,
-        min = Math.min(r, g, b),
-        max = Math.max(r, g, b),
-        h = NaN,
-        s = max - min,
-        l = (max + min) / 2;
-
+    var r = o.r / 255, g = o.g / 255, b = o.b / 255, min3 = Math.min(r, g, b), max3 = Math.max(r, g, b), h = NaN, s = max3 - min3, l = (max3 + min3) / 2;
     if (s) {
-      if (r === max) h = (g - b) / s + (g < b) * 6;else if (g === max) h = (b - r) / s + 2;else h = (r - g) / s + 4;
-      s /= l < 0.5 ? max + min : 2 - max - min;
+      if (r === max3)
+        h = (g - b) / s + (g < b) * 6;
+      else if (g === max3)
+        h = (b - r) / s + 2;
+      else
+        h = (r - g) / s + 4;
+      s /= l < 0.5 ? max3 + min3 : 2 - max3 - min3;
       h *= 60;
     } else {
       s = l > 0 && l < 1 ? 0 : h;
     }
-
     return new Hsl(h, s, l, o.opacity);
   }
   function hsl(h, s, l, opacity) {
     return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
   }
-
   function Hsl(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
-
-  define(Hsl, hsl, extend(Color, {
-    brighter: function (k) {
+  define_default(Hsl, hsl, extend(Color, {
+    brighter: function(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function (k) {
+    darker: function(k) {
       k = k == null ? darker : Math.pow(darker, k);
       return new Hsl(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function () {
-      var h = this.h % 360 + (this.h < 0) * 360,
-          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-          l = this.l,
-          m2 = l + (l < 0.5 ? l : 1 - l) * s,
-          m1 = 2 * l - m2;
+    rgb: function() {
+      var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
       return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
-    displayable: function () {
-      return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    displayable: function() {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && (0 <= this.l && this.l <= 1) && (0 <= this.opacity && this.opacity <= 1);
     },
-    formatHsl: function () {
+    formatHsl: function() {
       var a = this.opacity;
       a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
       return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
     }
   }));
-  /* From FvD 13.37, CSS Color Module Level 3 */
-
   function hsl2rgb(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
   }
 
-  const radians = Math.PI / 180;
-  const degrees = 180 / Math.PI;
+  // node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/src/math.js
+  var radians = Math.PI / 180;
+  var degrees = 180 / Math.PI;
 
-  var A = -0.14861,
-      B = +1.78277,
-      C = -0.29227,
-      D = -0.90649,
-      E = +1.97294,
-      ED = E * D,
-      EB = E * B,
-      BC_DA = B * C - D * A;
-
+  // node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/src/cubehelix.js
+  var A = -0.14861;
+  var B = 1.78277;
+  var C = -0.29227;
+  var D = -0.90649;
+  var E = 1.97294;
+  var ED = E * D;
+  var EB = E * B;
+  var BC_DA = B * C - D * A;
   function cubehelixConvert(o) {
-    if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Rgb)) o = rgbConvert(o);
-    var r = o.r / 255,
-        g = o.g / 255,
-        b = o.b / 255,
-        l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
-        bl = b - l,
-        k = (E * (g - l) - C * bl) / D,
-        s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)),
-        // NaN if l=0 or l=1
-    h = s ? Math.atan2(k, bl) * degrees - 120 : NaN;
+    if (o instanceof Cubehelix)
+      return new Cubehelix(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Rgb))
+      o = rgbConvert(o);
+    var r = o.r / 255, g = o.g / 255, b = o.b / 255, l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB), bl = b - l, k = (E * (g - l) - C * bl) / D, s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), h = s ? Math.atan2(k, bl) * degrees - 120 : NaN;
     return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
   }
-
-  function cubehelix$1(h, s, l, opacity) {
+  function cubehelix(h, s, l, opacity) {
     return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
   }
   function Cubehelix(h, s, l, opacity) {
@@ -4639,306 +3084,1313 @@
     this.l = +l;
     this.opacity = +opacity;
   }
-  define(Cubehelix, cubehelix$1, extend(Color, {
-    brighter: function (k) {
+  define_default(Cubehelix, cubehelix, extend(Color, {
+    brighter: function(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
-    darker: function (k) {
+    darker: function(k) {
       k = k == null ? darker : Math.pow(darker, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
-    rgb: function () {
-      var h = isNaN(this.h) ? 0 : (this.h + 120) * radians,
-          l = +this.l,
-          a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
-          cosh = Math.cos(h),
-          sinh = Math.sin(h);
+    rgb: function() {
+      var h = isNaN(this.h) ? 0 : (this.h + 120) * radians, l = +this.l, a = isNaN(this.s) ? 0 : this.s * l * (1 - l), cosh = Math.cos(h), sinh = Math.sin(h);
       return new Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
     }
   }));
 
-  var constant = (x => () => x);
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/basis.js
+  function basis(t1, v0, v1, v2, v3) {
+    var t2 = t1 * t1, t3 = t2 * t1;
+    return ((1 - 3 * t1 + 3 * t2 - t3) * v0 + (4 - 6 * t2 + 3 * t3) * v1 + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2 + t3 * v3) / 6;
+  }
+  function basis_default(values) {
+    var n = values.length - 1;
+    return function(t) {
+      var i = t <= 0 ? t = 0 : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n), v1 = values[i], v2 = values[i + 1], v0 = i > 0 ? values[i - 1] : 2 * v1 - v2, v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
+      return basis((t - i / n) * n, v0, v1, v2, v3);
+    };
+  }
 
-  function linear$1(a, d) {
-    return function (t) {
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/basisClosed.js
+  function basisClosed_default(values) {
+    var n = values.length;
+    return function(t) {
+      var i = Math.floor(((t %= 1) < 0 ? ++t : t) * n), v0 = values[(i + n - 1) % n], v1 = values[i % n], v2 = values[(i + 1) % n], v3 = values[(i + 2) % n];
+      return basis((t - i / n) * n, v0, v1, v2, v3);
+    };
+  }
+
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/constant.js
+  var constant_default2 = (x) => () => x;
+
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/color.js
+  function linear(a, d) {
+    return function(t) {
       return a + t * d;
     };
   }
-
   function exponential(a, b, y) {
-    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function (t) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
       return Math.pow(a + t * b, y);
     };
   }
-
   function hue(a, b) {
     var d = b - a;
-    return d ? linear$1(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant(isNaN(a) ? b : a);
+    return d ? linear(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant_default2(isNaN(a) ? b : a);
   }
   function gamma(y) {
-    return (y = +y) === 1 ? nogamma : function (a, b) {
-      return b - a ? exponential(a, b, y) : constant(isNaN(a) ? b : a);
+    return (y = +y) === 1 ? nogamma : function(a, b) {
+      return b - a ? exponential(a, b, y) : constant_default2(isNaN(a) ? b : a);
     };
   }
   function nogamma(a, b) {
     var d = b - a;
-    return d ? linear$1(a, d) : constant(isNaN(a) ? b : a);
+    return d ? linear(a, d) : constant_default2(isNaN(a) ? b : a);
   }
 
-  var interpolateRgb = (function rgbGamma(y) {
-    var color = gamma(y);
-
-    function rgb$1(start, end) {
-      var r = color((start = rgb(start)).r, (end = rgb(end)).r),
-          g = color(start.g, end.g),
-          b = color(start.b, end.b),
-          opacity = nogamma(start.opacity, end.opacity);
-      return function (t) {
-        start.r = r(t);
-        start.g = g(t);
-        start.b = b(t);
-        start.opacity = opacity(t);
-        return start + "";
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/rgb.js
+  var rgb_default = function rgbGamma(y) {
+    var color2 = gamma(y);
+    function rgb2(start2, end) {
+      var r = color2((start2 = rgb(start2)).r, (end = rgb(end)).r), g = color2(start2.g, end.g), b = color2(start2.b, end.b), opacity = nogamma(start2.opacity, end.opacity);
+      return function(t) {
+        start2.r = r(t);
+        start2.g = g(t);
+        start2.b = b(t);
+        start2.opacity = opacity(t);
+        return start2 + "";
       };
     }
+    rgb2.gamma = rgbGamma;
+    return rgb2;
+  }(1);
+  function rgbSpline(spline) {
+    return function(colors) {
+      var n = colors.length, r = new Array(n), g = new Array(n), b = new Array(n), i, color2;
+      for (i = 0; i < n; ++i) {
+        color2 = rgb(colors[i]);
+        r[i] = color2.r || 0;
+        g[i] = color2.g || 0;
+        b[i] = color2.b || 0;
+      }
+      r = spline(r);
+      g = spline(g);
+      b = spline(b);
+      color2.opacity = 1;
+      return function(t) {
+        color2.r = r(t);
+        color2.g = g(t);
+        color2.b = b(t);
+        return color2 + "";
+      };
+    };
+  }
+  var rgbBasis = rgbSpline(basis_default);
+  var rgbBasisClosed = rgbSpline(basisClosed_default);
 
-    rgb$1.gamma = rgbGamma;
-    return rgb$1;
-  })(1);
-
-  function numberArray (a, b) {
-    if (!b) b = [];
-    var n = a ? Math.min(b.length, a.length) : 0,
-        c = b.slice(),
-        i;
-    return function (t) {
-      for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
-
-      return c;
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/numberArray.js
+  function numberArray_default(a, b) {
+    if (!b)
+      b = [];
+    var n = a ? Math.min(b.length, a.length) : 0, c2 = b.slice(), i;
+    return function(t) {
+      for (i = 0; i < n; ++i)
+        c2[i] = a[i] * (1 - t) + b[i] * t;
+      return c2;
     };
   }
   function isNumberArray(x) {
     return ArrayBuffer.isView(x) && !(x instanceof DataView);
   }
 
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/array.js
   function genericArray(a, b) {
-    var nb = b ? b.length : 0,
-        na = a ? Math.min(nb, a.length) : 0,
-        x = new Array(na),
-        c = new Array(nb),
-        i;
-
-    for (i = 0; i < na; ++i) x[i] = interpolate(a[i], b[i]);
-
-    for (; i < nb; ++i) c[i] = b[i];
-
-    return function (t) {
-      for (i = 0; i < na; ++i) c[i] = x[i](t);
-
-      return c;
+    var nb = b ? b.length : 0, na = a ? Math.min(nb, a.length) : 0, x = new Array(na), c2 = new Array(nb), i;
+    for (i = 0; i < na; ++i)
+      x[i] = value_default(a[i], b[i]);
+    for (; i < nb; ++i)
+      c2[i] = b[i];
+    return function(t) {
+      for (i = 0; i < na; ++i)
+        c2[i] = x[i](t);
+      return c2;
     };
   }
 
-  function date (a, b) {
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/date.js
+  function date_default(a, b) {
     var d = new Date();
-    return a = +a, b = +b, function (t) {
+    return a = +a, b = +b, function(t) {
       return d.setTime(a * (1 - t) + b * t), d;
     };
   }
 
-  function interpolateNumber (a, b) {
-    return a = +a, b = +b, function (t) {
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/number.js
+  function number_default2(a, b) {
+    return a = +a, b = +b, function(t) {
       return a * (1 - t) + b * t;
     };
   }
 
-  function object (a, b) {
-    var i = {},
-        c = {},
-        k;
-    if (a === null || typeof a !== "object") a = {};
-    if (b === null || typeof b !== "object") b = {};
-
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/object.js
+  function object_default(a, b) {
+    var i = {}, c2 = {}, k;
+    if (a === null || typeof a !== "object")
+      a = {};
+    if (b === null || typeof b !== "object")
+      b = {};
     for (k in b) {
       if (k in a) {
-        i[k] = interpolate(a[k], b[k]);
+        i[k] = value_default(a[k], b[k]);
       } else {
-        c[k] = b[k];
+        c2[k] = b[k];
       }
     }
-
-    return function (t) {
-      for (k in i) c[k] = i[k](t);
-
-      return c;
+    return function(t) {
+      for (k in i)
+        c2[k] = i[k](t);
+      return c2;
     };
   }
 
-  var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-      reB = new RegExp(reA.source, "g");
-
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/string.js
+  var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g;
+  var reB = new RegExp(reA.source, "g");
   function zero(b) {
-    return function () {
+    return function() {
       return b;
     };
   }
-
   function one(b) {
-    return function (t) {
+    return function(t) {
       return b(t) + "";
     };
   }
-
-  function interpolateString (a, b) {
-    var bi = reA.lastIndex = reB.lastIndex = 0,
-        // scan index for next number in b
-    am,
-        // current match in a
-    bm,
-        // current match in b
-    bs,
-        // string preceding current number in b, if any
-    i = -1,
-        // index in s
-    s = [],
-        // string constants and placeholders
-    q = []; // number interpolators
-    // Coerce inputs to strings.
-
-    a = a + "", b = b + ""; // Interpolate pairs of numbers in a & b.
-
+  function string_default(a, b) {
+    var bi = reA.lastIndex = reB.lastIndex = 0, am, bm, bs, i = -1, s = [], q = [];
+    a = a + "", b = b + "";
     while ((am = reA.exec(a)) && (bm = reB.exec(b))) {
       if ((bs = bm.index) > bi) {
-        // a string precedes the next number in b
         bs = b.slice(bi, bs);
-        if (s[i]) s[i] += bs; // coalesce with previous string
-        else s[++i] = bs;
+        if (s[i])
+          s[i] += bs;
+        else
+          s[++i] = bs;
       }
-
       if ((am = am[0]) === (bm = bm[0])) {
-        // numbers in a & b match
-        if (s[i]) s[i] += bm; // coalesce with previous string
-        else s[++i] = bm;
+        if (s[i])
+          s[i] += bm;
+        else
+          s[++i] = bm;
       } else {
-        // interpolate non-matching numbers
         s[++i] = null;
-        q.push({
-          i: i,
-          x: interpolateNumber(am, bm)
-        });
+        q.push({ i, x: number_default2(am, bm) });
       }
-
       bi = reB.lastIndex;
-    } // Add remains of b.
-
-
+    }
     if (bi < b.length) {
       bs = b.slice(bi);
-      if (s[i]) s[i] += bs; // coalesce with previous string
-      else s[++i] = bs;
-    } // Special optimization for only a single match.
-    // Otherwise, interpolate each of the numbers and rejoin the string.
-
-
-    return s.length < 2 ? q[0] ? one(q[0].x) : zero(b) : (b = q.length, function (t) {
-      for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
-
+      if (s[i])
+        s[i] += bs;
+      else
+        s[++i] = bs;
+    }
+    return s.length < 2 ? q[0] ? one(q[0].x) : zero(b) : (b = q.length, function(t) {
+      for (var i2 = 0, o; i2 < b; ++i2)
+        s[(o = q[i2]).i] = o.x(t);
       return s.join("");
     });
   }
 
-  function interpolate (a, b) {
-    var t = typeof b,
-        c;
-    return b == null || t === "boolean" ? constant(b) : (t === "number" ? interpolateNumber : t === "string" ? (c = color(b)) ? (b = c, interpolateRgb) : interpolateString : b instanceof color ? interpolateRgb : b instanceof Date ? date : isNumberArray(b) ? numberArray : Array.isArray(b) ? genericArray : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object : interpolateNumber)(a, b);
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/value.js
+  function value_default(a, b) {
+    var t = typeof b, c2;
+    return b == null || t === "boolean" ? constant_default2(b) : (t === "number" ? number_default2 : t === "string" ? (c2 = color(b)) ? (b = c2, rgb_default) : string_default : b instanceof color ? rgb_default : b instanceof Date ? date_default : isNumberArray(b) ? numberArray_default : Array.isArray(b) ? genericArray : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object_default : number_default2)(a, b);
   }
 
-  function interpolateRound (a, b) {
-    return a = +a, b = +b, function (t) {
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/round.js
+  function round_default(a, b) {
+    return a = +a, b = +b, function(t) {
       return Math.round(a * (1 - t) + b * t);
     };
   }
 
-  function cubehelix(hue) {
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/transform/decompose.js
+  var degrees2 = 180 / Math.PI;
+  var identity = {
+    translateX: 0,
+    translateY: 0,
+    rotate: 0,
+    skewX: 0,
+    scaleX: 1,
+    scaleY: 1
+  };
+  function decompose_default(a, b, c2, d, e, f) {
+    var scaleX, scaleY, skewX;
+    if (scaleX = Math.sqrt(a * a + b * b))
+      a /= scaleX, b /= scaleX;
+    if (skewX = a * c2 + b * d)
+      c2 -= a * skewX, d -= b * skewX;
+    if (scaleY = Math.sqrt(c2 * c2 + d * d))
+      c2 /= scaleY, d /= scaleY, skewX /= scaleY;
+    if (a * d < b * c2)
+      a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
+    return {
+      translateX: e,
+      translateY: f,
+      rotate: Math.atan2(b, a) * degrees2,
+      skewX: Math.atan(skewX) * degrees2,
+      scaleX,
+      scaleY
+    };
+  }
+
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/transform/parse.js
+  var svgNode;
+  function parseCss(value) {
+    const m = new (typeof DOMMatrix === "function" ? DOMMatrix : WebKitCSSMatrix)(value + "");
+    return m.isIdentity ? identity : decompose_default(m.a, m.b, m.c, m.d, m.e, m.f);
+  }
+  function parseSvg(value) {
+    if (value == null)
+      return identity;
+    if (!svgNode)
+      svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svgNode.setAttribute("transform", value);
+    if (!(value = svgNode.transform.baseVal.consolidate()))
+      return identity;
+    value = value.matrix;
+    return decompose_default(value.a, value.b, value.c, value.d, value.e, value.f);
+  }
+
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/transform/index.js
+  function interpolateTransform(parse4, pxComma, pxParen, degParen) {
+    function pop(s) {
+      return s.length ? s.pop() + " " : "";
+    }
+    function translate(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push("translate(", null, pxComma, null, pxParen);
+        q.push({ i: i - 4, x: number_default2(xa, xb) }, { i: i - 2, x: number_default2(ya, yb) });
+      } else if (xb || yb) {
+        s.push("translate(" + xb + pxComma + yb + pxParen);
+      }
+    }
+    function rotate2(a, b, s, q) {
+      if (a !== b) {
+        if (a - b > 180)
+          b += 360;
+        else if (b - a > 180)
+          a += 360;
+        q.push({ i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: number_default2(a, b) });
+      } else if (b) {
+        s.push(pop(s) + "rotate(" + b + degParen);
+      }
+    }
+    function skewX(a, b, s, q) {
+      if (a !== b) {
+        q.push({ i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: number_default2(a, b) });
+      } else if (b) {
+        s.push(pop(s) + "skewX(" + b + degParen);
+      }
+    }
+    function scale2(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push(pop(s) + "scale(", null, ",", null, ")");
+        q.push({ i: i - 4, x: number_default2(xa, xb) }, { i: i - 2, x: number_default2(ya, yb) });
+      } else if (xb !== 1 || yb !== 1) {
+        s.push(pop(s) + "scale(" + xb + "," + yb + ")");
+      }
+    }
+    return function(a, b) {
+      var s = [], q = [];
+      a = parse4(a), b = parse4(b);
+      translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
+      rotate2(a.rotate, b.rotate, s, q);
+      skewX(a.skewX, b.skewX, s, q);
+      scale2(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
+      a = b = null;
+      return function(t) {
+        var i = -1, n = q.length, o;
+        while (++i < n)
+          s[(o = q[i]).i] = o.x(t);
+        return s.join("");
+      };
+    };
+  }
+  var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
+  var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
+
+  // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/src/cubehelix.js
+  function cubehelix2(hue2) {
     return function cubehelixGamma(y) {
       y = +y;
-
-      function cubehelix(start, end) {
-        var h = hue((start = cubehelix$1(start)).h, (end = cubehelix$1(end)).h),
-            s = nogamma(start.s, end.s),
-            l = nogamma(start.l, end.l),
-            opacity = nogamma(start.opacity, end.opacity);
-        return function (t) {
-          start.h = h(t);
-          start.s = s(t);
-          start.l = l(Math.pow(t, y));
-          start.opacity = opacity(t);
-          return start + "";
+      function cubehelix3(start2, end) {
+        var h = hue2((start2 = cubehelix(start2)).h, (end = cubehelix(end)).h), s = nogamma(start2.s, end.s), l = nogamma(start2.l, end.l), opacity = nogamma(start2.opacity, end.opacity);
+        return function(t) {
+          start2.h = h(t);
+          start2.s = s(t);
+          start2.l = l(Math.pow(t, y));
+          start2.opacity = opacity(t);
+          return start2 + "";
         };
       }
-
-      cubehelix.gamma = cubehelixGamma;
-      return cubehelix;
+      cubehelix3.gamma = cubehelixGamma;
+      return cubehelix3;
     }(1);
   }
+  var cubehelix_default = cubehelix2(hue);
+  var cubehelixLong = cubehelix2(nogamma);
 
-  cubehelix(hue);
-  var cubehelixLong = cubehelix(nogamma);
-
-  dispatch("start", "end", "cancel", "interrupt");
-
-  function formatDecimal (x) {
-    return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
-  } // Computes the decimal coefficient and exponent of the specified number x with
-  // significant digits p, where x is positive and p is in [1, 21] or undefined.
-  // For example, formatDecimalParts(1.23) returns ["123", 0].
-
-  function formatDecimalParts(x, p) {
-    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-
-    var i,
-        coefficient = x.slice(0, i); // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-    // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-
-    return [coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient, +x.slice(i + 1)];
+  // node_modules/.pnpm/d3-timer@2.0.0/node_modules/d3-timer/src/timer.js
+  var frame = 0;
+  var timeout = 0;
+  var interval = 0;
+  var pokeDelay = 1e3;
+  var taskHead;
+  var taskTail;
+  var clockLast = 0;
+  var clockNow = 0;
+  var clockSkew = 0;
+  var clock = typeof performance === "object" && performance.now ? performance : Date;
+  var setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) {
+    setTimeout(f, 17);
+  };
+  function now() {
+    return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
+  }
+  function clearNow() {
+    clockNow = 0;
+  }
+  function Timer() {
+    this._call = this._time = this._next = null;
+  }
+  Timer.prototype = timer.prototype = {
+    constructor: Timer,
+    restart: function(callback, delay2, time) {
+      if (typeof callback !== "function")
+        throw new TypeError("callback is not a function");
+      time = (time == null ? now() : +time) + (delay2 == null ? 0 : +delay2);
+      if (!this._next && taskTail !== this) {
+        if (taskTail)
+          taskTail._next = this;
+        else
+          taskHead = this;
+        taskTail = this;
+      }
+      this._call = callback;
+      this._time = time;
+      sleep();
+    },
+    stop: function() {
+      if (this._call) {
+        this._call = null;
+        this._time = Infinity;
+        sleep();
+      }
+    }
+  };
+  function timer(callback, delay2, time) {
+    var t = new Timer();
+    t.restart(callback, delay2, time);
+    return t;
+  }
+  function timerFlush() {
+    now();
+    ++frame;
+    var t = taskHead, e;
+    while (t) {
+      if ((e = clockNow - t._time) >= 0)
+        t._call.call(null, e);
+      t = t._next;
+    }
+    --frame;
+  }
+  function wake() {
+    clockNow = (clockLast = clock.now()) + clockSkew;
+    frame = timeout = 0;
+    try {
+      timerFlush();
+    } finally {
+      frame = 0;
+      nap();
+      clockNow = 0;
+    }
+  }
+  function poke() {
+    var now2 = clock.now(), delay2 = now2 - clockLast;
+    if (delay2 > pokeDelay)
+      clockSkew -= delay2, clockLast = now2;
+  }
+  function nap() {
+    var t0, t1 = taskHead, t2, time = Infinity;
+    while (t1) {
+      if (t1._call) {
+        if (time > t1._time)
+          time = t1._time;
+        t0 = t1, t1 = t1._next;
+      } else {
+        t2 = t1._next, t1._next = null;
+        t1 = t0 ? t0._next = t2 : taskHead = t2;
+      }
+    }
+    taskTail = t0;
+    sleep(time);
+  }
+  function sleep(time) {
+    if (frame)
+      return;
+    if (timeout)
+      timeout = clearTimeout(timeout);
+    var delay2 = time - clockNow;
+    if (delay2 > 24) {
+      if (time < Infinity)
+        timeout = setTimeout(wake, time - clock.now() - clockSkew);
+      if (interval)
+        interval = clearInterval(interval);
+    } else {
+      if (!interval)
+        clockLast = clock.now(), interval = setInterval(poke, pokeDelay);
+      frame = 1, setFrame(wake);
+    }
   }
 
-  function exponent (x) {
+  // node_modules/.pnpm/d3-timer@2.0.0/node_modules/d3-timer/src/timeout.js
+  function timeout_default(callback, delay2, time) {
+    var t = new Timer();
+    delay2 = delay2 == null ? 0 : +delay2;
+    t.restart((elapsed) => {
+      t.stop();
+      callback(elapsed + delay2);
+    }, delay2, time);
+    return t;
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/schedule.js
+  var emptyOn = dispatch_default("start", "end", "cancel", "interrupt");
+  var emptyTween = [];
+  var CREATED = 0;
+  var SCHEDULED = 1;
+  var STARTING = 2;
+  var STARTED = 3;
+  var RUNNING = 4;
+  var ENDING = 5;
+  var ENDED = 6;
+  function schedule_default(node, name, id2, index16, group2, timing) {
+    var schedules = node.__transition;
+    if (!schedules)
+      node.__transition = {};
+    else if (id2 in schedules)
+      return;
+    create(node, id2, {
+      name,
+      index: index16,
+      group: group2,
+      on: emptyOn,
+      tween: emptyTween,
+      time: timing.time,
+      delay: timing.delay,
+      duration: timing.duration,
+      ease: timing.ease,
+      timer: null,
+      state: CREATED
+    });
+  }
+  function init(node, id2) {
+    var schedule = get2(node, id2);
+    if (schedule.state > CREATED)
+      throw new Error("too late; already scheduled");
+    return schedule;
+  }
+  function set3(node, id2) {
+    var schedule = get2(node, id2);
+    if (schedule.state > STARTED)
+      throw new Error("too late; already running");
+    return schedule;
+  }
+  function get2(node, id2) {
+    var schedule = node.__transition;
+    if (!schedule || !(schedule = schedule[id2]))
+      throw new Error("transition not found");
+    return schedule;
+  }
+  function create(node, id2, self2) {
+    var schedules = node.__transition, tween;
+    schedules[id2] = self2;
+    self2.timer = timer(schedule, 0, self2.time);
+    function schedule(elapsed) {
+      self2.state = SCHEDULED;
+      self2.timer.restart(start2, self2.delay, self2.time);
+      if (self2.delay <= elapsed)
+        start2(elapsed - self2.delay);
+    }
+    function start2(elapsed) {
+      var i, j, n, o;
+      if (self2.state !== SCHEDULED)
+        return stop();
+      for (i in schedules) {
+        o = schedules[i];
+        if (o.name !== self2.name)
+          continue;
+        if (o.state === STARTED)
+          return timeout_default(start2);
+        if (o.state === RUNNING) {
+          o.state = ENDED;
+          o.timer.stop();
+          o.on.call("interrupt", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        } else if (+i < id2) {
+          o.state = ENDED;
+          o.timer.stop();
+          o.on.call("cancel", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+      }
+      timeout_default(function() {
+        if (self2.state === STARTED) {
+          self2.state = RUNNING;
+          self2.timer.restart(tick, self2.delay, self2.time);
+          tick(elapsed);
+        }
+      });
+      self2.state = STARTING;
+      self2.on.call("start", node, node.__data__, self2.index, self2.group);
+      if (self2.state !== STARTING)
+        return;
+      self2.state = STARTED;
+      tween = new Array(n = self2.tween.length);
+      for (i = 0, j = -1; i < n; ++i) {
+        if (o = self2.tween[i].value.call(node, node.__data__, self2.index, self2.group)) {
+          tween[++j] = o;
+        }
+      }
+      tween.length = j + 1;
+    }
+    function tick(elapsed) {
+      var t = elapsed < self2.duration ? self2.ease.call(null, elapsed / self2.duration) : (self2.timer.restart(stop), self2.state = ENDING, 1), i = -1, n = tween.length;
+      while (++i < n) {
+        tween[i].call(node, t);
+      }
+      if (self2.state === ENDING) {
+        self2.on.call("end", node, node.__data__, self2.index, self2.group);
+        stop();
+      }
+    }
+    function stop() {
+      self2.state = ENDED;
+      self2.timer.stop();
+      delete schedules[id2];
+      for (var i in schedules)
+        return;
+      delete node.__transition;
+    }
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/interrupt.js
+  function interrupt_default(node, name) {
+    var schedules = node.__transition, schedule, active, empty2 = true, i;
+    if (!schedules)
+      return;
+    name = name == null ? null : name + "";
+    for (i in schedules) {
+      if ((schedule = schedules[i]).name !== name) {
+        empty2 = false;
+        continue;
+      }
+      active = schedule.state > STARTING && schedule.state < ENDING;
+      schedule.state = ENDED;
+      schedule.timer.stop();
+      schedule.on.call(active ? "interrupt" : "cancel", node, node.__data__, schedule.index, schedule.group);
+      delete schedules[i];
+    }
+    if (empty2)
+      delete node.__transition;
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/interrupt.js
+  function interrupt_default2(name) {
+    return this.each(function() {
+      interrupt_default(this, name);
+    });
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/tween.js
+  function tweenRemove(id2, name) {
+    var tween0, tween1;
+    return function() {
+      var schedule = set3(this, id2), tween = schedule.tween;
+      if (tween !== tween0) {
+        tween1 = tween0 = tween;
+        for (var i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1 = tween1.slice();
+            tween1.splice(i, 1);
+            break;
+          }
+        }
+      }
+      schedule.tween = tween1;
+    };
+  }
+  function tweenFunction(id2, name, value) {
+    var tween0, tween1;
+    if (typeof value !== "function")
+      throw new Error();
+    return function() {
+      var schedule = set3(this, id2), tween = schedule.tween;
+      if (tween !== tween0) {
+        tween1 = (tween0 = tween).slice();
+        for (var t = { name, value }, i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1[i] = t;
+            break;
+          }
+        }
+        if (i === n)
+          tween1.push(t);
+      }
+      schedule.tween = tween1;
+    };
+  }
+  function tween_default(name, value) {
+    var id2 = this._id;
+    name += "";
+    if (arguments.length < 2) {
+      var tween = get2(this.node(), id2).tween;
+      for (var i = 0, n = tween.length, t; i < n; ++i) {
+        if ((t = tween[i]).name === name) {
+          return t.value;
+        }
+      }
+      return null;
+    }
+    return this.each((value == null ? tweenRemove : tweenFunction)(id2, name, value));
+  }
+  function tweenValue(transition2, name, value) {
+    var id2 = transition2._id;
+    transition2.each(function() {
+      var schedule = set3(this, id2);
+      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+    });
+    return function(node) {
+      return get2(node, id2).value[name];
+    };
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/interpolate.js
+  function interpolate_default(a, b) {
+    var c2;
+    return (typeof b === "number" ? number_default2 : b instanceof color ? rgb_default : (c2 = color(b)) ? (b = c2, rgb_default) : string_default)(a, b);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/attr.js
+  function attrRemove2(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+  function attrRemoveNS2(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+  function attrConstant2(name, interpolate, value1) {
+    var string00, string1 = value1 + "", interpolate0;
+    return function() {
+      var string0 = this.getAttribute(name);
+      return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+  function attrConstantNS2(fullname, interpolate, value1) {
+    var string00, string1 = value1 + "", interpolate0;
+    return function() {
+      var string0 = this.getAttributeNS(fullname.space, fullname.local);
+      return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+  function attrFunction2(name, interpolate, value) {
+    var string00, string10, interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null)
+        return void this.removeAttribute(name);
+      string0 = this.getAttribute(name);
+      string1 = value1 + "";
+      return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+  function attrFunctionNS2(fullname, interpolate, value) {
+    var string00, string10, interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null)
+        return void this.removeAttributeNS(fullname.space, fullname.local);
+      string0 = this.getAttributeNS(fullname.space, fullname.local);
+      string1 = value1 + "";
+      return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+  function attr_default2(name, value) {
+    var fullname = namespace_default(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate_default;
+    return this.attrTween(name, typeof value === "function" ? (fullname.local ? attrFunctionNS2 : attrFunction2)(fullname, i, tweenValue(this, "attr." + name, value)) : value == null ? (fullname.local ? attrRemoveNS2 : attrRemove2)(fullname) : (fullname.local ? attrConstantNS2 : attrConstant2)(fullname, i, value));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/attrTween.js
+  function attrInterpolate(name, i) {
+    return function(t) {
+      this.setAttribute(name, i.call(this, t));
+    };
+  }
+  function attrInterpolateNS(fullname, i) {
+    return function(t) {
+      this.setAttributeNS(fullname.space, fullname.local, i.call(this, t));
+    };
+  }
+  function attrTweenNS(fullname, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0)
+        t0 = (i0 = i) && attrInterpolateNS(fullname, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+  function attrTween(name, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0)
+        t0 = (i0 = i) && attrInterpolate(name, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+  function attrTween_default(name, value) {
+    var key = "attr." + name;
+    if (arguments.length < 2)
+      return (key = this.tween(key)) && key._value;
+    if (value == null)
+      return this.tween(key, null);
+    if (typeof value !== "function")
+      throw new Error();
+    var fullname = namespace_default(name);
+    return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/delay.js
+  function delayFunction(id2, value) {
+    return function() {
+      init(this, id2).delay = +value.apply(this, arguments);
+    };
+  }
+  function delayConstant(id2, value) {
+    return value = +value, function() {
+      init(this, id2).delay = value;
+    };
+  }
+  function delay_default(value) {
+    var id2 = this._id;
+    return arguments.length ? this.each((typeof value === "function" ? delayFunction : delayConstant)(id2, value)) : get2(this.node(), id2).delay;
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/duration.js
+  function durationFunction(id2, value) {
+    return function() {
+      set3(this, id2).duration = +value.apply(this, arguments);
+    };
+  }
+  function durationConstant(id2, value) {
+    return value = +value, function() {
+      set3(this, id2).duration = value;
+    };
+  }
+  function duration_default(value) {
+    var id2 = this._id;
+    return arguments.length ? this.each((typeof value === "function" ? durationFunction : durationConstant)(id2, value)) : get2(this.node(), id2).duration;
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/ease.js
+  function easeConstant(id2, value) {
+    if (typeof value !== "function")
+      throw new Error();
+    return function() {
+      set3(this, id2).ease = value;
+    };
+  }
+  function ease_default(value) {
+    var id2 = this._id;
+    return arguments.length ? this.each(easeConstant(id2, value)) : get2(this.node(), id2).ease;
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/easeVarying.js
+  function easeVarying(id2, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (typeof v !== "function")
+        throw new Error();
+      set3(this, id2).ease = v;
+    };
+  }
+  function easeVarying_default(value) {
+    if (typeof value !== "function")
+      throw new Error();
+    return this.each(easeVarying(this._id, value));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/filter.js
+  function filter_default2(match) {
+    if (typeof match !== "function")
+      match = matcher_default(match);
+    for (var groups2 = this._groups, m = groups2.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group2[i]) && match.call(node, node.__data__, i, group2)) {
+          subgroup.push(node);
+        }
+      }
+    }
+    return new Transition(subgroups, this._parents, this._name, this._id);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/merge.js
+  function merge_default2(transition2) {
+    if (transition2._id !== this._id)
+      throw new Error();
+    for (var groups0 = this._groups, groups1 = transition2._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+    return new Transition(merges, this._parents, this._name, this._id);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/on.js
+  function start(name) {
+    return (name + "").trim().split(/^|\s+/).every(function(t) {
+      var i = t.indexOf(".");
+      if (i >= 0)
+        t = t.slice(0, i);
+      return !t || t === "start";
+    });
+  }
+  function onFunction(id2, name, listener) {
+    var on0, on1, sit = start(name) ? init : set3;
+    return function() {
+      var schedule = sit(this, id2), on = schedule.on;
+      if (on !== on0)
+        (on1 = (on0 = on).copy()).on(name, listener);
+      schedule.on = on1;
+    };
+  }
+  function on_default2(name, listener) {
+    var id2 = this._id;
+    return arguments.length < 2 ? get2(this.node(), id2).on.on(name) : this.each(onFunction(id2, name, listener));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/remove.js
+  function removeFunction(id2) {
+    return function() {
+      var parent = this.parentNode;
+      for (var i in this.__transition)
+        if (+i !== id2)
+          return;
+      if (parent)
+        parent.removeChild(this);
+    };
+  }
+  function remove_default2() {
+    return this.on("end.remove", removeFunction(this._id));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/select.js
+  function select_default2(select) {
+    var name = this._name, id2 = this._id;
+    if (typeof select !== "function")
+      select = selector_default(select);
+    for (var groups2 = this._groups, m = groups2.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group2[i]) && (subnode = select.call(node, node.__data__, i, group2))) {
+          if ("__data__" in node)
+            subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+          schedule_default(subgroup[i], name, id2, i, subgroup, get2(node, id2));
+        }
+      }
+    }
+    return new Transition(subgroups, this._parents, name, id2);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/selectAll.js
+  function selectAll_default2(select) {
+    var name = this._name, id2 = this._id;
+    if (typeof select !== "function")
+      select = selectorAll_default(select);
+    for (var groups2 = this._groups, m = groups2.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
+        if (node = group2[i]) {
+          for (var children2 = select.call(node, node.__data__, i, group2), child, inherit2 = get2(node, id2), k = 0, l = children2.length; k < l; ++k) {
+            if (child = children2[k]) {
+              schedule_default(child, name, id2, k, children2, inherit2);
+            }
+          }
+          subgroups.push(children2);
+          parents.push(node);
+        }
+      }
+    }
+    return new Transition(subgroups, parents, name, id2);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/selection.js
+  var Selection2 = selection_default.prototype.constructor;
+  function selection_default2() {
+    return new Selection2(this._groups, this._parents);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/style.js
+  function styleNull(name, interpolate) {
+    var string00, string10, interpolate0;
+    return function() {
+      var string0 = styleValue(this, name), string1 = (this.style.removeProperty(name), styleValue(this, name));
+      return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : interpolate0 = interpolate(string00 = string0, string10 = string1);
+    };
+  }
+  function styleRemove2(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+  function styleConstant2(name, interpolate, value1) {
+    var string00, string1 = value1 + "", interpolate0;
+    return function() {
+      var string0 = styleValue(this, name);
+      return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+  function styleFunction2(name, interpolate, value) {
+    var string00, string10, interpolate0;
+    return function() {
+      var string0 = styleValue(this, name), value1 = value(this), string1 = value1 + "";
+      if (value1 == null)
+        string1 = value1 = (this.style.removeProperty(name), styleValue(this, name));
+      return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+  function styleMaybeRemove(id2, name) {
+    var on0, on1, listener0, key = "style." + name, event = "end." + key, remove2;
+    return function() {
+      var schedule = set3(this, id2), on = schedule.on, listener = schedule.value[key] == null ? remove2 || (remove2 = styleRemove2(name)) : void 0;
+      if (on !== on0 || listener0 !== listener)
+        (on1 = (on0 = on).copy()).on(event, listener0 = listener);
+      schedule.on = on1;
+    };
+  }
+  function style_default2(name, value, priority) {
+    var i = (name += "") === "transform" ? interpolateTransformCss : interpolate_default;
+    return value == null ? this.styleTween(name, styleNull(name, i)).on("end.style." + name, styleRemove2(name)) : typeof value === "function" ? this.styleTween(name, styleFunction2(name, i, tweenValue(this, "style." + name, value))).each(styleMaybeRemove(this._id, name)) : this.styleTween(name, styleConstant2(name, i, value), priority).on("end.style." + name, null);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/styleTween.js
+  function styleInterpolate(name, i, priority) {
+    return function(t) {
+      this.style.setProperty(name, i.call(this, t), priority);
+    };
+  }
+  function styleTween(name, value, priority) {
+    var t, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0)
+        t = (i0 = i) && styleInterpolate(name, i, priority);
+      return t;
+    }
+    tween._value = value;
+    return tween;
+  }
+  function styleTween_default(name, value, priority) {
+    var key = "style." + (name += "");
+    if (arguments.length < 2)
+      return (key = this.tween(key)) && key._value;
+    if (value == null)
+      return this.tween(key, null);
+    if (typeof value !== "function")
+      throw new Error();
+    return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/text.js
+  function textConstant2(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+  function textFunction2(value) {
+    return function() {
+      var value1 = value(this);
+      this.textContent = value1 == null ? "" : value1;
+    };
+  }
+  function text_default2(value) {
+    return this.tween("text", typeof value === "function" ? textFunction2(tweenValue(this, "text", value)) : textConstant2(value == null ? "" : value + ""));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/textTween.js
+  function textInterpolate(i) {
+    return function(t) {
+      this.textContent = i.call(this, t);
+    };
+  }
+  function textTween(value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0)
+        t0 = (i0 = i) && textInterpolate(i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+  function textTween_default(value) {
+    var key = "text";
+    if (arguments.length < 1)
+      return (key = this.tween(key)) && key._value;
+    if (value == null)
+      return this.tween(key, null);
+    if (typeof value !== "function")
+      throw new Error();
+    return this.tween(key, textTween(value));
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/transition.js
+  function transition_default() {
+    var name = this._name, id0 = this._id, id1 = newId();
+    for (var groups2 = this._groups, m = groups2.length, j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
+        if (node = group2[i]) {
+          var inherit2 = get2(node, id0);
+          schedule_default(node, name, id1, i, group2, {
+            time: inherit2.time + inherit2.delay + inherit2.duration,
+            delay: 0,
+            duration: inherit2.duration,
+            ease: inherit2.ease
+          });
+        }
+      }
+    }
+    return new Transition(groups2, this._parents, name, id1);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/end.js
+  function end_default() {
+    var on0, on1, that = this, id2 = that._id, size = that.size();
+    return new Promise(function(resolve, reject) {
+      var cancel = { value: reject }, end = { value: function() {
+        if (--size === 0)
+          resolve();
+      } };
+      that.each(function() {
+        var schedule = set3(this, id2), on = schedule.on;
+        if (on !== on0) {
+          on1 = (on0 = on).copy();
+          on1._.cancel.push(cancel);
+          on1._.interrupt.push(cancel);
+          on1._.end.push(end);
+        }
+        schedule.on = on1;
+      });
+      if (size === 0)
+        resolve();
+    });
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/index.js
+  var id = 0;
+  function Transition(groups2, parents, name, id2) {
+    this._groups = groups2;
+    this._parents = parents;
+    this._name = name;
+    this._id = id2;
+  }
+  function transition(name) {
+    return selection_default().transition(name);
+  }
+  function newId() {
+    return ++id;
+  }
+  var selection_prototype = selection_default.prototype;
+  Transition.prototype = transition.prototype = {
+    constructor: Transition,
+    select: select_default2,
+    selectAll: selectAll_default2,
+    filter: filter_default2,
+    merge: merge_default2,
+    selection: selection_default2,
+    transition: transition_default,
+    call: selection_prototype.call,
+    nodes: selection_prototype.nodes,
+    node: selection_prototype.node,
+    size: selection_prototype.size,
+    empty: selection_prototype.empty,
+    each: selection_prototype.each,
+    on: on_default2,
+    attr: attr_default2,
+    attrTween: attrTween_default,
+    style: style_default2,
+    styleTween: styleTween_default,
+    text: text_default2,
+    textTween: textTween_default,
+    remove: remove_default2,
+    tween: tween_default,
+    delay: delay_default,
+    duration: duration_default,
+    ease: ease_default,
+    easeVarying: easeVarying_default,
+    end: end_default,
+    [Symbol.iterator]: selection_prototype[Symbol.iterator]
+  };
+
+  // node_modules/.pnpm/d3-ease@2.0.0/node_modules/d3-ease/src/cubic.js
+  function cubicInOut(t) {
+    return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/transition.js
+  var defaultTiming = {
+    time: null,
+    delay: 0,
+    duration: 250,
+    ease: cubicInOut
+  };
+  function inherit(node, id2) {
+    var timing;
+    while (!(timing = node.__transition) || !(timing = timing[id2])) {
+      if (!(node = node.parentNode)) {
+        throw new Error(`transition ${id2} not found`);
+      }
+    }
+    return timing;
+  }
+  function transition_default2(name) {
+    var id2, timing;
+    if (name instanceof Transition) {
+      id2 = name._id, name = name._name;
+    } else {
+      id2 = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+    }
+    for (var groups2 = this._groups, m = groups2.length, j = 0; j < m; ++j) {
+      for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
+        if (node = group2[i]) {
+          schedule_default(node, name, id2, i, group2, timing || inherit(node, id2));
+        }
+      }
+    }
+    return new Transition(groups2, this._parents, name, id2);
+  }
+
+  // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/index.js
+  selection_default.prototype.interrupt = interrupt_default2;
+  selection_default.prototype.transition = transition_default2;
+
+  // node_modules/.pnpm/d3-brush@2.1.0/node_modules/d3-brush/src/brush.js
+  var { abs, max: max2, min: min2 } = Math;
+  function number1(e) {
+    return [+e[0], +e[1]];
+  }
+  function number2(e) {
+    return [number1(e[0]), number1(e[1])];
+  }
+  var X = {
+    name: "x",
+    handles: ["w", "e"].map(type),
+    input: function(x, e) {
+      return x == null ? null : [[+x[0], e[0][1]], [+x[1], e[1][1]]];
+    },
+    output: function(xy) {
+      return xy && [xy[0][0], xy[1][0]];
+    }
+  };
+  var Y = {
+    name: "y",
+    handles: ["n", "s"].map(type),
+    input: function(y, e) {
+      return y == null ? null : [[e[0][0], +y[0]], [e[1][0], +y[1]]];
+    },
+    output: function(xy) {
+      return xy && [xy[0][1], xy[1][1]];
+    }
+  };
+  var XY = {
+    name: "xy",
+    handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type),
+    input: function(xy) {
+      return xy == null ? null : number2(xy);
+    },
+    output: function(xy) {
+      return xy;
+    }
+  };
+  function type(t) {
+    return { type: t };
+  }
+
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatDecimal.js
+  function formatDecimal_default(x) {
+    return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
+  }
+  function formatDecimalParts(x, p) {
+    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0)
+      return null;
+    var i, coefficient = x.slice(0, i);
+    return [
+      coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+      +x.slice(i + 1)
+    ];
+  }
+
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/exponent.js
+  function exponent_default(x) {
     return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
   }
 
-  function formatGroup (grouping, thousands) {
-    return function (value, width) {
-      var i = value.length,
-          t = [],
-          j = 0,
-          g = grouping[0],
-          length = 0;
-
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatGroup.js
+  function formatGroup_default(grouping, thousands) {
+    return function(value, width) {
+      var i = value.length, t = [], j = 0, g = grouping[0], length = 0;
       while (i > 0 && g > 0) {
-        if (length + g + 1 > width) g = Math.max(1, width - length);
+        if (length + g + 1 > width)
+          g = Math.max(1, width - length);
         t.push(value.substring(i -= g, i + g));
-        if ((length += g + 1) > width) break;
+        if ((length += g + 1) > width)
+          break;
         g = grouping[j = (j + 1) % grouping.length];
       }
-
       return t.reverse().join(thousands);
     };
   }
 
-  function formatNumerals (numerals) {
-    return function (value) {
-      return value.replace(/[0-9]/g, function (i) {
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatNumerals.js
+  function formatNumerals_default(numerals) {
+    return function(value) {
+      return value.replace(/[0-9]/g, function(i) {
         return numerals[+i];
       });
     };
   }
 
-  // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatSpecifier.js
   var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
   function formatSpecifier(specifier) {
-    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+    if (!(match = re.exec(specifier)))
+      throw new Error("invalid format: " + specifier);
     var match;
     return new FormatSpecifier({
       fill: match[1],
@@ -4953,221 +4405,170 @@
       type: match[10]
     });
   }
-  formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
+  formatSpecifier.prototype = FormatSpecifier.prototype;
   function FormatSpecifier(specifier) {
-    this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-    this.align = specifier.align === undefined ? ">" : specifier.align + "";
-    this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-    this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+    this.fill = specifier.fill === void 0 ? " " : specifier.fill + "";
+    this.align = specifier.align === void 0 ? ">" : specifier.align + "";
+    this.sign = specifier.sign === void 0 ? "-" : specifier.sign + "";
+    this.symbol = specifier.symbol === void 0 ? "" : specifier.symbol + "";
     this.zero = !!specifier.zero;
-    this.width = specifier.width === undefined ? undefined : +specifier.width;
+    this.width = specifier.width === void 0 ? void 0 : +specifier.width;
     this.comma = !!specifier.comma;
-    this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+    this.precision = specifier.precision === void 0 ? void 0 : +specifier.precision;
     this.trim = !!specifier.trim;
-    this.type = specifier.type === undefined ? "" : specifier.type + "";
+    this.type = specifier.type === void 0 ? "" : specifier.type + "";
   }
-
-  FormatSpecifier.prototype.toString = function () {
-    return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === undefined ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
+  FormatSpecifier.prototype.toString = function() {
+    return this.fill + this.align + this.sign + this.symbol + (this.zero ? "0" : "") + (this.width === void 0 ? "" : Math.max(1, this.width | 0)) + (this.comma ? "," : "") + (this.precision === void 0 ? "" : "." + Math.max(0, this.precision | 0)) + (this.trim ? "~" : "") + this.type;
   };
 
-  // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-  function formatTrim (s) {
-    out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
-      switch (s[i]) {
-        case ".":
-          i0 = i1 = i;
-          break;
-
-        case "0":
-          if (i0 === 0) i0 = i;
-          i1 = i;
-          break;
-
-        default:
-          if (!+s[i]) break out;
-          if (i0 > 0) i0 = 0;
-          break;
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatTrim.js
+  function formatTrim_default(s) {
+    out:
+      for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+        switch (s[i]) {
+          case ".":
+            i0 = i1 = i;
+            break;
+          case "0":
+            if (i0 === 0)
+              i0 = i;
+            i1 = i;
+            break;
+          default:
+            if (!+s[i])
+              break out;
+            if (i0 > 0)
+              i0 = 0;
+            break;
+        }
       }
-    }
-
     return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
   }
 
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatPrefixAuto.js
   var prefixExponent;
-  function formatPrefixAuto (x, p) {
+  function formatPrefixAuto_default(x, p) {
     var d = formatDecimalParts(x, p);
-    if (!d) return x + "";
-    var coefficient = d[0],
-        exponent = d[1],
-        i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-        n = coefficient.length;
-    return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+    if (!d)
+      return x + "";
+    var coefficient = d[0], exponent = d[1], i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1, n = coefficient.length;
+    return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0];
   }
 
-  function formatRounded (x, p) {
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatRounded.js
+  function formatRounded_default(x, p) {
     var d = formatDecimalParts(x, p);
-    if (!d) return x + "";
-    var coefficient = d[0],
-        exponent = d[1];
+    if (!d)
+      return x + "";
+    var coefficient = d[0], exponent = d[1];
     return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1) : coefficient + new Array(exponent - coefficient.length + 2).join("0");
   }
 
-  var formatTypes = {
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/formatTypes.js
+  var formatTypes_default = {
     "%": (x, p) => (x * 100).toFixed(p),
-    "b": x => Math.round(x).toString(2),
-    "c": x => x + "",
-    "d": formatDecimal,
+    "b": (x) => Math.round(x).toString(2),
+    "c": (x) => x + "",
+    "d": formatDecimal_default,
     "e": (x, p) => x.toExponential(p),
     "f": (x, p) => x.toFixed(p),
     "g": (x, p) => x.toPrecision(p),
-    "o": x => Math.round(x).toString(8),
-    "p": (x, p) => formatRounded(x * 100, p),
-    "r": formatRounded,
-    "s": formatPrefixAuto,
-    "X": x => Math.round(x).toString(16).toUpperCase(),
-    "x": x => Math.round(x).toString(16)
+    "o": (x) => Math.round(x).toString(8),
+    "p": (x, p) => formatRounded_default(x * 100, p),
+    "r": formatRounded_default,
+    "s": formatPrefixAuto_default,
+    "X": (x) => Math.round(x).toString(16).toUpperCase(),
+    "x": (x) => Math.round(x).toString(16)
   };
 
-  function identity$1 (x) {
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/identity.js
+  function identity_default2(x) {
     return x;
   }
 
-  var map = Array.prototype.map,
-      prefixes = ["y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
-  function formatLocale (locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
-        currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
-        currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
-        decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-        numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map.call(locale.numerals, String)),
-        percent = locale.percent === undefined ? "%" : locale.percent + "",
-        minus = locale.minus === undefined ? "−" : locale.minus + "",
-        nan = locale.nan === undefined ? "NaN" : locale.nan + "";
-
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/locale.js
+  var map = Array.prototype.map;
+  var prefixes = ["y", "z", "a", "f", "p", "n", "\xB5", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+  function locale_default(locale2) {
+    var group2 = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity_default2 : formatGroup_default(map.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity_default2 : formatNumerals_default(map.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "\u2212" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
     function newFormat(specifier) {
       specifier = formatSpecifier(specifier);
-      var fill = specifier.fill,
-          align = specifier.align,
-          sign = specifier.sign,
-          symbol = specifier.symbol,
-          zero = specifier.zero,
-          width = specifier.width,
-          comma = specifier.comma,
-          precision = specifier.precision,
-          trim = specifier.trim,
-          type = specifier.type; // The "n" type is an alias for ",g".
-
-      if (type === "n") comma = true, type = "g"; // The "" type, and any invalid type, is an alias for ".12~g".
-      else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g"; // If zero fill is specified, padding goes after sign and before digits.
-
-      if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "="; // Compute the prefix and suffix.
-      // For SI-prefix, the suffix is lazily computed.
-
-      var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-          suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : ""; // What format function should we use?
-      // Is this an integer type?
-      // Can this type generate exponential notation?
-
-      var formatType = formatTypes[type],
-          maybeSuffix = /[defgprs%]/.test(type); // Set the default precision if not specified,
-      // or clamp the specified precision to the supported range.
-      // For significant precision, it must be in [1, 21].
-      // For fixed precision, it must be in [0, 20].
-
-      precision = precision === undefined ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
-
-      function format(value) {
-        var valuePrefix = prefix,
-            valueSuffix = suffix,
-            i,
-            n,
-            c;
-
-        if (type === "c") {
+      var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero2 = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type2 = specifier.type;
+      if (type2 === "n")
+        comma = true, type2 = "g";
+      else if (!formatTypes_default[type2])
+        precision === void 0 && (precision = 12), trim = true, type2 = "g";
+      if (zero2 || fill === "0" && align === "=")
+        zero2 = true, fill = "0", align = "=";
+      var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "";
+      var formatType = formatTypes_default[type2], maybeSuffix = /[defgprs%]/.test(type2);
+      precision = precision === void 0 ? 6 : /[gprs]/.test(type2) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+      function format2(value) {
+        var valuePrefix = prefix, valueSuffix = suffix, i, n, c2;
+        if (type2 === "c") {
           valueSuffix = formatType(value) + valueSuffix;
           value = "";
         } else {
-          value = +value; // Determine the sign. -0 is not less than 0, but 1 / -0 is!
-
-          var valueNegative = value < 0 || 1 / value < 0; // Perform the initial formatting.
-
-          value = isNaN(value) ? nan : formatType(Math.abs(value), precision); // Trim insignificant zeros.
-
-          if (trim) value = formatTrim(value); // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
-
-          if (valueNegative && +value === 0 && sign !== "+") valueNegative = false; // Compute the prefix and suffix.
-
+          value = +value;
+          var valueNegative = value < 0 || 1 / value < 0;
+          value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+          if (trim)
+            value = formatTrim_default(value);
+          if (valueNegative && +value === 0 && sign !== "+")
+            valueNegative = false;
           valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-          valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : ""); // Break the formatted value into the integer “value” part that can be
-          // grouped, and fractional or exponential “suffix” part that is not.
-
+          valueSuffix = (type2 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
           if (maybeSuffix) {
             i = -1, n = value.length;
-
             while (++i < n) {
-              if (c = value.charCodeAt(i), 48 > c || c > 57) {
-                valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+              if (c2 = value.charCodeAt(i), 48 > c2 || c2 > 57) {
+                valueSuffix = (c2 === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
                 value = value.slice(0, i);
                 break;
               }
             }
           }
-        } // If the fill character is not "0", grouping is applied before padding.
-
-
-        if (comma && !zero) value = group(value, Infinity); // Compute the padding.
-
-        var length = valuePrefix.length + value.length + valueSuffix.length,
-            padding = length < width ? new Array(width - length + 1).join(fill) : ""; // If the fill character is "0", grouping is applied after padding.
-
-        if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = ""; // Reconstruct the final output based on the desired alignment.
-
+        }
+        if (comma && !zero2)
+          value = group2(value, Infinity);
+        var length = valuePrefix.length + value.length + valueSuffix.length, padding = length < width ? new Array(width - length + 1).join(fill) : "";
+        if (comma && zero2)
+          value = group2(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
         switch (align) {
           case "<":
             value = valuePrefix + value + valueSuffix + padding;
             break;
-
           case "=":
             value = valuePrefix + padding + value + valueSuffix;
             break;
-
           case "^":
             value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
             break;
-
           default:
             value = padding + valuePrefix + value + valueSuffix;
             break;
         }
-
         return numerals(value);
       }
-
-      format.toString = function () {
+      format2.toString = function() {
         return specifier + "";
       };
-
-      return format;
+      return format2;
     }
-
-    function formatPrefix(specifier, value) {
-      var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
-          e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
-          k = Math.pow(10, -e),
-          prefix = prefixes[8 + e / 3];
-      return function (value) {
-        return f(k * value) + prefix;
+    function formatPrefix2(specifier, value) {
+      var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)), e = Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3, k = Math.pow(10, -e), prefix = prefixes[8 + e / 3];
+      return function(value2) {
+        return f(k * value2) + prefix;
       };
     }
-
     return {
       format: newFormat,
-      formatPrefix: formatPrefix
+      formatPrefix: formatPrefix2
     };
   }
 
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/defaultLocale.js
   var locale;
   var format;
   var formatPrefix;
@@ -5177,345 +4578,312 @@
     currency: ["$", ""]
   });
   function defaultLocale(definition) {
-    locale = formatLocale(definition);
+    locale = locale_default(definition);
     format = locale.format;
     formatPrefix = locale.formatPrefix;
     return locale;
   }
 
-  function precisionFixed (step) {
-    return Math.max(0, -exponent(Math.abs(step)));
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/precisionFixed.js
+  function precisionFixed_default(step) {
+    return Math.max(0, -exponent_default(Math.abs(step)));
   }
 
-  function precisionPrefix (step, value) {
-    return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/precisionPrefix.js
+  function precisionPrefix_default(step, value) {
+    return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3 - exponent_default(Math.abs(step)));
   }
 
-  function precisionRound (step, max) {
-    step = Math.abs(step), max = Math.abs(max) - step;
-    return Math.max(0, exponent(max) - exponent(step)) + 1;
+  // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/src/precisionRound.js
+  function precisionRound_default(step, max3) {
+    step = Math.abs(step), max3 = Math.abs(max3) - step;
+    return Math.max(0, exponent_default(max3) - exponent_default(step)) + 1;
   }
 
-  var defaultSource = Math.random;
+  // node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/src/defaultSource.js
+  var defaultSource_default = Math.random;
 
-  var randomUniform = (function sourceRandomUniform(source) {
-    function randomUniform(min, max) {
-      min = min == null ? 0 : +min;
-      max = max == null ? 1 : +max;
-      if (arguments.length === 1) max = min, min = 0;else max -= min;
-      return function () {
-        return source() * max + min;
+  // node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/src/uniform.js
+  var uniform_default = function sourceRandomUniform(source) {
+    function randomUniform(min3, max3) {
+      min3 = min3 == null ? 0 : +min3;
+      max3 = max3 == null ? 1 : +max3;
+      if (arguments.length === 1)
+        max3 = min3, min3 = 0;
+      else
+        max3 -= min3;
+      return function() {
+        return source() * max3 + min3;
       };
     }
-
     randomUniform.source = sourceRandomUniform;
     return randomUniform;
-  })(defaultSource);
+  }(defaultSource_default);
 
-  var randomInt = (function sourceRandomInt(source) {
-    function randomInt(min, max) {
-      if (arguments.length < 2) max = min, min = 0;
-      min = Math.floor(min);
-      max = Math.floor(max) - min;
-      return function () {
-        return Math.floor(source() * max + min);
+  // node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/src/int.js
+  var int_default = function sourceRandomInt(source) {
+    function randomInt(min3, max3) {
+      if (arguments.length < 2)
+        max3 = min3, min3 = 0;
+      min3 = Math.floor(min3);
+      max3 = Math.floor(max3) - min3;
+      return function() {
+        return Math.floor(source() * max3 + min3);
       };
     }
-
     randomInt.source = sourceRandomInt;
     return randomInt;
-  })(defaultSource);
+  }(defaultSource_default);
 
-  var randomNormal = (function sourceRandomNormal(source) {
+  // node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/src/normal.js
+  var normal_default = function sourceRandomNormal(source) {
     function randomNormal(mu, sigma) {
       var x, r;
       mu = mu == null ? 0 : +mu;
       sigma = sigma == null ? 1 : +sigma;
-      return function () {
-        var y; // If available, use the second previously-generated uniform random.
-
-        if (x != null) y = x, x = null; // Otherwise, generate a new x and y.
-        else do {
-          x = source() * 2 - 1;
-          y = source() * 2 - 1;
-          r = x * x + y * y;
-        } while (!r || r > 1);
+      return function() {
+        var y;
+        if (x != null)
+          y = x, x = null;
+        else
+          do {
+            x = source() * 2 - 1;
+            y = source() * 2 - 1;
+            r = x * x + y * y;
+          } while (!r || r > 1);
         return mu + sigma * y * Math.sqrt(-2 * Math.log(r) / r);
       };
     }
-
     randomNormal.source = sourceRandomNormal;
     return randomNormal;
-  })(defaultSource);
+  }(defaultSource_default);
 
-  // https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
-  const mul = 0x19660D;
-  const inc = 0x3C6EF35F;
-  const eps = 1 / 0x100000000;
+  // node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/src/lcg.js
+  var mul = 1664525;
+  var inc = 1013904223;
+  var eps = 1 / 4294967296;
   function lcg(seed = Math.random()) {
     let state = (0 <= seed && seed < 1 ? seed / eps : Math.abs(seed)) | 0;
     return () => (state = mul * state + inc | 0, eps * (state >>> 0));
   }
 
-  function initRange(domain, range) {
+  // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/init.js
+  function initRange(domain, range2) {
     switch (arguments.length) {
       case 0:
         break;
-
       case 1:
         this.range(domain);
         break;
-
       default:
-        this.range(range).domain(domain);
+        this.range(range2).domain(domain);
         break;
     }
-
     return this;
   }
 
+  // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/constant.js
   function constants(x) {
-    return function () {
+    return function() {
       return x;
     };
   }
 
+  // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/number.js
   function number(x) {
     return +x;
   }
 
+  // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/continuous.js
   var unit = [0, 1];
-  function identity(x) {
+  function identity2(x) {
     return x;
   }
-
   function normalize(a, b) {
-    return (b -= a = +a) ? function (x) {
+    return (b -= a = +a) ? function(x) {
       return (x - a) / b;
     } : constants(isNaN(b) ? NaN : 0.5);
   }
-
   function clamper(a, b) {
     var t;
-    if (a > b) t = a, a = b, b = t;
-    return function (x) {
+    if (a > b)
+      t = a, a = b, b = t;
+    return function(x) {
       return Math.max(a, Math.min(b, x));
     };
-  } // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
-  // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
-
-
-  function bimap(domain, range, interpolate) {
-    var d0 = domain[0],
-        d1 = domain[1],
-        r0 = range[0],
-        r1 = range[1];
-    if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
-    return function (x) {
+  }
+  function bimap(domain, range2, interpolate) {
+    var d0 = domain[0], d1 = domain[1], r0 = range2[0], r1 = range2[1];
+    if (d1 < d0)
+      d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+    else
+      d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
+    return function(x) {
       return r0(d0(x));
     };
   }
-
-  function polymap(domain, range, interpolate) {
-    var j = Math.min(domain.length, range.length) - 1,
-        d = new Array(j),
-        r = new Array(j),
-        i = -1; // Reverse descending domains.
-
+  function polymap(domain, range2, interpolate) {
+    var j = Math.min(domain.length, range2.length) - 1, d = new Array(j), r = new Array(j), i = -1;
     if (domain[j] < domain[0]) {
       domain = domain.slice().reverse();
-      range = range.slice().reverse();
+      range2 = range2.slice().reverse();
     }
-
     while (++i < j) {
       d[i] = normalize(domain[i], domain[i + 1]);
-      r[i] = interpolate(range[i], range[i + 1]);
+      r[i] = interpolate(range2[i], range2[i + 1]);
     }
-
-    return function (x) {
-      var i = bisect(domain, x, 1, j) - 1;
-      return r[i](d[i](x));
+    return function(x) {
+      var i2 = bisect_default(domain, x, 1, j) - 1;
+      return r[i2](d[i2](x));
     };
   }
-
   function copy(source, target) {
     return target.domain(source.domain()).range(source.range()).interpolate(source.interpolate()).clamp(source.clamp()).unknown(source.unknown());
   }
   function transformer() {
-    var domain = unit,
-        range = unit,
-        interpolate$1 = interpolate,
-        transform,
-        untransform,
-        unknown,
-        clamp = identity,
-        piecewise,
-        output,
-        input;
-
+    var domain = unit, range2 = unit, interpolate = value_default, transform2, untransform, unknown, clamp = identity2, piecewise, output, input;
     function rescale() {
-      var n = Math.min(domain.length, range.length);
-      if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
+      var n = Math.min(domain.length, range2.length);
+      if (clamp !== identity2)
+        clamp = clamper(domain[0], domain[n - 1]);
       piecewise = n > 2 ? polymap : bimap;
       output = input = null;
-      return scale;
+      return scale2;
     }
-
-    function scale(x) {
-      return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+    function scale2(x) {
+      return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform2), range2, interpolate)))(transform2(clamp(x)));
     }
-
-    scale.invert = function (y) {
-      return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
+    scale2.invert = function(y) {
+      return clamp(untransform((input || (input = piecewise(range2, domain.map(transform2), number_default2)))(y)));
     };
-
-    scale.domain = function (_) {
+    scale2.domain = function(_) {
       return arguments.length ? (domain = Array.from(_, number), rescale()) : domain.slice();
     };
-
-    scale.range = function (_) {
-      return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+    scale2.range = function(_) {
+      return arguments.length ? (range2 = Array.from(_), rescale()) : range2.slice();
     };
-
-    scale.rangeRound = function (_) {
-      return range = Array.from(_), interpolate$1 = interpolateRound, rescale();
+    scale2.rangeRound = function(_) {
+      return range2 = Array.from(_), interpolate = round_default, rescale();
     };
-
-    scale.clamp = function (_) {
-      return arguments.length ? (clamp = _ ? true : identity, rescale()) : clamp !== identity;
+    scale2.clamp = function(_) {
+      return arguments.length ? (clamp = _ ? true : identity2, rescale()) : clamp !== identity2;
     };
-
-    scale.interpolate = function (_) {
-      return arguments.length ? (interpolate$1 = _, rescale()) : interpolate$1;
+    scale2.interpolate = function(_) {
+      return arguments.length ? (interpolate = _, rescale()) : interpolate;
     };
-
-    scale.unknown = function (_) {
-      return arguments.length ? (unknown = _, scale) : unknown;
+    scale2.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale2) : unknown;
     };
-
-    return function (t, u) {
-      transform = t, untransform = u;
+    return function(t, u) {
+      transform2 = t, untransform = u;
       return rescale();
     };
   }
   function continuous() {
-    return transformer()(identity, identity);
+    return transformer()(identity2, identity2);
   }
 
-  function tickFormat(start, stop, count, specifier) {
-    var step = tickStep(start, stop, count),
-        precision;
+  // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/tickFormat.js
+  function tickFormat(start2, stop, count, specifier) {
+    var step = tickStep(start2, stop, count), precision;
     specifier = formatSpecifier(specifier == null ? ",f" : specifier);
-
     switch (specifier.type) {
-      case "s":
-        {
-          var value = Math.max(Math.abs(start), Math.abs(stop));
-          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
-          return formatPrefix(specifier, value);
-        }
-
+      case "s": {
+        var value = Math.max(Math.abs(start2), Math.abs(stop));
+        if (specifier.precision == null && !isNaN(precision = precisionPrefix_default(step, value)))
+          specifier.precision = precision;
+        return formatPrefix(specifier, value);
+      }
       case "":
       case "e":
       case "g":
       case "p":
-      case "r":
-        {
-          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
-          break;
-        }
-
+      case "r": {
+        if (specifier.precision == null && !isNaN(precision = precisionRound_default(step, Math.max(Math.abs(start2), Math.abs(stop)))))
+          specifier.precision = precision - (specifier.type === "e");
+        break;
+      }
       case "f":
-      case "%":
-        {
-          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
-          break;
-        }
+      case "%": {
+        if (specifier.precision == null && !isNaN(precision = precisionFixed_default(step)))
+          specifier.precision = precision - (specifier.type === "%") * 2;
+        break;
+      }
     }
-
     return format(specifier);
   }
 
-  function linearish(scale) {
-    var domain = scale.domain;
-
-    scale.ticks = function (count) {
+  // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/linear.js
+  function linearish(scale2) {
+    var domain = scale2.domain;
+    scale2.ticks = function(count) {
       var d = domain();
-      return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
+      return ticks_default(d[0], d[d.length - 1], count == null ? 10 : count);
     };
-
-    scale.tickFormat = function (count, specifier) {
+    scale2.tickFormat = function(count, specifier) {
       var d = domain();
       return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
     };
-
-    scale.nice = function (count) {
-      if (count == null) count = 10;
+    scale2.nice = function(count) {
+      if (count == null)
+        count = 10;
       var d = domain();
       var i0 = 0;
       var i1 = d.length - 1;
-      var start = d[i0];
+      var start2 = d[i0];
       var stop = d[i1];
       var prestep;
       var step;
       var maxIter = 10;
-
-      if (stop < start) {
-        step = start, start = stop, stop = step;
+      if (stop < start2) {
+        step = start2, start2 = stop, stop = step;
         step = i0, i0 = i1, i1 = step;
       }
-
       while (maxIter-- > 0) {
-        step = tickIncrement(start, stop, count);
-
+        step = tickIncrement(start2, stop, count);
         if (step === prestep) {
-          d[i0] = start;
+          d[i0] = start2;
           d[i1] = stop;
           return domain(d);
         } else if (step > 0) {
-          start = Math.floor(start / step) * step;
+          start2 = Math.floor(start2 / step) * step;
           stop = Math.ceil(stop / step) * step;
         } else if (step < 0) {
-          start = Math.ceil(start * step) / step;
+          start2 = Math.ceil(start2 * step) / step;
           stop = Math.floor(stop * step) / step;
         } else {
           break;
         }
-
         prestep = step;
       }
-
-      return scale;
+      return scale2;
     };
-
-    return scale;
+    return scale2;
   }
-  function linear() {
-    var scale = continuous();
-
-    scale.copy = function () {
-      return copy(scale, linear());
+  function linear2() {
+    var scale2 = continuous();
+    scale2.copy = function() {
+      return copy(scale2, linear2());
     };
-
-    initRange.apply(scale, arguments);
-    return linearish(scale);
+    initRange.apply(scale2, arguments);
+    return linearish(scale2);
   }
 
-  function colors (specifier) {
-    var n = specifier.length / 6 | 0,
-        colors = new Array(n),
-        i = 0;
-
-    while (i < n) colors[i] = "#" + specifier.slice(i * 6, ++i * 6);
-
+  // node_modules/.pnpm/d3-scale-chromatic@2.0.0/node_modules/d3-scale-chromatic/src/colors.js
+  function colors_default(specifier) {
+    var n = specifier.length / 6 | 0, colors = new Array(n), i = 0;
+    while (i < n)
+      colors[i] = "#" + specifier.slice(i * 6, ++i * 6);
     return colors;
   }
 
-  cubehelixLong(cubehelix$1(-100, 0.75, 0.35), cubehelix$1(80, 1.50, 0.8));
-  cubehelixLong(cubehelix$1(260, 0.75, 0.35), cubehelix$1(80, 1.50, 0.8));
-  var c = cubehelix$1();
-  function rainbow (t) {
-    if (t < 0 || t > 1) t -= Math.floor(t);
+  // node_modules/.pnpm/d3-scale-chromatic@2.0.0/node_modules/d3-scale-chromatic/src/sequential-multi/rainbow.js
+  var warm = cubehelixLong(cubehelix(-100, 0.75, 0.35), cubehelix(80, 1.5, 0.8));
+  var cool = cubehelixLong(cubehelix(260, 0.75, 0.35), cubehelix(80, 1.5, 0.8));
+  var c = cubehelix();
+  function rainbow_default(t) {
+    if (t < 0 || t > 1)
+      t -= Math.floor(t);
     var ts = Math.abs(t - 0.5);
     c.h = 360 * t - 100;
     c.s = 1.5 - 1.5 * ts;
@@ -5523,301 +4891,168 @@
     return c + "";
   }
 
-  function ramp(range) {
-    var n = range.length;
-    return function (t) {
-      return range[Math.max(0, Math.min(n - 1, Math.floor(t * n)))];
+  // node_modules/.pnpm/d3-scale-chromatic@2.0.0/node_modules/d3-scale-chromatic/src/sequential-multi/viridis.js
+  function ramp(range2) {
+    var n = range2.length;
+    return function(t) {
+      return range2[Math.max(0, Math.min(n - 1, Math.floor(t * n)))];
     };
   }
+  var viridis_default = ramp(colors_default("44015444025645045745055946075a46085c460a5d460b5e470d60470e6147106347116447136548146748166848176948186a481a6c481b6d481c6e481d6f481f70482071482173482374482475482576482677482878482979472a7a472c7a472d7b472e7c472f7d46307e46327e46337f463480453581453781453882443983443a83443b84433d84433e85423f854240864241864142874144874045884046883f47883f48893e49893e4a893e4c8a3d4d8a3d4e8a3c4f8a3c508b3b518b3b528b3a538b3a548c39558c39568c38588c38598c375a8c375b8d365c8d365d8d355e8d355f8d34608d34618d33628d33638d32648e32658e31668e31678e31688e30698e306a8e2f6b8e2f6c8e2e6d8e2e6e8e2e6f8e2d708e2d718e2c718e2c728e2c738e2b748e2b758e2a768e2a778e2a788e29798e297a8e297b8e287c8e287d8e277e8e277f8e27808e26818e26828e26828e25838e25848e25858e24868e24878e23888e23898e238a8d228b8d228c8d228d8d218e8d218f8d21908d21918c20928c20928c20938c1f948c1f958b1f968b1f978b1f988b1f998a1f9a8a1e9b8a1e9c891e9d891f9e891f9f881fa0881fa1881fa1871fa28720a38620a48621a58521a68522a78522a88423a98324aa8325ab8225ac8226ad8127ad8128ae8029af7f2ab07f2cb17e2db27d2eb37c2fb47c31b57b32b67a34b67935b77937b87838b9773aba763bbb753dbc743fbc7340bd7242be7144bf7046c06f48c16e4ac16d4cc26c4ec36b50c46a52c56954c56856c66758c7655ac8645cc8635ec96260ca6063cb5f65cb5e67cc5c69cd5b6ccd5a6ece5870cf5773d05675d05477d1537ad1517cd2507fd34e81d34d84d44b86d54989d5488bd6468ed64590d74393d74195d84098d83e9bd93c9dd93ba0da39a2da37a5db36a8db34aadc32addc30b0dd2fb2dd2db5de2bb8de29bade28bddf26c0df25c2df23c5e021c8e020cae11fcde11dd0e11cd2e21bd5e21ad8e219dae319dde318dfe318e2e418e5e419e7e419eae51aece51befe51cf1e51df4e61ef6e620f8e621fbe723fde725"));
+  var magma = ramp(colors_default("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
+  var inferno = ramp(colors_default("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
+  var plasma = ramp(colors_default("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
 
-  var viridis = ramp(colors("44015444025645045745055946075a46085c460a5d460b5e470d60470e6147106347116447136548146748166848176948186a481a6c481b6d481c6e481d6f481f70482071482173482374482475482576482677482878482979472a7a472c7a472d7b472e7c472f7d46307e46327e46337f463480453581453781453882443983443a83443b84433d84433e85423f854240864241864142874144874045884046883f47883f48893e49893e4a893e4c8a3d4d8a3d4e8a3c4f8a3c508b3b518b3b528b3a538b3a548c39558c39568c38588c38598c375a8c375b8d365c8d365d8d355e8d355f8d34608d34618d33628d33638d32648e32658e31668e31678e31688e30698e306a8e2f6b8e2f6c8e2e6d8e2e6e8e2e6f8e2d708e2d718e2c718e2c728e2c738e2b748e2b758e2a768e2a778e2a788e29798e297a8e297b8e287c8e287d8e277e8e277f8e27808e26818e26828e26828e25838e25848e25858e24868e24878e23888e23898e238a8d228b8d228c8d228d8d218e8d218f8d21908d21918c20928c20928c20938c1f948c1f958b1f968b1f978b1f988b1f998a1f9a8a1e9b8a1e9c891e9d891f9e891f9f881fa0881fa1881fa1871fa28720a38620a48621a58521a68522a78522a88423a98324aa8325ab8225ac8226ad8127ad8128ae8029af7f2ab07f2cb17e2db27d2eb37c2fb47c31b57b32b67a34b67935b77937b87838b9773aba763bbb753dbc743fbc7340bd7242be7144bf7046c06f48c16e4ac16d4cc26c4ec36b50c46a52c56954c56856c66758c7655ac8645cc8635ec96260ca6063cb5f65cb5e67cc5c69cd5b6ccd5a6ece5870cf5773d05675d05477d1537ad1517cd2507fd34e81d34d84d44b86d54989d5488bd6468ed64590d74393d74195d84098d83e9bd93c9dd93ba0da39a2da37a5db36a8db34aadc32addc30b0dd2fb2dd2db5de2bb8de29bade28bddf26c0df25c2df23c5e021c8e020cae11fcde11dd0e11cd2e21bd5e21ad8e219dae319dde318dfe318e2e418e5e419e7e419eae51aece51befe51cf1e51df4e61ef6e620f8e621fbe723fde725"));
-  ramp(colors("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
-  ramp(colors("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
-  ramp(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
-
-  /**
-   * @module utils/MathUtils
-   */
-
-  /**
-   * Generates a random float in [min, max)
-   *
-   * @param {number} min minimum
-   * @param {number} max maximum
-   * @returns {number} random float
-   */
-
-  function randFloat(min = 0, max = 1) {
-    return Math.random() * (max - min) + min;
+  // node_modules/.pnpm/d3-zoom@2.0.0/node_modules/d3-zoom/src/transform.js
+  function Transform(k, x, y) {
+    this.k = k;
+    this.x = x;
+    this.y = y;
   }
-  /**
-   * Returns a random element from the given array.
-   *
-   * @param {Array} array an array
-   * @returns {any} random element from the array
-   */
+  Transform.prototype = {
+    constructor: Transform,
+    scale: function(k) {
+      return k === 1 ? this : new Transform(this.k * k, this.x, this.y);
+    },
+    translate: function(x, y) {
+      return x === 0 & y === 0 ? this : new Transform(this.k, this.x + this.k * x, this.y + this.k * y);
+    },
+    apply: function(point) {
+      return [point[0] * this.k + this.x, point[1] * this.k + this.y];
+    },
+    applyX: function(x) {
+      return x * this.k + this.x;
+    },
+    applyY: function(y) {
+      return y * this.k + this.y;
+    },
+    invert: function(location) {
+      return [(location[0] - this.x) / this.k, (location[1] - this.y) / this.k];
+    },
+    invertX: function(x) {
+      return (x - this.x) / this.k;
+    },
+    invertY: function(y) {
+      return (y - this.y) / this.k;
+    },
+    rescaleX: function(x) {
+      return x.copy().domain(x.range().map(this.invertX, this).map(x.invert, x));
+    },
+    rescaleY: function(y) {
+      return y.copy().domain(y.range().map(this.invertY, this).map(y.invert, y));
+    },
+    toString: function() {
+      return "translate(" + this.x + "," + this.y + ") scale(" + this.k + ")";
+    }
+  };
+  var identity3 = new Transform(1, 0, 0);
+  transform.prototype = Transform.prototype;
+  function transform(node) {
+    while (!node.__zoom)
+      if (!(node = node.parentNode))
+        return identity3;
+    return node.__zoom;
+  }
 
+  // src/utils/MathUtils.js
+  function randFloat(min3 = 0, max3 = 1) {
+    return Math.random() * (max3 - min3) + min3;
+  }
   function choose(array) {
-    const index = randomInt(0, array.length)();
-    return array[index];
+    const index16 = int_default(0, array.length)();
+    return array[index16];
   }
-  /**
-   * Shortcut for Math.max(minValue, Math.min(maxValue, value))
-   *
-   * @param {number} value value
-   * @param {number} minValue lower limit
-   * @param {number} maxValue upper limit
-   * @returns {number} clipped number
-   */
-
   function clipValue(value, minValue, maxValue) {
     return Math.max(minValue, Math.min(maxValue, value));
   }
-  /**
-   * Rounds a number to a given number of decimals
-   *
-   * @param {number} number a number
-   * @param {number} n number of digits
-   * @returns {number} rounded number
-   */
-
-  function roundToNDecimals(number, n) {
-    return +number.toFixed(n);
+  function roundToNDecimals(number3, n) {
+    return +number3.toFixed(n);
   }
-  /**
-   * Swaps two numbers if the first is larger than the second
-   *
-   * @param {number} x a number
-   * @param {number} y a number
-   * @returns {number[]} array with the smaller number first
-   */
-
   function swapSoSmallerFirst(x, y) {
     if (x <= y) {
       return [x, y];
     }
-
     return [y, x];
   }
-  /**
-   * Counts the number of 1s in a binary number, e.g 100101 has 3 1s
-   *
-   * @see https://prismoskills.appspot.com/lessons/Bitwise_Operators/Count_ones_in_an_integer.jsp
-   * @param {number} integer an integer number
-   * @returns {number} number of 1s
-   */
-
   function countOnesOfBinary(integer) {
     let count = 0;
-
     while (integer !== 0) {
-      // eslint-disable-next-line no-bitwise
       integer = integer & integer - 1;
       count++;
     }
-
     return count;
   }
-  /**
-   * Local maxima are found by looking at entries that are higher than their left
-   * and right neighbor, or higher than their only neighbor if they are at the
-   * boundary.
-   * IMPORTANT: does not find plateaus
-   *
-   * @param {number[]} array array
-   * @returns {number[]} array with indices of maxima
-   */
-
   function findLocalMaxima(array) {
     if (array.length <= 1) {
       return [];
     }
-
     if (array.length === 2) {
       if (array[0] > array[1]) {
         return [0];
       }
-
       if (array[1] > array[0]) {
         return [1];
       }
-
       return [];
-    } // General case with 3 or more
-
-
+    }
     const maximaIndices = [];
-
     if (array[0] > array[1]) {
       maximaIndices.push(0);
     }
-
     let last = array[0];
     let current = array[1];
-
-    for (let index = 1; index < array.length - 1; index++) {
-      const next = array[index + 1];
-
+    for (let index16 = 1; index16 < array.length - 1; index16++) {
+      const next = array[index16 + 1];
       if (current > last && current > next) {
-        maximaIndices.push(index);
+        maximaIndices.push(index16);
       }
-
       last = current;
       current = next;
     }
-
     const lastIndex = array.length - 1;
-
     if (array[lastIndex] > array[lastIndex - 1]) {
       maximaIndices.push(array.length - 1);
     }
-
     return maximaIndices;
   }
 
-  /**
-   * This class represents an array of note objects.
-   * It can be used to simplify operations on a track.
-   *
-   * @example
-   *   const notes = [
-   *       // Some Note objects
-   *   ];
-   *   const noteArr = new NoteArray(notes)
-   *       // Add more notes (all notes will be sorted by time by default after this)
-   *       .addNotes([])
-   *       // Scale all note's sart and end time to make a track slower or faster
-   *       .scaleTime(0.5)
-   *       // Do more ...
-   *       // This class also mirrors many functions from the Array class
-   *       .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
-   *
-   *   // Get Note objects back in a simple Array
-   *   const transformedNotes = noteArr.getNotes();
-   *   // [Note, Note, Note, ...]
-   *
-   *   // Or use an iterator
-   *   for (const note of noteArr) {
-   *       console.log(note);
-   *   }
-   */
-
-  class NoteArray {
-    /**
-         * Creates a new NoteArray,
-         * will make a copy of the passed array and cast all notes
-         *
-         * @param {Note[]} [notes=[]] notes
-         * @param {boolean} [reUseNotes=false] if true, will directly use the passed notes.
-         *      This can be dangerous if you do not want them to change.
-         */
+  // src/types/NoteArray.js
+  var NoteArray = class {
     constructor(notes = [], reUseNotes = false) {
       if (reUseNotes) {
         this._notes = notes;
       } else {
-        // Parse notes
-        this._notes = notes.map(d => {
-          if (d.string !== undefined && d.fret !== undefined) {
-            return GuitarNote.from(d);
+        this._notes = notes.map((d) => {
+          if (d.string !== void 0 && d.fret !== void 0) {
+            return GuitarNote_default.from(d);
           }
-
-          return Note.from(d);
+          return Note_default.from(d);
         });
       }
     }
-    /**
-         * Returns a simple array with all Note objects.
-         *
-         * @returns {Note[]} array with Note objects
-         * @example <caption>Getting notes as simple Note[]</caption>
-         *      const na = new NoteArray(someNotes);
-         *      const notes = na.getNotes();
-         * @example <caption>Using an iterator instead</caption>
-         *      const na = new NoteArray(someNotes);
-         *      for (const note of na) {
-         *          console.log(note);
-         *      }
-         *      // Or copy all Notes to an array with
-         *      const array = [...na];
-         */
-
-
     getNotes() {
       return this._notes;
     }
-    /**
-         * Overwrite the NoteArray's notes with another Array of Notes
-         *
-         * @param {Note[]} notes notes
-         * @returns {NoteArray} itself
-         */
-
-
     setNotes(notes) {
       this._notes = notes;
       return this;
     }
-    /**
-         * Makes this class iterable
-         *
-         * @yields {Note} note
-         * @example <caption>Using an iterator for NoteArray</caption>
-         *      const na = new NoteArray(someNotes);
-         *      for (const note of na) {
-         *          console.log(note);
-         *      }
-         */
-
-
     *[Symbol.iterator]() {
-      for (const note of this._notes) {
-        yield note;
+      for (const note2 of this._notes) {
+        yield note2;
       }
     }
-    /**
-         * Appends notes to this NoteArray
-         *
-         * @param {Note[]} notes notes
-         * @param {boolean} sort iff ture, sorts notes by start timeafter adding
-         *      the new ones (default:true)
-         * @returns {NoteArray} itself
-         */
-
-
     addNotes(notes, sort = true) {
       this._notes = [...this._notes, ...notes];
-
       if (sort) {
         this.sortByTime();
       }
-
       return this;
     }
-    /**
-         * Adds the notes from another NoteArray to this NoteArray
-         * IMPORTANT: this does not change the notes or sort them!
-         * Take a look at NoteArray.append() if you want to extend
-         * a track at its end.
-         *
-         * @param {NoteArray} noteArray another NoteArray
-         * @returns {NoteArray} itself
-         */
-
-
     concat(noteArray) {
       this._notes = [...this._notes, ...noteArray._notes];
       return this;
     }
-    /**
-         * Appends notes to the end of this NoteArray, after shifting them by its
-         * duration. Set gap to something != 0 to create a gap or overlap.
-         *
-         * @param {NoteArray} noteArray another NoteArray
-         * @param {number} gap in seconds between the two parts
-         * @returns {NoteArray} itself
-         */
-
-
     append(noteArray, gap = 0) {
       const duration = this.getDuration();
       const clone = noteArray.clone();
@@ -5826,864 +5061,403 @@
       this.sortByTime();
       return this;
     }
-    /**
-         * Repeats the notes of this array by concatenating a time-shifted copy
-         *
-         * @param {number} times number of times to repeat it
-         * @returns {NoteArray} a new NoteArray with the repeated note sequence
-         */
-
-
     repeat(times) {
       const result = this.clone();
-
       if (times < 1) {
         return new NoteArray();
       }
-
       if (times === 1) {
         return result;
       }
-
-      const copy = this.clone();
+      const copy2 = this.clone();
       const duration = this.getDuration();
-
-      for (let index = 1; index < times; index++) {
-        // Shift notes in time
-        copy.shiftTime(duration); // Result is a NoteArray so use .concat
-
-        result.concat(copy);
+      for (let index16 = 1; index16 < times; index16++) {
+        copy2.shiftTime(duration);
+        result.concat(copy2);
       }
-
       return result;
     }
-    /**
-         * Returns the number of Note objects in this NoteArray
-         *
-         * @returns {number} note count
-         */
-
-
     length() {
       return this._notes.length;
     }
-    /**
-         * Returns the start time of the earliest note in this NoteArray
-         *
-         * @returns {number} start time
-         */
-
-
     getStartTime() {
-      return min(this._notes, d => d.start);
+      return min(this._notes, (d) => d.start);
     }
-    /**
-         * Returns the duration of this note array in seconds from 0 to the end of
-         * the latest note.
-         *
-         * @returns {number} duration
-         */
-
-
     getDuration() {
       let duration = 0;
-
-      for (const note of this._notes) {
-        const noteEnd = note.end === null ? note.start : note.end;
-
+      for (const note2 of this._notes) {
+        const noteEnd = note2.end === null ? note2.start : note2.end;
         if (noteEnd > duration) {
           duration = noteEnd;
         }
       }
-
       return duration;
     }
-    /**
-         * Scales the time of each note by factor
-         *
-         * @param {number} factor factor
-         * @returns {NoteArray} itself
-         */
-
-
     scaleTime(factor) {
-      this._notes = this._notes.map(n => n.scaleTime(factor));
+      this._notes = this._notes.map((n) => n.scaleTime(factor));
       return this;
     }
-    /**
-         * Adds the speicifed number of seconds to each note
-         *
-         * @param {number} addedSeconds time to add in seconds
-         * @returns {NoteArray} itself
-         */
-
-
     shiftTime(addedSeconds) {
-      this._notes = this._notes.map(n => n.shiftTime(addedSeconds));
+      this._notes = this._notes.map((n) => n.shiftTime(addedSeconds));
       return this;
     }
-    /**
-         * Moves all notes s.t. the first starts at <start>
-         * Will sort the notes by start time.
-         *
-         * @param {number} startTime the new start time for the earliest note
-         * @returns {NoteArray} itself
-         */
-
-
     shiftToStartAt(startTime) {
       this.sortByTime();
       const firstNoteStart = this._notes[0].start;
       const offset = firstNoteStart - startTime;
-
-      this._notes.forEach(n => {
+      this._notes.forEach((n) => {
         n.start -= offset;
-
         if (n.end !== null) {
           n.end -= offset;
         }
       });
-
       return this;
     }
-    /**
-         * Similar to Array.forEach
-         *
-         * @param {Function} func a function
-         * @returns {NoteArray} this
-         */
-
-
     forEach(func) {
-      this._notes.forEach((element, index, array) => func(element, index, array));
-
+      this._notes.forEach((element, index16, array) => func(element, index16, array));
       return this;
     }
-    /**
-         * Sorts the notes
-         *
-         * @param {Function} sortFunction sort function, e.g. (a, b)=>a.start-b.start
-         * @returns {NoteArray} itself
-         */
-
-
     sort(sortFunction) {
       this._notes = this._notes.sort(sortFunction);
       return this;
     }
-    /**
-         * Sorts the notes by start time
-         *
-         * @returns {NoteArray} itself
-         */
-
-
     sortByTime() {
       this._notes = this._notes.sort((a, b) => a.start - b.start);
       return this;
     }
-    /**
-         * Maps the notes using some mapping function
-         *
-         * @param {Function} mapFunction mapping function with same signature as
-         *      Array.map()
-         * @returns {NoteArray} itself
-         */
-
-
     map(mapFunction) {
-      this._notes = this._notes.map((element, index, array) => mapFunction(element, index, array));
+      this._notes = this._notes.map((element, index16, array) => mapFunction(element, index16, array));
       return this;
     }
-    /**
-         * Slices the notes by index, like Array.slice()
-         *
-         * @param {number} start start index
-         * @param {number} end end index
-         * @returns {NoteArray} itself
-         */
-
-
-    slice(start, end) {
-      this._notes = this._notes.slice(start, end);
+    slice(start2, end) {
+      this._notes = this._notes.slice(start2, end);
       return this;
     }
-    /**
-         * Slices the notes by time.
-         * The modes 'end' and 'contained' will remove all notes with end === null!
-         * Notes will not be changed, e.g. start time will remain the same.
-         *
-         * @param {number} startTime start of the filter range in seconds
-         * @param {number} endTime end of the filter range in seconds (exclusive)
-         * @param {string} [mode=contained] controls which note time to consider,
-         *      one of:
-         *      - start: note.start must be inside range
-         *      - end: note.end must be inside range
-         *      - contained: BOTH note.start and note.end must be inside range
-         *      - touched: EITHER start or end (or both) must be inside range)
-         *      - touched-included: like touched, but also includes notes where
-         *          neither start nor end inside range, but range is completely
-         *          inside the note
-         *      (contained is default)
-         * @returns {NoteArray} itself
-         * @throws {'Invalid slicing mode'} When slicing mode is not one of the
-         *      above values
-         */
-
-
-    sliceTime(startTime, endTime, mode = 'contained') {
-      const start = startTime;
+    sliceTime(startTime, endTime, mode2 = "contained") {
+      const start2 = startTime;
       const end = endTime;
       let filterFunc;
-
-      if (mode === 'start') {
-        filterFunc = n => n.start >= start && n.start < end;
-      } else if (mode === 'end') {
-        filterFunc = n => n.end !== null && n.end >= start && n.end < end;
-      } else if (mode === 'contained') {
-        filterFunc = n => n.end !== null && n.start >= start && n.end < end;
-      } else if (mode === 'touched') {
-        filterFunc = n => n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end;
-      } else if (mode === 'touched-included') {
-        filterFunc = n => // like touched
-        n.start >= start && n.start <= end || n.end !== null && n.end >= start && n.end <= end || // filter range inside note range
-        n.end !== null && n.start <= start && n.end >= end;
+      if (mode2 === "start") {
+        filterFunc = (n) => n.start >= start2 && n.start < end;
+      } else if (mode2 === "end") {
+        filterFunc = (n) => n.end !== null && n.end >= start2 && n.end < end;
+      } else if (mode2 === "contained") {
+        filterFunc = (n) => n.end !== null && n.start >= start2 && n.end < end;
+      } else if (mode2 === "touched") {
+        filterFunc = (n) => n.start >= start2 && n.start <= end || n.end !== null && n.end >= start2 && n.end <= end;
+      } else if (mode2 === "touched-included") {
+        filterFunc = (n) => n.start >= start2 && n.start <= end || n.end !== null && n.end >= start2 && n.end <= end || n.end !== null && n.start <= start2 && n.end >= end;
       } else {
-        throw new Error('Invalid slicing mode');
+        throw new Error("Invalid slicing mode");
       }
-
       this._notes = this._notes.filter(filterFunc);
       return this;
     }
-    /**
-         * Slices this NoteArray into slices by the given times. Will not return
-         * NoteArrays but simple Note[][], where each item contains all notes of one
-         * time slice. Do not include 0, it will be assumed as first time to slice.
-         * To make sure notes are not contained twice in different slices use the
-         * mode 'start'.
-         *
-         * @param {number[]} times points of time at which to slice (in seconds)
-         * @param {string} mode see NoteArray.sliceTime()
-         * @returns {Note[][]} time slices
-         * @param {boolean} [reUseNotes=false] if true, will not clone notes.
-         *      This can be dangerous if you do not want them to change.
-         * @example
-         *      // Slice into 1 second slices
-         *      const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
-         */
-
-
-    sliceAtTimes(times, mode, reUseNotes = false) {
+    sliceAtTimes(times, mode2, reUseNotes = false) {
       if (times.length === 0) {
         return [this._notes];
-      } // Make sure notes at the end are also in a slice
-
-
+      }
       const duration = this.getDuration();
-
       if (Math.max(...times) <= duration) {
         times.push(duration + 1);
       }
-
       const slices = [];
       let lastTime = 0;
-
       for (const time of times) {
-        slices.push( // this.clone()
-        new NoteArray(this._notes, reUseNotes).sliceTime(lastTime, time, mode).getNotes());
+        slices.push(new NoteArray(this._notes, reUseNotes).sliceTime(lastTime, time, mode2).getNotes());
         lastTime = time;
       }
-
       return slices;
     }
-    /**
-         * Segments the NoteArray into smaller ones at times where no note occurs
-         * for a specified amount of time.
-         * This method is useful for segmenting a recording session into separate
-         * songs, riffs, licks, ...
-         *
-         * @param {number} gapDuration duration of seconds for a gap to be used as
-         *      segmenting time
-         * @param {'start-start'|'end-start'} mode gaps can either be considered as
-         *      the maximum time between two note's starts or the end of the first
-         *      and the start of the second note
-         * @returns {Note[][]} segments
-         */
-
-
-    segmentAtGaps(gapDuration, mode) {
+    segmentAtGaps(gapDuration, mode2) {
       if (this._notes.length < 2) {
         return [this._notes];
       }
-
-      if (mode === 'start-start') {
+      if (mode2 === "start-start") {
         const notes = this.clone().sortByTime().getNotes();
         const cuts = [];
-
-        for (let index = 1; index < notes.length; index++) {
-          if (notes[index].start - notes[index - 1].start >= gapDuration) {
-            cuts.push(notes[index].start);
+        for (let index16 = 1; index16 < notes.length; index16++) {
+          if (notes[index16].start - notes[index16 - 1].start >= gapDuration) {
+            cuts.push(notes[index16].start);
           }
         }
-
-        return this.sliceAtTimes(cuts, 'start');
+        return this.sliceAtTimes(cuts, "start");
       } else {
-        // Get blocks of occupied time in the NoteArray's duration
-        const occupiedTimes = []; // TODO: can probably be made faster in the future
-
-        for (const note of this._notes) {
-          const {
-            start,
-            end
-          } = note; // Check for collision
-
+        const occupiedTimes = [];
+        for (const note2 of this._notes) {
+          const { start: start2, end } = note2;
           const collisions = [];
-
-          for (let index = 0; index < occupiedTimes.length; index++) {
-            const [s, e] = occupiedTimes[index];
-
-            if (s >= start && s <= end || e >= start && e <= end) {
-              occupiedTimes.splice(index, 1);
+          for (let index16 = 0; index16 < occupiedTimes.length; index16++) {
+            const [s, e] = occupiedTimes[index16];
+            if (s >= start2 && s <= end || e >= start2 && e <= end) {
+              occupiedTimes.splice(index16, 1);
               collisions.push([s, e]);
             }
           }
-
           if (collisions.length === 0) {
-            // Just add note time span
-            occupiedTimes.push([start, end]);
+            occupiedTimes.push([start2, end]);
           } else {
-            // Merge
-            const newStart = Math.min(start, ...collisions.map(d => d[0]));
-            const newEnd = Math.max(end, ...collisions.map(d => d[1]));
+            const newStart = Math.min(start2, ...collisions.map((d) => d[0]));
+            const newEnd = Math.max(end, ...collisions.map((d) => d[1]));
             occupiedTimes.push([newStart, newEnd]);
           }
-        } // Gaps are just between two following blocks of occupied time
-
-
+        }
         if (occupiedTimes.length === 1) {
-          // One block, so no gaps
           return [this._notes];
         }
-
         const cuts = [];
-
-        for (let index = 1; index < occupiedTimes.length; index++) {
-          const currentStart = occupiedTimes[index][0];
-          const lastEnd = occupiedTimes[index - 1][1];
-
+        for (let index16 = 1; index16 < occupiedTimes.length; index16++) {
+          const currentStart = occupiedTimes[index16][0];
+          const lastEnd = occupiedTimes[index16 - 1][1];
           if (currentStart - lastEnd >= gapDuration) {
             cuts.push(currentStart);
           }
         }
-
-        return this.sliceAtTimes(cuts, 'start');
+        return this.sliceAtTimes(cuts, "start");
       }
     }
-    /**
-         * Segments the NoteArray into Arrays of Notes at given indices
-         *
-         * @param {number[]} indices indices
-         * @returns {Note[][]} segments
-         * @example <caption>Get notes in partions of 4</caption>
-         *      const noteGroups = myNoteArray.segmentAtIndices([4, 8, 12, 16, 20]);
-         *      // noteGroups = [
-         *      //     Array(4),
-         *      //     Array(4),
-         *      //     Array(4),
-         *      // ]
-         */
-
-
     segmentAtIndices(indices) {
       const segments = [];
       let lastIndex = 0;
-
-      for (const index of indices) {
-        segments.push(this._notes.slice(lastIndex, index));
-        lastIndex = index;
+      for (const index16 of indices) {
+        segments.push(this._notes.slice(lastIndex, index16));
+        lastIndex = index16;
       }
-
       return segments;
     }
-    /**
-         * Filters the NoteArray like you would filter via Array.filter().
-         *
-         * @param {Function} filterFunction filter function, same signature as
-         *      Array.filter()
-         * @returns {NoteArray} itself
-         * @example
-         *      // Only keep notes longer than 1 second
-         *      const filtered = noteArray.filter(note=>note.getDuration()>1);
-         */
-
-
     filter(filterFunction) {
-      this._notes = this._notes.filter((element, index, array) => filterFunction(element, index, array));
+      this._notes = this._notes.filter((element, index16, array) => filterFunction(element, index16, array));
       return this;
     }
-    /**
-         * Filters by pitch, keeping only pitches specified in <pitches>
-         *
-         * @param {number[]|Set<number>} pitches array or Set of pitches to keep
-         * @returns {NoteArray} itself
-         */
-
-
     filterPitches(pitches) {
       if (!(pitches instanceof Set)) {
         pitches = new Set(pitches);
       }
-
-      this._notes = this._notes.filter(n => pitches.has(n.pitch));
+      this._notes = this._notes.filter((n) => pitches.has(n.pitch));
       return this;
     }
-    /**
-         * Transposes each note by <steps> semitones, will clip pitches to [0, 127]
-         *
-         * @param {number} steps number of semitones to transpose, can be negative
-         * @returns {NoteArray} itself
-         */
-
-
     transpose(steps) {
-      this._notes = this._notes.map(n => Note.from({ ...n,
+      this._notes = this._notes.map((n) => Note_default.from(__spreadProps(__spreadValues({}, n), {
         pitch: clipValue(n.pitch + steps, 0, 127)
-      }));
+      })));
       return this;
     }
-    /**
-         * Will set the octave of all notes to -1.
-         * This might cause two notes to exist at the same time and pitch!
-         *
-         * @returns {NoteArray} itself
-         */
-
-
     removeOctaves() {
-      this._notes = this._notes.map(note => Note.from({ ...note,
-        pitch: note.pitch % 12
-      }));
+      this._notes = this._notes.map((note2) => Note_default.from(__spreadProps(__spreadValues({}, note2), {
+        pitch: note2.pitch % 12
+      })));
       return this;
     }
-    /**
-         * Reverses the note array, such that it can be played backwards.
-         *
-         * @returns {NoteArray} itself
-         */
-
-
     reverse() {
-      // Update note start and end times
       const duration = this.getDuration();
-      this._notes = this._notes.map(n => {
+      this._notes = this._notes.map((n) => {
         const newNote = n.clone();
         newNote.start = duration - n.end;
         newNote.end = newNote.start + n.getDuration();
         return newNote;
-      }); // Sort by time
-
+      });
       this.sortByTime();
       return this;
     }
-    /**
-         * Returns true if this NoteArray and otherNoteArray have equal attributes.
-         *
-         * @param {NoteArray} otherNoteArray another NoteArray
-         * @returns {boolean} true if equal
-         */
-
-
     equals(otherNoteArray) {
       if (!(otherNoteArray instanceof NoteArray)) {
         return false;
       }
-
       const notes = otherNoteArray.getNotes();
-
       if (this._notes.length !== notes.length) {
         return false;
       }
-
-      for (const [index, note] of notes.entries()) {
-        if (!this._notes[index].equals(note)) {
+      for (const [index16, note2] of notes.entries()) {
+        if (!this._notes[index16].equals(note2)) {
           return false;
         }
       }
-
       return true;
     }
-    /**
-         * Deep clone, all contained notes are cloned as well.
-         *
-         * @returns {NoteArray} clone
-         */
-
-
     clone() {
       return new NoteArray(this._notes);
     }
+  };
+  var NoteArray_default = NoteArray;
 
-  }
-
-  /**
-   * @module utils/ArrayUtils
-   */
-  /**
-   * Shallow compares two arrays
-   *
-   * @param {Array} a an array
-   * @param {Array} b another array
-   * @returns {boolean} true iff equal
-   */
-
+  // src/utils/ArrayUtils.js
   function arrayShallowEquals(a, b) {
     if (a.length !== b.length) {
       return false;
     }
-
-    for (const [index, element] of a.entries()) {
-      if (element !== b[index]) {
+    for (const [index16, element] of a.entries()) {
+      if (element !== b[index16]) {
         return false;
       }
     }
-
     return true;
   }
-  /**
-   * Checks if two arrays contain the same elements,
-   * ignoring their ordering in each array.
-   *
-   * @param {Array} a an array
-   * @param {Array} b another array
-   * @param {boolean} checkLength also checks if arrays have the same length
-   * @returns {boolean} true iff arrays contain same elements
-   */
-
   function arrayHasSameElements(a, b, checkLength = true) {
     if (checkLength && a.length !== b.length) {
       return false;
     }
-
     const setA = new Set(a);
     const setB = new Set(b);
-
     for (const element of setA) {
       if (!setB.has(element)) {
         return false;
       }
     }
-
     for (const element of setB) {
       if (!setA.has(element)) {
         return false;
       }
     }
-
     return true;
   }
-  /**
-   * Jaccard index calulates the similarity of the sets as the size of the set
-   * interaction divided by the size of the set union:
-   * jackard_index = |intersection| / |union|
-   *
-   * @see https://en.wikipedia.org/wiki/Jaccard_index
-   * @param {number[]} set1 set 1
-   * @param {number[]} set2 set 2
-   * @returns {number} similarity in [0, 1]
-   */
-
-  function jaccardIndex(set1, set2) {
-    if (set1.length === 0 && set2.length === 0) {
+  function jaccardIndex(set1, set22) {
+    if (set1.length === 0 && set22.length === 0) {
       return 1;
     }
-
-    return intersection(set1, set2).size / union(set1, set2).size;
+    return intersection(set1, set22).size / union(set1, set22).size;
   }
-  /**
-   * Kendall Tau distance
-   *
-   * @see https://en.wikipedia.org/wiki/Kendall_tau_distance
-   * @todo naive implementation, can be sped up with hints on Wikipedia,
-   *    see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
-   * @param {number[]} ranking1 a ranking, i.e. for each entry the rank
-   * @param {number[]} ranking2 a ranking, i.e. for each entry the rank
-   * @param {boolean} [normalize=true] normalize to [0, 1]?
-   * @returns {number} Kendall tau distance
-   * @throws {'Ranking length must be equal'} if rankings don't have euqal length
-   */
-
-  function kendallTau(ranking1, ranking2, normalize = true) {
+  function kendallTau(ranking1, ranking2, normalize2 = true) {
     if (ranking1.length !== ranking2.length) {
-      throw new Error('Ranking length must be equal');
+      throw new Error("Ranking length must be equal");
     }
-
     if (ranking1.length === 0) {
       return 0;
     }
-
     let inversions = 0;
     const n = ranking1.length;
-
     for (let a = 0; a < n; a++) {
       for (let b = a + 1; b < n; b++) {
         const r1smaller = ranking1[a] < ranking1[b];
         const r2smaller = ranking2[a] < ranking2[b];
-
         if (r1smaller !== r2smaller) {
           inversions++;
         }
       }
     }
-
-    if (normalize) {
+    if (normalize2) {
       inversions /= n * (n - 1) / 2;
     }
-
     return inversions;
   }
-  /**
-   * Removes duplicates from an Array by converting to a Set and back
-   *
-   * @param {Array} array an array
-   * @returns {Array} array without duplicates
-   */
-
   function removeDuplicates(array) {
     return [...new Set(array)];
   }
-  /**
-   * Checks whether the array a contains the array b, i.e. whether the first
-   * b.length elements are the same.
-   *
-   * @todo rename to arrayStartsWithArray
-   * @param {Array} a an array
-   * @param {Array} b a shorter array
-   * @returns {boolean} true iff a contains b
-   */
-
   function arrayContainsArray(a, b) {
     if (a.length < b.length) {
       return false;
     }
-
-    for (const [index, element] of b.entries()) {
-      if (a[index] !== element) {
+    for (const [index16, element] of b.entries()) {
+      if (a[index16] !== element) {
         return false;
       }
     }
-
     return true;
   }
-  /**
-   * Compares a slice of a with a slice of b.
-   * Slices start at startA and startB and have the same length
-   *
-   * @param {Array} a an Array
-   * @param {Array} b an Array
-   * @param {number} length slice length
-   * @param {number} [startA=0] start index for the slice in a to compare
-   * @param {number} [startB=0] start index for the slice in b to compare
-   * @returns {boolean} true if slices are equal
-   * @throws {'undefined length'} length is undefined
-   * @throws {'start < 0'} when start is negative
-   */
-
   function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
-    if (length === null || length === undefined) {
-      throw new Error('undefined length');
+    if (length === null || length === void 0) {
+      throw new Error("undefined length");
     }
-
     if (startA < 0 || startB < 0) {
-      throw new Error('start < 0');
+      throw new Error("start < 0");
     }
-
     if (a.length < startA + length || b.length < startB + length) {
-      // Array(s) too small for slicing with this start and length
       return false;
     }
-
     for (let offset = 0; offset < length; offset++) {
       if (a[startA + offset] !== b[startB + offset]) {
         return false;
       }
     }
-
     return true;
   }
-  /**
-   * Finds an array in another array, only shallow comparison
-   *
-   * @param {Array} haystack array to search in
-   * @param {Array} needle array to search for
-   * @param {number} [startIndex=0] index from which to start searching
-   * @returns {number} index or -1 when not found
-   */
-
   function arrayIndexOf(haystack, needle, startIndex = 0) {
     if (needle.length === 0) {
       return -1;
     }
-
-    for (let index = startIndex; index < haystack.length - needle.length + 1; ++index) {
-      if (haystack[index] === needle[0]) {
+    for (let index16 = startIndex; index16 < haystack.length - needle.length + 1; ++index16) {
+      if (haystack[index16] === needle[0]) {
         let found = true;
-
         for (let offset = 1; offset < needle.length; ++offset) {
-          if (haystack[index + offset] !== needle[offset]) {
+          if (haystack[index16 + offset] !== needle[offset]) {
             found = false;
             break;
           }
         }
-
         if (found) {
-          return index;
+          return index16;
         }
       }
     }
-
     return -1;
   }
-  /**
-   * Returns the maximum numerical value from an array of arrays with arbitrary
-   * depth and structure.
-   *
-   * @param {Array} array array
-   * @returns {number} maximum value
-   */
-
   function getArrayMax(array) {
     return max(array.flat(Number.POSITIVE_INFINITY));
   }
-  /**
-   * Normalizes by dividing all entries by the maximum.
-   * Only for positive values!
-   *
-   * @param {Array} array nD array with arbitrary depth and structure
-   * @returns {Array} normalized array
-   */
-
   function normalizeNdArray(array) {
-    const max$1 = max(array.flat(Number.POSITIVE_INFINITY));
-
-    const normalize = (array_, maxValue) => array_.map(d => {
-      return d.length !== undefined ? normalize(d, maxValue) : d / maxValue;
+    const max3 = max(array.flat(Number.POSITIVE_INFINITY));
+    const normalize2 = (array_, maxValue) => array_.map((d) => {
+      return d.length !== void 0 ? normalize2(d, maxValue) : d / maxValue;
     });
-
-    return normalize(array, max$1);
+    return normalize2(array, max3);
   }
-  /**
-   * Assumes same shape of matrices.
-   *
-   * @param {number[][]} matrixA a matrix
-   * @param {number[][]} matrixB a matrix
-   * @returns {number} Euclidean distance of the two matrices
-   */
-
   function euclideanDistance(matrixA, matrixB) {
     const valuesA = matrixA.flat();
     const valuesB = matrixB.flat();
     const diffs = valuesA.map((d, i) => d - valuesB[i]);
     return Math.hypot(...diffs);
   }
-  /**
-   * Stringifies a 2D array / matrix for logging onto the console.
-   *
-   * @param {any[][]} matrix the matrix
-   * @param {string} colSeparator column separator
-   * @param {string} rowSeparator row separator
-   * @param {Function} formatter formatting for each element
-   * @returns {string} stringified matrix
-   */
-
-  function formatMatrix(matrix, colSeparator = ', ', rowSeparator = '\n', formatter) {
+  function formatMatrix(matrix, colSeparator = ", ", rowSeparator = "\n", formatter) {
     if (!matrix || matrix.length === 0) {
-      return '';
+      return "";
     }
-
     if (formatter) {
-      matrix = matrix.map(row => row.map(value => formatter(value)));
+      matrix = matrix.map((row) => row.map((value) => formatter(value)));
     }
-
-    return matrix.map(row => row.join(colSeparator)).join(rowSeparator);
+    return matrix.map((row) => row.join(colSeparator)).join(rowSeparator);
   }
-  /**
-   * Returns the value in array that is closest to value.
-   * Array MUST be sorted ascending.
-   *
-   * @param {Array} array array
-   * @param {*} value value
-   * @param {Function} accessor accessor
-   * @returns {*} value in array closest to value
-   */
-
-  function binarySearch(array, value, accessor = d => d) {
-    // Handle short arrays
+  function binarySearch(array, value, accessor = (d) => d) {
     if (array.length <= 3) {
       let closest = null;
       let diff = Number.POSITIVE_INFINITY;
-
       for (const element of array) {
         const value_ = accessor(element);
         const diff2 = Math.abs(value - value_);
-
         if (diff2 < diff) {
           closest = element;
           diff = diff2;
         }
       }
-
       return closest;
-    } // Split longer array in two for binary search
-
-
+    }
     const pivotPosition = Math.floor(array.length / 2);
     const pivotElement = array[pivotPosition];
     const pivotValue = accessor(pivotElement);
-
     if (value === pivotValue) {
       return pivotElement;
     }
-
     if (value < pivotValue) {
       return binarySearch(array.slice(0, pivotPosition + 1), value, accessor);
     }
-
     if (value > pivotValue) {
       return binarySearch(array.slice(pivotPosition - 1), value, accessor);
     }
   }
-  /**
-   * Finds streaks of values in an array.
-   *
-   * @param {Array} values array
-   * @param {Function} accessor value to compare
-   * @param {Function} equality comparator for equality of two values
-   * @returns {object[]} {startIndex, endIndex, length}[]
-   * @example
-   *   const arr = [1, 1, 2, 3, 3, 3];
-   *   const streaks = findStreaks(arr);
-   */
-
-  function findStreaks(values, accessor = d => d, equality = (a, b) => a === b) {
+  function findStreaks(values, accessor = (d) => d, equality = (a, b) => a === b) {
     let startIndex = 0;
     const result = [];
     let startValue = accessor(values[0]);
-
-    for (const [index, value] of values.entries()) {
+    for (const [index16, value] of values.entries()) {
       const v = accessor(value);
-
       if (!equality(startValue, v)) {
         result.push({
           startIndex,
-          endIndex: index - 1,
-          length: index - startIndex
+          endIndex: index16 - 1,
+          length: index16 - startIndex
         });
-        startIndex = index;
+        startIndex = index16;
         startValue = v;
       }
-    } // Finish last streak
-
-
+    }
     if (values.length > 0) {
       result.push({
         startIndex,
@@ -6691,138 +5465,74 @@
         length: values.length - startIndex
       });
     }
-
     return result;
   }
-  /**
-   * For each element in a sequence, finds the lowest index where an equal element
-   * occurs.
-   *
-   * @param {Array} sequence an Array
-   * @param {Function} equals euqality function
-   * @returns {number[]} result
-   */
-
   function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
-    return sequence.map(element => {
-      for (const [index2, element2] of sequence.entries()) {
+    return sequence.map((element) => {
+      for (const [index22, element2] of sequence.entries()) {
         if (equals(element, element2)) {
-          return index2;
+          return index22;
         }
       }
-
       return null;
     });
   }
 
-  /**
-   * Class for storing recorded notes alongside meta information.
-   */
-
-  class Recording extends NoteArray {
-    /**
-       * Creates a new Recording
-       *
-       * @param {string} name name if the song
-       * @param {Date} date date of the recording
-       * @param {Note[]} notes array of Note objects
-       * @param {number} [speed=1] relative speed compared to ground truth,
-       *      e.g. 0.5 for half as fast
-       * @param {number} [selectedTrack=0] track number of the ground truth to which
-       *      this recording belongs
-       * @param {number[]|null} [timeSelection=null] time selection of the ground
-       *      truth to which this recording belongs, or null if full duration
-       * @param {string} [comment=''] a free-text comment for the user to annotate
-       *      the recording
-       */
-    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = '') {
+  // src/types/Recording.js
+  var Recording = class extends NoteArray_default {
+    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
       super(notes);
       this.name = name;
-      this.date = date; // Save formatted date for faster access
-
-      this.dateString = date.toISOString().slice(0, 19).replace('T', ' ');
+      this.date = date;
+      this.dateString = date.toISOString().slice(0, 19).replace("T", " ");
       this.speed = +speed;
       this.selectedTrack = +selectedTrack;
       this.timeSelection = timeSelection;
       this.comment = comment;
       this.sortByTime();
     }
-    /**
-       * Returns a copy of the Note object
-       *
-       * @returns {Recording} new recording
-       */
-
-
     clone() {
-      return new Recording(this.name, this.date, this.getNotes().map(d => d.clone()), this.speed, this.selectedTrack, this.timeSelection === null ? null : [...this.timeSelection], this.comment);
+      return new Recording(this.name, this.date, this.getNotes().map((d) => d.clone()), this.speed, this.selectedTrack, this.timeSelection === null ? null : [...this.timeSelection], this.comment);
     }
-    /**
-       * Returns true if this Recording and otherRecording have equal attributes.
-       *
-       * @param {Recording} otherRecording another Recording
-       * @returns {boolean} true if equal
-       */
-
-
     equals(otherRecording) {
       if (!(otherRecording instanceof Recording)) {
         return false;
       }
-
       if (this.name !== otherRecording.name) {
         return false;
       }
-
       if (this.date.getTime() !== otherRecording.date.getTime()) {
         return false;
       }
-
       if (this.speed !== otherRecording.speed) {
         return false;
       }
-
       if (this.selectedTrack !== otherRecording.selectedTrack) {
         return false;
       }
-
       if (this.timeSelection !== otherRecording.timeSelection) {
         if (this.timeSelection === null || otherRecording.timeSelection === null) {
           return false;
         }
-
         if (!arrayShallowEquals(this.timeSelection, otherRecording.timeSelection)) {
           return false;
         }
-      } // Below is the same as NoteArray
-
-
+      }
       const notes1 = this.getNotes();
       const notes2 = otherRecording.getNotes();
-
       if (notes1.length !== notes2.length) {
         return false;
       }
-
-      for (const [index, element] of notes1.entries()) {
-        if (!element.equals(notes2[index])) {
+      for (const [index16, element] of notes1.entries()) {
+        if (!element.equals(notes2[index16])) {
           return false;
         }
       }
-
       if (this.comment !== otherRecording.comment) {
         return false;
       }
-
       return true;
     }
-    /**
-       * Turns the recoring into a simple object with the same properties
-       *
-       * @returns {object} simple object representation of the recording
-       */
-
-
     toSimpleObject() {
       return {
         name: this.name,
@@ -6834,881 +5544,275 @@
         comment: this.comment
       };
     }
-    /**
-       * Creates a Note object from an object via destructuring
-       *
-       * @param {object} object object with at least {name, date, notes, speed}
-       * @returns {Recording} new note
-       * @throws {Error} when name, date, or notes are missing
-       */
-
-
     static from(object) {
-      let {
-        name,
-        date,
-        notes
-      } = object; // Check for undefined
-
+      let { name, date, notes } = object;
       const values = [name, date, notes];
-      const names = ['name', 'date', 'notes'];
-
-      for (const [index, value] of values.entries()) {
-        if (value === undefined || value === null) {
-          throw new Error(`Cannot create Recording with undefined ${names[index]}`);
+      const names2 = ["name", "date", "notes"];
+      for (const [index16, value] of values.entries()) {
+        if (value === void 0 || value === null) {
+          throw new Error(`Cannot create Recording with undefined ${names2[index16]}`);
         }
-      } // Parse date if it is a string
-
-
-      if (typeof date === 'string') {
+      }
+      if (typeof date === "string") {
         date = new Date(Date.parse(date));
       }
-
-      const {
-        speed,
-        selectedTrack,
-        timeSelection,
-        comment
-      } = object;
+      const { speed, selectedTrack, timeSelection, comment } = object;
       return new Recording(name, date, notes, speed, selectedTrack, timeSelection, comment);
     }
+  };
+  var Recording_default = Recording;
 
-  }
+  // src/types/MusicPiece.js
+  var midiParser = __toESM(require_main(), 1);
 
-  var main = {exports: {}};
-
-  /*
-      Project Name : midi-parser-js
-      Project Url  : https://github.com/colxi/midi-parser-js/
-      Author       : colxi
-      Author URL   : http://www.colxi.info/
-      Description  : MidiParser library reads .MID binary files, Base64 encoded MIDI Data,
-      or UInt8 Arrays, and outputs as a readable and structured JS object.
-  */
-
-  (function (module) {
-    (function () {
-      /**
-       * CROSSBROWSER & NODEjs POLYFILL for ATOB() -
-       * By: https://github.com/MaxArt2501 (modified)
-       * @param  {string} string [description]
-       * @return {[type]}        [description]
-       */
-
-      const _atob = function (string) {
-        // base64 character set, plus padding character (=)
-        let b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='; // Regular expression to check formal correctness of base64 encoded strings
-
-        let b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/; // remove data type signatures at the begining of the string
-        // eg :  "data:audio/mid;base64,"
-
-        string = string.replace(/^.*?base64,/, ''); // atob can work with strings with whitespaces, even inside the encoded part,
-        // but only \t, \n, \f, \r and ' ', which can be stripped.
-
-        string = String(string).replace(/[\t\n\f\r ]+/g, '');
-        if (!b64re.test(string)) throw new TypeError('Failed to execute _atob() : The string to be decoded is not correctly encoded.'); // Adding the padding if missing, for semplicity
-
-        string += '=='.slice(2 - (string.length & 3));
-        let bitmap,
-            result = '';
-        let r1,
-            r2,
-            i = 0;
-
-        for (; i < string.length;) {
-          bitmap = b64.indexOf(string.charAt(i++)) << 18 | b64.indexOf(string.charAt(i++)) << 12 | (r1 = b64.indexOf(string.charAt(i++))) << 6 | (r2 = b64.indexOf(string.charAt(i++)));
-          result += r1 === 64 ? String.fromCharCode(bitmap >> 16 & 255) : r2 === 64 ? String.fromCharCode(bitmap >> 16 & 255, bitmap >> 8 & 255) : String.fromCharCode(bitmap >> 16 & 255, bitmap >> 8 & 255, bitmap & 255);
-        }
-
-        return result;
-      };
-      /**
-       * [MidiParser description]
-       * @type {Object}
-       */
-
-
-      const MidiParser = {
-        // debug (bool), when enabled will log in console unimplemented events
-        // warnings and internal handled errors.
-        debug: false,
-
-        /**
-         * [parse description]
-         * @param  {[type]} input     [description]
-         * @param  {[type]} _callback [description]
-         * @return {[type]}           [description]
-         */
-        parse: function (input, _callback) {
-          if (input instanceof Uint8Array) return MidiParser.Uint8(input);else if (typeof input === 'string') return MidiParser.Base64(input);else if (input instanceof HTMLElement && input.type === 'file') return MidiParser.addListener(input, _callback);else throw new Error('MidiParser.parse() : Invalid input provided');
-        },
-
-        /**
-         * addListener() should be called in order attach a listener to the INPUT HTML element
-         * that will provide the binary data automating the conversion, and returning
-         * the structured data to the provided callback function.
-         */
-        addListener: function (_fileElement, _callback) {
-          if (!File || !FileReader) throw new Error('The File|FileReader APIs are not supported in this browser. Use instead MidiParser.Base64() or MidiParser.Uint8()'); // validate provided element
-
-          if (_fileElement === undefined || !(_fileElement instanceof HTMLElement) || _fileElement.tagName !== 'INPUT' || _fileElement.type.toLowerCase() !== 'file') {
-            console.warn('MidiParser.addListener() : Provided element is not a valid FILE INPUT element');
-            return false;
-          }
-
-          _callback = _callback || function () {};
-
-          _fileElement.addEventListener('change', function (InputEvt) {
-            // set the 'file selected' event handler
-            if (!InputEvt.target.files.length) return false; // return false if no elements where selected
-
-            console.log('MidiParser.addListener() : File detected in INPUT ELEMENT processing data..');
-            let reader = new FileReader(); // prepare the file Reader
-
-            reader.readAsArrayBuffer(InputEvt.target.files[0]); // read the binary data
-
-            reader.onload = function (e) {
-              _callback(MidiParser.Uint8(new Uint8Array(e.target.result))); // encode data with Uint8Array and call the parser
-
-            };
-          });
-        },
-
-        /**
-         * Base64() : convert baset4 string into uint8 array buffer, before performing the
-         * parsing subroutine.
-         */
-        Base64: function (b64String) {
-          b64String = String(b64String);
-
-          let raw = _atob(b64String);
-
-          let rawLength = raw.length;
-          let t_array = new Uint8Array(new ArrayBuffer(rawLength));
-
-          for (let i = 0; i < rawLength; i++) t_array[i] = raw.charCodeAt(i);
-
-          return MidiParser.Uint8(t_array);
-        },
-
-        /**
-         * parse() : function reads the binary data, interpreting and spliting each chuck
-         * and parsing it to a structured Object. When job is finised returns the object
-         * or 'false' if any error was generated.
-         */
-        Uint8: function (FileAsUint8Array) {
-          let file = {
-            data: null,
-            pointer: 0,
-            movePointer: function (_bytes) {
-              // move the pointer negative and positive direction
-              this.pointer += _bytes;
-              return this.pointer;
-            },
-            readInt: function (_bytes) {
-              // get integer from next _bytes group (big-endian)
-              _bytes = Math.min(_bytes, this.data.byteLength - this.pointer);
-              if (_bytes < 1) return -1; // EOF
-
-              let value = 0;
-
-              if (_bytes > 1) {
-                for (let i = 1; i <= _bytes - 1; i++) {
-                  value += this.data.getUint8(this.pointer) * Math.pow(256, _bytes - i);
-                  this.pointer++;
-                }
-              }
-
-              value += this.data.getUint8(this.pointer);
-              this.pointer++;
-              return value;
-            },
-            readStr: function (_bytes) {
-              // read as ASCII chars, the followoing _bytes
-              let text = '';
-
-              for (let char = 1; char <= _bytes; char++) text += String.fromCharCode(this.readInt(1));
-
-              return text;
-            },
-            readIntVLV: function () {
-              // read a variable length value
-              let value = 0;
-
-              if (this.pointer >= this.data.byteLength) {
-                return -1; // EOF
-              } else if (this.data.getUint8(this.pointer) < 128) {
-                // ...value in a single byte
-                value = this.readInt(1);
-              } else {
-                // ...value in multiple bytes
-                let FirstBytes = [];
-
-                while (this.data.getUint8(this.pointer) >= 128) {
-                  FirstBytes.push(this.readInt(1) - 128);
-                }
-
-                let lastByte = this.readInt(1);
-
-                for (let dt = 1; dt <= FirstBytes.length; dt++) {
-                  value += FirstBytes[FirstBytes.length - dt] * Math.pow(128, dt);
-                }
-
-                value += lastByte;
-              }
-
-              return value;
-            }
-          };
-          file.data = new DataView(FileAsUint8Array.buffer, FileAsUint8Array.byteOffset, FileAsUint8Array.byteLength); // 8 bits bytes file data array
-          //  ** read FILE HEADER
-
-          if (file.readInt(4) !== 0x4D546864) {
-            console.warn('Header validation failed (not MIDI standard or file corrupt.)');
-            return false; // Header validation failed (not MIDI standard or file corrupt.)
-          }
-
-          file.readInt(4); // header size (unused var), getted just for read pointer movement
-
-          let MIDI = {}; // create new midi object
-
-          MIDI.formatType = file.readInt(2); // get MIDI Format Type
-
-          MIDI.tracks = file.readInt(2); // get ammount of track chunks
-
-          MIDI.track = []; // create array key for track data storing
-
-          let timeDivisionByte1 = file.readInt(1); // get Time Division first byte
-
-          let timeDivisionByte2 = file.readInt(1); // get Time Division second byte
-
-          if (timeDivisionByte1 >= 128) {
-            // discover Time Division mode (fps or tpf)
-            MIDI.timeDivision = [];
-            MIDI.timeDivision[0] = timeDivisionByte1 - 128; // frames per second MODE  (1st byte)
-
-            MIDI.timeDivision[1] = timeDivisionByte2; // ticks in each frame     (2nd byte)
-          } else MIDI.timeDivision = timeDivisionByte1 * 256 + timeDivisionByte2; // else... ticks per beat MODE  (2 bytes value)
-          //  ** read TRACK CHUNK
-
-
-          for (let t = 1; t <= MIDI.tracks; t++) {
-            MIDI.track[t - 1] = {
-              event: []
-            }; // create new Track entry in Array
-
-            let headerValidation = file.readInt(4);
-            if (headerValidation === -1) break; // EOF
-
-            if (headerValidation !== 0x4D54726B) return false; // Track chunk header validation failed.
-
-            file.readInt(4); // move pointer. get chunk size (bytes length)
-
-            let e = 0; // init event counter
-
-            let endOfTrack = false; // FLAG for track reading secuence breaking
-            // ** read EVENT CHUNK
-
-            let statusByte;
-            let laststatusByte;
-
-            while (!endOfTrack) {
-              e++; // increase by 1 event counter
-
-              MIDI.track[t - 1].event[e - 1] = {}; // create new event object, in events array
-
-              MIDI.track[t - 1].event[e - 1].deltaTime = file.readIntVLV(); // get DELTA TIME OF MIDI event (Variable Length Value)
-
-              statusByte = file.readInt(1); // read EVENT TYPE (STATUS BYTE)
-
-              if (statusByte === -1) break; // EOF
-              else if (statusByte >= 128) laststatusByte = statusByte; // NEW STATUS BYTE DETECTED
-              else {
-                // 'RUNNING STATUS' situation detected
-                statusByte = laststatusByte; // apply last loop, Status Byte
-
-                file.movePointer(-1); // move back the pointer (cause readed byte is not status byte)
-              } //
-              // ** IS META EVENT
-              //
-
-              if (statusByte === 0xFF) {
-                // Meta Event type
-                MIDI.track[t - 1].event[e - 1].type = 0xFF; // assign metaEvent code to array
-
-                MIDI.track[t - 1].event[e - 1].metaType = file.readInt(1); // assign metaEvent subtype
-
-                let metaEventLength = file.readIntVLV(); // get the metaEvent length
-
-                switch (MIDI.track[t - 1].event[e - 1].metaType) {
-                  case 0x2F: // end of track, has no data byte
-
-                  case -1:
-                    // EOF
-                    endOfTrack = true; // change FLAG to force track reading loop breaking
-
-                    break;
-
-                  case 0x01: // Text Event
-
-                  case 0x02: // Copyright Notice
-
-                  case 0x03:
-                  case 0x04: // Instrument Name
-
-                  case 0x05: // Lyrics)
-
-                  case 0x07: // Cue point                                         // Sequence/Track Name (documentation: http://www.ta7.de/txt/musik/musi0006.htm)
-
-                  case 0x06:
-                    // Marker
-                    MIDI.track[t - 1].event[e - 1].data = file.readStr(metaEventLength);
-                    break;
-
-                  case 0x21: // MIDI PORT
-
-                  case 0x59: // Key Signature
-
-                  case 0x51:
-                    // Set Tempo
-                    MIDI.track[t - 1].event[e - 1].data = file.readInt(metaEventLength);
-                    break;
-
-                  case 0x54:
-                    // SMPTE Offset
-                    MIDI.track[t - 1].event[e - 1].data = [];
-                    MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[2] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[3] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[4] = file.readInt(1);
-                    break;
-
-                  case 0x58:
-                    // Time Signature
-                    MIDI.track[t - 1].event[e - 1].data = [];
-                    MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[2] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[3] = file.readInt(1);
-                    break;
-
-                  default:
-                    // if user provided a custom interpreter, call it
-                    // and assign to event the returned data
-                    if (this.customInterpreter !== null) {
-                      MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].metaType, file, metaEventLength);
-                    } // if no customInterpretr is provided, or returned
-                    // false (=apply default), perform default action
-
-
-                    if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
-                      file.readInt(metaEventLength);
-                      MIDI.track[t - 1].event[e - 1].data = file.readInt(metaEventLength);
-                      if (this.debug) console.info('Unimplemented 0xFF meta event! data block readed as Integer');
-                    }
-
-                }
-              } //
-              // IS REGULAR EVENT
-              //
-              else {
-                // MIDI Control Events OR System Exclusive Events
-                statusByte = statusByte.toString(16).split(''); // split the status byte HEX representation, to obtain 4 bits values
-
-                if (!statusByte[1]) statusByte.unshift('0'); // force 2 digits
-
-                MIDI.track[t - 1].event[e - 1].type = parseInt(statusByte[0], 16); // first byte is EVENT TYPE ID
-
-                MIDI.track[t - 1].event[e - 1].channel = parseInt(statusByte[1], 16); // second byte is channel
-
-                switch (MIDI.track[t - 1].event[e - 1].type) {
-                  case 0xF:
-                    {
-                      // System Exclusive Events
-                      // if user provided a custom interpreter, call it
-                      // and assign to event the returned data
-                      if (this.customInterpreter !== null) {
-                        MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].type, file, false);
-                      } // if no customInterpretr is provided, or returned
-                      // false (=apply default), perform default action
-
-
-                      if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
-                        let event_length = file.readIntVLV();
-                        MIDI.track[t - 1].event[e - 1].data = file.readInt(event_length);
-                        if (this.debug) console.info('Unimplemented 0xF exclusive events! data block readed as Integer');
-                      }
-
-                      break;
-                    }
-
-                  case 0xA: // Note Aftertouch
-
-                  case 0xB: // Controller
-
-                  case 0xE: // Pitch Bend Event
-
-                  case 0x8: // Note off
-
-                  case 0x9:
-                    // Note On
-                    MIDI.track[t - 1].event[e - 1].data = [];
-                    MIDI.track[t - 1].event[e - 1].data[0] = file.readInt(1);
-                    MIDI.track[t - 1].event[e - 1].data[1] = file.readInt(1);
-                    break;
-
-                  case 0xC: // Program Change
-
-                  case 0xD:
-                    // Channel Aftertouch
-                    MIDI.track[t - 1].event[e - 1].data = file.readInt(1);
-                    break;
-
-                  case -1:
-                    // EOF
-                    endOfTrack = true; // change FLAG to force track reading loop breaking
-
-                    break;
-
-                  default:
-                    // if user provided a custom interpreter, call it
-                    // and assign to event the returned data
-                    if (this.customInterpreter !== null) {
-                      MIDI.track[t - 1].event[e - 1].data = this.customInterpreter(MIDI.track[t - 1].event[e - 1].metaType, file, false);
-                    } // if no customInterpretr is provided, or returned
-                    // false (=apply default), perform default action
-
-
-                    if (this.customInterpreter === null || MIDI.track[t - 1].event[e - 1].data === false) {
-                      console.log('Unknown EVENT detected... reading cancelled!');
-                      return false;
-                    }
-
-                }
-              }
-            }
-          }
-
-          return MIDI;
-        },
-
-        /**
-         * custom function to handle unimplemented, or custom midi messages.
-         * If message is a meta-event, the value of metaEventLength will be >0.
-         * Function must return the value to store, and pointer of dataView needs
-         * to be manually increased
-         * If you want default action to be performed, return false
-         */
-        customInterpreter: null // function( e_type , arrayByffer, metaEventLength){ return e_data_int }
-
-      }; // if running in NODE export module
-
-      module.exports = MidiParser;
-    })();
-  })(main);
-
-  /**
-   * @module fileFormats/MusicXmlParser
-   */
-  // Precision in number of digits when rounding seconds
-
-  const ROUNDING_PRECISION$1 = 5;
-  /**
-   * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
-   * Also calculates the position of measure lines and the total time in seconds.
-   *
-   * @param {XMLDocument} xml MusicXML document
-   * @param {boolean} log set to true to log results etc. to the console
-   * @returns {object} parsed document
-   */
-
+  // src/fileFormats/MusicXmlParser.js
+  var ROUNDING_PRECISION = 5;
   function preprocessMusicXmlData(xml, log = false) {
     if (log) {
-      console.groupCollapsed('[MusicXmlParser] Parsing MusicXML');
+      console.groupCollapsed("[MusicXmlParser] Parsing MusicXML");
       console.log(xml);
-    } // Get part and instrument names
-
-
-    const partNameElements = xml.querySelectorAll('part-name');
-    const instruments = xml.querySelectorAll('score-instrument');
+    }
+    const partNameElements = xml.querySelectorAll("part-name");
+    const instruments = xml.querySelectorAll("score-instrument");
     const partNames = [];
     const instrumentNames = [];
-
     for (const p of partNameElements) {
       partNames.push(p.innerHTML);
     }
-
-    for (const index of instruments) {
-      instrumentNames.push(index.children[0].innerHTML);
-    } // Get instrument definitions
-
-
-    const drumInstrumentMap = getDrumInstrumentMap(xml); // Preprocess notes
-
-    const parts = xml.querySelectorAll('part');
+    for (const index16 of instruments) {
+      instrumentNames.push(index16.children[0].innerHTML);
+    }
+    const drumInstrumentMap = getDrumInstrumentMap(xml);
+    const parts = xml.querySelectorAll("part");
     const parsedParts = [];
-
     for (const part of parts) {
       parsedParts.push(preprocessMusicXmlPart(part, drumInstrumentMap));
     }
-
     const result = {
       parts: parsedParts,
       partNames,
       instruments: instrumentNames,
-      totalTime: max(parsedParts, d => d.totalTime)
+      totalTime: max(parsedParts, (d) => d.totalTime)
     };
-
     if (log) {
       console.log(result);
       console.groupEnd();
     }
-
     return result;
   }
-  /**
-   * Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
-   * Also calculates the position of measure lines and the total time in seconds.
-   *
-   * @private
-   * @param {HTMLElement} part MusicXML part
-   * @param {Map} drumInstrumentMap midiPitch = map.get(partId).get(instrId)
-   * @returns {object} parsed measures
-   */
-
   function preprocessMusicXmlPart(part, drumInstrumentMap) {
-    // Handle Guitar sheets with stave and tab (so dublicate notes)
-    part = handleStaveAndTab(part); // Handle repetitions by duplicating measures
-
+    var _a, _b, _c;
+    part = handleStaveAndTab(part);
     let measures = part.children;
-    measures = duplicateRepeatedMeasures(measures); // For each parsed note, store the corresponding XML notes
-
-    const xmlNotes = part.querySelectorAll('note');
+    measures = duplicateRepeatedMeasures(measures);
+    const xmlNotes = part.querySelectorAll("note");
     const xmlNoteIndexMap = new Map([...xmlNotes].map((d, i) => [d, i]));
     const xmlNoteIndices = [];
     let currentTime = 0;
     let divisions;
     let tempo = 120;
     let beats = 4;
-    let beatType = 4; // Default velocity is 90 https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
-
+    let beatType = 4;
     const defaultVelocity = 90;
     const velocityFactor = 64 / 71;
-    let velocity = Math.round(defaultVelocity * velocityFactor); // Handle changing tempo and beat type
-
+    let velocity = Math.round(defaultVelocity * velocityFactor);
     const tempoChanges = [];
     const beatTypeChanges = [];
     const keySignatureChanges = [];
     const noteObjs = [];
-    const measureRehearsalMap = new Map();
-    const noteLyricsMap = new Map(); // Time in seconds of the start of new measures
-
-    const measureLinePositions = []; // Indices of notes where a new measure starts
-
+    const measureRehearsalMap = /* @__PURE__ */ new Map();
+    const noteLyricsMap = /* @__PURE__ */ new Map();
+    const measureLinePositions = [];
     const measureIndices = [];
-
     for (const measure of measures) {
-      const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION$1); // Try to update metrics (if they are not set, keep the old ones)
-
+      const currentTimeRounded = roundToNDecimals(currentTime, ROUNDING_PRECISION);
       try {
-        const soundElements = measure.querySelectorAll('sound'); // eslint-disable-next-line
-
+        const soundElements = measure.querySelectorAll("sound");
         for (const element of soundElements) {
-          const tempoValue = element.getAttribute('tempo');
-
+          const tempoValue = element.getAttribute("tempo");
           if (tempoValue !== null) {
             tempo = roundToNDecimals(+tempoValue, 3);
             tempoChanges.push({
               time: currentTimeRounded,
               tempo
             });
-          } // TODO: this only support one tempo change per measure!
-          // TODO: tempo changes that are not at the measure start will be false
-          // TODO: solution: go trough all children of measure: notes and other children
-          // notes will update the time
-
-
+          }
           break;
         }
-      } catch {}
-
+      } catch {
+      }
       try {
-        divisions = +measure.querySelectorAll('divisions')[0].innerHTML;
-      } catch {}
-
+        divisions = +measure.querySelectorAll("divisions")[0].innerHTML;
+      } catch {
+      }
       try {
-        beats = +measure.querySelectorAll('beats')[0].innerHTML;
-        beatType = +measure.querySelectorAll('beat-type')[0].innerHTML;
+        beats = +measure.querySelectorAll("beats")[0].innerHTML;
+        beatType = +measure.querySelectorAll("beat-type")[0].innerHTML;
         beatTypeChanges.push({
           time: currentTimeRounded,
           beats,
           beatType
         });
-      } catch {}
-
+      } catch {
+      }
       const secondsPerBeat = 1 / (tempo / 60);
-
       try {
-        const fifths = +measure.querySelectorAll('fifths')[0].innerHTML;
-        const {
-          key,
-          scale
-        } = keySignatureMap.get(fifths);
+        const fifths = +measure.querySelectorAll("fifths")[0].innerHTML;
+        const { key, scale: scale2 } = keySignatureMap.get(fifths);
         keySignatureChanges.push({
           time: currentTimeRounded,
           key,
-          scale
+          scale: scale2
         });
-      } catch {} // If measure is empty, still increase currentTime
-
-
-      if (measure.querySelectorAll('note').length === 0) {
+      } catch {
+      }
+      if (measure.querySelectorAll("note").length === 0) {
         const measureDuration = beats * (beatType / 4) * secondsPerBeat;
         currentTime += measureDuration;
-      } // Read notes
-
-
+      }
       let lastNoteDuration = 0;
-
       for (const child of measure.children) {
-        if (child.nodeName === 'backup') {
-          // Handle backup, which reduces the current time to handle multiple staves
-          const duration = +child.querySelectorAll('duration')[0].innerHTML;
+        if (child.nodeName === "backup") {
+          const duration = +child.querySelectorAll("duration")[0].innerHTML;
           const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
           currentTime -= durationInSeconds;
-        } else if (child.nodeName === 'forward') {
-          // Forward is inverse of backward
-          const duration = +child.querySelectorAll('duration')[0].innerHTML;
+        } else if (child.nodeName === "forward") {
+          const duration = +child.querySelectorAll("duration")[0].innerHTML;
           const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
           currentTime += durationInSeconds;
-        } else if (child.nodeName === 'direction') {
-          // Handle directions such as dynamics
+        } else if (child.nodeName === "direction") {
           for (const direction of child.children) {
-            if (direction.nodeName === 'sound' && direction.getAttribute('dynamics')) {
-              // Dynamics: convert number...
-              // https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
-              velocity = Math.round(velocityFactor * +direction.getAttribute('dynamics'));
+            if (direction.nodeName === "sound" && direction.getAttribute("dynamics")) {
+              velocity = Math.round(velocityFactor * +direction.getAttribute("dynamics"));
             }
-
-            if (child.querySelectorAll('rehearsal').length > 0) {
-              // Reheasal marks (used as section indicators by GuitarPro)
-              const rehearsals = child.querySelectorAll('rehearsal');
+            if (child.querySelectorAll("rehearsal").length > 0) {
+              const rehearsals = child.querySelectorAll("rehearsal");
               const marks = [];
-
               for (const r of rehearsals) {
-                marks.push(r.textContent);
+                if (r.textContent !== "") {
+                  marks.push(r.textContent);
+                }
               }
-
-              let text = marks.join(' ');
-              const measureIndex = measureIndices.length;
-
-              if (measureRehearsalMap.has(measureIndex)) {
-                const oldText = measureRehearsalMap.get(measureIndex);
-                text = `${oldText} ${text}`;
+              if (marks.length > 0) {
+                let text = marks.join(" ");
+                const measureIndex = measureIndices.length;
+                if (measureRehearsalMap.has(measureIndex)) {
+                  const oldText = measureRehearsalMap.get(measureIndex);
+                  text = `${oldText} ${text}`;
+                }
+                measureRehearsalMap.set(measureIndex, text);
               }
-
-              measureRehearsalMap.set(measureIndex, text);
-            } // TODO: handle others, e.g. tempo
-            // if (direction.nodeName === 'sound' && direction.getAttribute('tempo')) {
-            //     const tempoValue = Math.round(+direction.getAttribute('tempo'));
-            //     tempo = roundToNDecimals(tempoValue, 3);
-            //     tempoChanges.push({
-            //         time: roundToNDecimals(currentTime, ROUNDING_PRECISION),
-            //         tempo,
-            //     });
-            // }
-
+            }
           }
-        } else if (child.nodeName === 'note') {
-          const note = child;
-
+        } else if (child.nodeName === "note") {
+          const note2 = child;
           try {
-            var _note$querySelectorAl3;
-
-            // Get note duration in seconds
-            let durationInSeconds; // Handle grace notes
-
-            if (note.querySelectorAll('grace').length > 0) {
-              // Take duration from type
-              const type = note.querySelectorAll('type').textContent;
-
-              if (type === '64th') {
+            let durationInSeconds;
+            if (note2.querySelectorAll("grace").length > 0) {
+              const type2 = note2.querySelectorAll("type").textContent;
+              if (type2 === "64th") {
                 durationInSeconds = secondsPerBeat / 16;
-              } else if (type === '32nd') {
+              } else if (type2 === "32nd") {
                 durationInSeconds = secondsPerBeat / 8;
-              } else if (type === '16th') {
+              } else if (type2 === "16th") {
                 durationInSeconds = secondsPerBeat / 4;
-              } else if (type === 'eighth') {
+              } else if (type2 === "eighth") {
                 durationInSeconds = secondsPerBeat / 2;
-              } else if (type === 'quarter') {
+              } else if (type2 === "quarter") {
                 durationInSeconds = secondsPerBeat;
-              } else if (type === 'half') {
+              } else if (type2 === "half") {
                 durationInSeconds = secondsPerBeat * 2;
               } else {
-                // TODO: better fallback solution?
                 durationInSeconds = 0.01;
               }
             } else {
-              const duration = +note.querySelectorAll('duration')[0].innerHTML;
+              const duration = +note2.querySelectorAll("duration")[0].innerHTML;
               durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat);
-            } // Do not create note object for rests, only increase time
-
-
-            const isRest = note.querySelectorAll('rest').length > 0;
-
+            }
+            const isRest = note2.querySelectorAll("rest").length > 0;
             if (isRest) {
               currentTime += durationInSeconds;
               continue;
             }
-
-            const isUnpitched = note.querySelectorAll('unpitched').length > 0;
+            const isUnpitched = note2.querySelectorAll("unpitched").length > 0;
             let pitch;
-
             if (isUnpitched) {
-              // Handle drum notes
-              const instrumentId = note.querySelectorAll('instrument')[0].id;
+              const instrumentId = note2.querySelectorAll("instrument")[0].id;
               pitch = drumInstrumentMap.get(part.id).get(instrumentId);
             } else {
-              var _note$querySelectorAl, _note$querySelectorAl2;
-
-              // Get MIDI pitch
-              // Handle <alter> tag for accidentals
-              const alter = +((_note$querySelectorAl = (_note$querySelectorAl2 = note.querySelectorAll('alter')[0]) === null || _note$querySelectorAl2 === void 0 ? void 0 : _note$querySelectorAl2.innerHTML) !== null && _note$querySelectorAl !== void 0 ? _note$querySelectorAl : 0);
-              const step = note.querySelectorAll('step')[0].innerHTML;
-              const octave = +note.querySelectorAll('octave')[0].innerHTML;
+              const alter = +(((_a = note2.querySelectorAll("alter")[0]) == null ? void 0 : _a.innerHTML) ?? 0);
+              const step = note2.querySelectorAll("step")[0].innerHTML;
+              const octave = +note2.querySelectorAll("octave")[0].innerHTML;
               pitch = getMidiNoteByNameAndOctave(step, octave).pitch + alter;
-            } // TODO: Handle dynamics defined as tag inside a note
-
-
-            const dynamicsTag = (_note$querySelectorAl3 = note.querySelectorAll('dynamics')[0]) === null || _note$querySelectorAl3 === void 0 ? void 0 : _note$querySelectorAl3.children[0];
-
+            }
+            const dynamicsTag = (_b = note2.querySelectorAll("dynamics")[0]) == null ? void 0 : _b.children[0];
             if (dynamicsTag) {
               velocity = dynamicsMap.get(dynamicsTag.nodeName);
-            } // Is this a chord?
-            // https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/
-
-
-            const isChord = note.querySelectorAll('chord').length > 0;
-
+            }
+            const isChord = note2.querySelectorAll("chord").length > 0;
             if (isChord) {
               currentTime -= lastNoteDuration;
-            } // Is this note tied?
-
-
-            const tieElement = note.querySelectorAll('tie')[0];
-
-            if (tieElement && tieElement.getAttribute('type') === 'stop') {
-              const noteEnd = currentTime + durationInSeconds; // Find last note with this pitch and update end
-
-              for (let index = noteObjs.length - 1; index > 0; index--) {
-                const noteObject = noteObjs[index];
-
+            }
+            const tieElement = note2.querySelectorAll("tie")[0];
+            if (tieElement && tieElement.getAttribute("type") === "stop") {
+              const noteEnd = currentTime + durationInSeconds;
+              for (let index16 = noteObjs.length - 1; index16 > 0; index16--) {
+                const noteObject = noteObjs[index16];
                 if (noteObject.pitch === pitch) {
-                  noteObject.end = noteEnd; // Read lyrics and add to note
-
-                  const lyrics = getLyricsFromNote(note);
-
+                  noteObject.end = noteEnd;
+                  const lyrics = getLyricsFromNote(note2);
                   if (lyrics.length > 0) {
-                    var _noteLyricsMap$get;
-
-                    const oldLyrics = (_noteLyricsMap$get = noteLyricsMap.get(index)) !== null && _noteLyricsMap$get !== void 0 ? _noteLyricsMap$get : '';
+                    const oldLyrics = noteLyricsMap.get(index16) ?? "";
                     const newLyrics = `${oldLyrics} ${lyrics}`;
-                    noteLyricsMap.set(index, newLyrics);
-                  } // Save XML note index
-
-
-                  xmlNoteIndices[index].push(xmlNoteIndexMap.get(note));
+                    noteLyricsMap.set(index16, newLyrics);
+                  }
+                  xmlNoteIndices[index16].push(xmlNoteIndexMap.get(note2));
                   break;
                 }
               }
             } else {
-              var _note$querySelectorAl4, _note$querySelectorAl5;
-
-              // Save XML note index
-              xmlNoteIndices.push([xmlNoteIndexMap.get(note)]); // Staff is used as note's channel for non-guitar notes
-
-              const staff = +((_note$querySelectorAl4 = (_note$querySelectorAl5 = note.querySelectorAll('staff')[0]) === null || _note$querySelectorAl5 === void 0 ? void 0 : _note$querySelectorAl5.innerHTML) !== null && _note$querySelectorAl4 !== void 0 ? _note$querySelectorAl4 : 1); // TODO: use xml note type?
-              // const type = note.getElementsByTagName('type')[0].innerHTML;
-
-              const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION$1);
-              const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION$1); // Try to get guitar specific data
-
+              xmlNoteIndices.push([xmlNoteIndexMap.get(note2)]);
+              const staff = +(((_c = note2.querySelectorAll("staff")[0]) == null ? void 0 : _c.innerHTML) ?? 1);
+              const startTime = roundToNDecimals(currentTime, ROUNDING_PRECISION);
+              const endTime = roundToNDecimals(currentTime + durationInSeconds, ROUNDING_PRECISION);
               let string = null;
               let fret = null;
-
               try {
-                fret = +note.querySelectorAll('fret')[0].innerHTML;
-                string = +note.querySelectorAll('string')[0].innerHTML;
-              } catch {}
-
+                fret = +note2.querySelectorAll("fret")[0].innerHTML;
+                string = +note2.querySelectorAll("string")[0].innerHTML;
+              } catch {
+              }
               if (string !== null && fret !== null) {
-                noteObjs.push(new GuitarNote(pitch, startTime, velocity, string, endTime, string, fret)); // TODO: use drum notes and store part name and action directly
-                // } else if (isUnpitched) {
-                //     const part = '';
-                //     const action = '';
-                //     noteObjs.push(new DrumNote(
-                //         pitch,
-                //         startTime,
-                //         velocity,
-                //         staff - 1,
-                //         endTime,
-                //         part,
-                //         action,
-                //     ));
+                noteObjs.push(new GuitarNote_default(pitch, startTime, velocity, string, endTime, string, fret));
               } else {
-                noteObjs.push(new Note(pitch, startTime, velocity, // MusicXML starts with 1 but MIDI with 0
-                staff - 1, endTime));
-              } // Read lyrics
-
-
-              const lyrics = getLyricsFromNote(note);
-
+                noteObjs.push(new Note_default(pitch, startTime, velocity, staff - 1, endTime));
+              }
+              const lyrics = getLyricsFromNote(note2);
               if (lyrics.length > 0) {
                 noteLyricsMap.set(noteObjs.length - 1, lyrics);
               }
             }
-
             lastNoteDuration = durationInSeconds;
             currentTime += durationInSeconds;
           } catch (error) {
-            console.warn('[MusicXmlParser] Cannot parse MusicXML note', error, note);
+            console.warn("[MusicXmlParser] Cannot parse MusicXML note", error, note2);
           }
         }
-      } // Add measure line position
-
-
-      measureLinePositions.push(roundToNDecimals(currentTime, ROUNDING_PRECISION$1));
+      }
+      measureLinePositions.push(roundToNDecimals(currentTime, ROUNDING_PRECISION));
       measureIndices.push(noteObjs.length);
-    } // Defaults
-
-
+    }
     if (tempoChanges.length === 0 || tempoChanges[0].time > 0) {
-      tempoChanges.unshift({
-        tempo: 120,
-        time: 0
-      });
+      tempoChanges.unshift({ tempo: 120, time: 0 });
     }
-
     if (beatTypeChanges.length === 0 || beatTypeChanges[0].time > 0) {
-      beatTypeChanges.unshift({
-        beats: 4,
-        beatType: 4,
-        time: 0
-      });
+      beatTypeChanges.unshift({ beats: 4, beatType: 4, time: 0 });
     }
-
     if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
-      keySignatureChanges.unshift({
-        key: 'C',
-        scale: 'major',
-        time: 0
-      });
-    } // TODO: Remove duplicates from measureRehearsalMap
-
-
+      keySignatureChanges.unshift({ key: "C", scale: "major", time: 0 });
+    }
     const result = {
-      noteObjs: noteObjs,
+      noteObjs,
       totalTime: currentTime,
       measureLinePositions,
       measureIndices,
@@ -7719,507 +5823,217 @@
       keySignatureChanges,
       tuning: getTuningPitches(measures),
       noteLyricsMap
-    }; // console.log('[MusicXmlParser] Parsed part: ', result);
-
+    };
     return result;
   }
-  /**
-   * Reads lyrics from a note element
-   *
-   * @param {HTMLElement} note note element
-   * @returns {string} lyrics for this note
-   */
-
-
-  function getLyricsFromNote(note) {
-    const lyric = note.querySelectorAll('lyric');
+  function getLyricsFromNote(note2) {
+    const lyric = note2.querySelectorAll("lyric");
     const texts = [];
-
     for (const l of lyric) {
-      texts.push(l.querySelectorAll('text')[0].textContent);
+      texts.push(l.querySelectorAll("text")[0].textContent);
     }
-
-    const text = texts.join(' ');
+    const text = texts.join(" ");
     return text;
   }
-  /**
-   * Calculates the duration in seconds of a note, rest or backup
-   *
-   * @private
-   * @param {number} duration duration of the event in divisions
-   * @param {number} divisions MusicXML time divisions value
-   * @param {number} secondsPerBeat seconds per beat
-   * @returns {number} duration in seconds
-   */
-
-
   function getDurationInSeconds(duration, divisions, secondsPerBeat) {
     const durationInBeats = duration / divisions;
     const durationInSeconds = durationInBeats * secondsPerBeat;
     return durationInSeconds;
   }
-  /**
-   * Resolves repetitions by simply duplicating repeated measures.
-   * Handles volta lines (ending one, ending two).
-   *
-   * @todo handle 3x etc
-   * @todo write tests
-   * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
-   * @private
-   * @param {HTMLCollection} measures measures
-   * @returns {HTMLAllCollection[]} processed measures
-   */
-
-
   function duplicateRepeatedMeasures(measures) {
+    var _a, _b;
     let resultMeasures = [];
     let currentRepeatedSection = [];
     let isAlternativeEndingOne = false;
-
     for (const measure of measures) {
-      var _endingMarks$, _endingMarks$2;
-
-      // Check if this is the first measure of an volta ending 1
-      const endingMarks = measure.querySelectorAll('ending');
-
-      if (+((_endingMarks$ = endingMarks[0]) === null || _endingMarks$ === void 0 ? void 0 : _endingMarks$.getAttribute('number')) === 1 && ((_endingMarks$2 = endingMarks[0]) === null || _endingMarks$2 === void 0 ? void 0 : _endingMarks$2.getAttribute('type')) === 'start') {
+      const endingMarks = measure.querySelectorAll("ending");
+      if (+((_a = endingMarks[0]) == null ? void 0 : _a.getAttribute("number")) === 1 && ((_b = endingMarks[0]) == null ? void 0 : _b.getAttribute("type")) === "start") {
         isAlternativeEndingOne = true;
-      } // Handle repetition marks
-
-
-      const repetitionMarks = measure.querySelectorAll('repeat');
-
+      }
+      const repetitionMarks = measure.querySelectorAll("repeat");
       if (repetitionMarks.length === 2) {
-        // Only this measure is repeated
-        // TODO: volta endings don't make sense here so no need to handle?
-        const times = repetitionMarks[1].getAttribute('times') || 2;
-        const repetition = Array.from({
-          length: +times
-        }).fill(measure);
-
+        const times = repetitionMarks[1].getAttribute("times") || 2;
+        const repetition = Array.from({ length: +times }).fill(measure);
         if (currentRepeatedSection.length === 0) {
           resultMeasures = [...resultMeasures, ...repetition];
         } else {
           currentRepeatedSection = [...currentRepeatedSection, ...repetition];
         }
       } else if (repetitionMarks.length === 1) {
-        // Repetition either starts or ends here
-        const direction = repetitionMarks[0].getAttribute('direction');
-
-        if (direction === 'forward') {
-          // Start new repetition
+        const direction = repetitionMarks[0].getAttribute("direction");
+        if (direction === "forward") {
           currentRepeatedSection.push(measure);
-        } else if (direction === 'backward') {
-          const times = repetitionMarks[0].getAttribute('times') || 2;
-
+        } else if (direction === "backward") {
+          const times = repetitionMarks[0].getAttribute("times") || 2;
           if (currentRepeatedSection.length > 0) {
-            // Finish current repetition
             if (!isAlternativeEndingOne) {
               currentRepeatedSection.push(measure);
-
-              for (let index = 0; index < times; index++) {
+              for (let index16 = 0; index16 < times; index16++) {
                 resultMeasures = [...resultMeasures, ...currentRepeatedSection];
               }
             } else {
-              // Only include ending 1 in first repetition
               const firstRepetition = [...currentRepeatedSection, measure];
               resultMeasures = [...resultMeasures, ...firstRepetition];
-
-              for (let index = 1; index < times; index++) {
+              for (let index16 = 1; index16 < times; index16++) {
                 resultMeasures = [...resultMeasures, ...currentRepeatedSection];
               }
             }
-
             currentRepeatedSection = [];
           } else {
-            // Repetition started at the start of the piece, repeat all
-            // we have until here
             const allMeasuresUntilHere = [...resultMeasures];
-
-            for (let index = 1; index < times; index++) {
+            for (let index16 = 1; index16 < times; index16++) {
               resultMeasures = [...resultMeasures, ...allMeasuresUntilHere];
-            } // resultMeasures = [...resultMeasures, ...resultMeasures];
-
+            }
           }
         }
       } else {
         if (!isAlternativeEndingOne) {
-          // Measure without repetition marks, but might still be inside a
-          // repetition
           if (currentRepeatedSection.length === 0) {
             resultMeasures.push(measure);
           } else {
             currentRepeatedSection.push(measure);
           }
         }
-      } // Check if this is the last measure of a volta ending 1
-
-
+      }
       if (isAlternativeEndingOne) {
         for (const endingMark of endingMarks) {
-          if (+endingMark.getAttribute('number') === 1 && endingMark.getAttribute('type') === 'stop') {
+          if (+endingMark.getAttribute("number") === 1 && endingMark.getAttribute("type") === "stop") {
             isAlternativeEndingOne = false;
           }
         }
       }
     }
-
     return resultMeasures;
   }
-  /**
-   * Handles MusicXML measures that contain both a stave and a tab. Since every
-   * note is described twice, we just need to remove those without string, fret
-   * information
-   * This function also removes <backup> tags which should not be necessary after
-   * removing dublicate notes (only if string, fret notes were found).
-   *
-   * @private
-   * @param {HTMLElement} track a MusicXML track, i.e. its measures
-   * @returns {HTMLCollection} cleaned-up MusicXML measure
-   */
-
-
   function handleStaveAndTab(track) {
-    const notes = track.querySelectorAll('note'); // Check whether this file has notes with string, fret information
-
+    const notes = track.querySelectorAll("note");
     let hasStringFretNotes = false;
-
-    for (const note of notes) {
-      if (note.querySelectorAll('string').length > 0 && note.querySelectorAll('fret').length > 0) {
+    for (const note2 of notes) {
+      if (note2.querySelectorAll("string").length > 0 && note2.querySelectorAll("fret").length > 0) {
         hasStringFretNotes = true;
         break;
       }
-    } // If some notes have string and fret information, remove all the others
-    // Do *not* remove all rests, keep the one in the first voice!
-
-
+    }
     if (hasStringFretNotes) {
-      for (const note of notes) {
-        var _note$querySelectorAl6;
-
-        const voice = +((_note$querySelectorAl6 = note.querySelectorAll('voice')[0].innerHTML) !== null && _note$querySelectorAl6 !== void 0 ? _note$querySelectorAl6 : 1);
-        const isFirstVoiceRest = note.querySelectorAll('rest').length > 0 && voice === 1;
-
-        if (!isFirstVoiceRest && note.querySelectorAll('fret').length === 0) {
-          note.remove();
+      for (const note2 of notes) {
+        const voice = +(note2.querySelectorAll("voice")[0].innerHTML ?? 1);
+        const isFirstVoiceRest = note2.querySelectorAll("rest").length > 0 && voice === 1;
+        if (!isFirstVoiceRest && note2.querySelectorAll("fret").length === 0) {
+          note2.remove();
         }
-      } // Also remove <backup> tags which were only there due to having two
-      // staves
-
-
-      const backups = track.querySelectorAll('backup');
-
+      }
+      const backups = track.querySelectorAll("backup");
       for (const backup of backups) {
         backup.remove();
       }
     }
-
     return track;
   }
-  /**
-   * Gets the tuning for a MusicXML part
-   *
-   * @private
-   * @param {HTMLCollection} measures the measures of the parts
-   * @returns {number[]} pitches of the tuning or [] if none is found
-   */
-
-
   function getTuningPitches(measures) {
     for (const measure of measures) {
       try {
         const tuningPitches = [];
-        const staffTunings = measure.querySelectorAll('staff-tuning');
-
+        const staffTunings = measure.querySelectorAll("staff-tuning");
         for (const st of staffTunings) {
-          const tuningNote = st.querySelectorAll('tuning-step')[0].innerHTML;
-          const tuningOctave = +st.querySelectorAll('tuning-octave')[0].innerHTML; // let line = +st.getAttribute('line');
-          // console.log(`String ${line} is tuned to ${tuningNote}${tuningOctave}`);
-
+          const tuningNote = st.querySelectorAll("tuning-step")[0].innerHTML;
+          const tuningOctave = +st.querySelectorAll("tuning-octave")[0].innerHTML;
           tuningPitches.push(getMidiNoteByNameAndOctave(tuningNote, tuningOctave).pitch);
         }
-
         return tuningPitches;
-      } catch {}
+      } catch {
+      }
     }
-
     return [];
   }
-  /**
-   * Extracts information about the XML's parts for different instruments
-   *
-   * @param {XMLDocument} xml MusicXML
-   * @returns {object[]} part definitions
-   */
-  // function getPartDefinitions (xml) {
-  //   const partDefinitions = xml.querySelectorAll('score-part')
-  //   const result = []
-  //   for (const partDefinition of partDefinitions) {
-  //     // Instruments (e.g., drum parts have multiple)
-  //     const instruments = new Map()
-  //     const instrDefs = partDefinition.querySelectorAll('score-instrument')
-  //     for (const instrumentDefinition of instrDefs) {
-  //       const id = instrumentDefinition.getAttribute('id')
-  //       instruments.set(id, {
-  //         id,
-  //         name: instrumentDefinition.querySelectorAll('instrument-name')[0].textContent
-  //       })
-  //     }
-  //     const instrMidiDefs = partDefinition.querySelectorAll('midi-instrument')
-  //     for (const instrumentDefinition of instrMidiDefs) {
-  //       const midiNote = instrumentDefinition.querySelectorAll('midi-unpitched')[0]?.textContent
-  //       if (!midiNote) {
-  //         continue
-  //       }
-  //       const id = instrumentDefinition.getAttribute('id')
-  //       instruments.get(id).midiNote = +midiNote
-  //     }
-  //     // Parsed part definitions
-  //     result.push({
-  //       id: partDefinition.getAttribute('id'),
-  //       name: partDefinition.querySelectorAll('part-name')[0].textContent,
-  //       abbr: partDefinition.querySelectorAll('part-abbreviation')[0].textContent,
-  //       instruments: instruments.size > 0 ? instruments : null
-  //     })
-  //   }
-  //   return result
-  // }
-
-  /**
-   * Returns a map containing maps, such that result.get(partId).get(instrId)
-   * gives you the instrument with the ID instrId as defined in the part partId.
-   *
-   * This is needed to map drum notes to MIDI pitches.
-   *
-   * @param {XMLDocument} xml MusicXML
-   * @returns {Map} map with structure result.get(partId).get(instrId)
-   */
-
-
   function getDrumInstrumentMap(xml) {
-    var _xml$querySelectorAll;
-
-    const partMap = new Map();
-    const scoreParts = (_xml$querySelectorAll = xml.querySelectorAll('part-list')[0]) === null || _xml$querySelectorAll === void 0 ? void 0 : _xml$querySelectorAll.querySelectorAll('score-part');
-
+    var _a, _b;
+    const partMap = /* @__PURE__ */ new Map();
+    const scoreParts = (_a = xml.querySelectorAll("part-list")[0]) == null ? void 0 : _a.querySelectorAll("score-part");
     if (!scoreParts) {
       return partMap;
     }
-
     for (const scorePart of scoreParts) {
       const partId = scorePart.id;
-      const instruMap = new Map();
-      const midiInstrs = scorePart.querySelectorAll('midi-instrument');
-
+      const instruMap = /* @__PURE__ */ new Map();
+      const midiInstrs = scorePart.querySelectorAll("midi-instrument");
       for (const midiInstr of midiInstrs) {
-        var _midiInstr$querySelec;
-
         const instrId = midiInstr.id;
-        const pitch = (_midiInstr$querySelec = midiInstr.querySelectorAll('midi-unpitched')[0]) === null || _midiInstr$querySelec === void 0 ? void 0 : _midiInstr$querySelec.innerHTML;
-
+        const pitch = (_b = midiInstr.querySelectorAll("midi-unpitched")[0]) == null ? void 0 : _b.innerHTML;
         if (pitch) {
           instruMap.set(instrId, +pitch);
         }
       }
-
       partMap.set(partId, instruMap);
     }
-
     return partMap;
   }
-  /**
-   * Checks whether a note is palm-muted
-   *
-   * @param {HTMLElement} note note element
-   * @returns {boolean} true if note is palm-muted
-   */
-  // function isPalmMuted (note) {
-  //   const mute = note.querySelectorAll('mute')
-  //   if (mute.length > 0 && mute[0].textContent === 'palm') {
-  //     return true
-  //   }
-  //   return false
-  // }
+  var keySignatureMap = /* @__PURE__ */ new Map([
+    [-7, { key: "Cb", scale: "major" }],
+    [-6, { key: "Gb", scale: "major" }],
+    [-5, { key: "Db", scale: "major" }],
+    [-4, { key: "Ab", scale: "major" }],
+    [-3, { key: "Eb", scale: "major" }],
+    [-2, { key: "Bb", scale: "major" }],
+    [-1, { key: "F", scale: "major" }],
+    [0, { key: "C", scale: "major" }],
+    [1, { key: "G", scale: "major" }],
+    [2, { key: "D", scale: "major" }],
+    [3, { key: "A", scale: "major" }],
+    [4, { key: "E", scale: "major" }],
+    [5, { key: "B", scale: "major" }],
+    [6, { key: "F#", scale: "major" }],
+    [7, { key: "C#", scale: "major" }]
+  ]);
+  var dynamicsMap = /* @__PURE__ */ new Map([
+    ["ppp", 25],
+    ["pp", 38],
+    ["p", 51],
+    ["mp", 64],
+    ["mf", 76],
+    ["f", 89],
+    ["ff", 102],
+    ["fff", 114]
+  ]);
 
-  /**
-   * Checks whether a note is hammer-on
-   *
-   * @param {HTMLElement} note note element
-   * @returns {boolean} true if note is hammer-on
-   */
-  // function isHammeron (note) {
-  //   return note.querySelectorAll('hammer-on').length > 0
-  // }
-
-  /**
-   * Map from fiths to key signature
-   *
-   * @type {Map<number,object>}
-   */
-
-
-  const keySignatureMap = new Map([[-7, {
-    key: 'Cb',
-    scale: 'major'
-  }], [-6, {
-    key: 'Gb',
-    scale: 'major'
-  }], [-5, {
-    key: 'Db',
-    scale: 'major'
-  }], [-4, {
-    key: 'Ab',
-    scale: 'major'
-  }], [-3, {
-    key: 'Eb',
-    scale: 'major'
-  }], [-2, {
-    key: 'Bb',
-    scale: 'major'
-  }], [-1, {
-    key: 'F',
-    scale: 'major'
-  }], [0, {
-    key: 'C',
-    scale: 'major'
-  }], [1, {
-    key: 'G',
-    scale: 'major'
-  }], [2, {
-    key: 'D',
-    scale: 'major'
-  }], [3, {
-    key: 'A',
-    scale: 'major'
-  }], [4, {
-    key: 'E',
-    scale: 'major'
-  }], [5, {
-    key: 'B',
-    scale: 'major'
-  }], [6, {
-    key: 'F#',
-    scale: 'major'
-  }], [7, {
-    key: 'C#',
-    scale: 'major'
-  }]]);
-  /**
-   * Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
-   *
-   * @type {Map<string,number>}
-   */
-
-  const dynamicsMap = new Map([['ppp', 25], ['pp', 38], ['p', 51], ['mp', 64], ['mf', 76], ['f', 89], ['ff', 102], ['fff', 114]]);
-
-  /**
-   * @module utils/MusicUtils
-   */
-
-  /**
-   * Converts beats per minute to seconds per beat
-   *
-   * @param {number} bpm tempo in beats per minute
-   * @returns {number} seconds per beat
-   */
-
+  // src/utils/MusicUtils.js
   function bpmToSecondsPerBeat(bpm) {
     return 1 / (bpm / 60);
   }
-  /**
-   * Maps any frequency (in Hz) to an approximate MIDI note number. Result can be
-   * rounded to get to the closest MIDI note or used as is for a sound in between
-   * two notes.
-   *
-   * @param {number} frequency a frequency in Hz
-   * @returns {number} MIDI note number (not rounded)
-   */
-
   function freqToApproxMidiNr(frequency) {
     return 12 * Math.log2(frequency / 440) + 69;
   }
-  /**
-   * Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to its
-   * frequency.
-   *
-   * @param {number} midi MIDI note number
-   * @returns {number} frequency in Hz
-   */
-
   function midiToFrequency(midi) {
     return 2 ** ((midi - 69) / 12) * 440;
   }
-  /**
-   * Turns a chord into an integer that uniquely describes the occuring chroma.
-   * If the same chroma occurs twice this will not make a difference
-   * (e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
-   *
-   * How it works:
-   * Chord has C, E, and G
-   * x = 000010010001
-   *         G  E   C
-   *
-   * @param {Note[]} notes notes
-   * @returns {number} an integer that uniquely identifies this chord's chroma
-   */
-
   function chordToInteger(notes) {
-    let value = 0x0;
-
-    for (const note of notes) {
-      const chroma = note.pitch % 12; // eslint-disable-next-line no-bitwise
-
-      const noteInteger = 1 << chroma; // eslint-disable-next-line no-bitwise
-
+    let value = 0;
+    for (const note2 of notes) {
+      const chroma = note2.pitch % 12;
+      const noteInteger = 1 << chroma;
       value = value | noteInteger;
     }
-
     return value;
   }
-  /**
-   * Takes two chord integer representations from chordToInteger() and computes
-   * the Jaccard index
-   *
-   * @param {number} chord1 chord as integer representation
-   * @param {number} chord2 chord as integer representation
-   * @returns {number} Jackard index, from 0 for different to 1 for identical
-   */
-
   function chordIntegerJaccardIndex(chord1, chord2) {
     if (chord1 === chord2) {
       return 1;
-    } // eslint-disable-next-line no-bitwise
-
-
-    const intersection = chord1 & chord2; // eslint-disable-next-line no-bitwise
-
-    const union = chord1 | chord2;
-    const intersectionSize = countOnesOfBinary(intersection);
-    const unionSize = countOnesOfBinary(union);
+    }
+    const intersection2 = chord1 & chord2;
+    const union2 = chord1 | chord2;
+    const intersectionSize = countOnesOfBinary(intersection2);
+    const unionSize = countOnesOfBinary(union2);
     return intersectionSize / unionSize;
   }
-  /*
-   * noteTypeDurationRatios
-   * 1 = whole note, 1/2 = half note, ...
-   *
-   * With added dots:
-   * o. has duration of 1.5, o.. 1.75, ...
-   */
-
-  const noteTypeDurationRatios = [];
-  const baseDurations = [2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16, 1 / 32, 1 / 64];
-
+  var noteTypeDurationRatios = [];
+  var baseDurations = [2, 1, 1 / 2, 1 / 4, 1 / 8, 1 / 16, 1 / 32, 1 / 64];
   for (const d of baseDurations) {
     for (let dots = 0; dots < 4; dots++) {
       let duration = d;
       let toAdd = d;
-
       for (let dot = 0; dot < dots; dot++) {
-        // Each dot after the note adds half of the one before
         toAdd /= 2;
         duration += toAdd;
       }
-
       noteTypeDurationRatios.push({
         type: d,
         dots,
@@ -8227,83 +6041,45 @@
       });
     }
   }
-
   noteTypeDurationRatios.sort((a, b) => a.duration - b.duration);
-  /**
-   * Estimates the note type (whole, quarter, ...) and number of dots for dotted
-   * notes
-   *
-   * @todo test if corrrectly 'calibrated'
-   * @param {number} duration duration of a note
-   * @param {number} bpm tempo of the piece in bpm
-   * @returns {object} note type and number of dots
-   *      e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
-   *      e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note
-   */
-
   function noteDurationToNoteType(duration, bpm) {
     const quarterDuration = bpmToSecondsPerBeat(bpm);
-    const ratio = duration / quarterDuration / 4; // TODO: round to finest representable step?
-    // Binary search
-
-    return binarySearch(noteTypeDurationRatios, ratio, d => d.duration);
+    const ratio = duration / quarterDuration / 4;
+    return binarySearch(noteTypeDurationRatios, ratio, (d) => d.duration);
   }
-  /**
-   * Circle of 5ths as
-   * [midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
-   *
-   * @see https://en.wikipedia.org/wiki/Circle_of_fifths
-   * @type {any[][]}
-   */
-
-  const CIRCLE_OF_5THS = [[0, 'C', 'C', 0, 0], [7, 'G', 'G', 1, 0], [2, 'D', 'D', 2, 0], [9, 'A', 'A', 3, 0], [4, 'E', 'E', 4, 0], [11, 'B', 'B', 5, 7], [6, 'F#', 'Gb', 6, 6], [1, 'C#', 'Db', 7, 5], [8, 'G#', 'Ab', 0, 4], [3, 'D#', 'Eb', 0, 3], [10, 'A#', 'Bb', 0, 2], [5, 'F', 'F', 0, 1]];
-  /**
-   * Maps number of semitones to interval name
-   * m - minor
-   * M - major
-   * P - perfect
-   * aug - augmented
-   *
-   * @type {Map<number,string>}
-   */
-
-  const INTERVALS = new Map([[1, 'unison'], [1, 'm2'], [2, 'M2'], [3, 'm3'], [4, 'M3'], [5, 'P4'], [6, 'aug4'], [7, 'P5'], [8, 'm6'], [9, 'M6'], [10, 'm7'], [11, 'M7'], [12, 'P8']]);
-  /**
-   * Estimates a difficulty score for playing a set of notes.
-   * Can be used for an entire piece or measure-by-measure.
-   *
-   * @todo different modi, e.g. for piano or guitar (fingering is different)
-   * @param {Note[]} notes notes
-   * @param {string} mode mode
-   * @param {number[]} fingering finger as number for each note, same order
-   * @returns {number} difficulty, can range within [0, infinity)
-   * @throws {'Invalid mode parameter'} when mode is invalid
-   */
-  // export function estimateDifficulty(notes, mode, fingering) {
-  //     if (mode === 'noteDensity') {
-  //         // Naive mode, only look at density of notes
-  //         const startTimeExtent = extent(notes, d => d.start);
-  //         return notes.length / startTimeExtent;
-  //     } else if (mode === 'fingering') {
-  //         // TODO: check complexity of fingering
-  //     }
-  //     throw new Error('Invalid mode parameter');
-  // }
-
-  /**
-   * Creates a track of metronome ticks for a given tempo and meter.
-   *
-   * @param {number} tempo tempo in bpm, e.g. 120
-   * @param {number[]} meter e.g. [4, 4]
-   * @param {number} duration duration of the resulting track in seconds
-   * @returns {object[]} metronome track with {time: number, accent: boolean}
-   */
-
+  var CIRCLE_OF_5THS = [
+    [0, "C", "C", 0, 0],
+    [7, "G", "G", 1, 0],
+    [2, "D", "D", 2, 0],
+    [9, "A", "A", 3, 0],
+    [4, "E", "E", 4, 0],
+    [11, "B", "B", 5, 7],
+    [6, "F#", "Gb", 6, 6],
+    [1, "C#", "Db", 7, 5],
+    [8, "G#", "Ab", 0, 4],
+    [3, "D#", "Eb", 0, 3],
+    [10, "A#", "Bb", 0, 2],
+    [5, "F", "F", 0, 1]
+  ];
+  var INTERVALS = /* @__PURE__ */ new Map([
+    [1, "unison"],
+    [1, "m2"],
+    [2, "M2"],
+    [3, "m3"],
+    [4, "M3"],
+    [5, "P4"],
+    [6, "aug4"],
+    [7, "P5"],
+    [8, "m6"],
+    [9, "M6"],
+    [10, "m7"],
+    [11, "M7"],
+    [12, "P8"]
+  ]);
   function metronomeTrackFromTempoAndMeter(tempo = 120, meter = [4, 4], duration = 60) {
     const track = [];
     const secondsPerBeat = bpmToSecondsPerBeat(tempo) / (meter[1] / 4);
     let currentTime = 0;
-
     while (currentTime <= duration) {
       for (let beat = 0; beat < meter[0]; beat++) {
         track.push({
@@ -8311,147 +6087,75 @@
           accent: beat % meter[0] === 0
         });
         currentTime += secondsPerBeat;
-
         if (currentTime > duration) {
           return track;
         }
       }
     }
   }
-  /**
-   * Creates a track of metronome ticks for a given music piece.
-   *
-   * @param {MusicPiece} musicPiece music piece
-   * @param {number} [tempoFactor=1] rescale the tempo of the metronome, e.g. 2
-   *      for twice the speed
-   * @returns {object[]} metronome track with {time: number, accent: boolean}
-   */
-
   function metronomeTrackFromMusicPiece(musicPiece, tempoFactor = 1) {
-    var _timeSignatures$0$sig, _tempos$0$bpm;
-
-    const {
-      duration,
-      tempos,
-      timeSignatures
-    } = musicPiece;
+    const { duration, tempos, timeSignatures } = musicPiece;
     const track = [];
-    let currentTime = 0; // Time signatures
-
-    const initialTimeSig = (_timeSignatures$0$sig = timeSignatures[0].signature) !== null && _timeSignatures$0$sig !== void 0 ? _timeSignatures$0$sig : [4, 4];
+    let currentTime = 0;
+    const initialTimeSig = timeSignatures[0].signature ?? [4, 4];
     let [beatCount, beatType] = initialTimeSig;
-    const timeSigsTodo = timeSignatures.slice(1); // Tempi
-
-    const initialTempo = (_tempos$0$bpm = tempos[0].bpm) !== null && _tempos$0$bpm !== void 0 ? _tempos$0$bpm : 120;
+    const timeSigsTodo = timeSignatures.slice(1);
+    const initialTempo = tempos[0].bpm ?? 120;
     let secondsPerBeat = bpmToSecondsPerBeat(initialTempo) / (beatType / 4);
     const temposTodo = tempos.slice(1);
-
     while (currentTime <= duration) {
-      // Always use the most recent tempo and meter
       const lookahead = currentTime + secondsPerBeat;
-
       if (timeSigsTodo.length > 0 && timeSigsTodo[0].time <= lookahead) {
-        // console.log(
-        //     'timesig change to', timeSigsTodo[0].signature,
-        //     'after', track.length,
-        //     'beeps, at', currentTime);
         [beatCount, beatType] = timeSigsTodo[0].signature;
         timeSigsTodo.shift();
       }
-
       if (temposTodo.length > 0 && temposTodo[0].time <= lookahead) {
-        // console.log(
-        //     'tempo change to', temposTodo[0].bpm,
-        //     'after', track.length,
-        //     'beeps, at', currentTime);
         secondsPerBeat = bpmToSecondsPerBeat(temposTodo[0].bpm) / (beatType / 4);
         temposTodo.shift();
       }
-
       for (let beat = 0; beat < beatCount; beat++) {
         track.push({
           time: roundToNDecimals(currentTime / tempoFactor, 3),
           accent: beat === 0
         });
         currentTime += secondsPerBeat;
-
         if (currentTime > duration) {
           return track;
         }
       }
     }
-
     return track;
   }
 
-  /**
-   * @module fileFormats/MidiParser
-   * @todo parse pitch bends
-   * @todo after tempo changes notes and measure time do not align,
-   *       see "[Test] Tempo change.mid"
-   */
-  // Precision in number of digits when rounding seconds
-
-  const ROUNDING_PRECISION = 5;
-  /**
-   * Parses a MIDI JSON file to get Note objects with absolute time in seconds.
-   *
-   * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
-   * @param {object} data MIDI data in JSON format
-   * @param {boolean} splitFormat0IntoTracks split MIDI format 0 data into tracks
-   *      instead of using channels?
-   * @param {boolean} log set to true to log results etc. to the console
-   * @returns {object} including an array of note objects and meta information
-   */
-
+  // src/fileFormats/MidiParser.js
+  var ROUNDING_PRECISION2 = 5;
   function preprocessMidiFileData(data, splitFormat0IntoTracks = true, log = false) {
-    if (data === null || data === undefined) {
+    if (data === null || data === void 0) {
       return;
     }
-
     if (!data.track) {
-      console.warn('[MidiParser] MIDI data has no track');
+      console.warn("[MidiParser] MIDI data has no track");
       return;
     }
-
     if (log) {
-      console.groupCollapsed('[MidiParser] Preprocessing MIDI file data');
-    } // Parse notes
-
-
+      console.groupCollapsed("[MidiParser] Preprocessing MIDI file data");
+    }
     let parsedTracks = [];
-    const {
-      tempoChanges,
-      beatTypeChanges,
-      keySignatureChanges
-    } = getSignatureChanges(data.track);
-
+    const { tempoChanges, beatTypeChanges, keySignatureChanges } = getSignatureChanges(data.track);
     for (const track of data.track) {
       const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log);
-
       if (t !== null) {
         parsedTracks.push(t);
       }
-    } // Split MIDI format 0 data into tracks instead of having channels
-
-
+    }
     if (data.formatType === 0 && splitFormat0IntoTracks && parsedTracks.length === 1) {
       parsedTracks = splitFormat0(parsedTracks);
-    } // Generate measure lines from tempo and beat type changes
-
-
-    const totalTime = max(parsedTracks, d => {
-      var _d$totalTime;
-
-      return (_d$totalTime = d === null || d === void 0 ? void 0 : d.totalTime) !== null && _d$totalTime !== void 0 ? _d$totalTime : 0;
-    });
-    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime); // Get measure indices, the note's index where a new measure starts, for each track
-
+    }
+    const totalTime = max(parsedTracks, (d) => (d == null ? void 0 : d.totalTime) ?? 0);
+    const measureLinePositions = getMeasureLines(tempoChanges, beatTypeChanges, totalTime);
     for (const track of parsedTracks) {
       track.measureIndices = getMeasureIndices(track.noteObjs, measureLinePositions);
-    } // Resulting track
-
-
+    }
     const result = {
       tracks: parsedTracks,
       totalTime,
@@ -8460,209 +6164,133 @@
       keySignatureChanges,
       measureLinePositions
     };
-
     if (log) {
       console.log(`Got ${parsedTracks.length} MIDI tracks`, result);
       console.groupEnd();
     }
-
     return result;
   }
-  /**
-   * Parses a single MIDI track and pushes it to parsedTracks if it contains notes
-   *
-   * @private
-   * @param {object} track a MIDI track
-   * @param {number} timeDivision MIDI time division
-   * @param {object[]} tempoChanges array with tempo change events
-   * @param {object[]} beatTypeChanges array with beat type change events
-   * @param {object[]} keySignatureChanges array with key signature change events
-   * @param {boolean} log if true, debug info will be logged to the console
-   * @returns {object} parsed track
-   */
-
   function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log) {
-    var _tempoChanges$0$tempo, _tempoChanges$;
-
+    var _a;
     const notes = [];
-    let tempo = (_tempoChanges$0$tempo = (_tempoChanges$ = tempoChanges[0]) === null || _tempoChanges$ === void 0 ? void 0 : _tempoChanges$.tempo) !== null && _tempoChanges$0$tempo !== void 0 ? _tempoChanges$0$tempo : 120;
+    let tempo = ((_a = tempoChanges[0]) == null ? void 0 : _a.tempo) ?? 120;
     let currentTick = 0;
     let currentTime;
     let milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
     let tickOfLastTempoChange = 0;
-    let timeOfLastTempoChange = 0; // This map stores note-on note that have not yet been finished by a note-off
-
-    const unfinishedNotes = new Map();
-
+    let timeOfLastTempoChange = 0;
+    const unfinishedNotes = /* @__PURE__ */ new Map();
     for (const event of track.event) {
-      const type = event.type; // Ignore delta time if it is a meta event (fixes some parsing issues)
-
-      if (type === EVENT_TYPES.meta) {
+      const type2 = event.type;
+      if (type2 === EVENT_TYPES.meta) {
         continue;
       }
-
-      currentTick += event.deltaTime; // Update beat type change times
-
+      currentTick += event.deltaTime;
       for (const btc of beatTypeChanges) {
-        if (btc.time === undefined && btc.tick <= currentTick) {
-          const t = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
-          btc.time = roundToNDecimals(t, ROUNDING_PRECISION);
+        if (btc.time === void 0 && btc.tick <= currentTick) {
+          const t = (btc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
+          btc.time = roundToNDecimals(t, ROUNDING_PRECISION2);
         }
-      } // Update key signature change times
-
-
+      }
       for (const ksc of keySignatureChanges) {
-        if (ksc.time === undefined && ksc.tick <= currentTick) {
-          const t = (ksc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
-          ksc.time = roundToNDecimals(t, ROUNDING_PRECISION);
+        if (ksc.time === void 0 && ksc.tick <= currentTick) {
+          const t = (ksc.tick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
+          ksc.time = roundToNDecimals(t, ROUNDING_PRECISION2);
         }
-      } // Handle last tempo change in track differently
-
-
+      }
       let mostRecentTempoChange;
-
       if (tempoChanges.length > 0 && currentTick > tempoChanges[tempoChanges.length - 1].tick) {
         mostRecentTempoChange = tempoChanges[tempoChanges.length - 1];
-      } // Get current tempo, as soon as we are too far, 1 step back
-
-
-      for (let index = 1; index < tempoChanges.length; index++) {
-        const tick = tempoChanges[index].tick;
-
+      }
+      for (let index16 = 1; index16 < tempoChanges.length; index16++) {
+        const tick = tempoChanges[index16].tick;
         if (tick > currentTick) {
-          const change = tempoChanges[index - 1];
+          const change = tempoChanges[index16 - 1];
           mostRecentTempoChange = change;
           break;
         }
-      } // React to tempo changes
-
-
+      }
       if (mostRecentTempoChange && mostRecentTempoChange.tempo !== tempo) {
         const tick = mostRecentTempoChange.tick;
-        timeOfLastTempoChange = (tick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange;
+        timeOfLastTempoChange = (tick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
         tickOfLastTempoChange = tick;
-        mostRecentTempoChange.time = roundToNDecimals(timeOfLastTempoChange, ROUNDING_PRECISION);
+        mostRecentTempoChange.time = roundToNDecimals(timeOfLastTempoChange, ROUNDING_PRECISION2);
         tempo = mostRecentTempoChange.tempo;
         milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
-      } // Update current time in seconds
-
-
-      currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1000 + timeOfLastTempoChange; // Skip events that are neither note-on nor note-off
-
-      if (type !== EVENT_TYPES.noteOn && type !== EVENT_TYPES.noteOff) {
+      }
+      currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
+      if (type2 !== EVENT_TYPES.noteOn && type2 !== EVENT_TYPES.noteOff) {
         continue;
       }
-
       const [pitch, velocity] = event.data;
       const channel = event.channel;
       const key = `${pitch} ${channel}`;
-
-      if (type === EVENT_TYPES.noteOff || type === EVENT_TYPES.noteOn && velocity === 0) {
-        // Handle note-off
+      if (type2 === EVENT_TYPES.noteOff || type2 === EVENT_TYPES.noteOn && velocity === 0) {
         if (unfinishedNotes.has(key)) {
-          unfinishedNotes.get(key).end = roundToNDecimals(currentTime, ROUNDING_PRECISION);
+          unfinishedNotes.get(key).end = roundToNDecimals(currentTime, ROUNDING_PRECISION2);
           unfinishedNotes.delete(key);
         } else {
           if (log) {
-            console.warn('Did not find an unfinished note for note-off event!');
+            console.warn("Did not find an unfinished note for note-off event!");
             console.log(event);
           }
         }
-      } else if (type === EVENT_TYPES.noteOn) {
-        // Handle note-on
-        const newNote = new Note(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION), velocity, channel);
+      } else if (type2 === EVENT_TYPES.noteOn) {
+        const newNote = new Note_default(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION2), velocity, channel);
         notes.push(newNote);
         unfinishedNotes.set(key, newNote);
       } else {
         continue;
       }
-    } // Fix missing note ends
-
-
+    }
     const neededToFix = [];
-
-    for (const note of notes) {
-      if (note.end === -1) {
-        note.end = roundToNDecimals(currentTime, ROUNDING_PRECISION);
-        neededToFix.push(note);
+    for (const note2 of notes) {
+      if (note2.end === -1) {
+        note2.end = roundToNDecimals(currentTime, ROUNDING_PRECISION2);
+        neededToFix.push(note2);
       }
     }
-
     if (neededToFix.length > 0) {
       console.warn(`had to fix ${neededToFix.length} notes`);
       console.log(neededToFix);
-    } // Save parsed track with meta information
-
-
-    const {
-      trackName,
-      instrument,
-      instrumentName
-    } = getInstrumentAndTrackName(track);
-
+    }
+    const { trackName, instrument, instrumentName } = getInstrumentAndTrackName(track);
     if (notes.length > 0) {
       const parsedTrack = {
         noteObjs: notes,
         totalTime: currentTime,
-        trackName: trackName !== null && trackName !== void 0 ? trackName : 'Track',
+        trackName: trackName ?? "Track",
         instrument,
-        instrumentName: instrumentName !== null && instrumentName !== void 0 ? instrumentName : 'Unknown instrument'
+        instrumentName: instrumentName ?? "Unknown instrument"
       };
       return parsedTrack;
     } else {
       return null;
     }
   }
-  /**
-   * Finds out the name of the track and the instrument, if this data is available
-   *
-   * @private
-   * @param {object} track MIDI track
-   * @returns {{trackName, instrument, instrumentName}} meta data with either
-   *      values or null when no information found
-   */
-
-
   function getInstrumentAndTrackName(track) {
     let trackName = null;
     let instrument = null;
     let instrumentName = null;
-
     for (const event of track.event) {
       if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.trackName) {
         trackName = event.data;
       }
-
       if (event.type === EVENT_TYPES.programChange) {
         instrument = event.data;
       }
-
       if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.instrumentName) {
         instrumentName = event.data;
       }
     }
-
     return {
       trackName,
       instrument,
       instrumentName
     };
   }
-  /**
-   * Caclulates the time positions of measure lines by looking at tempo and beat
-   * type change events
-   *
-   * @private
-   * @param {object[]} tempoChanges tempo change events
-   * @param {object[]} beatTypeChanges beat type change events
-   * @param {number} totalTime total time
-   * @returns {number[]} measure line times in seconds
-   */
-
-
   function getMeasureLines(tempoChanges, beatTypeChanges, totalTime) {
-    const measureLines = []; // Generate measure lines from tempo and beat type changes
-
+    const measureLines = [];
     let tempo = 120;
     let beats = 4;
     let beatType = 4;
@@ -8670,151 +6298,85 @@
     let currentBeatsInMeasure = 0;
     let timeOfLastTempoChange = 0;
     let timeSinceLastTempoChange = 0;
-
     while (currentTime < totalTime) {
-      // Get current tempo and beat type
       let mostRecentTempoChange;
-
       for (const t of tempoChanges) {
         if (t.time <= currentTime) {
           mostRecentTempoChange = t.tempo;
         }
       }
-
       if (mostRecentTempoChange && mostRecentTempoChange !== tempo) {
         timeOfLastTempoChange = currentTime;
         timeSinceLastTempoChange = 0;
         tempo = mostRecentTempoChange;
       }
-
       for (const b of beatTypeChanges) {
         if (b.time <= currentTime) {
           beats = b.beats;
           beatType = b.beatType;
         }
-      } // Update time and beats
-
-
+      }
       currentBeatsInMeasure++;
       const secondsPerBeat = bpmToSecondsPerBeat(tempo) / (beatType / 4);
       timeSinceLastTempoChange += secondsPerBeat;
       currentTime = timeOfLastTempoChange + timeSinceLastTempoChange;
-
       if (currentBeatsInMeasure >= beats) {
-        // Measure is full
         currentBeatsInMeasure = 0;
-        measureLines.push(roundToNDecimals(currentTime, ROUNDING_PRECISION));
+        measureLines.push(roundToNDecimals(currentTime, ROUNDING_PRECISION2));
       }
     }
-
     return measureLines;
   }
-  /**
-   * For the notes of one track, computes the notes' indices where new measures
-   * start.
-   *
-   * @param {Note[]} notes notes of a track
-   * @param {numer[]} measureTimes times in seconds where new measures start
-   * @returns {number[]} measure indices
-   */
-
-
   function getMeasureIndices(notes, measureTimes) {
     const measureIndices = [];
     const todo = [...measureTimes];
-
-    for (const [index, note] of notes.entries()) {
-      if (note.start >= todo[0]) {
+    for (const [index16, note2] of notes.entries()) {
+      if (note2.start >= todo[0]) {
         todo.shift();
-        measureIndices.push(index);
+        measureIndices.push(index16);
       }
     }
-
     return measureIndices;
   }
-  /**
-   * Split MIDI format 0 data into tracks instead of having channels,
-   * creates one track for each channel
-   *
-   * @private
-   * @param {Note[][]} tracks parsed MIDI tracks
-   * @returns {Note[][]} splitted tracks
-   */
-
-
   function splitFormat0(tracks) {
     if (tracks.length > 1) {
-      console.warn('Splitting a format 0 file with more than 1 track will result in all but the first beeing lost!');
-    } // console.log('Splitting format 0 file into tracks based on channel');
-
-
-    const grouped = group(tracks[0].noteObjs, d => d.channel); // All tracks will share the meta infomation of the 0th track
-    // Assign the splitted-by-channel notes to their new tracks
-
-    const splittedTracks = [];
-
-    for (const notes of grouped.values()) {
-      splittedTracks.push({ ...tracks[0],
-        noteObjs: notes
-      });
+      console.warn("Splitting a format 0 file with more than 1 track will result in all but the first beeing lost!");
     }
-
+    const grouped = group(tracks[0].noteObjs, (d) => d.channel);
+    const splittedTracks = [];
+    for (const notes of grouped.values()) {
+      splittedTracks.push(__spreadProps(__spreadValues({}, tracks[0]), {
+        noteObjs: notes
+      }));
+    }
     return splittedTracks;
   }
-  /**
-   * Given the tempo and time division, returns the number of milliseconds
-   * each MIDI time tick corresponds to
-   *
-   * @private
-   * @param {number} tempo tempo
-   * @param {number} timeDivision time division
-   * @returns {number} milli seconds per tick
-   */
-
-
   function getMillisecondsPerTick(tempo, timeDivision) {
-    const milliSecondsPerBeat = 1 / tempo * 60_000;
+    const milliSecondsPerBeat = 1 / tempo * 6e4;
     const milliSecondsPerTick = milliSecondsPerBeat / timeDivision;
     return milliSecondsPerTick;
   }
-  /**
-   * Retrieves all tempo and beat type changes from a MIDI file's tracks.
-   *
-   * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
-   * @private
-   * @param {Array} tracks MIDI JSON file tracks
-   * @returns {object} {tempoChanges, beatTypeChanges} as arrays of objects, which
-   *      contain the MIDI tick and the new information
-   */
-
-
   function getSignatureChanges(tracks) {
     const tempoChanges = [];
     const beatTypeChanges = [];
     const keySignatureChanges = [];
     let currentTick = 0;
     let lastTempo = null;
-
     for (const track of tracks) {
       for (const event of track.event) {
-        // Get timing of events
-        currentTick += event.deltaTime; // Tempo change
-
+        currentTick += event.deltaTime;
         if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.setTempo) {
-          const milliSecondsPerQuarter = event.data / 1000;
-          const tempo = Math.round(1 / (milliSecondsPerQuarter / 60_000)); // Ignore tempo changes that don't change the tempo
-
+          const milliSecondsPerQuarter = event.data / 1e3;
+          const tempo = Math.round(1 / (milliSecondsPerQuarter / 6e4));
           if (tempo !== lastTempo) {
             tempoChanges.push({
               tick: currentTick,
               tempo,
-              time: currentTick === 0 ? 0 : undefined
+              time: currentTick === 0 ? 0 : void 0
             });
             lastTempo = tempo;
           }
-        } // Beat type change
-
-
+        }
         if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.timeSignature) {
           const d = event.data;
           const beats = d[0];
@@ -8824,283 +6386,137 @@
             beats,
             beatType
           };
-
           if (beatTypeChanges.length === 0) {
             beatTypeChanges.push(newEntry);
           } else {
-            // If it id not change, do not add
             const last = beatTypeChanges[beatTypeChanges.length - 1];
-
             if (last.beats !== beats || last.beatType !== beatType) {
               beatTypeChanges.push(newEntry);
             }
-          } // console.log(`Metro: ${d[2]}`);
-          // console.log(`32nds: ${d[3]}`);
-
-        } // Key change
-
-
+          }
+        }
         if (event.type === EVENT_TYPES.meta && event.metaType === META_TYPES.keySignature) {
-          // console.log('keychange', event);
           const d = event.data;
-
           if (!KEY_SIG_MAP.has(d)) {
-            console.warn('[MidiParser] Invalid key signature', d);
+            console.warn("[MidiParser] Invalid key signature", d);
           } else {
-            const {
-              key,
-              scale
-            } = KEY_SIG_MAP.get(d);
+            const { key, scale: scale2 } = KEY_SIG_MAP.get(d);
             const newEntry = {
               tick: currentTick,
               key,
-              scale
+              scale: scale2
             };
-
             if (keySignatureChanges.length === 0) {
               keySignatureChanges.push(newEntry);
             } else {
-              // If it id not change, do not add
               const last = keySignatureChanges[keySignatureChanges.length - 1];
-
-              if (last.key !== key || last.scale !== scale) {
+              if (last.key !== key || last.scale !== scale2) {
                 keySignatureChanges.push(newEntry);
               }
             }
           }
         }
       }
-    } // Default values
-
-
+    }
     if (tempoChanges.length === 0 || tempoChanges[0].time > 0) {
-      tempoChanges.unshift({
-        tempo: 120,
-        time: 0
-      });
+      tempoChanges.unshift({ tempo: 120, time: 0 });
     }
-
     if (beatTypeChanges.length === 0 || beatTypeChanges[0].time > 0) {
-      beatTypeChanges.unshift({
-        beats: 4,
-        beatType: 4,
-        time: 0
-      });
+      beatTypeChanges.unshift({ beats: 4, beatType: 4, time: 0 });
     }
-
     if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
-      keySignatureChanges.unshift({
-        key: 'C',
-        scale: 'major',
-        time: 0
-      });
+      keySignatureChanges.unshift({ key: "C", scale: "major", time: 0 });
     }
-
-    return {
-      tempoChanges,
-      beatTypeChanges,
-      keySignatureChanges
-    };
+    return { tempoChanges, beatTypeChanges, keySignatureChanges };
   }
-  /**
-   * MIDI event types and meta types and their codes
-   *
-   * @see https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
-   * Event Type         Value   Value decimal    Parameter 1         Parameter 2
-   * Note Off           0x8       8              note number         velocity
-   * Note On            0x9       9              note number         velocity
-   * Note Aftertouch    0xA      10              note number         aftertouch value
-   * Controller         0xB      11              controller number   controller value
-   * Program Change     0xC      12              program number      not used
-   * Channel Aftertouch 0xD      13              aftertouch value    not used
-   * Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
-   * Meta               0xFF    255                 parameters depend on meta type
-   * @type {object}
-   */
-
-
-  const EVENT_TYPES = {
-    noteOff: 0x8,
-    noteOn: 0x9,
-    noteAftertouch: 0xA,
-    controller: 0xB,
-    programChange: 0xC,
-    channelAftertouch: 0xD,
-    pitchBend: 0xE,
-    meta: 0xFF
+  var EVENT_TYPES = {
+    noteOff: 8,
+    noteOn: 9,
+    noteAftertouch: 10,
+    controller: 11,
+    programChange: 12,
+    channelAftertouch: 13,
+    pitchBend: 14,
+    meta: 255
   };
-  /**
-   * @type {object}
-   */
-
-  const META_TYPES = {
-    sequenceNumber: 0x0,
-    textEvent: 0x1,
-    copyright: 0x2,
-    trackName: 0x3,
-    instrumentName: 0x4,
-    lyrics: 0x5,
-    marker: 0x6,
-    cuePoint: 0x7,
-    channelPrefix: 0x20,
-    endOfTrack: 0x2F,
-    setTempo: 0x51,
-    smpteOffset: 0x54,
-    timeSignature: 0x58,
-    keySignature: 0x59,
-    sequencerSpecific: 0x7F
+  var META_TYPES = {
+    sequenceNumber: 0,
+    textEvent: 1,
+    copyright: 2,
+    trackName: 3,
+    instrumentName: 4,
+    lyrics: 5,
+    marker: 6,
+    cuePoint: 7,
+    channelPrefix: 32,
+    endOfTrack: 47,
+    setTempo: 81,
+    smpteOffset: 84,
+    timeSignature: 88,
+    keySignature: 89,
+    sequencerSpecific: 127
   };
-  /**
-   * Maps needed for key signature detection from number of sharps / flats
-   *
-   * @type {Map<number,object>}
-   * @see https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
-   */
+  var KEY_SIG_MAP = /* @__PURE__ */ new Map([
+    [63744, { key: "Cb", scale: "major" }],
+    [64e3, { key: "Gb", scale: "major" }],
+    [64256, { key: "Db", scale: "major" }],
+    [64512, { key: "Ab", scale: "major" }],
+    [64768, { key: "Eb", scale: "major" }],
+    [65024, { key: "Bb", scale: "major" }],
+    [65280, { key: "F", scale: "major" }],
+    [0, { key: "C", scale: "major" }],
+    [256, { key: "G", scale: "major" }],
+    [512, { key: "D", scale: "major" }],
+    [768, { key: "A", scale: "major" }],
+    [1024, { key: "E", scale: "major" }],
+    [1280, { key: "B", scale: "major" }],
+    [1536, { key: "F#", scale: "major" }],
+    [1792, { key: "C#", scale: "major" }],
+    [63745, { key: "Ab", scale: "minor" }],
+    [64001, { key: "Eb", scale: "minor" }],
+    [64257, { key: "Bb", scale: "minor" }],
+    [64513, { key: "F", scale: "minor" }],
+    [64769, { key: "C", scale: "minor" }],
+    [65025, { key: "G", scale: "minor" }],
+    [65281, { key: "D", scale: "minor" }],
+    [1, { key: "A", scale: "minor" }],
+    [257, { key: "E", scale: "minor" }],
+    [513, { key: "B", scale: "minor" }],
+    [769, { key: "F#", scale: "minor" }],
+    [1025, { key: "C#", scale: "minor" }],
+    [1281, { key: "G#", scale: "minor" }],
+    [1537, { key: "D#", scale: "minor" }],
+    [1793, { key: "A#", scale: "minor" }]
+  ]);
 
-  const KEY_SIG_MAP = new Map([// major
-  [0xF9_00, {
-    key: 'Cb',
-    scale: 'major'
-  }], [0xFA_00, {
-    key: 'Gb',
-    scale: 'major'
-  }], [0xFB_00, {
-    key: 'Db',
-    scale: 'major'
-  }], [0xFC_00, {
-    key: 'Ab',
-    scale: 'major'
-  }], [0xFD_00, {
-    key: 'Eb',
-    scale: 'major'
-  }], [0xFE_00, {
-    key: 'Bb',
-    scale: 'major'
-  }], [0xFF_00, {
-    key: 'F',
-    scale: 'major'
-  }], [0x00_00, {
-    key: 'C',
-    scale: 'major'
-  }], [0x01_00, {
-    key: 'G',
-    scale: 'major'
-  }], [0x02_00, {
-    key: 'D',
-    scale: 'major'
-  }], [0x03_00, {
-    key: 'A',
-    scale: 'major'
-  }], [0x04_00, {
-    key: 'E',
-    scale: 'major'
-  }], [0x05_00, {
-    key: 'B',
-    scale: 'major'
-  }], [0x06_00, {
-    key: 'F#',
-    scale: 'major'
-  }], [0x07_00, {
-    key: 'C#',
-    scale: 'major'
-  }], // minor
-  [0xF9_01, {
-    key: 'Ab',
-    scale: 'minor'
-  }], [0xFA_01, {
-    key: 'Eb',
-    scale: 'minor'
-  }], [0xFB_01, {
-    key: 'Bb',
-    scale: 'minor'
-  }], [0xFC_01, {
-    key: 'F',
-    scale: 'minor'
-  }], [0xFD_01, {
-    key: 'C',
-    scale: 'minor'
-  }], [0xFE_01, {
-    key: 'G',
-    scale: 'minor'
-  }], [0xFF_01, {
-    key: 'D',
-    scale: 'minor'
-  }], [0x00_01, {
-    key: 'A',
-    scale: 'minor'
-  }], [0x01_01, {
-    key: 'E',
-    scale: 'minor'
-  }], [0x02_01, {
-    key: 'B',
-    scale: 'minor'
-  }], [0x03_01, {
-    key: 'F#',
-    scale: 'minor'
-  }], [0x04_01, {
-    key: 'C#',
-    scale: 'minor'
-  }], [0x05_01, {
-    key: 'G#',
-    scale: 'minor'
-  }], [0x06_01, {
-    key: 'D#',
-    scale: 'minor'
-  }], [0x07_01, {
-    key: 'A#',
-    scale: 'minor'
-  }]]);
-
-  /**
-   * Represents a parsed MIDI or MusicXML file in a uniform format.
-   */
-
-  class MusicPiece {
-    /**
-       * Do not use this constructor, but the static methods MusicPiece.fromMidi
-       * and MusicPiece.fromMusicXml instead.
-       *
-       * @param {string} name name (e.g. file name or piece name)
-       * @param {TempoDefinition[]} tempos tempos
-       * @param {TimeSignature[]} timeSignatures time signatures
-       * @param {KeySignature[]} keySignatures key signatures
-       * @param {number[]} measureTimes time in seconds for each measure line
-       * @param {Track[]} tracks tracks
-       * @throws {'No or invalid tracks given!'} when invalid tracks are given
-       */
+  // src/types/MusicPiece.js
+  var MusicPiece = class {
     constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
       if (!tracks || tracks.length === 0) {
-        throw new Error('No or invalid tracks given! Use .fromMidi or .fromMusicXml?');
+        throw new Error("No or invalid tracks given! Use .fromMidi or .fromMusicXml?");
       }
-
       this.name = name;
       this.measureTimes = measureTimes;
       this.tracks = tracks;
-      this.duration = Math.max(...this.tracks.map(d => d.duration)); // Filter multiple identical consecutive infos
-
+      this.duration = Math.max(...this.tracks.map((d) => d.duration));
       this.tempos = tempos.slice(0, 1);
       let currentTempo = tempos[0];
-
       for (const tempo of tempos) {
         if (tempo.string !== currentTempo.string) {
           currentTempo = tempo;
           this.tempos.push(tempo);
         }
       }
-
       this.timeSignatures = timeSignatures.slice(0, 1);
       let currentTimeSig = timeSignatures[0];
-
       for (const timeSignature of timeSignatures) {
         if (timeSignature.string !== currentTimeSig.string) {
           currentTimeSig = timeSignature;
           this.timeSignatures.push(timeSignature);
         }
       }
-
       this.keySignatures = keySignatures.slice(0, 1);
       let currentKeySig = keySignatures[0];
-
       for (const keySignature of keySignatures) {
         if (keySignature.string !== currentKeySig.string) {
           currentKeySig = keySignature;
@@ -9108,716 +6524,304 @@
         }
       }
     }
-    /**
-       * Creates a MusicPiece object from a MIDI file binary
-       *
-       * @param {string} name name
-       * @param {ArrayBuffer} midiFile MIDI file
-       * @returns {MusicPiece} new MusicPiece
-       * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-       * @example <caption>In Node.js</caption>
-       *      const file = path.join(directory, fileName);
-       *      const data = fs.readFileSync(file, 'base64');
-       *      const mp = MusicPiece.fromMidi(fileName, data);
-       * @example <caption>In the browser</caption>
-       *      const uintArray = new Uint8Array(midiBinary);
-       *      const MP = MusicPiece.fromMidi(filename, uintArray);
-       */
-
-
     static fromMidi(name, midiFile) {
       if (!midiFile) {
-        throw new Error('No MIDI file content given');
+        throw new Error("No MIDI file content given");
       }
-
-      const midi = main.exports.parse(midiFile);
+      const midi = midiParser.parse(midiFile);
       const parsed = preprocessMidiFileData(midi);
       let tempos = [];
       let timeSignatures = [];
       let keySignatures = [];
       let measureTimes = [];
-
       if (parsed.tracks.length > 0) {
-        // Tempos
-        tempos = parsed.tempoChanges.map(d => new TempoDefinition(d.time, d.tempo)); // Time signatures
-
-        timeSignatures = parsed.beatTypeChanges.map(d => new TimeSignature(d.time, [d.beats, d.beatType])); // Key signatures
-
-        keySignatures = parsed.keySignatureChanges.map(d => new KeySignature(d.time, d.key, d.scale)); // Measure times
-
+        tempos = parsed.tempoChanges.map((d) => new TempoDefinition(d.time, d.tempo));
+        timeSignatures = parsed.beatTypeChanges.map((d) => new TimeSignature(d.time, [d.beats, d.beatType]));
+        keySignatures = parsed.keySignatureChanges.map((d) => new KeySignature(d.time, d.key, d.scale));
         measureTimes = parsed.measureLinePositions;
-      } // Tracks
-
-
-      const tracks = parsed.tracks.map(track => new Track(track.trackName, track.instrumentName, track.noteObjs, null, track.measureIndices, new Map(), new Map()));
+      }
+      const tracks = parsed.tracks.map((track) => new Track(track.trackName, track.instrumentName, track.noteObjs, null, track.measureIndices, /* @__PURE__ */ new Map(), /* @__PURE__ */ new Map()));
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
-    /**
-       * Creates a MusicPiece object from a MIDI file binary
-       *
-       * @deprecated This is not fully implemented yet
-       * @todo on hold until @tonejs/midi adds time in seconds for meta events
-       * @todo use @tonejs/midi for parsing, but the same information as with
-       * MusicPiece.fromMidi()
-       * @see https://github.com/Tonejs/Midi
-       * @param {string} name name
-       * @param {ArrayBuffer} midiFile MIDI file
-       * @returns {MusicPiece} new MusicPiece
-       * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-       * @example <caption>In Node.js</caption>
-       *      const file = path.join(directory, fileName);
-       *      const data = fs.readFileSync(file);
-       *      const mp = MusicPiece.fromMidi(fileName, data);
-       * @example <caption>In the browser</caption>
-       *      const uintArray = new Uint8Array(midiBinary);
-       *      const MP = MusicPiece.fromMidi(filename, uintArray);
-       */
-    // static fromMidi2 (name, midiFile) {
-    //   if (!midiFile) {
-    //     throw new Error('No MIDI file content given')
-    //   }
-    //   const parsed = new Midi(midiFile)
-    //   // const uintArray = new Uint8Array(midiFile);
-    //   // const parsed = new Midi(uintArray);
-    //   // Tracks
-    //   const tracks = []
-    //   for (const track of parsed.tracks) {
-    //     if (track.notes.length === 0) { continue }
-    //     const notes = track.notes.map(note => Note.from({
-    //       pitch: note.midi,
-    //       start: note.time,
-    //       end: note.time + note.duration,
-    //       velocity: Math.round(note.velocity * 127),
-    //       channel: track.channel
-    //     }))
-    //     tracks.push(
-    //       Track.fromMidi(
-    //         track.trackName,
-    //         track.instrumentName,
-    //         notes
-    //       )
-    //     )
-    //   }
-    //   // TODO: convert ticks to seconds
-    //   let tempos = []
-    //   let timeSignatures = []
-    //   let keySignatures = []
-    //   let measureTimes = []
-    //   if (parsed.tracks.length > 0) {
-    //     // tempos
-    //     tempos = parsed.header.tempos
-    //       .map(d => new TempoDefinition(d.time, d.tempo))
-    //     // time signatures
-    //     timeSignatures = parsed.header.timeSignatures
-    //       .map(d => new TimeSignature(d.time, [d.beats, d.beatType]))
-    //     // key signatures
-    //     keySignatures = parsed.header.keySignatures
-    //       .map(d => new KeySignature(d.time, d.key, d.scale))
-    //     // measure times
-    //     measureTimes = parsed.measureLinePositions
-    //   }
-    //   return new MusicPiece(
-    //     name,
-    //     tempos,
-    //     timeSignatures,
-    //     keySignatures,
-    //     measureTimes,
-    //     tracks
-    //   )
-    // }
-
-    /**
-       * Creates a MusicPiece object from a MusicXML string
-       *
-       * @param {string} name name
-       * @param {string|object} xmlFile MusicXML file content as string or object
-       *      If it is an object, it must behave like a DOM, e.g. provide methods
-       *      such as .querySelectorAll()
-       * @returns {MusicPiece} new MusicPiece
-       * @throws {'No MusicXML file content given'} when MusicXML file is
-       *  undefined or null
-       * @example Parsing a MusicPiece in Node.js
-       *    const jsdom = require('jsdom');
-       *    const xmlFile = fs.readFileSync('My Song.musicxml');
-       *    const dom = new jsdom.JSDOM(xmlFile);
-       *    const xmlDocument = dom.window.document;
-       *    const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
-       */
-
-
     static fromMusicXml(name, xmlFile) {
       if (!xmlFile) {
-        throw new Error('No MusicXML file content given');
+        throw new Error("No MusicXML file content given");
       }
-
       let xmlDocument = xmlFile;
-
-      if (typeof xmlDocument === 'string') {
+      if (typeof xmlDocument === "string") {
         const parser = new DOMParser();
-        xmlDocument = parser.parseFromString(xmlFile, 'text/xml');
+        xmlDocument = parser.parseFromString(xmlFile, "text/xml");
       }
-
       const parsed = preprocessMusicXmlData(xmlDocument);
       let tempos = [];
       let timeSignatures = [];
       let keySignatures = [];
-
       if (parsed.parts.length > 0) {
-        // Tempos
-        tempos = parsed.parts[0].tempoChanges.map(d => new TempoDefinition(d.time, d.tempo)); // Time signatures
-
-        timeSignatures = parsed.parts[0].beatTypeChanges.map(d => new TimeSignature(d.time, [d.beats, d.beatType])); // Key signatures
-
-        keySignatures = parsed.parts[0].keySignatureChanges.map(d => new KeySignature(d.time, d.key, d.scale));
-      } // Measure times
-
-
+        tempos = parsed.parts[0].tempoChanges.map((d) => new TempoDefinition(d.time, d.tempo));
+        timeSignatures = parsed.parts[0].beatTypeChanges.map((d) => new TimeSignature(d.time, [d.beats, d.beatType]));
+        keySignatures = parsed.parts[0].keySignatureChanges.map((d) => new KeySignature(d.time, d.key, d.scale));
+      }
       let measureTimes = [];
-
       if (parsed.parts.length > 0) {
         measureTimes = parsed.parts[0].measureLinePositions;
-      } // Tracks
-
-
-      const tracks = parsed.parts.map((track, index) => {
+      }
+      const tracks = parsed.parts.map((track, index16) => {
         for (const n of track.noteObjs) {
-          n.channel = index;
+          n.channel = index16;
         }
-
-        return new Track(parsed.partNames[index], parsed.instruments[index], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap, track.xmlNoteIndices);
+        return new Track(parsed.partNames[index16], parsed.instruments[index16], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap, track.xmlNoteIndices);
       });
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
-    /**
-       * Allows to get a MusicPiece from JSON after doing JSON.stringify()
-       *
-       * @param {string|object} json JSON
-       * @returns {MusicPiece} new MusicPiece
-       * @example
-       *      const jsonString = mp.toJson();
-       *      const recovered = MusicPiece.fromJson(jsonString);
-       */
-
-
     static fromJson(json) {
-      json = typeof json === 'string' ? JSON.parse(json) : json;
+      json = typeof json === "string" ? JSON.parse(json) : json;
       const name = json.name;
-      const tempos = json.tempos.map(d => new TempoDefinition(d.time, d.bpm));
-      const timeSignatures = json.timeSignatures.map(d => new TimeSignature(d.time, d.signature));
-      const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale));
+      const tempos = json.tempos.map((d) => new TempoDefinition(d.time, d.bpm));
+      const timeSignatures = json.timeSignatures.map((d) => new TimeSignature(d.time, d.signature));
+      const keySignatures = json.keySignatures.map((d) => new KeySignature(d.time, d.key, d.scale));
       const measureTimes = json.measureTimes;
-      const tracks = json.tracks.map(track => Track.from(track));
+      const tracks = json.tracks.map((track) => Track.from(track));
       return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
-    /**
-       * Returns a JSON-serialized representation
-       *
-       * @param {boolean} pretty true for readable (prettified) JSON
-       * @returns {string} JSON as string
-       * @example
-       *      const jsonString = mp.toJson();
-       *      const recovered = MusicPiece.fromJson(jsonString);
-       */
-
-
     toJson(pretty = false) {
-      const _this = { ...this,
-        tracks: this.tracks.map(d => d.toObject())
-      };
-      return JSON.stringify(_this, undefined, pretty ? 2 : 0);
+      const _this = __spreadProps(__spreadValues({}, this), {
+        tracks: this.tracks.map((d) => d.toObject())
+      });
+      return JSON.stringify(_this, void 0, pretty ? 2 : 0);
     }
-    /**
-       * Returns an array with all notes from all tracks.
-       *
-       * @deprecated use getNotesFromTracks('all') instead.
-       * @param {boolean} sortByTime true: sort notes by time
-       * @returns {Note[]} all notes of this piece
-       */
-
-
     getAllNotes(sortByTime = false) {
-      const notes = this.tracks.flatMap(t => t.notes);
-
+      const notes = this.tracks.flatMap((t) => t.notes);
       if (sortByTime) {
         notes.sort((a, b) => a.start - b.start);
       }
-
       return notes;
     }
-    /**
-       * Returns an array with notes from the specified tracks.
-       *
-       * @param {'all'|number|number[]} indices either 'all', a number, or an
-       *      Array with numbers
-       * @param {boolean} sortByTime true: sort notes by time (not needed for a
-       *      single track)
-       * @returns {Note[]} Array with all notes from the specified tracks
-       */
-
-
-    getNotesFromTracks(indices = 'all', sortByTime = false) {
+    getNotesFromTracks(indices = "all", sortByTime = false) {
       let notes = [];
-
-      if (indices === 'all') {
-        // Return all notes from all tracks
-        notes = this.tracks.flatMap(t => t.notes);
+      if (indices === "all") {
+        notes = this.tracks.flatMap((t) => t.notes);
       } else if (Array.isArray(indices)) {
-        // Return notes from some tracks
-        notes = this.tracks.filter((d, i) => indices.includes(i)).flatMap(t => t.notes);
+        notes = this.tracks.filter((d, i) => indices.includes(i)).flatMap((t) => t.notes);
       } else {
-        // Return notes from a single track
-        notes = this.tracks[indices].notes; // Notes in each tracks are already sorted
-
+        notes = this.tracks[indices].notes;
         sortByTime = false;
       }
-
       if (sortByTime) {
         notes.sort((a, b) => a.start - b.start);
       }
-
       return notes;
     }
-    /**
-       * Transposes all or only the specified tracks by the specified number of
-       * (semitone) steps.
-       * Will return a new MusicPiece instance.
-       * Note pitches will be clipped to [0, 127].
-       * Will not change playing instructions such as string and fret.
-       *
-       * @param {number} steps number of semitones to transpose (can be negative)
-       * @param {'all'|number|number[]} tracks tracks to transpose
-       * @returns {MusicPiece} a new, transposed MusicPiece
-       */
-
-
-    transpose(steps = 0, tracks = 'all') {
-      const newTracks = this.tracks.map((track, index) => {
-        const change = tracks === 'all' || Array.isArray(tracks) && tracks.includes(index) || tracks === index;
-        const na = new NoteArray(track.notes);
+    transpose(steps = 0, tracks = "all") {
+      const newTracks = this.tracks.map((track, index16) => {
+        const change = tracks === "all" || Array.isArray(tracks) && tracks.includes(index16) || tracks === index16;
+        const na = new NoteArray_default(track.notes);
         let tuning = track.tuningPitches;
-
         if (change) {
-          // Transpose notes and tuning pitches
           na.transpose(steps);
-          tuning = track.tuningPitches.map(d => d + steps);
+          tuning = track.tuningPitches.map((d) => d + steps);
         }
-
         return new Track(track.name, track.instrument, na.getNotes(), tuning, track.measureIndices);
       });
       return new MusicPiece(this.name, [...this.tempos], [...this.timeSignatures], [...this.keySignatures], [...this.measureTimes], newTracks);
     }
-
-  }
-  /**
-   * Used by MusicPiece, should not be used directly
-   */
-
-
-  class Track {
-    /**
-       * Do not use this constructor, but the static methods Track.fromMidi
-       * and Track.fromMusicXml instead.
-       *
-       * Notes will be sorted by start time.
-       *
-       * @param {string} name name
-       * @param {string} instrument instrument name
-       * @param {Note[]} notes notes
-       * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
-       *  tuning
-       * @param {number[]} [measureIndices=null] note indices where new measures
-       *  start
-       * @param {Map<number,object>} measureRehearsalMap maps measure index to
-       *  rehearsal marks
-       * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
-       * @param {number[][]} xmlNoteIndices for each parsed note, the indices of
-       *  the XML note elements that correspond to it
-       * @throws {'Notes are undefined or not an array'} for invalid notes
-       */
+  };
+  var Track = class {
     constructor(name, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
-      var _name;
-
-      name = !((_name = name) !== null && _name !== void 0 && _name.length) ? 'unnamed' : name.replace('\u0000', '');
+      name = !(name == null ? void 0 : name.length) ? "unnamed" : name.replace("\0", "");
       this.name = name;
       this.instrument = instrument;
-
-      if (!notes || notes.length === undefined) {
-        throw new Error('Notes are undefined or not an array');
+      if (!notes || notes.length === void 0) {
+        throw new Error("Notes are undefined or not an array");
       }
-
       this.notes = notes.sort((a, b) => a.start - b.start);
       this.tuningPitches = tuningPitches;
       this.measureIndices = measureIndices;
       this.measureRehearsalMap = measureRehearsalMap;
       this.noteLyricsMap = noteLyricsMap;
-      this.xmlNoteIndices = xmlNoteIndices; // Computed properties
-
-      this.duration = new NoteArray(notes).getDuration();
+      this.xmlNoteIndices = xmlNoteIndices;
+      this.duration = new NoteArray_default(notes).getDuration();
       this.hasStringFret = false;
-
-      for (const note of notes) {
-        if (note.string !== undefined && note.fret !== undefined) {
+      for (const note2 of notes) {
+        if (note2.string !== void 0 && note2.fret !== void 0) {
           this.hasStringFret = true;
           break;
         }
       }
     }
-    /**
-       * Returns an object representation of this Track, turns Maps into Arrays
-       *  to work with JSON.stringify
-       *
-       * @returns {object} object represntation
-       */
-
-
     toObject() {
-      return { ...this,
+      return __spreadProps(__spreadValues({}, this), {
         measureRehearsalMap: [...this.measureRehearsalMap],
         noteLyricsMap: [...this.noteLyricsMap]
-      };
+      });
     }
-    /**
-       * Parses an object into a Track, must have same format as the result of
-       * Track.toObject().
-       *
-       * @param {object} object object represntation of a Track
-       * @returns {Track} track
-       */
-
-
     static from(object) {
-      const notes = object.notes.map(note => {
-        return note.string !== undefined && note.fret !== undefined ? GuitarNote.from(note) : Note.from(note);
+      const notes = object.notes.map((note2) => {
+        return note2.string !== void 0 && note2.fret !== void 0 ? GuitarNote_default.from(note2) : Note_default.from(note2);
       });
       const measureRehearsalMap = new Map(object.measureRehearsalMap);
       const noteLyricsMap = new Map(object.noteLyricsMap);
       return new Track(object.name, object.instrument, notes, object.tuningPitches, object.measureIndices, measureRehearsalMap, noteLyricsMap, object.xmlNoteIndices);
     }
-
-  }
-  /**
-   * Tempo definition
-   */
-
-  class TempoDefinition {
-    /**
-       * @param {number} time in seconds
-       * @param {number} bpm tempo in seconds per beat
-       */
+  };
+  var TempoDefinition = class {
     constructor(time, bpm) {
       this.time = time;
       this.bpm = bpm;
       this.string = `${bpm} bpm`;
     }
-
-  }
-  /**
-   * Time signature definition
-   */
-
-  class TimeSignature {
-    /**
-       * @param {number} time in seconds
-       * @param {number[]} signature time signature as [beats, beatType]
-       */
+  };
+  var TimeSignature = class {
     constructor(time, signature) {
       this.time = time;
       this.signature = signature;
-      this.string = signature.join('/');
+      this.string = signature.join("/");
     }
-
-  }
-  /**
-   * Key signature definition
-   */
-
-  class KeySignature {
-    /**
-       * @param {number} time in seconds
-       * @param {string} key key e.g. 'C'
-       * @param {string} scale scale e.g. 'major'
-       */
-    constructor(time, key, scale) {
+  };
+  var KeySignature = class {
+    constructor(time, key, scale2) {
       this.time = time;
       this.key = key;
-      this.scale = scale;
-      this.string = `${key} ${scale}`;
+      this.scale = scale2;
+      this.string = `${key} ${scale2}`;
     }
+  };
+  var MusicPiece_default = MusicPiece;
 
-  }
-
-  /**
-   * Stores a sequence of pitches and provides some methods to simplify and
-   * manipulate it.
-   *
-   * @todo implement keepOnlyHighestConcurrentNotes
-   */
-
-  class PitchSequence {
-    /**
-       * @param {number[]} pitches pitches
-       */
+  // src/types/PitchSequence.js
+  var PitchSequence = class {
     constructor(pitches = []) {
       this._pitches = pitches;
     }
-    /**
-       * Creates a pitch sequence from an array of Notes
-       *
-       * @param {Note[]} notes notes
-       * @returns {PitchSequence} pitch sequence
-       */
-
-
     static fromNotes(notes = []) {
       const pitches = [...notes].sort((a, b) => {
         if (a.start === b.start) {
           return a.pitch - b.pitch;
         }
-
         return a.start - b.start;
-      }).map(d => d.pitch);
+      }).map((d) => d.pitch);
       return new PitchSequence(pitches);
     }
-    /**
-       * @param {string} string a string of Unicode characters
-       * @returns {PitchSequence} pitch sequence
-       */
-
-
     static fromCharString(string) {
       if (!string || string.length === 0) {
         return new PitchSequence();
       }
-
-      const pitches = [...string].map((d, index) => string.charCodeAt(index));
+      const pitches = [...string].map((d, index16) => string.charCodeAt(index16));
       return new PitchSequence(pitches);
     }
-    /**
-       * @returns {number[]} pitches
-       */
-
-
     getPitches() {
       return this._pitches;
     }
-    /**
-       * @returns {number} number of pitches
-       */
-
-
     length() {
       return this._pitches.length;
     }
-    /**
-       * Turns pitch sequence into a string by turning each  pitch into a character
-       * (based on Unicode index)
-       *
-       * @returns {string} string representation of note pitches
-       */
-
-
     toCharString() {
       if (!this._pitches || this._pitches.length === 0) {
-        return '';
+        return "";
       }
-
       return String.fromCharCode(...this._pitches);
     }
-    /**
-       * @returns {string} a string with the notes' names
-       */
-
-
     toNoteNameString() {
-      return this._pitches.map(p => getMidiNoteByNr(p).label).join(' ');
+      return this._pitches.map((p) => getMidiNoteByNr(p).label).join(" ");
     }
-    /**
-       * Reverses the order of pitches in this PitchSequence
-       *
-       * @returns {PitchSequence} this
-       */
-
-
     reverse() {
       this._pitches = this._pitches.reverse();
       return this;
     }
-    /**
-       * Takes a sequence of MIDI pitches and nomralizes them to be in [0, 11]
-       *
-       * @returns {PitchSequence} this
-       */
-
-
     removeOctaves() {
-      this._pitches = this._pitches.map(d => d % 12);
+      this._pitches = this._pitches.map((d) => d % 12);
       return this;
     }
-    /**
-       * Transforms note pitches to intervals, i.e. diffrences between to subsequent
-       * notes: C, C#, C, D => 1, -1, 2
-       *
-       * @returns {number[]} intervals
-       */
-
-
     toIntervals() {
       const p = this._pitches;
-
       if (!p || p.length === 0 || p.length < 2) {
         return [];
       }
-
-      const result = Array.from({
-        length: p.length - 1
-      });
-
-      for (let index = 1; index < p.length; index++) {
-        result[index - 1] = p[index] - p[index - 1];
+      const result = Array.from({ length: p.length - 1 });
+      for (let index16 = 1; index16 < p.length; index16++) {
+        result[index16 - 1] = p[index16] - p[index16 - 1];
       }
-
       return result;
     }
-    /**
-       * @returns {PitchSequence} clone
-       */
-
-
     clone() {
       return new PitchSequence(this._pitches);
     }
-    /**
-       * Returns true if this NoteArray and otherNoteArray have equal attributes.
-       *
-       * @param {NoteArray} otherPitchSequence another NoteArray
-       * @returns {boolean} true if equal
-       */
-
-
     equals(otherPitchSequence) {
       if (!(otherPitchSequence instanceof PitchSequence)) {
         return false;
       }
-
       const p = otherPitchSequence.getPitches();
-
       if (this._pitches.length !== p.length) {
         return false;
       }
-
-      for (const [index, element] of p.entries()) {
-        if (this._pitches[index] !== element) {
+      for (const [index16, element] of p.entries()) {
+        if (this._pitches[index16] !== element) {
           return false;
         }
       }
-
       return true;
     }
+  };
+  var PitchSequence_default = PitchSequence;
 
-  }
-
-  /**
-   * @module graphics/Canvas
-   * @todo combine multiple canvases into one, by drawing over common background
-   * @todo save canvas as file https://www.digitalocean.com/community/tutorials/js-canvas-toblob
-   */
-
-  /**
-   * Sets up a canvas rescaled to device pixel ratio
-   *
-   * @param {HTMLCanvasElement} canvas canvas element
-   * @returns {CanvasRenderingContext2D} canvas rendering context
-   */
-
+  // src/graphics/Canvas.js
+  var Canvas_exports = {};
+  __export(Canvas_exports, {
+    drawArc: () => drawArc,
+    drawAssymetricArc: () => drawAssymetricArc,
+    drawBezierConnectorX: () => drawBezierConnectorX,
+    drawBezierConnectorY: () => drawBezierConnectorY,
+    drawBowRight: () => drawBowRight,
+    drawBracketH: () => drawBracketH,
+    drawCircle: () => drawCircle,
+    drawColorRamp: () => drawColorRamp,
+    drawCornerLine: () => drawCornerLine,
+    drawDiamond: () => drawDiamond,
+    drawFilledCircle: () => drawFilledCircle,
+    drawHLine: () => drawHLine,
+    drawHexagon: () => drawHexagon,
+    drawLine: () => drawLine,
+    drawMatrix: () => drawMatrix,
+    drawNoteTrapezoid: () => drawNoteTrapezoid,
+    drawNoteTrapezoidUpwards: () => drawNoteTrapezoidUpwards,
+    drawRoundedCorner: () => drawRoundedCorner,
+    drawRoundedCornerLine: () => drawRoundedCornerLine,
+    drawRoundedCornerLineRightLeft: () => drawRoundedCornerLineRightLeft,
+    drawRoundedRect: () => drawRoundedRect,
+    drawTriangle: () => drawTriangle,
+    drawVLine: () => drawVLine,
+    drawX: () => drawX,
+    setupCanvas: () => setupCanvas
+  });
   function setupCanvas(canvas) {
-    // Fix issues when importing musicvis-lib in Node.js
     if (!window) {
       return;
-    } // Get the device pixel ratio, falling back to 1.
-
-
-    const dpr = window.devicePixelRatio || 1; // Get the size of the canvas in CSS pixels.
-
-    const rect = canvas.getBoundingClientRect(); // Give the canvas pixel dimensions of their CSS
-    // sizes times the device pixel ratio.
-
+    }
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
-    const context = canvas.getContext('2d'); // Scale all drawing operations by the dpr
-
+    const context = canvas.getContext("2d");
     context.scale(dpr, dpr);
     return context;
   }
-  /**
-   * Draws a stroked straight line.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of the start
-   * @param {number} y1 y coordinate of the start
-   * @param {number} x2 x coordinate of end
-   * @param {number} y2 y coordinate of end
-   * @returns {void}
-   * @example
-   *      // Set the strokeStyle first
-   *      context.strokeStyle = 'black';
-   *      // Let's draw an X
-   *      Canvas.drawLine(context, 0, 0, 50, 50);
-   *      Canvas.drawLine(context, 0, 50, 50, 0);
-   */
-
   function drawLine(context, x1, y1, x2, y2) {
     context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a stroked straight horizontal line.
-   *
-   * @deprecated Use context.fillRect(x1, y, x2-x1, strokeWidth)
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of the start
-   * @param {number} y y coordinate of the start
-   * @param {number} x2 x coordinate of end
-   * @returns {void}
-   */
-
   function drawHLine(context, x1, y, x2) {
     context.beginPath();
     context.moveTo(x1, y);
     context.lineTo(x2, y);
     context.stroke();
   }
-  /**
-   * Draws a stroked straight vertical line.
-   *
-   * @deprecated Use context.fillRect(x1, y1, strokeWidth, y2-y1)
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of the start
-   * @param {number} y1 y coordinate of the start
-   * @param {number} y2 y coordinate of end
-   * @returns {void}
-   */
-
   function drawVLine(context, x, y1, y2) {
     context.beginPath();
     context.moveTo(x, y1);
     context.lineTo(x, y2);
     context.stroke();
   }
-  /**
-   * Draws a line that bows to the right in the direction of travel (looks like a
-   * left turn), thereby encoding direction. Useful for node-link graphs.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of the start
-   * @param {number} y1 y coordinate of the start
-   * @param {number} x2 x coordinate of end
-   * @param {number} y2 y coordinate of end
-   * @param {number} [strength=0.5] how much the bow deviates from a straight line
-   *      towards the right, negative values will make bows to the left
-   */
-
   function drawBowRight(context, x1, y1, x2, y2, strength = 0.5) {
     const middleX = (x1 + x2) / 2;
     const middleY = (y1 + y2) / 2;
@@ -9832,46 +6836,16 @@
     context.bezierCurveTo(cx, cy, cx, cy, x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a stroked circle.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of center
-   * @param {number} y y coordinate of center
-   * @param {number} radius radius
-   * @returns {void}
-   */
-
   function drawCircle(context, x, y, radius) {
     context.beginPath();
     context.arc(x, y, radius, 0, 2 * Math.PI);
     context.stroke();
   }
-  /**
-   * Draws a filled circle.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of center
-   * @param {number} y y coordinate of center
-   * @param {number} radius radius
-   * @returns {void}
-   */
-
   function drawFilledCircle(context, x, y, radius) {
     context.beginPath();
     context.arc(x, y, radius, 0, 2 * Math.PI);
     context.fill();
   }
-  /**
-   * Draws a filled triangle like this: /\
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of center
-   * @param {number} y y coordinate of center
-   * @param {number} halfSize half of the size
-   * @returns {void}
-   */
-
   function drawTriangle(context, x, y, halfSize) {
     context.beginPath();
     context.moveTo(x - halfSize, y + halfSize);
@@ -9880,16 +6854,6 @@
     context.closePath();
     context.fill();
   }
-  /**
-   * Draws a diamond like this: <>
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of center
-   * @param {number} y y coordinate of center
-   * @param {number} halfSize half of the size
-   * @returns {void}
-   */
-
   function drawDiamond(context, x, y, halfSize) {
     context.beginPath();
     context.moveTo(x - halfSize, y);
@@ -9899,16 +6863,6 @@
     context.closePath();
     context.fill();
   }
-  /**
-   * Draws an X
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of center
-   * @param {number} y y coordinate of center
-   * @param {number} halfSize half of the size
-   * @returns {void}
-   */
-
   function drawX(context, x, y, halfSize) {
     context.save();
     context.lineWidth = 2;
@@ -9920,19 +6874,6 @@
     context.stroke();
     context.restore();
   }
-  /**
-   * Draws a trapezoid that looks like a rectangle but gets narrower at the right
-   * end, so better show where one ends and the next begins.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of top left
-   * @param {number} y y coordinate of top left
-   * @param {number} width width
-   * @param {number} height height (of left side)
-   * @param {number} height2 height (of right side)
-   * @returns {void}
-   */
-
   function drawNoteTrapezoid(context, x, y, width, height, height2) {
     context.beginPath();
     context.moveTo(x, y);
@@ -9942,19 +6883,6 @@
     context.closePath();
     context.fill();
   }
-  /**
-   * Draws a trapezoid that looks like a rectangle but gets narrower at the top
-   * end, so better show where one ends and the next begins.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of bounding rect's top left
-   * @param {number} y y coordinate of bounding rect's top left
-   * @param {number} width width (of bounding rect / bottom side)
-   * @param {number} height height
-   * @param {number} width2 width (of top side)
-   * @returns {void}
-   */
-
   function drawNoteTrapezoidUpwards(context, x, y, width, height, width2) {
     context.beginPath();
     context.lineTo(x, y + height);
@@ -9964,23 +6892,10 @@
     context.closePath();
     context.fill();
   }
-  /**
-   * Draws a rectangle with rounded corners, does not fill or stroke by itself
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x coordinate of bounding rect's top left
-   * @param {number} y y coordinate of bounding rect's top left
-   * @param {number} width width
-   * @param {number} height height
-   * @param {number} radius rounding radius
-   * @returns {void}
-   */
-
   function drawRoundedRect(context, x, y, width, height, radius) {
     if (width < 0) {
       return;
     }
-
     context.beginPath();
     context.moveTo(x + radius, y);
     context.lineTo(x + width - radius, y);
@@ -9993,18 +6908,6 @@
     context.quadraticCurveTo(x, y, x + radius, y);
     context.closePath();
   }
-  /**
-   * Draws a horizontal, then vertical line to connect two points (or the other
-   * way round when xFirst == false)
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of start
-   * @param {number} y1 y coordinate of start
-   * @param {number} x2 x coordinate of end
-   * @param {number} y2 y coordinate of end
-   * @param {boolean} [xFirst=true] controls whether to go first in x or y direction
-   */
-
   function drawCornerLine(context, x1, y1, x2, y2, xFirst = true) {
     context.beginPath();
     context.moveTo(x1, y1);
@@ -10012,19 +6915,6 @@
     context.lineTo(x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a rounded version of drawCornerLine().
-   * Only works for dendrograms drawn from top-dowm, use
-   * drawRoundedCornerLineRightLeft for right-to-left dendrograms.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of start
-   * @param {number} y1 y coordinate of start
-   * @param {number} x2 x coordinate of end
-   * @param {number} y2 y coordinate of end
-   * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
-   */
-
   function drawRoundedCornerLine(context, x1, y1, x2, y2, maxRadius = 25) {
     const xDist = Math.abs(x2 - x1);
     const yDist = Math.abs(y2 - y1);
@@ -10033,28 +6923,14 @@
     const cy = y1 < y2 ? y1 + radius : y1 - radius;
     context.beginPath();
     context.moveTo(x1, y1);
-
     if (x1 < x2) {
       context.arc(cx, cy, radius, 1.5 * Math.PI, 2 * Math.PI);
     } else {
       context.arc(cx, cy, radius, 1.5 * Math.PI, Math.PI, true);
     }
-
     context.lineTo(x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a rounded version of drawRoundedCornerLine for right-to-left
-   * dendrograms.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of start
-   * @param {number} y1 y coordinate of start
-   * @param {number} x2 x coordinate of end
-   * @param {number} y2 y coordinate of end
-   * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
-   */
-
   function drawRoundedCornerLineRightLeft(context, x1, y1, x2, y2, maxRadius = 25) {
     const xDist = Math.abs(x2 - x1);
     const yDist = Math.abs(y2 - y1);
@@ -10063,53 +6939,28 @@
     const cy = y1 < y2 ? y2 - radius : y2 + radius;
     context.beginPath();
     context.moveTo(x1, y1);
-
     if (y1 < y2) {
       context.arc(cx, cy, radius, 0, 0.5 * Math.PI);
     } else {
       context.arc(cx, cy, radius, 0, 1.5 * Math.PI, true);
     }
-
     context.lineTo(x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a hexagon, call context.fill() or context.stroke() afterwards.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} cx center x
-   * @param {number} cy center y
-   * @param {number} radius radius of the circle on which the points are placed
-   */
-
   function drawHexagon(context, cx, cy, radius) {
     context.beginPath();
-
-    for (let index = 0; index < 6; index++) {
-      // Start at 30° TODO: allow to specify
-      const angle = (60 * index + 30) / 180 * Math.PI;
+    for (let index16 = 0; index16 < 6; index16++) {
+      const angle = (60 * index16 + 30) / 180 * Math.PI;
       const x = cx + Math.cos(angle) * radius;
       const y = cy + Math.sin(angle) * radius;
-
-      if (index === 0) {
+      if (index16 === 0) {
         context.moveTo(x, y);
       } else {
         context.lineTo(x, y);
       }
     }
-
     context.closePath();
   }
-  /**
-   * Draws a Bezier curve to connect to points in X direction.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of the first point
-   * @param {number} y1 y coordinate of the first point
-   * @param {number} x2 x coordinate of the second point
-   * @param {number} y2 y coordinate of the second point
-   */
-
   function drawBezierConnectorX(context, x1, y1, x2, y2) {
     const deltaX = (x2 - x1) / 2;
     context.beginPath();
@@ -10117,16 +6968,6 @@
     context.bezierCurveTo(x1 + deltaX, y1, x1 + deltaX, y2, x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a Bezier curve to connect to points in Y direction.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of the first point
-   * @param {number} y1 y coordinate of the first point
-   * @param {number} x2 x coordinate of the second point
-   * @param {number} y2 y coordinate of the second point
-   */
-
   function drawBezierConnectorY(context, x1, y1, x2, y2) {
     const deltaY = (y2 - y1) / 2;
     context.beginPath();
@@ -10134,33 +6975,17 @@
     context.bezierCurveTo(x1, y1 + deltaY, x2, y1 + deltaY, x2, y2);
     context.stroke();
   }
-  /**
-   * Draws a rounded corner, requires x and y distances between points to be
-   * equal.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x1 x coordinate of the first point
-   * @param {number} y1 y coordinate of the first point
-   * @param {number} x2 x coordinate of the second point
-   * @param {number} y2 y coordinate of the second point
-   * @param {boolean} turnLeft true for left turn, false for right turn
-   * @param {number} roundness corner roundness between 0 (sharp) and 1 (round)
-   */
-
   function drawRoundedCorner(context, x1, y1, x2, y2, turnLeft = true, roundness = 1) {
     context.beginPath();
     context.moveTo(x1, y1);
-
     if (x1 === x2 || y1 === y2) {
       context.lineTo(x2, y2);
       context.stroke();
       return;
     }
-
     const radius = Math.abs(x2 - x1) * roundness;
     let cx;
     let cy;
-
     if (turnLeft) {
       if (x1 < x2 && y1 < y2) {
         cx = x1 + radius;
@@ -10198,23 +7023,10 @@
         context.arc(cx, cy, radius, Math.PI, 1.5 * Math.PI, false);
       }
     }
-
     context.lineTo(x2, y2);
     context.stroke();
   }
-  /**
-   * Draws an arc that connects similar parts.
-   * Both parts must have the same width in pixels.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} startX1 x coordinate of the start of the first part
-   * @param {number} startX2 x coordinate of the start of the second part
-   * @param {number} length length in pixels of the parts
-   * @param {number} yBottom bottom baseline y coordinate
-   */
-
   function drawArc(context, startX1, startX2, length, yBottom) {
-    // Get center and radius
     const radius = (startX2 - startX1) / 2;
     const cx = startX1 + radius + length / 2;
     context.lineWidth = length;
@@ -10222,33 +7034,15 @@
     context.arc(cx, yBottom, radius, Math.PI, 2 * Math.PI);
     context.stroke();
   }
-  /**
-   * Draws a more complex path and fills it.
-   * Two arcs: One from startX1 to endX2 on the top, one from endX1 to startX2
-   * below it.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} startX1 x coordinate of the start of the first part
-   * @param {number} endX1 x coordinate of the end of the first part
-   * @param {number} startX2 x coordinate of the start of the second part
-   * @param {number} endX2 x coordinate of the end of the second part
-   * @param {number} yBottom bottom baseline y coordinate
-   */
-
   function drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBottom) {
-    // Get center and radius
     const radiusTop = (endX2 - startX1) / 2;
-
     if (radiusTop < 0) {
       return;
     }
-
     let radiusBottom = (startX2 - endX1) / 2;
-
     if (radiusBottom < 0) {
       radiusBottom = 0;
     }
-
     const cxTop = startX1 + radiusTop;
     const cxBottom = endX1 + radiusBottom;
     context.beginPath();
@@ -10259,18 +7053,6 @@
     context.closePath();
     context.fill();
   }
-  /**
-   * Draws a horizontal bracket like this |_____| (bottom)
-   * or this |""""""| (top).
-   * Use a positive h for bottom and a negative one for top.
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number} x x position of the bracket's horizontal lines
-   * @param {number} y y position of the bracket's horizontal lines
-   * @param {number} w width of the bracket's horizontal lines
-   * @param {number} h height of the bracket's vertical ticks
-   */
-
   function drawBracketH(context, x, y, w, h) {
     context.beginPath();
     context.moveTo(x, y + h);
@@ -10279,1043 +7061,535 @@
     context.lineTo(x + w, y + h);
     context.stroke();
   }
-  /**
-   * Draws a quadratic matrix onto a canvas
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {number[][]} matrix matrix
-   * @param {number} [x=0] x position of the top left corner
-   * @param {number} [y=0] y position of the top left corner
-   * @param {number} [size=400] width and height in pixel
-   * @param {Function} colorMap colormap from [min, max] to a color
-   */
-
-  function drawMatrix(context, matrix, x = 0, y = 0, size = 400, colorScale, colorMap = viridis) {
+  function drawMatrix(context, matrix, x = 0, y = 0, size = 400, colorScale, colorMap = viridis_default) {
     const cellSize = size / matrix.length;
     const paddedSize = cellSize * 1.01;
-    colorScale = colorScale || linear().domain(extent(matrix.flat())).range([1, 0]);
-
+    colorScale = colorScale || linear2().domain(extent_default(matrix.flat())).range([1, 0]);
     for (let row = 0; row < matrix.length; row++) {
       for (let col = 0; col < matrix.length; col++) {
         context.fillStyle = colorMap(colorScale(matrix[row][col]));
         context.fillRect(x, y, paddedSize, paddedSize);
         x += cellSize;
       }
-
       y += cellSize;
     }
   }
-  /**
-   * Draws a color ramp
-   *
-   * @param {CanvasRenderingContext2D} context canvas rendering context
-   * @param {Function} colorMap colormap from [min, max] to a color
-   */
-
-  function drawColorRamp(context, w = 100, h = 10, colorMap = rainbow) {
-    const scaleColor = linear().domain([0, w]);
-
+  function drawColorRamp(context, w = 100, h = 10, colorMap = rainbow_default) {
+    const scaleColor = linear2().domain([0, w]);
     for (let x = 0; x < w; ++x) {
       context.fillStyle = colorMap(scaleColor(x));
       context.fillRect(x, 0, 1.1, h);
     }
   }
 
-  var Canvas = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    setupCanvas: setupCanvas,
-    drawLine: drawLine,
-    drawHLine: drawHLine,
-    drawVLine: drawVLine,
-    drawBowRight: drawBowRight,
-    drawCircle: drawCircle,
-    drawFilledCircle: drawFilledCircle,
-    drawTriangle: drawTriangle,
-    drawDiamond: drawDiamond,
-    drawX: drawX,
-    drawNoteTrapezoid: drawNoteTrapezoid,
-    drawNoteTrapezoidUpwards: drawNoteTrapezoidUpwards,
-    drawRoundedRect: drawRoundedRect,
-    drawCornerLine: drawCornerLine,
-    drawRoundedCornerLine: drawRoundedCornerLine,
-    drawRoundedCornerLineRightLeft: drawRoundedCornerLineRightLeft,
-    drawHexagon: drawHexagon,
-    drawBezierConnectorX: drawBezierConnectorX,
-    drawBezierConnectorY: drawBezierConnectorY,
-    drawRoundedCorner: drawRoundedCorner,
-    drawArc: drawArc,
-    drawAssymetricArc: drawAssymetricArc,
-    drawBracketH: drawBracketH,
-    drawMatrix: drawMatrix,
-    drawColorRamp: drawColorRamp
-  });
-
-  /**
-   * Allows to record audio blobs.
-   *
-   * @module input/AudioRecorder
-   * @example <caption>Usage (only in async functions)</caption>
-   *     const recorder = await recordAudio();
-   *     recorder.start();
-   *     // ...
-   *     const audio = await recorder.stop();
-   * stop() returns a Blob with audio data
-   * @see https://medium.com/@bryanjenningz/how-to-record-and-play-audio-in-javascript-faa1b2b3e49b
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
-   * @returns {Promise} audio recorder
-   */
-  const recordAudio = () => {
-    // eslint-disable-next-line
-    return new Promise(async resolve => {
+  // src/input/AudioRecorder.js
+  var recordAudio = () => {
+    return new Promise(async (resolve) => {
       let stream;
-
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: true
-        });
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       } catch (error) {
-        console.warn('[AudioInput] Cannot access audio', error);
+        console.warn("[AudioInput] Cannot access audio", error);
         return;
       }
-
       const options = {
-        audioBitsPerSecond: 128_000
+        audioBitsPerSecond: 128e3
       };
       const mediaRecorder = new MediaRecorder(stream, options);
-      let audioChunks = []; // Add new data when it arrives
-
-      mediaRecorder.addEventListener('dataavailable', event => {
+      let audioChunks = [];
+      mediaRecorder.addEventListener("dataavailable", (event) => {
         audioChunks.push(event.data);
-      }); // Starts recording
-
-      const start = () => {
+      });
+      const start2 = () => {
         if (!mediaRecorder) {
-          console.warn('[AudioInput] Cannot record audio, no microphone?');
+          console.warn("[AudioInput] Cannot record audio, no microphone?");
           return;
         }
-
-        if (mediaRecorder.state === 'recording') {
+        if (mediaRecorder.state === "recording") {
           return;
         }
-
         console.log(`[AudioInput] Recording @ ${mediaRecorder.audioBitsPerSecond} b/s`);
         audioChunks = [];
         mediaRecorder.start();
-      }; // Stops recording
-
-
-      const stop = () => new Promise(resolve => {
+      };
+      const stop = () => new Promise((resolve2) => {
         if (!mediaRecorder) {
           return;
         }
-
-        console.log('[AudioInput] Stopping audio recording');
-        mediaRecorder.addEventListener('stop', () => {
-          // Audio blob contains the data to store on the server
-          const blobOptions = {
-            type: mediaRecorder.mimeType
-          };
-          const audioBlob = new Blob(audioChunks, blobOptions); // console.log(audioBlob);
-
-          resolve(audioBlob);
+        console.log("[AudioInput] Stopping audio recording");
+        mediaRecorder.addEventListener("stop", () => {
+          const blobOptions = { type: mediaRecorder.mimeType };
+          const audioBlob = new Blob(audioChunks, blobOptions);
+          resolve2(audioBlob);
         });
         mediaRecorder.stop();
       });
-
-      resolve({
-        start,
-        stop
-      });
+      resolve({ start: start2, stop });
     });
   };
 
-  /**
-   * Records incoming MIDI messages from a MIDI device.
-   *
-   * @param {Function} [onMessage] a callback function to get notfied of incoming
-   *      messages
-   * @module input/MidiRecorder
-   * @example <caption>Usage (only in async functions)</caption>
-   *     const recorder = await recordMidi();
-   *     recorder.start();
-   *     const notes = recorder.stop();
-   * @returns {Promise} MIDI recorder
-   */
-
-  const recordMidi = onMessage => {
-    // eslint-disable-next-line
-    return new Promise(async resolve => {
+  // src/input/MidiRecorder.js
+  var recordMidi = (onMessage) => {
+    return new Promise(async (resolve) => {
       let midiAccess;
-
       try {
         midiAccess = await navigator.requestMIDIAccess();
       } catch (error) {
-        console.warn('[MidiInput] Cannot access MIDI', error);
+        console.warn("[MidiInput] Cannot access MIDI", error);
         return;
       }
-
-      let messages = []; // Add new data when it arrives
-
-      const addMessage = message => {
+      let messages = [];
+      const addMessage = (message) => {
         if (onMessage) {
           onMessage(message);
         }
-
         messages.push(message);
-      }; // Starts recording
-
-
-      const start = () => {
+      };
+      const start2 = () => {
         if (!midiAccess) {
-          console.warn('[MidiInput] Cannot record MIDI');
+          console.warn("[MidiInput] Cannot record MIDI");
           return;
-        } // Do this here, in case devices changed
-
-
+        }
         for (const input of midiAccess.inputs.values()) {
           input.onmidimessage = addMessage;
         }
-
-        console.log('[MidiInput] Starting recording');
+        console.log("[MidiInput] Starting recording");
         messages = [];
-      }; // Stops recording
-
-
+      };
       const stop = () => {
         if (!midiAccess) {
           return;
         }
-
-        console.log('[MidiInput] Stopping recording'); // Process messages
-
+        console.log("[MidiInput] Stopping recording");
         const notes = processMidiMessagesToNotes(messages);
         return notes;
       };
-
-      resolve({
-        start,
-        stop
-      });
+      resolve({ start: start2, stop });
     });
   };
-  /**
-   * Parses MIDI messages to Notes
-   *
-   * @private
-   * @param {Oject[]} messages MIDI messages as they come from the WebMidi API
-   * @returns {Note[]} notes
-   */
-
   function processMidiMessagesToNotes(messages) {
-    // Keep track of currently sounding notes
-    const currentNotes = new Map();
+    const currentNotes = /* @__PURE__ */ new Map();
     const notes = [];
-
     for (const message of messages) {
       const device = message.target.name;
       const time = message.timeStamp;
       const commandAndChannel = message.data[0];
       const channel = commandAndChannel % 16;
       const command = commandAndChannel - channel;
-      const pitch = message.data[1]; // A velocity value might not be included with a noteOff command
-
+      const pitch = message.data[1];
       const velocity = message.data.length > 2 ? message.data[2] : 0;
-
       switch (command) {
         case 128:
           noteOff(notes, currentNotes, device, time, pitch, channel);
           break;
-
         case 144:
           if (velocity > 0) {
             noteOn(currentNotes, device, time, pitch, channel, velocity);
           } else {
             noteOff(notes, currentNotes, device, time, pitch, channel);
           }
-
           break;
-
+        case 224:
+          break;
+        default:
       }
-    } // Look for unfinished notes
-
-
+    }
     if (currentNotes.size > 0) {
       console.warn(`[MidiInput] Got ${currentNotes.size} unfinished notes`);
     }
-
     notes.sort((a, b) => a.start - b.start);
     return notes;
   }
-  /**
-   * Handles note-on messages
-   *
-   * @private
-   * @param {Map} currentNotes Map with started but not yet ended notes
-   * @param {string} device device name
-   * @param {number} time time stamp of the message
-   * @param {number} pitch MIDI pitch in [0, 127]
-   * @param {number} channel MIDI channel
-   * @param {number} velocity MIDI velocity
-   */
-
-
   function noteOn(currentNotes, device, time, pitch, channel, velocity) {
-    const note = new Note(pitch, time / 1000, velocity, channel);
+    const note2 = new Note_default(pitch, time / 1e3, velocity, channel);
     const key = `${device}-${channel}-${pitch}`;
-    currentNotes.set(key, note);
+    currentNotes.set(key, note2);
   }
-  /**
-   * Handles note-off messages
-   *
-   * @private
-   * @param {Note[]} notes finished notes
-   * @param {Map} currentNotes Map with started but not yet ended notes
-   * @param {string} device device name
-   * @param {number} time time stamp of the message
-   * @param {number} pitch MIDI pitch in [0, 127]
-   * @param {number} channel MIDI channel
-   */
-
-
   function noteOff(notes, currentNotes, device, time, pitch, channel) {
-    // Look for note start
     const key = `${device}-${channel}-${pitch}`;
-
     if (!currentNotes.has(key)) {
       console.warn(`[MidiInput] Missing note-on for note-off with key ${key}`);
       return;
     }
-
-    const note = currentNotes.get(key);
-    note.end = time / 1000;
-    notes.push(note);
+    const note2 = currentNotes.get(key);
+    note2.end = time / 1e3;
+    notes.push(note2);
     currentNotes.delete(key);
   }
 
-  /**
-   * Handles incoming MIDI messages from a MIDI device.
-   *
-   * @module input/MidiInputManager
-   */
-
-  class MidiInputManager {
-    /**
-         * Constructor with callback functions
-         *
-         * @param {Function} getMidiLiveData a function called by this object to get
-         *      the currently recorded MIDI notes from App.js, where the
-         *      MidiInputManager instance should be created
-         *      Example for how to defined getMidiLiveData as method in App.js:
-         *          getMidiLiveData = () => this.state.midiLiveData;
-         * @param {Function} setMidiLiveData a function called by this object to
-         *      update the currently MIDI notes in App.js
-         *      Example:
-         *          setMidiLiveData = (data) => {
-         *              // Work-around so note_off event handling can
-         *              // immediately find the note_on event
-         *              this.state.midiLiveData = data;
-         *              this.setState({ midiLiveData: data });
-         *          };
-         * @param {Function} addCurrentNote a function called by this object to add
-         *      a currently played note (e.g. currently pressed piano key)
-         *      Example:
-         *          addCurrentNote = (note) => {
-         *              const newMap = new Map(this.state.currentNotes).set(note.pitch, note);
-         *              this.setState({ currentNotes: newMap });
-         *          }
-         * @param {Function} removeCurrentNote a function called by this object to
-         *      remove a currently played note
-         *      Example:
-         *          removeCurrentNote = (pitch) => {
-         *              const newMap = new Map(this.state.currentNotes).delete(pitch);
-         *              this.setState({ currentNotes: newMap });
-         *          }
-         */
-    constructor(getMidiLiveData, setMidiLiveData, addCurrentNote = () => {}, removeCurrentNote = () => {}) {
+  // src/input/MidiInputManager.js
+  var MidiInputManager = class {
+    constructor(getMidiLiveData, setMidiLiveData, addCurrentNote = () => {
+    }, removeCurrentNote = () => {
+    }) {
       this._getMidiLiveData = getMidiLiveData;
       this._setMidiLiveData = setMidiLiveData;
       this._addCurrentNote = addCurrentNote;
-      this._removeCurrentNote = removeCurrentNote; // Request MIDI access
-
+      this._removeCurrentNote = removeCurrentNote;
       if (navigator.requestMIDIAccess) {
         navigator.requestMIDIAccess().then(this._onMIDISuccess, this._onMIDIFailure);
       } else {
-        console.error('[MidiInput] WebMIDI is not supported in this browser.');
-        throw new Error('Browser does not support WebMIDI');
+        console.error("[MidiInput] WebMIDI is not supported in this browser.");
+        throw new Error("Browser does not support WebMIDI");
       }
     }
-    /**
-         * Handles a successful MIDI access request
-         *
-         * @private
-         * @param {*} midiAccess MIDI access
-         */
-
-
     _onMIDISuccess(midiAccess) {
-      // console.log(midiAccess);
       console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} input devices`);
-
       for (const input of midiAccess.inputs.values()) {
         console.log(` - ${input.name}`);
         input.onmidimessage = this._handleMIDIMessage;
       }
-
-      console.groupEnd(); // console.groupCollapsed(`[MidiInput] ${midiAccess.inputs.size} output devices`);
-      // for (let output of midiAccess.outputs.values()) {
-      //     console.log(` - ${output.name}`);
-      // }
-      // console.groupEnd();
+      console.groupEnd();
     }
-
-    /**
-         * Handles MIDI access errors
-         *
-         * @private
-         * @param {*} error error
-         */
     _onMIDIFailure(error) {
-      console.error('[MidiInput] Cannot access MIDI devices.', error);
+      console.error("[MidiInput] Cannot access MIDI devices.", error);
     }
-    /**
-         * Handles incoming MIDI messages
-         *
-         * @private
-         * @param {*} message MIDI message
-         */
-
-
     _handleMIDIMessage(message) {
-      // console.log(message);
       const device = message.target.name;
       const commandAndChannel = message.data[0];
       const channel = commandAndChannel % 16;
       const command = commandAndChannel - channel;
       const time = message.timeStamp;
-      const pitch = message.data[1]; // A velocity value might not be included with a noteOff command
-
+      const pitch = message.data[1];
       const velocity = message.data.length > 2 ? message.data[2] : 0;
-
       switch (command) {
         case 128:
           this._noteOff(device, time, pitch, channel);
-
           break;
-
         case 144:
           if (velocity > 0) {
             this._noteOn(device, time, pitch, channel, velocity);
           } else {
             this._noteOff(device, time, pitch, channel);
           }
-
           break;
-
+        case 224:
+          break;
+        default:
       }
     }
-
-    /**
-         * Handles note-on messages
-         *
-         * @private
-         * @param {string} device device name
-         * @param {number} time time stamp of the message
-         * @param {number} pitch MIDI pitch in [0, 127]
-         * @param {number} channel MIDI channel
-         * @param {number} velocity MIDI velocity
-         */
     _noteOn(device, time, pitch, channel, velocity) {
-      const note = new Note(pitch, time / 1000, velocity, channel); // Add current note
-
-      this._addCurrentNote(note); // Update recorded MIDI data
-      // TODO: probably better to only update on note-off,
-      // Then we need internal cache
-      // But this might be good, since only 'unfinished' notes need to be checked on note-off,
-      // so we can remove finished notes from the cache
-
-
+      const note2 = new Note_default(pitch, time / 1e3, velocity, channel);
+      this._addCurrentNote(note2);
       let midiData = this._getMidiLiveData();
-
-      midiData = [...midiData, note];
-
+      midiData = [...midiData, note2];
       this._setMidiLiveData(midiData);
     }
-    /**
-         * Handles note-off messages by updating the end time of the corresponding
-         * note
-         *
-         * @private
-         * @param {string} device device name
-         * @param {number} time time stamp of the message
-         * @param {number} pitch MIDI pitch in [0, 127]
-         * @param {number} channel MIDI channel
-         */
-
-
     _noteOff(device, time, pitch, channel) {
       const midiData = this._getMidiLiveData();
-
       if (midiData.length === 0) {
-        // If we have to wait for the setState to process, try again
         setTimeout(() => this._noteOff(time, pitch), 10);
-      } // Go back to latest note with the same pitch and channel and add the end time
-
-
-      let index = midiData.length - 1; // TODO: if there are multiple instruments or channels, check also for those
-
-      while (midiData[index].pitch !== pitch || midiData[index].channel !== channel) {
-        index--;
-
-        if (index < 0) {
-          console.warn('[MidiInput] Did not find note-on event for note-off event!');
+      }
+      let index16 = midiData.length - 1;
+      while (midiData[index16].pitch !== pitch || midiData[index16].channel !== channel) {
+        index16--;
+        if (index16 < 0) {
+          console.warn("[MidiInput] Did not find note-on event for note-off event!");
           break;
         }
       }
-
-      if (index >= 0) {
-        // Note successfully found, update data
-        midiData[index].end = time / 1000;
-
+      if (index16 >= 0) {
+        midiData[index16].end = time / 1e3;
         this._setMidiLiveData(midiData);
-
         this._removeCurrentNote(pitch);
       }
     }
-
-  }
-
-  /**
-   * @module instruments/Drums
-   */
-
-  /**
-   * Drum parts
-   *
-   * @type {object}
-   */
-
-  const DRUM_PARTS = {
-    Agogo: 'DRUM_PARTS.Agogo',
-    Cabasa: 'DRUM_PARTS.Cabasa',
-    Castanets: 'DRUM_PARTS.Castanets',
-    China: 'DRUM_PARTS.China',
-    Claves: 'DRUM_PARTS.Claves',
-    Conga: 'DRUM_PARTS.Conga',
-    Cowbell: 'DRUM_PARTS.Cowbell',
-    Crash: 'DRUM_PARTS.Crash',
-    Cuica: 'DRUM_PARTS.Cuica',
-    Cymbal: 'DRUM_PARTS.Cymbal',
-    Golpe: 'DRUM_PARTS.Golpe',
-    Grancassa: 'DRUM_PARTS.Grancassa',
-    Guiro: 'DRUM_PARTS.Guiro',
-    Hand_Clap: 'DRUM_PARTS.Hand Clap',
-    Hand: 'DRUM_PARTS.Hand',
-    Hi_Hat: 'DRUM_PARTS.Hi Hat',
-    High_Floor_Tom: 'DRUM_PARTS.High Floor Tom',
-    High_Tom: 'DRUM_PARTS.High Tom',
-    Kick: 'DRUM_PARTS.Kick',
-    Low_Floor_Tom: 'DRUM_PARTS.Low Floor Tom',
-    Low_Tom: 'DRUM_PARTS.Low Tom',
-    Mid_Tom: 'DRUM_PARTS.Mid Tom',
-    Pedal_Hi_Hat: 'DRUM_PARTS.Pedal Hi Hat',
-    Ride: 'DRUM_PARTS.Ride',
-    Right_Maraca: 'DRUM_PARTS.Right Maraca',
-    Shaker: 'DRUM_PARTS.Shaker',
-    Snare: 'DRUM_PARTS.Snare',
-    Splash: 'DRUM_PARTS.Splash',
-    Surdo: 'DRUM_PARTS.Surdo',
-    Timbale: 'DRUM_PARTS.Timbale',
-    Tinkle_Bell: 'DRUM_PARTS.Tinkle Bell',
-    Triangle: 'DRUM_PARTS.Triangle',
-    Vibraslap: 'DRUM_PARTS.Vibraslap',
-    Whistle_high: 'DRUM_PARTS.Whistle high',
-    Whistle_low: 'DRUM_PARTS.Whistle low',
-    Woodblock_high: 'DRUM_PARTS.Woodblock high',
-    Woodblock_low: 'DRUM_PARTS.Woodblock low'
   };
-  /**
-   * Drum actions
-   *
-   * @type {object}
-   */
+  var MidiInputManager_default = MidiInputManager;
 
-  const DRUM_ACTIONS = {
-    choke: 'DRUM_ACTIONS.choke',
-    finger: 'DRUM_ACTIONS.finger',
-    hit: 'DRUM_ACTIONS.hit',
-    mute: 'DRUM_ACTIONS.mute',
-    return: 'DRUM_ACTIONS.return',
-    scrapReturn: 'DRUM_ACTIONS.scrapReturn',
-    sideStick: 'DRUM_ACTIONS.sideStick',
-    slap: 'DRUM_ACTIONS.slap'
+  // src/instruments/Drums.js
+  var Drums_exports = {};
+  __export(Drums_exports, {
+    DRUM_ACTIONS: () => DRUM_ACTIONS,
+    DRUM_PARTS: () => DRUM_PARTS,
+    DRUM_PARTS_ACTIONS: () => DRUM_PARTS_ACTIONS,
+    drumPitchReplacementMapMPS850: () => drumPitchReplacementMapMPS850,
+    generateDrumVariation: () => generateDrumVariation,
+    getPitch2PositionMap: () => getPitch2PositionMap,
+    simplifyDrumPitches: () => simplifyDrumPitches
+  });
+  var DRUM_PARTS = {
+    Agogo: "DRUM_PARTS.Agogo",
+    Cabasa: "DRUM_PARTS.Cabasa",
+    Castanets: "DRUM_PARTS.Castanets",
+    China: "DRUM_PARTS.China",
+    Claves: "DRUM_PARTS.Claves",
+    Conga: "DRUM_PARTS.Conga",
+    Cowbell: "DRUM_PARTS.Cowbell",
+    Crash: "DRUM_PARTS.Crash",
+    Cuica: "DRUM_PARTS.Cuica",
+    Cymbal: "DRUM_PARTS.Cymbal",
+    Golpe: "DRUM_PARTS.Golpe",
+    Grancassa: "DRUM_PARTS.Grancassa",
+    Guiro: "DRUM_PARTS.Guiro",
+    Hand_Clap: "DRUM_PARTS.Hand Clap",
+    Hand: "DRUM_PARTS.Hand",
+    Hi_Hat: "DRUM_PARTS.Hi Hat",
+    High_Floor_Tom: "DRUM_PARTS.High Floor Tom",
+    High_Tom: "DRUM_PARTS.High Tom",
+    Kick: "DRUM_PARTS.Kick",
+    Low_Floor_Tom: "DRUM_PARTS.Low Floor Tom",
+    Low_Tom: "DRUM_PARTS.Low Tom",
+    Mid_Tom: "DRUM_PARTS.Mid Tom",
+    Pedal_Hi_Hat: "DRUM_PARTS.Pedal Hi Hat",
+    Ride: "DRUM_PARTS.Ride",
+    Right_Maraca: "DRUM_PARTS.Right Maraca",
+    Shaker: "DRUM_PARTS.Shaker",
+    Snare: "DRUM_PARTS.Snare",
+    Splash: "DRUM_PARTS.Splash",
+    Surdo: "DRUM_PARTS.Surdo",
+    Timbale: "DRUM_PARTS.Timbale",
+    Tinkle_Bell: "DRUM_PARTS.Tinkle Bell",
+    Triangle: "DRUM_PARTS.Triangle",
+    Vibraslap: "DRUM_PARTS.Vibraslap",
+    Whistle_high: "DRUM_PARTS.Whistle high",
+    Whistle_low: "DRUM_PARTS.Whistle low",
+    Woodblock_high: "DRUM_PARTS.Woodblock high",
+    Woodblock_low: "DRUM_PARTS.Woodblock low"
   };
-  /**
-   * Drum parts and actions
-   *
-   * @todo still incomplete
-   * @type {object}
-   */
-
-  const DRUM_PARTS_ACTIONS = {
-    Agogo_high_hit: 'DRUM_PARTS_ACTIONS.Agogo high (hit)',
-    Agogo_low_hit: 'DRUM_PARTS_ACTIONS.Agogo low (hit)',
-    Cabasa_return: 'DRUM_PARTS_ACTIONS.Cabasa (return)',
-    Castanets_hit: 'DRUM_PARTS_ACTIONS.Castanets (hit)',
-    China_choke: 'DRUM_PARTS_ACTIONS.China (choke)',
-    Claves_hit: 'DRUM_PARTS_ACTIONS.Claves (hit)',
-    Conga_high_slap: 'DRUM_PARTS_ACTIONS.Conga high (slap)',
-    Conga_low_mute: 'DRUM_PARTS_ACTIONS.Conga low (mute)',
-    Cowbell_high_tip: 'DRUM_PARTS_ACTIONS.Cowbell high (tip)',
-    Crash_medium_choke: 'DRUM_PARTS_ACTIONS.Crash medium (choke)',
-    Cuica_mute: 'DRUM_PARTS_ACTIONS.Cuica (mute)',
-    Cuica_open: 'DRUM_PARTS_ACTIONS.Cuica (open)',
-    Cymbal_hit: 'DRUM_PARTS_ACTIONS.Cymbal (hit)',
-    Golpe_finger: 'DRUM_PARTS_ACTIONS.Golpe (finger)',
-    Grancassa_hit: 'DRUM_PARTS_ACTIONS.Grancassa (hit)',
-    Guiro_hit: 'DRUM_PARTS_ACTIONS.Guiro (hit)',
-    Guiro_scrap_return: 'DRUM_PARTS_ACTIONS.Guiro (scrap-return)',
-    Hand_Clap_hit: 'DRUM_PARTS_ACTIONS.Hand Clap (hit)',
-    Hand_slap: 'DRUM_PARTS_ACTIONS.Hand (slap)',
-    Hi_Hat_closed: 'DRUM_PARTS_ACTIONS.Hi-Hat (closed)',
-    Hi_Hat_open: 'DRUM_PARTS_ACTIONS.Hi-Hat (open)',
-    High_Floor_Tom_hit: 'DRUM_PARTS_ACTIONS.High Floor Tom (hit)',
-    High_Tom_hit: 'DRUM_PARTS_ACTIONS.High Tom (hit)',
-    Kick_hit: 'DRUM_PARTS_ACTIONS.Kick (hit)',
-    Low_Floor_Tom_hit: 'DRUM_PARTS_ACTIONS.Low Floor Tom (hit)',
-    Low_Tom_hit: 'DRUM_PARTS_ACTIONS.Low Tom (hit)',
-    Mid_Tom_hit: 'DRUM_PARTS_ACTIONS.Mid Tom (hit)',
-    Pedal_Hi_Hat_hit: 'DRUM_PARTS_ACTIONS.Pedal Hi-Hat (hit)',
-    Ride_choke: 'DRUM_PARTS_ACTIONS.Ride (choke)',
-    Right_Maraca_return: 'DRUM_PARTS_ACTIONS.Right Maraca (return)',
-    Shaker_return: 'DRUM_PARTS_ACTIONS.Shaker (return)',
-    Snare_hit: 'DRUM_PARTS_ACTIONS.Snare (hit)',
-    Snare_side_stick: 'DRUM_PARTS_ACTIONS.Snare (side stick)',
-    Splash_choke: 'DRUM_PARTS_ACTIONS.Splash (choke)',
-    Surdo_hit: 'DRUM_PARTS_ACTIONS.Surdo (hit)',
-    Surdo_mute: 'DRUM_PARTS_ACTIONS.Surdo (mute)',
-    Timbale_high_hit: 'DRUM_PARTS_ACTIONS.Timbale high (hit)',
-    Timbale_low_hit: 'DRUM_PARTS_ACTIONS.Timbale low (hit)',
-    Tinkle_Bell_hit: 'DRUM_PARTS_ACTIONS.Tinkle Bell (hit)',
-    Triangle_hit: 'DRUM_PARTS_ACTIONS.Triangle (hit)',
-    Triangle_mute: 'DRUM_PARTS_ACTIONS.Triangle (mute)',
-    Vibraslap_hit: 'DRUM_PARTS_ACTIONS.Vibraslap (hit)',
-    Whistle_high_hit: 'DRUM_PARTS_ACTIONS.Whistle high (hit)',
-    Whistle_low_hit: 'DRUM_PARTS_ACTIONS.Whistle low (hit)',
-    Woodblock_high_hit: 'DRUM_PARTS_ACTIONS.Woodblock high (hit)',
-    Woodblock_low_hit: 'DRUM_PARTS_ACTIONS.Woodblock low (hit)'
+  var DRUM_ACTIONS = {
+    choke: "DRUM_ACTIONS.choke",
+    finger: "DRUM_ACTIONS.finger",
+    hit: "DRUM_ACTIONS.hit",
+    mute: "DRUM_ACTIONS.mute",
+    return: "DRUM_ACTIONS.return",
+    scrapReturn: "DRUM_ACTIONS.scrapReturn",
+    sideStick: "DRUM_ACTIONS.sideStick",
+    slap: "DRUM_ACTIONS.slap"
   };
-  /**
-   * Pitches that are mapped onto themselves are included for other information.
-   * Millenium MPS-850 https://www.thomann.de/de/millenium_mps_850_e_drum_set.htm
-   *
-   * Notation info (line and shape of symbol) so drum notation can generate a lookup from this
-   * https://en.wikipedia.org/wiki/Percussion_notation#/media/File:Sibelius_drum_legend.png
-   * Lines start with 0 at the top above the top most horizontal notation line,
-   * using incremental integers for every possible position, i.e. for on and between lines
-   *
-   * Legend:
-   *  Map key: The orignal pitch from the input data
-   *  repPitch: Replacement pitch, used to simplify multiple zones into one
-   *  zone: Zone of the instrument this pitch comes from
-   *  order: visual order ranking of this intrumentin the UI (top-bottom or left-right)
-   *  line: y position in the drum notation (using integers for every possible position)
-   *  shape: Note shape in notation: triangle, <>, x, o, ostroke, xstroke
-   *  label: Short label for this intrument
-   *  name: Full name of this instrument
-   *
-   * @type {Map<number,object>}
-   */
-
-  const drumPitchReplacementMapMPS850 = new Map([// Crash 1
-  [49, {
-    repPitch: 49,
-    zone: 1,
-    order: 10,
-    line: -1,
-    shape: 'o',
-    label: 'CC1',
-    name: 'Crash Cymbal 1'
-  }], [55, {
-    repPitch: 49,
-    zone: 2,
-    order: 11,
-    line: -1,
-    shape: 'o',
-    label: 'CC1',
-    name: 'Crash Cymbal 1'
-  }], // Crash 2
-  [52, {
-    repPitch: 57,
-    zone: 1,
-    order: 20,
-    line: 0,
-    shape: 'o',
-    label: 'CC2',
-    name: 'Crash Cymbal 2'
-  }], [57, {
-    repPitch: 57,
-    zone: 2,
-    order: 21,
-    line: 0,
-    shape: 'o',
-    label: 'CC2',
-    name: 'Crash Cymbal 2'
-  }], // Hi-hat stick
-  [22, {
-    repPitch: 46,
-    zone: 1,
-    order: 30,
-    line: 0,
-    shape: '<>',
-    label: 'HHS',
-    name: 'Hi-Hat'
-  }], [26, {
-    repPitch: 46,
-    zone: 2,
-    order: 31,
-    line: 0,
-    shape: '<>',
-    label: 'HHS',
-    name: 'Hi-Hat'
-  }], [42, {
-    repPitch: 46,
-    zone: 3,
-    order: 32,
-    line: 0,
-    shape: '<>',
-    label: 'HHS',
-    name: 'Hi-Hat'
-  }], [46, {
-    repPitch: 46,
-    zone: 4,
-    order: 33,
-    line: 0,
-    shape: '<>',
-    label: 'HHS',
-    name: 'Hi-Hat'
-  }], // Hi-hat pedal
-  [44, {
-    repPitch: 44,
-    zone: 1,
-    order: 40,
-    line: 9,
-    shape: 'o',
-    label: 'HHP',
-    name: 'Hi-Hat Pedal'
-  }], // Ride
-  [51, {
-    repPitch: 51,
-    zone: 1,
-    order: 50,
-    line: 1,
-    shape: 'x',
-    label: 'Rd',
-    name: 'Ride Cymbal'
-  }], [53, {
-    repPitch: 51,
-    zone: 2,
-    order: 51,
-    line: 1,
-    shape: 'x',
-    label: 'Rd',
-    name: 'Ride Cymbal'
-  }], [59, {
-    repPitch: 51,
-    zone: 3,
-    order: 52,
-    line: 1,
-    shape: 'x',
-    label: 'Rd',
-    name: 'Ride Cymbal'
-  }], // Snare
-  [38, {
-    repPitch: 38,
-    zone: 1,
-    order: 60,
-    line: 4,
-    shape: 'o',
-    label: 'SN',
-    name: 'Snare'
-  }], [40, {
-    repPitch: 38,
-    zone: 2,
-    order: 61,
-    line: 4,
-    shape: 'o',
-    label: 'SN',
-    name: 'Snare'
-  }], // Tom 1
-  [48, {
-    repPitch: 48,
-    zone: 1,
-    order: 90,
-    line: 2,
-    shape: 'o',
-    label: 'T1',
-    name: 'Tom 1'
-  }], [50, {
-    repPitch: 48,
-    zone: 2,
-    order: 91,
-    line: 2,
-    shape: 'o',
-    label: 'T1',
-    name: 'Tom 1'
-  }], // Tom 2
-  [45, {
-    repPitch: 45,
-    zone: 1,
-    order: 100,
-    line: 3,
-    shape: 'o',
-    label: 'T2',
-    name: 'Tom 2'
-  }], [47, {
-    repPitch: 45,
-    zone: 2,
-    order: 101,
-    line: 3,
-    shape: 'o',
-    label: 'T2',
-    name: 'Tom 2'
-  }], // Stand tom 1
-  [43, {
-    repPitch: 43,
-    zone: 1,
-    order: 70,
-    line: 5,
-    shape: 'o',
-    label: 'ST1',
-    name: 'Stand Tom 1'
-  }], [58, {
-    repPitch: 43,
-    zone: 2,
-    order: 71,
-    line: 5,
-    shape: 'o',
-    label: 'ST1',
-    name: 'Stand Tom 1'
-  }], // Stand tom 2
-  [39, {
-    repPitch: 41,
-    zone: 1,
-    order: 80,
-    line: 6,
-    shape: 'o',
-    label: 'ST2',
-    name: 'Stand Tom 2'
-  }], [41, {
-    repPitch: 41,
-    zone: 2,
-    order: 81,
-    line: 6,
-    shape: 'o',
-    label: 'ST2',
-    name: 'Stand Tom 2'
-  }], // Bass drum
-  [35, {
-    repPitch: 36,
-    zone: 1,
-    order: 110,
-    line: 8,
-    shape: 'o',
-    label: 'BD',
-    name: 'Bass Drum'
-  }], [36, {
-    repPitch: 36,
-    zone: 2,
-    order: 111,
-    line: 8,
-    shape: 'o',
-    label: 'BD',
-    name: 'Bass Drum'
-  }]]);
-  /**
-   * Generates a variation of an array of notes by adding, removing or changing notes
-   *
-   * @param {Note[]} data array of notes
-   * @param {number} deviation width of the Gauss kernel
-   * @param {number} pAdd probability of adding a note after each note
-   * @param {number} pRemove probability of removing each note
-   * @returns {Note[]} variated Note array
-   */
-
-  function generateDrumVariation(data, deviation = 1, pAdd = 0.1, pRemove = 0.1) {
-    // Only use pitches that occur in the GT data
-    const usedPitches = new Set();
-
-    for (const note of data) {
-      usedPitches.add(note.pitch);
+  var DRUM_PARTS_ACTIONS = {
+    Agogo_high_hit: "DRUM_PARTS_ACTIONS.Agogo high (hit)",
+    Agogo_low_hit: "DRUM_PARTS_ACTIONS.Agogo low (hit)",
+    Cabasa_return: "DRUM_PARTS_ACTIONS.Cabasa (return)",
+    Castanets_hit: "DRUM_PARTS_ACTIONS.Castanets (hit)",
+    China_choke: "DRUM_PARTS_ACTIONS.China (choke)",
+    Claves_hit: "DRUM_PARTS_ACTIONS.Claves (hit)",
+    Conga_high_slap: "DRUM_PARTS_ACTIONS.Conga high (slap)",
+    Conga_low_mute: "DRUM_PARTS_ACTIONS.Conga low (mute)",
+    Cowbell_high_tip: "DRUM_PARTS_ACTIONS.Cowbell high (tip)",
+    Crash_medium_choke: "DRUM_PARTS_ACTIONS.Crash medium (choke)",
+    Cuica_mute: "DRUM_PARTS_ACTIONS.Cuica (mute)",
+    Cuica_open: "DRUM_PARTS_ACTIONS.Cuica (open)",
+    Cymbal_hit: "DRUM_PARTS_ACTIONS.Cymbal (hit)",
+    Golpe_finger: "DRUM_PARTS_ACTIONS.Golpe (finger)",
+    Grancassa_hit: "DRUM_PARTS_ACTIONS.Grancassa (hit)",
+    Guiro_hit: "DRUM_PARTS_ACTIONS.Guiro (hit)",
+    Guiro_scrap_return: "DRUM_PARTS_ACTIONS.Guiro (scrap-return)",
+    Hand_Clap_hit: "DRUM_PARTS_ACTIONS.Hand Clap (hit)",
+    Hand_slap: "DRUM_PARTS_ACTIONS.Hand (slap)",
+    Hi_Hat_closed: "DRUM_PARTS_ACTIONS.Hi-Hat (closed)",
+    Hi_Hat_open: "DRUM_PARTS_ACTIONS.Hi-Hat (open)",
+    High_Floor_Tom_hit: "DRUM_PARTS_ACTIONS.High Floor Tom (hit)",
+    High_Tom_hit: "DRUM_PARTS_ACTIONS.High Tom (hit)",
+    Kick_hit: "DRUM_PARTS_ACTIONS.Kick (hit)",
+    Low_Floor_Tom_hit: "DRUM_PARTS_ACTIONS.Low Floor Tom (hit)",
+    Low_Tom_hit: "DRUM_PARTS_ACTIONS.Low Tom (hit)",
+    Mid_Tom_hit: "DRUM_PARTS_ACTIONS.Mid Tom (hit)",
+    Pedal_Hi_Hat_hit: "DRUM_PARTS_ACTIONS.Pedal Hi-Hat (hit)",
+    Ride_choke: "DRUM_PARTS_ACTIONS.Ride (choke)",
+    Right_Maraca_return: "DRUM_PARTS_ACTIONS.Right Maraca (return)",
+    Shaker_return: "DRUM_PARTS_ACTIONS.Shaker (return)",
+    Snare_hit: "DRUM_PARTS_ACTIONS.Snare (hit)",
+    Snare_side_stick: "DRUM_PARTS_ACTIONS.Snare (side stick)",
+    Splash_choke: "DRUM_PARTS_ACTIONS.Splash (choke)",
+    Surdo_hit: "DRUM_PARTS_ACTIONS.Surdo (hit)",
+    Surdo_mute: "DRUM_PARTS_ACTIONS.Surdo (mute)",
+    Timbale_high_hit: "DRUM_PARTS_ACTIONS.Timbale high (hit)",
+    Timbale_low_hit: "DRUM_PARTS_ACTIONS.Timbale low (hit)",
+    Tinkle_Bell_hit: "DRUM_PARTS_ACTIONS.Tinkle Bell (hit)",
+    Triangle_hit: "DRUM_PARTS_ACTIONS.Triangle (hit)",
+    Triangle_mute: "DRUM_PARTS_ACTIONS.Triangle (mute)",
+    Vibraslap_hit: "DRUM_PARTS_ACTIONS.Vibraslap (hit)",
+    Whistle_high_hit: "DRUM_PARTS_ACTIONS.Whistle high (hit)",
+    Whistle_low_hit: "DRUM_PARTS_ACTIONS.Whistle low (hit)",
+    Woodblock_high_hit: "DRUM_PARTS_ACTIONS.Woodblock high (hit)",
+    Woodblock_low_hit: "DRUM_PARTS_ACTIONS.Woodblock low (hit)"
+  };
+  var drumPitchReplacementMapMPS850 = /* @__PURE__ */ new Map([
+    [49, { repPitch: 49, zone: 1, order: 10, line: -1, shape: "o", label: "CC1", name: "Crash Cymbal 1" }],
+    [55, { repPitch: 49, zone: 2, order: 11, line: -1, shape: "o", label: "CC1", name: "Crash Cymbal 1" }],
+    [52, { repPitch: 57, zone: 1, order: 20, line: 0, shape: "o", label: "CC2", name: "Crash Cymbal 2" }],
+    [57, { repPitch: 57, zone: 2, order: 21, line: 0, shape: "o", label: "CC2", name: "Crash Cymbal 2" }],
+    [22, { repPitch: 46, zone: 1, order: 30, line: 0, shape: "<>", label: "HHS", name: "Hi-Hat" }],
+    [26, { repPitch: 46, zone: 2, order: 31, line: 0, shape: "<>", label: "HHS", name: "Hi-Hat" }],
+    [42, { repPitch: 46, zone: 3, order: 32, line: 0, shape: "<>", label: "HHS", name: "Hi-Hat" }],
+    [46, { repPitch: 46, zone: 4, order: 33, line: 0, shape: "<>", label: "HHS", name: "Hi-Hat" }],
+    [44, { repPitch: 44, zone: 1, order: 40, line: 9, shape: "o", label: "HHP", name: "Hi-Hat Pedal" }],
+    [51, { repPitch: 51, zone: 1, order: 50, line: 1, shape: "x", label: "Rd", name: "Ride Cymbal" }],
+    [53, { repPitch: 51, zone: 2, order: 51, line: 1, shape: "x", label: "Rd", name: "Ride Cymbal" }],
+    [59, { repPitch: 51, zone: 3, order: 52, line: 1, shape: "x", label: "Rd", name: "Ride Cymbal" }],
+    [38, { repPitch: 38, zone: 1, order: 60, line: 4, shape: "o", label: "SN", name: "Snare" }],
+    [40, { repPitch: 38, zone: 2, order: 61, line: 4, shape: "o", label: "SN", name: "Snare" }],
+    [48, { repPitch: 48, zone: 1, order: 90, line: 2, shape: "o", label: "T1", name: "Tom 1" }],
+    [50, { repPitch: 48, zone: 2, order: 91, line: 2, shape: "o", label: "T1", name: "Tom 1" }],
+    [45, { repPitch: 45, zone: 1, order: 100, line: 3, shape: "o", label: "T2", name: "Tom 2" }],
+    [47, { repPitch: 45, zone: 2, order: 101, line: 3, shape: "o", label: "T2", name: "Tom 2" }],
+    [43, { repPitch: 43, zone: 1, order: 70, line: 5, shape: "o", label: "ST1", name: "Stand Tom 1" }],
+    [58, { repPitch: 43, zone: 2, order: 71, line: 5, shape: "o", label: "ST1", name: "Stand Tom 1" }],
+    [39, { repPitch: 41, zone: 1, order: 80, line: 6, shape: "o", label: "ST2", name: "Stand Tom 2" }],
+    [41, { repPitch: 41, zone: 2, order: 81, line: 6, shape: "o", label: "ST2", name: "Stand Tom 2" }],
+    [35, { repPitch: 36, zone: 1, order: 110, line: 8, shape: "o", label: "BD", name: "Bass Drum" }],
+    [36, { repPitch: 36, zone: 2, order: 111, line: 8, shape: "o", label: "BD", name: "Bass Drum" }]
+  ]);
+  function generateDrumVariation(data, deviation2 = 1, pAdd = 0.1, pRemove = 0.1) {
+    const usedPitches = /* @__PURE__ */ new Set();
+    for (const note2 of data) {
+      usedPitches.add(note2.pitch);
     }
-
-    const pitches = [...usedPitches]; // Create variation by adding, removing, and shifting notes
-
-    const randVelocity = randomInt(15, 128);
-    const randTime = randomNormal(0, deviation);
+    const pitches = [...usedPitches];
+    const randVelocity = int_default(15, 128);
+    const randTime = normal_default(0, deviation2);
     const variation = [];
-
-    for (const note of data) {
-      // Add and remove notes at random
+    for (const note2 of data) {
       if (randFloat(0, 1) < pAdd) {
-        // Add another note
-        const start = note.start + randFloat(0, 1);
-        const end = start + randFloat(0, 1);
+        const start2 = note2.start + randFloat(0, 1);
+        const end = start2 + randFloat(0, 1);
         const velocity = randVelocity();
         const pitch = choose(pitches);
-        variation.push(new Note(pitch, start, velocity, 0, end));
+        variation.push(new Note_default(pitch, start2, velocity, 0, end));
       }
-
-      if (randFloat(0, 1) < pRemove) ; else {
-        // Shift timings at random
-        const start = note.start + randTime();
-        const end = note.end + randTime(); // Get new note
-
-        const newNote = Note.from(note);
-        newNote.start = Math.min(start, end);
-        newNote.end = Math.max(start, end);
+      if (randFloat(0, 1) < pRemove) {
+      } else {
+        const start2 = note2.start + randTime();
+        const end = note2.end + randTime();
+        const newNote = Note_default.from(note2);
+        newNote.start = Math.min(start2, end);
+        newNote.end = Math.max(start2, end);
         variation.push(newNote);
       }
-    } // Sort notes by start just in case
-
-
+    }
     variation.sort((a, b) => a.start - b.start);
     return variation;
   }
-  /**
-   * Replaces pitches based on replacementMap
-   *
-   * @param {Note[]} notes notes
-   * @param {Map} replacementMap a map pitch->replacementPitch
-   * @returns {Notes[]} notes with replaced pitches
-   * @throws {'No replacement map given!'} when replacementMap is missing
-   */
-
   function simplifyDrumPitches(notes, replacementMap) {
     if (!replacementMap || !(replacementMap instanceof Map)) {
-      throw new Error('No replacement map given!');
+      throw new Error("No replacement map given!");
     }
-
-    const errors = new Set();
-    const simplified = notes.map(note => {
-      const oldPitch = note.pitch;
+    const errors = /* @__PURE__ */ new Set();
+    const simplified = notes.map((note2) => {
+      const oldPitch = note2.pitch;
       let newPitch = oldPitch;
-
       if (!replacementMap.has(oldPitch)) {
         errors.add(oldPitch);
       } else {
         newPitch = replacementMap.get(oldPitch).repPitch;
       }
-
-      const newNote = Note.from({ ...note,
-        pitch: newPitch
-      });
+      const newNote = Note_default.from(__spreadProps(__spreadValues({}, note2), { pitch: newPitch }));
       return newNote;
-    }); // TODO: return errors, do not log! also easier to test
-    // if (errors.size > 0) {
-    //     console.warn(`Cannot replace all pitches, replacementMap misses entry for these pitches:`);
-    //     console.log(Array.from(errors));
-    // }
-
-    return simplified; // return { simplified, errors };
+    });
+    return simplified;
   }
-  /**
-   * Returns a Map:pitch->yPosIndex for views to lookup which row
-   * a pitch has to be drawn in
-   *
-   * @param {Map} replacementMap a pitch replacement map
-   * @returns {Map} Map:pitch->yPosIndex
-   */
-
   function getPitch2PositionMap(replacementMap) {
-    const result = new Map();
-    const uniqeRows = [...group([...replacementMap], d => d[1].repPitch)];
+    const result = /* @__PURE__ */ new Map();
+    const uniqeRows = [...group([...replacementMap], (d) => d[1].repPitch)];
     uniqeRows.sort((a, b) => a[1][0][1].order - b[1][0][1].order);
-
-    for (const [index, d] of uniqeRows.entries()) {
-      result.set(d[0], index);
+    for (const [index16, d] of uniqeRows.entries()) {
+      result.set(d[0], index16);
     }
-
     return result;
   }
 
-  var Drums = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    DRUM_PARTS: DRUM_PARTS,
-    DRUM_ACTIONS: DRUM_ACTIONS,
-    DRUM_PARTS_ACTIONS: DRUM_PARTS_ACTIONS,
-    drumPitchReplacementMapMPS850: drumPitchReplacementMapMPS850,
-    generateDrumVariation: generateDrumVariation,
-    simplifyDrumPitches: simplifyDrumPitches,
-    getPitch2PositionMap: getPitch2PositionMap
+  // src/instruments/Guitar.js
+  var Guitar_exports = {};
+  __export(Guitar_exports, {
+    StringedTuning: () => StringedTuning,
+    fretboardPositionsFromMidi: () => fretboardPositionsFromMidi,
+    generateExampleData: () => generateExampleData,
+    getFretboardPositionsFromNoteName: () => getFretboardPositionsFromNoteName,
+    getFretboardPositionsFromPitch: () => getFretboardPositionsFromPitch,
+    getNoteInfoFromFretboardPos: () => getNoteInfoFromFretboardPos,
+    getPitchFromFretboardPos: () => getPitchFromFretboardPos,
+    getTuningFromPitches: () => getTuningFromPitches,
+    getTuningPitchRange: () => getTuningPitchRange,
+    guitarNoteFromNote: () => guitarNoteFromNote,
+    stringColors: () => stringColors,
+    stringedTunings: () => stringedTunings
   });
-
-  /**
-   * @module instruments/Guitar
-   */
-
-  /**
-   * Represents a tuning of a fretted string instrument.
-   */
-
-  class StringedTuning {
-    /**
-       * Represents a tuning of a fretted string instrument.
-       *
-       * @param {string} name name
-       * @param {string[]} notes array of notes, e.g. ['E2', 'A2', 'D3', ...]
-       */
+  var StringedTuning = class {
     constructor(name, notes) {
       this.name = name;
       this.notes = notes;
-      this.short = notes.join(' ');
-      this.pitches = notes.map(note => getMidiNoteByLabel(note).pitch);
+      this.short = notes.join(" ");
+      this.pitches = notes.map((note2) => getMidiNoteByLabel(note2).pitch);
       this.stringCount = notes.length;
     }
-
-  }
-  /**
-   * Maps from instrument to string number to list of tunings.
-   * Defaults are at the top.
-   *
-   * @todo add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
-   * @todo replace arrays by maps? tuning name - tuning
-   * @type {Map<string,Map<number,StringedTuning>>}
-   * @example
-   *      stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
-   */
-
-  const stringedTunings = new Map([['Guitar', new Map([[6, [new StringedTuning('E stand.', ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop D', ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop C', ['C2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1/2 down', ['D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1 1/2 down', ['C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']), new StringedTuning('2 down', ['C2', 'F2', 'A#2', 'D#3', 'G3', 'C4']), new StringedTuning('DADGAG', ['D2', 'A2', 'D3', 'G3', 'A3', 'D4'])]], [7, [new StringedTuning('B stand.', ['B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop A', ['A1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('1/2 down', ['A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1 1/2 down', ['G#1', 'C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']), new StringedTuning('2 down', ['G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4'])]], [8, [new StringedTuning('F# stand.', ['F#1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('Drop E', ['E1', 'B1', 'E2', 'A2', 'D3', 'G3', 'B3', 'E4']), new StringedTuning('1/2 down', ['F1', 'A#1', 'D#2', 'G#2', 'C#3', 'F#3', 'A#3', 'D#4']), new StringedTuning('1 down', ['E1', 'A1', 'D2', 'G2', 'C3', 'F3', 'A3', 'D4']), new StringedTuning('1 1/2 down', ['D#1', 'G#1', 'C#2', 'F#2', 'B2', 'E3', 'G#3', 'C#4']), new StringedTuning('2 down', ['D1', 'G1', 'C2', 'F2', 'A#2', 'D#3', 'G3', 'C4'])]]])], ['Bass', new Map([[4, [new StringedTuning('E stand.', ['E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop D', ['D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['D1', 'G1', 'C2', 'F2']), new StringedTuning('1 1/2 down', ['C#1', 'F#1', 'B1', 'E2']), new StringedTuning('2 down', ['C1', 'F1', 'A#1', 'D#2'])]], [5, [new StringedTuning('B stand.', ['B0', 'E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop A', ['A0', 'D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['A#0', 'D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['A0', 'D1', 'G1', 'C2', 'F2']), new StringedTuning('1 1/2 down', ['G#0', 'C#1', 'F#1', 'B1', 'E2']), new StringedTuning('2 down', ['G0', 'C1', 'F1', 'A#1', 'D#2'])]], [6, [new StringedTuning('F# stand.', ['F#0', 'B0', 'E1', 'A1', 'D2', 'G2']), new StringedTuning('Drop E', ['E0', 'A0', 'D1', 'A1', 'D2', 'G2']), new StringedTuning('1/2 down', ['F0', 'A#0', 'D#1', 'G#1', 'C#2', 'F#2']), new StringedTuning('1 down', ['E1', 'A0', 'D1', 'G1', 'C2', 'F2']), new StringedTuning('1 1/2 down', ['D#0', 'G#0', 'C#1', 'F#1', 'B1', 'E2']), new StringedTuning('2 down', ['D0', 'G0', 'C1', 'F1', 'A#1', 'D#2'])]]])], ['Ukulele', new Map([[4, [new StringedTuning('Hawaii', ['G4', 'C4', 'E4', 'A4']), new StringedTuning('Low G', ['G3', 'C4', 'E4', 'A4']), new StringedTuning('D-tuning', ['A4', 'D4', 'F#4', 'B4']), new StringedTuning('Canadian', ['A3', 'D4', 'F#4', 'B4']), new StringedTuning('Bariton', ['D3', 'G3', 'B3', 'E4'])]]])]]);
-  /**
-   * For Notes that have a guitar string encoded in their channel, this function
-   * allows to convert them to a GuitarNote.
-   *
-   * @param {Note} note a Note that has the guitar string stored in its channel
-   *      e.g. 0 to 5 for a six string
-   * @param {StringedTuning} tuning tuning
-   * @returns {GuitarNote} a GuitarNote
-   */
-
-  function guitarNoteFromNote(note, tuning) {
-    const string = note.channel;
+  };
+  var stringedTunings = /* @__PURE__ */ new Map([
+    ["Guitar", /* @__PURE__ */ new Map([
+      [6, [
+        new StringedTuning("E stand.", ["E2", "A2", "D3", "G3", "B3", "E4"]),
+        new StringedTuning("Drop D", ["D2", "A2", "D3", "G3", "B3", "E4"]),
+        new StringedTuning("Drop C", ["C2", "G2", "C3", "F3", "A3", "D4"]),
+        new StringedTuning("1/2 down", ["D#2", "G#2", "C#3", "F#3", "A#3", "D#4"]),
+        new StringedTuning("1 down", ["D2", "G2", "C3", "F3", "A3", "D4"]),
+        new StringedTuning("1 1/2 down", ["C#2", "F#2", "B2", "E3", "G#3", "C#4"]),
+        new StringedTuning("2 down", ["C2", "F2", "A#2", "D#3", "G3", "C4"]),
+        new StringedTuning("DADGAG", ["D2", "A2", "D3", "G3", "A3", "D4"])
+      ]],
+      [7, [
+        new StringedTuning("B stand.", ["B1", "E2", "A2", "D3", "G3", "B3", "E4"]),
+        new StringedTuning("Drop A", ["A1", "E2", "A2", "D3", "G3", "B3", "E4"]),
+        new StringedTuning("1/2 down", ["A#1", "D#2", "G#2", "C#3", "F#3", "A#3", "D#4"]),
+        new StringedTuning("1 down", ["A1", "D2", "G2", "C3", "F3", "A3", "D4"]),
+        new StringedTuning("1 1/2 down", ["G#1", "C#2", "F#2", "B2", "E3", "G#3", "C#4"]),
+        new StringedTuning("2 down", ["G1", "C2", "F2", "A#2", "D#3", "G3", "C4"])
+      ]],
+      [8, [
+        new StringedTuning("F# stand.", ["F#1", "B1", "E2", "A2", "D3", "G3", "B3", "E4"]),
+        new StringedTuning("Drop E", ["E1", "B1", "E2", "A2", "D3", "G3", "B3", "E4"]),
+        new StringedTuning("1/2 down", ["F1", "A#1", "D#2", "G#2", "C#3", "F#3", "A#3", "D#4"]),
+        new StringedTuning("1 down", ["E1", "A1", "D2", "G2", "C3", "F3", "A3", "D4"]),
+        new StringedTuning("1 1/2 down", ["D#1", "G#1", "C#2", "F#2", "B2", "E3", "G#3", "C#4"]),
+        new StringedTuning("2 down", ["D1", "G1", "C2", "F2", "A#2", "D#3", "G3", "C4"])
+      ]]
+    ])],
+    ["Bass", /* @__PURE__ */ new Map([
+      [4, [
+        new StringedTuning("E stand.", ["E1", "A1", "D2", "G2"]),
+        new StringedTuning("Drop D", ["D1", "A1", "D2", "G2"]),
+        new StringedTuning("1/2 down", ["D#1", "G#1", "C#2", "F#2"]),
+        new StringedTuning("1 down", ["D1", "G1", "C2", "F2"]),
+        new StringedTuning("1 1/2 down", ["C#1", "F#1", "B1", "E2"]),
+        new StringedTuning("2 down", ["C1", "F1", "A#1", "D#2"])
+      ]],
+      [5, [
+        new StringedTuning("B stand.", ["B0", "E1", "A1", "D2", "G2"]),
+        new StringedTuning("Drop A", ["A0", "D1", "A1", "D2", "G2"]),
+        new StringedTuning("1/2 down", ["A#0", "D#1", "G#1", "C#2", "F#2"]),
+        new StringedTuning("1 down", ["A0", "D1", "G1", "C2", "F2"]),
+        new StringedTuning("1 1/2 down", ["G#0", "C#1", "F#1", "B1", "E2"]),
+        new StringedTuning("2 down", ["G0", "C1", "F1", "A#1", "D#2"])
+      ]],
+      [6, [
+        new StringedTuning("F# stand.", ["F#0", "B0", "E1", "A1", "D2", "G2"]),
+        new StringedTuning("Drop E", ["E0", "A0", "D1", "A1", "D2", "G2"]),
+        new StringedTuning("1/2 down", ["F0", "A#0", "D#1", "G#1", "C#2", "F#2"]),
+        new StringedTuning("1 down", ["E1", "A0", "D1", "G1", "C2", "F2"]),
+        new StringedTuning("1 1/2 down", ["D#0", "G#0", "C#1", "F#1", "B1", "E2"]),
+        new StringedTuning("2 down", ["D0", "G0", "C1", "F1", "A#1", "D#2"])
+      ]]
+    ])],
+    ["Ukulele", /* @__PURE__ */ new Map([
+      [4, [
+        new StringedTuning("Hawaii", ["G4", "C4", "E4", "A4"]),
+        new StringedTuning("Low G", ["G3", "C4", "E4", "A4"]),
+        new StringedTuning("D-tuning", ["A4", "D4", "F#4", "B4"]),
+        new StringedTuning("Canadian", ["A3", "D4", "F#4", "B4"]),
+        new StringedTuning("Bariton", ["D3", "G3", "B3", "E4"])
+      ]]
+    ])]
+  ]);
+  function guitarNoteFromNote(note2, tuning) {
+    const string = note2.channel;
     const reversedString = tuning.stringCount - string - 1;
-    const fret = note.pitch - tuning.pitches[reversedString];
-    return GuitarNote.fromNote(note, string, fret);
+    const fret = note2.pitch - tuning.pitches[reversedString];
+    return GuitarNote_default.fromNote(note2, string, fret);
   }
-  /**
-   * Returns a tuning with the specified pitches or null if none found.
-   *
-   * @param {number[]} pitches pitches of the tuning, same order as in
-   *      Guitar.js' stringedTunings, i.e. low to high notes
-   * @returns {StringedTuning|null} the found tuning or null
-   */
-
   function getTuningFromPitches(pitches) {
     const stringCount = pitches.length;
-
     for (const stringCountMap of stringedTunings.values()) {
       if (stringCountMap.has(stringCount)) {
         const tunings = stringCountMap.get(stringCount);
-
         for (const t of tunings) {
           if (arrayShallowEquals(t.pitches, pitches)) {
             return t;
@@ -11323,417 +7597,239 @@
         }
       }
     }
-
     return null;
   }
-  /**
-   * Returns the pitch range of a tuning, given the number of frets.
-   *
-   * @param {StringedTuning} tuning tuning
-   * @param {number} fretCount number of frets the instrument has (default: 24)
-   * @returns {number[]} [minPitch, maxPitch]
-   */
-
   function getTuningPitchRange(tuning, fretCount = 24) {
-    // const openExtent = extent(tuning.pitches);
     const openMax = tuning.pitches[tuning.stringCount - 1];
     const openMin = tuning.pitches[0];
     return [openMin, openMax + fretCount];
   }
-  /**
-   * Colors for guitar strings, acces via stringColor[string]
-   * where string in [1, 8].
-   *
-   * @type {string[]}
-   */
-
-  const stringColors = ['#888', '#d122e9', '#31eb1c', '#f37c14', '#10edfc', '#ffeb09', '#ff210d', 'silver', 'gold'];
-  /**
-   * Returns the pitch of a note at a given fretboard position.
-   *
-   * @param {number} string string
-   * @param {number} fret fret
-   * @param {StringedTuning} tuning tuning
-   * @returns {number} pitch
-   */
-
+  var stringColors = [
+    "#888",
+    "#d122e9",
+    "#31eb1c",
+    "#f37c14",
+    "#10edfc",
+    "#ffeb09",
+    "#ff210d",
+    "silver",
+    "gold"
+  ];
   function getPitchFromFretboardPos(string, fret, tuning) {
-    // Order is reversed, since tunings are named from bass to treble
-    // but strings are numbered the other direction...
     const reversedString = tuning.stringCount - string + 1;
     const openPitch = tuning.pitches[reversedString - 1];
     return openPitch + fret;
   }
-  /**
-   * Returns MIDI attributes of a note at a given fretboard position, e.g. C#
-   *
-   * @param {number} string string
-   * @param {number} fret fret
-   * @param {StringedTuning} tuning tuning
-   * @returns {object} note info, e.g. { pitch: 69, name: 'A', octave: 4, label: 'A4', frequency: 440.000 }
-   */
-
   function getNoteInfoFromFretboardPos(string, fret, tuning) {
     const pitch = getPitchFromFretboardPos(string, fret, tuning);
     return getMidiNoteByNr(pitch);
   }
-  /**
-   * Finds all fretboard positions with this exact pitch.
-   *
-   * @param {number} pitch MIDI pitch
-   * @param {StringedTuning} tuning tuning
-   * @param {number} fretCount number of frets the instrument has
-   * @returns {object[]} positions
-   */
-
   function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
     const positions = [];
     const stringCount = tuning.stringCount;
-
     for (let string = 0; string < stringCount; string++) {
-      const openPitch = tuning.pitches[string]; // Rule out strings where pitch is lower than open string
-
+      const openPitch = tuning.pitches[string];
       if (pitch < openPitch) {
         continue;
-      } // Rule out strings where pitch is higher than highest fret
-
-
+      }
       if (pitch > openPitch + fretCount) {
         continue;
       }
-
       positions.push({
-        // Convert so string 1 is treble
         string: stringCount - string,
         fret: pitch - openPitch
       });
     }
-
     return positions;
   }
-  /**
-   * Finds all fretboard positions with this note in all octaves.
-   *
-   * @param {string} name note name, e.g. 'C#'
-   * @param {StringedTuning} tuning tuning
-   * @param {number} fretCount number of frets the instrument has
-   * @returns {object[]} positions
-   */
-
   function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) {
-    const n = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
+    const n = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     if (!n.includes(name)) {
       return null;
     }
-
     const positions = [];
     const lowestPitch = n.indexOf(name);
     const stringCount = tuning.stringCount;
-
     for (let string = 0; string < stringCount; string++) {
-      // First fret where this note appears
       const openPitch = tuning.pitches[string];
       let fret = lowestPitch - openPitch % 12;
-
       if (fret < 0) {
         fret += 12;
       }
-
       while (fret <= fretCount) {
         positions.push({
-          // Convert so string 1 is treble
           string: stringCount - string,
           fret
-        }); // Go to next octave
-
+        });
         fret += 12;
       }
     }
-
     return positions;
   }
-  /**
-   * Generates example MIDI-like data (preprocessed MIDI).
-   *
-   * @param {number} startTime start tick
-   * @param {number} count number of notes to generate
-   * @param {StringedTuning} tuning tuning
-   * @returns {GuitarNote[]} notes
-   */
-
   function generateExampleData(startTime = 0, count = 50, tuning) {
     let currentTime = startTime;
-    return Array.from({
-      length: count
-    }).map(() => {
-      const start = currentTime + randFloat(0, 1);
-      currentTime = start + randFloat(0, 1);
-      const string = randomInt(1, 7)();
-      const fret = randomInt(0, 25)();
+    return Array.from({ length: count }).map(() => {
+      const start2 = currentTime + randFloat(0, 1);
+      currentTime = start2 + randFloat(0, 1);
+      const string = int_default(1, 7)();
+      const fret = int_default(0, 25)();
       const pitch = getPitchFromFretboardPos(string, fret, tuning);
-      const velocity = randomInt(15, 127)();
-      return new GuitarNote(pitch, start, velocity, string, currentTime, string, fret);
+      const velocity = int_default(15, 127)();
+      return new GuitarNote_default(pitch, start2, velocity, string, currentTime, string, fret);
     });
   }
-  /**
-   * Estimates the fretboard position from MIDI notes
-   *
-   * @todo does not work well yet
-   * @param {Note[]} notes notes with only MIDI information
-   * @param {StringedTuning} tuning tuning
-   * @param {number} fretCount number of frets the instrument has
-   * @returns {GuitarNote[]} GuitarNotes with fretboard positions
-   */
-
   function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
     if (!notes || notes.length === 0) {
       return [];
     }
-
     if (!tuning || !tuning.pitches) {
-      console.warn('Invalid tuning parameter!');
+      console.warn("Invalid tuning parameter!");
       return [];
-    } // Sort notes that cannot be played out in advance for better performance
-
-
+    }
     const [minPitch, maxPitch] = getTuningPitchRange(tuning, fretCount);
     const possibleNotes = [];
     const errorPitches = [];
-
-    for (const note of notes) {
-      if (note.pitch < minPitch || note.pitch > maxPitch) {
-        errorPitches.push(note.pitch);
+    for (const note2 of notes) {
+      if (note2.pitch < minPitch || note2.pitch > maxPitch) {
+        errorPitches.push(note2.pitch);
       } else {
-        possibleNotes.push(note);
+        possibleNotes.push(note2);
       }
     }
-
     const result = [];
-
-    for (const note of possibleNotes) {
-      const positions = getFretboardPositionsFromPitch(note.pitch, tuning, 24); // Choose best position
-      // TODO: improve this to make it easier to play, take closest postion to prior one
-
+    for (const note2 of possibleNotes) {
+      const positions = getFretboardPositionsFromPitch(note2.pitch, tuning, 24);
       let bestPos = positions[0];
-
       for (const pos of positions) {
         if (pos.fret < bestPos.fret) {
           bestPos = pos;
         }
       }
-
-      const {
-        string,
-        fret
-      } = bestPos;
-      result.push(GuitarNote.fromNote(note, string, fret));
-    } // Give advice on transposing for better results
-
-
+      const { string, fret } = bestPos;
+      result.push(GuitarNote_default.fromNote(note2, string, fret));
+    }
     if (errorPitches.length > 0) {
-      const [minDataPitch, maxDataPitch] = extent(notes, d => d.pitch);
-      let advice = '';
-
+      const [minDataPitch, maxDataPitch] = extent_default(notes, (d) => d.pitch);
+      let advice = "";
       if (minDataPitch < minPitch) {
         advice += `Transpose by ${minPitch - minDataPitch} semitones`;
       }
-
       if (maxPitch < maxDataPitch) {
         advice += `Transpose by ${maxPitch - maxDataPitch} semitones`;
       }
-
-      console.warn(`Cannot find a fretboard position for ${errorPitches.length} pitches, try another tuning instead:\n`, errorPitches, `\nCurrent tuning's pitch range is ${minPitch} - ${maxPitch}`, `\ndata pitch range is ${minDataPitch} - ${maxDataPitch}\n`, advice);
+      console.warn(`Cannot find a fretboard position for ${errorPitches.length} pitches, try another tuning instead:
+`, errorPitches, `
+Current tuning's pitch range is ${minPitch} - ${maxPitch}`, `
+data pitch range is ${minDataPitch} - ${maxDataPitch}
+`, advice);
     }
-
     return result;
-  } // /**
-  //  * @todo chords always? use 4-fret-blocks
-  //  * @param {GuitarNote[]} notes notes with fretboard positions
-  //  * @returns {?} fingering information
-  //  */
-  // export function fingeringFromFretboardPositions(notes) {
-  //     // TODO: detect chords first?
-  //     // TODO: then lookup chords' fingerings from a lookup table
-  //     // TODO: alternatively (as fallback) use heuristics
-  //     // TODO: or try to do it like humans do when playing
-  //     // TODO: consider prior and following notes/chords!
-  // }
+  }
 
-  var Guitar = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    StringedTuning: StringedTuning,
-    stringedTunings: stringedTunings,
-    guitarNoteFromNote: guitarNoteFromNote,
-    getTuningFromPitches: getTuningFromPitches,
-    getTuningPitchRange: getTuningPitchRange,
-    stringColors: stringColors,
-    getPitchFromFretboardPos: getPitchFromFretboardPos,
-    getNoteInfoFromFretboardPos: getNoteInfoFromFretboardPos,
-    getFretboardPositionsFromPitch: getFretboardPositionsFromPitch,
-    getFretboardPositionsFromNoteName: getFretboardPositionsFromNoteName,
-    generateExampleData: generateExampleData,
-    fretboardPositionsFromMidi: fretboardPositionsFromMidi
+  // src/instruments/Lamellophone.js
+  var Lamellophone_exports = {};
+  __export(Lamellophone_exports, {
+    LamellophoneTuning: () => LamellophoneTuning,
+    bestTransposition: () => bestTransposition,
+    convertNotesToHtmlTab: () => convertNotesToHtmlTab,
+    convertNotesToTab: () => convertNotesToTab,
+    convertNumbersToLetters: () => convertNumbersToLetters,
+    convertTabToNotes: () => convertTabToNotes,
+    lamellophoneTunings: () => lamellophoneTunings
   });
 
-  /**
-   * Fill a string with a repeated character
-   *
-   * @param character
-   * @param repetition
-   */
-  const fillStr = (s, n) => Array(Math.abs(n) + 1).join(s);
+  // src/chords/Chords.js
+  var Chords_exports = {};
+  __export(Chords_exports, {
+    detectChordsByExactStart: () => detectChordsByExactStart,
+    detectChordsByOverlap: () => detectChordsByOverlap,
+    detectChordsBySimilarStart: () => detectChordsBySimilarStart,
+    getChordName: () => getChordName,
+    getChordType: () => getChordType
+  });
 
+  // node_modules/.pnpm/@tonaljs+core@4.6.5/node_modules/@tonaljs/core/dist/index.es.js
+  var fillStr = (s, n) => Array(Math.abs(n) + 1).join(s);
   function deprecate(original, alternative, fn) {
-    return function (...args) {
-      // tslint:disable-next-line
+    return function(...args) {
       console.warn(`${original} is deprecated. Use ${alternative}.`);
       return fn.apply(this, args);
     };
   }
-
   function isNamed(src) {
     return src !== null && typeof src === "object" && typeof src.name === "string" ? true : false;
   }
-
   function isPitch(pitch) {
     return pitch !== null && typeof pitch === "object" && typeof pitch.step === "number" && typeof pitch.alt === "number" ? true : false;
-  } // The number of fifths of [C, D, E, F, G, A, B]
-
-
-  const FIFTHS = [0, 2, 4, -1, 1, 3, 5]; // The number of octaves it span each step
-
-  const STEPS_TO_OCTS = FIFTHS.map(fifths => Math.floor(fifths * 7 / 12));
-
+  }
+  var FIFTHS = [0, 2, 4, -1, 1, 3, 5];
+  var STEPS_TO_OCTS = FIFTHS.map((fifths) => Math.floor(fifths * 7 / 12));
   function encode(pitch) {
-    const {
-      step,
-      alt,
-      oct,
-      dir = 1
-    } = pitch;
+    const { step, alt, oct, dir = 1 } = pitch;
     const f = FIFTHS[step] + 7 * alt;
-
-    if (oct === undefined) {
+    if (oct === void 0) {
       return [dir * f];
     }
-
     const o = oct - STEPS_TO_OCTS[step] - 4 * alt;
     return [dir * f, dir * o];
-  } // We need to get the steps from fifths
-  // Fifths for CDEFGAB are [ 0, 2, 4, -1, 1, 3, 5 ]
-  // We add 1 to fifths to avoid negative numbers, so:
-  // for ["F", "C", "G", "D", "A", "E", "B"] we have:
-
-
-  const FIFTHS_TO_STEPS = [3, 0, 4, 1, 5, 2, 6];
-
+  }
+  var FIFTHS_TO_STEPS = [3, 0, 4, 1, 5, 2, 6];
   function decode(coord) {
     const [f, o, dir] = coord;
     const step = FIFTHS_TO_STEPS[unaltered(f)];
     const alt = Math.floor((f + 1) / 7);
-
-    if (o === undefined) {
-      return {
-        step,
-        alt,
-        dir
-      };
+    if (o === void 0) {
+      return { step, alt, dir };
     }
-
     const oct = o + 4 * alt + STEPS_TO_OCTS[step];
-    return {
-      step,
-      alt,
-      oct,
-      dir
-    };
-  } // Return the number of fifths as if it were unaltered
-
-
+    return { step, alt, oct, dir };
+  }
   function unaltered(f) {
     const i = (f + 1) % 7;
     return i < 0 ? 7 + i : i;
   }
-
-  const NoNote = {
-    empty: true,
-    name: "",
-    pc: "",
-    acc: ""
-  };
-  const cache$1 = new Map();
-
-  const stepToLetter = step => "CDEFGAB".charAt(step);
-
-  const altToAcc = alt => alt < 0 ? fillStr("b", -alt) : fillStr("#", alt);
-
-  const accToAlt = acc => acc[0] === "b" ? -acc.length : acc.length;
-  /**
-   * Given a note literal (a note name or a note object), returns the Note object
-   * @example
-   * note('Bb4') // => { name: "Bb4", midi: 70, chroma: 10, ... }
-   */
-
-
+  var NoNote = { empty: true, name: "", pc: "", acc: "" };
+  var cache$1 = /* @__PURE__ */ new Map();
+  var stepToLetter = (step) => "CDEFGAB".charAt(step);
+  var altToAcc = (alt) => alt < 0 ? fillStr("b", -alt) : fillStr("#", alt);
+  var accToAlt = (acc) => acc[0] === "b" ? -acc.length : acc.length;
   function note(src) {
     const cached = cache$1.get(src);
-
     if (cached) {
       return cached;
     }
-
     const value = typeof src === "string" ? parse$1(src) : isPitch(src) ? note(pitchName$1(src)) : isNamed(src) ? note(src.name) : NoNote;
     cache$1.set(src, value);
     return value;
   }
-
-  const REGEX$1 = /^([a-gA-G]?)(#{1,}|b{1,}|x{1,}|)(-?\d*)\s*(.*)$/;
-  /**
-   * @private
-   */
-
+  var REGEX$1 = /^([a-gA-G]?)(#{1,}|b{1,}|x{1,}|)(-?\d*)\s*(.*)$/;
   function tokenizeNote(str) {
     const m = REGEX$1.exec(str);
     return [m[1].toUpperCase(), m[2].replace(/x/g, "##"), m[3], m[4]];
   }
-  /**
-   * @private
-   */
-
-
   function coordToNote(noteCoord) {
     return note(decode(noteCoord));
   }
-
-  const mod = (n, m) => (n % m + m) % m;
-
-  const SEMI = [0, 2, 4, 5, 7, 9, 11];
-
+  var mod = (n, m) => (n % m + m) % m;
+  var SEMI = [0, 2, 4, 5, 7, 9, 11];
   function parse$1(noteName) {
     const tokens = tokenizeNote(noteName);
-
     if (tokens[0] === "" || tokens[3] !== "") {
       return NoNote;
     }
-
     const letter = tokens[0];
     const acc = tokens[1];
     const octStr = tokens[2];
     const step = (letter.charCodeAt(0) + 3) % 7;
     const alt = accToAlt(acc);
-    const oct = octStr.length ? +octStr : undefined;
-    const coord = encode({
-      step,
-      alt,
-      oct
-    });
+    const oct = octStr.length ? +octStr : void 0;
+    const coord = encode({ step, alt, oct });
     const name = letter + acc + octStr;
     const pc = letter + acc;
     const chroma = (SEMI[step] + alt + 120) % 12;
-    const height = oct === undefined ? mod(SEMI[step] + alt, 12) - 12 * 99 : SEMI[step] + alt + 12 * (oct + 1);
+    const height = oct === void 0 ? mod(SEMI[step] + alt, 12) - 12 * 99 : SEMI[step] + alt + 12 * (oct + 1);
     const midi = height >= 0 && height <= 127 ? height : null;
-    const freq = oct === undefined ? null : Math.pow(2, (height - 69) / 12) * 440;
+    const freq = oct === void 0 ? null : Math.pow(2, (height - 69) / 12) * 440;
     return {
       empty: false,
       acc,
@@ -11750,106 +7846,53 @@
       step
     };
   }
-
   function pitchName$1(props) {
-    const {
-      step,
-      alt,
-      oct
-    } = props;
+    const { step, alt, oct } = props;
     const letter = stepToLetter(step);
-
     if (!letter) {
       return "";
     }
-
     const pc = letter + altToAcc(alt);
     return oct || oct === 0 ? pc + oct : pc;
   }
-
-  const NoInterval = {
-    empty: true,
-    name: "",
-    acc: ""
-  }; // shorthand tonal notation (with quality after number)
-
-  const INTERVAL_TONAL_REGEX = "([-+]?\\d+)(d{1,4}|m|M|P|A{1,4})"; // standard shorthand notation (with quality before number)
-
-  const INTERVAL_SHORTHAND_REGEX = "(AA|A|P|M|m|d|dd)([-+]?\\d+)";
-  const REGEX$2 = new RegExp("^" + INTERVAL_TONAL_REGEX + "|" + INTERVAL_SHORTHAND_REGEX + "$");
-  /**
-   * @private
-   */
-
+  var NoInterval = { empty: true, name: "", acc: "" };
+  var INTERVAL_TONAL_REGEX = "([-+]?\\d+)(d{1,4}|m|M|P|A{1,4})";
+  var INTERVAL_SHORTHAND_REGEX = "(AA|A|P|M|m|d|dd)([-+]?\\d+)";
+  var REGEX = new RegExp("^" + INTERVAL_TONAL_REGEX + "|" + INTERVAL_SHORTHAND_REGEX + "$");
   function tokenizeInterval(str) {
-    const m = REGEX$2.exec(`${str}`);
-
+    const m = REGEX.exec(`${str}`);
     if (m === null) {
       return ["", ""];
     }
-
     return m[1] ? [m[1], m[2]] : [m[4], m[3]];
   }
-
-  const cache$2 = {};
-  /**
-   * Get interval properties. It returns an object with:
-   *
-   * - name: the interval name
-   * - num: the interval number
-   * - type: 'perfectable' or 'majorable'
-   * - q: the interval quality (d, m, M, A)
-   * - dir: interval direction (1 ascending, -1 descending)
-   * - simple: the simplified number
-   * - semitones: the size in semitones
-   * - chroma: the interval chroma
-   *
-   * @param {string} interval - the interval name
-   * @return {Object} the interval properties
-   *
-   * @example
-   * import { interval } from '@tonaljs/core'
-   * interval('P5').semitones // => 7
-   * interval('m3').type // => 'majorable'
-   */
-
-  function interval(src) {
-    return typeof src === "string" ? cache$2[src] || (cache$2[src] = parse(src)) : isPitch(src) ? interval(pitchName(src)) : isNamed(src) ? interval(src.name) : NoInterval;
+  var cache = {};
+  function interval2(src) {
+    return typeof src === "string" ? cache[src] || (cache[src] = parse2(src)) : isPitch(src) ? interval2(pitchName(src)) : isNamed(src) ? interval2(src.name) : NoInterval;
   }
-
-  const SIZES = [0, 2, 4, 5, 7, 9, 11];
-  const TYPES = "PMMPPMM";
-
-  function parse(str) {
+  var SIZES = [0, 2, 4, 5, 7, 9, 11];
+  var TYPES = "PMMPPMM";
+  function parse2(str) {
     const tokens = tokenizeInterval(str);
-
     if (tokens[0] === "") {
       return NoInterval;
     }
-
     const num = +tokens[0];
     const q = tokens[1];
     const step = (Math.abs(num) - 1) % 7;
     const t = TYPES[step];
-
     if (t === "M" && q === "P") {
       return NoInterval;
     }
-
-    const type = t === "M" ? "majorable" : "perfectable";
+    const type2 = t === "M" ? "majorable" : "perfectable";
     const name = "" + num + q;
     const dir = num < 0 ? -1 : 1;
     const simple = num === 8 || num === -8 ? num : dir * (step + 1);
-    const alt = qToAlt(type, q);
+    const alt = qToAlt(type2, q);
     const oct = Math.floor((Math.abs(num) - 1) / 7);
     const semitones = dir * (SIZES[step] + alt + 12 * oct);
     const chroma = (dir * (SIZES[step] + alt) % 12 + 12) % 12;
-    const coord = encode({
-      step,
-      alt,
-      oct,
-      dir
-    });
+    const coord = encode({ step, alt, oct, dir });
     return {
       empty: false,
       name,
@@ -11858,7 +7901,7 @@
       step,
       alt,
       dir,
-      type,
+      type: type2,
       simple,
       semitones,
       chroma,
@@ -11866,282 +7909,147 @@
       oct
     };
   }
-  /**
-   * @private
-   *
-   * forceDescending is used in the case of unison (#243)
-   */
-
-
   function coordToInterval(coord, forceDescending) {
     const [f, o = 0] = coord;
     const isDescending = f * 7 + o * 12 < 0;
     const ivl = forceDescending || isDescending ? [-f, -o, -1] : [f, o, 1];
-    return interval(decode(ivl));
+    return interval2(decode(ivl));
   }
-
-  function qToAlt(type, q) {
-    return q === "M" && type === "majorable" || q === "P" && type === "perfectable" ? 0 : q === "m" && type === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type === "perfectable" ? q.length : q.length + 1) : 0;
-  } // return the interval name of a pitch
-
-
+  function qToAlt(type2, q) {
+    return q === "M" && type2 === "majorable" || q === "P" && type2 === "perfectable" ? 0 : q === "m" && type2 === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type2 === "perfectable" ? q.length : q.length + 1) : 0;
+  }
   function pitchName(props) {
-    const {
-      step,
-      alt,
-      oct = 0,
-      dir
-    } = props;
-
+    const { step, alt, oct = 0, dir } = props;
     if (!dir) {
       return "";
     }
-
-    const calcNum = step + 1 + 7 * oct; // this is an edge case: descending pitch class unison (see #243)
-
+    const calcNum = step + 1 + 7 * oct;
     const num = calcNum === 0 ? step + 1 : calcNum;
     const d = dir < 0 ? "-" : "";
-    const type = TYPES[step] === "M" ? "majorable" : "perfectable";
-    const name = d + num + altToQ(type, alt);
+    const type2 = TYPES[step] === "M" ? "majorable" : "perfectable";
+    const name = d + num + altToQ(type2, alt);
     return name;
   }
-
-  function altToQ(type, alt) {
+  function altToQ(type2, alt) {
     if (alt === 0) {
-      return type === "majorable" ? "M" : "P";
-    } else if (alt === -1 && type === "majorable") {
+      return type2 === "majorable" ? "M" : "P";
+    } else if (alt === -1 && type2 === "majorable") {
       return "m";
     } else if (alt > 0) {
       return fillStr("A", alt);
     } else {
-      return fillStr("d", type === "perfectable" ? alt : alt + 1);
+      return fillStr("d", type2 === "perfectable" ? alt : alt + 1);
     }
   }
-  /**
-   * Transpose a note by an interval.
-   *
-   * @param {string} note - the note or note name
-   * @param {string} interval - the interval or interval name
-   * @return {string} the transposed note name or empty string if not valid notes
-   * @example
-   * import { tranpose } from "@tonaljs/core"
-   * transpose("d3", "3M") // => "F#3"
-   * transpose("D", "3M") // => "F#"
-   * ["C", "D", "E", "F", "G"].map(pc => transpose(pc, "M3)) // => ["E", "F#", "G#", "A", "B"]
-   */
-
-
-  function transpose$1(noteName, intervalName) {
+  function transpose(noteName, intervalName) {
     const note$1 = note(noteName);
-    const interval$1 = interval(intervalName);
-
+    const interval$1 = interval2(intervalName);
     if (note$1.empty || interval$1.empty) {
       return "";
     }
-
     const noteCoord = note$1.coord;
     const intervalCoord = interval$1.coord;
     const tr = noteCoord.length === 1 ? [noteCoord[0] + intervalCoord[0]] : [noteCoord[0] + intervalCoord[0], noteCoord[1] + intervalCoord[1]];
     return coordToNote(tr).name;
   }
-  /**
-   * Find the interval distance between two notes or coord classes.
-   *
-   * To find distance between coord classes, both notes must be coord classes and
-   * the interval is always ascending
-   *
-   * @param {Note|string} from - the note or note name to calculate distance from
-   * @param {Note|string} to - the note or note name to calculate distance to
-   * @return {string} the interval name or empty string if not valid notes
-   *
-   */
-
-
   function distance(fromNote, toNote) {
     const from = note(fromNote);
     const to = note(toNote);
-
     if (from.empty || to.empty) {
       return "";
     }
-
     const fcoord = from.coord;
     const tcoord = to.coord;
     const fifths = tcoord[0] - fcoord[0];
-    const octs = fcoord.length === 2 && tcoord.length === 2 ? tcoord[1] - fcoord[1] : -Math.floor(fifths * 7 / 12); // If it's unison and not pitch class, it can be descending interval (#243)
-
+    const octs = fcoord.length === 2 && tcoord.length === 2 ? tcoord[1] - fcoord[1] : -Math.floor(fifths * 7 / 12);
     const forceDescending = to.height === from.height && to.midi !== null && from.midi !== null && from.step > to.step;
     return coordToInterval([fifths, octs], forceDescending).name;
   }
 
-  // ascending range
-  /**
-   * Rotates a list a number of times. It"s completly agnostic about the
-   * contents of the list.
-   *
-   * @param {Integer} times - the number of rotations
-   * @param {Array} collection
-   * @return {Array} the rotated collection
-   *
-   * @example
-   * rotate(1, [1, 2, 3]) // => [2, 3, 1]
-   */
-
-
+  // node_modules/.pnpm/@tonaljs+collection@4.6.2/node_modules/@tonaljs/collection/dist/index.es.js
   function rotate(times, arr) {
     const len = arr.length;
     const n = (times % len + len) % len;
     return arr.slice(n, len).concat(arr.slice(0, n));
   }
-  /**
-   * Return a copy of the collection with the null values removed
-   * @function
-   * @param {Array} collection
-   * @return {Array}
-   *
-   * @example
-   * compact(["a", "b", null, "c"]) // => ["a", "b", "c"]
-   */
-
-
   function compact(arr) {
-    return arr.filter(n => n === 0 || n);
+    return arr.filter((n) => n === 0 || n);
   }
 
-  const EmptyPcset = {
+  // node_modules/.pnpm/@tonaljs+pcset@4.6.5/node_modules/@tonaljs/pcset/dist/index.es.js
+  var EmptyPcset = {
     empty: true,
     name: "",
     setNum: 0,
     chroma: "000000000000",
     normalized: "000000000000",
     intervals: []
-  }; // UTILITIES
-
-  const setNumToChroma = num => Number(num).toString(2);
-
-  const chromaToNumber = chroma => parseInt(chroma, 2);
-
-  const REGEX = /^[01]{12}$/;
-
-  function isChroma(set) {
-    return REGEX.test(set);
-  }
-
-  const isPcsetNum = set => typeof set === "number" && set >= 0 && set <= 4095;
-
-  const isPcset = set => set && isChroma(set.chroma);
-
-  const cache = {
-    [EmptyPcset.chroma]: EmptyPcset
   };
-  /**
-   * Get the pitch class set of a collection of notes or set number or chroma
-   */
-
-  function get$4(src) {
-    const chroma = isChroma(src) ? src : isPcsetNum(src) ? setNumToChroma(src) : Array.isArray(src) ? listToChroma(src) : isPcset(src) ? src.chroma : EmptyPcset.chroma;
-    return cache[chroma] = cache[chroma] || chromaToPcset(chroma);
+  var setNumToChroma = (num) => Number(num).toString(2);
+  var chromaToNumber = (chroma) => parseInt(chroma, 2);
+  var REGEX2 = /^[01]{12}$/;
+  function isChroma(set4) {
+    return REGEX2.test(set4);
   }
-
-  const IVLS = ["1P", "2m", "2M", "3m", "3M", "4P", "5d", "5P", "6m", "6M", "7m", "7M"];
-  /**
-   * @private
-   * Get the intervals of a pcset *starting from C*
-   * @param {Set} set - the pitch class set
-   * @return {IntervalName[]} an array of interval names or an empty array
-   * if not a valid pitch class set
-   */
-
+  var isPcsetNum = (set4) => typeof set4 === "number" && set4 >= 0 && set4 <= 4095;
+  var isPcset = (set4) => set4 && isChroma(set4.chroma);
+  var cache2 = { [EmptyPcset.chroma]: EmptyPcset };
+  function get3(src) {
+    const chroma = isChroma(src) ? src : isPcsetNum(src) ? setNumToChroma(src) : Array.isArray(src) ? listToChroma(src) : isPcset(src) ? src.chroma : EmptyPcset.chroma;
+    return cache2[chroma] = cache2[chroma] || chromaToPcset(chroma);
+  }
+  var pcset = deprecate("Pcset.pcset", "Pcset.get", get3);
+  var IVLS = [
+    "1P",
+    "2m",
+    "2M",
+    "3m",
+    "3M",
+    "4P",
+    "5d",
+    "5P",
+    "6m",
+    "6M",
+    "7m",
+    "7M"
+  ];
   function chromaToIntervals(chroma) {
     const intervals = [];
-
     for (let i = 0; i < 12; i++) {
-      // tslint:disable-next-line:curly
-      if (chroma.charAt(i) === "1") intervals.push(IVLS[i]);
+      if (chroma.charAt(i) === "1")
+        intervals.push(IVLS[i]);
     }
-
     return intervals;
   }
-  /**
-   * Given a a list of notes or a pcset chroma, produce the rotations
-   * of the chroma discarding the ones that starts with "0"
-   *
-   * This is used, for example, to get all the modes of a scale.
-   *
-   * @param {Array|string} set - the list of notes or pitchChr of the set
-   * @param {boolean} normalize - (Optional, true by default) remove all
-   * the rotations that starts with "0"
-   * @return {Array<string>} an array with all the modes of the chroma
-   *
-   * @example
-   * Pcset.modes(["C", "D", "E"]).map(Pcset.intervals)
-   */
-
-
-  function modes$1(set, normalize = true) {
-    const pcs = get$4(set);
+  function modes(set4, normalize2 = true) {
+    const pcs = get3(set4);
     const binary = pcs.chroma.split("");
     return compact(binary.map((_, i) => {
       const r = rotate(i, binary);
-      return normalize && r[0] === "0" ? null : r.join("");
+      return normalize2 && r[0] === "0" ? null : r.join("");
     }));
   }
-  /**
-   * Create a function that test if a collection of notes is a
-   * subset of a given set
-   *
-   * The function is curryfied.
-   *
-   * @param {PcsetChroma|NoteName[]} set - the superset to test against (chroma or
-   * list of notes)
-   * @return{function(PcsetChroma|NoteNames[]): boolean} a function accepting a set
-   * to test against (chroma or list of notes)
-   * @example
-   * const inCMajor = Pcset.isSubsetOf(["C", "E", "G"])
-   * inCMajor(["e6", "c4"]) // => true
-   * inCMajor(["e6", "c4", "d3"]) // => false
-   */
-
-
-  function isSubsetOf(set) {
-    const s = get$4(set).setNum;
-    return notes => {
-      const o = get$4(notes).setNum; // tslint:disable-next-line: no-bitwise
-
+  function isSubsetOf(set4) {
+    const s = get3(set4).setNum;
+    return (notes) => {
+      const o = get3(notes).setNum;
       return s && s !== o && (o & s) === o;
     };
   }
-  /**
-   * Create a function that test if a collection of notes is a
-   * superset of a given set (it contains all notes and at least one more)
-   *
-   * @param {Set} set - an array of notes or a chroma set string to test against
-   * @return {(subset: Set): boolean} a function that given a set
-   * returns true if is a subset of the first one
-   * @example
-   * const extendsCMajor = Pcset.isSupersetOf(["C", "E", "G"])
-   * extendsCMajor(["e6", "a", "c4", "g2"]) // => true
-   * extendsCMajor(["c6", "e4", "g3"]) // => false
-   */
-
-
-  function isSupersetOf(set) {
-    const s = get$4(set).setNum;
-    return notes => {
-      const o = get$4(notes).setNum; // tslint:disable-next-line: no-bitwise
-
+  function isSupersetOf(set4) {
+    const s = get3(set4).setNum;
+    return (notes) => {
+      const o = get3(notes).setNum;
       return s && s !== o && (o | s) === o;
     };
   }
-
   function chromaRotations(chroma) {
     const binary = chroma.split("");
     return binary.map((_, i) => rotate(i, binary).join(""));
   }
-
   function chromaToPcset(chroma) {
     const setNum = chromaToNumber(chroma);
-    const normalizedNum = chromaRotations(chroma).map(chromaToNumber).filter(n => n >= 2048).sort()[0];
+    const normalizedNum = chromaRotations(chroma).map(chromaToNumber).filter((n) => n >= 2048).sort()[0];
     const normalized = setNumToChroma(normalizedNum);
     const intervals = chromaToIntervals(chroma);
     return {
@@ -12153,232 +8061,396 @@
       intervals
     };
   }
-
-  function listToChroma(set) {
-    if (set.length === 0) {
+  function listToChroma(set4) {
+    if (set4.length === 0) {
       return EmptyPcset.chroma;
     }
-
     let pitch;
-    const binary = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // tslint:disable-next-line:prefer-for-of
-
-    for (let i = 0; i < set.length; i++) {
-      pitch = note(set[i]); // tslint:disable-next-line: curly
-
-      if (pitch.empty) pitch = interval(set[i]); // tslint:disable-next-line: curly
-
-      if (!pitch.empty) binary[pitch.chroma] = 1;
+    const binary = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (let i = 0; i < set4.length; i++) {
+      pitch = note(set4[i]);
+      if (pitch.empty)
+        pitch = interval2(set4[i]);
+      if (!pitch.empty)
+        binary[pitch.chroma] = 1;
     }
-
     return binary.join("");
   }
 
-  /**
-   * @private
-   * Chord List
-   * Source: https://en.wikibooks.org/wiki/Music_Theory/Complete_List_of_Chord_Patterns
-   * Format: ["intervals", "full name", "abrv1 abrv2"]
-   */
-
-  const CHORDS = [// ==Major==
-  ["1P 3M 5P", "major", "M ^ "], ["1P 3M 5P 7M", "major seventh", "maj7 Δ ma7 M7 Maj7 ^7"], ["1P 3M 5P 7M 9M", "major ninth", "maj9 Δ9 ^9"], ["1P 3M 5P 7M 9M 13M", "major thirteenth", "maj13 Maj13 ^13"], ["1P 3M 5P 6M", "sixth", "6 add6 add13 M6"], ["1P 3M 5P 6M 9M", "sixth/ninth", "6/9 69 M69"], ["1P 3M 6m 7M", "major seventh flat sixth", "M7b6 ^7b6"], ["1P 3M 5P 7M 11A", "major seventh sharp eleventh", "maj#4 Δ#4 Δ#11 M7#11 ^7#11 maj7#11"], // ==Minor==
-  // '''Normal'''
-  ["1P 3m 5P", "minor", "m min -"], ["1P 3m 5P 7m", "minor seventh", "m7 min7 mi7 -7"], ["1P 3m 5P 7M", "minor/major seventh", "m/ma7 m/maj7 mM7 mMaj7 m/M7 -Δ7 mΔ -^7"], ["1P 3m 5P 6M", "minor sixth", "m6 -6"], ["1P 3m 5P 7m 9M", "minor ninth", "m9 -9"], ["1P 3m 5P 7M 9M", "minor/major ninth", "mM9 mMaj9 -^9"], ["1P 3m 5P 7m 9M 11P", "minor eleventh", "m11 -11"], ["1P 3m 5P 7m 9M 13M", "minor thirteenth", "m13 -13"], // '''Diminished'''
-  ["1P 3m 5d", "diminished", "dim ° o"], ["1P 3m 5d 7d", "diminished seventh", "dim7 °7 o7"], ["1P 3m 5d 7m", "half-diminished", "m7b5 ø -7b5 h7 h"], // ==Dominant/Seventh==
-  // '''Normal'''
-  ["1P 3M 5P 7m", "dominant seventh", "7 dom"], ["1P 3M 5P 7m 9M", "dominant ninth", "9"], ["1P 3M 5P 7m 9M 13M", "dominant thirteenth", "13"], ["1P 3M 5P 7m 11A", "lydian dominant seventh", "7#11 7#4"], // '''Altered'''
-  ["1P 3M 5P 7m 9m", "dominant flat ninth", "7b9"], ["1P 3M 5P 7m 9A", "dominant sharp ninth", "7#9"], ["1P 3M 7m 9m", "altered", "alt7"], // '''Suspended'''
-  ["1P 4P 5P", "suspended fourth", "sus4 sus"], ["1P 2M 5P", "suspended second", "sus2"], ["1P 4P 5P 7m", "suspended fourth seventh", "7sus4 7sus"], ["1P 5P 7m 9M 11P", "eleventh", "11"], ["1P 4P 5P 7m 9m", "suspended fourth flat ninth", "b9sus phryg 7b9sus 7b9sus4"], // ==Other==
-  ["1P 5P", "fifth", "5"], ["1P 3M 5A", "augmented", "aug + +5 ^#5"], ["1P 3m 5A", "minor augmented", "m#5 -#5 m+"], ["1P 3M 5A 7M", "augmented seventh", "maj7#5 maj7+5 +maj7 ^7#5"], ["1P 3M 5P 7M 9M 11A", "major sharp eleventh (lydian)", "maj9#11 Δ9#11 ^9#11"], // ==Legacy==
-  ["1P 2M 4P 5P", "", "sus24 sus4add9"], ["1P 3M 5A 7M 9M", "", "maj9#5 Maj9#5"], ["1P 3M 5A 7m", "", "7#5 +7 7+ 7aug aug7"], ["1P 3M 5A 7m 9A", "", "7#5#9 7#9#5 7alt"], ["1P 3M 5A 7m 9M", "", "9#5 9+"], ["1P 3M 5A 7m 9M 11A", "", "9#5#11"], ["1P 3M 5A 7m 9m", "", "7#5b9 7b9#5"], ["1P 3M 5A 7m 9m 11A", "", "7#5b9#11"], ["1P 3M 5A 9A", "", "+add#9"], ["1P 3M 5A 9M", "", "M#5add9 +add9"], ["1P 3M 5P 6M 11A", "", "M6#11 M6b5 6#11 6b5"], ["1P 3M 5P 6M 7M 9M", "", "M7add13"], ["1P 3M 5P 6M 9M 11A", "", "69#11"], ["1P 3m 5P 6M 9M", "", "m69 -69"], ["1P 3M 5P 6m 7m", "", "7b6"], ["1P 3M 5P 7M 9A 11A", "", "maj7#9#11"], ["1P 3M 5P 7M 9M 11A 13M", "", "M13#11 maj13#11 M13+4 M13#4"], ["1P 3M 5P 7M 9m", "", "M7b9"], ["1P 3M 5P 7m 11A 13m", "", "7#11b13 7b5b13"], ["1P 3M 5P 7m 13M", "", "7add6 67 7add13"], ["1P 3M 5P 7m 9A 11A", "", "7#9#11 7b5#9 7#9b5"], ["1P 3M 5P 7m 9A 11A 13M", "", "13#9#11"], ["1P 3M 5P 7m 9A 11A 13m", "", "7#9#11b13"], ["1P 3M 5P 7m 9A 13M", "", "13#9"], ["1P 3M 5P 7m 9A 13m", "", "7#9b13"], ["1P 3M 5P 7m 9M 11A", "", "9#11 9+4 9#4"], ["1P 3M 5P 7m 9M 11A 13M", "", "13#11 13+4 13#4"], ["1P 3M 5P 7m 9M 11A 13m", "", "9#11b13 9b5b13"], ["1P 3M 5P 7m 9m 11A", "", "7b9#11 7b5b9 7b9b5"], ["1P 3M 5P 7m 9m 11A 13M", "", "13b9#11"], ["1P 3M 5P 7m 9m 11A 13m", "", "7b9b13#11 7b9#11b13 7b5b9b13"], ["1P 3M 5P 7m 9m 13M", "", "13b9"], ["1P 3M 5P 7m 9m 13m", "", "7b9b13"], ["1P 3M 5P 7m 9m 9A", "", "7b9#9"], ["1P 3M 5P 9M", "", "Madd9 2 add9 add2"], ["1P 3M 5P 9m", "", "Maddb9"], ["1P 3M 5d", "", "Mb5"], ["1P 3M 5d 6M 7m 9M", "", "13b5"], ["1P 3M 5d 7M", "", "M7b5"], ["1P 3M 5d 7M 9M", "", "M9b5"], ["1P 3M 5d 7m", "", "7b5"], ["1P 3M 5d 7m 9M", "", "9b5"], ["1P 3M 7m", "", "7no5"], ["1P 3M 7m 13m", "", "7b13"], ["1P 3M 7m 9M", "", "9no5"], ["1P 3M 7m 9M 13M", "", "13no5"], ["1P 3M 7m 9M 13m", "", "9b13"], ["1P 3m 4P 5P", "", "madd4"], ["1P 3m 5P 6m 7M", "", "mMaj7b6"], ["1P 3m 5P 6m 7M 9M", "", "mMaj9b6"], ["1P 3m 5P 7m 11P", "", "m7add11 m7add4"], ["1P 3m 5P 9M", "", "madd9"], ["1P 3m 5d 6M 7M", "", "o7M7"], ["1P 3m 5d 7M", "", "oM7"], ["1P 3m 6m 7M", "", "mb6M7"], ["1P 3m 6m 7m", "", "m7#5"], ["1P 3m 6m 7m 9M", "", "m9#5"], ["1P 3m 5A 7m 9M 11P", "", "m11A"], ["1P 3m 6m 9m", "", "mb6b9"], ["1P 2M 3m 5d 7m", "", "m9b5"], ["1P 4P 5A 7M", "", "M7#5sus4"], ["1P 4P 5A 7M 9M", "", "M9#5sus4"], ["1P 4P 5A 7m", "", "7#5sus4"], ["1P 4P 5P 7M", "", "M7sus4"], ["1P 4P 5P 7M 9M", "", "M9sus4"], ["1P 4P 5P 7m 9M", "", "9sus4 9sus"], ["1P 4P 5P 7m 9M 13M", "", "13sus4 13sus"], ["1P 4P 5P 7m 9m 13m", "", "7sus4b9b13 7b9b13sus4"], ["1P 4P 7m 10m", "", "4 quartal"], ["1P 5P 7m 9m 11P", "", "11b9"]];
-  const NoChordType = { ...EmptyPcset,
+  // node_modules/.pnpm/@tonaljs+chord-type@4.6.5/node_modules/@tonaljs/chord-type/dist/index.es.js
+  var CHORDS = [
+    ["1P 3M 5P", "major", "M ^ "],
+    ["1P 3M 5P 7M", "major seventh", "maj7 \u0394 ma7 M7 Maj7 ^7"],
+    ["1P 3M 5P 7M 9M", "major ninth", "maj9 \u03949 ^9"],
+    ["1P 3M 5P 7M 9M 13M", "major thirteenth", "maj13 Maj13 ^13"],
+    ["1P 3M 5P 6M", "sixth", "6 add6 add13 M6"],
+    ["1P 3M 5P 6M 9M", "sixth/ninth", "6/9 69 M69"],
+    ["1P 3M 6m 7M", "major seventh flat sixth", "M7b6 ^7b6"],
+    [
+      "1P 3M 5P 7M 11A",
+      "major seventh sharp eleventh",
+      "maj#4 \u0394#4 \u0394#11 M7#11 ^7#11 maj7#11"
+    ],
+    ["1P 3m 5P", "minor", "m min -"],
+    ["1P 3m 5P 7m", "minor seventh", "m7 min7 mi7 -7"],
+    [
+      "1P 3m 5P 7M",
+      "minor/major seventh",
+      "m/ma7 m/maj7 mM7 mMaj7 m/M7 -\u03947 m\u0394 -^7"
+    ],
+    ["1P 3m 5P 6M", "minor sixth", "m6 -6"],
+    ["1P 3m 5P 7m 9M", "minor ninth", "m9 -9"],
+    ["1P 3m 5P 7M 9M", "minor/major ninth", "mM9 mMaj9 -^9"],
+    ["1P 3m 5P 7m 9M 11P", "minor eleventh", "m11 -11"],
+    ["1P 3m 5P 7m 9M 13M", "minor thirteenth", "m13 -13"],
+    ["1P 3m 5d", "diminished", "dim \xB0 o"],
+    ["1P 3m 5d 7d", "diminished seventh", "dim7 \xB07 o7"],
+    ["1P 3m 5d 7m", "half-diminished", "m7b5 \xF8 -7b5 h7 h"],
+    ["1P 3M 5P 7m", "dominant seventh", "7 dom"],
+    ["1P 3M 5P 7m 9M", "dominant ninth", "9"],
+    ["1P 3M 5P 7m 9M 13M", "dominant thirteenth", "13"],
+    ["1P 3M 5P 7m 11A", "lydian dominant seventh", "7#11 7#4"],
+    ["1P 3M 5P 7m 9m", "dominant flat ninth", "7b9"],
+    ["1P 3M 5P 7m 9A", "dominant sharp ninth", "7#9"],
+    ["1P 3M 7m 9m", "altered", "alt7"],
+    ["1P 4P 5P", "suspended fourth", "sus4 sus"],
+    ["1P 2M 5P", "suspended second", "sus2"],
+    ["1P 4P 5P 7m", "suspended fourth seventh", "7sus4 7sus"],
+    ["1P 5P 7m 9M 11P", "eleventh", "11"],
+    [
+      "1P 4P 5P 7m 9m",
+      "suspended fourth flat ninth",
+      "b9sus phryg 7b9sus 7b9sus4"
+    ],
+    ["1P 5P", "fifth", "5"],
+    ["1P 3M 5A", "augmented", "aug + +5 ^#5"],
+    ["1P 3m 5A", "minor augmented", "m#5 -#5 m+"],
+    ["1P 3M 5A 7M", "augmented seventh", "maj7#5 maj7+5 +maj7 ^7#5"],
+    [
+      "1P 3M 5P 7M 9M 11A",
+      "major sharp eleventh (lydian)",
+      "maj9#11 \u03949#11 ^9#11"
+    ],
+    ["1P 2M 4P 5P", "", "sus24 sus4add9"],
+    ["1P 3M 5A 7M 9M", "", "maj9#5 Maj9#5"],
+    ["1P 3M 5A 7m", "", "7#5 +7 7+ 7aug aug7"],
+    ["1P 3M 5A 7m 9A", "", "7#5#9 7#9#5 7alt"],
+    ["1P 3M 5A 7m 9M", "", "9#5 9+"],
+    ["1P 3M 5A 7m 9M 11A", "", "9#5#11"],
+    ["1P 3M 5A 7m 9m", "", "7#5b9 7b9#5"],
+    ["1P 3M 5A 7m 9m 11A", "", "7#5b9#11"],
+    ["1P 3M 5A 9A", "", "+add#9"],
+    ["1P 3M 5A 9M", "", "M#5add9 +add9"],
+    ["1P 3M 5P 6M 11A", "", "M6#11 M6b5 6#11 6b5"],
+    ["1P 3M 5P 6M 7M 9M", "", "M7add13"],
+    ["1P 3M 5P 6M 9M 11A", "", "69#11"],
+    ["1P 3m 5P 6M 9M", "", "m69 -69"],
+    ["1P 3M 5P 6m 7m", "", "7b6"],
+    ["1P 3M 5P 7M 9A 11A", "", "maj7#9#11"],
+    ["1P 3M 5P 7M 9M 11A 13M", "", "M13#11 maj13#11 M13+4 M13#4"],
+    ["1P 3M 5P 7M 9m", "", "M7b9"],
+    ["1P 3M 5P 7m 11A 13m", "", "7#11b13 7b5b13"],
+    ["1P 3M 5P 7m 13M", "", "7add6 67 7add13"],
+    ["1P 3M 5P 7m 9A 11A", "", "7#9#11 7b5#9 7#9b5"],
+    ["1P 3M 5P 7m 9A 11A 13M", "", "13#9#11"],
+    ["1P 3M 5P 7m 9A 11A 13m", "", "7#9#11b13"],
+    ["1P 3M 5P 7m 9A 13M", "", "13#9"],
+    ["1P 3M 5P 7m 9A 13m", "", "7#9b13"],
+    ["1P 3M 5P 7m 9M 11A", "", "9#11 9+4 9#4"],
+    ["1P 3M 5P 7m 9M 11A 13M", "", "13#11 13+4 13#4"],
+    ["1P 3M 5P 7m 9M 11A 13m", "", "9#11b13 9b5b13"],
+    ["1P 3M 5P 7m 9m 11A", "", "7b9#11 7b5b9 7b9b5"],
+    ["1P 3M 5P 7m 9m 11A 13M", "", "13b9#11"],
+    ["1P 3M 5P 7m 9m 11A 13m", "", "7b9b13#11 7b9#11b13 7b5b9b13"],
+    ["1P 3M 5P 7m 9m 13M", "", "13b9"],
+    ["1P 3M 5P 7m 9m 13m", "", "7b9b13"],
+    ["1P 3M 5P 7m 9m 9A", "", "7b9#9"],
+    ["1P 3M 5P 9M", "", "Madd9 2 add9 add2"],
+    ["1P 3M 5P 9m", "", "Maddb9"],
+    ["1P 3M 5d", "", "Mb5"],
+    ["1P 3M 5d 6M 7m 9M", "", "13b5"],
+    ["1P 3M 5d 7M", "", "M7b5"],
+    ["1P 3M 5d 7M 9M", "", "M9b5"],
+    ["1P 3M 5d 7m", "", "7b5"],
+    ["1P 3M 5d 7m 9M", "", "9b5"],
+    ["1P 3M 7m", "", "7no5"],
+    ["1P 3M 7m 13m", "", "7b13"],
+    ["1P 3M 7m 9M", "", "9no5"],
+    ["1P 3M 7m 9M 13M", "", "13no5"],
+    ["1P 3M 7m 9M 13m", "", "9b13"],
+    ["1P 3m 4P 5P", "", "madd4"],
+    ["1P 3m 5P 6m 7M", "", "mMaj7b6"],
+    ["1P 3m 5P 6m 7M 9M", "", "mMaj9b6"],
+    ["1P 3m 5P 7m 11P", "", "m7add11 m7add4"],
+    ["1P 3m 5P 9M", "", "madd9"],
+    ["1P 3m 5d 6M 7M", "", "o7M7"],
+    ["1P 3m 5d 7M", "", "oM7"],
+    ["1P 3m 6m 7M", "", "mb6M7"],
+    ["1P 3m 6m 7m", "", "m7#5"],
+    ["1P 3m 6m 7m 9M", "", "m9#5"],
+    ["1P 3m 5A 7m 9M 11P", "", "m11A"],
+    ["1P 3m 6m 9m", "", "mb6b9"],
+    ["1P 2M 3m 5d 7m", "", "m9b5"],
+    ["1P 4P 5A 7M", "", "M7#5sus4"],
+    ["1P 4P 5A 7M 9M", "", "M9#5sus4"],
+    ["1P 4P 5A 7m", "", "7#5sus4"],
+    ["1P 4P 5P 7M", "", "M7sus4"],
+    ["1P 4P 5P 7M 9M", "", "M9sus4"],
+    ["1P 4P 5P 7m 9M", "", "9sus4 9sus"],
+    ["1P 4P 5P 7m 9M 13M", "", "13sus4 13sus"],
+    ["1P 4P 5P 7m 9m 13m", "", "7sus4b9b13 7b9b13sus4"],
+    ["1P 4P 7m 10m", "", "4 quartal"],
+    ["1P 5P 7m 9m 11P", "", "11b9"]
+  ];
+  var NoChordType = __spreadProps(__spreadValues({}, EmptyPcset), {
     name: "",
     quality: "Unknown",
     intervals: [],
     aliases: []
-  };
-  let dictionary$1 = [];
-  let index$5 = {};
-  /**
-   * Given a chord name or chroma, return the chord properties
-   * @param {string} source - chord name or pitch class set chroma
-   * @example
-   * import { get } from 'tonaljs/chord-type'
-   * get('major') // => { name: 'major', ... }
-   */
-
-  function get$3(type) {
-    return index$5[type] || NoChordType;
+  });
+  var dictionary = [];
+  var index2 = {};
+  function get4(type2) {
+    return index2[type2] || NoChordType;
   }
-  /**
-   * Return a list of all chord types
-   */
-
-
-  function all$1() {
-    return dictionary$1.slice();
+  var chordType = deprecate("ChordType.chordType", "ChordType.get", get4);
+  function all() {
+    return dictionary.slice();
   }
-  /**
-   * Add a chord to the dictionary.
-   * @param intervals
-   * @param aliases
-   * @param [fullName]
-   */
-
-
-  function add$1(intervals, aliases, fullName) {
+  var entries = deprecate("ChordType.entries", "ChordType.all", all);
+  function add(intervals, aliases, fullName) {
     const quality = getQuality(intervals);
-    const chord = { ...get$4(intervals),
+    const chord2 = __spreadProps(__spreadValues({}, get3(intervals)), {
       name: fullName || "",
       quality,
       intervals,
       aliases
-    };
-    dictionary$1.push(chord);
-
-    if (chord.name) {
-      index$5[chord.name] = chord;
+    });
+    dictionary.push(chord2);
+    if (chord2.name) {
+      index2[chord2.name] = chord2;
     }
-
-    index$5[chord.setNum] = chord;
-    index$5[chord.chroma] = chord;
-    chord.aliases.forEach(alias => addAlias$1(chord, alias));
+    index2[chord2.setNum] = chord2;
+    index2[chord2.chroma] = chord2;
+    chord2.aliases.forEach((alias) => addAlias(chord2, alias));
   }
-
-  function addAlias$1(chord, alias) {
-    index$5[alias] = chord;
+  function addAlias(chord2, alias) {
+    index2[alias] = chord2;
   }
-
   function getQuality(intervals) {
-    const has = interval => intervals.indexOf(interval) !== -1;
-
+    const has = (interval3) => intervals.indexOf(interval3) !== -1;
     return has("5A") ? "Augmented" : has("3M") ? "Major" : has("5d") ? "Diminished" : has("3m") ? "Minor" : "Unknown";
   }
+  CHORDS.forEach(([ivls, fullName, names2]) => add(ivls.split(" "), names2.split(" "), fullName));
+  dictionary.sort((a, b) => a.setNum - b.setNum);
 
-  CHORDS.forEach(([ivls, fullName, names]) => add$1(ivls.split(" "), names.split(" "), fullName));
-  dictionary$1.sort((a, b) => a.setNum - b.setNum);
-
-  const namedSet = notes => {
+  // node_modules/.pnpm/@tonaljs+chord-detect@4.6.5/node_modules/@tonaljs/chord-detect/dist/index.es.js
+  var namedSet = (notes) => {
     const pcToName = notes.reduce((record, n) => {
       const chroma = note(n).chroma;
-
-      if (chroma !== undefined) {
+      if (chroma !== void 0) {
         record[chroma] = record[chroma] || note(n).name;
       }
-
       return record;
     }, {});
-    return chroma => pcToName[chroma];
+    return (chroma) => pcToName[chroma];
   };
-
   function detect(source) {
-    const notes = source.map(n => note(n).pc).filter(x => x);
-
+    const notes = source.map((n) => note(n).pc).filter((x) => x);
     if (note.length === 0) {
       return [];
     }
-
     const found = findExactMatches(notes, 1);
-    return found.filter(chord => chord.weight).sort((a, b) => b.weight - a.weight).map(chord => chord.name);
+    return found.filter((chord2) => chord2.weight).sort((a, b) => b.weight - a.weight).map((chord2) => chord2.name);
   }
-
   function findExactMatches(notes, weight) {
     const tonic = notes[0];
     const tonicChroma = note(tonic).chroma;
-    const noteName = namedSet(notes); // we need to test all chormas to get the correct baseNote
-
-    const allModes = modes$1(notes, false);
+    const noteName = namedSet(notes);
+    const allModes = modes(notes, false);
     const found = [];
-    allModes.forEach((mode, index) => {
-      // some chords could have the same chroma but different interval spelling
-      const chordTypes = all$1().filter(chordType => chordType.chroma === mode);
-      chordTypes.forEach(chordType => {
-        const chordName = chordType.aliases[0];
-        const baseNote = noteName(index);
-        const isInversion = index !== tonicChroma;
-
+    allModes.forEach((mode2, index16) => {
+      const chordTypes2 = all().filter((chordType2) => chordType2.chroma === mode2);
+      chordTypes2.forEach((chordType2) => {
+        const chordName = chordType2.aliases[0];
+        const baseNote = noteName(index16);
+        const isInversion = index16 !== tonicChroma;
         if (isInversion) {
           found.push({
             weight: 0.5 * weight,
             name: `${baseNote}${chordName}/${tonic}`
           });
         } else {
-          found.push({
-            weight: 1 * weight,
-            name: `${baseNote}${chordName}`
-          });
+          found.push({ weight: 1 * weight, name: `${baseNote}${chordName}` });
         }
       });
     });
     return found;
   }
 
-  // Format: ["intervals", "name", "alias1", "alias2", ...]
-
-  const SCALES = [// 5-note scales
-  ["1P 2M 3M 5P 6M", "major pentatonic", "pentatonic"], ["1P 3M 4P 5P 7M", "ionian pentatonic"], ["1P 3M 4P 5P 7m", "mixolydian pentatonic", "indian"], ["1P 2M 4P 5P 6M", "ritusen"], ["1P 2M 4P 5P 7m", "egyptian"], ["1P 3M 4P 5d 7m", "neopolitan major pentatonic"], ["1P 3m 4P 5P 6m", "vietnamese 1"], ["1P 2m 3m 5P 6m", "pelog"], ["1P 2m 4P 5P 6m", "kumoijoshi"], ["1P 2M 3m 5P 6m", "hirajoshi"], ["1P 2m 4P 5d 7m", "iwato"], ["1P 2m 4P 5P 7m", "in-sen"], ["1P 3M 4A 5P 7M", "lydian pentatonic", "chinese"], ["1P 3m 4P 6m 7m", "malkos raga"], ["1P 3m 4P 5d 7m", "locrian pentatonic", "minor seven flat five pentatonic"], ["1P 3m 4P 5P 7m", "minor pentatonic", "vietnamese 2"], ["1P 3m 4P 5P 6M", "minor six pentatonic"], ["1P 2M 3m 5P 6M", "flat three pentatonic", "kumoi"], ["1P 2M 3M 5P 6m", "flat six pentatonic"], ["1P 2m 3M 5P 6M", "scriabin"], ["1P 3M 5d 6m 7m", "whole tone pentatonic"], ["1P 3M 4A 5A 7M", "lydian #5P pentatonic"], ["1P 3M 4A 5P 7m", "lydian dominant pentatonic"], ["1P 3m 4P 5P 7M", "minor #7M pentatonic"], ["1P 3m 4d 5d 7m", "super locrian pentatonic"], // 6-note scales
-  ["1P 2M 3m 4P 5P 7M", "minor hexatonic"], ["1P 2A 3M 5P 5A 7M", "augmented"], ["1P 2M 3m 3M 5P 6M", "major blues"], ["1P 2M 4P 5P 6M 7m", "piongio"], ["1P 2m 3M 4A 6M 7m", "prometheus neopolitan"], ["1P 2M 3M 4A 6M 7m", "prometheus"], ["1P 2m 3M 5d 6m 7m", "mystery #1"], ["1P 2m 3M 4P 5A 6M", "six tone symmetric"], ["1P 2M 3M 4A 5A 7m", "whole tone", "messiaen's mode #1"], ["1P 2m 4P 4A 5P 7M", "messiaen's mode #5"], ["1P 3m 4P 5d 5P 7m", "minor blues", "blues"], // 7-note scales
-  ["1P 2M 3M 4P 5d 6m 7m", "locrian major", "arabian"], ["1P 2m 3M 4A 5P 6m 7M", "double harmonic lydian"], ["1P 2M 3m 4P 5P 6m 7M", "harmonic minor"], ["1P 2m 2A 3M 4A 6m 7m", "altered", "super locrian", "diminished whole tone", "pomeroy"], ["1P 2M 3m 4P 5d 6m 7m", "locrian #2", "half-diminished", "aeolian b5"], ["1P 2M 3M 4P 5P 6m 7m", "mixolydian b6", "melodic minor fifth mode", "hindu"], ["1P 2M 3M 4A 5P 6M 7m", "lydian dominant", "lydian b7", "overtone"], ["1P 2M 3M 4A 5P 6M 7M", "lydian"], ["1P 2M 3M 4A 5A 6M 7M", "lydian augmented"], ["1P 2m 3m 4P 5P 6M 7m", "dorian b2", "phrygian #6", "melodic minor second mode"], ["1P 2M 3m 4P 5P 6M 7M", "melodic minor"], ["1P 2m 3m 4P 5d 6m 7m", "locrian"], ["1P 2m 3m 4d 5d 6m 7d", "ultralocrian", "superlocrian bb7", "superlocrian diminished"], ["1P 2m 3m 4P 5d 6M 7m", "locrian 6", "locrian natural 6", "locrian sharp 6"], ["1P 2A 3M 4P 5P 5A 7M", "augmented heptatonic"], // Source https://en.wikipedia.org/wiki/Ukrainian_Dorian_scale
-  ["1P 2M 3m 4A 5P 6M 7m", "dorian #4", "ukrainian dorian", "romanian minor", "altered dorian"], ["1P 2M 3m 4A 5P 6M 7M", "lydian diminished"], ["1P 2m 3m 4P 5P 6m 7m", "phrygian"], ["1P 2M 3M 4A 5A 7m 7M", "leading whole tone"], ["1P 2M 3M 4A 5P 6m 7m", "lydian minor"], ["1P 2m 3M 4P 5P 6m 7m", "phrygian dominant", "spanish", "phrygian major"], ["1P 2m 3m 4P 5P 6m 7M", "balinese"], ["1P 2m 3m 4P 5P 6M 7M", "neopolitan major"], ["1P 2M 3m 4P 5P 6m 7m", "aeolian", "minor"], ["1P 2M 3M 4P 5P 6m 7M", "harmonic major"], ["1P 2m 3M 4P 5P 6m 7M", "double harmonic major", "gypsy"], ["1P 2M 3m 4P 5P 6M 7m", "dorian"], ["1P 2M 3m 4A 5P 6m 7M", "hungarian minor"], ["1P 2A 3M 4A 5P 6M 7m", "hungarian major"], ["1P 2m 3M 4P 5d 6M 7m", "oriental"], ["1P 2m 3m 3M 4A 5P 7m", "flamenco"], ["1P 2m 3m 4A 5P 6m 7M", "todi raga"], ["1P 2M 3M 4P 5P 6M 7m", "mixolydian", "dominant"], ["1P 2m 3M 4P 5d 6m 7M", "persian"], ["1P 2M 3M 4P 5P 6M 7M", "major", "ionian"], ["1P 2m 3M 5d 6m 7m 7M", "enigmatic"], ["1P 2M 3M 4P 5A 6M 7M", "major augmented", "major #5", "ionian augmented", "ionian #5"], ["1P 2A 3M 4A 5P 6M 7M", "lydian #9"], // 8-note scales
-  ["1P 2m 2M 4P 4A 5P 6m 7M", "messiaen's mode #4"], ["1P 2m 3M 4P 4A 5P 6m 7M", "purvi raga"], ["1P 2m 3m 3M 4P 5P 6m 7m", "spanish heptatonic"], ["1P 2M 3M 4P 5P 6M 7m 7M", "bebop"], ["1P 2M 3m 3M 4P 5P 6M 7m", "bebop minor"], ["1P 2M 3M 4P 5P 5A 6M 7M", "bebop major"], ["1P 2m 3m 4P 5d 5P 6m 7m", "bebop locrian"], ["1P 2M 3m 4P 5P 6m 7m 7M", "minor bebop"], ["1P 2M 3m 4P 5d 6m 6M 7M", "diminished", "whole-half diminished"], ["1P 2M 3M 4P 5d 5P 6M 7M", "ichikosucho"], ["1P 2M 3m 4P 5P 6m 6M 7M", "minor six diminished"], ["1P 2m 3m 3M 4A 5P 6M 7m", "half-whole diminished", "dominant diminished", "messiaen's mode #2"], ["1P 3m 3M 4P 5P 6M 7m 7M", "kafi raga"], ["1P 2M 3M 4P 4A 5A 6A 7M", "messiaen's mode #6"], // 9-note scales
-  ["1P 2M 3m 3M 4P 5d 5P 6M 7m", "composite blues"], ["1P 2M 3m 3M 4A 5P 6m 7m 7M", "messiaen's mode #3"], // 10-note scales
-  ["1P 2m 2M 3m 4P 4A 5P 6m 6M 7M", "messiaen's mode #7"], // 12-note scales
-  ["1P 2m 2M 3m 3M 4P 5d 5P 6m 6M 7m 7M", "chromatic"]];
-  const NoScaleType = { ...EmptyPcset,
+  // node_modules/.pnpm/@tonaljs+scale-type@4.6.5/node_modules/@tonaljs/scale-type/dist/index.es.js
+  var SCALES = [
+    ["1P 2M 3M 5P 6M", "major pentatonic", "pentatonic"],
+    ["1P 3M 4P 5P 7M", "ionian pentatonic"],
+    ["1P 3M 4P 5P 7m", "mixolydian pentatonic", "indian"],
+    ["1P 2M 4P 5P 6M", "ritusen"],
+    ["1P 2M 4P 5P 7m", "egyptian"],
+    ["1P 3M 4P 5d 7m", "neopolitan major pentatonic"],
+    ["1P 3m 4P 5P 6m", "vietnamese 1"],
+    ["1P 2m 3m 5P 6m", "pelog"],
+    ["1P 2m 4P 5P 6m", "kumoijoshi"],
+    ["1P 2M 3m 5P 6m", "hirajoshi"],
+    ["1P 2m 4P 5d 7m", "iwato"],
+    ["1P 2m 4P 5P 7m", "in-sen"],
+    ["1P 3M 4A 5P 7M", "lydian pentatonic", "chinese"],
+    ["1P 3m 4P 6m 7m", "malkos raga"],
+    ["1P 3m 4P 5d 7m", "locrian pentatonic", "minor seven flat five pentatonic"],
+    ["1P 3m 4P 5P 7m", "minor pentatonic", "vietnamese 2"],
+    ["1P 3m 4P 5P 6M", "minor six pentatonic"],
+    ["1P 2M 3m 5P 6M", "flat three pentatonic", "kumoi"],
+    ["1P 2M 3M 5P 6m", "flat six pentatonic"],
+    ["1P 2m 3M 5P 6M", "scriabin"],
+    ["1P 3M 5d 6m 7m", "whole tone pentatonic"],
+    ["1P 3M 4A 5A 7M", "lydian #5P pentatonic"],
+    ["1P 3M 4A 5P 7m", "lydian dominant pentatonic"],
+    ["1P 3m 4P 5P 7M", "minor #7M pentatonic"],
+    ["1P 3m 4d 5d 7m", "super locrian pentatonic"],
+    ["1P 2M 3m 4P 5P 7M", "minor hexatonic"],
+    ["1P 2A 3M 5P 5A 7M", "augmented"],
+    ["1P 2M 3m 3M 5P 6M", "major blues"],
+    ["1P 2M 4P 5P 6M 7m", "piongio"],
+    ["1P 2m 3M 4A 6M 7m", "prometheus neopolitan"],
+    ["1P 2M 3M 4A 6M 7m", "prometheus"],
+    ["1P 2m 3M 5d 6m 7m", "mystery #1"],
+    ["1P 2m 3M 4P 5A 6M", "six tone symmetric"],
+    ["1P 2M 3M 4A 5A 7m", "whole tone", "messiaen's mode #1"],
+    ["1P 2m 4P 4A 5P 7M", "messiaen's mode #5"],
+    ["1P 3m 4P 5d 5P 7m", "minor blues", "blues"],
+    ["1P 2M 3M 4P 5d 6m 7m", "locrian major", "arabian"],
+    ["1P 2m 3M 4A 5P 6m 7M", "double harmonic lydian"],
+    ["1P 2M 3m 4P 5P 6m 7M", "harmonic minor"],
+    [
+      "1P 2m 2A 3M 4A 6m 7m",
+      "altered",
+      "super locrian",
+      "diminished whole tone",
+      "pomeroy"
+    ],
+    ["1P 2M 3m 4P 5d 6m 7m", "locrian #2", "half-diminished", "aeolian b5"],
+    [
+      "1P 2M 3M 4P 5P 6m 7m",
+      "mixolydian b6",
+      "melodic minor fifth mode",
+      "hindu"
+    ],
+    ["1P 2M 3M 4A 5P 6M 7m", "lydian dominant", "lydian b7", "overtone"],
+    ["1P 2M 3M 4A 5P 6M 7M", "lydian"],
+    ["1P 2M 3M 4A 5A 6M 7M", "lydian augmented"],
+    [
+      "1P 2m 3m 4P 5P 6M 7m",
+      "dorian b2",
+      "phrygian #6",
+      "melodic minor second mode"
+    ],
+    ["1P 2M 3m 4P 5P 6M 7M", "melodic minor"],
+    ["1P 2m 3m 4P 5d 6m 7m", "locrian"],
+    [
+      "1P 2m 3m 4d 5d 6m 7d",
+      "ultralocrian",
+      "superlocrian bb7",
+      "superlocrian diminished"
+    ],
+    ["1P 2m 3m 4P 5d 6M 7m", "locrian 6", "locrian natural 6", "locrian sharp 6"],
+    ["1P 2A 3M 4P 5P 5A 7M", "augmented heptatonic"],
+    [
+      "1P 2M 3m 4A 5P 6M 7m",
+      "dorian #4",
+      "ukrainian dorian",
+      "romanian minor",
+      "altered dorian"
+    ],
+    ["1P 2M 3m 4A 5P 6M 7M", "lydian diminished"],
+    ["1P 2m 3m 4P 5P 6m 7m", "phrygian"],
+    ["1P 2M 3M 4A 5A 7m 7M", "leading whole tone"],
+    ["1P 2M 3M 4A 5P 6m 7m", "lydian minor"],
+    ["1P 2m 3M 4P 5P 6m 7m", "phrygian dominant", "spanish", "phrygian major"],
+    ["1P 2m 3m 4P 5P 6m 7M", "balinese"],
+    ["1P 2m 3m 4P 5P 6M 7M", "neopolitan major"],
+    ["1P 2M 3m 4P 5P 6m 7m", "aeolian", "minor"],
+    ["1P 2M 3M 4P 5P 6m 7M", "harmonic major"],
+    ["1P 2m 3M 4P 5P 6m 7M", "double harmonic major", "gypsy"],
+    ["1P 2M 3m 4P 5P 6M 7m", "dorian"],
+    ["1P 2M 3m 4A 5P 6m 7M", "hungarian minor"],
+    ["1P 2A 3M 4A 5P 6M 7m", "hungarian major"],
+    ["1P 2m 3M 4P 5d 6M 7m", "oriental"],
+    ["1P 2m 3m 3M 4A 5P 7m", "flamenco"],
+    ["1P 2m 3m 4A 5P 6m 7M", "todi raga"],
+    ["1P 2M 3M 4P 5P 6M 7m", "mixolydian", "dominant"],
+    ["1P 2m 3M 4P 5d 6m 7M", "persian"],
+    ["1P 2M 3M 4P 5P 6M 7M", "major", "ionian"],
+    ["1P 2m 3M 5d 6m 7m 7M", "enigmatic"],
+    [
+      "1P 2M 3M 4P 5A 6M 7M",
+      "major augmented",
+      "major #5",
+      "ionian augmented",
+      "ionian #5"
+    ],
+    ["1P 2A 3M 4A 5P 6M 7M", "lydian #9"],
+    ["1P 2m 2M 4P 4A 5P 6m 7M", "messiaen's mode #4"],
+    ["1P 2m 3M 4P 4A 5P 6m 7M", "purvi raga"],
+    ["1P 2m 3m 3M 4P 5P 6m 7m", "spanish heptatonic"],
+    ["1P 2M 3M 4P 5P 6M 7m 7M", "bebop"],
+    ["1P 2M 3m 3M 4P 5P 6M 7m", "bebop minor"],
+    ["1P 2M 3M 4P 5P 5A 6M 7M", "bebop major"],
+    ["1P 2m 3m 4P 5d 5P 6m 7m", "bebop locrian"],
+    ["1P 2M 3m 4P 5P 6m 7m 7M", "minor bebop"],
+    ["1P 2M 3m 4P 5d 6m 6M 7M", "diminished", "whole-half diminished"],
+    ["1P 2M 3M 4P 5d 5P 6M 7M", "ichikosucho"],
+    ["1P 2M 3m 4P 5P 6m 6M 7M", "minor six diminished"],
+    [
+      "1P 2m 3m 3M 4A 5P 6M 7m",
+      "half-whole diminished",
+      "dominant diminished",
+      "messiaen's mode #2"
+    ],
+    ["1P 3m 3M 4P 5P 6M 7m 7M", "kafi raga"],
+    ["1P 2M 3M 4P 4A 5A 6A 7M", "messiaen's mode #6"],
+    ["1P 2M 3m 3M 4P 5d 5P 6M 7m", "composite blues"],
+    ["1P 2M 3m 3M 4A 5P 6m 7m 7M", "messiaen's mode #3"],
+    ["1P 2m 2M 3m 4P 4A 5P 6m 6M 7M", "messiaen's mode #7"],
+    ["1P 2m 2M 3m 3M 4P 5d 5P 6m 6M 7m 7M", "chromatic"]
+  ];
+  var NoScaleType = __spreadProps(__spreadValues({}, EmptyPcset), {
     intervals: [],
     aliases: []
-  };
-  let dictionary = [];
-  let index$4 = {};
-  /**
-   * Given a scale name or chroma, return the scale properties
-   *
-   * @param {string} type - scale name or pitch class set chroma
-   * @example
-   * import { get } from 'tonaljs/scale-type'
-   * get('major') // => { name: 'major', ... }
-   */
-
-
-  function get$2(type) {
-    return index$4[type] || NoScaleType;
+  });
+  var dictionary2 = [];
+  var index3 = {};
+  function get5(type2) {
+    return index3[type2] || NoScaleType;
   }
-  /**
-   * Return a list of all scale types
-   */
-
-  function all() {
-    return dictionary.slice();
+  var scaleType = deprecate("ScaleDictionary.scaleType", "ScaleType.get", get5);
+  function all2() {
+    return dictionary2.slice();
   }
-  /**
-   * Add a scale into dictionary
-   * @param intervals
-   * @param name
-   * @param aliases
-   */
-
-
-  function add(intervals, name, aliases = []) {
-    const scale = { ...get$4(intervals),
-      name,
-      intervals,
-      aliases
-    };
-    dictionary.push(scale);
-    index$4[scale.name] = scale;
-    index$4[scale.setNum] = scale;
-    index$4[scale.chroma] = scale;
-    scale.aliases.forEach(alias => addAlias(scale, alias));
-    return scale;
+  var entries2 = deprecate("ScaleDictionary.entries", "ScaleType.all", all2);
+  function add2(intervals, name, aliases = []) {
+    const scale2 = __spreadProps(__spreadValues({}, get3(intervals)), { name, intervals, aliases });
+    dictionary2.push(scale2);
+    index3[scale2.name] = scale2;
+    index3[scale2.setNum] = scale2;
+    index3[scale2.chroma] = scale2;
+    scale2.aliases.forEach((alias) => addAlias2(scale2, alias));
+    return scale2;
   }
-
-  function addAlias(scale, alias) {
-    index$4[alias] = scale;
+  function addAlias2(scale2, alias) {
+    index3[alias] = scale2;
   }
+  SCALES.forEach(([ivls, name, ...aliases]) => add2(ivls.split(" "), name, aliases));
 
-  SCALES.forEach(([ivls, name, ...aliases]) => add(ivls.split(" "), name, aliases));
-
-  const NoChord = {
+  // node_modules/.pnpm/@tonaljs+chord@4.6.5/node_modules/@tonaljs/chord/dist/index.es.js
+  var NoChord = {
     empty: true,
     name: "",
     symbol: "",
@@ -12393,95 +8465,50 @@
     aliases: [],
     notes: [],
     intervals: []
-  }; // 6, 64, 7, 9, 11 and 13 are consider part of the chord
-  // (see https://github.com/danigb/tonal/issues/55)
-
-  const NUM_TYPES = /^(6|64|7|9|11|13)$/;
-  /**
-   * Tokenize a chord name. It returns an array with the tonic and chord type
-   * If not tonic is found, all the name is considered the chord name.
-   *
-   * This function does NOT check if the chord type exists or not. It only tries
-   * to split the tonic and chord type.
-   *
-   * @function
-   * @param {string} name - the chord name
-   * @return {Array} an array with [tonic, type]
-   * @example
-   * tokenize("Cmaj7") // => [ "C", "maj7" ]
-   * tokenize("C7") // => [ "C", "7" ]
-   * tokenize("mMaj7") // => [ null, "mMaj7" ]
-   * tokenize("Cnonsense") // => [ null, "nonsense" ]
-   */
-
+  };
+  var NUM_TYPES = /^(6|64|7|9|11|13)$/;
   function tokenize(name) {
-    const [letter, acc, oct, type] = tokenizeNote(name);
-
+    const [letter, acc, oct, type2] = tokenizeNote(name);
     if (letter === "") {
       return ["", name];
-    } // aug is augmented (see https://github.com/danigb/tonal/issues/55)
-
-
-    if (letter === "A" && type === "ug") {
+    }
+    if (letter === "A" && type2 === "ug") {
       return ["", "aug"];
-    } // see: https://github.com/tonaljs/tonal/issues/70
-
-
-    if (!type && (oct === "4" || oct === "5")) {
+    }
+    if (!type2 && (oct === "4" || oct === "5")) {
       return [letter + acc, oct];
     }
-
     if (NUM_TYPES.test(oct)) {
-      return [letter + acc, oct + type];
+      return [letter + acc, oct + type2];
     } else {
-      return [letter + acc + oct, type];
+      return [letter + acc + oct, type2];
     }
   }
-  /**
-   * Get a Chord from a chord name.
-   */
-
-
-  function get$1(src) {
+  function get6(src) {
     if (src === "") {
       return NoChord;
     }
-
     if (Array.isArray(src) && src.length === 2) {
       return getChord(src[1], src[0]);
     } else {
-      const [tonic, type] = tokenize(src);
-      const chord = getChord(type, tonic);
-      return chord.empty ? getChord(src) : chord;
+      const [tonic, type2] = tokenize(src);
+      const chord2 = getChord(type2, tonic);
+      return chord2.empty ? getChord(src) : chord2;
     }
   }
-  /**
-   * Get chord properties
-   *
-   * @param typeName - the chord type name
-   * @param [tonic] - Optional tonic
-   * @param [root]  - Optional root (requires a tonic)
-   */
-
-
   function getChord(typeName, optionalTonic, optionalRoot) {
-    const type = get$3(typeName);
+    const type2 = get4(typeName);
     const tonic = note(optionalTonic || "");
-    const root = note(optionalRoot || "");
-
-    if (type.empty || optionalTonic && tonic.empty || optionalRoot && root.empty) {
+    const root2 = note(optionalRoot || "");
+    if (type2.empty || optionalTonic && tonic.empty || optionalRoot && root2.empty) {
       return NoChord;
     }
-
-    const rootInterval = distance(tonic.pc, root.pc);
-    const rootDegree = type.intervals.indexOf(rootInterval) + 1;
-
-    if (!root.empty && !rootDegree) {
+    const rootInterval = distance(tonic.pc, root2.pc);
+    const rootDegree = type2.intervals.indexOf(rootInterval) + 1;
+    if (!root2.empty && !rootDegree) {
       return NoChord;
     }
-
-    const intervals = Array.from(type.intervals);
-
+    const intervals = Array.from(type2.intervals);
     for (let i = 1; i < rootDegree; i++) {
       const num = intervals[0][0];
       const quality = intervals[0][1];
@@ -12489,148 +8516,244 @@
       intervals.push(`${newNum}${quality}`);
       intervals.shift();
     }
-
-    const notes = tonic.empty ? [] : intervals.map(i => transpose$1(tonic, i));
-    typeName = type.aliases.indexOf(typeName) !== -1 ? typeName : type.aliases[0];
-    const symbol = `${tonic.empty ? "" : tonic.pc}${typeName}${root.empty || rootDegree <= 1 ? "" : "/" + root.pc}`;
-    const name = `${optionalTonic ? tonic.pc + " " : ""}${type.name}${rootDegree > 1 && optionalRoot ? " over " + root.pc : ""}`;
-    return { ...type,
+    const notes = tonic.empty ? [] : intervals.map((i) => transpose(tonic, i));
+    typeName = type2.aliases.indexOf(typeName) !== -1 ? typeName : type2.aliases[0];
+    const symbol = `${tonic.empty ? "" : tonic.pc}${typeName}${root2.empty || rootDegree <= 1 ? "" : "/" + root2.pc}`;
+    const name = `${optionalTonic ? tonic.pc + " " : ""}${type2.name}${rootDegree > 1 && optionalRoot ? " over " + root2.pc : ""}`;
+    return __spreadProps(__spreadValues({}, type2), {
       name,
       symbol,
-      type: type.name,
-      root: root.name,
+      type: type2.name,
+      root: root2.name,
       intervals,
       rootDegree,
       tonic: tonic.name,
       notes
-    };
+    });
   }
-
-  const chord = deprecate("Chord.chord", "Chord.get", get$1);
-  /**
-   * Transpose a chord name
-   *
-   * @param {string} chordName - the chord name
-   * @return {string} the transposed chord
-   *
-   * @example
-   * transpose('Dm7', 'P4') // => 'Gm7
-   */
-
-  function transpose(chordName, interval) {
-    const [tonic, type] = tokenize(chordName);
-
+  var chord = deprecate("Chord.chord", "Chord.get", get6);
+  function transpose2(chordName, interval3) {
+    const [tonic, type2] = tokenize(chordName);
     if (!tonic) {
       return chordName;
     }
-
-    return transpose$1(tonic, interval) + type;
+    return transpose(tonic, interval3) + type2;
   }
-  /**
-   * Get all scales where the given chord fits
-   *
-   * @example
-   * chordScales('C7b9')
-   * // => ["phrygian dominant", "flamenco", "spanish heptatonic", "half-whole diminished", "chromatic"]
-   */
-
-
   function chordScales(name) {
-    const s = get$1(name);
+    const s = get6(name);
     const isChordIncluded = isSupersetOf(s.chroma);
-    return all().filter(scale => isChordIncluded(scale.chroma)).map(scale => scale.name);
+    return all2().filter((scale2) => isChordIncluded(scale2.chroma)).map((scale2) => scale2.name);
   }
-  /**
-   * Get all chords names that are a superset of the given one
-   * (has the same notes and at least one more)
-   *
-   * @function
-   * @example
-   * extended("CMaj7")
-   * // => [ 'Cmaj#4', 'Cmaj7#9#11', 'Cmaj9', 'CM7add13', 'Cmaj13', 'Cmaj9#11', 'CM13#11', 'CM7b9' ]
-   */
-
-
   function extended(chordName) {
-    const s = get$1(chordName);
+    const s = get6(chordName);
     const isSuperset = isSupersetOf(s.chroma);
-    return all$1().filter(chord => isSuperset(chord.chroma)).map(chord => s.tonic + chord.aliases[0]);
+    return all().filter((chord2) => isSuperset(chord2.chroma)).map((chord2) => s.tonic + chord2.aliases[0]);
   }
-  /**
-   * Find all chords names that are a subset of the given one
-   * (has less notes but all from the given chord)
-   *
-   * @example
-   */
-
-
   function reduced(chordName) {
-    const s = get$1(chordName);
+    const s = get6(chordName);
     const isSubset = isSubsetOf(s.chroma);
-    return all$1().filter(chord => isSubset(chord.chroma)).map(chord => s.tonic + chord.aliases[0]);
+    return all().filter((chord2) => isSubset(chord2.chroma)).map((chord2) => s.tonic + chord2.aliases[0]);
   }
-
-  var index$3 = {
+  var index4 = {
     getChord,
-    get: get$1,
+    get: get6,
     detect,
     chordScales,
     extended,
     reduced,
     tokenize,
-    transpose,
-    // deprecate
+    transpose: transpose2,
     chord
   };
 
-  Object.freeze([]);
+  // node_modules/.pnpm/@tonaljs+duration-value@4.6.2/node_modules/@tonaljs/duration-value/dist/index.es.js
+  var DATA = [
+    [
+      0.125,
+      "dl",
+      ["large", "duplex longa", "maxima", "octuple", "octuple whole"]
+    ],
+    [0.25, "l", ["long", "longa"]],
+    [0.5, "d", ["double whole", "double", "breve"]],
+    [1, "w", ["whole", "semibreve"]],
+    [2, "h", ["half", "minim"]],
+    [4, "q", ["quarter", "crotchet"]],
+    [8, "e", ["eighth", "quaver"]],
+    [16, "s", ["sixteenth", "semiquaver"]],
+    [32, "t", ["thirty-second", "demisemiquaver"]],
+    [64, "sf", ["sixty-fourth", "hemidemisemiquaver"]],
+    [128, "h", ["hundred twenty-eighth"]],
+    [256, "th", ["two hundred fifty-sixth"]]
+  ];
+  var VALUES = [];
+  DATA.forEach(([denominator, shorthand, names2]) => add3(denominator, shorthand, names2));
+  function add3(denominator, shorthand, names2) {
+    VALUES.push({
+      empty: false,
+      dots: "",
+      name: "",
+      value: 1 / denominator,
+      fraction: denominator < 1 ? [1 / denominator, 1] : [1, denominator],
+      shorthand,
+      names: names2
+    });
+  }
 
-  const MODES = [[0, 2773, 0, "ionian", "", "Maj7", "major"], [1, 2902, 2, "dorian", "m", "m7"], [2, 3418, 4, "phrygian", "m", "m7"], [3, 2741, -1, "lydian", "", "Maj7"], [4, 2774, 1, "mixolydian", "", "7"], [5, 2906, 3, "aeolian", "m", "m7", "minor"], [6, 3434, 5, "locrian", "dim", "m7b5"]];
-  const NoMode = { ...EmptyPcset,
+  // node_modules/.pnpm/@tonaljs+interval@4.6.5/node_modules/@tonaljs/interval/dist/index.es.js
+  var IQ = "P m M m M P d P m M m M".split(" ");
+  var add4 = combinator((a, b) => [a[0] + b[0], a[1] + b[1]]);
+  var substract = combinator((a, b) => [a[0] - b[0], a[1] - b[1]]);
+  function combinator(fn) {
+    return (a, b) => {
+      const coordA = interval2(a).coord;
+      const coordB = interval2(b).coord;
+      if (coordA && coordB) {
+        const coord = fn(coordA, coordB);
+        return coordToInterval(coord).name;
+      }
+    };
+  }
+
+  // node_modules/.pnpm/@tonaljs+midi@4.6.5/node_modules/@tonaljs/midi/dist/index.es.js
+  var L2 = Math.log(2);
+  var L440 = Math.log(440);
+  var SHARPS2 = "C C# D D# E F F# G G# A A# B".split(" ");
+  var FLATS = "C Db D Eb E F Gb G Ab A Bb B".split(" ");
+
+  // node_modules/.pnpm/@tonaljs+roman-numeral@4.6.5/node_modules/@tonaljs/roman-numeral/dist/index.es.js
+  var NoRomanNumeral = { empty: true, name: "", chordType: "" };
+  var cache3 = {};
+  function get7(src) {
+    return typeof src === "string" ? cache3[src] || (cache3[src] = parse3(src)) : typeof src === "number" ? get7(NAMES[src] || "") : isPitch(src) ? fromPitch(src) : isNamed(src) ? get7(src.name) : NoRomanNumeral;
+  }
+  var romanNumeral = deprecate("RomanNumeral.romanNumeral", "RomanNumeral.get", get7);
+  function fromPitch(pitch) {
+    return get7(altToAcc(pitch.alt) + NAMES[pitch.step]);
+  }
+  var REGEX3 = /^(#{1,}|b{1,}|x{1,}|)(IV|I{1,3}|VI{0,2}|iv|i{1,3}|vi{0,2})([^IViv]*)$/;
+  function tokenize2(str) {
+    return REGEX3.exec(str) || ["", "", "", ""];
+  }
+  var ROMANS = "I II III IV V VI VII";
+  var NAMES = ROMANS.split(" ");
+  var NAMES_MINOR = ROMANS.toLowerCase().split(" ");
+  function parse3(src) {
+    const [name, acc, roman, chordType2] = tokenize2(src);
+    if (!roman) {
+      return NoRomanNumeral;
+    }
+    const upperRoman = roman.toUpperCase();
+    const step = NAMES.indexOf(upperRoman);
+    const alt = accToAlt(acc);
+    const dir = 1;
+    return {
+      empty: false,
+      name,
+      roman,
+      interval: interval2({ step, alt, dir }).name,
+      acc,
+      chordType: chordType2,
+      alt,
+      step,
+      major: roman === upperRoman,
+      oct: 0,
+      dir
+    };
+  }
+
+  // node_modules/.pnpm/@tonaljs+key@4.6.5/node_modules/@tonaljs/key/dist/index.es.js
+  var Empty = Object.freeze([]);
+  var NoKey = {
+    type: "major",
+    tonic: "",
+    alteration: 0,
+    keySignature: ""
+  };
+  var NoKeyScale = {
+    tonic: "",
+    grades: Empty,
+    intervals: Empty,
+    scale: Empty,
+    chords: Empty,
+    chordsHarmonicFunction: Empty,
+    chordScales: Empty
+  };
+  var NoMajorKey = __spreadProps(__spreadValues(__spreadValues({}, NoKey), NoKeyScale), {
+    type: "major",
+    minorRelative: "",
+    scale: Empty,
+    secondaryDominants: Empty,
+    secondaryDominantsMinorRelative: Empty,
+    substituteDominants: Empty,
+    substituteDominantsMinorRelative: Empty
+  });
+  var NoMinorKey = __spreadProps(__spreadValues({}, NoKey), {
+    type: "minor",
+    relativeMajor: "",
+    natural: NoKeyScale,
+    harmonic: NoKeyScale,
+    melodic: NoKeyScale
+  });
+  var mapScaleToType = (scale2, list, sep = "") => list.map((type2, i) => `${scale2[i]}${sep}${type2}`);
+  function keyScale(grades, chords2, harmonicFunctions, chordScales2) {
+    return (tonic) => {
+      const intervals = grades.map((gr) => get7(gr).interval || "");
+      const scale2 = intervals.map((interval3) => transpose(tonic, interval3));
+      return {
+        tonic,
+        grades,
+        intervals,
+        scale: scale2,
+        chords: mapScaleToType(scale2, chords2),
+        chordsHarmonicFunction: harmonicFunctions.slice(),
+        chordScales: mapScaleToType(scale2, chordScales2, " ")
+      };
+    };
+  }
+  var MajorScale = keyScale("I II III IV V VI VII".split(" "), "maj7 m7 m7 maj7 7 m7 m7b5".split(" "), "T SD T SD D T D".split(" "), "major,dorian,phrygian,lydian,mixolydian,minor,locrian".split(","));
+  var NaturalScale = keyScale("I II bIII IV V bVI bVII".split(" "), "m7 m7b5 maj7 m7 m7 maj7 7".split(" "), "T SD T SD D SD SD".split(" "), "minor,locrian,major,dorian,phrygian,lydian,mixolydian".split(","));
+  var HarmonicScale = keyScale("I II bIII IV V bVI VII".split(" "), "mMaj7 m7b5 +maj7 m7 7 maj7 o7".split(" "), "T SD T SD D SD D".split(" "), "harmonic minor,locrian 6,major augmented,lydian diminished,phrygian dominant,lydian #9,ultralocrian".split(","));
+  var MelodicScale = keyScale("I II bIII IV V VI VII".split(" "), "m6 m7 +maj7 7 7 m7b5 m7b5".split(" "), "T SD T SD D  ".split(" "), "melodic minor,dorian b2,lydian augmented,lydian dominant,mixolydian b6,locrian #2,altered".split(","));
+
+  // node_modules/.pnpm/@tonaljs+mode@4.6.5/node_modules/@tonaljs/mode/dist/index.es.js
+  var MODES = [
+    [0, 2773, 0, "ionian", "", "Maj7", "major"],
+    [1, 2902, 2, "dorian", "m", "m7"],
+    [2, 3418, 4, "phrygian", "m", "m7"],
+    [3, 2741, -1, "lydian", "", "Maj7"],
+    [4, 2774, 1, "mixolydian", "", "7"],
+    [5, 2906, 3, "aeolian", "m", "m7", "minor"],
+    [6, 3434, 5, "locrian", "dim", "m7b5"]
+  ];
+  var NoMode = __spreadProps(__spreadValues({}, EmptyPcset), {
     name: "",
     alt: 0,
     modeNum: NaN,
     triad: "",
     seventh: "",
     aliases: []
-  };
-  const modes = MODES.map(toMode);
-  const index$2 = {};
-  modes.forEach(mode => {
-    index$2[mode.name] = mode;
-    mode.aliases.forEach(alias => {
-      index$2[alias] = mode;
+  });
+  var modes2 = MODES.map(toMode);
+  var index5 = {};
+  modes2.forEach((mode2) => {
+    index5[mode2.name] = mode2;
+    mode2.aliases.forEach((alias) => {
+      index5[alias] = mode2;
     });
   });
-  /**
-   * Get a Mode by it's name
-   *
-   * @example
-   * get('dorian')
-   * // =>
-   * // {
-   * //   intervals: [ '1P', '2M', '3m', '4P', '5P', '6M', '7m' ],
-   * //   modeNum: 1,
-   * //   chroma: '101101010110',
-   * //   normalized: '101101010110',
-   * //   name: 'dorian',
-   * //   setNum: 2902,
-   * //   alt: 2,
-   * //   triad: 'm',
-   * //   seventh: 'm7',
-   * //   aliases: []
-   * // }
-   */
-
-  function get(name) {
-    return typeof name === "string" ? index$2[name.toLowerCase()] || NoMode : name && name.name ? get(name.name) : NoMode;
+  function get8(name) {
+    return typeof name === "string" ? index5[name.toLowerCase()] || NoMode : name && name.name ? get8(name.name) : NoMode;
   }
-
-  function toMode(mode) {
-    const [modeNum, setNum, alt, name, triad, seventh, alias] = mode;
+  var mode = deprecate("Mode.mode", "Mode.get", get8);
+  function all3() {
+    return modes2.slice();
+  }
+  var entries3 = deprecate("Mode.mode", "Mode.all", all3);
+  function toMode(mode2) {
+    const [modeNum, setNum, alt, name, triad, seventh, alias] = mode2;
     const aliases = alias ? [alias] : [];
     const chroma = Number(setNum).toString(2);
-    const intervals = get$2(name).intervals;
+    const intervals = get5(name).intervals;
     return {
       empty: false,
       intervals,
@@ -12645,366 +8768,203 @@
       aliases
     };
   }
-
-  function chords(chords) {
+  function chords(chords2) {
     return (modeName, tonic) => {
-      const mode = get(modeName);
-      if (mode.empty) return [];
-      const triads = rotate(mode.modeNum, chords);
-      const tonics = mode.intervals.map(i => transpose$1(tonic, i));
-      return triads.map((triad, i) => tonics[i] + triad);
+      const mode2 = get8(modeName);
+      if (mode2.empty)
+        return [];
+      const triads2 = rotate(mode2.modeNum, chords2);
+      const tonics = mode2.intervals.map((i) => transpose(tonic, i));
+      return triads2.map((triad, i) => tonics[i] + triad);
     };
   }
+  var triads = chords(MODES.map((x) => x[4]));
+  var seventhChords = chords(MODES.map((x) => x[5]));
 
-  chords(MODES.map(x => x[4]));
-  chords(MODES.map(x => x[5]));
-
-  /* eslint-disable-line no-unused-vars */
-
-  /**
-   * @module Chords
-   */
-
-  /**
-   * Detects chords as those notes that have the exact same start time, only works
-   * for ground truth (since recordings are not exact)
-   * Does only work if ground truth is aligned! TuxGuitar produces unaligned MIDI.
-   *
-   * @param {Note[]} notes notes
-   * @returns {Note[][]} array of chord arrays
-   */
-
-  function detectChordsByExactStart(notes) {
-    const grouped = group(notes, d => d.start);
-    const chords = [...grouped].map(d => d[1]) // Sort chords by time
-    .sort((a, b) => a[0].start - b[0].start) // Sort notes in each chord by pitch
-    .map(chord => chord.sort((a, b) => a.pitch - b.pitch));
-    return chords;
+  // node_modules/.pnpm/@tonaljs+scale@4.6.5/node_modules/@tonaljs/scale/dist/index.es.js
+  var NoScale = {
+    empty: true,
+    name: "",
+    type: "",
+    tonic: null,
+    setNum: NaN,
+    chroma: "",
+    normalized: "",
+    aliases: [],
+    notes: [],
+    intervals: []
+  };
+  function tokenize3(name) {
+    if (typeof name !== "string") {
+      return ["", ""];
+    }
+    const i = name.indexOf(" ");
+    const tonic = note(name.substring(0, i));
+    if (tonic.empty) {
+      const n = note(name);
+      return n.empty ? ["", name] : [n.name, ""];
+    }
+    const type2 = name.substring(tonic.name.length + 1);
+    return [tonic.name, type2.length ? type2 : ""];
   }
-  /**
-   * Detects chords by taking a note as new chord then adding all notes close
-   * after it to the chord, until the next note is farther away than the given
-   * `threshold`. Then, the next chord is started with this note.
-   *
-   * @param {Note[]} notes notes
-   * @param {number} threshold threshold
-   * @returns {Note[][]} chords
-   */
+  function get9(src) {
+    const tokens = Array.isArray(src) ? src : tokenize3(src);
+    const tonic = note(tokens[0]).name;
+    const st = get5(tokens[1]);
+    if (st.empty) {
+      return NoScale;
+    }
+    const type2 = st.name;
+    const notes = tonic ? st.intervals.map((i) => transpose(tonic, i)) : [];
+    const name = tonic ? tonic + " " + type2 : type2;
+    return __spreadProps(__spreadValues({}, st), { name, type: type2, tonic, notes });
+  }
+  var scale = deprecate("Scale.scale", "Scale.get", get9);
 
+  // src/chords/Chords.js
+  function detectChordsByExactStart(notes) {
+    const grouped = group(notes, (d) => d.start);
+    const chords2 = [...grouped].map((d) => d[1]).sort((a, b) => a[0].start - b[0].start).map((chord2) => chord2.sort((a, b) => a.pitch - b.pitch));
+    return chords2;
+  }
   function detectChordsBySimilarStart(notes, threshold = 0.02) {
-    const chords = [];
+    const chords2 = [];
     let currentChord = [];
     let currentChordStartTime = 0;
-    let currentChordPitches = new Set();
-
-    for (const note of notes) {
-      // Note belongs to current chord
-      if (note.start - currentChordStartTime <= threshold) {
-        // Do not allow the same note twice in a chord
-        if (!currentChordPitches.has(note.pitch)) {
-          currentChord.push(note);
-          currentChordPitches.add(note.pitch);
+    let currentChordPitches = /* @__PURE__ */ new Set();
+    for (const note2 of notes) {
+      if (note2.start - currentChordStartTime <= threshold) {
+        if (!currentChordPitches.has(note2.pitch)) {
+          currentChord.push(note2);
+          currentChordPitches.add(note2.pitch);
         }
       } else {
-        // Start new chord
         if (currentChord.length > 0) {
-          chords.push(currentChord);
+          chords2.push(currentChord);
         }
-
-        currentChord = [note];
-        currentChordStartTime = note.start;
-        currentChordPitches = new Set([note.pitch]);
+        currentChord = [note2];
+        currentChordStartTime = note2.start;
+        currentChordPitches = /* @__PURE__ */ new Set([note2.pitch]);
       }
     }
-
     if (currentChord.length > 0) {
-      chords.push(currentChord);
+      chords2.push(currentChord);
     }
-
-    return chords;
+    return chords2;
   }
-  /**
-   * Detects chords, by simply looking for notes that overlap each other in time.
-   * Example:
-   *    =======
-   *       =========
-   *         ========
-   * Important: Notes must be sorted by start time for this to work correctly.
-   *
-   * @todo not used yet
-   * @todo optional minimum overlap ratio
-   * @todo new definition of chord? i.e. notes have to start 'together'
-   * @param {Note[]} notes array of Note objects
-   * @param {boolean} sortByPitch sort chords by pitch? (otherwise sorted
-   *      by note start time)
-   * @returns {Note[][]} array of chord arrays
-   */
-
   function detectChordsByOverlap(notes, sortByPitch = true) {
     if (!notes || notes.length === 0) {
       return [];
     }
-
     if (notes.length === 1) {
       return [[notes[0]]];
     }
-
     const sorted = [...notes].sort((a, b) => a.start !== b.start ? a.start - b.start : a.pitch - b.pitch);
     const notesTodo = new Set(sorted);
-    const chords = []; // Find all overlaps with brute force
-
+    const chords2 = [];
     while (notesTodo.size > 0) {
-      // Take a new note and make a new chord
       const note1 = notesTodo.values().next().value;
       notesTodo.delete(note1);
-      let chord = [note1]; // Add all notes that overap note1
-
+      let chord2 = [note1];
       for (const note2 of notesTodo.values()) {
         if (note1.overlapInSeconds(note2) >= 0.5 * note1.getDuration()) {
-          chord.push(note2);
+          chord2.push(note2);
           notesTodo.delete(note2);
         }
       }
-
       if (sortByPitch) {
-        chord = chord.sort((a, b) => a.pitch - b.pitch);
+        chord2 = chord2.sort((a, b) => a.pitch - b.pitch);
       }
-
-      chords.push(chord);
+      chords2.push(chord2);
     }
-
-    return chords;
-  } // export function detectChordsByOverlap(notes, sortByPitch = true) {
-  //     if (!notes || !notes.length) { return []; }
-  //     if (notes.length === 1) { return [[notes[0]]]; }
-  //     const chords = [];
-  //     let currentChord = [notes[0]];
-  //     for (let i = 1; i < notes.length; i++) {
-  //         const note = notes[i];
-  //         console.log(i);
-  //         console.log(currentChord);
-  //         console.log(note);
-  //         // Check for overlap with current chord
-  //         let overlaps = false;
-  //         for (let note2 of currentChord) {
-  //             if (note.overlapsInTime(note2)) {
-  //                 overlaps = true;
-  //                 break;
-  //             }
-  //         }
-  //         console.log(overlaps);
-  //         if (overlaps) {
-  //             currentChord.push(note);
-  //             // TODO: also check the distance from the first note of the chord!
-  //             // TODO:jump ahead to not count the cord multiple times (partially)
-  //         } else {
-  //             // If not, the previous chord is finished
-  //             // Sort chord by pitch?
-  //             if (sortByPitch) {
-  //                 currentChord = currentChord.sort((a, b) => a.pitch - b.pitch);
-  //             }
-  //             chords.push(currentChord);
-  //             // Start new chord
-  //             if (i < notes.length - 1) {
-  //                 currentChord = [notes[i + 1]];
-  //                 i++;
-  //             }
-  //         }
-  //     }
-  //     // finish last chord
-  //     chords.push(currentChord);
-  //     return chords;
-  // }
-
-  /*
-   * Maps number of steps (number of notes -1) to possible chord types
-   */
-
-  const chordTypes = new Map([[1, [// TODO: how to handle inversions?
-  {
-    steps: [5],
-    name: 'Inverted power chord',
-    suffix: '?'
-  }, {
-    steps: [7],
-    name: 'Power chord',
-    suffix: '5'
-  }]], [2, [{
-    steps: [2, 7],
-    name: 'Suspended second',
-    suffix: 'sus2'
-  }, {
-    steps: [3, 6],
-    name: 'Diminished',
-    suffix: 'dim'
-  }, {
-    steps: [3, 7],
-    name: 'Minor',
-    suffix: 'min'
-  }, {
-    steps: [4, 10],
-    name: 'Seventh',
-    suffix: '7'
-  }, {
-    steps: [4, 7],
-    name: 'Major',
-    suffix: ''
-  }, {
-    steps: [4, 8],
-    name: 'Augmented',
-    suffix: 'aug'
-  }, {
-    steps: [4, 9],
-    name: 'Sixth',
-    suffix: '6'
-  }, {
-    steps: [5, 7],
-    name: 'Suspended fourth',
-    suffix: 'sus4'
-  }]], [3, [{
-    steps: [2, 3, 7],
-    name: 'Minor, added ninth',
-    suffix: 'm(add9)'
-  }, {
-    steps: [2, 4, 7],
-    name: 'Added ninth',
-    suffix: 'add9'
-  }, {
-    steps: [3, 6, 10],
-    name: 'Minor seventh, flat fifth',
-    suffix: 'm7b5'
-  }, {
-    steps: [3, 7, 10],
-    name: 'Minor seventh',
-    suffix: 'm7'
-  }, {
-    steps: [3, 7, 11],
-    name: 'Minor, major seventh',
-    suffix: 'm(Maj7)'
-  }, {
-    steps: [3, 7, 8],
-    name: 'Minor, flat sixth',
-    suffix: 'mb6'
-  }, {
-    steps: [3, 7, 9],
-    name: 'Minor sixth',
-    suffix: 'm6'
-  }, {
-    steps: [4, 5, 11],
-    name: 'Major eleventh (no fifth, no ninth)',
-    suffix: 'Maj11'
-  }, {
-    steps: [4, 5, 7],
-    name: 'Added fourth',
-    suffix: 'add4'
-  }, {
-    steps: [4, 7, 10],
-    name: 'Dominant seventh',
-    suffix: '7'
-  }, {
-    steps: [4, 7, 11],
-    name: 'Major seventh',
-    suffix: 'Maj7'
-  }, {
-    steps: [4, 7, 9],
-    name: 'Major Sixth',
-    suffix: 'Maj6'
-  }]], [4, [{
-    steps: [2, 3, 6, 10],
-    name: 'Minor ninth flat fifth',
-    suffix: 'm9b5'
-  }, {
-    steps: [2, 3, 7, 10],
-    name: 'Minor ninth',
-    suffix: 'm9'
-  }, {
-    steps: [2, 3, 7, 11],
-    name: 'Minor ninth, major seventh',
-    suffix: 'm9(Maj7)'
-  }, {
-    steps: [2, 3, 7, 9],
-    name: 'Minor sixth, added ninth',
-    suffix: 'm6/9'
-  }, {
-    steps: [2, 4, 7, 11],
-    name: 'Major ninth',
-    suffix: 'Maj9'
-  }, {
-    steps: [2, 4, 7, 9],
-    name: 'Sixth, added ninth',
-    suffix: '6/9'
-  }, {
-    steps: [4, 5, 7, 11],
-    name: 'Major eleventh (no ninth)',
-    suffix: 'Maj11'
-  }, {
-    steps: [4, 6, 7, 10],
-    name: 'Seventh, sharp eleventh',
-    suffix: '7#11'
-  }, {
-    steps: [4, 6, 7, 11],
-    name: 'Major seventh, sharp eleventh',
-    suffix: 'Maj7#11'
-  }]], [5, [{
-    steps: [2, 4, 5, 7, 11],
-    name: 'Major eleventh',
-    suffix: 'Maj11'
-  }, {
-    steps: [2, 4, 7, 9, 11],
-    name: 'Major thirteen',
-    suffix: 'Maj13'
-  }]], [6, [{
-    steps: [2, 3, 4, 6, 7, 10],
-    name: 'Minor thirteen',
-    suffix: 'm13'
-  }]]]);
-  /**
-   * Returns chord type, e.g. 'Major', 'Diminished', ...
-   * Important: Notes must be sorted by pitch ascending
-   *
-   * @todo some chords might be multiple types
-   * @param {Note[]} notes notes (sorted by pitch asc.)
-   * @returns {string} chord type
-   */
-
+    return chords2;
+  }
+  var chordTypes = /* @__PURE__ */ new Map([
+    [
+      1,
+      [
+        { steps: [5], name: "Inverted power chord", suffix: "?" },
+        { steps: [7], name: "Power chord", suffix: "5" }
+      ]
+    ],
+    [
+      2,
+      [
+        { steps: [2, 7], name: "Suspended second", suffix: "sus2" },
+        { steps: [3, 6], name: "Diminished", suffix: "dim" },
+        { steps: [3, 7], name: "Minor", suffix: "min" },
+        { steps: [4, 10], name: "Seventh", suffix: "7" },
+        { steps: [4, 7], name: "Major", suffix: "" },
+        { steps: [4, 8], name: "Augmented", suffix: "aug" },
+        { steps: [4, 9], name: "Sixth", suffix: "6" },
+        { steps: [5, 7], name: "Suspended fourth", suffix: "sus4" }
+      ]
+    ],
+    [
+      3,
+      [
+        { steps: [2, 3, 7], name: "Minor, added ninth", suffix: "m(add9)" },
+        { steps: [2, 4, 7], name: "Added ninth", suffix: "add9" },
+        { steps: [3, 6, 10], name: "Minor seventh, flat fifth", suffix: "m7b5" },
+        { steps: [3, 7, 10], name: "Minor seventh", suffix: "m7" },
+        { steps: [3, 7, 11], name: "Minor, major seventh", suffix: "m(Maj7)" },
+        { steps: [3, 7, 8], name: "Minor, flat sixth", suffix: "mb6" },
+        { steps: [3, 7, 9], name: "Minor sixth", suffix: "m6" },
+        { steps: [4, 5, 11], name: "Major eleventh (no fifth, no ninth)", suffix: "Maj11" },
+        { steps: [4, 5, 7], name: "Added fourth", suffix: "add4" },
+        { steps: [4, 7, 10], name: "Dominant seventh", suffix: "7" },
+        { steps: [4, 7, 11], name: "Major seventh", suffix: "Maj7" },
+        { steps: [4, 7, 9], name: "Major Sixth", suffix: "Maj6" }
+      ]
+    ],
+    [
+      4,
+      [
+        { steps: [2, 3, 6, 10], name: "Minor ninth flat fifth", suffix: "m9b5" },
+        { steps: [2, 3, 7, 10], name: "Minor ninth", suffix: "m9" },
+        { steps: [2, 3, 7, 11], name: "Minor ninth, major seventh", suffix: "m9(Maj7)" },
+        { steps: [2, 3, 7, 9], name: "Minor sixth, added ninth", suffix: "m6/9" },
+        { steps: [2, 4, 7, 11], name: "Major ninth", suffix: "Maj9" },
+        { steps: [2, 4, 7, 9], name: "Sixth, added ninth", suffix: "6/9" },
+        { steps: [4, 5, 7, 11], name: "Major eleventh (no ninth)", suffix: "Maj11" },
+        { steps: [4, 6, 7, 10], name: "Seventh, sharp eleventh", suffix: "7#11" },
+        { steps: [4, 6, 7, 11], name: "Major seventh, sharp eleventh", suffix: "Maj7#11" }
+      ]
+    ],
+    [
+      5,
+      [
+        { steps: [2, 4, 5, 7, 11], name: "Major eleventh", suffix: "Maj11" },
+        { steps: [2, 4, 7, 9, 11], name: "Major thirteen", suffix: "Maj13" }
+      ]
+    ],
+    [
+      6,
+      [
+        { steps: [2, 3, 4, 6, 7, 10], name: "Minor thirteen", suffix: "m13" }
+      ]
+    ]
+  ]);
   function getChordType(notes) {
     if (!notes || notes.length === 0) {
-      return {
-        name: 'No note'
-      };
+      return { name: "No note" };
     }
-
     if (notes.length === 1) {
-      return {
-        name: 'Single note'
-      };
-    } // Get distances in semitones
-
-
+      return { name: "Single note" };
+    }
     let steps = [];
     const lowest = notes[0].pitch;
-
-    for (let index = 1; index < notes.length; index++) {
-      steps.push(notes[index].pitch - lowest);
-    } // Normalize higher than octave
-
-
-    steps = steps.map(d => d % 12); // Filter doubles
-
-    steps = [...new Set(steps)]; // Filter octaves
-
-    steps = steps.filter(d => d !== 0);
-
-    if (steps.length === 0) {
-      return {
-        name: 'Octave'
-      };
+    for (let index16 = 1; index16 < notes.length; index16++) {
+      steps.push(notes[index16].pitch - lowest);
     }
-
-    steps.sort((a, b) => a - b); // Now get the chord type
-
+    steps = steps.map((d) => d % 12);
+    steps = [...new Set(steps)];
+    steps = steps.filter((d) => d !== 0);
+    if (steps.length === 0) {
+      return { name: "Octave" };
+    }
+    steps.sort((a, b) => a - b);
     const candidates = chordTypes.get(steps.length);
-
     if (candidates) {
       for (const cand of candidates) {
         if (arrayShallowEquals(steps, cand.steps)) {
@@ -13012,167 +8972,104 @@
         }
       }
     }
-
-    return {
-      name: 'Unknown chord type'
-    };
+    return { name: "Unknown chord type" };
   }
-  /**
-   * https://github.com/tonaljs/tonal/tree/master/packages/chord
-   * Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
-   *
-   * @param {Note[]} notes notes
-   * @returns {string[]} possible chord types
-   */
-
   function getChordName(notes) {
-    const noteLetters = notes.sort((a, b) => a.pitch - b.pitch).map(d => d.getLetter());
-    const chords = index$3.detect(noteLetters);
-    return chords;
-  } // /**
-  //  * Estimates the name of a given chord of notes
-  //  *
-  //  * @param {string} chord name
-  //  * @return {Note[]} notes array of Note objects
-  //  * @todo use tonaljs
-  //  * @todo use this https://github.com/greird/chordictionaryjs
-  //  */
-  // export function getNotesFromChordName(name, length = 1, start = 0) {
-  //     console.error('NIY');
-  // }
+    const noteLetters = notes.sort((a, b) => a.pitch - b.pitch).map((d) => d.getLetter());
+    const chords2 = index4.detect(noteLetters);
+    return chords2;
+  }
 
-  var Chords = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    detectChordsByExactStart: detectChordsByExactStart,
-    detectChordsBySimilarStart: detectChordsBySimilarStart,
-    detectChordsByOverlap: detectChordsByOverlap,
-    getChordType: getChordType,
-    getChordName: getChordName
-  });
-
-  /**
-   * @module instruments/Lamellophone
-   */
-
-  /**
-   * Represents Lamellophone tunings
-   */
-
-  class LamellophoneTuning {
-    /**
-       * Represents a tuning of lamellophone.
-       *
-       * @param {string} name name
-       * @param {string[]} notes array of notes, same order as on instrument
-       *      e.g. [..., 'D4','C4', 'F#4', ...]
-       */
+  // src/instruments/Lamellophone.js
+  var LamellophoneTuning = class {
     constructor(name, notes) {
       this.name = name;
       this.notes = notes;
-      this.short = notes.join(' ');
-      this.pitches = notes.map(note => getMidiNoteByLabel(note).pitch);
+      this.short = notes.join(" ");
+      this.pitches = notes.map((note2) => getMidiNoteByLabel(note2).pitch);
       this.pitchesSorted = [...this.pitches].sort((a, b) => a - b);
       this.keyCount = notes.length;
     }
-    /**
-       * Returns an array of the tuning's notes as number representation:
-       * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-       * Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
-       *
-       * @returns {string[]} array with tuning notes in number representation
-       */
-
-
     getNumbers() {
       const pitches = this.pitchesSorted;
-      const numbers = new Map();
-
-      for (const [index, pitch] of pitches.entries()) {
-        let number = index + 1;
-        let ending = '';
+      const numbers2 = /* @__PURE__ */ new Map();
+      for (const [index16, pitch] of pitches.entries()) {
+        let number3 = index16 + 1;
+        let ending = "";
         let lowerOctave = pitch - 12;
-
-        while (lowerOctave > 0 && numbers.has(lowerOctave)) {
-          number = numbers.get(lowerOctave).number;
-          ending += '°';
+        while (lowerOctave > 0 && numbers2.has(lowerOctave)) {
+          number3 = numbers2.get(lowerOctave).number;
+          ending += "\xB0";
           lowerOctave -= 12;
         }
-
-        numbers.set(pitch, {
-          number,
-          numberString: `${number}${ending}`
-        });
+        numbers2.set(pitch, { number: number3, numberString: `${number3}${ending}` });
       }
-
-      return [...numbers.values()].map(d => d.numberString);
+      return [...numbers2.values()].map((d) => d.numberString);
     }
-    /**
-       * Returns an array of the tuning's notes as letter representation:
-       * Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
-       * Number format: C,  D,  ... C°, D°, ... C°°, D°°
-       *
-       * @returns {string[]} array with tuning notes in letter representation
-       */
-
-
     getLetters() {
       const pitches = this.pitchesSorted;
-      const numbers = new Map();
-
-      for (const [index, pitch] of pitches.entries()) {
-        let number = index + 1;
-        let ending = '';
+      const numbers2 = /* @__PURE__ */ new Map();
+      for (const [index16, pitch] of pitches.entries()) {
+        let number3 = index16 + 1;
+        let ending = "";
         let lowerOctave = pitch - 12;
-
-        while (lowerOctave > 0 && numbers.has(lowerOctave)) {
-          number = numbers.get(lowerOctave).number;
-          ending += '°';
+        while (lowerOctave > 0 && numbers2.has(lowerOctave)) {
+          number3 = numbers2.get(lowerOctave).number;
+          ending += "\xB0";
           lowerOctave -= 12;
         }
-
         const letter = getMidiNoteByNr(pitch).name;
-        numbers.set(pitch, {
-          number,
-          letterString: `${letter}${ending}`
-        });
+        numbers2.set(pitch, { number: number3, letterString: `${letter}${ending}` });
       }
-
-      return [...numbers.values()].map(d => d.letterString);
+      return [...numbers2.values()].map((d) => d.letterString);
     }
-
-  }
-  /**
-   * Tunings.
-   * Notes are in the same order as on the instrument
-   *
-   * @type {Map<string,Map<string,LamellophoneTuning>>}
-   */
-
-  const lamellophoneTunings = new Map([['Kalimba', new Map([['9 A Major', new LamellophoneTuning('9 A Major', ['A5', 'C#6', 'C#5', 'A5', 'A4', 'F#5', 'E5', 'E6', 'B5'])], ['9 A Minor', new LamellophoneTuning('9 A Minor', ['A5', 'C6', 'C5', 'A5', 'A4', 'F5', 'E5', 'E6', 'B5'])], ['9 A Minor 7', new LamellophoneTuning('9 A Minor 7', ['A5', 'C6', 'C5', 'A5', 'A4', 'F#5', 'E5', 'E6', 'B5'])], ['9 A Ake Bono', new LamellophoneTuning('9 A Ake Bono', ['A5', 'D6', 'D5', 'A5', 'A4', 'F5', 'E5', 'E6', 'A#5'])], ['9 A Hijaz', new LamellophoneTuning('9 A Hijaz', ['G5', 'D6', 'D5', 'A5', 'A4', 'F#5', 'D#5', 'D#6', 'A#5'])], ['9 A Pygmy', new LamellophoneTuning('9 A Pygmy', ['G5', 'C6', 'C5', 'G5', 'G4', 'D#5', 'D5', 'D#6', 'A#5'])], ['17 C Major', new LamellophoneTuning('17 C Major', ['D6', 'B5', 'G5', 'E5', 'C5', 'A4', 'F4', 'D4', 'C4', 'E4', 'G4', 'B4', 'D5', 'F5', 'A5', 'C6', 'E6'])], ['21 C Major', new LamellophoneTuning('21 C Major', ['D6', 'B5', 'G5', 'E5', 'C5', 'A4', 'F4', 'D4', 'B3', 'G3', 'F3', 'A3', 'C4', 'E4', 'G4', 'B4', 'D5', 'F5', 'A5', 'C6', 'E6'])]])]]);
-  /**
-   * Parses a tab into notes
-   *
-   * @param {string} tab in letter format
-   * @param {LamellophoneTuning} tuning tuning
-   * @param {number} tempo tempo in bpm
-   * @returns {Note[]} notes
-   */
-
+  };
+  var lamellophoneTunings = /* @__PURE__ */ new Map([
+    ["Kalimba", /* @__PURE__ */ new Map([
+      [
+        "9 A Major",
+        new LamellophoneTuning("9 A Major", ["A5", "C#6", "C#5", "A5", "A4", "F#5", "E5", "E6", "B5"])
+      ],
+      [
+        "9 A Minor",
+        new LamellophoneTuning("9 A Minor", ["A5", "C6", "C5", "A5", "A4", "F5", "E5", "E6", "B5"])
+      ],
+      [
+        "9 A Minor 7",
+        new LamellophoneTuning("9 A Minor 7", ["A5", "C6", "C5", "A5", "A4", "F#5", "E5", "E6", "B5"])
+      ],
+      [
+        "9 A Ake Bono",
+        new LamellophoneTuning("9 A Ake Bono", ["A5", "D6", "D5", "A5", "A4", "F5", "E5", "E6", "A#5"])
+      ],
+      [
+        "9 A Hijaz",
+        new LamellophoneTuning("9 A Hijaz", ["G5", "D6", "D5", "A5", "A4", "F#5", "D#5", "D#6", "A#5"])
+      ],
+      [
+        "9 A Pygmy",
+        new LamellophoneTuning("9 A Pygmy", ["G5", "C6", "C5", "G5", "G4", "D#5", "D5", "D#6", "A#5"])
+      ],
+      [
+        "17 C Major",
+        new LamellophoneTuning("17 C Major", ["D6", "B5", "G5", "E5", "C5", "A4", "F4", "D4", "C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6", "E6"])
+      ],
+      [
+        "21 C Major",
+        new LamellophoneTuning("21 C Major", ["D6", "B5", "G5", "E5", "C5", "A4", "F4", "D4", "B3", "G3", "F3", "A3", "C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6", "E6"])
+      ]
+    ])]
+  ]);
   function convertTabToNotes(tab, tuning, tempo = 120) {
     if (!tab || tab.length === 0) {
       return [];
-    } // Create a mapping symbol->pitch
-
-
-    const symbolToPitchMap = new Map();
+    }
+    const symbolToPitchMap = /* @__PURE__ */ new Map();
     const symbols = tuning.getLetters();
-
-    for (let index = 0; index < tuning.keyCount; index++) {
-      symbolToPitchMap.set(symbols[index], tuning.pitchesSorted[index]);
-    } // Parse tab to notes
-
-
-    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    for (let index16 = 0; index16 < tuning.keyCount; index16++) {
+      symbolToPitchMap.set(symbols[index16], tuning.pitchesSorted[index16]);
+    }
+    const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     const noteNamesSet = new Set(noteNames);
     const lowestNote = tuning.pitchesSorted[0];
     const startOct = getMidiNoteByNr(lowestNote).octave;
@@ -13183,270 +9080,162 @@
     let currentPitch = 0;
     let currentOctOffset = 0;
     const notes = [];
-    tab = `${tab.toUpperCase().replaceAll('\n', ' \n')} `; // This is needed more often
-
+    tab = `${tab.toUpperCase().replaceAll("\n", " \n")} `;
     const finishNote = () => {
       try {
-        notes.push(Note.from({
+        notes.push(Note_default.from({
           pitch: currentPitch + 12 * (startOct + 1 + currentOctOffset),
           start: currentTime,
           end: currentTime + secondsPerBeat
         }));
         currentOctOffset = 0;
-
         if (!insideChord) {
           currentTime += secondsPerBeat;
         }
       } catch {
         console.log(currentPitch);
       }
-
       insideNote = false;
     };
-
     for (const char of tab) {
-      if (char === '(') {
-        // Start chord (but finish current if any)
+      if (char === "(") {
         if (insideChord) {
           insideChord = false;
         }
-
         if (insideNote) {
           finishNote();
         }
-
         insideChord = true;
       } else if (noteNamesSet.has(char)) {
-        // Start note (but finish current if any)
         if (insideNote) {
           finishNote();
         }
-
         insideNote = true;
         currentPitch = noteNames.indexOf(char);
-      } else if (char === '#') {
-        // Sharpen note
+      } else if (char === "#") {
         currentPitch++;
-      } else if (char === '°') {
-        // Increase ocatve
+      } else if (char === "\xB0") {
         currentOctOffset++;
-      } else if (char === ' ' || char === '\n' || char === ')') {
-        // End chord and note if inside
-        if (char === ')') {
+      } else if (char === " " || char === "\n" || char === ")") {
+        if (char === ")") {
           insideChord = false;
         }
-
-        if (char === '\n') {
+        if (char === "\n") {
           insideChord = false;
           currentTime += secondsPerBeat;
         }
-
         if (insideNote) {
           finishNote();
         }
       }
     }
-
     return notes;
   }
-  /**
-   * Converts an array of notes into a text tab
-   *
-   * @param {Note[]} notes notes
-   * @param {LamellophoneTuning} tuning tuning
-   * @param {'letter'|'number'} mode mode
-   * @param {number} restSize number of seconds for a gap between chords to insert
-   *     a line break
-   * @returns {string} text tab
-   */
-
-  function convertNotesToTab(notes, tuning, mode = 'letter', restSize = 0.1) {
+  function convertNotesToTab(notes, tuning, mode2 = "letter", restSize = 0.1) {
     if (!notes || notes.length === 0) {
       return [];
-    } // Create a mapping pitch->symbol
-
-
-    const pitchToSymbolMap = new Map();
-    const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
-
-    for (let index = 0; index < tuning.keyCount; index++) {
-      pitchToSymbolMap.set(tuning.pitchesSorted[index], symbols[index]);
-    } // Get chords
-
-
-    const chords = detectChordsByExactStart(notes); // Create tab
-
-    let tab = '';
+    }
+    const pitchToSymbolMap = /* @__PURE__ */ new Map();
+    const symbols = mode2 === "letter" ? tuning.getLetters() : tuning.getNumbers();
+    for (let index16 = 0; index16 < tuning.keyCount; index16++) {
+      pitchToSymbolMap.set(tuning.pitchesSorted[index16], symbols[index16]);
+    }
+    const chords2 = detectChordsByExactStart(notes);
+    let tab = "";
     let previousEnd = 0;
-
-    for (const chord of chords) {
-      // Format chord's notes
-      let chordString = chord.map(note => {
-        if (pitchToSymbolMap.has(note.pitch)) {
-          return pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
+    for (const chord2 of chords2) {
+      let chordString = chord2.map((note2) => {
+        var _a;
+        if (pitchToSymbolMap.has(note2.pitch)) {
+          return pitchToSymbolMap.get(note2.pitch) || `[${note2.pitch}]`;
         } else {
-          var _getMidiNoteByNr$name, _getMidiNoteByNr;
-
-          return mode === 'letter' ? (_getMidiNoteByNr$name = (_getMidiNoteByNr = getMidiNoteByNr(note.pitch)) === null || _getMidiNoteByNr === void 0 ? void 0 : _getMidiNoteByNr.name) !== null && _getMidiNoteByNr$name !== void 0 ? _getMidiNoteByNr$name : note.pitch : note.pitch;
+          return mode2 === "letter" ? ((_a = getMidiNoteByNr(note2.pitch)) == null ? void 0 : _a.name) ?? note2.pitch : note2.pitch;
         }
-      }).join(' ');
-
-      if (chord.length > 1) {
-        // Mark chords with backets (for multiple notes)
+      }).join(" ");
+      if (chord2.length > 1) {
         chordString = `(${chordString})`;
       }
-
-      tab = chord[0].start - previousEnd > restSize ? `${tab}\n${chordString}` : `${tab} ${chordString}`; // Update last end time of chord
-
-      previousEnd = max(chord, n => n.end);
-    } // Remove leading space
-
-
+      tab = chord2[0].start - previousEnd > restSize ? `${tab}
+${chordString}` : `${tab} ${chordString}`;
+      previousEnd = max(chord2, (n) => n.end);
+    }
     return tab.slice(1);
   }
-  /**
-   * Converts an array of notes into an HTML tab with colored notes
-   *
-   * @param {Note[]} notes notes
-   * @param {LamellophoneTuning} tuning tuning
-   * @param {'letter'|'number'} mode mode
-   * @param {number} restSize number of seconds for a gap between chords to insert
-   *     a line break
-   * @param {Function} colormap color map function: pitch to color
-   * @returns {string} HTML tab
-   */
-
-  function convertNotesToHtmlTab(notes, tuning, mode = 'letter', restSize = 0.1, colormap = () => 'black') {
+  function convertNotesToHtmlTab(notes, tuning, mode2 = "letter", restSize = 0.1, colormap = () => "black") {
     if (!notes || notes.length === 0) {
       return [];
-    } // Create a mapping pitch->symbol
-
-
-    const pitchToSymbolMap = new Map();
-    const symbols = mode === 'letter' ? tuning.getLetters() : tuning.getNumbers();
-
-    for (let index = 0; index < tuning.keyCount; index++) {
-      pitchToSymbolMap.set(tuning.pitches[index], symbols[index]);
-    } // Get chords
-
-
-    const chords = detectChordsByExactStart(notes); // Create tab
-
-    let tab = '';
+    }
+    const pitchToSymbolMap = /* @__PURE__ */ new Map();
+    const symbols = mode2 === "letter" ? tuning.getLetters() : tuning.getNumbers();
+    for (let index16 = 0; index16 < tuning.keyCount; index16++) {
+      pitchToSymbolMap.set(tuning.pitches[index16], symbols[index16]);
+    }
+    const chords2 = detectChordsByExactStart(notes);
+    let tab = "";
     let previousEnd = 0;
-
-    for (const chord of chords) {
-      // Format chord's notes
-      let chordString = chord.map(note => {
+    for (const chord2 of chords2) {
+      let chordString = chord2.map((note2) => {
+        var _a;
         let string;
-
-        if (pitchToSymbolMap.has(note.pitch)) {
-          string = pitchToSymbolMap.get(note.pitch) || `[${note.pitch}]`;
+        if (pitchToSymbolMap.has(note2.pitch)) {
+          string = pitchToSymbolMap.get(note2.pitch) || `[${note2.pitch}]`;
         } else {
-          var _getMidiNoteByNr$name2, _getMidiNoteByNr2;
-
-          string = mode === 'letter' ? (_getMidiNoteByNr$name2 = (_getMidiNoteByNr2 = getMidiNoteByNr(note.pitch)) === null || _getMidiNoteByNr2 === void 0 ? void 0 : _getMidiNoteByNr2.name) !== null && _getMidiNoteByNr$name2 !== void 0 ? _getMidiNoteByNr$name2 : note.pitch : note.pitch;
+          string = mode2 === "letter" ? ((_a = getMidiNoteByNr(note2.pitch)) == null ? void 0 : _a.name) ?? note2.pitch : note2.pitch;
         }
-
-        const color = colormap(note.pitch);
-        return `<span class='note' style='background-color: ${color}'>${string}</span>`;
-      }).join('\n');
-
-      if (chord.length > 1) {
-        // Mark chords with backets (for multiple notes)
+        const color2 = colormap(note2.pitch);
+        return `<span class='note' style='background-color: ${color2}'>${string}</span>`;
+      }).join("\n");
+      if (chord2.length > 1) {
         chordString = `<span class='chord'>${chordString}</span>`;
       }
-
-      tab = chord[0].start - previousEnd > restSize ? `${tab}<br/>${chordString}` : `${tab}${chordString}`; // Update last end time of chord
-
-      previousEnd = max(chord, n => n.end);
+      tab = chord2[0].start - previousEnd > restSize ? `${tab}<br/>${chordString}` : `${tab}${chordString}`;
+      previousEnd = max(chord2, (n) => n.end);
     }
-
     return tab;
   }
-  /**
-   * Converts a number-based tab to note letter format
-   *
-   * @param {string} numberTab tab text with number format
-   * @param {Map<number, string>} numberLetterMap maps numbers to letters
-   * @returns {string} tab in letter format
-   */
-
   function convertNumbersToLetters(numberTab, numberLetterMap) {
     if (!numberTab || numberTab.length === 0) {
-      return '';
-    } // Normalize to °
-
-
-    numberTab = numberTab.replaceAll('\'', '°');
-    numberTab = numberTab.replaceAll('’', '°');
-    numberTab = numberTab.replaceAll('*', '°');
-    numberTab = numberTab.replaceAll('º', '°');
-    numberTab = numberTab.replaceAll('^', '°');
-
+      return "";
+    }
+    numberTab = numberTab.replaceAll("'", "\xB0");
+    numberTab = numberTab.replaceAll("\u2019", "\xB0");
+    numberTab = numberTab.replaceAll("*", "\xB0");
+    numberTab = numberTab.replaceAll("\xBA", "\xB0");
+    numberTab = numberTab.replaceAll("^", "\xB0");
     for (const [key, value] of numberLetterMap.entries()) {
       numberTab = numberTab.replaceAll(key, value);
     }
-
     return numberTab;
   }
-  /**
-   * Tries to find a transposition s.t. the tuning is able to play all notes.
-   * If not not possible, return the transposition that requires the least keys to
-   * be retuned.
-   *
-   * @todo tests fail
-   * @param {Note[]} notes notes
-   * @param {LamellophoneTuning} tuning tuning
-   * @returns {object} {transpose: number, retune: Map}
-   */
-
   function bestTransposition(notes, tuning) {
     if (!notes || notes.length === 0) {
-      return {
-        transpose: 0,
-        retune: new Map()
-      };
+      return { transpose: 0, retune: /* @__PURE__ */ new Map() };
     }
-
-    const occuringPitches = new Set(notes.map(n => n.pitch));
-
-    if (occuringPitches.size > tuning.keyCount) ;
-
-    const notePitches = [...occuringPitches]; // Already perfect? return now
-
+    const occuringPitches = new Set(notes.map((n) => n.pitch));
+    if (occuringPitches.size > tuning.keyCount) {
+    }
+    const notePitches = [...occuringPitches];
     if (difference(notePitches, tuning.pitches).size === 0) {
-      return {
-        transpose: 0,
-        retune: new Map()
-      };
+      return { transpose: 0, retune: /* @__PURE__ */ new Map() };
     }
-
-    const [minPitch, maxPitch] = extent(notePitches);
-
-    const transpose = (array, steps) => array.map(d => d + steps); // Just brute force through all transpositions
-
-
+    const [minPitch, maxPitch] = extent_default(notePitches);
+    const transpose3 = (array, steps) => array.map((d) => d + steps);
     let bestSteps = 0;
     let bestTransposed;
-
+    let commonPitches;
     for (let steps = -minPitch; steps <= 127 - maxPitch; steps++) {
-      const transposed = transpose(notePitches, steps);
-      intersection(transposed, tuning.pitches);
-
-      {
+      const transposed = transpose3(notePitches, steps);
+      const common = intersection(transposed, tuning.pitches);
+      if (!commonPitches || common.size > commonPitches.size) {
         bestSteps = steps;
         bestTransposed = transposed;
       }
     }
-
-    bestTransposed = new Set(bestTransposed); // Get pitches in tuning but not in notes and other way round
-
+    bestTransposed = new Set(bestTransposed);
     const uncommon = difference(bestTransposed, tuning.pitches);
     console.log(uncommon);
-    const freePitches = new Set();
+    const freePitches = /* @__PURE__ */ new Set();
     const neededPitches = [];
-
     for (const p of uncommon) {
       if (bestTransposed.has(p)) {
         neededPitches.push(p);
@@ -13454,311 +9243,233 @@
         freePitches.add(p);
       }
     }
-
     console.log(neededPitches);
     console.log(freePitches);
-
     if (neededPitches.length === 0) {
-      // Everything is fine!
       return {
         transpose: bestSteps,
-        retune: new Map()
+        retune: /* @__PURE__ */ new Map()
       };
     }
-
     if (freePitches.size === 0) {
-      // Cannot solve this!
       return {
         transpose: bestSteps,
-        retune: new Map()
+        retune: /* @__PURE__ */ new Map()
       };
-    } // Get closest free pitch for each needed one
-
-
-    const retune = new Map();
-
+    }
+    const retune = /* @__PURE__ */ new Map();
     for (const neededPitch of neededPitches) {
       let bestMatch = null;
       const bestDiff = Number.POSITIVE_INFINITY;
       let freePitch;
-
       for (freePitch of freePitches) {
         const diff = Math.abs(neededPitch - freePitch);
-
         if (diff < bestDiff) {
           bestMatch = freePitch;
         }
       }
-
       freePitches.delete(bestMatch);
       retune.set(freePitch, neededPitch);
     }
-
     return {
       transpose: bestSteps,
       retune
     };
   }
 
-  var Lamellophone = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    LamellophoneTuning: LamellophoneTuning,
-    lamellophoneTunings: lamellophoneTunings,
-    convertTabToNotes: convertTabToNotes,
-    convertNotesToTab: convertNotesToTab,
-    convertNotesToHtmlTab: convertNotesToHtmlTab,
-    convertNumbersToLetters: convertNumbersToLetters,
-    bestTransposition: bestTransposition
+  // src/instruments/Piano.js
+  var Piano_exports = {};
+  __export(Piano_exports, {
+    pianoPitchRange: () => pianoPitchRange
+  });
+  var pianoPitchRange = /* @__PURE__ */ new Map([
+    [72, { minPitch: 24, maxPitch: 95 }],
+    [88, { minPitch: 21, maxPitch: 108 }],
+    [128, { minPitch: 0, maxPitch: 127 }]
+  ]);
+
+  // src/alignment/Alignment.js
+  var Alignment_exports = {};
+  __export(Alignment_exports, {
+    alignNoteArrays: () => alignNoteArrays,
+    alignNoteArrays2: () => alignNoteArrays2,
+    alignNoteArrays3: () => alignNoteArrays3,
+    alignmentBenchmark: () => alignmentBenchmark,
+    testAlignment: () => testAlignment
   });
 
-  /**
-   * @module instruments/Piano
-   */
-
-  /**
-   * Map:keyCount->pitchRange
-   * pitchRange is {minPitch:number, maxPitch:number}
-   *
-   * @type {Map<number,object>}
-   */
-  const pianoPitchRange = new Map([[72, {
-    minPitch: 24,
-    maxPitch: 95
-  }], [88, {
-    minPitch: 21,
-    maxPitch: 108
-  }], [128, {
-    minPitch: 0,
-    maxPitch: 127
-  }]]);
-  /**
-   *
-   * @param {Note[]} notes notes with only MIDI information
-   * @returns {?} notes with fingering information
-   */
-  // export function fingeringFromMidi(notes) {
-  // TODO: detect chords first?
-  // TODO: then lookup chords' fingerings from a lookup table
-  // TODO: alternatively (as fallback) use heuristics
-  // TODO: or try to do it like humans do when playing
-  // }
-
-  var Piano = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    pianoPitchRange: pianoPitchRange
+  // src/comparison/Matching.js
+  var Matching_exports = {};
+  __export(Matching_exports, {
+    getMatchingError: () => getMatchingError,
+    getMatchingSection: () => getMatchingSection,
+    getMatchingSliceError: () => getMatchingSliceError,
+    getMultiMatchingErrorPerNote: () => getMultiMatchingErrorPerNote,
+    matchGtAndMultipleRecordings: () => matchGtAndMultipleRecordings,
+    matchGtAndRecordingNotes: () => matchGtAndRecordingNotes
   });
 
-  /**
-   * @module utils/BlobUtils
-   */
+  // src/utils/index.js
+  var utils_exports = {};
+  __export(utils_exports, {
+    CIRCLE_OF_5THS: () => CIRCLE_OF_5THS,
+    INTERVALS: () => INTERVALS,
+    alignNotesToBpm: () => alignNotesToBpm,
+    arrayContainsArray: () => arrayContainsArray,
+    arrayHasSameElements: () => arrayHasSameElements,
+    arrayIndexOf: () => arrayIndexOf,
+    arrayShallowEquals: () => arrayShallowEquals,
+    arraySlicesEqual: () => arraySlicesEqual,
+    averageColor: () => averageColor,
+    averageRecordings: () => averageRecordings,
+    averageRecordings2: () => averageRecordings2,
+    binarySearch: () => binarySearch,
+    blobToBase64: () => blobToBase64,
+    blobToFileExtension: () => blobToFileExtension,
+    bpmToSecondsPerBeat: () => bpmToSecondsPerBeat,
+    choose: () => choose,
+    chordIntegerJaccardIndex: () => chordIntegerJaccardIndex,
+    chordToInteger: () => chordToInteger,
+    clipRecordingsPitchesToGtFretboardRange: () => clipRecordingsPitchesToGtFretboardRange,
+    clipRecordingsPitchesToGtRange: () => clipRecordingsPitchesToGtRange,
+    clipValue: () => clipValue,
+    confidenceInterval: () => confidenceInterval,
+    countOnesOfBinary: () => countOnesOfBinary,
+    deepCloneFlatObjectMap: () => deepCloneFlatObjectMap,
+    delay: () => delay,
+    differenceMap: () => differenceMap,
+    differenceMapErrorAreas: () => differenceMapErrorAreas,
+    euclideanDistance: () => euclideanDistance,
+    filterRecordingNoise: () => filterRecordingNoise,
+    findLocalMaxima: () => findLocalMaxima,
+    findNearest: () => findNearest,
+    findRepeatedIndices: () => findRepeatedIndices,
+    findStreaks: () => findStreaks,
+    formatDate: () => formatDate,
+    formatMatrix: () => formatMatrix,
+    formatSongTitle: () => formatSongTitle,
+    formatTime: () => formatTime,
+    freqToApproxMidiNr: () => freqToApproxMidiNr,
+    getArrayMax: () => getArrayMax,
+    getBoxplotCharacteristics: () => getBoxplotCharacteristics,
+    getColorLightness: () => getColorLightness,
+    getObjectFromLocalStorage: () => getObjectFromLocalStorage,
+    groupNotesByPitch: () => groupNotesByPitch,
+    jaccardIndex: () => jaccardIndex,
+    kendallTau: () => kendallTau,
+    kernelDensityEstimator: () => kernelDensityEstimator,
+    kernelEpanechnikov: () => kernelEpanechnikov,
+    kernelGauss: () => kernelGauss,
+    metronomeTrackFromMusicPiece: () => metronomeTrackFromMusicPiece,
+    metronomeTrackFromTempoAndMeter: () => metronomeTrackFromTempoAndMeter,
+    midiToFrequency: () => midiToFrequency,
+    normalizeNdArray: () => normalizeNdArray,
+    noteColorFromPitch: () => noteColorFromPitch,
+    noteDurationToNoteType: () => noteDurationToNoteType,
+    pearsonCorrelation: () => pearsonCorrelation,
+    pingMidiDevice: () => pingMidiDevice,
+    randFloat: () => randFloat,
+    recordingsHeatmap: () => recordingsHeatmap,
+    removeDuplicates: () => removeDuplicates,
+    reverseString: () => reverseString,
+    roundToNDecimals: () => roundToNDecimals,
+    setOpacity: () => setOpacity,
+    storeObjectInLocalStorage: () => storeObjectInLocalStorage,
+    swapSoSmallerFirst: () => swapSoSmallerFirst
+  });
 
-  /**
-   * Converts a Blob to a base64 string
-   *
-   * @param {Blob} blob Blob
-   * @returns {Promise<string,undefined>} base64 string
-   */
+  // src/utils/BlobUtils.js
   function blobToBase64(blob) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-
       reader.onloadend = () => resolve(reader.result);
-
       reader.readAsDataURL(blob);
     });
   }
-  /**
-   * Extracts the file extension from a Blob, so it can be saved as a file with
-   * an appropriate extension.
-   *
-   * @param {Blob} blob Blob
-   * @returns {string} file extension
-   */
-
   function blobToFileExtension(blob) {
-    return blob.type.split('/')[1].split(';')[0];
+    return blob.type.split("/")[1].split(";")[0];
   }
 
-  /**
-   * Determines the perceptual lightness of an HTML color
-   *
-   * @see https://stackoverflow.com/a/596241 (but normalizing to 0, 100)
-   * @param {string} color HTML color specifier
-   * @returns {number} lightness in [0, 100]
-   */
-
-  function getColorLightness(color$1) {
-    const {
-      r,
-      g,
-      b
-    } = color(color$1).rgb(); // eslint-disable-next-line no-bitwise
-
-    const Y = r + r + r + b + g + g + g + g >> 3;
-    return Y / 2.55;
+  // src/utils/ColorUtils.js
+  function getColorLightness(color2) {
+    const { r, g, b } = color(color2).rgb();
+    const Y2 = r + r + r + b + g + g + g + g >> 3;
+    return Y2 / 2.55;
   }
-  /**
-   * Determines the average of mutliple given colors
-   *
-   * @param {string[]} colors HTML color specifiers
-   * @returns {string} average as RGB string
-   */
-
   function averageColor(colors) {
     let mR = 0;
     let mG = 0;
     let mB = 0;
-
-    for (const c of colors) {
-      const {
-        r,
-        g,
-        b
-      } = color(c).rgb();
+    for (const c2 of colors) {
+      const { r, g, b } = color(c2).rgb();
       mR += r;
       mG += g;
       mB += b;
     }
-
     mR = Math.round(mR / colors.length);
     mG = Math.round(mG / colors.length);
     mB = Math.round(mB / colors.length);
     return `rgb(${mR}, ${mG}, ${mB})`;
   }
-  /**
-   * Sets a color's opacity.
-   * Does not support colors in rgba format.
-   *
-   * @param {string} color valid HTML color identifier
-   * @param {number} [opacity=1] opacity from 0 to 1
-   * @returns {string} color as RGBA string
-   */
-
-  function setOpacity(color$1, opacity = 1) {
-    const {
-      r,
-      g,
-      b
-    } = color(color$1).rgb();
+  function setOpacity(color2, opacity = 1) {
+    const { r, g, b } = color(color2).rgb();
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   }
 
-  /**
-   * @module utils/FormattingUtils
-   */
-
-  /**
-   * Formats a time in seconds to <minutes>:<seconds>.<milliseconds>
-   *
-   * @param {number|null} seconds in seconds
-   * @param {boolean} includeMillis include milli seconds in string?
-   * @returns {string} 0-padded time string <minutes>:<seconds>.<milliseconds>
-   */
+  // src/utils/FormattingUtils.js
   function formatTime(seconds, includeMillis = true) {
-    if (seconds === undefined || seconds === null) {
-      return includeMillis ? '--:--.---' : '--:--';
+    if (seconds === void 0 || seconds === null) {
+      return includeMillis ? "--:--.---" : "--:--";
     }
-
     const s = Math.floor(seconds);
-    let min = Math.floor(s / 60).toString();
+    let min3 = Math.floor(s / 60).toString();
     let sec = (s % 60).toString();
-    min = min.length < 2 ? `0${min}` : min;
+    min3 = min3.length < 2 ? `0${min3}` : min3;
     sec = sec.length < 2 ? `0${sec}` : sec;
-
     if (!includeMillis) {
-      return `${min}:${sec}`;
+      return `${min3}:${sec}`;
     }
-
-    let ms = Math.round((seconds - s) * 1000).toString();
-
+    let ms = Math.round((seconds - s) * 1e3).toString();
     if (ms.length < 2) {
       ms = `00${ms}`;
     } else if (ms.length < 3) {
       ms = `0${ms}`;
     }
-
-    return `${min}:${sec}.${ms}`;
+    return `${min3}:${sec}.${ms}`;
   }
-  /**
-   * Formats a Date to a string with format
-   *      YYYY-mm-DDTHH:MM:SS
-   * or when replaceT == true
-   *      YYYY-mm-DD HH:MM:SS
-   *
-   * @param {Date} date date
-   * @param {boolean} replaceT replace the 'T'?
-   * @param {boolean} keepMillis keep milliseconds?
-   * @returns {string} formatted date
-   */
-
   function formatDate(date, replaceT = false, keepMillis = true) {
-    let string = date.toISOString().split(':').join('-');
-
+    let string = date.toISOString().split(":").join("-");
     if (!keepMillis) {
-      string = string.slice(0, string.indexOf('.'));
+      string = string.slice(0, string.indexOf("."));
     }
-
     if (replaceT) {
-      string = string.replace('T', ' ');
+      string = string.replace("T", " ");
     }
-
     return string;
   }
-  /**
-   * Formats the song title (e.g. remove file extension and shorten)
-   *
-   * @param {string} title song title
-   * @param {number} maxLength shorten to this length
-   * @returns {string} formatted song title
-   */
-
   function formatSongTitle(title, maxLength = 30) {
     if (!title) {
-      return '[No Song]';
-    } // Remove file extension
-
-
-    if (title.lastIndexOf('.') !== -1) {
-      title = title.slice(0, title.lastIndexOf('.'));
-    } // Shorten
-
-
+      return "[No Song]";
+    }
+    if (title.lastIndexOf(".") !== -1) {
+      title = title.slice(0, title.lastIndexOf("."));
+    }
     if (title.length > maxLength) {
       title = `${title.slice(0, maxLength - 3)}...`;
     }
-
     return title;
   }
 
-  /**
-   * @module utils/LocalStorageUtils
-   */
-
-  /**
-   * Stringifies an object and stores it in the localStorage
-   *
-   * @param {string} key key
-   * @param {object} object JSON compatible object
-   */
+  // src/utils/LocalStorageUtils.js
   function storeObjectInLocalStorage(key, object) {
     const string = JSON.stringify(object);
     localStorage.setItem(key, string);
   }
-  /**
-   * Retrieves a stringified object from the localStorage and parses it.
-   *
-   * @param {string} key key
-   * @returns {object|null} object or null of not possible
-   */
-
   function getObjectFromLocalStorage(key) {
     const string = localStorage.getItem(key);
-
     if (string === null) {
-      // console.warn(`LocalStorage has no key ${key}`);
       return null;
     }
-
     try {
       return JSON.parse(string);
     } catch {
@@ -13766,260 +9477,130 @@
     }
   }
 
-  /**
-   * @module utils/MiscUtils
-   */
-
-  /**
-   * Clones a map where the values are flat objects,
-   * i.e. values do not contain objects themselfes.
-   *
-   * @param {Map} map a map with object values
-   * @returns {Map} a copy of the map with copies of the value objects
-   */
-
-  function deepCloneFlatObjectMap(map) {
-    const result = new Map();
-
-    for (const [key, value] of map.entries()) {
-      result.set(key, { ...value
-      });
+  // src/utils/MiscUtils.js
+  function deepCloneFlatObjectMap(map2) {
+    const result = /* @__PURE__ */ new Map();
+    for (const [key, value] of map2.entries()) {
+      result.set(key, __spreadValues({}, value));
     }
-
     return result;
   }
-  /**
-   * Groups the Notes from multiple tracks
-   *
-   * @param {Note[][]} tracks array of arrays of Note objects
-   * @returns {Map} grouping
-   */
-
   function groupNotesByPitch(tracks) {
     const allNotes = tracks.flat();
-
     if (allNotes.length === 0) {
-      return new Map();
+      return /* @__PURE__ */ new Map();
     }
-
-    return group(allNotes, d => d.pitch);
+    return group(allNotes, (d) => d.pitch);
   }
-  /**
-   * Reverses a given string.
-   *
-   * @param {string} s string
-   * @returns {string} reversed string
-   */
-
   function reverseString(s) {
-    return [...s].reverse().join('');
+    return [...s].reverse().join("");
   }
-  /**
-   * Given some notes and a target note, finds
-   * the note that has its start time closest to
-   * the one of targetNote
-   *
-   * @todo replace by d3 argmin or sth?
-   * @param {Note[]} notes notes
-   * @param {Note} targetNote target note
-   * @returns {Note} closest note to targetNote
-   */
-
   function findNearest(notes, targetNote) {
     if (!notes || notes.length === 0 || !targetNote) {
       return null;
     }
-
     let nearest = null;
     let dist = Number.POSITIVE_INFINITY;
     const targetStart = targetNote.start;
-
     for (const n of notes) {
       const newDist = Math.abs(n.start - targetStart);
-
       if (newDist < dist) {
         dist = newDist;
         nearest = n;
       }
     }
-
     return nearest;
   }
-  /**
-   * Allows to wait for a number of seconds with async/await
-   * IMPORTANT: This it not exact, it will at *least* wait for X seconds
-   *
-   * @param {number} seconds number of seconds to wait
-   * @returns {Promise} empty Promise that will resolve after the specified amount
-   *      of seconds
-   */
-
   function delay(seconds) {
-    return new Promise(resolve => {
-      setTimeout(resolve, seconds * 1000);
+    return new Promise((resolve) => {
+      setTimeout(resolve, seconds * 1e3);
     });
   }
 
-  /**
-   * @module utils/NoteColorUtils
-   */
-  // TODO: move to colors/ folder?
-
-  /**
-   * Maps each note to a color
-   * Colors from https://www.svpwiki.com/music+note+or+sound+colors
-   * Order is C, C#, ... B
-   *
-   * @type {string[]}
-   */
-
-  const noteColormap = ['#ff0000', '#ff4e00', '#db7b00', '#ffcc00', '#e4ed00', '#81d700', '#00ffb4', '#00ffea', '#00baff', '#3c00ff', '#a800ff', '#ff00fd'].map(d => {
-    // Make colors less saturated
-    const c = hsl(d);
-    c.s = 0.5;
-    return c.toString();
+  // src/utils/NoteColorUtils.js
+  var noteColormap = [
+    "#ff0000",
+    "#ff4e00",
+    "#db7b00",
+    "#ffcc00",
+    "#e4ed00",
+    "#81d700",
+    "#00ffb4",
+    "#00ffea",
+    "#00baff",
+    "#3c00ff",
+    "#a800ff",
+    "#ff00fd"
+  ].map((d) => {
+    const c2 = hsl(d);
+    c2.s = 0.5;
+    return c2.toString();
   });
-  /**
-   * Colorblind save colors from
-   * Malandrino et al. - Visualization and Music Harmony: Design, Implementation,
-   * and Evaluation https://ieeexplore.ieee.org/abstract/document/8564210
-   * Order is C, C#, ... B
-   *
-   * @type {string[]}
-   */
-  // export const noteColormapAccessible = new Map([
-  //     ['C', '#9aebff'],
-  //     ['C#', '#add5ff'],
-  //     ['D', '#d6d6ff'],
-  //     ['D#', '#ebd5ff'],
-  //     ['E', '#ffc2eb'],
-  //     ['F', '#ffcbcc'],
-  //     ['F#', '#ffd5c2'],
-  //     ['G', '#ffebc2'],
-  //     ['G#', '#ebffc2'],
-  //     ['A', '#c2d599'],
-  //     ['A#', '#99ebbe'],
-  //     ['B', '#adebeb'],
-  // ]);
-
-  const noteColormapAccessible = ['#6699ff', '#66ffff', '#000000', '#647878', '#993366', '#ff0000', '#ffcc99', '#ffff01', '#ff9900', '#009900', '#66ff99', '#0000cc'];
-  const colorInterpolator = interpolateRgb('black', 'steelblue');
-  /**
-   * Gradient color map from black to steelblue
-   *
-   * @type {string[]}
-   */
-
-  const noteColormapGradientArray = Array.from({
-    length: 12
-  }).map((d, index) => colorInterpolator(index / 11));
-  /**
-   * Returns the note color depending on the given pitch.
-   * (Simplifies note color lookup by looking up the color for pitch%12.)
-   *
-   * @param {number} pitch MIDI pitch in [0, 127]
-   * @param {string} colormap one of 'default', 'accessible', 'gradient'
-   * @returns {string} color code
-   */
-
-  function noteColorFromPitch(pitch, colormap = 'default') {
+  var noteColormapAccessible = [
+    "#6699ff",
+    "#66ffff",
+    "#000000",
+    "#647878",
+    "#993366",
+    "#ff0000",
+    "#ffcc99",
+    "#ffff01",
+    "#ff9900",
+    "#009900",
+    "#66ff99",
+    "#0000cc"
+  ];
+  var colorInterpolator = rgb_default("black", "steelblue");
+  var noteColormapGradientArray = Array.from({ length: 12 }).map((d, index16) => colorInterpolator(index16 / 11));
+  function noteColorFromPitch(pitch, colormap = "default") {
     switch (colormap) {
-      case 'accessible':
+      case "accessible":
         return noteColormapAccessible[pitch % 12];
-
-      case 'gradient':
+      case "gradient":
         return noteColormapGradientArray[pitch % 12];
-
       default:
         return noteColormap[pitch % 12];
     }
   }
 
-  /**
-   * @module utils/StatisticsUtils
-   */
-
-  /**
-   * Computes the Pearson correlation
-   *
-   * @see https://gist.github.com/matt-west/6500993#gistcomment-3718526
-   * @param {number[]} x an array of numbers
-   * @param {number[]} y an array of numbers
-   * @returns {number} correlation
-   * @throws {'Invalid data, must be two arrays with same length'} for invalid
-   *  arguments
-   * @throws {'Invalid data, length must be >= 2'} for invalid arguments
-   */
-
+  // src/utils/StatisticsUtils.js
   function pearsonCorrelation(x, y) {
     if (!x || !y || !x.length || !y.length || x.length !== y.length) {
-      throw new Error('Invalid data, must be two arrays with same length');
+      throw new Error("Invalid data, must be two arrays with same length");
     }
-
     if (x.length < 2) {
-      throw new Error('Invalid data, length must be >= 2');
+      throw new Error("Invalid data, length must be >= 2");
     }
-
     let n = x.length;
     let nn = 0;
-
     for (let i = 0; i < n; i++, nn++) {
       if (!x[i] && x[i] !== 0 || !y[i] && y[i] !== 0) {
         nn--;
         continue;
       }
-
       x[nn] = x[i];
       y[nn] = y[i];
     }
-
     if (n !== nn) {
       x = x.splice(0, nn);
       y = y.splice(0, nn);
       n = nn;
     }
-
     const meanX = mean(x);
     const meanY = mean(y);
-
-    const calc = (v, mean) => Math.sqrt(v.reduce((s, a) => s + a * a, 0) - n * mean * mean);
-
-    return (x.map((e, i) => ({
-      x: e,
-      y: y[i]
-    })).reduce((v, a) => v + a.x * a.y, 0) - n * meanX * meanY) / (calc(x, meanX) * calc(y, meanY));
+    const calc = (v, mean2) => Math.sqrt(v.reduce((s, a) => s + a * a, 0) - n * mean2 * mean2);
+    return (x.map((e, i) => ({ x: e, y: y[i] })).reduce((v, a) => v + a.x * a.y, 0) - n * meanX * meanY) / (calc(x, meanX) * calc(y, meanY));
   }
-  /**
-   * Calculates a 95% confidence interval
-   *
-   * @see https://www.alchemer.com/resources/blog/how-to-calculate-confidence-intervals/
-   * @param {numnber[]} values values
-   * @returns {object} {mean, low, high}
-   */
-
   function confidenceInterval(values) {
     const n = values.length;
     const m = mean(values);
     const s = deviation(values);
-    const z = 1.96; // 95% CI
-    // const z = 2.576; // 99% CI
-
+    const z = 1.96;
     const part = z * (s / Math.sqrt(n));
     const low = m - part;
     const high = m + part;
-    return {
-      mean: m,
-      low,
-      high
-    };
+    return { mean: m, low, high };
   }
-  /**
-   * Given an array of numbers, computes the proportions of a boxplot.
-   *
-   * @param {number[]} values values
-   * @returns {object} { q1, q2, q3, r0, r1 }
-   */
-
   function getBoxplotCharacteristics(values) {
     values.sort((a, b) => a - b);
     const minValue = values[0];
@@ -14030,467 +9611,218 @@
     const iqr = q3 - q1;
     const r0 = Math.max(minValue, q1 - iqr * 1.5);
     const r1 = Math.min(maxValue, q3 + iqr * 1.5);
-    return {
-      q1,
-      q2,
-      q3,
-      r0,
-      r1
-    };
+    return { q1, q2, q3, r0, r1 };
   }
-  /**
-   * Returns a kernel desity estimator function.
-   *
-   * @see https://www.d3-graph-gallery.com/graph/violin_basicDens.html
-   * @example
-   * // With x being a d3.scaleLinear() scale
-   * const kde = kernelDensityEstimator(kernelEpanechnikov(0.2), x.ticks(50));
-   * const estimate = kde(data);
-   * @param {Function} kernel kernel function
-   * @param {number[]} X domain
-   * @returns {Function} kernel density estimator
-   */
-
-  function kernelDensityEstimator(kernel, X) {
-    /**
-         * Kernel desity estimator
-         * For each value of X it computes the estimated density of the data values
-         * in V. The result has the form [ [x1, est1], [x2, est2], ... ]
-         *
-         * @param {number[]} V values
-         * @returns {number[][]} estimates for points of X
-         */
-    const estimator = V => {
-      return X.map(x => [x, mean(V, v => kernel(x - v))]);
+  function kernelDensityEstimator(kernel, X2) {
+    const estimator = (V) => {
+      return X2.map((x) => [
+        x,
+        mean(V, (v) => kernel(x - v))
+      ]);
     };
-
     return estimator;
   }
-  /**
-   * Epanechnikov kernel
-   *
-   * @param {number} k kernel size
-   * @returns {Function} kernel function with curried k
-   */
-
   function kernelEpanechnikov(k) {
-    /**
-         * Epanechnokov kernel function
-         *
-         * @param {number} v value
-         * @returns {number} result
-         */
-    const epKernel = v => Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-
+    const epKernel = (v) => Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
     return epKernel;
   }
-  /**
-   * Gauss kernel
-   *
-   * @param {number} k kernel size
-   * @returns {Function} kernel function with curried k
-   */
-
   function kernelGauss(k) {
-    /**
-         * Gaussian kernel function
-         *
-         * @param {number} v value
-         * @returns {number} result
-         */
-    const gaKernel = v => Math.abs(v / k) <= 1 ? 1 / Math.sqrt(2 * Math.PI) * Math.E ** (-1 / 2 * v * v) : 0;
-
+    const gaKernel = (v) => Math.abs(v / k) <= 1 ? 1 / Math.sqrt(2 * Math.PI) * Math.E ** (-1 / 2 * v * v) : 0;
     return gaKernel;
   }
 
-  /* eslint-disable-line no-unused-vars */
-
-  /**
-   * @module utils/RecordingsUtils
-   */
-
-  /**
-   * Filters notes of a recording to remove noise from the MIDI device or pickup
-   *
-   * @todo detect gaps and fill them
-   * @param {Recording} recording a recording
-   * @param {number} velocityThreshold notes with velocity < velocityThreshold
-   *      are removed
-   * @param {number} durationThreshold notes with duration < velocityThreshold
-   *      are removed (value in seconds)
-   * @returns {Recording} clone of the recording with filtered notes
-   */
-
+  // src/utils/RecordingsUtils.js
   function filterRecordingNoise(recording, velocityThreshold = 0, durationThreshold = 0) {
-    const result = recording.clone().filter(note => {
-      if (note.velocity < velocityThreshold) {
+    const result = recording.clone().filter((note2) => {
+      if (note2.velocity < velocityThreshold) {
         return false;
       }
-
-      if (note.getDuration() < durationThreshold) {
+      if (note2.getDuration() < durationThreshold) {
         return false;
       }
-
       return true;
-    }); // console.log(`Filtered recording, ${result.length()} of ${recording.length()} notes left`);
-
+    });
     return result;
   }
-  /**
-   * Removes notes from a recordings which are outside the range of the ground
-   * truth and therefore likely noise.
-   * Looks up the pitch range from the track of the GT that the recording was made
-   * for.
-   *
-   * @param {Recording[]} recordings recordings
-   * @param {Note[][]} groundTruth ground truth
-   * @returns {Recording[]} filtered recordings
-   */
-
   function clipRecordingsPitchesToGtRange(recordings, groundTruth) {
-    // Speed up by getting range only once for all tracks
-    const pitchRanges = new Map();
-
-    for (const [index, part] of groundTruth.entries()) {
-      const pitchExtent = extent(part, d => d.pitch);
-      pitchRanges.set(index, pitchExtent);
+    const pitchRanges = /* @__PURE__ */ new Map();
+    for (const [index16, part] of groundTruth.entries()) {
+      const pitchExtent = extent_default(part, (d) => d.pitch);
+      pitchRanges.set(index16, pitchExtent);
     }
-
-    return recordings.map(recording => {
+    return recordings.map((recording) => {
       const track = recording.selectedTrack;
       const [minPitch, maxPitch] = pitchRanges.get(track);
-      return recording.clone().filter(note => note.pitch >= minPitch && note.pitch <= maxPitch);
+      return recording.clone().filter((note2) => note2.pitch >= minPitch && note2.pitch <= maxPitch);
     });
   }
-  /**
-   * Removes notes from a recordings which are outside the fretboard range of the
-   * ground truth and therefore likely noise.
-   * Looks up the fretboard position range from the track of the GT that the
-   * recording was made for.
-   *
-   * @param {Recording[]} recordings recordings
-   * @param {Note[][]} groundTruth ground truth
-   * @param {'exact'|'area'} [mode=exact] mode for which fretboard positions to
-   *      include: exact will only keep notes that have positions that occur in
-   *      the GT, area will get a rectangular area of the fretboard that contains
-   *      all GT positions and fill filter on that.
-   * @returns {Recording[]} filtered recordings
-   */
-
-  function clipRecordingsPitchesToGtFretboardRange(recordings, groundTruth, mode = 'exact') {
-    if (mode === 'exact') {
-      // Speed up by getting range only once for all tracks
-      const occuringPositions = new Map();
-
-      for (const [index, part] of groundTruth.entries()) {
-        const positions = new Set(part.map(note => `${note.string} ${note.fret}`));
-        occuringPositions.set(index, positions);
+  function clipRecordingsPitchesToGtFretboardRange(recordings, groundTruth, mode2 = "exact") {
+    if (mode2 === "exact") {
+      const occuringPositions = /* @__PURE__ */ new Map();
+      for (const [index16, part] of groundTruth.entries()) {
+        const positions = new Set(part.map((note2) => `${note2.string} ${note2.fret}`));
+        occuringPositions.set(index16, positions);
       }
-
-      return recordings.map(recording => {
+      return recordings.map((recording) => {
         const track = recording.selectedTrack;
         const validPositions = occuringPositions.get(track);
-        return recording.clone().filter(note => validPositions.has(`${note.string} ${note.fret}`));
+        return recording.clone().filter((note2) => validPositions.has(`${note2.string} ${note2.fret}`));
       });
     } else {
-      // Speed up by getting range only once for all tracks
-      const positionRanges = new Map();
-
-      for (const [index, part] of groundTruth.entries()) {
-        const stringExtent = extent(part, d => d.string);
-        const fretExtent = extent(part, d => d.fret);
-        positionRanges.set(index, {
-          stringExtent,
-          fretExtent
-        });
+      const positionRanges = /* @__PURE__ */ new Map();
+      for (const [index16, part] of groundTruth.entries()) {
+        const stringExtent = extent_default(part, (d) => d.string);
+        const fretExtent = extent_default(part, (d) => d.fret);
+        positionRanges.set(index16, { stringExtent, fretExtent });
       }
-
-      return recordings.map(recording => {
+      return recordings.map((recording) => {
         const track = recording.selectedTrack;
-        const {
-          stringExtent,
-          fretExtent
-        } = positionRanges.get(track);
+        const { stringExtent, fretExtent } = positionRanges.get(track);
         const [minString, maxString] = stringExtent;
         const [minFret, maxFret] = fretExtent;
-        return recording.clone().filter(note => {
-          return note.string >= minString && note.string <= maxString && note.fret >= minFret && note.fret <= maxFret;
+        return recording.clone().filter((note2) => {
+          return note2.string >= minString && note2.string <= maxString && note2.fret >= minFret && note2.fret <= maxFret;
         });
       });
     }
   }
-  /**
-   * Aligns notes to a rhythmic pattern
-   *
-   * @todo not used
-   * @param {Note[]} notes notes
-   * @param {number} bpm e.g. 120 for tempo 120
-   * @param {number} timeDivision e.g. 16 for 16th note steps
-   * @returns {Note[]} aligned notes
-   */
-
   function alignNotesToBpm(notes, bpm, timeDivision = 16) {
     const secondsPerBeat = bpmToSecondsPerBeat(bpm);
     const secondsPerDivision = secondsPerBeat / timeDivision;
-    return notes.map(note => {
-      const n = note.clone();
+    return notes.map((note2) => {
+      const n = note2.clone();
       n.start = Math.round(n.start / secondsPerDivision) * secondsPerDivision;
       n.end = Math.round(n.end / secondsPerDivision) * secondsPerDivision;
       return n;
     });
   }
-  /**
-   * Calculates a heatmap either pitch- or channel-wise.
-   * Pitch-time heatmap:
-   * Calculates a heatmap of multiple recordings, to see the note density in the
-   * pitch-time-space.
-   * Channel-time heatmap:
-   * Calculates a heatmap of multiple recordings, to see the note density in the
-   * channel-time-space. Channel could be a guitar string or left and right hand
-   * for example.
-   *
-   * @param {Note[]} recNotes recordings
-   * @param {number} nRecs number of recordings
-   * @param {number} binSize time bin size in milliseconds
-   * @param {string} attribute 'pitch' | 'channel'
-   * @returns {Map} pitch->heatmap; heatmap is number[] for all time slices
-   */
-
-  function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = 'pitch') {
+  function recordingsHeatmap(recNotes, nRecs, binSize = 10, attribute = "pitch") {
     let groupedByAttribute;
-
-    if (attribute === 'pitch') {
-      groupedByAttribute = group(recNotes, d => d.pitch);
-    } else if (attribute === 'channel') {
-      groupedByAttribute = group(recNotes, d => d.channel);
+    if (attribute === "pitch") {
+      groupedByAttribute = group(recNotes, (d) => d.pitch);
+    } else if (attribute === "channel") {
+      groupedByAttribute = group(recNotes, (d) => d.channel);
     } else {
       console.warn(`Invalid attribute parameter '${attribute}'`);
     }
-
-    const heatmapByAttribute = new Map();
-
+    const heatmapByAttribute = /* @__PURE__ */ new Map();
     for (const [attribute_, notes] of groupedByAttribute.entries()) {
-      // Calculate heatmap
-      const maxTime = max(notes, d => d.end);
-      const nBins = Math.ceil(maxTime * 1000 / binSize) + 1;
-      const heatmap = Array.from({
-        length: nBins
-      }).fill(0);
-
-      for (const note of notes) {
-        const start = Math.round(note.start * 1000 / binSize);
-        const end = Math.round(note.end * 1000 / binSize);
-
-        for (let bin = start; bin <= end; bin++) {
+      const maxTime = max(notes, (d) => d.end);
+      const nBins = Math.ceil(maxTime * 1e3 / binSize) + 1;
+      const heatmap = Array.from({ length: nBins }).fill(0);
+      for (const note2 of notes) {
+        const start2 = Math.round(note2.start * 1e3 / binSize);
+        const end = Math.round(note2.end * 1e3 / binSize);
+        for (let bin = start2; bin <= end; bin++) {
           heatmap[bin] += 1;
         }
-      } // Normalize
-
-
+      }
       for (let bin = 0; bin < heatmap.length; bin++) {
         heatmap[bin] /= nRecs;
       }
-
       heatmapByAttribute.set(attribute_, heatmap);
     }
-
     return heatmapByAttribute;
   }
-  /**
-   * 'Averages' multiple recordings of the same piece to get an approximation of
-   * the ground truth.
-   *
-   * @todo use velocity?
-   * @param {Map} heatmapByPitch haetmap from recordingsHeatmap()
-   * @param {number} binSize size of time bins in milliseconds
-   * @param {number} threshold note is regarded as true when this ratio of
-   *      recordings has a note there
-   * @returns {Note[]} approximated ground truth notes
-   */
-
   function averageRecordings(heatmapByPitch, binSize, threshold = 0.8) {
     const newNotes = [];
-
     for (const [pitch, heatmap] of heatmapByPitch.entries()) {
-      // Threshold to get note timespans -> array with booleans (is note here?)
-      // TODO: use Canny Edge Detector? Fill Gaps?
       for (let bin = 0; bin < heatmap.length; bin++) {
         heatmap[bin] = heatmap[bin] > threshold;
-      } // Extract notes
-
-
+      }
       let currentNote = null;
-
       for (let bin = 0; bin < heatmap.length; bin++) {
-        // Detect note start
         if (!currentNote && heatmap[bin]) {
-          const time = bin * binSize / 1000;
-          currentNote = new Note(pitch, time, 127, 0);
-        } // Detect note end or end of array
-
-
+          const time = bin * binSize / 1e3;
+          currentNote = new Note_default(pitch, time, 127, 0);
+        }
         if (currentNote && (!heatmap[bin] || bin === heatmap.length - 1)) {
-          const time = bin * binSize / 1000;
+          const time = bin * binSize / 1e3;
           currentNote.end = time;
           newNotes.push(currentNote);
           currentNote = null;
         }
       }
-    } // Sort new notes
-
-
+    }
     newNotes.sort((a, b) => a.start - b.start);
     return newNotes;
   }
-  /**
-   * Extracts a probable ground truth from multiple recordings. Uses one KDE for
-   * each note starts and ends, detects maxima in the KDE and thresholds them.
-   * Then uses alternating start end end candidates to create notes.
-   *
-   * @param {Note[]} recNotes recordings notes
-   * @param {number} bandwidth kernel bandwidth
-   * @param {number} ticksPerSecond number of ticks per second
-   * @param {number} threshold threshold
-   * @returns {Note[]} new notes
-   */
-
   function averageRecordings2(recNotes, bandwidth = 0.01, ticksPerSecond, threshold) {
-    const groupedByPitch = group(recNotes, d => d.pitch);
+    const groupedByPitch = group(recNotes, (d) => d.pitch);
     const newNotes = [];
-
     for (const [pitch, notes] of groupedByPitch.entries()) {
-      const starts = notes.map(d => d.start);
-      const ends = notes.map(d => d.end); // Create KDE
-
+      const starts = notes.map((d) => d.start);
+      const ends = notes.map((d) => d.end);
       const duration = max(ends);
       const ticks = Math.ceil(ticksPerSecond * duration);
-      const x = linear().domain([0, duration]).range([0, duration]);
+      const x = linear2().domain([0, duration]).range([0, duration]);
       const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), x.ticks(ticks));
       const estimateStarts = kde(starts);
-      const estimateEnds = kde(ends); // Search for density maxima
-
-      const maximaStarts = findLocalMaxima(estimateStarts.map(d => d[1]));
-      const maximaEnds = findLocalMaxima(estimateEnds.map(d => d[1])); // If density value > threshold, update note state
-
-      const chosenStarts = maximaStarts.filter(d => estimateStarts[d][1] > threshold).map(d => estimateStarts[d][0]);
-      const chosenEnds = maximaEnds.filter(d => estimateEnds[d][1] > threshold).map(d => estimateEnds[d][0]); // Create notes
-
+      const estimateEnds = kde(ends);
+      const maximaStarts = findLocalMaxima(estimateStarts.map((d) => d[1]));
+      const maximaEnds = findLocalMaxima(estimateEnds.map((d) => d[1]));
+      const chosenStarts = maximaStarts.filter((d) => estimateStarts[d][1] > threshold).map((d) => estimateStarts[d][0]);
+      const chosenEnds = maximaEnds.filter((d) => estimateEnds[d][1] > threshold).map((d) => estimateEnds[d][0]);
       while (chosenStarts.length > 0) {
-        const nextStart = chosenStarts.shift(); // Remove ends before nextStart
-
+        const nextStart = chosenStarts.shift();
         while (chosenEnds.length > 0 && chosenEnds[0] < nextStart) {
           chosenEnds.shift();
         }
-
-        const nextEnd = chosenEnds.shift(); // Remove starts before nextEnd
-
+        const nextEnd = chosenEnds.shift();
         while (chosenStarts.length > 0 && chosenStarts[0] < nextEnd) {
           chosenStarts.shift();
         }
-
-        newNotes.push(new Note(pitch, nextStart, 127, 0, nextEnd));
+        newNotes.push(new Note_default(pitch, nextStart, 127, 0, nextEnd));
       }
-    } // Sort new notes
-
-
+    }
     newNotes.sort((a, b) => a.start - b.start);
     return newNotes;
   }
-  /**
-   * Returns a Map: pitch->differenceMap, differenceMap is an Array with time bins
-   * and each bin is either
-   *      0 (none, neither GT nor rec have a note here)
-   *      1 (missing, only GT has a note here)
-   *      2 (additional, only rec has a note here)
-   *      3 (both, both have a note here)
-   *
-   * @todo move to comparison
-   * @param {Note[]} gtNotes ground truth notes
-   * @param {Note[]} recNotes recrodings notes
-   * @param {number} binSize size of a time bin in milliseconds
-   * @returns {Map} pitch->differenceMap; differenceMap is number[] for all time slices
-   * @example
-   *      const diffMap = differenceMap(gtNotes, recNotes, 10);
-   */
-
   function differenceMap(gtNotes, recNotes, binSize) {
     const recHeatmap = recordingsHeatmap(recNotes, 1, binSize);
     const gtHeatmap = recordingsHeatmap(gtNotes, 1, binSize);
-    const allPitches = [...new Set([...recHeatmap.keys(), ...gtHeatmap.keys()])];
-    const resultMap = new Map();
-
+    const allPitches = [.../* @__PURE__ */ new Set([
+      ...recHeatmap.keys(),
+      ...gtHeatmap.keys()
+    ])];
+    const resultMap = /* @__PURE__ */ new Map();
     for (const pitch of allPitches) {
-      let result; // Handle pitches that occur only in one of both
-
+      let result;
       if (!recHeatmap.has(pitch)) {
-        // All notes are missing
-        result = gtHeatmap.get(pitch).map(d => d !== 0 ? 1 : 0);
+        result = gtHeatmap.get(pitch).map((d) => d !== 0 ? 1 : 0);
       } else if (!gtHeatmap.has(pitch)) {
-        // All notes are additional
-        result = recHeatmap.get(pitch).map(d => d !== 0 ? 2 : 0);
+        result = recHeatmap.get(pitch).map((d) => d !== 0 ? 2 : 0);
       } else {
-        // Compare both bins for each time slice
         const recH = recHeatmap.get(pitch);
         const gtH = gtHeatmap.get(pitch);
         const nBins = Math.max(recH.length, gtH.length);
-        result = Array.from({
-          length: nBins
-        }).fill(0);
-
-        for (let index = 0; index < result.length; index++) {
-          const gtValue = gtH[index] || 0;
-          const recValue = recH[index] || 0;
-
+        result = Array.from({ length: nBins }).fill(0);
+        for (let index16 = 0; index16 < result.length; index16++) {
+          const gtValue = gtH[index16] || 0;
+          const recValue = recH[index16] || 0;
           if (gtValue === 0 && recValue === 0) {
-            // None
-            result[index] = 0;
+            result[index16] = 0;
           }
-
           if (gtValue !== 0 && recValue === 0) {
-            // Missing
-            result[index] = 1;
+            result[index16] = 1;
           }
-
           if (gtValue === 0 && recValue !== 0) {
-            // Additional
-            result[index] = 2;
+            result[index16] = 2;
           }
-
           if (gtValue !== 0 && recValue !== 0) {
-            // Both
-            result[index] = 3;
+            result[index16] = 3;
           }
         }
       }
-
       resultMap.set(pitch, result);
     }
-
     return resultMap;
   }
-  /**
-   * Computes the 'area' of error from a differenceMap normalized by total area.
-   * The area is simply the number of bins with each value, total area is max.
-   * number of bins in all pitches * the number of pitches.
-   *
-   * @todo move to comparison
-   * @todo not used or tested yet
-   * @todo add threshold for small errors (i.e. ignore area left and right of notes' start and end (masking?)))
-   * @param {Map} differenceMap differenceMap from differenceMap()
-   * @returns {object} {missing, additional, correct} area ratios
-   * @example
-   *      const diffMap = differenceMap(gtNotes, recNotes, 10);
-   *      const diffMapErrors = differenceMapErrorAreas(diffMap);
-   *      const {missing, additional, correct} = diffMapErrors;
-   */
-
-  function differenceMapErrorAreas(differenceMap) {
-    // Count bins for each error type
+  function differenceMapErrorAreas(differenceMap2) {
     let missingBins = 0;
     let additionalBins = 0;
     let correctBins = 0;
-
-    for (const diffMap of differenceMap.values()) {
+    for (const diffMap of differenceMap2.values()) {
       for (const bin of diffMap) {
         if (bin === 1) {
           missingBins++;
@@ -14500,11 +9832,9 @@
           correctBins++;
         }
       }
-    } // Normalize
-
-
-    const maxLength = max([...differenceMap], d => d[1].length);
-    const totalArea = differenceMap.size * maxLength;
+    }
+    const maxLength = max([...differenceMap2], (d) => d[1].length);
+    const totalArea = differenceMap2.size * maxLength;
     return {
       missing: missingBins / totalArea,
       additional: additionalBins / totalArea,
@@ -14512,361 +9842,162 @@
     };
   }
 
-  /**
-   * @module utils/WebMidiUtils
-   */
-
-  /**
-   * Allows to ping a MIDI device that loops back to measure latency.
-   * The tool loopMIDI does exactly this:
-   *
-   * @see https://www.tobias-erichsen.de/software/loopmidi.html.
-   * @example pingMidiDevice('loopMIDI Port', 10);
-   * @param {string} deviceName name of the MIDI device
-   * @param {number} howOften how many times to ping the device
-   */
+  // src/utils/WebMidiUtils.js
   function pingMidiDevice(deviceName, howOften = 1) {
     if (!navigator.requestMIDIAccess) {
-      console.error('MIDI: WebMIDI is not supported in this browser.');
+      console.error("MIDI: WebMIDI is not supported in this browser.");
     } else {
       let sentCount = 0;
       let sentTime;
-      let totalTime = 0; // Start listening for incoming data
-
+      let totalTime = 0;
       const receiveFunction = () => {
         const ping = Date.now() - sentTime;
         totalTime += ping;
         const avg = totalTime / sentCount;
         console.log(`Received MIDI from ${deviceName} after ${ping} ms (avg: ${avg})`);
       };
-
-      navigator.requestMIDIAccess().then(midiAccess => {
+      navigator.requestMIDIAccess().then((midiAccess) => {
         for (const input of midiAccess.inputs.values()) {
           if (deviceName === input.name) {
             input.onmidimessage = receiveFunction;
           }
-        } // Get output device
-
-
+        }
         let outputDevice = null;
-
         for (const output of midiAccess.outputs.values()) {
           if (deviceName === output.name) {
             outputDevice = output;
           }
         }
-
         if (!outputDevice) {
           console.error(`Cannot ping output device ${deviceName} because it is not there`);
-        } // Send data once a second
-
-
+        }
         const pingFunction = () => {
           if (sentCount < howOften) {
             sentCount++;
             console.log(`Ping ${sentCount}/${howOften} Sending MIDI ping to ${deviceName}`);
             sentTime = new Date();
-            outputDevice.send([0x90, 0x45, 0x7F]);
-            setTimeout(pingFunction, 1000);
+            outputDevice.send([144, 69, 127]);
+            setTimeout(pingFunction, 1e3);
           }
         };
-
-        setTimeout(pingFunction, 1000);
-      }, () => console.error('Cannot get MIDI access'));
+        setTimeout(pingFunction, 1e3);
+      }, () => console.error("Cannot get MIDI access"));
     }
   }
 
-  /**
-   * @module utils
-   */
-
-  var index$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    arrayShallowEquals: arrayShallowEquals,
-    arrayHasSameElements: arrayHasSameElements,
-    jaccardIndex: jaccardIndex,
-    kendallTau: kendallTau,
-    removeDuplicates: removeDuplicates,
-    arrayContainsArray: arrayContainsArray,
-    arraySlicesEqual: arraySlicesEqual,
-    arrayIndexOf: arrayIndexOf,
-    getArrayMax: getArrayMax,
-    normalizeNdArray: normalizeNdArray,
-    euclideanDistance: euclideanDistance,
-    formatMatrix: formatMatrix,
-    binarySearch: binarySearch,
-    findStreaks: findStreaks,
-    findRepeatedIndices: findRepeatedIndices,
-    blobToBase64: blobToBase64,
-    blobToFileExtension: blobToFileExtension,
-    getColorLightness: getColorLightness,
-    averageColor: averageColor,
-    setOpacity: setOpacity,
-    formatTime: formatTime,
-    formatDate: formatDate,
-    formatSongTitle: formatSongTitle,
-    storeObjectInLocalStorage: storeObjectInLocalStorage,
-    getObjectFromLocalStorage: getObjectFromLocalStorage,
-    randFloat: randFloat,
-    choose: choose,
-    clipValue: clipValue,
-    roundToNDecimals: roundToNDecimals,
-    swapSoSmallerFirst: swapSoSmallerFirst,
-    countOnesOfBinary: countOnesOfBinary,
-    findLocalMaxima: findLocalMaxima,
-    deepCloneFlatObjectMap: deepCloneFlatObjectMap,
-    groupNotesByPitch: groupNotesByPitch,
-    reverseString: reverseString,
-    findNearest: findNearest,
-    delay: delay,
-    bpmToSecondsPerBeat: bpmToSecondsPerBeat,
-    freqToApproxMidiNr: freqToApproxMidiNr,
-    midiToFrequency: midiToFrequency,
-    chordToInteger: chordToInteger,
-    chordIntegerJaccardIndex: chordIntegerJaccardIndex,
-    noteDurationToNoteType: noteDurationToNoteType,
-    CIRCLE_OF_5THS: CIRCLE_OF_5THS,
-    INTERVALS: INTERVALS,
-    metronomeTrackFromTempoAndMeter: metronomeTrackFromTempoAndMeter,
-    metronomeTrackFromMusicPiece: metronomeTrackFromMusicPiece,
-    noteColorFromPitch: noteColorFromPitch,
-    filterRecordingNoise: filterRecordingNoise,
-    clipRecordingsPitchesToGtRange: clipRecordingsPitchesToGtRange,
-    clipRecordingsPitchesToGtFretboardRange: clipRecordingsPitchesToGtFretboardRange,
-    alignNotesToBpm: alignNotesToBpm,
-    recordingsHeatmap: recordingsHeatmap,
-    averageRecordings: averageRecordings,
-    averageRecordings2: averageRecordings2,
-    differenceMap: differenceMap,
-    differenceMapErrorAreas: differenceMapErrorAreas,
-    pearsonCorrelation: pearsonCorrelation,
-    confidenceInterval: confidenceInterval,
-    getBoxplotCharacteristics: getBoxplotCharacteristics,
-    kernelDensityEstimator: kernelDensityEstimator,
-    kernelEpanechnikov: kernelEpanechnikov,
-    kernelGauss: kernelGauss,
-    pingMidiDevice: pingMidiDevice
-  });
-
-  /* eslint-disable-line no-unused-vars */
-
-  /**
-   * @module comparison/Matching
-   */
-
-  /**
-   * For one recording, separately for each pitch,
-   * matches each recorded note to its closest ground truth note.
-   * If there are multiple matches, the best (smallest time difference)
-   * will be kept and others will be regarded as additional notes.
-   * Ground truth notes without match will be regarded as missing notes.
-   *
-   * Result format (separated by pitch in a Map):
-   * Map:pitch->{
-   *    gtRecMap           matched rec. note for each GT note Map:gtNoteStart->recNote,
-   *    additionalNotes:   rec. notes without matched GT note
-   *    missingNotes:      GT notes without matched rec. note
-   *    gtNotes:           all GT notes
-   * }
-   *
-   * @todo add max distance?
-   * @param {Note[]} recNotes recorded notes of a single recording
-   * @param {Note[]} gtNotes ground truth notes
-   * @returns {Map} result
-   */
-
+  // src/comparison/Matching.js
   function matchGtAndRecordingNotes(recNotes, gtNotes) {
-    const groupedByPitch = group(gtNotes, d => d.pitch);
-    const groupedByPitchRec = group(recNotes, d => d.pitch);
-    const result = new Map(); // For each pitch, map recorded notes to GT notes
-
-    for (const [pitch, gtNotes] of groupedByPitch.entries()) {
-      const gtRecMap = new Map();
+    const groupedByPitch = group(gtNotes, (d) => d.pitch);
+    const groupedByPitchRec = group(recNotes, (d) => d.pitch);
+    const result = /* @__PURE__ */ new Map();
+    for (const [pitch, gtNotes2] of groupedByPitch.entries()) {
+      const gtRecMap = /* @__PURE__ */ new Map();
       const additionalNotes = [];
       const missingNotes = [];
-
-      for (const n of gtNotes) {
+      for (const n of gtNotes2) {
         gtRecMap.set(n.start, null);
-      } // Recording might be missing this pitch, then all notes are missing
-
-
+      }
       if (!groupedByPitchRec.has(pitch)) {
         result.set(pitch, {
-          gtRecMap: new Map(),
+          gtRecMap: /* @__PURE__ */ new Map(),
           additionalNotes: [],
-          missingNotes: gtNotes,
-          gtNotes: gtNotes
+          missingNotes: gtNotes2,
+          gtNotes: gtNotes2
         });
         continue;
       }
-
-      const recNotes = groupedByPitchRec.get(pitch);
-
-      for (const r of recNotes) {
-        // Match each recorded note to the closest ground truth note
-        const nearest = findNearest(gtNotes, r);
+      const recNotes2 = groupedByPitchRec.get(pitch);
+      for (const r of recNotes2) {
+        const nearest = findNearest(gtNotes2, r);
         const currentEntry = gtRecMap.get(nearest.start);
-
         if (currentEntry === null) {
-          // If empty, take
           gtRecMap.set(nearest.start, r);
         } else {
-          // If it is taken, overtake it if the new match is closer
           if (Math.abs(nearest.start - r.start) < Math.abs(currentEntry.start - r.start)) {
-            // If it can overtake, add the old note to 'wrong additional notes' list
             gtRecMap.set(nearest.start, r);
             additionalNotes.push(currentEntry);
           } else {
-            // If it cannot overtake, add note to 'wrong additional notes' list
             additionalNotes.push(r);
           }
         }
-      } // Go trough all GT notes, those that have no recording assigned to it are missing notes
-
-
-      for (const n of gtNotes) {
+      }
+      for (const n of gtNotes2) {
         if (gtRecMap.get(n.start) === null) {
           missingNotes.push(n);
         }
-      } // Store result in map pitch->groupings
-
-
+      }
       result.set(pitch, {
         gtRecMap,
         additionalNotes,
         missingNotes,
-        gtNotes: gtNotes
+        gtNotes: gtNotes2
       });
-    } // If a recording has a pitch that GT has not, all those notes are additional notes
-
-
-    for (const [pitch, recNotes] of groupedByPitchRec.entries()) {
+    }
+    for (const [pitch, recNotes2] of groupedByPitchRec.entries()) {
       if (!groupedByPitch.has(pitch)) {
         result.set(pitch, {
-          gtRecMap: new Map(),
-          additionalNotes: recNotes,
+          gtRecMap: /* @__PURE__ */ new Map(),
+          additionalNotes: recNotes2,
           missingNotes: [],
           gtNotes: []
         });
       }
-    } // console.log(result);
-
-
+    }
     return result;
   }
-  /**
-   * Matches all recorded notes from multiple recordings to the nearest
-   * ground truth (GT) note.
-   * Contrary to the matching created by matchGtAndRecordingNotes()
-   * missing and additional notes are not considered, so multiple notes
-   * from a single recording can be matched to the same GT note.
-   *
-   * Result format:
-   * Map:pitch->Map:gtStart->arrayOfMatchedRecNotes
-   *
-   * @param {Recording[]} recordings recordings
-   * @param {Note[]} gtNotes ground truth notes
-   * @returns {Map} matching
-   */
-
   function matchGtAndMultipleRecordings(recordings, gtNotes) {
-    const allRecNotes = recordings.flatMap(d => d.notes);
-    const groupedByPitch = group(gtNotes, d => d.pitch);
-    const groupedByPitchRec = group(allRecNotes, d => d.pitch);
-    const result = new Map(); // For each pitch, map recorded notes to GT notes and keep track of misses
-
-    for (const [pitch, gtNotes] of groupedByPitch.entries()) {
-      const gtRecMap = new Map();
-
-      for (const n of gtNotes) {
+    const allRecNotes = recordings.flatMap((d) => d.notes);
+    const groupedByPitch = group(gtNotes, (d) => d.pitch);
+    const groupedByPitchRec = group(allRecNotes, (d) => d.pitch);
+    const result = /* @__PURE__ */ new Map();
+    for (const [pitch, gtNotes2] of groupedByPitch.entries()) {
+      const gtRecMap = /* @__PURE__ */ new Map();
+      for (const n of gtNotes2) {
         gtRecMap.set(n.start, []);
-      } // Recording might be missing this pitch, then match is empty
-
-
+      }
       if (!groupedByPitchRec.has(pitch)) {
-        result.set(pitch, new Map());
+        result.set(pitch, /* @__PURE__ */ new Map());
         continue;
       }
-
       const recNotes = groupedByPitchRec.get(pitch);
-
       for (const r of recNotes) {
-        // Match each recorded note to the closest ground truth note
-        const nearest = findNearest(gtNotes, r);
+        const nearest = findNearest(gtNotes2, r);
         const currentEntry = gtRecMap.get(nearest.start);
         currentEntry.push(r);
         gtRecMap.set(nearest.start, currentEntry);
-      } // Store result in map pitch->groupings
-
-
+      }
       result.set(pitch, gtRecMap);
-    } // console.log(result);
-
-
+    }
     return result;
   }
-  /**
-   * Calculates (for each pitch) the average error for each GT note (averaged
-   * over all matched notes in the recordings),
-   * as well as the maximum of all those average errors.
-   * GT notes that have no matched recorded notes will have an error of 0.
-   *
-   * @param {Map} multiMatching matching with a GT and multiple recordings
-   * @param {number} errorThreshold number seconds of deviation above which
-   *      to exclude an error
-   * @returns {Map} error summary Map:pitch->{gtErrorMap, maxError},
-   *      gtErrorMap is Map:gtStart->error (error is average over all time
-   *      differences between the GT note and matched recNotes)
-   */
-
   function getMultiMatchingErrorPerNote(multiMatching, errorThreshold = 3) {
-    const result = new Map();
-
+    const result = /* @__PURE__ */ new Map();
     for (const [pitch, gtRecMap] of multiMatching.entries()) {
-      const gtErrorMap = new Map();
-      let maxError = 0; // Go through all gtStart and matched notes
-
+      const gtErrorMap = /* @__PURE__ */ new Map();
+      let maxError = 0;
       for (const [gtStart, matchedRecNotes] of gtRecMap.entries()) {
         let error = 0;
-
         if (matchedRecNotes.length > 0) {
-          for (const note of matchedRecNotes) {
-            const error_ = Math.abs(note.start - gtStart);
-
+          for (const note2 of matchedRecNotes) {
+            const error_ = Math.abs(note2.start - gtStart);
             if (error_ <= errorThreshold) {
               error += error_;
             }
           }
-
           error /= matchedRecNotes.length;
-
           if (error > maxError) {
             maxError = error;
           }
         }
-
         gtErrorMap.set(gtStart, error);
       }
-
       result.set(pitch, {
         gtErrorMap,
         maxError
       });
     }
-
     return result;
   }
-  /**
-   * Calculates the error of a matching by applying penalties and summing up
-   *
-   * @param {Map} matching a matching created by matchGtAndRecordingNotes
-   * @param {number} addPenalty penalty for each additonal note
-   * @param {number} missPenalty penalty for each missing note
-   * @param {number} timingPenalty penalty for note timing differences in seconds
-   * @param {number} timeThreshold timing errors below it (absolute) are ignored
-   * @returns {object} errors by category
-   */
-
   function getMatchingError(matching, addPenalty, missPenalty, timingPenalty, timeThreshold = 0) {
     const result = {
       total: 0,
@@ -14875,33 +10006,23 @@
       totalCorrect: 0,
       totalTime: 0,
       totalNumberOfGtNotes: 0,
-      perPitch: new Map()
+      perPitch: /* @__PURE__ */ new Map()
     };
-
     for (const [pitch, m] of matching.entries()) {
-      const {
-        gtRecMap,
-        additionalNotes,
-        missingNotes,
-        gtNotes
-      } = m;
+      const { gtRecMap, additionalNotes, missingNotes, gtNotes } = m;
       const addError = additionalNotes.length * addPenalty;
       const missError = missingNotes.length * missPenalty;
       let correct = 0;
       let timeError = 0;
-
       for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
-        // If it is null, this is handled in missingNotes
         if (matchedRecNote !== null) {
           correct++;
           const error = Math.abs(matchedRecNote.start - gtStart);
-
           if (error > timeThreshold) {
             timeError += error;
           }
         }
       }
-
       const total = addError + missError + timeError * timingPenalty;
       result.perPitch.set(pitch, {
         total,
@@ -14910,8 +10031,7 @@
         correct,
         timeError,
         numberOfGtNotes: gtNotes.length
-      }); // Update total
-
+      });
       result.totalAdd += addError;
       result.totalMiss += missError;
       result.totalCorrect += correct;
@@ -14919,126 +10039,53 @@
       result.total += total;
       result.totalNumberOfGtNotes += gtNotes.length;
     }
-
     return result;
   }
-  /**
-   * Cuts a section from a matching by filtering on the start times
-   * of ground truth, missing, and additonal notes
-   *
-   * @param {Map} matching matching
-   * @param {number} start start time (inclusive)
-   * @param {number} end end time (exclusive)
-   * @returns {Map} section of matching
-   */
-
-  function getMatchingSection(matching, start, end) {
-    const result = new Map();
-
+  function getMatchingSection(matching, start2, end) {
+    const result = /* @__PURE__ */ new Map();
     for (const [pitch, m] of matching.entries()) {
-      const {
-        gtRecMap,
-        additionalNotes,
-        missingNotes,
-        gtNotes
-      } = m;
-      const newGtRecMap = new Map();
-
+      const { gtRecMap, additionalNotes, missingNotes, gtNotes } = m;
+      const newGtRecMap = /* @__PURE__ */ new Map();
       for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
-        // If it is null, this is handled in missingNotes
-        if (matchedRecNote !== null && gtStart >= start && gtStart < end) {
+        if (matchedRecNote !== null && gtStart >= start2 && gtStart < end) {
           newGtRecMap.set(gtStart, matchedRecNote);
         }
       }
-
       result.set(pitch, {
         gtRecMap: newGtRecMap,
-        additionalNotes: additionalNotes.filter(d => d.start >= start && d.start < end),
-        missingNotes: missingNotes.filter(d => d.start >= start && d.start < end),
-        gtNotes: gtNotes
+        additionalNotes: additionalNotes.filter((d) => d.start >= start2 && d.start < end),
+        missingNotes: missingNotes.filter((d) => d.start >= start2 && d.start < end),
+        gtNotes
       });
     }
-
     return result;
   }
-  /**
-   * Shortcut for getMatchingSection and getMatchingError,
-   * see them for parameter details.
-   *
-   * @param {Map} matching matching
-   * @param {number} start start time (inclusive)
-   * @param {number} end end time (exclusive)
-   * @param {number} addPenalty penalty for each additonal note
-   * @param {number} missPenalty penalty for each missing note
-   * @param {number} timingPenalty penalty for note timing differences in seconds
-   * @returns {object} error by category
-   */
-
-  function getMatchingSliceError(matching, start, end, addPenalty, missPenalty, timingPenalty) {
-    const section = getMatchingSection(matching, start, end);
+  function getMatchingSliceError(matching, start2, end, addPenalty, missPenalty, timingPenalty) {
+    const section = getMatchingSection(matching, start2, end);
     const error = getMatchingError(section, addPenalty, missPenalty, timingPenalty);
     return error;
   }
 
-  var Matching = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    matchGtAndRecordingNotes: matchGtAndRecordingNotes,
-    matchGtAndMultipleRecordings: matchGtAndMultipleRecordings,
-    getMultiMatchingErrorPerNote: getMultiMatchingErrorPerNote,
-    getMatchingError: getMatchingError,
-    getMatchingSection: getMatchingSection,
-    getMatchingSliceError: getMatchingSliceError
-  });
-
-  /**
-   * @module Alignment
-   */
-
-  /**
-   * Given two NoteArrays, shift the second one in time such that they are aligned
-   *
-   * @todo use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
-   *      to find note alignment, then only use those for force calculation
-   * @param {NoteArray} gt a NoteArray, e.g. the ground truth
-   * @param {NoteArray} rec a NoteArray to align to a
-   * @returns {NoteArray} an aligned copy of b
-   */
-
+  // src/alignment/Alignment.js
   function alignNoteArrays(gt, rec) {
     rec = rec.clone();
     const f = alignmentForce(gt.getNotes(), rec.getNotes());
-    rec = rec.shiftTime(f); // console.log(`Aligned recording via shifting by ${f.toFixed(3)} seconds`);
-
+    rec = rec.shiftTime(f);
     return {
       aligned: rec,
       timeDifference: f
     };
   }
-  /**
-   * Given two NoteArrays, shift the second one in time such that they are aligned
-   *
-   * @param {NoteArray} gt a NoteArray, e.g. the ground truth
-   * @param {NoteArray} rec a NoteArray to align to a
-   * @returns {NoteArray} an aligned copy of b
-   */
-
   function alignNoteArrays2(gt, rec) {
     let timeDifference = 0;
     let tries = 0;
     rec = rec.clone();
-
     while (tries < 25) {
-      // Get a 1-to-1 matching between gt and rec notes so noise has less impact
-      const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes()); // Get average time difference between matched notes
-
+      const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes());
       let timeDiff = 0;
       let count = 0;
-
       for (const m of matching.values()) {
-        const {
-          gtRecMap
-        } = m;
-
+        const { gtRecMap } = m;
         for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
           if (matchedRecNote !== null) {
             count++;
@@ -15046,45 +10093,26 @@
           }
         }
       }
-
-      timeDiff /= count; // Shift recording
-
+      timeDiff /= count;
       rec.shiftTime(timeDiff);
-      timeDifference += timeDiff; // console.log(`${tries} shifting by ${timeDiff.toFixed(3)} seconds`);
-      // Stop while loop when finished
-
-      if (Math.abs(timeDiff) < 0.0005) {
+      timeDifference += timeDiff;
+      if (Math.abs(timeDiff) < 5e-4) {
         break;
       }
-
       tries++;
     }
-
     return {
       aligned: rec,
       timeDifference
     };
   }
-  /**
-   * Given two NoteArrays, shift the second one in time such that they are aligned
-   *
-   * @todo use median instead of average?
-   * @param {NoteArray} gt a NoteArray, e.g. the ground truth
-   * @param {NoteArray} rec a NoteArray to align to a
-   * @returns {NoteArray} an aligned copy of b
-   */
-
   function alignNoteArrays3(gt, rec) {
     let timeDifference = 0;
     let tries = 0;
     rec = rec.clone();
-
     while (tries < 25) {
-      // Get a 1-to-1 matching between gt and rec notes so noise has less impact
-      const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes()); // Get time differences
-
+      const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes());
       const timeDiffs = [];
-
       for (const m of matching.values()) {
         for (const [gtStart, matchedRecNote] of m.gtRecMap.entries()) {
           if (matchedRecNote !== null) {
@@ -15092,199 +10120,125 @@
           }
         }
       }
-
-      const shift = median(timeDiffs); // Shift recording
-
+      const shift = median_default(timeDiffs);
       rec.shiftTime(shift);
-      timeDifference += shift; // console.log(`${tries} shifting by ${shift.toFixed(3)} seconds`);
-      // Stop while loop when finished
-
-      if (Math.abs(shift) < 0.0001) {
+      timeDifference += shift;
+      if (Math.abs(shift) < 1e-4) {
         break;
       }
-
       tries++;
     }
-
     return {
       aligned: rec,
       timeDifference
     };
   }
-  /**
-   * Calculates the mean difference between all notes in a and the nearest same-
-   * pitched notes in b
-   *
-   * @param {Note[]} a array with notes
-   * @param {Note[]} b array with notes
-   * @returns {number} mean time difference
-   */
-
   function alignmentForce(a, b) {
-    let difference = 0;
-    let count = 0; // For each note in a, search the closest note in b with the same pitch and calculate the distance
-
+    let difference2 = 0;
+    let count = 0;
     for (const noteA of a) {
-      let distance = Number.POSITIVE_INFINITY;
+      let distance2 = Number.POSITIVE_INFINITY;
       let diff = Number.POSITIVE_INFINITY;
-
       for (const noteB of b) {
         if (noteA.pitch === noteB.pitch) {
           const dist = Math.abs(noteA.start - noteB.start);
-
-          if (dist < distance) {
-            distance = dist;
-            diff = noteA.start - noteB.start; // TODO: Larger distances might be errors
-            // if (diff > 1) {
-            //     diff = Math.sqrt(diff);
-            // }
+          if (dist < distance2) {
+            distance2 = dist;
+            diff = noteA.start - noteB.start;
           }
         }
-      } // (If not found, this does not change alignment)
-
-
-      if (distance < Number.POSITIVE_INFINITY) {
-        difference += diff;
+      }
+      if (distance2 < Number.POSITIVE_INFINITY) {
+        difference2 += diff;
         count++;
       }
     }
-
-    return difference / count;
+    return difference2 / count;
   }
-  /**
-   * Test function
-   *
-   * @todo move to test
-   */
-
-
   function testAlignment() {
-    const test = (a, b, title) => {
+    const test = (a2, b2, title) => {
       console.log(title);
-      console.log(b.getNotes().map(n => n.start));
-      const aligned = alignNoteArrays(a, b);
-      console.log(aligned.getNotes().map(n => n.start));
+      console.log(b2.getNotes().map((n) => n.start));
+      const aligned = alignNoteArrays(a2, b2);
+      console.log(aligned.getNotes().map((n) => n.start));
     };
-
-    const a = new NoteArray([new Note(69, 0, 127, 0, 1), new Note(70, 1, 127, 0, 2), new Note(71, 2, 127, 0, 3)]);
-    console.log(a.getNotes().map(n => n.start));
+    const a = new NoteArray_default([
+      new Note_default(69, 0, 127, 0, 1),
+      new Note_default(70, 1, 127, 0, 2),
+      new Note_default(71, 2, 127, 0, 3)
+    ]);
+    console.log(a.getNotes().map((n) => n.start));
     let b;
     b = a.clone().shiftTime(2);
-    test(a, b, 'shifted by 2');
+    test(a, b, "shifted by 2");
     b = a.clone().shiftTime(-2);
-    test(a, b, 'shifted by -2');
-    b = a.clone().shiftTime(3).addNotes([new Note(72, 2, 127, 0, 3)]);
-    test(a, b, 'shifted by 3, added note');
+    test(a, b, "shifted by -2");
+    b = a.clone().shiftTime(3).addNotes([new Note_default(72, 2, 127, 0, 3)]);
+    test(a, b, "shifted by 3, added note");
     b = a.clone().repeat(2);
-    test(a, b, 'repeated');
+    test(a, b, "repeated");
     b = a.clone().repeat(2).shiftTime(3);
-    test(a, b, 'repeated, shifted by 3');
+    test(a, b, "repeated, shifted by 3");
   }
-  /**
-   * @todo Benchmark different aligment functions on a randomly generated test set
-   * This allows to check the calculated alignment against a known ground truth
-   */
-
   function alignmentBenchmark() {
-    // Use random seed for reproducability
-    const seed = 0.448_715_738_882_824_23; // any number in [0, 1)
-
-    const rand127 = randomInt.source(lcg(seed))(0, 127);
+    const seed = 0.44871573888282423;
+    const rand127 = int_default.source(lcg(seed))(0, 127);
     const maxTime = 500;
-    const randTime = randomUniform.source(lcg(seed))(0, maxTime);
-    const randDuration = randomUniform.source(lcg(seed))(1 / 64, 2); // Create random notes
-
-    const randomNotes = Array.from({
-      length: 200
-    }).fill(0).map(() => {
-      const start = randTime();
-      return new Note(rand127(), start, 127, 0, start + randDuration());
+    const randTime = uniform_default.source(lcg(seed))(0, maxTime);
+    const randDuration = uniform_default.source(lcg(seed))(1 / 64, 2);
+    const randomNotes = Array.from({ length: 200 }).fill(0).map(() => {
+      const start2 = randTime();
+      return new Note_default(rand127(), start2, 127, 0, start2 + randDuration());
     });
-    const notes = new NoteArray(randomNotes).sortByTime();
-    console.log('true notes', notes.getNotes()); // Shift notes by some amount of seconds (this is what alignment should calculate!)
-
+    const notes = new NoteArray_default(randomNotes).sortByTime();
+    console.log("true notes", notes.getNotes());
     const shift = 3;
     const shifted = notes.clone().shiftTime(shift);
-    console.log('shifted', shifted); // Introduce errors, as a human would
-
-    const deviation = 0.1;
+    console.log("shifted", shifted);
+    const deviation2 = 0.1;
     const pAdd = 0.1;
     const pRemove = 0.1;
-    let variation = generateDrumVariation(shifted.getNotes(), deviation, pAdd, pRemove);
-    variation = new NoteArray(variation);
-    console.log('variation', variation); // Run all functions
-
+    let variation = generateDrumVariation(shifted.getNotes(), deviation2, pAdd, pRemove);
+    variation = new NoteArray_default(variation);
+    console.log("variation", variation);
     const funcs = [alignNoteArrays, alignNoteArrays2, alignNoteArrays3];
     console.log(`True time shift: ${shift} seconds`);
-    console.log('Only shifted');
-
+    console.log("Only shifted");
     for (const f of funcs) {
-      const {
-        timeDifference
-      } = f(notes, shifted);
+      const { timeDifference } = f(notes, shifted);
       const error = Math.abs(timeDifference - -shift);
-      console.log(`${f.name}\nshift: ${timeDifference.toFixed(3)} \nError ${error.toFixed(3)}`);
+      console.log(`${f.name}
+shift: ${timeDifference.toFixed(3)} 
+Error ${error.toFixed(3)}`);
     }
-
-    console.log('Shifted & variation');
-
+    console.log("Shifted & variation");
     for (const f of funcs) {
-      const {
-        timeDifference
-      } = f(notes, variation);
+      const { timeDifference } = f(notes, variation);
       const error = Math.abs(timeDifference - -shift);
-      console.log(`${f.name}\nshift: ${timeDifference.toFixed(3)} \nError ${error.toFixed(3)}`);
+      console.log(`${f.name}
+shift: ${timeDifference.toFixed(3)} 
+Error ${error.toFixed(3)}`);
     }
   }
 
-  var Alignment = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    alignNoteArrays: alignNoteArrays,
-    alignNoteArrays2: alignNoteArrays2,
-    alignNoteArrays3: alignNoteArrays3,
-    testAlignment: testAlignment,
-    alignmentBenchmark: alignmentBenchmark
+  // src/alignment/DiffAlignment.js
+  var DiffAlignment_exports = {};
+  __export(DiffAlignment_exports, {
+    activationMap: () => activationMap,
+    agreement: () => agreement,
+    alignGtAndRecToMinimizeDiffError: () => alignGtAndRecToMinimizeDiffError,
+    alignRecordingSectionsToBestFit: () => alignRecordingSectionsToBestFit,
+    alignRecordingToBestFit: () => alignRecordingToBestFit
   });
-
-  /**
-   * @module DiffAlignment
-   */
-
-  /**
-   * Aligns the recording to the best fitting position of the ground truth
-   *
-   * @param {Note[]} gtNotes ground truth notes
-   * @param {Recording} recording a Recording object
-   * @param {number} binSize time bin size in milliseconds
-   * @returns {Recording} aligned recording
-   */
-
   function alignRecordingToBestFit(gtNotes, recording, binSize = 100) {
     const recNotes = recording.getNotes();
     const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize)[0];
-    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1000);
+    const newRec = recording.clone().shiftToStartAt(bestFit.offsetMilliseconds / 1e3);
     return newRec;
   }
-  /**
-   * Splits the recording at gaps > gapDuration and then aligns each section to
-   * the best fitting position of the ground truth.
-   *
-   * @param {Note[]} gtNotes ground truth notes
-   * @param {Recording} recording a Recording object
-   * @param {number} binSize time bin size in milliseconds
-   * @param {number} gapDuration duration of seconds for a gap to be used as
-   *      segmenting time
-   * @param {'start-start'|'end-start'} gapMode gaps can either be considered as
-   *      the maximum time between two note's starts or the end of the first
-   *      and the start of the second note
-   * @returns {Recording} aligned recording
-   */
-
-  function alignRecordingSectionsToBestFit(gtNotes, recording, binSize, gapDuration = 3, gapMode = 'start-start') {
-    // Cut into sections when there are gaps
-    const sections = Recording.segmentAtGaps(gapDuration, gapMode);
-    const alignedSections = sections.map(section => {
-      // TODO: avoid overlaps?
+  function alignRecordingSectionsToBestFit(gtNotes, recording, binSize, gapDuration = 3, gapMode = "start-start") {
+    const sections = Recording_default.segmentAtGaps(gapDuration, gapMode);
+    const alignedSections = sections.map((section) => {
       const bestFit = alignGtAndRecToMinimizeDiffError(gtNotes, section, binSize)[0];
       return bestFit;
     });
@@ -15292,325 +10246,167 @@
     newRec.setNotes(alignedSections.flat());
     return newRec;
   }
-  /**
-   * Global alignment.
-   *
-   * Returns an array with matches sorted by magnitude of agreement.
-   * The offsetMilliseconds value describes at what time the first note of the
-   * recording should start.
-   *
-   * Goal: Know which part of ground truth (GT) was played in recording (rec)
-   * Assumptions:
-   * - Rec has same tempo as GT
-   * - Rec does not start before GT
-   * - Rec does not repeat something that is not repeated in the GT
-   * - Rec does not have gaps
-   * Ideas:
-   * - Brute-force
-   * - Sliding window
-   * - Using diff between time-pitch matrix of GT and rec
-   * - Only compute agreement (correct diff part) for the current overlap
-   * - For each time position save the agreement magnitude
-   * - Optionally: repeat around local maxima with finer binSize
-   *
-   * @param {Note[]} gtNotes ground truth notes
-   * @param {Note[]} recNotes recorded notes
-   * @param {number} binSize time bin size in milliseconds
-   * @returns {object[]} best offsets with agreements
-   */
-
   function alignGtAndRecToMinimizeDiffError(gtNotes, recNotes, binSize) {
-    gtNotes = new NoteArray(gtNotes);
-    recNotes = new NoteArray(recNotes).shiftToStartAt(0);
+    gtNotes = new NoteArray_default(gtNotes);
+    recNotes = new NoteArray_default(recNotes).shiftToStartAt(0);
     const gtDuration = gtNotes.getDuration();
     const recDuration = recNotes.getDuration();
-    const nBins = Math.ceil(gtDuration * 1000 / binSize) + 1;
-    const nRecBins = Math.ceil(recDuration * 1000 / binSize) + 1; // TODO: just switch them around?
-
+    const nBins = Math.ceil(gtDuration * 1e3 / binSize) + 1;
+    const nRecBins = Math.ceil(recDuration * 1e3 / binSize) + 1;
     if (nRecBins > nBins) {
-      console.warn('Cannot compare GT and rec if rec is longer');
-    } // Get activation maps
-
-
+      console.warn("Cannot compare GT and rec if rec is longer");
+    }
     const gtActivation = activationMap(gtNotes.getNotes(), binSize);
-    const recActivation = activationMap(recNotes.getNotes(), binSize); // Compare with sliding window
-
+    const recActivation = activationMap(recNotes.getNotes(), binSize);
     const agreementsPerOffset = [];
-
     for (let offset = 0; offset < nBins - nRecBins + 1; offset++) {
-      const currentAgreement = agreement(gtActivation, recActivation, offset); // console.log(`Comparing gt bins ${offset}...${offset + nRecBins} to rec\nGot agreement ${currentAgreement}`);
-
+      const currentAgreement = agreement(gtActivation, recActivation, offset);
       agreementsPerOffset.push({
         offsetBins: offset,
         offsetMilliseconds: offset * binSize,
         agreement: currentAgreement
       });
-    } // Sort by best match
-
-
+    }
     const sorted = agreementsPerOffset.sort((a, b) => b.agreement - a.agreement);
     return sorted;
   }
-  /**
-   * Returns an activation map, that maps pitch to an array of time bins.
-   * Each bin contains a 0 when there is no note or a 1 when there is one.
-   *
-   * @param {Note[]} allNotes notes
-   * @param {number} binSize time bin size in milliseconds
-   * @returns {Map} activation map
-   */
-
   function activationMap(allNotes, binSize = 100) {
-    const activationMap = new Map();
-
-    for (const [pitch, notes] of group(allNotes, d => d.pitch).entries()) {
-      const maxTime = max(notes, d => d.end);
-      const nBins = Math.ceil(maxTime * 1000 / binSize) + 1;
-      const pitchActivationMap = Array.from({
-        length: nBins
-      }).fill(0); // Calculate heatmap by writing 1 where a note is active
-
-      for (const note of notes) {
-        const start = Math.round(note.start * 1000 / binSize);
-        const end = Math.round(note.end * 1000 / binSize);
-
-        for (let bin = start; bin <= end; bin++) {
+    const activationMap2 = /* @__PURE__ */ new Map();
+    for (const [pitch, notes] of group(allNotes, (d) => d.pitch).entries()) {
+      const maxTime = max(notes, (d) => d.end);
+      const nBins = Math.ceil(maxTime * 1e3 / binSize) + 1;
+      const pitchActivationMap = Array.from({ length: nBins }).fill(0);
+      for (const note2 of notes) {
+        const start2 = Math.round(note2.start * 1e3 / binSize);
+        const end = Math.round(note2.end * 1e3 / binSize);
+        for (let bin = start2; bin <= end; bin++) {
           pitchActivationMap[bin] = 1;
         }
       }
-
-      activationMap.set(pitch, pitchActivationMap);
+      activationMap2.set(pitch, pitchActivationMap);
     }
-
-    return activationMap;
+    return activationMap2;
   }
-  /**
-   * Given two activation maps, simply counts the number of bins [pitch, time]
-   * where both have a 1, so an acitve note
-   * GT must be longer than rec
-   *
-   * @todo also count common 0s?
-   * @param {Map} gtActivations see activationMap()
-   * @param {Map} recActivations see activationMap()
-   * @param {number} offset offset for activation2 when comparing
-   * @returns {number} agreement
-   */
-
   function agreement(gtActivations, recActivations, offset) {
-    const allPitches = [...new Set([...gtActivations.keys(), ...recActivations.keys()])];
-    let agreement = 0;
-
+    const allPitches = [.../* @__PURE__ */ new Set([
+      ...gtActivations.keys(),
+      ...recActivations.keys()
+    ])];
+    let agreement2 = 0;
     for (const pitch of allPitches) {
-      // Handle pitches that occur only in one of both
-      if (!gtActivations.has(pitch)) ; else if (!recActivations.has(pitch)) ; else {
-        // Compare both bins for each time slice
+      if (!gtActivations.has(pitch)) {
+      } else if (!recActivations.has(pitch)) {
+      } else {
         const gtA = gtActivations.get(pitch);
-        const recA = recActivations.get(pitch); // Go through full rec, and compare to current section of GT
-
-        for (let index = 0; index < recA.length; index++) {
-          const gtValue = gtA[index + offset] || 0;
-          const recValue = recA[index] || 0;
-
+        const recA = recActivations.get(pitch);
+        for (let index16 = 0; index16 < recA.length; index16++) {
+          const gtValue = gtA[index16 + offset] || 0;
+          const recValue = recA[index16] || 0;
           if (gtValue === 1 && recValue === 1) {
-            agreement++;
+            agreement2++;
           }
         }
       }
     }
-
-    return agreement;
+    return agreement2;
   }
 
-  var DiffAlignment = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    alignRecordingToBestFit: alignRecordingToBestFit,
-    alignRecordingSectionsToBestFit: alignRecordingSectionsToBestFit,
-    alignGtAndRecToMinimizeDiffError: alignGtAndRecToMinimizeDiffError,
-    activationMap: activationMap,
-    agreement: agreement
+  // src/comparison/PriorityMatching.js
+  var PriorityMatching_exports = {};
+  __export(PriorityMatching_exports, {
+    balancedNoteDistance: () => balancedNoteDistance,
+    errorFromPriorityMatching: () => errorFromPriorityMatching,
+    getMatrixMinPosition: () => getMatrixMinPosition,
+    priorityMatching: () => priorityMatching
   });
-
-  /**
-   * Idea: Like in hierarchical clustering, take the most similar pair out of the
-   * set of all possible pairs repeatedly, until one array of items is empty.
-   *
-   * @template T1
-   * @template T2
-   * @param {T1[]} itemsA an array with items
-   * @param {T2[]} itemsB an array with items
-   * @param {function(T1, T2): number} distanceFunction distance function for two
-   *      items, must be 0 for equal items and symmetric
-   * @returns {Map<number,number>} with the indices of the matched items
-   */
-
   function priorityMatching(itemsA, itemsB, distanceFunction) {
-    // Build distance matrix
-    const matrix = Array.from({
-      length: itemsA.length
-    }).map(() => Array.from({
-      length: itemsB.length
-    }));
-
+    const matrix = Array.from({ length: itemsA.length }).map(() => Array.from({ length: itemsB.length }));
     for (const [indexA, gtNote] of itemsA.entries()) {
       for (let indexB = indexA; indexB < itemsB.length; indexB++) {
         const dist = distanceFunction(gtNote, itemsB[indexB]);
         matrix[indexA][indexB] = dist;
-
-        if (matrix[indexB] !== undefined) {
+        if (matrix[indexB] !== void 0) {
           matrix[indexB][indexA] = dist;
         }
       }
-    } // Compute matching pair by pair
-
-
-    const matching = new Map();
+    }
+    const matching = /* @__PURE__ */ new Map();
     const numberOfMatches = Math.min(itemsA.length, itemsB.length);
-
     for (let match = 0; match < numberOfMatches; match++) {
-      // Find most similar pair, i.e. matrix entry with smallest value
       const [a, b] = getMatrixMinPosition(matrix);
-      matching.set(a, b); // Remove from matrix (just set to null)
-
+      matching.set(a, b);
       if (match >= numberOfMatches - 1) {
         break;
       }
-
-      for (let index = 0; index < itemsA.length; index++) {
-        matrix[index][b] = null;
+      for (let index16 = 0; index16 < itemsA.length; index16++) {
+        matrix[index16][b] = null;
       }
-
-      for (let index = 0; index < itemsB.length; index++) {
-        matrix[a][index] = null;
+      for (let index16 = 0; index16 < itemsB.length; index16++) {
+        matrix[a][index16] = null;
       }
     }
-
     return matching;
   }
-  /**
-   * First matches GT to rec notes via priorityMatching, then computes the error
-   * for each GT note that has been matched using the same distance function.
-   * The Map will be undefined for GT notes that have not been matched, they can
-   * be considered missing in the recording.
-   *
-   * @param {Note[]} gtNotes ground truth notes
-   * @param {Note[]} recNotes recorded notes
-   * @param {function(Note,Note): number} distanceFunction distance function,
-   *      taking two notes and returning the 'distance', i.e. how different they
-   *      are. See balancedNoteDistance as example.
-   * @returns {Map<Note,number>} a Map from GT note to its error
-   */
-
   function errorFromPriorityMatching(gtNotes, recNotes, distanceFunction) {
-    const matching = priorityMatching(gtNotes, recNotes, distanceFunction); // Map GT notes to errors
-
-    const errors = new Map();
-
+    const matching = priorityMatching(gtNotes, recNotes, distanceFunction);
+    const errors = /* @__PURE__ */ new Map();
     for (const [gt, rec] of matching.entries()) {
       const gtNote = gtNotes[gt];
       const recNote = recNotes[rec];
       const error = distanceFunction(gtNote, recNote);
       errors.set(gtNote, error);
     }
-
     return errors;
   }
-  /**
-   * Computes a distance (inverse similarity) of two notes, considering pitch,
-   * chroma, start, duration, and channel.
-   *
-   * @param {Note} a a Note
-   * @param {Note} b a Note
-   * @returns {number} distance
-   */
-
   function balancedNoteDistance(a, b) {
-    let dist = 0; // Pitch
-
-    dist += Math.abs(a.pitch - b.pitch); // Chroma
-
-    dist += Math.abs(a.pitch % 12 - b.pitch % 12); // Start time
-
-    dist += Math.abs(a.start - b.start); // Duration
-
-    dist += 0.5 * Math.abs(a.getDuration() - b.getDuration()); // Channel
-
+    let dist = 0;
+    dist += Math.abs(a.pitch - b.pitch);
+    dist += Math.abs(a.pitch % 12 - b.pitch % 12);
+    dist += Math.abs(a.start - b.start);
+    dist += 0.5 * Math.abs(a.getDuration() - b.getDuration());
     dist += Math.abs(a.channel - b.channel);
     return dist;
   }
-  /**
-   * Returns the row and colum indices of the minimum value of the given matrix
-   *
-   * @param {number[][]} matrix matrix
-   * @returns {number[]} [rowIndex, columIndex] of the minimum value
-   */
-
   function getMatrixMinPosition(matrix) {
-    // Find most similar pair, i.e. matrix entry with smallest value
-    const minPerRow = matrix.map(row => {
+    const minPerRow = matrix.map((row) => {
       const minInd = minIndex(row);
-      return [minInd, row[minInd]];
+      return [
+        minInd,
+        row[minInd]
+      ];
     });
-    const minRowIndex = minIndex(minPerRow, d => d[1]);
+    const minRowIndex = minIndex(minPerRow, (d) => d[1]);
     const minColIndex = minPerRow[minRowIndex][0];
     return [minRowIndex, minColIndex];
   }
 
-  var PriorityMatching = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    priorityMatching: priorityMatching,
-    errorFromPriorityMatching: errorFromPriorityMatching,
-    balancedNoteDistance: balancedNoteDistance,
-    getMatrixMinPosition: getMatrixMinPosition
+  // src/comparison/Similarity.js
+  var Similarity_exports = {};
+  __export(Similarity_exports, {
+    discretizeTime: () => discretizeTime,
+    getSimilarParts: () => getSimilarParts,
+    getTrackSimilarity: () => getTrackSimilarity
   });
-
-  /**
-   * @module comparison/Similarity
-   */
-
-  /**
-   * Given a track, a selected time interval and a threshold,
-   * this function searches for parts in the track that are
-   * similar to the selection.
-   * It uses a sliding window with the size of the selection
-   * and a stride given as argument.
-   *
-   * @param {Note[]} track array of Note objects
-   * @param {number[]} selectedInterval [startTime, endTime] in seconds
-   * @param {number} stride stride for the sliding window in number of bins
-   * @param {number} threshold distance threshold below which parts are considered similar
-   * @param {number} secondsPerBin time bin size in seconds
-   * @param {string} distance one of: 'dtw', 'euclidean', 'nearest'
-   * @returns {object} similar parts
-   */
-
-  function getSimilarParts(track, selectedInterval, stride, threshold, secondsPerBin = 1 / 16, distance = 'euclidean') {
-    console.log(`Searching for similar parts based on selection, using ${distance}`);
-
-    if (track === undefined || track.length === 0) {
-      console.warn('No or empty track given');
+  function getSimilarParts(track, selectedInterval, stride, threshold, secondsPerBin = 1 / 16, distance2 = "euclidean") {
+    console.log(`Searching for similar parts based on selection, using ${distance2}`);
+    if (track === void 0 || track.length === 0) {
+      console.warn("No or empty track given");
       return;
-    } // Discretize track (instead of doing this for every part)
-
-
-    const minTime = min(track, d => d.start);
-    const maxTime = max(track, d => d.end);
+    }
+    const minTime = min(track, (d) => d.start);
+    const maxTime = max(track, (d) => d.end);
     const binCount = Math.ceil((maxTime - minTime) / secondsPerBin);
-    const discrTrack = discretizeTime(track, secondsPerBin); // Selection
-
+    const discrTrack = discretizeTime(track, secondsPerBin);
     const startBin = Math.floor((selectedInterval[0] - minTime) / secondsPerBin);
     const endBin = Math.ceil((selectedInterval[1] - minTime) / secondsPerBin);
-    const selection = sliceDiscretizedTrack(discrTrack, startBin, endBin);
-    const selectionSize = endBin - startBin; // Sliding window through the track
-
+    const selection2 = sliceDiscretizedTrack(discrTrack, startBin, endBin);
+    const selectionSize = endBin - startBin;
     const similarParts = [];
-
     for (let pos = 0; pos < binCount - selectionSize; pos += stride) {
-      const pos2 = pos + selectionSize; // Ignore intersections with selection
-
+      const pos2 = pos + selectionSize;
       if (!(pos >= startBin && pos <= endBin) && !(pos2 >= startBin && pos2 <= endBin)) {
         const part = sliceDiscretizedTrack(discrTrack, pos, pos2);
-        const dist = getTrackSimilarity(selection, part, distance);
-
+        const dist = getTrackSimilarity(selection2, part, distance2);
         if (dist <= threshold) {
           similarParts.push({
             startBin: pos,
@@ -15622,7 +10418,6 @@
         }
       }
     }
-
     return {
       selection: {
         startBin,
@@ -15633,55 +10428,28 @@
       similarParts
     };
   }
-  /**
-   * Uses calculates the distance between
-   * two discretized tracks, for each pitch separately.
-   * Pitch-wise distances are averaged and a penalty is added to the distance
-   * for pitches that are not occuring in both tracks
-   *
-   * @see https://github.com/GordonLesti/dynamic-time-warping
-   * @param {Map} discrA discretized track
-   * @param {Map} discrB discretized track
-   * @param {string} distance one of: 'euclidean', 'nearest'
-   * @returns {number} distance
-   */
-
-  function getTrackSimilarity(discrA, discrB, distance) {
-    // Get common pitches
+  function getTrackSimilarity(discrA, discrB, distance2) {
     const common = [];
-
     for (const key of discrA.keys()) {
       if (discrB.has(key)) {
         common.push(key);
       }
-    } // Get distance for each pitch and add to weighted average
-
-
-    let totalDist = 0; // Get DTW distance for each common pitch
-
+    }
+    let totalDist = 0;
     for (const pitch of common) {
       const binsA = discrA.get(pitch);
       const binsB = discrB.get(pitch);
       let dist;
-
-      if (distance === 'dtw') ; else if (distance === 'euclidean') {
+      if (distance2 === "dtw") {
+      } else if (distance2 === "euclidean") {
         dist = euclideanDistanceSquared(binsA, binsB);
-      } else if (distance === 'nearest') {
+      } else if (distance2 === "nearest") {
         dist = neirestNeighborDistance(binsA, binsB);
-      } // Get weighted average
-      // TODO: How to weight the average?
-
-
-      const weight = 1; // const weight = countActiveNoteBins(binsA) + countActiveNoteBins(binsB);
-      // const weight = 1 / (countActiveNoteBins(binsA) + countActiveNoteBins(binsB));
-
+      }
+      const weight = 1;
       totalDist += weight * dist;
-    } // TODO: add penalty for uncommon pitches
-    // Depending on number of 1s?
-
-
+    }
     let penaltyWeight = 0;
-
     for (const discr of [discrA, discrB]) {
       for (const key of discr.keys()) {
         if (!common.includes(key)) {
@@ -15689,1053 +10457,568 @@
         }
       }
     }
-
     return totalDist + penaltyWeight;
   }
-  /**
-   * - Normalizes Note times to be between 0 and (maxTime - minTime),
-   * - discretizes the start and end time by using Math.round to get
-   * the closest time bin (beat) and
-   * - Creates one array for each pitch, where each entry contains
-   * either a 0 (no note at that time bin) or a 1 (note at that time bin)
-   *
-   * @param {Note[]} track an array of Note objects
-   * @param {number} secondsPerBin time bin size in seconds
-   * @returns {Map} pitch to binArray
-   */
-
   function discretizeTime(track, secondsPerBin) {
-    const minTime = min(track, d => d.start);
-    const maxTime = max(track, d => d.end);
-    const binCount = Math.ceil((maxTime - minTime) / secondsPerBin); // Map pitch->timeBinArray
-
-    const result = new Map();
-
-    for (const note of track) {
-      const startBin = Math.round((note.start - minTime) / secondsPerBin);
-      const endBin = Math.round((note.end - minTime) / secondsPerBin);
-      const pitch = note.pitch;
-      const binArray = result.has(pitch) ? result.get(pitch) : Array.from({
-        length: binCount
-      }).fill(0);
-
+    const minTime = min(track, (d) => d.start);
+    const maxTime = max(track, (d) => d.end);
+    const binCount = Math.ceil((maxTime - minTime) / secondsPerBin);
+    const result = /* @__PURE__ */ new Map();
+    for (const note2 of track) {
+      const startBin = Math.round((note2.start - minTime) / secondsPerBin);
+      const endBin = Math.round((note2.end - minTime) / secondsPerBin);
+      const pitch = note2.pitch;
+      const binArray = result.has(pitch) ? result.get(pitch) : Array.from({ length: binCount }).fill(0);
       for (let bin = startBin; bin <= endBin; bin++) {
         binArray[bin] = 1;
       }
-
       result.set(pitch, binArray);
     }
-
     return result;
   }
-  /**
-   * Counts the occurence of 1 in an array
-   *
-   * @param {number[]} binArray array
-   * @returns {number} occurence of 1
-   */
-
   function countActiveNoteBins(binArray) {
     let count = 0;
-
     for (const bin of binArray) {
       if (bin === 1) {
         count++;
       }
     }
-
     return count;
   }
-  /**
-   * Slices bins out of a discretices track.
-   * This is done for each pitch separately
-   *
-   * @param {Map} trackMap Map pitch->binArray
-   * @param {number} startBin index of first bin
-   * @param {number} endBin index of last bin
-   * @returns {Map} map with sliced arrays
-   */
-
-
   function sliceDiscretizedTrack(trackMap, startBin, endBin) {
-    const slice = new Map();
-
+    const slice = /* @__PURE__ */ new Map();
     for (const [key, value] of trackMap.entries()) {
       slice.set(key, value.slice(startBin, endBin));
     }
-
     return slice;
   }
-  /**
-   * Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},
-   * i.e. Euclidean distance but without square root
-   *
-   * @param {number[]} A an array
-   * @param {number[]} B  another array
-   * @returns {number} Euclidean distance
-   */
-
-
-  function euclideanDistanceSquared(A, B) {
-    const maxBins = Math.max(A.length, B.length);
+  function euclideanDistanceSquared(A2, B2) {
+    const maxBins = Math.max(A2.length, B2.length);
     let sum = 0;
-
-    for (let index = 0; index < maxBins; index++) {
-      // If undefined (because one array is shorter)
-      // use 0 as padding value
-      const a = A[index] || 0;
-      const b = B[index] || 0;
+    for (let index16 = 0; index16 < maxBins; index16++) {
+      const a = A2[index16] || 0;
+      const b = B2[index16] || 0;
       const diff = a - b;
       sum += diff * diff;
     }
-
     return sum;
   }
-  /**
-   * Given two arrays containing 1s and 0s, this algorithm
-   * goes through all bins and for each bin where one array
-   * has a 1 and the other a 0, it searches for the closest 1
-   * next to the 0.
-   * The distance is then added to the global distance.
-   *
-   * @param {number[]} A an array
-   * @param {number[]} B  another array
-   * @returns {number} nearest neighbor distance
-   */
-
-
-  function neirestNeighborDistance(A, B) {
-    const maxBins = Math.max(A.length, B.length);
+  function neirestNeighborDistance(A2, B2) {
+    const maxBins = Math.max(A2.length, B2.length);
     const maxOffset = Math.round(maxBins / 4);
     let sum = 0;
-
-    for (let index = 0; index < maxBins; index++) {
-      let offset = 0; // If undefined (because one array is shorter)
-      // use 0 as padding value
-
-      const a = A[index] || 0;
-      const b = B[index] || 0;
-
-      if (a === b) ; else if (a === 0 && b === 1) {
-        // If b == 1, look for the nearest 1 in a
-        // Out of bounds does not matter since undefined !== 1
-        // while (i - offset > 0 && i + offset < (maxBins-1) && offset <= maxOffset) {
+    for (let index16 = 0; index16 < maxBins; index16++) {
+      let offset = 0;
+      const a = A2[index16] || 0;
+      const b = B2[index16] || 0;
+      if (a === b) {
+      } else if (a === 0 && b === 1) {
         while (offset <= maxOffset) {
           offset++;
-
-          if (a[index - offset] === 1 || a[index + offset === 1]) {
+          if (a[index16 - offset] === 1 || a[index16 + offset === 1]) {
             break;
           }
         }
       } else if (a === 1 && b === 0) {
-        // If a == 1, look for the nearest 1 in b
         while (offset <= maxOffset) {
           offset++;
-
-          if (b[index - offset] === 1 || b[index + offset === 1]) {
+          if (b[index16 - offset] === 1 || b[index16 + offset === 1]) {
             break;
           }
         }
       }
-
       sum += offset;
     }
-
     return sum;
   }
 
-  var Similarity = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    getSimilarParts: getSimilarParts,
-    getTrackSimilarity: getTrackSimilarity,
-    discretizeTime: discretizeTime
+  // src/comparison/SimilarSections.js
+  var SimilarSections_exports = {};
+  __export(SimilarSections_exports, {
+    findSimilarNoteSections: () => findSimilarNoteSections,
+    findSimilarStringSections: () => findSimilarStringSections
   });
 
-  /**
-   * @module stringBased/Levenshtein
-   */
-
-  /**
-   * Computes the Levenshtein distance of two strings or arrays.
-   *
-   * @see https://gist.github.com/andrei-m/982927#gistcomment-1931258
-   * @author https://github.com/kigiri, license: MIT
-   * @param {string|Array} a a string
-   * @param {string|Array} b another string
-   * @param {boolean} normalize when set to true, the distance will be normalized
-   *      to [0, 1], by dividing by the longer string's length
-   * @returns {number} Levenshtein distance
-   */
-  function levenshtein(a, b, normalize = false) {
+  // src/stringBased/Levenshtein.js
+  var Levenshtein_exports = {};
+  __export(Levenshtein_exports, {
+    damerauLevenshtein: () => damerauLevenshtein,
+    levenshtein: () => levenshtein
+  });
+  function levenshtein(a, b, normalize2 = false) {
     if (a.length === 0 && b.length === 0) {
       return 0;
     }
-
     if (a.length === 0) {
-      return normalize ? 1 : b.length;
+      return normalize2 ? 1 : b.length;
     }
-
     if (b.length === 0) {
-      return normalize ? 1 : a.length;
+      return normalize2 ? 1 : a.length;
     }
-
-    let i, j, previous, value; // swap to save some memory O(min(a,b)) instead of O(a)
-
+    let i, j, previous, value;
     if (a.length > b.length) {
       const temporary = a;
       a = b;
       b = temporary;
-    } // init the row
-
-
-    const row = Array.from({
-      length: a.length + 1
-    });
-
+    }
+    const row = Array.from({ length: a.length + 1 });
     for (i = 0; i <= a.length; i++) {
       row[i] = i;
-    } // fill in the rest
-
-
+    }
     for (i = 1; i <= b.length; i++) {
       previous = i;
-
       for (j = 1; j <= a.length; j++) {
-        value = b[i - 1] === a[j - 1] ? row[j - 1] : Math.min(row[j - 1] + 1, // substitution
-        Math.min(previous + 1, // insertion
-        row[j] + 1 // deletion
-        ));
+        value = b[i - 1] === a[j - 1] ? row[j - 1] : Math.min(row[j - 1] + 1, Math.min(previous + 1, row[j] + 1));
         row[j - 1] = previous;
         previous = value;
       }
-
       row[a.length] = previous;
     }
-
-    const result = row[a.length]; // Normalize?
-
-    return normalize ? result / Math.max(a.length, b.length) : result;
+    const result = row[a.length];
+    return normalize2 ? result / Math.max(a.length, b.length) : result;
   }
-  /**
-   * Computes the Damerau-Levenshtein distance of two strings or arrays.
-   *
-   * @see https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
-   * @param {string|Array} a a string
-   * @param {string|Array} b another string
-   * @param {boolean} normalize when set to true, the distance will be normalized
-   *      to [0, 1], by dividing by the longer string's length
-   * @returns {number} Levenshtein distance
-   */
-
-  function damerauLevenshtein(a, b, normalize = false) {
+  function damerauLevenshtein(a, b, normalize2 = false) {
     if (a.length === 0 && b.length === 0) {
       return 0;
     }
-
     if (a.length === 0) {
-      return normalize ? 1 : b.length;
+      return normalize2 ? 1 : b.length;
     }
-
     if (b.length === 0) {
-      return normalize ? 1 : a.length;
+      return normalize2 ? 1 : a.length;
     }
-
-    const d = Array.from({
-      length: a.length + 1
-    }).map(() => Array.from({
-      length: b.length
-    }));
-
+    const d = Array.from({ length: a.length + 1 }).map(() => Array.from({ length: b.length }));
     for (let i = 0; i <= a.length; i++) {
       d[i][0] = i;
     }
-
     for (let i = 0; i <= b.length; i++) {
       d[0][i] = i;
     }
-
     let cost;
-
     for (let i = 1; i <= a.length; i++) {
       for (let j = 1; j <= b.length; j++) {
         cost = a[i - 1] === b[j - 1] ? 0 : 1;
-        d[i][j] = Math.min(d[i - 1][j] + 1, // deletion
-        d[i][j - 1] + 1, // insertion
-        d[i - 1][j - 1] + cost // substitution
-        );
-
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
         if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
-          // transposition
           d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
         }
       }
     }
-
-    const result = d[a.length][b.length]; // Normalize?
-
-    return normalize ? result / Math.max(a.length, b.length) : result;
+    const result = d[a.length][b.length];
+    return normalize2 ? result / Math.max(a.length, b.length) : result;
   }
 
-  var Levenshtein = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    levenshtein: levenshtein,
-    damerauLevenshtein: damerauLevenshtein
-  });
-
-  /**
-   * @module comparison/SimilarSections
-   */
-
-  /**
-   * Turns an array of notes into a string to perform pattern matching search for similar
-   * patterns.
-   *
-   * @param {Note[]} notes notes, must be sorted by Note.start
-   * @param {number} startTime start time of the section to search
-   * @param {number} endTime end time for the section to search
-   * @param {number} threshold threshold for normalized Levenshtein distance in [0, 1]
-   * @returns {object[]} {index, distance, startTime, endTime}
-   */
-
+  // src/comparison/SimilarSections.js
   function findSimilarNoteSections(notes, startTime, endTime, threshold = 0.5) {
-    const selectedNotes = notes.filter(d => d.start >= startTime && d.end <= endTime); // Convert to string
-
-    const dataString = PitchSequence.fromNotes(notes).getPitches();
-    const searchString = PitchSequence.fromNotes(selectedNotes).getPitches();
+    const selectedNotes = notes.filter((d) => d.start >= startTime && d.end <= endTime);
+    const dataString = PitchSequence_default.fromNotes(notes).getPitches();
+    const searchString = PitchSequence_default.fromNotes(selectedNotes).getPitches();
     const length = searchString.length;
-
     if (length < 3) {
       return [];
-    } // Find matches
-
-
-    const matches = findSimilarStringSections(dataString, searchString, threshold); // Get time spans
-
-    return matches.map(m => {
-      const {
-        index
-      } = m;
-      const note1 = notes[index];
-      const note2 = notes[index + length];
-      return { ...m,
+    }
+    const matches = findSimilarStringSections(dataString, searchString, threshold);
+    return matches.map((m) => {
+      const { index: index16 } = m;
+      const note1 = notes[index16];
+      const note2 = notes[index16 + length];
+      return __spreadProps(__spreadValues({}, m), {
         startTime: note1.start,
         endTime: note2.end
-      };
+      });
     });
   }
-  /**
-   * Finds similar sections in a string via Levenshtein distance
-   *
-   * @param {stringArray} dataString they string to search in
-   * @param {stringArray} searchString the string to search for
-   * @param {number} threshold threshold for normalized Levenshtein distance in [0, 1]
-   * @returns {object[]} {index, distance}
-   */
-
   function findSimilarStringSections(dataString, searchString, threshold = 0.5) {
     const length = searchString.length;
     const matches = [];
-
-    for (let index = 0; index < dataString.length - length; index++) {
-      const slice = dataString.slice(index, index + length);
-      const distance = levenshtein(searchString, slice) / length;
-
-      if (distance < threshold) {
-        matches.push({
-          index: index,
-          distance
-        });
+    for (let index16 = 0; index16 < dataString.length - length; index16++) {
+      const slice = dataString.slice(index16, index16 + length);
+      const distance2 = levenshtein(searchString, slice) / length;
+      if (distance2 < threshold) {
+        matches.push({ index: index16, distance: distance2 });
       }
-    } // Filter overlapping matches by removing the ones with larger distances
-
-
-    const filtered = []; // Therefore, sort by distance ascending and add them one by one
-
-    matches.sort((a, b) => a.distance - b.distance); // Speed up hit detection by keeping track of indices that are already occupied
-
-    const occupied = Array.from({
-      length: dataString.length
-    }).fill(false);
-
+    }
+    const filtered = [];
+    matches.sort((a, b) => a.distance - b.distance);
+    const occupied = Array.from({ length: dataString.length }).fill(false);
     for (const m of matches) {
-      const {
-        index
-      } = m; // Check if occupied
-
+      const { index: index16 } = m;
       let occ = false;
-
-      for (let i = index; i < index + length; i++) {
+      for (let i = index16; i < index16 + length; i++) {
         if (occupied[i]) {
           occ = true;
           break;
         }
-      } // If not occupied, add and occupy
-
-
+      }
       if (!occ) {
         filtered.push(m);
-
-        for (let i = index; i < index + length; i++) {
+        for (let i = index16; i < index16 + length; i++) {
           occupied[i] = true;
         }
       }
     }
-
     return filtered;
   }
 
-  var SimilarSections = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    findSimilarNoteSections: findSimilarNoteSections,
-    findSimilarStringSections: findSimilarStringSections
+  // src/stringBased/index.js
+  var stringBased_exports = {};
+  __export(stringBased_exports, {
+    Gotoh: () => Gotoh_exports,
+    ImmediateRepetitionCompression: () => ImmediateRepetitionCompression_exports,
+    Levenshtein: () => Levenshtein_exports,
+    LongestCommonSubsequence: () => LongestCommonSubsequence_exports,
+    NGrams: () => NGrams_exports,
+    NeedlemanWunsch: () => NeedlemanWunsch_default,
+    SuffixTree: () => SuffixTree_exports
   });
 
-  /**
-   * @module stringBased/LongestCommonSubsequence
-   */
-
-  /**
-   * Calculates the longest common subsequence.
-   *
-   * @see https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
-   * @example
-   * const lcs = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
-   * // world
-   * @param {string|Array} a a string
-   * @param {string|Array} b another string
-   * @returns {string|Array} the longest common subsequence
-   */
+  // src/stringBased/LongestCommonSubsequence.js
+  var LongestCommonSubsequence_exports = {};
+  __export(LongestCommonSubsequence_exports, {
+    lcs: () => lcs,
+    lcsLength: () => lcsLength,
+    normalizedLcsLength: () => normalizedLcsLength
+  });
   function lcs(a, b) {
-    // Make sure shorter string is the column string
     const m = a.length;
-    const n = b.length; // Return now if one (or both) empty
-
+    const n = b.length;
     if (a.length === 0) {
       return a;
     }
-
     if (b.length === 0) {
       return b;
     }
-
     let i;
     let j;
     let row = [];
     let left;
     let diagonal;
     let latch;
-    const lcs = [];
-    const c = []; // Build the c-table
-
-    for (j = 0; j < n; row[j++] = 0);
-
+    const lcs2 = [];
+    const c2 = [];
+    for (j = 0; j < n; row[j++] = 0)
+      ;
     for (i = 0; i < m; i++) {
-      c[i] = row = [...row];
-
+      c2[i] = row = [...row];
       for (diagonal = 0, j = 0; j < n; j++, diagonal = latch) {
         latch = row[j];
-
         if (a[i] === b[j]) {
           row[j] = diagonal + 1;
         } else {
           left = row[j - 1] || 0;
-
           if (left > row[j]) {
             row[j] = left;
           }
         }
       }
     }
-
     i--;
-    j--; // row[j] now contains the length of the lcs
-    // Recover the lcs from the table
-
+    j--;
     while (i > -1 && j > -1) {
-      switch (c[i][j]) {
-        // eslint-disable-next-line
+      switch (c2[i][j]) {
         default:
           j--;
-          lcs.unshift(a[i]);
-
-        case i && c[i - 1][j]:
-          // eslint-disable-line no-fallthrough
+          lcs2.unshift(a[i]);
+        case (i && c2[i - 1][j]):
           i--;
           continue;
-
-        case j && c[i][j - 1]:
+        case (j && c2[i][j - 1]):
           j--;
       }
-    } // Only join when x and y are strings
-
-
-    return Array.isArray(a) || Array.isArray(b) ? lcs : lcs.join('');
+    }
+    return Array.isArray(a) || Array.isArray(b) ? lcs2 : lcs2.join("");
   }
-  /**
-   * Calculates the *length* of the longest common subsequence.
-   * Also works with arrays.
-   *
-   * @see https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
-   * @example
-   * const lcsLength = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
-   * // 5
-   * @param {string|Array} a a string
-   * @param {string|Array} b another string
-   * @returns {number} the length of longest common subsequence
-   */
-
   function lcsLength(a, b) {
-    // Make sure shorter string is the column string
     const m = a.length;
-    const n = b.length; // Return now if one (or both) empty
-
+    const n = b.length;
     if (a.length === 0) {
       return 0;
     }
-
     if (b.length === 0) {
       return 0;
     }
-
     let i;
     let j;
     let row = [];
     let left;
     let diagonal;
     let latch;
-    const c = []; // Build the c-table
-
-    for (j = 0; j < n; row[j++] = 0);
-
+    const c2 = [];
+    for (j = 0; j < n; row[j++] = 0)
+      ;
     for (i = 0; i < m; i++) {
-      c[i] = row = [...row];
-
+      c2[i] = row = [...row];
       for (diagonal = 0, j = 0; j < n; j++, diagonal = latch) {
         latch = row[j];
-
         if (a[i] === b[j]) {
           row[j] = diagonal + 1;
         } else {
           left = row[j - 1] || 0;
-
           if (left > row[j]) {
             row[j] = left;
           }
         }
       }
     }
-
     i--;
-    j--; // row[j] now contains the length of the lcs
-
+    j--;
     return row[j];
   }
-  /**
-   * Normalizes the result of lcsLength() by dividing by the longer string's
-   * length.
-   *
-   * @param {string|Array} a a string
-   * @param {string|Array} b another string
-   * @returns {number} normalized length of longest common subsequence
-   */
-
   function normalizedLcsLength(a, b) {
     const longerLength = Math.max(a.length, b.length);
-
     if (longerLength === 0) {
       return 0;
     }
-
     return lcsLength(a, b) / longerLength;
   }
 
-  var LongestCommonSubsequence = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    lcs: lcs,
-    lcsLength: lcsLength,
-    normalizedLcsLength: normalizedLcsLength
+  // src/stringBased/Gotoh.js
+  var Gotoh_exports = {};
+  __export(Gotoh_exports, {
+    differenceSimilarity: () => differenceSimilarity,
+    gotoh: () => gotoh,
+    matchMissmatchSimilarity: () => matchMissmatchSimilarity,
+    normalizedGotoh: () => normalizedGotoh
   });
-
-  /**
-   * @module stringBased/Gotoh
-   */
-
-  /**
-   * Calculates the SIMILARITY for two strings or arrays.
-   * Similar to NeedlemanWunsch but O(n^2) instead of O(n^3)
-   * IMPORTANT: This metric is not symmetric!
-   *
-   * @todo normalize to [0, 1], but how?
-   * @todo somehow the the matched sequences and gaps...
-   * @see https://de.wikipedia.org/wiki/Gotoh-Algorithmus
-   * @param {string|Array} seqA a sequence
-   * @param {string|Array} seqB a sequence
-   * @param {Function} similarityFunction a function that takes two elements and
-   *      returns their similarity score (higher => more similar)
-   *      (a:any, b:any):number
-   * @param {number} gapPenaltyStart cost for starting a new gap (negative)
-   * @param {number} gapPenaltyExtend cost for continuing a gap (negative)
-   * @returns {number} similarity score
-   */
   function gotoh(seqA, seqB, similarityFunction = matchMissmatchSimilarity, gapPenaltyStart = -1, gapPenaltyExtend = -0.1) {
-    // check if strings are empty
     if (seqA.length === 0 && seqB.length === 0) {
       return 0;
-    } // gap penalty function
-
-
-    const gap = index => gapPenaltyStart + (index - 1) * gapPenaltyExtend;
-
+    }
+    const gap = (index16) => gapPenaltyStart + (index16 - 1) * gapPenaltyExtend;
     const lengthA = seqA.length;
-    const lengthB = seqB.length; // initialize matrices
-
-    const a = Array.from({
-      length: lengthA + 1
-    }).map(() => Array.from({
-      length: lengthB + 1
-    }));
-    const b = Array.from({
-      length: lengthA + 1
-    }).map(() => Array.from({
-      length: lengthB + 1
-    }));
-    const c = Array.from({
-      length: lengthA + 1
-    }).map(() => Array.from({
-      length: lengthB + 1
-    }));
+    const lengthB = seqB.length;
+    const a = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
+    const b = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
+    const c2 = Array.from({ length: lengthA + 1 }).map(() => Array.from({ length: lengthB + 1 }));
     a[0][0] = 0;
     b[0][0] = 0;
-    c[0][0] = 0;
-
+    c2[0][0] = 0;
     for (let i = 1; i <= lengthA; i++) {
-      a[i][0] = c[i][0] = Number.NEGATIVE_INFINITY;
+      a[i][0] = c2[i][0] = Number.NEGATIVE_INFINITY;
       b[i][0] = gap(i);
     }
-
     for (let i = 1; i <= lengthB; i++) {
       a[0][i] = b[0][i] = Number.NEGATIVE_INFINITY;
-      c[0][i] = gap(i);
-    } // compute matrices
-
-
+      c2[0][i] = gap(i);
+    }
     for (let i = 1; i <= lengthA; i++) {
       for (let j = 1; j <= lengthB; j++) {
         const sim = similarityFunction(seqA[i - 1], seqB[j - 1]);
-        a[i][j] = Math.max(a[i - 1][j - 1], b[i - 1][j - 1], c[i - 1][j - 1]) + sim;
-        b[i][j] = Math.max(a[i - 1][j] + gapPenaltyStart, b[i - 1][j] + gapPenaltyExtend, c[i - 1][j] + gapPenaltyStart);
-        c[i][j] = Math.max(a[i][j - 1] + gapPenaltyStart, b[i][j - 1] + gapPenaltyStart, c[i][j - 1] + gapPenaltyExtend);
+        a[i][j] = Math.max(a[i - 1][j - 1], b[i - 1][j - 1], c2[i - 1][j - 1]) + sim;
+        b[i][j] = Math.max(a[i - 1][j] + gapPenaltyStart, b[i - 1][j] + gapPenaltyExtend, c2[i - 1][j] + gapPenaltyStart);
+        c2[i][j] = Math.max(a[i][j - 1] + gapPenaltyStart, b[i][j - 1] + gapPenaltyStart, c2[i][j - 1] + gapPenaltyExtend);
       }
     }
-
-    return Math.max(a[lengthA][lengthB], b[lengthA][lengthB], c[lengthA][lengthB]);
+    return Math.max(a[lengthA][lengthB], b[lengthA][lengthB], c2[lengthA][lengthB]);
   }
-  /**
-   * Idea: what would the max. similarity value be? the string with itself!
-   * So just compare the longer string to itself and use that similarity to
-   * normalize
-   *
-   * @todo does this work with negative costs and/or results?
-   * @todo can this be optimized since only the similarityFunction is needed?
-   * @todo only compute 'a' matrix for maxSimilarity
-   * @param {string|Array} seqA a sequence
-   * @param {string|Array} seqB a sequence
-   * @param {Function} similarityFunction a function that takes two elements and
-   *      returns their similarity score (higher => more similar)
-   *      (a:any, b:any):number
-   * @param {number} gapPenaltyStart cost for starting a new gap (negative)
-   * @param {number} gapPenaltyExtend cost for continuing a gap (negative)
-   * @returns {number} normalized similarity score
-   */
-
   function normalizedGotoh(seqA, seqB, similarityFunction = matchMissmatchSimilarity, gapPenaltyStart = -1, gapPenaltyExtend = -0.1) {
     const similarity = gotoh(seqA, seqB, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
     const longer = seqA.length >= seqB.length ? seqA : seqB;
     const maxSimilarity = gotoh(longer, longer, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
-
     if (maxSimilarity === 0) {
-      // TODO: can this happen? what would be reasonable here?
       return similarity;
     }
-
     return similarity / maxSimilarity;
   }
-  /**
-   * Cost function that simply checks whether two values are equal or not with ===
-   *
-   * @param {any} a some value
-   * @param {any} b some value
-   * @returns {number} 1 if equal, -1 otherwise
-   */
-
   function matchMissmatchSimilarity(a, b) {
     return a === b ? 1 : -1;
   }
-  /**
-   * Cost function that takes the negative absolute value of the value's
-   * difference, assuming that close values are more similar
-   *
-   * @param {number} a some value
-   * @param {number} b some value
-   * @returns {number} -Math.abs(a - b)
-   */
-
   function differenceSimilarity(a, b) {
     return -Math.abs(a - b);
   }
 
-  var Gotoh = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    gotoh: gotoh,
-    normalizedGotoh: normalizedGotoh,
-    matchMissmatchSimilarity: matchMissmatchSimilarity,
-    differenceSimilarity: differenceSimilarity
+  // src/stringBased/SuffixTree.js
+  var SuffixTree_exports = {};
+  __export(SuffixTree_exports, {
+    default: () => SuffixTree_default
   });
-
-  /**
-   * @module stringBased/SuffixTree
-   */
-
-  /**
-   * Suffix tree, a tree that shows which subsequences are repeated
-   *
-   * @see https://github.com/eikes/suffixtree/blob/master/js/suffixtree.js
-   */
-
-  class SuffixTree {
-    /**
-       * SuffixTree for strings or Arrays
-       *
-       * @param {string|Array} array string or Array to process
-       */
+  var SuffixTree = class {
     constructor(array) {
-      // Split string to array
-      if (typeof array === 'string') {
-        array = array.split('');
+      if (typeof array === "string") {
+        array = array.split("");
       }
-
       this.node = new TreeNode();
-
       if (array && array.length > 0) {
-        for (let index = 0; index < array.length; index++) {
-          this.node.addSuffix(array.slice(index));
+        for (let index16 = 0; index16 < array.length; index16++) {
+          this.node.addSuffix(array.slice(index16));
         }
       }
     }
-    /**
-       * Returns the longest repeated substring
-       *
-       * @returns {Array} longest repeated substring
-       */
-
-
     getLongestRepeatedSubString() {
       return this.node.getLongestRepeatedSubString();
     }
-    /**
-       * Returns a readable string format of this tree
-       *
-       * @returns {string} string
-       */
-
-
     toString() {
       return this.node.toString();
     }
-    /**
-       * Returns a JSON representation of this tree
-       *
-       * @returns {string} JSON
-       */
-
-
     toJson() {
       return JSON.stringify(this.node);
     }
-
-  }
-  /**
-   * TreeNode
-   */
-
-
-  class TreeNode {
-    /**
-       *
-       */
+  };
+  var TreeNode = class {
     constructor() {
       this.value = [];
       this.leaves = [];
       this.nodes = [];
     }
-    /**
-       * @param {string|Array} suf suffix
-       * @returns {boolean} true if first entry of suf equals the value of a child
-       */
-
-
     checkNodes(suf) {
       let node;
-
-      for (let index = 0; index < this.nodes.length; index++) {
-        node = this.nodes[index];
-
+      for (let index16 = 0; index16 < this.nodes.length; index16++) {
+        node = this.nodes[index16];
         if (arrayShallowEquals(node.value, [suf[0]])) {
           node.addSuffix(suf.slice(1));
           return true;
         }
       }
-
       return false;
     }
-    /**
-       * @param {string|Array} suf suffix
-       */
-
-
     checkLeaves(suf) {
       let node, leaf;
-
-      for (let index = 0; index < this.leaves.length; index++) {
-        leaf = this.leaves[index];
-
+      for (let index16 = 0; index16 < this.leaves.length; index16++) {
+        leaf = this.leaves[index16];
         if (leaf[0] === suf[0]) {
           node = new TreeNode();
           node.value = [leaf[0]];
           node.addSuffix(suf.slice(1));
           node.addSuffix(leaf.slice(1));
           this.nodes.push(node);
-          this.leaves.splice(index, 1);
+          this.leaves.splice(index16, 1);
           return;
         }
       }
-
       this.leaves.push(suf);
     }
-    /**
-       * @param {string|Array} suf suffix
-       */
-
-
     addSuffix(suf) {
       if (suf.length === 0) {
         return;
       }
-
       if (!this.checkNodes(suf)) {
         this.checkLeaves(suf);
       }
     }
-    /**
-       * Returns the longest repeated substring
-       *
-       * @returns {Array} longest substring
-       */
-
-
     getLongestRepeatedSubString() {
       let array = [];
       let temporary = [];
-
-      for (let index = 0; index < this.nodes.length; index++) {
-        temporary = this.nodes[index].getLongestRepeatedSubString();
-
+      for (let index16 = 0; index16 < this.nodes.length; index16++) {
+        temporary = this.nodes[index16].getLongestRepeatedSubString();
         if (temporary.length > array.length) {
           array = temporary;
         }
       }
-
       return this.value.concat(array);
     }
-    /**
-       * Readable string representation of this node and its children
-       *
-       * @param {number} indent indentation
-       * @returns {string} string representation
-       */
-
-
     toString(indent = 1) {
-      const ind = ' |'.repeat(indent);
-      let string = '';
-      string += this.value.length > 0 ? `-N '${this.value}'` : 'root';
-
+      const ind = " |".repeat(indent);
+      let string = "";
+      string += this.value.length > 0 ? `-N '${this.value}'` : "root";
       if (this.nodes.length > 0) {
-        for (let index = 0; index < this.nodes.length; index++) {
-          string += `\n${ind}${this.nodes[index].toString(indent + 1)}`;
+        for (let index16 = 0; index16 < this.nodes.length; index16++) {
+          string += `
+${ind}${this.nodes[index16].toString(indent + 1)}`;
         }
       }
-
       if (this.leaves.length > 0) {
-        for (let index = 0; index < this.leaves.length; index++) {
-          string += `\n${ind}-L ${this.leaves[index]}`;
+        for (let index16 = 0; index16 < this.leaves.length; index16++) {
+          string += `
+${ind}-L ${this.leaves[index16]}`;
         }
       }
-
       return string;
     }
+  };
+  var SuffixTree_default = SuffixTree;
 
-  }
-
-  var SuffixTree$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': SuffixTree
+  // src/stringBased/NGrams.js
+  var NGrams_exports = {};
+  __export(NGrams_exports, {
+    getNGrams: () => getNGrams,
+    getNGramsForArray: () => getNGramsForArray
   });
-
-  /**
-   * Calculates all n-grams with a specified length
-   *
-   * @param {string} string a string
-   * @param {number} length length (n) of n-grams
-   * @returns {Map<string,number>} maps n-gram to its number of occurences
-   */
   function getNGrams(string, length) {
     if (length <= 0) {
-      return new Map();
+      return /* @__PURE__ */ new Map();
     }
-
     length = Math.min(length, string.length);
-    const nGrams = new Map();
-
-    for (let index = 0; index < string.length - length + 1; index++) {
-      const subString = string.slice(index, index + length);
-
+    const nGrams = /* @__PURE__ */ new Map();
+    for (let index16 = 0; index16 < string.length - length + 1; index16++) {
+      const subString = string.slice(index16, index16 + length);
       if (nGrams.has(subString)) {
         nGrams.set(subString, nGrams.get(subString) + 1);
       } else {
         nGrams.set(subString, 1);
       }
     }
-
     return nGrams;
   }
-  /**
-   * Calculates all n-grams with a specified length
-   *
-   * @param {Array} array an array of primitive data types
-   * @param {number} length length (n) of n-grams
-   * @returns {Map<string,object>} maps n-gram, joined with ' ', to its number of
-   * occurences and value
-   */
-
   function getNGramsForArray(array, length) {
     if (length <= 0) {
-      return new Map();
+      return /* @__PURE__ */ new Map();
     }
-
     length = Math.min(length, array.length);
-    const nGrams = new Map();
-
-    for (let index = 0; index < array.length - length + 1; index++) {
-      const subArray = array.slice(index, index + length);
-      const key = subArray.join(' ');
+    const nGrams = /* @__PURE__ */ new Map();
+    for (let index16 = 0; index16 < array.length - length + 1; index16++) {
+      const subArray = array.slice(index16, index16 + length);
+      const key = subArray.join(" ");
       let count = 1;
-
       if (nGrams.has(key)) {
         count = nGrams.get(key).count + 1;
       }
-
       nGrams.set(key, {
         value: subArray,
         count
       });
     }
-
     return nGrams;
   }
 
-  var NGrams = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    getNGrams: getNGrams,
-    getNGramsForArray: getNGramsForArray
+  // src/stringBased/ImmediateRepetitionCompression.js
+  var ImmediateRepetitionCompression_exports = {};
+  __export(ImmediateRepetitionCompression_exports, {
+    compress: () => compress,
+    compressionRate: () => compressionRate,
+    decompress: () => decompress,
+    getImmediateRepetitions: () => getImmediateRepetitions,
+    summary: () => summary,
+    toString: () => toString
   });
-
-  /**
-   * Compresses a sequence by detecting immediately repeating subsequences
-   * hierarchically. Optimal result but high performance complexity.
-   *
-   * @todo Link to observable demo
-   * @param {Array} sequence array with immediately repeating subsequences
-   * @returns {object} compressed hierarchy
-   */
-
   function compress(sequence) {
-    var _pre$depth, _repetition$depth, _post$depth, _pre$length, _repetition$length, _post$length;
-
     if (!sequence || sequence.length === 0) {
       return null;
     }
-
     const longestReps = getImmediateRepetitions(sequence);
-
     if (longestReps === null) {
       return sequence;
-    } // Get repetition
-
-
-    const {
-      seq,
-      rep,
-      length: len,
-      pos
-    } = longestReps[0]; // Get rest of sequence
-
+    }
+    const { seq, rep, length: len, pos } = longestReps[0];
     const preSeq = sequence.slice(0, pos);
-    const postSeq = sequence.slice(pos + len * rep); // Recurse with longest repetition
-
-    const repetition = compress(seq); // Recurse with left rest
-
-    const pre = compress(preSeq); // Recurse with right rest
-
-    const post = compress(postSeq); // Get current depth
-
-    const depth = Math.max((_pre$depth = pre === null || pre === void 0 ? void 0 : pre.depth) !== null && _pre$depth !== void 0 ? _pre$depth : 0, (_repetition$depth = repetition === null || repetition === void 0 ? void 0 : repetition.depth) !== null && _repetition$depth !== void 0 ? _repetition$depth : 0 + 1, (_post$depth = post === null || post === void 0 ? void 0 : post.depth) !== null && _post$depth !== void 0 ? _post$depth : 0); // Get current length / width, i.e. compressed sequence length
-
-    const length = ((_pre$length = pre === null || pre === void 0 ? void 0 : pre.length) !== null && _pre$length !== void 0 ? _pre$length : 0) + ((_repetition$length = repetition === null || repetition === void 0 ? void 0 : repetition.length) !== null && _repetition$length !== void 0 ? _repetition$length : 0) + ((_post$length = post === null || post === void 0 ? void 0 : post.length) !== null && _post$length !== void 0 ? _post$length : 0);
+    const postSeq = sequence.slice(pos + len * rep);
+    const repetition = compress(seq);
+    const pre = compress(preSeq);
+    const post = compress(postSeq);
+    const depth = Math.max((pre == null ? void 0 : pre.depth) ?? 0, (repetition == null ? void 0 : repetition.depth) ?? 0 + 1, (post == null ? void 0 : post.depth) ?? 0);
+    const length = ((pre == null ? void 0 : pre.length) ?? 0) + ((repetition == null ? void 0 : repetition.length) ?? 0) + ((post == null ? void 0 : post.length) ?? 0);
     return {
       pre,
       seq: repetition,
       rep,
-      post: post,
-      // Depth, leaves are 0, root is highest
+      post,
       depth,
-      // Compressed length
       length,
-      // Include complete sequence of this node
       content: sequence
     };
   }
-  /**
-   * Finds all immediate repetitions in a given sequence.
-   *
-   * @todo implement a mode that just looks for the best one, instead of later
-   * sorting all found ones (will be faster since less sequence.slice() happens)
-   * Still needs to keep all results with the same score
-   * @param {Array} sequence array with immediately repeating subsequences
-   * @returns {object[]} result
-   */
-
   function getImmediateRepetitions(sequence = []) {
-    const foundReps = []; // For each length, look for a repetition that has that length
-
+    const foundReps = [];
     for (let length = Math.floor(sequence.length / 2); length > 0; --length) {
       for (let pos = 0; pos < sequence.length - length; ++pos) {
-        let numberOfReps = 0; // eslint-disable-next-line no-constant-condition
-
+        let numberOfReps = 0;
         while (true) {
-          // Let's see how often the slice at pos with the current length repeats immediately...
           const startPos = pos + (numberOfReps + 1) * length;
           const found = arraySlicesEqual(sequence, sequence, length, pos, startPos);
-
           if (!found) {
-            // No more repetitions found
             break;
           } else {
-            // Continue with searching for more
             numberOfReps++;
-          } // Did we find any repetitions?
-
-
+          }
           if (numberOfReps > 0) {
             const rep = numberOfReps + 1;
             const seq = sequence.slice(pos, pos + length);
@@ -16750,338 +11033,161 @@
         }
       }
     }
-
     if (foundReps.length > 0) {
-      // Prioritize the ones that encompass most of the sequence, i.e., maximum length*rep
       return foundReps.sort((a, b) => {
-        // If same total length, choose the one with more repetitions
-        // Better 8*a than 4*aa
         return a.totalLength === b.totalLength ? b.rep - a.rep : b.totalLength - a.totalLength;
       });
     }
-
     return null;
   }
-  /**
-   * Restores the original array/sequence from the compressed hierarchy.
-   *
-   * @param {object} tree compressed hierarchy
-   * @returns {Array} decompressed sequence
-   */
-
   function decompress(tree) {
     if (!tree) {
       return [];
     }
-
     if (tree.join) {
       return tree;
     }
-
     const seq = decompress(tree.seq);
-    const repetition = Array.from({
-      length: tree.rep
-    }).map(() => seq);
-    return [...decompress(tree.pre), ...repetition.flat(), ...decompress(tree.post)];
+    const repetition = Array.from({ length: tree.rep }).map(() => seq);
+    return [
+      ...decompress(tree.pre),
+      ...repetition.flat(),
+      ...decompress(tree.post)
+    ];
   }
-  /**
-   * Returns the summary of a hierachy, leaving out information about repetitions.
-   *
-   * @param {object} tree compressed hierarchy
-   * @returns {Array} summary
-   * @example
-   *  const arr = '12312345656'.split('')
-   *  const h = compress(arr)
-   *  summary(h).join('')
-   *  // '123456'
-   */
-
   function summary(tree) {
     if (!tree) {
       return [];
     }
-
     if (tree.join) {
       return tree;
     }
-
-    return [...summary(tree.pre), ...summary(tree.seq), ...summary(tree.post)];
+    return [
+      ...summary(tree.pre),
+      ...summary(tree.seq),
+      ...summary(tree.post)
+    ];
   }
-  /**
-   * Formats a compressed hierarchy into a readable string, for example:
-   * "1222333222333" => "1 (2x (3x 2) (3x 3))"
-   *
-   * @param {object} tree compressed hierarchy
-   * @param {string} separator separator
-   * @returns {string} result
-   */
-
-  function toString(tree, separator = ' ') {
+  function toString(tree, separator = " ") {
     if (!tree) {
-      return '';
+      return "";
     }
-
     if (tree.join) {
       return tree.join(separator);
     }
-
     const seq = toString(tree.seq);
     const repetition = `(${tree.rep}x ${seq})`;
-    return [toString(tree.pre), repetition, toString(tree.post)].join(separator).trim();
+    return [
+      toString(tree.pre),
+      repetition,
+      toString(tree.post)
+    ].join(separator).trim();
   }
-  /**
-   * Calculates the compression rate in [0, 1] for a result of compress().
-   *
-   * @param {object} compressed compressed hierachy
-   * @returns {number} compression ratio
-   * @throws {'Invalid hierarchy'} for invalid hierarchy
-   */
-
   function compressionRate(compressed) {
-    var _compressed$content;
-
-    if (!(compressed !== null && compressed !== void 0 && compressed.length) || !(compressed !== null && compressed !== void 0 && (_compressed$content = compressed.content) !== null && _compressed$content !== void 0 && _compressed$content.length)) {
-      throw new Error('Invalid hierarchy');
+    var _a;
+    if (!(compressed == null ? void 0 : compressed.length) || !((_a = compressed == null ? void 0 : compressed.content) == null ? void 0 : _a.length)) {
+      throw new Error("Invalid hierarchy");
     }
-
     return compressed.length / compressed.content.length;
   }
 
-  var ImmediateRepetitionCompression = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    compress: compress,
-    getImmediateRepetitions: getImmediateRepetitions,
-    decompress: decompress,
-    summary: summary,
-    toString: toString,
-    compressionRate: compressionRate
-  });
-
-  /**
-   * @module stringBased/NeedlemanWunsch
-   */
-
-  /**
-   * Needleman-Wunsch algorithm
-   *
-   * @see https://github.com/blievrouw/needleman-wunsch/blob/master/src/needleman_wunsch.js
-   * @todo does not support cost matrix
-   * @todo extend by matchMismathFunction
-   */
-  class NeedlemanWunsch {
-    /**
-       * @param {string|Array} seq1 a string
-       * @param {string|Array} seq2 another string
-       * @param {number} matchScore score for matching characters
-       * @param {number} mismatchPenalty penalty for mismatching characters
-       * @param {number} gapPenalty penalty for a gap
-       */
+  // src/stringBased/NeedlemanWunsch.js
+  var NeedlemanWunsch = class {
     constructor(seq1, seq2, matchScore = 1, mismatchPenalty = -1, gapPenalty = -1) {
-      // Compared sequences
       this.seq1 = seq1;
-      this.seq2 = seq2; // Scoring parameters
-
+      this.seq2 = seq2;
       this.matchScore = matchScore;
       this.mismatchPenalty = mismatchPenalty;
-      this.gapPenalty = gapPenalty; // Intermediate scores matrix (scores for [`insert`, `match`, `delete`] positions)
-
-      this.I = []; // Score matrix (best score out of intermediate scores)
-
-      this.S = []; // Traceback matrix (boolean values for [`insert`, `match`, `delete`] positions)
-
-      this.T = []; // Alignments
-
-      this.finalAlignments = []; // Calculate scores and tracebacks
-
+      this.gapPenalty = gapPenalty;
+      this.I = [];
+      this.S = [];
+      this.T = [];
+      this.finalAlignments = [];
       this.calcScoresAndTracebacks();
     }
-    /**
-       * Calculates (intermediate) scores and tracebacks using provided parameters
-       */
-
-
     calcScoresAndTracebacks() {
       this.S.push([0]);
       this.I.push([[null, null, null]]);
-      this.T.push([[false, false, false]]); // Calculate scores and traceback on first row
-
+      this.T.push([[false, false, false]]);
       for (let i = 1; i < this.seq2.length + 1; i++) {
         this.S[0].push(this.S[0][this.S[0].length - 1] + this.gapPenalty);
         this.I[0].push([null, null, null]);
         this.T[0].push([true, false, false]);
-      } // Generate other rows
-
-
+      }
       for (let i = 1; i < this.seq1.length + 1; i++) {
         this.S.push([this.S[i - 1][0] + this.gapPenalty]);
         this.I.push([[null, null, null]]);
         this.T.push([[false, false, true]]);
-
         for (let j = 1; j < this.seq2.length + 1; j++) {
           const insert = this.S[i][j - 1] + this.gapPenalty;
-          const del = this.S[i - 1][j] + this.gapPenalty; // similarity
-          // TODO: support function here
-
+          const del = this.S[i - 1][j] + this.gapPenalty;
           const simScore = this.seq1[i - 1] === this.seq2[j - 1] ? this.matchScore : this.mismatchPenalty;
           const match = this.S[i - 1][j - 1] + simScore;
           const intermediateScores = [insert, match, del];
           const score = Math.max(...intermediateScores);
-          const tracebackTypeStatus = intermediateScores.map(entry => entry === score);
+          const tracebackTypeStatus = intermediateScores.map((entry) => entry === score);
           this.S[i].push(score);
           this.I[i].push(intermediateScores);
           this.T[i].push(tracebackTypeStatus);
         }
-      } // set best match score
-
-
+      }
       const lastRow = this.S[this.S.length - 1];
       this.score = lastRow[lastRow.length - 1];
     }
-    /**
-       * Finds next alignment locations (children) from a position in scoring matrix
-       *
-       * @param {number[]} pos m- Position in scoring matrix
-       * @returns {object[]} children - Children positions and alignment types
-       */
-
-
     alignmentChildren(pos) {
       const [i, j] = pos;
-      const children = [];
+      const children2 = [];
       const tracebackTypeStatus = this.T[i][j];
-
       if (tracebackTypeStatus[0]) {
-        // insert
-        children.push({
-          pos: [i, j - 1],
-          tracebackType: 0
-        });
+        children2.push({ pos: [i, j - 1], tracebackType: 0 });
       }
-
       if (tracebackTypeStatus[1]) {
-        // match
-        children.push({
-          pos: [i - 1, j - 1],
-          tracebackType: 1
-        });
+        children2.push({ pos: [i - 1, j - 1], tracebackType: 1 });
       }
-
       if (tracebackTypeStatus[2]) {
-        // delete
-        children.push({
-          pos: [i - 1, j],
-          tracebackType: 2
-        });
+        children2.push({ pos: [i - 1, j], tracebackType: 2 });
       }
-
-      return children;
+      return children2;
     }
-    /**
-       * Runs through scoring matrix from bottom-right to top-left using traceback values to create all optimal alignments
-       *
-       * @returns {object[]} e.g. [{ seq1: '-4321', seq2: '54321' }]
-       */
-
-
     alignmentTraceback() {
       const finalAlignments = [];
-      const root = {
+      const root2 = {
         next: null,
         pos: [this.seq1.length, this.seq2.length],
         alignment: {
-          seq1: '',
-          seq2: '' // score: this.score,
-
+          seq1: "",
+          seq2: ""
         }
       };
-      let current, child, children, length, alignment, pos, t;
-      current = root;
-
+      let current, child, children2, length, alignment, pos, t;
+      current = root2;
       while (current) {
         pos = current.pos;
-        alignment = current.alignment; // Get children alignments
-
-        children = this.alignmentChildren(current.pos); // Store completed alignments
-
-        if (children.length === 0) {
+        alignment = current.alignment;
+        children2 = this.alignmentChildren(current.pos);
+        if (children2.length === 0) {
           finalAlignments.push(alignment);
         }
-
         current = current.next;
-
-        for (t = 0, length = children.length; t < length; t++) {
-          child = children[t];
+        for (t = 0, length = children2.length; t < length; t++) {
+          child = children2[t];
           child.alignment = {
-            // -1 refers to offset between  scoring matrix and the sequence
-            seq1: alignment.seq1.concat(child.tracebackType === 0 ? '-' : this.seq1[pos[0] - 1]),
-            seq2: alignment.seq2.concat(child.tracebackType === 2 ? '-' : this.seq2[pos[1] - 1]) // TODO: add score for this alignment
-            // score: alignment.score - this.S[pos[0]][pos[1]]
-
-          }; // Move down a layer
-
+            seq1: alignment.seq1.concat(child.tracebackType === 0 ? "-" : this.seq1[pos[0] - 1]),
+            seq2: alignment.seq2.concat(child.tracebackType === 2 ? "-" : this.seq2[pos[1] - 1])
+          };
           child.next = current;
           current = child;
         }
       }
-
       return finalAlignments;
     }
+  };
+  var NeedlemanWunsch_default = NeedlemanWunsch;
 
-  }
-
-  /**
-   * @module stringBased
-   * @todo rename to Sequences
-   */
-
-  var index = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    Levenshtein: Levenshtein,
-    LongestCommonSubsequence: LongestCommonSubsequence,
-    Gotoh: Gotoh,
-    SuffixTree: SuffixTree$1,
-    NGrams: NGrams,
-    ImmediateRepetitionCompression: ImmediateRepetitionCompression,
-    NeedlemanWunsch: NeedlemanWunsch
-  });
-
-  /**
-   * Returns the current version of the library
-   *
-   * @returns {string} version string
-   */
-
+  // src/index.js
   function getVersion() {
     return version;
-  } // Types
-
-  exports.Alignment = Alignment;
-  exports.Canvas = Canvas;
-  exports.Chords = Chords;
-  exports.DiffAlignment = DiffAlignment;
-  exports.Drums = Drums;
-  exports.Guitar = Guitar;
-  exports.GuitarNote = GuitarNote;
-  exports.HarmonicaNote = HarmonicaNote;
-  exports.Lamellophone = Lamellophone;
-  exports.Matching = Matching;
-  exports.Midi = Midi;
-  exports.MidiInputManager = MidiInputManager;
-  exports.MusicPiece = MusicPiece;
-  exports.Note = Note;
-  exports.NoteArray = NoteArray;
-  exports.Piano = Piano;
-  exports.PitchSequence = PitchSequence;
-  exports.PriorityMatching = PriorityMatching;
-  exports.Recording = Recording;
-  exports.SimilarSections = SimilarSections;
-  exports.Similarity = Similarity;
-  exports.StringBased = index;
-  exports.Utils = index$1;
-  exports.getVersion = getVersion;
-  exports.recordAudio = recordAudio;
-  exports.recordMidi = recordMidi;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
-
-}));
+  }
+  return __toCommonJS(src_exports);
+})();
+//# sourceMappingURL=musicvislib.js.map

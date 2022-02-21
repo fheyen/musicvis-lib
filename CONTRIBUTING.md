@@ -37,9 +37,7 @@ Using [standard](https://standardjs.com/)
 
 `npm run build`
 
-Using webpack, see [webpack.dev.js](./webpack.dev.js) and [webpack.prod.js](./webpack.prod.js)
-
-Using [source-map-loader](https://github.com/webpack-contrib/source-map-loader)
+Using [esbuild](https://esbuild.github.io/)
 
 ## Pre-Commit Hooks
 

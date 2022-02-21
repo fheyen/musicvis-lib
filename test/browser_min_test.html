@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo</title>
+</head>
+
+<body>
+  <script src="../dist/musicvislib.min.js"></script>
+  <script>
+
+    if (!musicvislib) {
+      alert("musicvislib is undefined, test failed!")
+    }
+    console.log(musicvislib)
+    console.log(musicvislib.Midi)
+    console.log(musicvislib.Midi.getMidiNoteByNr(0));
+  </script>
+</body>
+
+</html>
