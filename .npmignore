@@ -1,0 +1,21 @@
+test/
+**/*.test.js
+.husky/
+.github/
+docs/
+.babelrc
+
+# From .gitignore
+
+**/package-lock.json
+logs
+*.log
+npm-debug.log*
+pids
+*.pid
+*.seed
+lib-cov
+coverage
+.grunt
+.lock-wscript
+node_modules

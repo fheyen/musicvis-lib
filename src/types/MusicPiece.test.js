@@ -2,7 +2,7 @@ import path from 'path'
 import MusicPiece, { Track, TempoDefinition, TimeSignature, KeySignature } from './MusicPiece.js'
 import GuitarNote from './GuitarNote.js'
 import Note from './Note.js'
-import { readFile, readMidiFile, readXmlFile, listFiles, getAllNotesFromMidi, getAllNotesFromXml, getSongsWithMidiAndXml } from '../../test/testTools/readTestAssetFiles.js'
+import { readMidiFile, readXmlFile, listFiles, getAllNotesFromMidi, getAllNotesFromXml, getSongsWithMidiAndXml } from '../../test/testTools/readTestAssetFiles.js'
 
 const TEST_DIR = path.join(__dirname, '..', '..', 'test', '_test_assets')
 const TEST_DIR_PRIVATE = path.join(__dirname, '..', '..', 'test', '_test_assets_private')
@@ -150,34 +150,34 @@ describe('MusicPiece', () => {
   })
 
   // TODO: waiting for upstream changes in @tonejs/midi
-  describe.skip('fromMidi2', () => {
-    test('empty', () => {
-      expect(() => MusicPiece.fromMidi2()).toThrow('No MIDI file content given')
-    })
+  // describe.skip('fromMidi2', () => {
+  //   test('empty', () => {
+  //     expect(() => MusicPiece.fromMidi2()).toThrow('No MIDI file content given')
+  //   })
 
-    test('actual file', () => {
-      const file = readFile('[Test] 3-4 meter.mid', TEST_DIR)
-      expect(() => MusicPiece.fromMidi2('test', file)).not.toThrow()
-    })
+  //   test('actual file', () => {
+  //     const file = readFile('[Test] 3-4 meter.mid', TEST_DIR)
+  //     expect(() => MusicPiece.fromMidi2('test', file)).not.toThrow()
+  //   })
 
-    test('produces Notes', () => {
-      const midi = readFile('[Test] Guitar Techniques 2.mid', TEST_DIR)
-      const midiNotes = MusicPiece.fromMidi2('test', midi).getNotesFromTracks('all')
-      for (const note of midiNotes) {
-        expect(note).toBeInstanceOf(Note)
-      }
-    })
+  //   test('produces Notes', () => {
+  //     const midi = readFile('[Test] Guitar Techniques 2.mid', TEST_DIR)
+  //     const midiNotes = MusicPiece.fromMidi2('test', midi).getNotesFromTracks('all')
+  //     for (const note of midiNotes) {
+  //       expect(note).toBeInstanceOf(Note)
+  //     }
+  //   })
 
-    const allMidiFiles = listFiles(TEST_DIR)
-      .filter(f => f.endsWith('.mid') || f.endsWith('.midi'))
+  //   const allMidiFiles = listFiles(TEST_DIR)
+  //     .filter(f => f.endsWith('.mid') || f.endsWith('.midi'))
 
-    test.each(allMidiFiles)('parses MIDI without error %s', (file) => {
-      const midi = readFile(file, TEST_DIR)
-      expect(() => MusicPiece.fromMidi2(file, midi)).not.toThrow()
-    })
+  //   test.each(allMidiFiles)('parses MIDI without error %s', (file) => {
+  //     const midi = readFile(file, TEST_DIR)
+  //     expect(() => MusicPiece.fromMidi2(file, midi)).not.toThrow()
+  //   })
 
-    test.todo('Test if data is equal to fromMidi and fromMusicXml')
-  })
+  //   test.todo('Test if data is equal to fromMidi and fromMusicXml')
+  // })
 
   describe('fromMusicXml', () => {
     test('empty arguments', () => {
@@ -377,6 +377,15 @@ describe('MusicPiece', () => {
     })
 
     // TODO: test transposing of single tracks
+  })
+
+  test('grace notes', () => {
+    const { mpMidi, mpXml } = getMusicPiecesFromBothFormats('[Test] Dynamics GuitarPro', TEST_DIR)
+    expect(
+      mpXml.tracks[0].notes.map(d => d.toNote())
+    ).toStrictEqual(
+      mpMidi.tracks[0].notes
+    )
   })
 
   test.todo('Track.tuning from MusicXml file')

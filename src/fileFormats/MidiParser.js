@@ -155,7 +155,7 @@ function parseMidiTrack (track, timeDivision, tempoChanges, beatTypeChanges, key
     if (type === EVENT_TYPES.noteOff || (type === EVENT_TYPES.noteOn && velocity === 0)) {
       // Handle note-off
       if (unfinishedNotes.has(key)) {
-        unfinishedNotes.get(key).end = currentTime
+        unfinishedNotes.get(key).end = roundToNDecimals(currentTime, ROUNDING_PRECISION)
         unfinishedNotes.delete(key)
       } else {
         if (log) {

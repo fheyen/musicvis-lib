@@ -884,4 +884,31 @@ describe('MusicXmlParser', () => {
       [22, '22']
     ])
   })
+
+  describe('XML note indices', () => {
+    test('simple', () => {
+      const parsed = readXmlAndProcess('[Test] 3-4 meter.musicxml')
+      expect(
+        Array.from(parsed.parts[0].xmlNoteIndices)
+      ).toStrictEqual([
+        [0], [1], [2], [3], [4], [5], [6], [7], [8]
+      ])
+    })
+    test('ties', () => {
+      const parsed = readXmlAndProcess('[Test] Ties and Slurs.musicxml')
+      expect(
+        Array.from(parsed.parts[0].xmlNoteIndices)
+      ).toStrictEqual([
+        [0], [1], [2, 3], [4], [5], [6], [7], [8], [9], [10], [11], [13, 14], [15], [16], [17]
+      ])
+    })
+    test('tied chords', () => {
+      const parsed = readXmlAndProcess('[Test] Ties and Slurs Guitar.musicxml')
+      expect(
+        Array.from(parsed.parts[0].xmlNoteIndices)
+      ).toStrictEqual([
+        [0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18], [19], [20], [23], [24], [25], [26], [27], [28], [29], [30], [31], [32], [33], [34], [35], [36], [37], [39], [41], [42, 43], [46], [47], [48], [49], [50], [52, 57], [53, 58], [54, 59], [55, 60], [56, 61], [62], [63], [64], [65]
+      ])
+    })
+  })
 })

@@ -73,6 +73,11 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
   let measures = part.children
   measures = duplicateRepeatedMeasures(measures)
 
+  // For each parsed note, store the corresponding XML notes
+  const xmlNotes = part.querySelectorAll('note')
+  const xmlNoteIndexMap = new Map([...xmlNotes].map((d, i) => [d, i]))
+  const xmlNoteIndices = []
+
   let currentTime = 0
   let divisions
   let tempo = 120
@@ -162,8 +167,8 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
         // Handle directions such as dynamics
         for (const direction of child.children) {
           if (direction.nodeName === 'sound' && direction.getAttribute('dynamics')) {
-            // Dynamics
-            // Convert number... https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
+            // Dynamics: convert number...
+            // https://www.musicxml.com/tutorial/the-midi-compatible-part/sound-suggestions/
             velocity = Math.round(velocityFactor * +direction.getAttribute('dynamics'))
           }
           if (child.querySelectorAll('rehearsal').length > 0) {
@@ -193,10 +198,35 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
         }
       } else if (child.nodeName === 'note') {
         const note = child
+
         try {
           // Get note duration in seconds
-          const duration = +note.querySelectorAll('duration')[0].innerHTML
-          const durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat)
+          let durationInSeconds
+          // Handle grace notes
+          if (note.querySelectorAll('grace').length > 0) {
+            // Take duration from type
+            const type = note.querySelectorAll('type').textContent
+            if (type === '64th') {
+              durationInSeconds = secondsPerBeat / 16
+            } else if (type === '32nd') {
+              durationInSeconds = secondsPerBeat / 8
+            } else if (type === '16th') {
+              durationInSeconds = secondsPerBeat / 4
+            } else if (type === 'eighth') {
+              durationInSeconds = secondsPerBeat / 2
+            } else if (type === 'quarter') {
+              durationInSeconds = secondsPerBeat
+            } else if (type === 'half') {
+              durationInSeconds = secondsPerBeat * 2
+            } else {
+              // TODO: better fallback solution?
+              durationInSeconds = 0.01
+            }
+          } else {
+            const duration = +note.querySelectorAll('duration')[0].innerHTML
+            durationInSeconds = getDurationInSeconds(duration, divisions, secondsPerBeat)
+          }
+
           // Do not create note object for rests, only increase time
           const isRest = note.querySelectorAll('rest').length > 0
           if (isRest) {
@@ -223,7 +253,8 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
             velocity = dynamicsMap.get(dynamicsTag.nodeName)
           }
 
-          // Is this a chord? (https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/)
+          // Is this a chord?
+          // https://www.musicxml.com/tutorial/the-midi-compatible-part/chords/
           const isChord = note.querySelectorAll('chord').length > 0
           if (isChord) {
             currentTime -= lastNoteDuration
@@ -244,10 +275,14 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
                   const newLyrics = `${oldLyrics} ${lyrics}`
                   noteLyricsMap.set(index, newLyrics)
                 }
+                // Save XML note index
+                xmlNoteIndices[index].push(xmlNoteIndexMap.get(note))
                 break
               }
             }
           } else {
+            // Save XML note index
+            xmlNoteIndices.push([xmlNoteIndexMap.get(note)])
             // Staff is used as note's channel for non-guitar notes
             const staff = +(note.querySelectorAll('staff')[0]?.innerHTML ?? 1)
             // TODO: use xml note type?
@@ -321,12 +356,15 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
   if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
     keySignatureChanges.unshift({ key: 'C', scale: 'major', time: 0 })
   }
+  // TODO: Remove duplicates from measureRehearsalMap
+
   const result = {
     noteObjs: noteObjs,
     totalTime: currentTime,
     measureLinePositions,
     measureIndices,
     measureRehearsalMap,
+    xmlNoteIndices,
     tempoChanges,
     beatTypeChanges,
     keySignatureChanges,
@@ -621,10 +659,10 @@ function getDrumInstrumentMap (xml) {
 // }
 
 /**
- * Checks whether a note is palm-muted
+ * Checks whether a note is hammer-on
  *
  * @param {HTMLElement} note note element
- * @returns {boolean} true if note is palm-muted
+ * @returns {boolean} true if note is hammer-on
  */
 // function isHammeron (note) {
 //   return note.querySelectorAll('hammer-on').length > 0
