@@ -26,32 +26,32 @@ var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name2 in all)
+    __defProp(target, name2, { get: all[name2], enumerable: true });
 };
-var __reExport = (target, module2, copyDefault, desc) => {
-  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
-    for (let key of __getOwnPropNames(module2))
+var __reExport = (target, module3, copyDefault, desc) => {
+  if (module3 && typeof module3 === "object" || typeof module3 === "function") {
+    for (let key of __getOwnPropNames(module3))
       if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
-        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
+        __defProp(target, key, { get: () => module3[key], enumerable: !(desc = __getOwnPropDesc(module3, key)) || desc.enumerable });
   }
   return target;
 };
-var __toESM = (module2, isNodeMode) => {
-  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
+var __toESM = (module3, isNodeMode) => {
+  return __reExport(__markAsModule(__defProp(module3 != null ? __create(__getProtoOf(module3)) : {}, "default", !isNodeMode && module3 && module3.__esModule ? { get: () => module3.default, enumerable: true } : { value: module3, enumerable: true })), module3);
 };
 var __toCommonJS = /* @__PURE__ */ ((cache) => {
-  return (module2, temp) => {
-    return cache && cache.get(module2) || (temp = __reExport(__markAsModule({}), module2, 1), cache && cache.set(module2, temp), temp);
+  return (module3, temp) => {
+    return cache && cache.get(module3) || (temp = __reExport(__markAsModule({}), module3, 1), cache && cache.set(module3, temp), temp);
   };
 })(typeof WeakMap !== "undefined" ? /* @__PURE__ */ new WeakMap() : 0);
 
 // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/dist/d3-array.js
 var require_d3_array = __commonJS({
-  "node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/dist/d3-array.js"(exports, module2) {
+  "node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/dist/d3-array.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       function ascending(a, b) {
         return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -1040,87 +1040,87 @@ var require_d3_array = __commonJS({
         }
         return set2;
       }
-      exports2.Adder = Adder;
-      exports2.InternMap = InternMap;
-      exports2.InternSet = InternSet;
-      exports2.ascending = ascending;
-      exports2.bin = bin;
-      exports2.bisect = bisectRight;
-      exports2.bisectCenter = bisectCenter;
-      exports2.bisectLeft = bisectLeft;
-      exports2.bisectRight = bisectRight;
-      exports2.bisector = bisector;
-      exports2.count = count;
-      exports2.cross = cross;
-      exports2.cumsum = cumsum;
-      exports2.descending = descending;
-      exports2.deviation = deviation2;
-      exports2.difference = difference2;
-      exports2.disjoint = disjoint;
-      exports2.every = every;
-      exports2.extent = extent5;
-      exports2.fcumsum = fcumsum;
-      exports2.filter = filter;
-      exports2.fsum = fsum;
-      exports2.greatest = greatest;
-      exports2.greatestIndex = greatestIndex;
-      exports2.group = group8;
-      exports2.groupSort = groupSort;
-      exports2.groups = groups;
-      exports2.histogram = bin;
-      exports2.index = index;
-      exports2.indexes = indexes;
-      exports2.intersection = intersection3;
-      exports2.least = least;
-      exports2.leastIndex = leastIndex;
-      exports2.map = map;
-      exports2.max = max8;
-      exports2.maxIndex = maxIndex;
-      exports2.mean = mean2;
-      exports2.median = median2;
-      exports2.merge = merge;
-      exports2.min = min3;
-      exports2.minIndex = minIndex2;
-      exports2.nice = nice;
-      exports2.pairs = pairs;
-      exports2.permute = permute;
-      exports2.quantile = quantile2;
-      exports2.quantileSorted = quantileSorted;
-      exports2.quickselect = quickselect;
-      exports2.range = range;
-      exports2.reduce = reduce;
-      exports2.reverse = reverse;
-      exports2.rollup = rollup;
-      exports2.rollups = rollups;
-      exports2.scan = scan;
-      exports2.shuffle = shuffle;
-      exports2.shuffler = shuffler;
-      exports2.some = some;
-      exports2.sort = sort;
-      exports2.subset = subset;
-      exports2.sum = sum;
-      exports2.superset = superset;
-      exports2.thresholdFreedmanDiaconis = freedmanDiaconis;
-      exports2.thresholdScott = scott;
-      exports2.thresholdSturges = sturges;
-      exports2.tickIncrement = tickIncrement;
-      exports2.tickStep = tickStep;
-      exports2.ticks = ticks;
-      exports2.transpose = transpose;
-      exports2.union = union2;
-      exports2.variance = variance;
-      exports2.zip = zip;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.Adder = Adder;
+      exports3.InternMap = InternMap;
+      exports3.InternSet = InternSet;
+      exports3.ascending = ascending;
+      exports3.bin = bin;
+      exports3.bisect = bisectRight;
+      exports3.bisectCenter = bisectCenter;
+      exports3.bisectLeft = bisectLeft;
+      exports3.bisectRight = bisectRight;
+      exports3.bisector = bisector;
+      exports3.count = count;
+      exports3.cross = cross;
+      exports3.cumsum = cumsum;
+      exports3.descending = descending;
+      exports3.deviation = deviation2;
+      exports3.difference = difference2;
+      exports3.disjoint = disjoint;
+      exports3.every = every;
+      exports3.extent = extent5;
+      exports3.fcumsum = fcumsum;
+      exports3.filter = filter;
+      exports3.fsum = fsum;
+      exports3.greatest = greatest;
+      exports3.greatestIndex = greatestIndex;
+      exports3.group = group8;
+      exports3.groupSort = groupSort;
+      exports3.groups = groups;
+      exports3.histogram = bin;
+      exports3.index = index;
+      exports3.indexes = indexes;
+      exports3.intersection = intersection3;
+      exports3.least = least;
+      exports3.leastIndex = leastIndex;
+      exports3.map = map;
+      exports3.max = max8;
+      exports3.maxIndex = maxIndex;
+      exports3.mean = mean2;
+      exports3.median = median2;
+      exports3.merge = merge;
+      exports3.min = min3;
+      exports3.minIndex = minIndex2;
+      exports3.nice = nice;
+      exports3.pairs = pairs;
+      exports3.permute = permute;
+      exports3.quantile = quantile2;
+      exports3.quantileSorted = quantileSorted;
+      exports3.quickselect = quickselect;
+      exports3.range = range;
+      exports3.reduce = reduce;
+      exports3.reverse = reverse;
+      exports3.rollup = rollup;
+      exports3.rollups = rollups;
+      exports3.scan = scan;
+      exports3.shuffle = shuffle;
+      exports3.shuffler = shuffler;
+      exports3.some = some;
+      exports3.sort = sort;
+      exports3.subset = subset;
+      exports3.sum = sum;
+      exports3.superset = superset;
+      exports3.thresholdFreedmanDiaconis = freedmanDiaconis;
+      exports3.thresholdScott = scott;
+      exports3.thresholdSturges = sturges;
+      exports3.tickIncrement = tickIncrement;
+      exports3.tickStep = tickStep;
+      exports3.ticks = ticks;
+      exports3.transpose = transpose;
+      exports3.union = union2;
+      exports3.variance = variance;
+      exports3.zip = zip;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-axis@2.1.0/node_modules/d3-axis/dist/d3-axis.js
 var require_d3_axis = __commonJS({
-  "node_modules/.pnpm/d3-axis@2.1.0/node_modules/d3-axis/dist/d3-axis.js"(exports, module2) {
+  "node_modules/.pnpm/d3-axis@2.1.0/node_modules/d3-axis/dist/d3-axis.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       var slice = Array.prototype.slice;
       function identity(x) {
@@ -1222,21 +1222,21 @@ var require_d3_axis = __commonJS({
       function axisLeft(scale) {
         return axis(left, scale);
       }
-      exports2.axisBottom = axisBottom;
-      exports2.axisLeft = axisLeft;
-      exports2.axisRight = axisRight;
-      exports2.axisTop = axisTop;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.axisBottom = axisBottom;
+      exports3.axisLeft = axisLeft;
+      exports3.axisRight = axisRight;
+      exports3.axisTop = axisTop;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-dispatch@2.0.0/node_modules/d3-dispatch/dist/d3-dispatch.js
 var require_d3_dispatch = __commonJS({
-  "node_modules/.pnpm/d3-dispatch@2.0.0/node_modules/d3-dispatch/dist/d3-dispatch.js"(exports, module2) {
+  "node_modules/.pnpm/d3-dispatch@2.0.0/node_modules/d3-dispatch/dist/d3-dispatch.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       var noop = { value: () => {
       } };
@@ -1253,12 +1253,12 @@ var require_d3_dispatch = __commonJS({
       }
       function parseTypenames(typenames, types) {
         return typenames.trim().split(/^|\s+/).map(function(t) {
-          var name = "", i = t.indexOf(".");
+          var name2 = "", i = t.indexOf(".");
           if (i >= 0)
-            name = t.slice(i + 1), t = t.slice(0, i);
+            name2 = t.slice(i + 1), t = t.slice(0, i);
           if (t && !types.hasOwnProperty(t))
             throw new Error("unknown type: " + t);
-          return { type: t, name };
+          return { type: t, name: name2 };
         });
       }
       Dispatch.prototype = dispatch.prototype = {
@@ -1288,52 +1288,52 @@ var require_d3_dispatch = __commonJS({
             copy[t] = _[t].slice();
           return new Dispatch(copy);
         },
-        call: function(type, that) {
+        call: function(type2, that) {
           if ((n = arguments.length - 2) > 0)
             for (var args = new Array(n), i = 0, n, t; i < n; ++i)
               args[i] = arguments[i + 2];
-          if (!this._.hasOwnProperty(type))
-            throw new Error("unknown type: " + type);
-          for (t = this._[type], i = 0, n = t.length; i < n; ++i)
+          if (!this._.hasOwnProperty(type2))
+            throw new Error("unknown type: " + type2);
+          for (t = this._[type2], i = 0, n = t.length; i < n; ++i)
             t[i].value.apply(that, args);
         },
-        apply: function(type, that, args) {
-          if (!this._.hasOwnProperty(type))
-            throw new Error("unknown type: " + type);
-          for (var t = this._[type], i = 0, n = t.length; i < n; ++i)
+        apply: function(type2, that, args) {
+          if (!this._.hasOwnProperty(type2))
+            throw new Error("unknown type: " + type2);
+          for (var t = this._[type2], i = 0, n = t.length; i < n; ++i)
             t[i].value.apply(that, args);
         }
       };
-      function get(type, name) {
-        for (var i = 0, n = type.length, c; i < n; ++i) {
-          if ((c = type[i]).name === name) {
+      function get(type2, name2) {
+        for (var i = 0, n = type2.length, c; i < n; ++i) {
+          if ((c = type2[i]).name === name2) {
             return c.value;
           }
         }
       }
-      function set(type, name, callback) {
-        for (var i = 0, n = type.length; i < n; ++i) {
-          if (type[i].name === name) {
-            type[i] = noop, type = type.slice(0, i).concat(type.slice(i + 1));
+      function set(type2, name2, callback) {
+        for (var i = 0, n = type2.length; i < n; ++i) {
+          if (type2[i].name === name2) {
+            type2[i] = noop, type2 = type2.slice(0, i).concat(type2.slice(i + 1));
             break;
           }
         }
         if (callback != null)
-          type.push({ name, value: callback });
-        return type;
+          type2.push({ name: name2, value: callback });
+        return type2;
       }
-      exports2.dispatch = dispatch;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.dispatch = dispatch;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/dist/d3-selection.js
 var require_d3_selection = __commonJS({
-  "node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/dist/d3-selection.js"(exports, module2) {
+  "node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/dist/d3-selection.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       var xhtml = "http://www.w3.org/1999/xhtml";
       var namespaces = {
@@ -1343,16 +1343,16 @@ var require_d3_selection = __commonJS({
         xml: "http://www.w3.org/XML/1998/namespace",
         xmlns: "http://www.w3.org/2000/xmlns/"
       };
-      function namespace(name) {
-        var prefix = name += "", i = prefix.indexOf(":");
-        if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns")
-          name = name.slice(i + 1);
-        return namespaces.hasOwnProperty(prefix) ? { space: namespaces[prefix], local: name } : name;
+      function namespace(name2) {
+        var prefix = name2 += "", i = prefix.indexOf(":");
+        if (i >= 0 && (prefix = name2.slice(0, i)) !== "xmlns")
+          name2 = name2.slice(i + 1);
+        return namespaces.hasOwnProperty(prefix) ? { space: namespaces[prefix], local: name2 } : name2;
       }
-      function creatorInherit(name) {
+      function creatorInherit(name2) {
         return function() {
           var document2 = this.ownerDocument, uri = this.namespaceURI;
-          return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name) : document2.createElementNS(uri, name);
+          return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name2) : document2.createElementNS(uri, name2);
         };
       }
       function creatorFixed(fullname) {
@@ -1360,8 +1360,8 @@ var require_d3_selection = __commonJS({
           return this.ownerDocument.createElementNS(fullname.space, fullname.local);
         };
       }
-      function creator(name) {
-        var fullname = namespace(name);
+      function creator(name2) {
+        var fullname = namespace(name2);
         return (fullname.local ? creatorFixed : creatorInherit)(fullname);
       }
       function none() {
@@ -1664,9 +1664,9 @@ var require_d3_selection = __commonJS({
         }
         return this;
       }
-      function attrRemove(name) {
+      function attrRemove(name2) {
         return function() {
-          this.removeAttribute(name);
+          this.removeAttribute(name2);
         };
       }
       function attrRemoveNS(fullname) {
@@ -1674,9 +1674,9 @@ var require_d3_selection = __commonJS({
           this.removeAttributeNS(fullname.space, fullname.local);
         };
       }
-      function attrConstant(name, value) {
+      function attrConstant(name2, value) {
         return function() {
-          this.setAttribute(name, value);
+          this.setAttribute(name2, value);
         };
       }
       function attrConstantNS(fullname, value) {
@@ -1684,13 +1684,13 @@ var require_d3_selection = __commonJS({
           this.setAttributeNS(fullname.space, fullname.local, value);
         };
       }
-      function attrFunction(name, value) {
+      function attrFunction(name2, value) {
         return function() {
           var v = value.apply(this, arguments);
           if (v == null)
-            this.removeAttribute(name);
+            this.removeAttribute(name2);
           else
-            this.setAttribute(name, v);
+            this.setAttribute(name2, v);
         };
       }
       function attrFunctionNS(fullname, value) {
@@ -1702,8 +1702,8 @@ var require_d3_selection = __commonJS({
             this.setAttributeNS(fullname.space, fullname.local, v);
         };
       }
-      function selection_attr(name, value) {
-        var fullname = namespace(name);
+      function selection_attr(name2, value) {
+        var fullname = namespace(name2);
         if (arguments.length < 2) {
           var node = this.node();
           return fullname.local ? node.getAttributeNS(fullname.space, fullname.local) : node.getAttribute(fullname);
@@ -1713,52 +1713,52 @@ var require_d3_selection = __commonJS({
       function defaultView(node) {
         return node.ownerDocument && node.ownerDocument.defaultView || node.document && node || node.defaultView;
       }
-      function styleRemove(name) {
+      function styleRemove(name2) {
         return function() {
-          this.style.removeProperty(name);
+          this.style.removeProperty(name2);
         };
       }
-      function styleConstant(name, value, priority) {
+      function styleConstant(name2, value, priority) {
         return function() {
-          this.style.setProperty(name, value, priority);
+          this.style.setProperty(name2, value, priority);
         };
       }
-      function styleFunction(name, value, priority) {
-        return function() {
-          var v = value.apply(this, arguments);
-          if (v == null)
-            this.style.removeProperty(name);
-          else
-            this.style.setProperty(name, v, priority);
-        };
-      }
-      function selection_style(name, value, priority) {
-        return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name, value, priority == null ? "" : priority)) : styleValue(this.node(), name);
-      }
-      function styleValue(node, name) {
-        return node.style.getPropertyValue(name) || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-      }
-      function propertyRemove(name) {
-        return function() {
-          delete this[name];
-        };
-      }
-      function propertyConstant(name, value) {
-        return function() {
-          this[name] = value;
-        };
-      }
-      function propertyFunction(name, value) {
+      function styleFunction(name2, value, priority) {
         return function() {
           var v = value.apply(this, arguments);
           if (v == null)
-            delete this[name];
+            this.style.removeProperty(name2);
           else
-            this[name] = v;
+            this.style.setProperty(name2, v, priority);
         };
       }
-      function selection_property(name, value) {
-        return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name, value)) : this.node()[name];
+      function selection_style(name2, value, priority) {
+        return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name2, value, priority == null ? "" : priority)) : styleValue(this.node(), name2);
+      }
+      function styleValue(node, name2) {
+        return node.style.getPropertyValue(name2) || defaultView(node).getComputedStyle(node, null).getPropertyValue(name2);
+      }
+      function propertyRemove(name2) {
+        return function() {
+          delete this[name2];
+        };
+      }
+      function propertyConstant(name2, value) {
+        return function() {
+          this[name2] = value;
+        };
+      }
+      function propertyFunction(name2, value) {
+        return function() {
+          var v = value.apply(this, arguments);
+          if (v == null)
+            delete this[name2];
+          else
+            this[name2] = v;
+        };
+      }
+      function selection_property(name2, value) {
+        return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name2, value)) : this.node()[name2];
       }
       function classArray(string) {
         return string.trim().split(/^|\s+/);
@@ -1771,22 +1771,22 @@ var require_d3_selection = __commonJS({
         this._names = classArray(node.getAttribute("class") || "");
       }
       ClassList.prototype = {
-        add: function(name) {
-          var i = this._names.indexOf(name);
+        add: function(name2) {
+          var i = this._names.indexOf(name2);
           if (i < 0) {
-            this._names.push(name);
+            this._names.push(name2);
             this._node.setAttribute("class", this._names.join(" "));
           }
         },
-        remove: function(name) {
-          var i = this._names.indexOf(name);
+        remove: function(name2) {
+          var i = this._names.indexOf(name2);
           if (i >= 0) {
             this._names.splice(i, 1);
             this._node.setAttribute("class", this._names.join(" "));
           }
         },
-        contains: function(name) {
-          return this._names.indexOf(name) >= 0;
+        contains: function(name2) {
+          return this._names.indexOf(name2) >= 0;
         }
       };
       function classedAdd(node, names) {
@@ -1814,8 +1814,8 @@ var require_d3_selection = __commonJS({
           (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
         };
       }
-      function selection_classed(name, value) {
-        var names = classArray(name + "");
+      function selection_classed(name2, value) {
+        var names = classArray(name2 + "");
         if (arguments.length < 2) {
           var list = classList(this.node()), i = -1, n = names.length;
           while (++i < n)
@@ -1873,8 +1873,8 @@ var require_d3_selection = __commonJS({
       function selection_lower() {
         return this.each(lower);
       }
-      function selection_append(name) {
-        var create2 = typeof name === "function" ? name : creator(name);
+      function selection_append(name2) {
+        var create2 = typeof name2 === "function" ? name2 : creator(name2);
         return this.select(function() {
           return this.appendChild(create2.apply(this, arguments));
         });
@@ -1882,8 +1882,8 @@ var require_d3_selection = __commonJS({
       function constantNull() {
         return null;
       }
-      function selection_insert(name, before) {
-        var create2 = typeof name === "function" ? name : creator(name), select2 = before == null ? constantNull : typeof before === "function" ? before : selector(before);
+      function selection_insert(name2, before) {
+        var create2 = typeof name2 === "function" ? name2 : creator(name2), select2 = before == null ? constantNull : typeof before === "function" ? before : selector(before);
         return this.select(function() {
           return this.insertBefore(create2.apply(this, arguments), select2.apply(this, arguments) || null);
         });
@@ -1917,10 +1917,10 @@ var require_d3_selection = __commonJS({
       }
       function parseTypenames(typenames) {
         return typenames.trim().split(/^|\s+/).map(function(t) {
-          var name = "", i = t.indexOf(".");
+          var name2 = "", i = t.indexOf(".");
           if (i >= 0)
-            name = t.slice(i + 1), t = t.slice(0, i);
-          return { type: t, name };
+            name2 = t.slice(i + 1), t = t.slice(0, i);
+          return { type: t, name: name2 };
         });
       }
       function onRemove(typename) {
@@ -1980,31 +1980,31 @@ var require_d3_selection = __commonJS({
           this.each(on(typenames[i], value, options));
         return this;
       }
-      function dispatchEvent(node, type, params) {
+      function dispatchEvent(node, type2, params) {
         var window2 = defaultView(node), event = window2.CustomEvent;
         if (typeof event === "function") {
-          event = new event(type, params);
+          event = new event(type2, params);
         } else {
           event = window2.document.createEvent("Event");
           if (params)
-            event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+            event.initEvent(type2, params.bubbles, params.cancelable), event.detail = params.detail;
           else
-            event.initEvent(type, false, false);
+            event.initEvent(type2, false, false);
         }
         node.dispatchEvent(event);
       }
-      function dispatchConstant(type, params) {
+      function dispatchConstant(type2, params) {
         return function() {
-          return dispatchEvent(this, type, params);
+          return dispatchEvent(this, type2, params);
         };
       }
-      function dispatchFunction(type, params) {
+      function dispatchFunction(type2, params) {
         return function() {
-          return dispatchEvent(this, type, params.apply(this, arguments));
+          return dispatchEvent(this, type2, params.apply(this, arguments));
         };
       }
-      function selection_dispatch(type, params) {
-        return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type, params));
+      function selection_dispatch(type2, params) {
+        return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type2, params));
       }
       function* selection_iterator() {
         for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
@@ -2066,8 +2066,8 @@ var require_d3_selection = __commonJS({
       function select(selector2) {
         return typeof selector2 === "string" ? new Selection([[document.querySelector(selector2)]], [document.documentElement]) : new Selection([[selector2]], root);
       }
-      function create(name) {
-        return select(creator(name).call(document.documentElement));
+      function create(name2) {
+        return select(creator(name2).call(document.documentElement));
       }
       var nextId = 0;
       function local() {
@@ -2132,32 +2132,32 @@ var require_d3_selection = __commonJS({
       function selectAll(selector2) {
         return typeof selector2 === "string" ? new Selection([document.querySelectorAll(selector2)], [document.documentElement]) : new Selection([selector2 == null ? [] : array(selector2)], root);
       }
-      exports2.create = create;
-      exports2.creator = creator;
-      exports2.local = local;
-      exports2.matcher = matcher;
-      exports2.namespace = namespace;
-      exports2.namespaces = namespaces;
-      exports2.pointer = pointer;
-      exports2.pointers = pointers;
-      exports2.select = select;
-      exports2.selectAll = selectAll;
-      exports2.selection = selection;
-      exports2.selector = selector;
-      exports2.selectorAll = selectorAll;
-      exports2.style = styleValue;
-      exports2.window = defaultView;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.create = create;
+      exports3.creator = creator;
+      exports3.local = local;
+      exports3.matcher = matcher;
+      exports3.namespace = namespace;
+      exports3.namespaces = namespaces;
+      exports3.pointer = pointer;
+      exports3.pointers = pointers;
+      exports3.select = select;
+      exports3.selectAll = selectAll;
+      exports3.selection = selection;
+      exports3.selector = selector;
+      exports3.selectorAll = selectorAll;
+      exports3.style = styleValue;
+      exports3.window = defaultView;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-drag@2.0.0/node_modules/d3-drag/dist/d3-drag.js
 var require_d3_drag = __commonJS({
-  "node_modules/.pnpm/d3-drag@2.0.0/node_modules/d3-drag/dist/d3-drag.js"(exports, module2) {
+  "node_modules/.pnpm/d3-drag@2.0.0/node_modules/d3-drag/dist/d3-drag.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_dispatch(), require_d3_selection()) : typeof define === "function" && define.amd ? define(["exports", "d3-dispatch", "d3-selection"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Dispatch, d3Selection) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_dispatch(), require_d3_selection()) : typeof define === "function" && define.amd ? define(["exports", "d3-dispatch", "d3-selection"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Dispatch, d3Selection) {
       "use strict";
       function nopropagation(event) {
         event.stopImmediatePropagation();
@@ -2191,7 +2191,7 @@ var require_d3_drag = __commonJS({
         }
       }
       var constant = (x) => () => x;
-      function DragEvent(type, {
+      function DragEvent(type2, {
         sourceEvent,
         subject,
         target,
@@ -2204,7 +2204,7 @@ var require_d3_drag = __commonJS({
         dispatch
       }) {
         Object.defineProperties(this, {
-          type: { value: type, enumerable: true, configurable: true },
+          type: { value: type2, enumerable: true, configurable: true },
           sourceEvent: { value: sourceEvent, enumerable: true, configurable: true },
           subject: { value: subject, enumerable: true, configurable: true },
           target: { value: target, enumerable: true, configurable: true },
@@ -2316,9 +2316,9 @@ var require_d3_drag = __commonJS({
             return;
           dx = s.x - p[0] || 0;
           dy = s.y - p[1] || 0;
-          return function gesture(type, event2, touch2) {
+          return function gesture(type2, event2, touch2) {
             var p0 = p, n;
-            switch (type) {
+            switch (type2) {
               case "start":
                 gestures[identifier] = gesture, n = active++;
                 break;
@@ -2328,7 +2328,7 @@ var require_d3_drag = __commonJS({
                 p = d3Selection.pointer(touch2 || event2, container2), n = active;
                 break;
             }
-            dispatch.call(type, that, new DragEvent(type, {
+            dispatch.call(type2, that, new DragEvent(type2, {
               sourceEvent: event2,
               subject: s,
               target: drag2,
@@ -2363,20 +2363,20 @@ var require_d3_drag = __commonJS({
         };
         return drag2;
       }
-      exports2.drag = drag;
-      exports2.dragDisable = nodrag;
-      exports2.dragEnable = yesdrag;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.drag = drag;
+      exports3.dragDisable = nodrag;
+      exports3.dragEnable = yesdrag;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/dist/d3-color.js
 var require_d3_color = __commonJS({
-  "node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/dist/d3-color.js"(exports, module2) {
+  "node_modules/.pnpm/d3-color@2.0.0/node_modules/d3-color/dist/d3-color.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       function define2(constructor, factory, prototype) {
         constructor.prototype = factory.prototype = prototype;
@@ -2824,25 +2824,25 @@ var require_d3_color = __commonJS({
           return new Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
         }
       }));
-      exports2.color = color2;
-      exports2.cubehelix = cubehelix;
-      exports2.gray = gray;
-      exports2.hcl = hcl;
-      exports2.hsl = hsl2;
-      exports2.lab = lab;
-      exports2.lch = lch;
-      exports2.rgb = rgb;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.color = color2;
+      exports3.cubehelix = cubehelix;
+      exports3.gray = gray;
+      exports3.hcl = hcl;
+      exports3.hsl = hsl2;
+      exports3.lab = lab;
+      exports3.lch = lch;
+      exports3.rgb = rgb;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/dist/d3-interpolate.js
 var require_d3_interpolate = __commonJS({
-  "node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/dist/d3-interpolate.js"(exports, module2) {
+  "node_modules/.pnpm/d3-interpolate@2.0.1/node_modules/d3-interpolate/dist/d3-interpolate.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_color()) : typeof define === "function" && define.amd ? define(["exports", "d3-color"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Color) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_color()) : typeof define === "function" && define.amd ? define(["exports", "d3-color"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Color) {
       "use strict";
       function basis(t1, v0, v1, v2, v3) {
         var t2 = t1 * t1, t3 = t2 * t1;
@@ -3267,44 +3267,44 @@ var require_d3_interpolate = __commonJS({
           samples[i] = interpolator(i / (n - 1));
         return samples;
       }
-      exports2.interpolate = value;
-      exports2.interpolateArray = array;
-      exports2.interpolateBasis = basis$1;
-      exports2.interpolateBasisClosed = basisClosed;
-      exports2.interpolateCubehelix = cubehelix$1;
-      exports2.interpolateCubehelixLong = cubehelixLong;
-      exports2.interpolateDate = date;
-      exports2.interpolateDiscrete = discrete;
-      exports2.interpolateHcl = hcl$1;
-      exports2.interpolateHclLong = hclLong;
-      exports2.interpolateHsl = hsl$1;
-      exports2.interpolateHslLong = hslLong;
-      exports2.interpolateHue = hue$1;
-      exports2.interpolateLab = lab;
-      exports2.interpolateNumber = number;
-      exports2.interpolateNumberArray = numberArray;
-      exports2.interpolateObject = object;
-      exports2.interpolateRgb = rgb;
-      exports2.interpolateRgbBasis = rgbBasis;
-      exports2.interpolateRgbBasisClosed = rgbBasisClosed;
-      exports2.interpolateRound = round;
-      exports2.interpolateString = string;
-      exports2.interpolateTransformCss = interpolateTransformCss;
-      exports2.interpolateTransformSvg = interpolateTransformSvg;
-      exports2.interpolateZoom = zoom;
-      exports2.piecewise = piecewise;
-      exports2.quantize = quantize;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.interpolate = value;
+      exports3.interpolateArray = array;
+      exports3.interpolateBasis = basis$1;
+      exports3.interpolateBasisClosed = basisClosed;
+      exports3.interpolateCubehelix = cubehelix$1;
+      exports3.interpolateCubehelixLong = cubehelixLong;
+      exports3.interpolateDate = date;
+      exports3.interpolateDiscrete = discrete;
+      exports3.interpolateHcl = hcl$1;
+      exports3.interpolateHclLong = hclLong;
+      exports3.interpolateHsl = hsl$1;
+      exports3.interpolateHslLong = hslLong;
+      exports3.interpolateHue = hue$1;
+      exports3.interpolateLab = lab;
+      exports3.interpolateNumber = number;
+      exports3.interpolateNumberArray = numberArray;
+      exports3.interpolateObject = object;
+      exports3.interpolateRgb = rgb;
+      exports3.interpolateRgbBasis = rgbBasis;
+      exports3.interpolateRgbBasisClosed = rgbBasisClosed;
+      exports3.interpolateRound = round;
+      exports3.interpolateString = string;
+      exports3.interpolateTransformCss = interpolateTransformCss;
+      exports3.interpolateTransformSvg = interpolateTransformSvg;
+      exports3.interpolateZoom = zoom;
+      exports3.piecewise = piecewise;
+      exports3.quantize = quantize;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-timer@2.0.0/node_modules/d3-timer/dist/d3-timer.js
 var require_d3_timer = __commonJS({
-  "node_modules/.pnpm/d3-timer@2.0.0/node_modules/d3-timer/dist/d3-timer.js"(exports, module2) {
+  "node_modules/.pnpm/d3-timer@2.0.0/node_modules/d3-timer/dist/d3-timer.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       var frame = 0, timeout = 0, interval = 0, pokeDelay = 1e3, taskHead, taskTail, clockLast = 0, clockNow = 0, clockSkew = 0, clock = typeof performance === "object" && performance.now ? performance : Date, setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) {
         setTimeout(f, 17);
@@ -3432,22 +3432,22 @@ var require_d3_timer = __commonJS({
         t.restart(callback, delay2, time);
         return t;
       }
-      exports2.interval = interval$1;
-      exports2.now = now;
-      exports2.timeout = timeout$1;
-      exports2.timer = timer;
-      exports2.timerFlush = timerFlush;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.interval = interval$1;
+      exports3.now = now;
+      exports3.timeout = timeout$1;
+      exports3.timer = timer;
+      exports3.timerFlush = timerFlush;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-ease@2.0.0/node_modules/d3-ease/dist/d3-ease.js
 var require_d3_ease = __commonJS({
-  "node_modules/.pnpm/d3-ease@2.0.0/node_modules/d3-ease/dist/d3-ease.js"(exports, module2) {
+  "node_modules/.pnpm/d3-ease@2.0.0/node_modules/d3-ease/dist/d3-ease.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       const linear = (t) => +t;
       function quadIn(t) {
@@ -3599,54 +3599,54 @@ var require_d3_ease = __commonJS({
         };
         return elasticInOut2;
       }(amplitude, period);
-      exports2.easeBack = backInOut;
-      exports2.easeBackIn = backIn;
-      exports2.easeBackInOut = backInOut;
-      exports2.easeBackOut = backOut;
-      exports2.easeBounce = bounceOut;
-      exports2.easeBounceIn = bounceIn;
-      exports2.easeBounceInOut = bounceInOut;
-      exports2.easeBounceOut = bounceOut;
-      exports2.easeCircle = circleInOut;
-      exports2.easeCircleIn = circleIn;
-      exports2.easeCircleInOut = circleInOut;
-      exports2.easeCircleOut = circleOut;
-      exports2.easeCubic = cubicInOut;
-      exports2.easeCubicIn = cubicIn;
-      exports2.easeCubicInOut = cubicInOut;
-      exports2.easeCubicOut = cubicOut;
-      exports2.easeElastic = elasticOut;
-      exports2.easeElasticIn = elasticIn;
-      exports2.easeElasticInOut = elasticInOut;
-      exports2.easeElasticOut = elasticOut;
-      exports2.easeExp = expInOut;
-      exports2.easeExpIn = expIn;
-      exports2.easeExpInOut = expInOut;
-      exports2.easeExpOut = expOut;
-      exports2.easeLinear = linear;
-      exports2.easePoly = polyInOut;
-      exports2.easePolyIn = polyIn;
-      exports2.easePolyInOut = polyInOut;
-      exports2.easePolyOut = polyOut;
-      exports2.easeQuad = quadInOut;
-      exports2.easeQuadIn = quadIn;
-      exports2.easeQuadInOut = quadInOut;
-      exports2.easeQuadOut = quadOut;
-      exports2.easeSin = sinInOut;
-      exports2.easeSinIn = sinIn;
-      exports2.easeSinInOut = sinInOut;
-      exports2.easeSinOut = sinOut;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.easeBack = backInOut;
+      exports3.easeBackIn = backIn;
+      exports3.easeBackInOut = backInOut;
+      exports3.easeBackOut = backOut;
+      exports3.easeBounce = bounceOut;
+      exports3.easeBounceIn = bounceIn;
+      exports3.easeBounceInOut = bounceInOut;
+      exports3.easeBounceOut = bounceOut;
+      exports3.easeCircle = circleInOut;
+      exports3.easeCircleIn = circleIn;
+      exports3.easeCircleInOut = circleInOut;
+      exports3.easeCircleOut = circleOut;
+      exports3.easeCubic = cubicInOut;
+      exports3.easeCubicIn = cubicIn;
+      exports3.easeCubicInOut = cubicInOut;
+      exports3.easeCubicOut = cubicOut;
+      exports3.easeElastic = elasticOut;
+      exports3.easeElasticIn = elasticIn;
+      exports3.easeElasticInOut = elasticInOut;
+      exports3.easeElasticOut = elasticOut;
+      exports3.easeExp = expInOut;
+      exports3.easeExpIn = expIn;
+      exports3.easeExpInOut = expInOut;
+      exports3.easeExpOut = expOut;
+      exports3.easeLinear = linear;
+      exports3.easePoly = polyInOut;
+      exports3.easePolyIn = polyIn;
+      exports3.easePolyInOut = polyInOut;
+      exports3.easePolyOut = polyOut;
+      exports3.easeQuad = quadInOut;
+      exports3.easeQuadIn = quadIn;
+      exports3.easeQuadInOut = quadInOut;
+      exports3.easeQuadOut = quadOut;
+      exports3.easeSin = sinInOut;
+      exports3.easeSinIn = sinIn;
+      exports3.easeSinInOut = sinInOut;
+      exports3.easeSinOut = sinOut;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/dist/d3-transition.js
 var require_d3_transition = __commonJS({
-  "node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/dist/d3-transition.js"(exports, module2) {
+  "node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/dist/d3-transition.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_selection(), require_d3_dispatch(), require_d3_timer(), require_d3_interpolate(), require_d3_color(), require_d3_ease()) : typeof define === "function" && define.amd ? define(["exports", "d3-selection", "d3-dispatch", "d3-timer", "d3-interpolate", "d3-color", "d3-ease"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Selection, d3Dispatch, d3Timer, d3Interpolate, d3Color, d3Ease) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_selection(), require_d3_dispatch(), require_d3_timer(), require_d3_interpolate(), require_d3_color(), require_d3_ease()) : typeof define === "function" && define.amd ? define(["exports", "d3-selection", "d3-dispatch", "d3-timer", "d3-interpolate", "d3-color", "d3-ease"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Selection, d3Dispatch, d3Timer, d3Interpolate, d3Color, d3Ease) {
       "use strict";
       var emptyOn = d3Dispatch.dispatch("start", "end", "cancel", "interrupt");
       var emptyTween = [];
@@ -3657,14 +3657,14 @@ var require_d3_transition = __commonJS({
       var RUNNING = 4;
       var ENDING = 5;
       var ENDED = 6;
-      function schedule(node, name, id2, index, group8, timing) {
+      function schedule(node, name2, id2, index, group8, timing) {
         var schedules = node.__transition;
         if (!schedules)
           node.__transition = {};
         else if (id2 in schedules)
           return;
         create(node, id2, {
-          name,
+          name: name2,
           index,
           group: group8,
           on: emptyOn,
@@ -3766,13 +3766,13 @@ var require_d3_transition = __commonJS({
           delete node.__transition;
         }
       }
-      function interrupt(node, name) {
+      function interrupt(node, name2) {
         var schedules = node.__transition, schedule2, active2, empty = true, i;
         if (!schedules)
           return;
-        name = name == null ? null : name + "";
+        name2 = name2 == null ? null : name2 + "";
         for (i in schedules) {
-          if ((schedule2 = schedules[i]).name !== name) {
+          if ((schedule2 = schedules[i]).name !== name2) {
             empty = false;
             continue;
           }
@@ -3785,19 +3785,19 @@ var require_d3_transition = __commonJS({
         if (empty)
           delete node.__transition;
       }
-      function selection_interrupt(name) {
+      function selection_interrupt(name2) {
         return this.each(function() {
-          interrupt(this, name);
+          interrupt(this, name2);
         });
       }
-      function tweenRemove(id2, name) {
+      function tweenRemove(id2, name2) {
         var tween0, tween1;
         return function() {
           var schedule2 = set(this, id2), tween = schedule2.tween;
           if (tween !== tween0) {
             tween1 = tween0 = tween;
             for (var i = 0, n = tween1.length; i < n; ++i) {
-              if (tween1[i].name === name) {
+              if (tween1[i].name === name2) {
                 tween1 = tween1.slice();
                 tween1.splice(i, 1);
                 break;
@@ -3807,7 +3807,7 @@ var require_d3_transition = __commonJS({
           schedule2.tween = tween1;
         };
       }
-      function tweenFunction(id2, name, value) {
+      function tweenFunction(id2, name2, value) {
         var tween0, tween1;
         if (typeof value !== "function")
           throw new Error();
@@ -3815,8 +3815,8 @@ var require_d3_transition = __commonJS({
           var schedule2 = set(this, id2), tween = schedule2.tween;
           if (tween !== tween0) {
             tween1 = (tween0 = tween).slice();
-            for (var t = { name, value }, i = 0, n = tween1.length; i < n; ++i) {
-              if (tween1[i].name === name) {
+            for (var t = { name: name2, value }, i = 0, n = tween1.length; i < n; ++i) {
+              if (tween1[i].name === name2) {
                 tween1[i] = t;
                 break;
               }
@@ -3827,37 +3827,37 @@ var require_d3_transition = __commonJS({
           schedule2.tween = tween1;
         };
       }
-      function transition_tween(name, value) {
+      function transition_tween(name2, value) {
         var id2 = this._id;
-        name += "";
+        name2 += "";
         if (arguments.length < 2) {
           var tween = get(this.node(), id2).tween;
           for (var i = 0, n = tween.length, t; i < n; ++i) {
-            if ((t = tween[i]).name === name) {
+            if ((t = tween[i]).name === name2) {
               return t.value;
             }
           }
           return null;
         }
-        return this.each((value == null ? tweenRemove : tweenFunction)(id2, name, value));
+        return this.each((value == null ? tweenRemove : tweenFunction)(id2, name2, value));
       }
-      function tweenValue(transition2, name, value) {
+      function tweenValue(transition2, name2, value) {
         var id2 = transition2._id;
         transition2.each(function() {
           var schedule2 = set(this, id2);
-          (schedule2.value || (schedule2.value = {}))[name] = value.apply(this, arguments);
+          (schedule2.value || (schedule2.value = {}))[name2] = value.apply(this, arguments);
         });
         return function(node) {
-          return get(node, id2).value[name];
+          return get(node, id2).value[name2];
         };
       }
       function interpolate(a, b) {
         var c;
         return (typeof b === "number" ? d3Interpolate.interpolateNumber : b instanceof d3Color.color ? d3Interpolate.interpolateRgb : (c = d3Color.color(b)) ? (b = c, d3Interpolate.interpolateRgb) : d3Interpolate.interpolateString)(a, b);
       }
-      function attrRemove(name) {
+      function attrRemove(name2) {
         return function() {
-          this.removeAttribute(name);
+          this.removeAttribute(name2);
         };
       }
       function attrRemoveNS(fullname) {
@@ -3865,10 +3865,10 @@ var require_d3_transition = __commonJS({
           this.removeAttributeNS(fullname.space, fullname.local);
         };
       }
-      function attrConstant(name, interpolate2, value1) {
+      function attrConstant(name2, interpolate2, value1) {
         var string00, string1 = value1 + "", interpolate0;
         return function() {
-          var string0 = this.getAttribute(name);
+          var string0 = this.getAttribute(name2);
           return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate2(string00 = string0, value1);
         };
       }
@@ -3879,13 +3879,13 @@ var require_d3_transition = __commonJS({
           return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate2(string00 = string0, value1);
         };
       }
-      function attrFunction(name, interpolate2, value) {
+      function attrFunction(name2, interpolate2, value) {
         var string00, string10, interpolate0;
         return function() {
           var string0, value1 = value(this), string1;
           if (value1 == null)
-            return void this.removeAttribute(name);
-          string0 = this.getAttribute(name);
+            return void this.removeAttribute(name2);
+          string0 = this.getAttribute(name2);
           string1 = value1 + "";
           return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate2(string00 = string0, value1));
         };
@@ -3901,13 +3901,13 @@ var require_d3_transition = __commonJS({
           return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate2(string00 = string0, value1));
         };
       }
-      function transition_attr(name, value) {
-        var fullname = d3Selection.namespace(name), i = fullname === "transform" ? d3Interpolate.interpolateTransformSvg : interpolate;
-        return this.attrTween(name, typeof value === "function" ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value)) : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname) : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value));
+      function transition_attr(name2, value) {
+        var fullname = d3Selection.namespace(name2), i = fullname === "transform" ? d3Interpolate.interpolateTransformSvg : interpolate;
+        return this.attrTween(name2, typeof value === "function" ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name2, value)) : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname) : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value));
       }
-      function attrInterpolate(name, i) {
+      function attrInterpolate(name2, i) {
         return function(t) {
-          this.setAttribute(name, i.call(this, t));
+          this.setAttribute(name2, i.call(this, t));
         };
       }
       function attrInterpolateNS(fullname, i) {
@@ -3926,26 +3926,26 @@ var require_d3_transition = __commonJS({
         tween._value = value;
         return tween;
       }
-      function attrTween(name, value) {
+      function attrTween(name2, value) {
         var t0, i0;
         function tween() {
           var i = value.apply(this, arguments);
           if (i !== i0)
-            t0 = (i0 = i) && attrInterpolate(name, i);
+            t0 = (i0 = i) && attrInterpolate(name2, i);
           return t0;
         }
         tween._value = value;
         return tween;
       }
-      function transition_attrTween(name, value) {
-        var key = "attr." + name;
+      function transition_attrTween(name2, value) {
+        var key = "attr." + name2;
         if (arguments.length < 2)
           return (key = this.tween(key)) && key._value;
         if (value == null)
           return this.tween(key, null);
         if (typeof value !== "function")
           throw new Error();
-        var fullname = d3Selection.namespace(name);
+        var fullname = d3Selection.namespace(name2);
         return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
       }
       function delayFunction(id2, value) {
@@ -4027,26 +4027,26 @@ var require_d3_transition = __commonJS({
         }
         return new Transition(merges, this._parents, this._name, this._id);
       }
-      function start(name) {
-        return (name + "").trim().split(/^|\s+/).every(function(t) {
+      function start(name2) {
+        return (name2 + "").trim().split(/^|\s+/).every(function(t) {
           var i = t.indexOf(".");
           if (i >= 0)
             t = t.slice(0, i);
           return !t || t === "start";
         });
       }
-      function onFunction(id2, name, listener) {
-        var on0, on1, sit = start(name) ? init : set;
+      function onFunction(id2, name2, listener) {
+        var on0, on1, sit = start(name2) ? init : set;
         return function() {
           var schedule2 = sit(this, id2), on = schedule2.on;
           if (on !== on0)
-            (on1 = (on0 = on).copy()).on(name, listener);
+            (on1 = (on0 = on).copy()).on(name2, listener);
           schedule2.on = on1;
         };
       }
-      function transition_on(name, listener) {
+      function transition_on(name2, listener) {
         var id2 = this._id;
-        return arguments.length < 2 ? get(this.node(), id2).on.on(name) : this.each(onFunction(id2, name, listener));
+        return arguments.length < 2 ? get(this.node(), id2).on.on(name2) : this.each(onFunction(id2, name2, listener));
       }
       function removeFunction(id2) {
         return function() {
@@ -4062,7 +4062,7 @@ var require_d3_transition = __commonJS({
         return this.on("end.remove", removeFunction(this._id));
       }
       function transition_select(select) {
-        var name = this._name, id2 = this._id;
+        var name2 = this._name, id2 = this._id;
         if (typeof select !== "function")
           select = d3Selection.selector(select);
         for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
@@ -4071,14 +4071,14 @@ var require_d3_transition = __commonJS({
               if ("__data__" in node)
                 subnode.__data__ = node.__data__;
               subgroup[i] = subnode;
-              schedule(subgroup[i], name, id2, i, subgroup, get(node, id2));
+              schedule(subgroup[i], name2, id2, i, subgroup, get(node, id2));
             }
           }
         }
-        return new Transition(subgroups, this._parents, name, id2);
+        return new Transition(subgroups, this._parents, name2, id2);
       }
       function transition_selectAll(select) {
-        var name = this._name, id2 = this._id;
+        var name2 = this._name, id2 = this._id;
         if (typeof select !== "function")
           select = d3Selection.selectorAll(select);
         for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
@@ -4086,7 +4086,7 @@ var require_d3_transition = __commonJS({
             if (node = group8[i]) {
               for (var children = select.call(node, node.__data__, i, group8), child, inherit2 = get(node, id2), k = 0, l = children.length; k < l; ++k) {
                 if (child = children[k]) {
-                  schedule(child, name, id2, k, children, inherit2);
+                  schedule(child, name2, id2, k, children, inherit2);
                 }
               }
               subgroups.push(children);
@@ -4094,78 +4094,78 @@ var require_d3_transition = __commonJS({
             }
           }
         }
-        return new Transition(subgroups, parents, name, id2);
+        return new Transition(subgroups, parents, name2, id2);
       }
       var Selection = d3Selection.selection.prototype.constructor;
       function transition_selection() {
         return new Selection(this._groups, this._parents);
       }
-      function styleNull(name, interpolate2) {
+      function styleNull(name2, interpolate2) {
         var string00, string10, interpolate0;
         return function() {
-          var string0 = d3Selection.style(this, name), string1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+          var string0 = d3Selection.style(this, name2), string1 = (this.style.removeProperty(name2), d3Selection.style(this, name2));
           return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : interpolate0 = interpolate2(string00 = string0, string10 = string1);
         };
       }
-      function styleRemove(name) {
+      function styleRemove(name2) {
         return function() {
-          this.style.removeProperty(name);
+          this.style.removeProperty(name2);
         };
       }
-      function styleConstant(name, interpolate2, value1) {
+      function styleConstant(name2, interpolate2, value1) {
         var string00, string1 = value1 + "", interpolate0;
         return function() {
-          var string0 = d3Selection.style(this, name);
+          var string0 = d3Selection.style(this, name2);
           return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate2(string00 = string0, value1);
         };
       }
-      function styleFunction(name, interpolate2, value) {
+      function styleFunction(name2, interpolate2, value) {
         var string00, string10, interpolate0;
         return function() {
-          var string0 = d3Selection.style(this, name), value1 = value(this), string1 = value1 + "";
+          var string0 = d3Selection.style(this, name2), value1 = value(this), string1 = value1 + "";
           if (value1 == null)
-            string1 = value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+            string1 = value1 = (this.style.removeProperty(name2), d3Selection.style(this, name2));
           return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate2(string00 = string0, value1));
         };
       }
-      function styleMaybeRemove(id2, name) {
-        var on0, on1, listener0, key = "style." + name, event = "end." + key, remove;
+      function styleMaybeRemove(id2, name2) {
+        var on0, on1, listener0, key = "style." + name2, event = "end." + key, remove;
         return function() {
-          var schedule2 = set(this, id2), on = schedule2.on, listener = schedule2.value[key] == null ? remove || (remove = styleRemove(name)) : void 0;
+          var schedule2 = set(this, id2), on = schedule2.on, listener = schedule2.value[key] == null ? remove || (remove = styleRemove(name2)) : void 0;
           if (on !== on0 || listener0 !== listener)
             (on1 = (on0 = on).copy()).on(event, listener0 = listener);
           schedule2.on = on1;
         };
       }
-      function transition_style(name, value, priority) {
-        var i = (name += "") === "transform" ? d3Interpolate.interpolateTransformCss : interpolate;
-        return value == null ? this.styleTween(name, styleNull(name, i)).on("end.style." + name, styleRemove(name)) : typeof value === "function" ? this.styleTween(name, styleFunction(name, i, tweenValue(this, "style." + name, value))).each(styleMaybeRemove(this._id, name)) : this.styleTween(name, styleConstant(name, i, value), priority).on("end.style." + name, null);
+      function transition_style(name2, value, priority) {
+        var i = (name2 += "") === "transform" ? d3Interpolate.interpolateTransformCss : interpolate;
+        return value == null ? this.styleTween(name2, styleNull(name2, i)).on("end.style." + name2, styleRemove(name2)) : typeof value === "function" ? this.styleTween(name2, styleFunction(name2, i, tweenValue(this, "style." + name2, value))).each(styleMaybeRemove(this._id, name2)) : this.styleTween(name2, styleConstant(name2, i, value), priority).on("end.style." + name2, null);
       }
-      function styleInterpolate(name, i, priority) {
+      function styleInterpolate(name2, i, priority) {
         return function(t) {
-          this.style.setProperty(name, i.call(this, t), priority);
+          this.style.setProperty(name2, i.call(this, t), priority);
         };
       }
-      function styleTween(name, value, priority) {
+      function styleTween(name2, value, priority) {
         var t, i0;
         function tween() {
           var i = value.apply(this, arguments);
           if (i !== i0)
-            t = (i0 = i) && styleInterpolate(name, i, priority);
+            t = (i0 = i) && styleInterpolate(name2, i, priority);
           return t;
         }
         tween._value = value;
         return tween;
       }
-      function transition_styleTween(name, value, priority) {
-        var key = "style." + (name += "");
+      function transition_styleTween(name2, value, priority) {
+        var key = "style." + (name2 += "");
         if (arguments.length < 2)
           return (key = this.tween(key)) && key._value;
         if (value == null)
           return this.tween(key, null);
         if (typeof value !== "function")
           throw new Error();
-        return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+        return this.tween(key, styleTween(name2, value, priority == null ? "" : priority));
       }
       function textConstant(value) {
         return function() {
@@ -4208,12 +4208,12 @@ var require_d3_transition = __commonJS({
         return this.tween(key, textTween(value));
       }
       function transition_transition() {
-        var name = this._name, id0 = this._id, id1 = newId();
+        var name2 = this._name, id0 = this._id, id1 = newId();
         for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
           for (var group8 = groups[j], n = group8.length, node, i = 0; i < n; ++i) {
             if (node = group8[i]) {
               var inherit2 = get(node, id0);
-              schedule(node, name, id1, i, group8, {
+              schedule(node, name2, id1, i, group8, {
                 time: inherit2.time + inherit2.delay + inherit2.duration,
                 delay: 0,
                 duration: inherit2.duration,
@@ -4222,7 +4222,7 @@ var require_d3_transition = __commonJS({
             }
           }
         }
-        return new Transition(groups, this._parents, name, id1);
+        return new Transition(groups, this._parents, name2, id1);
       }
       function transition_end() {
         var on0, on1, that = this, id2 = that._id, size = that.size();
@@ -4246,14 +4246,14 @@ var require_d3_transition = __commonJS({
         });
       }
       var id = 0;
-      function Transition(groups, parents, name, id2) {
+      function Transition(groups, parents, name2, id2) {
         this._groups = groups;
         this._parents = parents;
-        this._name = name;
+        this._name = name2;
         this._id = id2;
       }
-      function transition(name) {
-        return d3Selection.selection().transition(name);
+      function transition(name2) {
+        return d3Selection.selection().transition(name2);
       }
       function newId() {
         return ++id;
@@ -4304,54 +4304,54 @@ var require_d3_transition = __commonJS({
         }
         return timing;
       }
-      function selection_transition(name) {
+      function selection_transition(name2) {
         var id2, timing;
-        if (name instanceof Transition) {
-          id2 = name._id, name = name._name;
+        if (name2 instanceof Transition) {
+          id2 = name2._id, name2 = name2._name;
         } else {
-          id2 = newId(), (timing = defaultTiming).time = d3Timer.now(), name = name == null ? null : name + "";
+          id2 = newId(), (timing = defaultTiming).time = d3Timer.now(), name2 = name2 == null ? null : name2 + "";
         }
         for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
           for (var group8 = groups[j], n = group8.length, node, i = 0; i < n; ++i) {
             if (node = group8[i]) {
-              schedule(node, name, id2, i, group8, timing || inherit(node, id2));
+              schedule(node, name2, id2, i, group8, timing || inherit(node, id2));
             }
           }
         }
-        return new Transition(groups, this._parents, name, id2);
+        return new Transition(groups, this._parents, name2, id2);
       }
       d3Selection.selection.prototype.interrupt = selection_interrupt;
       d3Selection.selection.prototype.transition = selection_transition;
       var root = [null];
-      function active(node, name) {
+      function active(node, name2) {
         var schedules = node.__transition, schedule2, i;
         if (schedules) {
-          name = name == null ? null : name + "";
+          name2 = name2 == null ? null : name2 + "";
           for (i in schedules) {
-            if ((schedule2 = schedules[i]).state > SCHEDULED && schedule2.name === name) {
-              return new Transition([[node]], root, name, +i);
+            if ((schedule2 = schedules[i]).state > SCHEDULED && schedule2.name === name2) {
+              return new Transition([[node]], root, name2, +i);
             }
           }
         }
         return null;
       }
-      exports2.active = active;
-      exports2.interrupt = interrupt;
-      exports2.transition = transition;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.active = active;
+      exports3.interrupt = interrupt;
+      exports3.transition = transition;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-brush@2.1.0/node_modules/d3-brush/dist/d3-brush.js
 var require_d3_brush = __commonJS({
-  "node_modules/.pnpm/d3-brush@2.1.0/node_modules/d3-brush/dist/d3-brush.js"(exports, module2) {
+  "node_modules/.pnpm/d3-brush@2.1.0/node_modules/d3-brush/dist/d3-brush.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_dispatch(), require_d3_drag(), require_d3_interpolate(), require_d3_selection(), require_d3_transition()) : typeof define === "function" && define.amd ? define(["exports", "d3-dispatch", "d3-drag", "d3-interpolate", "d3-selection", "d3-transition"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Dispatch, d3Drag, d3Interpolate, d3Selection, d3Transition) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_dispatch(), require_d3_drag(), require_d3_interpolate(), require_d3_selection(), require_d3_transition()) : typeof define === "function" && define.amd ? define(["exports", "d3-dispatch", "d3-drag", "d3-interpolate", "d3-selection", "d3-transition"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Dispatch, d3Drag, d3Interpolate, d3Selection, d3Transition) {
       "use strict";
       var constant = (x) => () => x;
-      function BrushEvent(type2, {
+      function BrushEvent(type3, {
         sourceEvent,
         target,
         selection,
@@ -4359,7 +4359,7 @@ var require_d3_brush = __commonJS({
         dispatch
       }) {
         Object.defineProperties(this, {
-          type: { value: type2, enumerable: true, configurable: true },
+          type: { value: type3, enumerable: true, configurable: true },
           sourceEvent: { value: sourceEvent, enumerable: true, configurable: true },
           target: { value: target, enumerable: true, configurable: true },
           selection: { value: selection, enumerable: true, configurable: true },
@@ -4384,7 +4384,7 @@ var require_d3_brush = __commonJS({
       }
       var X = {
         name: "x",
-        handles: ["w", "e"].map(type),
+        handles: ["w", "e"].map(type2),
         input: function(x, e) {
           return x == null ? null : [[+x[0], e[0][1]], [+x[1], e[1][1]]];
         },
@@ -4394,7 +4394,7 @@ var require_d3_brush = __commonJS({
       };
       var Y = {
         name: "y",
-        handles: ["n", "s"].map(type),
+        handles: ["n", "s"].map(type2),
         input: function(y, e) {
           return y == null ? null : [[e[0][0], +y[0]], [e[1][0], +y[1]]];
         },
@@ -4404,7 +4404,7 @@ var require_d3_brush = __commonJS({
       };
       var XY = {
         name: "xy",
-        handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type),
+        handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type2),
         input: function(xy) {
           return xy == null ? null : number2(xy);
         },
@@ -4464,7 +4464,7 @@ var require_d3_brush = __commonJS({
         se: 1,
         sw: 1
       };
-      function type(t) {
+      function type2(t) {
         return { type: t };
       }
       function defaultFilter(event) {
@@ -4506,12 +4506,12 @@ var require_d3_brush = __commonJS({
       function brush$1(dim) {
         var extent5 = defaultExtent, filter = defaultFilter, touchable = defaultTouchable, keys = true, listeners = d3Dispatch.dispatch("start", "brush", "end"), handleSize = 6, touchending;
         function brush2(group8) {
-          var overlay = group8.property("__brush", initialize).selectAll(".overlay").data([type("overlay")]);
+          var overlay = group8.property("__brush", initialize).selectAll(".overlay").data([type2("overlay")]);
           overlay.enter().append("rect").attr("class", "overlay").attr("pointer-events", "all").attr("cursor", cursors.overlay).merge(overlay).each(function() {
             var extent6 = local(this).extent;
             d3Selection.select(this).attr("x", extent6[0][0]).attr("y", extent6[0][1]).attr("width", extent6[1][0] - extent6[0][0]).attr("height", extent6[1][1] - extent6[0][1]);
           });
-          group8.selectAll(".selection").data([type("selection")]).enter().append("rect").attr("class", "selection").attr("cursor", cursors.selection).attr("fill", "#777").attr("fill-opacity", 0.3).attr("stroke", "#fff").attr("shape-rendering", "crispEdges");
+          group8.selectAll(".selection").data([type2("selection")]).enter().append("rect").attr("class", "selection").attr("cursor", cursors.selection).attr("fill", "#777").attr("fill-opacity", 0.3).attr("stroke", "#fff").attr("shape-rendering", "crispEdges");
           var handle = group8.selectAll(".handle").data(dim.handles, function(d) {
             return d.type;
           });
@@ -4601,9 +4601,9 @@ var require_d3_brush = __commonJS({
               delete this.state.emitter, this.emit("end", event, mode);
             return this;
           },
-          emit: function(type2, event, mode) {
+          emit: function(type3, event, mode) {
             var d = d3Selection.select(this.that).datum();
-            listeners.call(type2, this.that, new BrushEvent(type2, {
+            listeners.call(type3, this.that, new BrushEvent(type3, {
               sourceEvent: event,
               target: brush2,
               selection: dim.output(this.state.selection),
@@ -4617,14 +4617,14 @@ var require_d3_brush = __commonJS({
             return;
           if (!filter.apply(this, arguments))
             return;
-          var that = this, type2 = event.target.__data__.type, mode = (keys && event.metaKey ? type2 = "overlay" : type2) === "selection" ? MODE_DRAG : keys && event.altKey ? MODE_CENTER : MODE_HANDLE, signX = dim === Y ? null : signsX[type2], signY = dim === X ? null : signsY[type2], state = local(that), extent6 = state.extent, selection = state.selection, W = extent6[0][0], w0, w1, N = extent6[0][1], n0, n1, E = extent6[1][0], e0, e1, S = extent6[1][1], s0, s1, dx = 0, dy = 0, moving, shifting = signX && signY && keys && event.shiftKey, lockX, lockY, points = Array.from(event.touches || [event], (t) => {
+          var that = this, type3 = event.target.__data__.type, mode = (keys && event.metaKey ? type3 = "overlay" : type3) === "selection" ? MODE_DRAG : keys && event.altKey ? MODE_CENTER : MODE_HANDLE, signX = dim === Y ? null : signsX[type3], signY = dim === X ? null : signsY[type3], state = local(that), extent6 = state.extent, selection = state.selection, W = extent6[0][0], w0, w1, N = extent6[0][1], n0, n1, E = extent6[1][0], e0, e1, S = extent6[1][1], s0, s1, dx = 0, dy = 0, moving, shifting = signX && signY && keys && event.shiftKey, lockX, lockY, points = Array.from(event.touches || [event], (t) => {
             const i = t.identifier;
             t = d3Selection.pointer(t, that);
             t.point0 = t.slice();
             t.identifier = i;
             return t;
           });
-          if (type2 === "overlay") {
+          if (type3 === "overlay") {
             if (selection)
               moving = true;
             const pts = [points[0], points[1] || points[0]];
@@ -4648,7 +4648,7 @@ var require_d3_brush = __commonJS({
           e1 = e0;
           s1 = s0;
           var group8 = d3Selection.select(that).attr("pointer-events", "none");
-          var overlay = group8.selectAll(".overlay").attr("cursor", cursors[type2]);
+          var overlay = group8.selectAll(".overlay").attr("cursor", cursors[type3]);
           d3Transition.interrupt(that);
           var emit = emitter(that, arguments, true).beforestart();
           if (event.touches) {
@@ -4726,15 +4726,15 @@ var require_d3_brush = __commonJS({
               signX *= -1;
               t = w0, w0 = e0, e0 = t;
               t = w1, w1 = e1, e1 = t;
-              if (type2 in flipX)
-                overlay.attr("cursor", cursors[type2 = flipX[type2]]);
+              if (type3 in flipX)
+                overlay.attr("cursor", cursors[type3 = flipX[type3]]);
             }
             if (s1 < n1) {
               signY *= -1;
               t = n0, n0 = s0, s0 = t;
               t = n1, n1 = s1, s1 = t;
-              if (type2 in flipY)
-                overlay.attr("cursor", cursors[type2 = flipY[type2]]);
+              if (type3 in flipY)
+                overlay.attr("cursor", cursors[type3 = flipY[type3]]);
             }
             if (state.selection)
               selection = state.selection;
@@ -4851,7 +4851,7 @@ var require_d3_brush = __commonJS({
                       n0 = n1;
                     mode = MODE_HANDLE;
                   }
-                  overlay.attr("cursor", cursors[type2]);
+                  overlay.attr("cursor", cursors[type3]);
                   move();
                 }
                 break;
@@ -4895,21 +4895,21 @@ var require_d3_brush = __commonJS({
         };
         return brush2;
       }
-      exports2.brush = brush;
-      exports2.brushSelection = brushSelection;
-      exports2.brushX = brushX;
-      exports2.brushY = brushY;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.brush = brush;
+      exports3.brushSelection = brushSelection;
+      exports3.brushX = brushX;
+      exports3.brushY = brushY;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-path@2.0.0/node_modules/d3-path/dist/d3-path.js
 var require_d3_path = __commonJS({
-  "node_modules/.pnpm/d3-path@2.0.0/node_modules/d3-path/dist/d3-path.js"(exports, module2) {
+  "node_modules/.pnpm/d3-path@2.0.0/node_modules/d3-path/dist/d3-path.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       const pi = Math.PI, tau = 2 * pi, epsilon = 1e-6, tauEpsilon = tau - epsilon;
       function Path() {
@@ -4985,18 +4985,18 @@ var require_d3_path = __commonJS({
           return this._;
         }
       };
-      exports2.path = path;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.path = path;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-chord@2.0.0/node_modules/d3-chord/dist/d3-chord.js
 var require_d3_chord = __commonJS({
-  "node_modules/.pnpm/d3-chord@2.0.0/node_modules/d3-chord/dist/d3-chord.js"(exports, module2) {
+  "node_modules/.pnpm/d3-chord@2.0.0/node_modules/d3-chord/dist/d3-chord.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_path()) : typeof define === "function" && define.amd ? define(["exports", "d3-path"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Path) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_path()) : typeof define === "function" && define.amd ? define(["exports", "d3-path"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Path) {
       "use strict";
       var abs = Math.abs;
       var cos = Math.cos;
@@ -5200,22 +5200,22 @@ var require_d3_chord = __commonJS({
       function ribbonArrow() {
         return ribbon(defaultArrowheadRadius);
       }
-      exports2.chord = chord;
-      exports2.chordDirected = chordDirected;
-      exports2.chordTranspose = chordTranspose;
-      exports2.ribbon = ribbon$1;
-      exports2.ribbonArrow = ribbonArrow;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.chord = chord;
+      exports3.chordDirected = chordDirected;
+      exports3.chordTranspose = chordTranspose;
+      exports3.ribbon = ribbon$1;
+      exports3.ribbonArrow = ribbonArrow;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-contour@2.0.0/node_modules/d3-contour/dist/d3-contour.js
 var require_d3_contour = __commonJS({
-  "node_modules/.pnpm/d3-contour@2.0.0/node_modules/d3-contour/dist/d3-contour.js"(exports, module2) {
+  "node_modules/.pnpm/d3-contour@2.0.0/node_modules/d3-contour/dist/d3-contour.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_array()) : typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Array) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_array()) : typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Array) {
       "use strict";
       var array = Array.prototype;
       var slice = array.slice;
@@ -5538,19 +5538,19 @@ var require_d3_contour = __commonJS({
         };
         return density2;
       }
-      exports2.contourDensity = density;
-      exports2.contours = contours;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.contourDensity = density;
+      exports3.contours = contours;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-delaunay@5.3.0/node_modules/d3-delaunay/dist/d3-delaunay.js
 var require_d3_delaunay = __commonJS({
-  "node_modules/.pnpm/d3-delaunay@5.3.0/node_modules/d3-delaunay/dist/d3-delaunay.js"(exports, module2) {
+  "node_modules/.pnpm/d3-delaunay@5.3.0/node_modules/d3-delaunay/dist/d3-delaunay.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       const EPSILON = Math.pow(2, -52);
       const EDGE_STACK = new Uint32Array(512);
@@ -6568,24 +6568,24 @@ var require_d3_delaunay = __commonJS({
           ++i;
         }
       }
-      exports2.Delaunay = Delaunay;
-      exports2.Voronoi = Voronoi;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.Delaunay = Delaunay;
+      exports3.Voronoi = Voronoi;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-dsv@2.0.0/node_modules/d3-dsv/dist/d3-dsv.js
 var require_d3_dsv = __commonJS({
-  "node_modules/.pnpm/d3-dsv@2.0.0/node_modules/d3-dsv/dist/d3-dsv.js"(exports, module2) {
+  "node_modules/.pnpm/d3-dsv@2.0.0/node_modules/d3-dsv/dist/d3-dsv.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       var EOL = {}, EOF = {}, QUOTE = 34, NEWLINE = 10, RETURN = 13;
       function objectConverter(columns) {
-        return new Function("d", "return {" + columns.map(function(name, i) {
-          return JSON.stringify(name) + ": d[" + i + '] || ""';
+        return new Function("d", "return {" + columns.map(function(name2, i) {
+          return JSON.stringify(name2) + ": d[" + i + '] || ""';
         }).join(",") + "}");
       }
       function customConverter(columns, f) {
@@ -6752,33 +6752,33 @@ var require_d3_dsv = __commonJS({
         return object;
       }
       const fixtz = new Date("2019-01-01T00:00").getHours() || new Date("2019-07-01T00:00").getHours();
-      exports2.autoType = autoType;
-      exports2.csvFormat = csvFormat;
-      exports2.csvFormatBody = csvFormatBody;
-      exports2.csvFormatRow = csvFormatRow;
-      exports2.csvFormatRows = csvFormatRows;
-      exports2.csvFormatValue = csvFormatValue;
-      exports2.csvParse = csvParse;
-      exports2.csvParseRows = csvParseRows;
-      exports2.dsvFormat = dsv;
-      exports2.tsvFormat = tsvFormat;
-      exports2.tsvFormatBody = tsvFormatBody;
-      exports2.tsvFormatRow = tsvFormatRow;
-      exports2.tsvFormatRows = tsvFormatRows;
-      exports2.tsvFormatValue = tsvFormatValue;
-      exports2.tsvParse = tsvParse;
-      exports2.tsvParseRows = tsvParseRows;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.autoType = autoType;
+      exports3.csvFormat = csvFormat;
+      exports3.csvFormatBody = csvFormatBody;
+      exports3.csvFormatRow = csvFormatRow;
+      exports3.csvFormatRows = csvFormatRows;
+      exports3.csvFormatValue = csvFormatValue;
+      exports3.csvParse = csvParse;
+      exports3.csvParseRows = csvParseRows;
+      exports3.dsvFormat = dsv;
+      exports3.tsvFormat = tsvFormat;
+      exports3.tsvFormatBody = tsvFormatBody;
+      exports3.tsvFormatRow = tsvFormatRow;
+      exports3.tsvFormatRows = tsvFormatRows;
+      exports3.tsvFormatValue = tsvFormatValue;
+      exports3.tsvParse = tsvParse;
+      exports3.tsvParseRows = tsvParseRows;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-fetch@2.0.0/node_modules/d3-fetch/dist/d3-fetch.js
 var require_d3_fetch = __commonJS({
-  "node_modules/.pnpm/d3-fetch@2.0.0/node_modules/d3-fetch/dist/d3-fetch.js"(exports, module2) {
+  "node_modules/.pnpm/d3-fetch@2.0.0/node_modules/d3-fetch/dist/d3-fetch.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_dsv()) : typeof define === "function" && define.amd ? define(["exports", "d3-dsv"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Dsv) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_dsv()) : typeof define === "function" && define.amd ? define(["exports", "d3-dsv"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Dsv) {
       "use strict";
       function responseBlob(response) {
         if (!response.ok)
@@ -6845,34 +6845,34 @@ var require_d3_fetch = __commonJS({
       function json(input, init) {
         return fetch(input, init).then(responseJson);
       }
-      function parser(type) {
-        return (input, init) => text(input, init).then((text2) => new DOMParser().parseFromString(text2, type));
+      function parser(type2) {
+        return (input, init) => text(input, init).then((text2) => new DOMParser().parseFromString(text2, type2));
       }
       var xml = parser("application/xml");
       var html = parser("text/html");
       var svg = parser("image/svg+xml");
-      exports2.blob = blob;
-      exports2.buffer = buffer;
-      exports2.csv = csv;
-      exports2.dsv = dsv;
-      exports2.html = html;
-      exports2.image = image;
-      exports2.json = json;
-      exports2.svg = svg;
-      exports2.text = text;
-      exports2.tsv = tsv;
-      exports2.xml = xml;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.blob = blob;
+      exports3.buffer = buffer;
+      exports3.csv = csv;
+      exports3.dsv = dsv;
+      exports3.html = html;
+      exports3.image = image;
+      exports3.json = json;
+      exports3.svg = svg;
+      exports3.text = text;
+      exports3.tsv = tsv;
+      exports3.xml = xml;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-quadtree@2.0.0/node_modules/d3-quadtree/dist/d3-quadtree.js
 var require_d3_quadtree = __commonJS({
-  "node_modules/.pnpm/d3-quadtree@2.0.0/node_modules/d3-quadtree/dist/d3-quadtree.js"(exports, module2) {
+  "node_modules/.pnpm/d3-quadtree@2.0.0/node_modules/d3-quadtree/dist/d3-quadtree.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       function tree_add(d) {
         const x = +this._x.call(null, d), y = +this._y.call(null, d);
@@ -7194,18 +7194,18 @@ var require_d3_quadtree = __commonJS({
       treeProto.visitAfter = tree_visitAfter;
       treeProto.x = tree_x;
       treeProto.y = tree_y;
-      exports2.quadtree = quadtree;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.quadtree = quadtree;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-force@2.1.1/node_modules/d3-force/dist/d3-force.js
 var require_d3_force = __commonJS({
-  "node_modules/.pnpm/d3-force@2.1.1/node_modules/d3-force/dist/d3-force.js"(exports, module2) {
+  "node_modules/.pnpm/d3-force@2.1.1/node_modules/d3-force/dist/d3-force.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_quadtree(), require_d3_dispatch(), require_d3_timer()) : typeof define === "function" && define.amd ? define(["exports", "d3-quadtree", "d3-dispatch", "d3-timer"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Quadtree, d3Dispatch, d3Timer) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_quadtree(), require_d3_dispatch(), require_d3_timer()) : typeof define === "function" && define.amd ? define(["exports", "d3-quadtree", "d3-dispatch", "d3-timer"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Quadtree, d3Dispatch, d3Timer) {
       "use strict";
       function center(x2, y2) {
         var nodes, strength = 1;
@@ -7509,8 +7509,8 @@ var require_d3_force = __commonJS({
           randomSource: function(_) {
             return arguments.length ? (random = _, forces.forEach(initializeForce), simulation2) : random;
           },
-          force: function(name, _) {
-            return arguments.length > 1 ? (_ == null ? forces.delete(name) : forces.set(name, initializeForce(_)), simulation2) : forces.get(name);
+          force: function(name2, _) {
+            return arguments.length > 1 ? (_ == null ? forces.delete(name2) : forces.set(name2, initializeForce(_)), simulation2) : forces.get(name2);
           },
           find: function(x2, y2, radius) {
             var i = 0, n = nodes.length, dx, dy, d2, node, closest;
@@ -7528,8 +7528,8 @@ var require_d3_force = __commonJS({
             }
             return closest;
           },
-          on: function(name, _) {
-            return arguments.length > 1 ? (event.on(name, _), simulation2) : event.on(name);
+          on: function(name2, _) {
+            return arguments.length > 1 ? (event.on(name2, _), simulation2) : event.on(name2);
           }
         };
       }
@@ -7726,25 +7726,25 @@ var require_d3_force = __commonJS({
         };
         return force;
       }
-      exports2.forceCenter = center;
-      exports2.forceCollide = collide;
-      exports2.forceLink = link;
-      exports2.forceManyBody = manyBody;
-      exports2.forceRadial = radial;
-      exports2.forceSimulation = simulation;
-      exports2.forceX = x$2;
-      exports2.forceY = y$2;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.forceCenter = center;
+      exports3.forceCollide = collide;
+      exports3.forceLink = link;
+      exports3.forceManyBody = manyBody;
+      exports3.forceRadial = radial;
+      exports3.forceSimulation = simulation;
+      exports3.forceX = x$2;
+      exports3.forceY = y$2;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/dist/d3-format.js
 var require_d3_format = __commonJS({
-  "node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/dist/d3-format.js"(exports, module2) {
+  "node_modules/.pnpm/d3-format@2.0.0/node_modules/d3-format/dist/d3-format.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       function formatDecimal(x) {
         return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
@@ -7876,19 +7876,19 @@ var require_d3_format = __commonJS({
         var group8 = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity : formatGroup(map.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity : formatNumerals(map.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "\u2212" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
         function newFormat(specifier) {
           specifier = formatSpecifier(specifier);
-          var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type = specifier.type;
-          if (type === "n")
-            comma = true, type = "g";
-          else if (!formatTypes[type])
-            precision === void 0 && (precision = 12), trim = true, type = "g";
+          var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type2 = specifier.type;
+          if (type2 === "n")
+            comma = true, type2 = "g";
+          else if (!formatTypes[type2])
+            precision === void 0 && (precision = 12), trim = true, type2 = "g";
           if (zero || fill === "0" && align === "=")
             zero = true, fill = "0", align = "=";
-          var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
-          var formatType = formatTypes[type], maybeSuffix = /[defgprs%]/.test(type);
-          precision = precision === void 0 ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+          var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "";
+          var formatType = formatTypes[type2], maybeSuffix = /[defgprs%]/.test(type2);
+          precision = precision === void 0 ? 6 : /[gprs]/.test(type2) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
           function format(value) {
             var valuePrefix = prefix, valueSuffix = suffix, i, n, c;
-            if (type === "c") {
+            if (type2 === "c") {
               valueSuffix = formatType(value) + valueSuffix;
               value = "";
             } else {
@@ -7900,7 +7900,7 @@ var require_d3_format = __commonJS({
               if (valueNegative && +value === 0 && sign !== "+")
                 valueNegative = false;
               valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-              valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+              valueSuffix = (type2 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
               if (maybeSuffix) {
                 i = -1, n = value.length;
                 while (++i < n) {
@@ -7957,8 +7957,8 @@ var require_d3_format = __commonJS({
       });
       function defaultLocale(definition) {
         locale = formatLocale(definition);
-        exports2.format = locale.format;
-        exports2.formatPrefix = locale.formatPrefix;
+        exports3.format = locale.format;
+        exports3.formatPrefix = locale.formatPrefix;
         return locale;
       }
       function precisionFixed(step) {
@@ -7971,24 +7971,24 @@ var require_d3_format = __commonJS({
         step = Math.abs(step), max8 = Math.abs(max8) - step;
         return Math.max(0, exponent(max8) - exponent(step)) + 1;
       }
-      exports2.FormatSpecifier = FormatSpecifier;
-      exports2.formatDefaultLocale = defaultLocale;
-      exports2.formatLocale = formatLocale;
-      exports2.formatSpecifier = formatSpecifier;
-      exports2.precisionFixed = precisionFixed;
-      exports2.precisionPrefix = precisionPrefix;
-      exports2.precisionRound = precisionRound;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.FormatSpecifier = FormatSpecifier;
+      exports3.formatDefaultLocale = defaultLocale;
+      exports3.formatLocale = formatLocale;
+      exports3.formatSpecifier = formatSpecifier;
+      exports3.precisionFixed = precisionFixed;
+      exports3.precisionPrefix = precisionPrefix;
+      exports3.precisionRound = precisionRound;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-geo@2.0.2/node_modules/d3-geo/dist/d3-geo.js
 var require_d3_geo = __commonJS({
-  "node_modules/.pnpm/d3-geo@2.0.2/node_modules/d3-geo/dist/d3-geo.js"(exports, module2) {
+  "node_modules/.pnpm/d3-geo@2.0.2/node_modules/d3-geo/dist/d3-geo.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_array()) : typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Array) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_array()) : typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Array) {
       "use strict";
       var epsilon = 1e-6;
       var epsilon2 = 1e-12;
@@ -10364,66 +10364,66 @@ var require_d3_geo = __commonJS({
         };
         return rotate([0, 0, 90]).scale(159.155);
       }
-      exports2.geoAlbers = albers;
-      exports2.geoAlbersUsa = albersUsa;
-      exports2.geoArea = area;
-      exports2.geoAzimuthalEqualArea = azimuthalEqualArea;
-      exports2.geoAzimuthalEqualAreaRaw = azimuthalEqualAreaRaw;
-      exports2.geoAzimuthalEquidistant = azimuthalEquidistant;
-      exports2.geoAzimuthalEquidistantRaw = azimuthalEquidistantRaw;
-      exports2.geoBounds = bounds;
-      exports2.geoCentroid = centroid;
-      exports2.geoCircle = circle;
-      exports2.geoClipAntimeridian = clipAntimeridian;
-      exports2.geoClipCircle = clipCircle;
-      exports2.geoClipExtent = extent5;
-      exports2.geoClipRectangle = clipRectangle;
-      exports2.geoConicConformal = conicConformal;
-      exports2.geoConicConformalRaw = conicConformalRaw;
-      exports2.geoConicEqualArea = conicEqualArea;
-      exports2.geoConicEqualAreaRaw = conicEqualAreaRaw;
-      exports2.geoConicEquidistant = conicEquidistant;
-      exports2.geoConicEquidistantRaw = conicEquidistantRaw;
-      exports2.geoContains = contains;
-      exports2.geoDistance = distance;
-      exports2.geoEqualEarth = equalEarth;
-      exports2.geoEqualEarthRaw = equalEarthRaw;
-      exports2.geoEquirectangular = equirectangular;
-      exports2.geoEquirectangularRaw = equirectangularRaw;
-      exports2.geoGnomonic = gnomonic;
-      exports2.geoGnomonicRaw = gnomonicRaw;
-      exports2.geoGraticule = graticule;
-      exports2.geoGraticule10 = graticule10;
-      exports2.geoIdentity = identity$1;
-      exports2.geoInterpolate = interpolate;
-      exports2.geoLength = length;
-      exports2.geoMercator = mercator;
-      exports2.geoMercatorRaw = mercatorRaw;
-      exports2.geoNaturalEarth1 = naturalEarth1;
-      exports2.geoNaturalEarth1Raw = naturalEarth1Raw;
-      exports2.geoOrthographic = orthographic;
-      exports2.geoOrthographicRaw = orthographicRaw;
-      exports2.geoPath = index;
-      exports2.geoProjection = projection;
-      exports2.geoProjectionMutator = projectionMutator;
-      exports2.geoRotation = rotation;
-      exports2.geoStereographic = stereographic;
-      exports2.geoStereographicRaw = stereographicRaw;
-      exports2.geoStream = geoStream;
-      exports2.geoTransform = transform;
-      exports2.geoTransverseMercator = transverseMercator;
-      exports2.geoTransverseMercatorRaw = transverseMercatorRaw;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.geoAlbers = albers;
+      exports3.geoAlbersUsa = albersUsa;
+      exports3.geoArea = area;
+      exports3.geoAzimuthalEqualArea = azimuthalEqualArea;
+      exports3.geoAzimuthalEqualAreaRaw = azimuthalEqualAreaRaw;
+      exports3.geoAzimuthalEquidistant = azimuthalEquidistant;
+      exports3.geoAzimuthalEquidistantRaw = azimuthalEquidistantRaw;
+      exports3.geoBounds = bounds;
+      exports3.geoCentroid = centroid;
+      exports3.geoCircle = circle;
+      exports3.geoClipAntimeridian = clipAntimeridian;
+      exports3.geoClipCircle = clipCircle;
+      exports3.geoClipExtent = extent5;
+      exports3.geoClipRectangle = clipRectangle;
+      exports3.geoConicConformal = conicConformal;
+      exports3.geoConicConformalRaw = conicConformalRaw;
+      exports3.geoConicEqualArea = conicEqualArea;
+      exports3.geoConicEqualAreaRaw = conicEqualAreaRaw;
+      exports3.geoConicEquidistant = conicEquidistant;
+      exports3.geoConicEquidistantRaw = conicEquidistantRaw;
+      exports3.geoContains = contains;
+      exports3.geoDistance = distance;
+      exports3.geoEqualEarth = equalEarth;
+      exports3.geoEqualEarthRaw = equalEarthRaw;
+      exports3.geoEquirectangular = equirectangular;
+      exports3.geoEquirectangularRaw = equirectangularRaw;
+      exports3.geoGnomonic = gnomonic;
+      exports3.geoGnomonicRaw = gnomonicRaw;
+      exports3.geoGraticule = graticule;
+      exports3.geoGraticule10 = graticule10;
+      exports3.geoIdentity = identity$1;
+      exports3.geoInterpolate = interpolate;
+      exports3.geoLength = length;
+      exports3.geoMercator = mercator;
+      exports3.geoMercatorRaw = mercatorRaw;
+      exports3.geoNaturalEarth1 = naturalEarth1;
+      exports3.geoNaturalEarth1Raw = naturalEarth1Raw;
+      exports3.geoOrthographic = orthographic;
+      exports3.geoOrthographicRaw = orthographicRaw;
+      exports3.geoPath = index;
+      exports3.geoProjection = projection;
+      exports3.geoProjectionMutator = projectionMutator;
+      exports3.geoRotation = rotation;
+      exports3.geoStereographic = stereographic;
+      exports3.geoStereographicRaw = stereographicRaw;
+      exports3.geoStream = geoStream;
+      exports3.geoTransform = transform;
+      exports3.geoTransverseMercator = transverseMercator;
+      exports3.geoTransverseMercatorRaw = transverseMercatorRaw;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-hierarchy@2.0.0/node_modules/d3-hierarchy/dist/d3-hierarchy.js
 var require_d3_hierarchy = __commonJS({
-  "node_modules/.pnpm/d3-hierarchy@2.0.0/node_modules/d3-hierarchy/dist/d3-hierarchy.js"(exports, module2) {
+  "node_modules/.pnpm/d3-hierarchy@2.0.0/node_modules/d3-hierarchy/dist/d3-hierarchy.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       function defaultSeparation(a, b) {
         return a.parent === b.parent ? 1 : 2;
@@ -11382,32 +11382,32 @@ var require_d3_hierarchy = __commonJS({
         };
         return resquarify2;
       }(phi);
-      exports2.cluster = cluster;
-      exports2.hierarchy = hierarchy;
-      exports2.pack = index;
-      exports2.packEnclose = enclose;
-      exports2.packSiblings = siblings;
-      exports2.partition = partition;
-      exports2.stratify = stratify;
-      exports2.tree = tree;
-      exports2.treemap = index$1;
-      exports2.treemapBinary = binary;
-      exports2.treemapDice = treemapDice;
-      exports2.treemapResquarify = resquarify;
-      exports2.treemapSlice = treemapSlice;
-      exports2.treemapSliceDice = sliceDice;
-      exports2.treemapSquarify = squarify;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.cluster = cluster;
+      exports3.hierarchy = hierarchy;
+      exports3.pack = index;
+      exports3.packEnclose = enclose;
+      exports3.packSiblings = siblings;
+      exports3.partition = partition;
+      exports3.stratify = stratify;
+      exports3.tree = tree;
+      exports3.treemap = index$1;
+      exports3.treemapBinary = binary;
+      exports3.treemapDice = treemapDice;
+      exports3.treemapResquarify = resquarify;
+      exports3.treemapSlice = treemapSlice;
+      exports3.treemapSliceDice = sliceDice;
+      exports3.treemapSquarify = squarify;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-polygon@2.0.0/node_modules/d3-polygon/dist/d3-polygon.js
 var require_d3_polygon = __commonJS({
-  "node_modules/.pnpm/d3-polygon@2.0.0/node_modules/d3-polygon/dist/d3-polygon.js"(exports, module2) {
+  "node_modules/.pnpm/d3-polygon@2.0.0/node_modules/d3-polygon/dist/d3-polygon.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       function area(polygon) {
         var i = -1, n = polygon.length, a, b = polygon[n - 1], area2 = 0;
@@ -11486,22 +11486,22 @@ var require_d3_polygon = __commonJS({
         }
         return perimeter;
       }
-      exports2.polygonArea = area;
-      exports2.polygonCentroid = centroid;
-      exports2.polygonContains = contains;
-      exports2.polygonHull = hull;
-      exports2.polygonLength = length;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.polygonArea = area;
+      exports3.polygonCentroid = centroid;
+      exports3.polygonContains = contains;
+      exports3.polygonHull = hull;
+      exports3.polygonLength = length;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/dist/d3-random.js
 var require_d3_random = __commonJS({
-  "node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/dist/d3-random.js"(exports, module2) {
+  "node_modules/.pnpm/d3-random@2.2.2/node_modules/d3-random/dist/d3-random.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
+    })(exports2, function(exports3) {
       "use strict";
       var defaultSource = Math.random;
       var uniform = function sourceRandomUniform(source) {
@@ -11773,35 +11773,35 @@ var require_d3_random = __commonJS({
         let state = (0 <= seed && seed < 1 ? seed / eps : Math.abs(seed)) | 0;
         return () => (state = mul * state + inc | 0, eps * (state >>> 0));
       }
-      exports2.randomBates = bates;
-      exports2.randomBernoulli = bernoulli;
-      exports2.randomBeta = beta;
-      exports2.randomBinomial = binomial;
-      exports2.randomCauchy = cauchy;
-      exports2.randomExponential = exponential;
-      exports2.randomGamma = gamma;
-      exports2.randomGeometric = geometric;
-      exports2.randomInt = int;
-      exports2.randomIrwinHall = irwinHall;
-      exports2.randomLcg = lcg;
-      exports2.randomLogNormal = logNormal;
-      exports2.randomLogistic = logistic;
-      exports2.randomNormal = normal;
-      exports2.randomPareto = pareto;
-      exports2.randomPoisson = poisson;
-      exports2.randomUniform = uniform;
-      exports2.randomWeibull = weibull;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.randomBates = bates;
+      exports3.randomBernoulli = bernoulli;
+      exports3.randomBeta = beta;
+      exports3.randomBinomial = binomial;
+      exports3.randomCauchy = cauchy;
+      exports3.randomExponential = exponential;
+      exports3.randomGamma = gamma;
+      exports3.randomGeometric = geometric;
+      exports3.randomInt = int;
+      exports3.randomIrwinHall = irwinHall;
+      exports3.randomLcg = lcg;
+      exports3.randomLogNormal = logNormal;
+      exports3.randomLogistic = logistic;
+      exports3.randomNormal = normal;
+      exports3.randomPareto = pareto;
+      exports3.randomPoisson = poisson;
+      exports3.randomUniform = uniform;
+      exports3.randomWeibull = weibull;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-time@2.1.1/node_modules/d3-time/dist/d3-time.js
 var require_d3_time = __commonJS({
-  "node_modules/.pnpm/d3-time@2.1.1/node_modules/d3-time/dist/d3-time.js"(exports, module2) {
+  "node_modules/.pnpm/d3-time@2.1.1/node_modules/d3-time/dist/d3-time.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_array()) : typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Array) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_array()) : typeof define === "function" && define.amd ? define(["exports", "d3-array"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Array) {
       "use strict";
       var t0 = new Date(), t1 = new Date();
       function newInterval(floori, offseti, count, field) {
@@ -12112,82 +12112,82 @@ var require_d3_time = __commonJS({
       }
       const [utcTicks, utcTickInterval] = ticker(utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute);
       const [timeTicks, timeTickInterval] = ticker(year, month, sunday, day, hour, minute);
-      exports2.timeDay = day;
-      exports2.timeDays = days;
-      exports2.timeFriday = friday;
-      exports2.timeFridays = fridays;
-      exports2.timeHour = hour;
-      exports2.timeHours = hours;
-      exports2.timeInterval = newInterval;
-      exports2.timeMillisecond = millisecond;
-      exports2.timeMilliseconds = milliseconds;
-      exports2.timeMinute = minute;
-      exports2.timeMinutes = minutes;
-      exports2.timeMonday = monday;
-      exports2.timeMondays = mondays;
-      exports2.timeMonth = month;
-      exports2.timeMonths = months;
-      exports2.timeSaturday = saturday;
-      exports2.timeSaturdays = saturdays;
-      exports2.timeSecond = second;
-      exports2.timeSeconds = seconds;
-      exports2.timeSunday = sunday;
-      exports2.timeSundays = sundays;
-      exports2.timeThursday = thursday;
-      exports2.timeThursdays = thursdays;
-      exports2.timeTickInterval = timeTickInterval;
-      exports2.timeTicks = timeTicks;
-      exports2.timeTuesday = tuesday;
-      exports2.timeTuesdays = tuesdays;
-      exports2.timeWednesday = wednesday;
-      exports2.timeWednesdays = wednesdays;
-      exports2.timeWeek = sunday;
-      exports2.timeWeeks = sundays;
-      exports2.timeYear = year;
-      exports2.timeYears = years;
-      exports2.utcDay = utcDay;
-      exports2.utcDays = utcDays;
-      exports2.utcFriday = utcFriday;
-      exports2.utcFridays = utcFridays;
-      exports2.utcHour = utcHour;
-      exports2.utcHours = utcHours;
-      exports2.utcMillisecond = millisecond;
-      exports2.utcMilliseconds = milliseconds;
-      exports2.utcMinute = utcMinute;
-      exports2.utcMinutes = utcMinutes;
-      exports2.utcMonday = utcMonday;
-      exports2.utcMondays = utcMondays;
-      exports2.utcMonth = utcMonth;
-      exports2.utcMonths = utcMonths;
-      exports2.utcSaturday = utcSaturday;
-      exports2.utcSaturdays = utcSaturdays;
-      exports2.utcSecond = second;
-      exports2.utcSeconds = seconds;
-      exports2.utcSunday = utcSunday;
-      exports2.utcSundays = utcSundays;
-      exports2.utcThursday = utcThursday;
-      exports2.utcThursdays = utcThursdays;
-      exports2.utcTickInterval = utcTickInterval;
-      exports2.utcTicks = utcTicks;
-      exports2.utcTuesday = utcTuesday;
-      exports2.utcTuesdays = utcTuesdays;
-      exports2.utcWednesday = utcWednesday;
-      exports2.utcWednesdays = utcWednesdays;
-      exports2.utcWeek = utcSunday;
-      exports2.utcWeeks = utcSundays;
-      exports2.utcYear = utcYear;
-      exports2.utcYears = utcYears;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.timeDay = day;
+      exports3.timeDays = days;
+      exports3.timeFriday = friday;
+      exports3.timeFridays = fridays;
+      exports3.timeHour = hour;
+      exports3.timeHours = hours;
+      exports3.timeInterval = newInterval;
+      exports3.timeMillisecond = millisecond;
+      exports3.timeMilliseconds = milliseconds;
+      exports3.timeMinute = minute;
+      exports3.timeMinutes = minutes;
+      exports3.timeMonday = monday;
+      exports3.timeMondays = mondays;
+      exports3.timeMonth = month;
+      exports3.timeMonths = months;
+      exports3.timeSaturday = saturday;
+      exports3.timeSaturdays = saturdays;
+      exports3.timeSecond = second;
+      exports3.timeSeconds = seconds;
+      exports3.timeSunday = sunday;
+      exports3.timeSundays = sundays;
+      exports3.timeThursday = thursday;
+      exports3.timeThursdays = thursdays;
+      exports3.timeTickInterval = timeTickInterval;
+      exports3.timeTicks = timeTicks;
+      exports3.timeTuesday = tuesday;
+      exports3.timeTuesdays = tuesdays;
+      exports3.timeWednesday = wednesday;
+      exports3.timeWednesdays = wednesdays;
+      exports3.timeWeek = sunday;
+      exports3.timeWeeks = sundays;
+      exports3.timeYear = year;
+      exports3.timeYears = years;
+      exports3.utcDay = utcDay;
+      exports3.utcDays = utcDays;
+      exports3.utcFriday = utcFriday;
+      exports3.utcFridays = utcFridays;
+      exports3.utcHour = utcHour;
+      exports3.utcHours = utcHours;
+      exports3.utcMillisecond = millisecond;
+      exports3.utcMilliseconds = milliseconds;
+      exports3.utcMinute = utcMinute;
+      exports3.utcMinutes = utcMinutes;
+      exports3.utcMonday = utcMonday;
+      exports3.utcMondays = utcMondays;
+      exports3.utcMonth = utcMonth;
+      exports3.utcMonths = utcMonths;
+      exports3.utcSaturday = utcSaturday;
+      exports3.utcSaturdays = utcSaturdays;
+      exports3.utcSecond = second;
+      exports3.utcSeconds = seconds;
+      exports3.utcSunday = utcSunday;
+      exports3.utcSundays = utcSundays;
+      exports3.utcThursday = utcThursday;
+      exports3.utcThursdays = utcThursdays;
+      exports3.utcTickInterval = utcTickInterval;
+      exports3.utcTicks = utcTicks;
+      exports3.utcTuesday = utcTuesday;
+      exports3.utcTuesdays = utcTuesdays;
+      exports3.utcWednesday = utcWednesday;
+      exports3.utcWednesdays = utcWednesdays;
+      exports3.utcWeek = utcSunday;
+      exports3.utcWeeks = utcSundays;
+      exports3.utcYear = utcYear;
+      exports3.utcYears = utcYears;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-time-format@3.0.0/node_modules/d3-time-format/dist/d3-time-format.js
 var require_d3_time_format = __commonJS({
-  "node_modules/.pnpm/d3-time-format@3.0.0/node_modules/d3-time-format/dist/d3-time-format.js"(exports, module2) {
+  "node_modules/.pnpm/d3-time-format@3.0.0/node_modules/d3-time-format/dist/d3-time-format.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_time()) : typeof define === "function" && define.amd ? define(["exports", "d3-time"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Time) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_time()) : typeof define === "function" && define.amd ? define(["exports", "d3-time"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Time) {
       "use strict";
       function localDate(d) {
         if (0 <= d.y && d.y < 100) {
@@ -12516,7 +12516,7 @@ var require_d3_time_format = __commonJS({
         return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
       }
       function formatLookup(names) {
-        return new Map(names.map((name, i) => [name.toLowerCase(), i]));
+        return new Map(names.map((name2, i) => [name2.toLowerCase(), i]));
       }
       function parseWeekdayNumberSunday(d, string, i) {
         var n = numberRe.exec(string.slice(i, i + 1));
@@ -12753,37 +12753,37 @@ var require_d3_time_format = __commonJS({
       });
       function defaultLocale(definition) {
         locale = formatLocale(definition);
-        exports2.timeFormat = locale.format;
-        exports2.timeParse = locale.parse;
-        exports2.utcFormat = locale.utcFormat;
-        exports2.utcParse = locale.utcParse;
+        exports3.timeFormat = locale.format;
+        exports3.timeParse = locale.parse;
+        exports3.utcFormat = locale.utcFormat;
+        exports3.utcParse = locale.utcParse;
         return locale;
       }
       var isoSpecifier = "%Y-%m-%dT%H:%M:%S.%LZ";
       function formatIsoNative(date) {
         return date.toISOString();
       }
-      var formatIso = Date.prototype.toISOString ? formatIsoNative : exports2.utcFormat(isoSpecifier);
+      var formatIso = Date.prototype.toISOString ? formatIsoNative : exports3.utcFormat(isoSpecifier);
       function parseIsoNative(string) {
         var date = new Date(string);
         return isNaN(date) ? null : date;
       }
-      var parseIso = +new Date("2000-01-01T00:00:00.000Z") ? parseIsoNative : exports2.utcParse(isoSpecifier);
-      exports2.isoFormat = formatIso;
-      exports2.isoParse = parseIso;
-      exports2.timeFormatDefaultLocale = defaultLocale;
-      exports2.timeFormatLocale = formatLocale;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      var parseIso = +new Date("2000-01-01T00:00:00.000Z") ? parseIsoNative : exports3.utcParse(isoSpecifier);
+      exports3.isoFormat = formatIso;
+      exports3.isoParse = parseIso;
+      exports3.timeFormatDefaultLocale = defaultLocale;
+      exports3.timeFormatLocale = formatLocale;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/dist/d3-scale.js
 var require_d3_scale = __commonJS({
-  "node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/dist/d3-scale.js"(exports, module2) {
+  "node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/dist/d3-scale.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_array(), require_d3_interpolate(), require_d3_format(), require_d3_time(), require_d3_time_format()) : typeof define === "function" && define.amd ? define(["exports", "d3-array", "d3-interpolate", "d3-format", "d3-time", "d3-time-format"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Array, d3Interpolate, d3Format, d3Time, d3TimeFormat) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_array(), require_d3_interpolate(), require_d3_format(), require_d3_time(), require_d3_time_format()) : typeof define === "function" && define.amd ? define(["exports", "d3-array", "d3-interpolate", "d3-format", "d3-time", "d3-time-format"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Array, d3Interpolate, d3Format, d3Time, d3TimeFormat) {
       "use strict";
       function initRange(domain, range) {
         switch (arguments.length) {
@@ -13639,45 +13639,45 @@ var require_d3_scale = __commonJS({
       function divergingSqrt() {
         return divergingPow.apply(null, arguments).exponent(0.5);
       }
-      exports2.scaleBand = band;
-      exports2.scaleDiverging = diverging;
-      exports2.scaleDivergingLog = divergingLog;
-      exports2.scaleDivergingPow = divergingPow;
-      exports2.scaleDivergingSqrt = divergingSqrt;
-      exports2.scaleDivergingSymlog = divergingSymlog;
-      exports2.scaleIdentity = identity;
-      exports2.scaleImplicit = implicit;
-      exports2.scaleLinear = linear;
-      exports2.scaleLog = log;
-      exports2.scaleOrdinal = ordinal;
-      exports2.scalePoint = point;
-      exports2.scalePow = pow;
-      exports2.scaleQuantile = quantile2;
-      exports2.scaleQuantize = quantize;
-      exports2.scaleRadial = radial;
-      exports2.scaleSequential = sequential;
-      exports2.scaleSequentialLog = sequentialLog;
-      exports2.scaleSequentialPow = sequentialPow;
-      exports2.scaleSequentialQuantile = sequentialQuantile;
-      exports2.scaleSequentialSqrt = sequentialSqrt;
-      exports2.scaleSequentialSymlog = sequentialSymlog;
-      exports2.scaleSqrt = sqrt;
-      exports2.scaleSymlog = symlog;
-      exports2.scaleThreshold = threshold;
-      exports2.scaleTime = time;
-      exports2.scaleUtc = utcTime;
-      exports2.tickFormat = tickFormat;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.scaleBand = band;
+      exports3.scaleDiverging = diverging;
+      exports3.scaleDivergingLog = divergingLog;
+      exports3.scaleDivergingPow = divergingPow;
+      exports3.scaleDivergingSqrt = divergingSqrt;
+      exports3.scaleDivergingSymlog = divergingSymlog;
+      exports3.scaleIdentity = identity;
+      exports3.scaleImplicit = implicit;
+      exports3.scaleLinear = linear;
+      exports3.scaleLog = log;
+      exports3.scaleOrdinal = ordinal;
+      exports3.scalePoint = point;
+      exports3.scalePow = pow;
+      exports3.scaleQuantile = quantile2;
+      exports3.scaleQuantize = quantize;
+      exports3.scaleRadial = radial;
+      exports3.scaleSequential = sequential;
+      exports3.scaleSequentialLog = sequentialLog;
+      exports3.scaleSequentialPow = sequentialPow;
+      exports3.scaleSequentialQuantile = sequentialQuantile;
+      exports3.scaleSequentialSqrt = sequentialSqrt;
+      exports3.scaleSequentialSymlog = sequentialSymlog;
+      exports3.scaleSqrt = sqrt;
+      exports3.scaleSymlog = symlog;
+      exports3.scaleThreshold = threshold;
+      exports3.scaleTime = time;
+      exports3.scaleUtc = utcTime;
+      exports3.tickFormat = tickFormat;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-scale-chromatic@2.0.0/node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.js
 var require_d3_scale_chromatic = __commonJS({
-  "node_modules/.pnpm/d3-scale-chromatic@2.0.0/node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.js"(exports, module2) {
+  "node_modules/.pnpm/d3-scale-chromatic@2.0.0/node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_interpolate(), require_d3_color()) : typeof define === "function" && define.amd ? define(["exports", "d3-interpolate", "d3-color"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Interpolate, d3Color) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_interpolate(), require_d3_color()) : typeof define === "function" && define.amd ? define(["exports", "d3-interpolate", "d3-color"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Interpolate, d3Color) {
       "use strict";
       function colors(specifier) {
         var n = specifier.length / 6 | 0, colors2 = new Array(n), i = 0;
@@ -13790,92 +13790,92 @@ var require_d3_scale_chromatic = __commonJS({
       var magma = ramp$1(colors("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
       var inferno = ramp$1(colors("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
       var plasma = ramp$1(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
-      exports2.interpolateBlues = Blues;
-      exports2.interpolateBrBG = BrBG;
-      exports2.interpolateBuGn = BuGn;
-      exports2.interpolateBuPu = BuPu;
-      exports2.interpolateCividis = cividis;
-      exports2.interpolateCool = cool;
-      exports2.interpolateCubehelixDefault = cubehelix;
-      exports2.interpolateGnBu = GnBu;
-      exports2.interpolateGreens = Greens;
-      exports2.interpolateGreys = Greys;
-      exports2.interpolateInferno = inferno;
-      exports2.interpolateMagma = magma;
-      exports2.interpolateOrRd = OrRd;
-      exports2.interpolateOranges = Oranges;
-      exports2.interpolatePRGn = PRGn;
-      exports2.interpolatePiYG = PiYG;
-      exports2.interpolatePlasma = plasma;
-      exports2.interpolatePuBu = PuBu;
-      exports2.interpolatePuBuGn = PuBuGn;
-      exports2.interpolatePuOr = PuOr;
-      exports2.interpolatePuRd = PuRd;
-      exports2.interpolatePurples = Purples;
-      exports2.interpolateRainbow = rainbow;
-      exports2.interpolateRdBu = RdBu;
-      exports2.interpolateRdGy = RdGy;
-      exports2.interpolateRdPu = RdPu;
-      exports2.interpolateRdYlBu = RdYlBu;
-      exports2.interpolateRdYlGn = RdYlGn;
-      exports2.interpolateReds = Reds;
-      exports2.interpolateSinebow = sinebow;
-      exports2.interpolateSpectral = Spectral;
-      exports2.interpolateTurbo = turbo;
-      exports2.interpolateViridis = viridis;
-      exports2.interpolateWarm = warm;
-      exports2.interpolateYlGn = YlGn;
-      exports2.interpolateYlGnBu = YlGnBu;
-      exports2.interpolateYlOrBr = YlOrBr;
-      exports2.interpolateYlOrRd = YlOrRd;
-      exports2.schemeAccent = Accent;
-      exports2.schemeBlues = scheme$l;
-      exports2.schemeBrBG = scheme;
-      exports2.schemeBuGn = scheme$9;
-      exports2.schemeBuPu = scheme$a;
-      exports2.schemeCategory10 = category10;
-      exports2.schemeDark2 = Dark2;
-      exports2.schemeGnBu = scheme$b;
-      exports2.schemeGreens = scheme$m;
-      exports2.schemeGreys = scheme$n;
-      exports2.schemeOrRd = scheme$c;
-      exports2.schemeOranges = scheme$q;
-      exports2.schemePRGn = scheme$1;
-      exports2.schemePaired = Paired;
-      exports2.schemePastel1 = Pastel1;
-      exports2.schemePastel2 = Pastel2;
-      exports2.schemePiYG = scheme$2;
-      exports2.schemePuBu = scheme$e;
-      exports2.schemePuBuGn = scheme$d;
-      exports2.schemePuOr = scheme$3;
-      exports2.schemePuRd = scheme$f;
-      exports2.schemePurples = scheme$o;
-      exports2.schemeRdBu = scheme$4;
-      exports2.schemeRdGy = scheme$5;
-      exports2.schemeRdPu = scheme$g;
-      exports2.schemeRdYlBu = scheme$6;
-      exports2.schemeRdYlGn = scheme$7;
-      exports2.schemeReds = scheme$p;
-      exports2.schemeSet1 = Set1;
-      exports2.schemeSet2 = Set2;
-      exports2.schemeSet3 = Set3;
-      exports2.schemeSpectral = scheme$8;
-      exports2.schemeTableau10 = Tableau10;
-      exports2.schemeYlGn = scheme$i;
-      exports2.schemeYlGnBu = scheme$h;
-      exports2.schemeYlOrBr = scheme$j;
-      exports2.schemeYlOrRd = scheme$k;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.interpolateBlues = Blues;
+      exports3.interpolateBrBG = BrBG;
+      exports3.interpolateBuGn = BuGn;
+      exports3.interpolateBuPu = BuPu;
+      exports3.interpolateCividis = cividis;
+      exports3.interpolateCool = cool;
+      exports3.interpolateCubehelixDefault = cubehelix;
+      exports3.interpolateGnBu = GnBu;
+      exports3.interpolateGreens = Greens;
+      exports3.interpolateGreys = Greys;
+      exports3.interpolateInferno = inferno;
+      exports3.interpolateMagma = magma;
+      exports3.interpolateOrRd = OrRd;
+      exports3.interpolateOranges = Oranges;
+      exports3.interpolatePRGn = PRGn;
+      exports3.interpolatePiYG = PiYG;
+      exports3.interpolatePlasma = plasma;
+      exports3.interpolatePuBu = PuBu;
+      exports3.interpolatePuBuGn = PuBuGn;
+      exports3.interpolatePuOr = PuOr;
+      exports3.interpolatePuRd = PuRd;
+      exports3.interpolatePurples = Purples;
+      exports3.interpolateRainbow = rainbow;
+      exports3.interpolateRdBu = RdBu;
+      exports3.interpolateRdGy = RdGy;
+      exports3.interpolateRdPu = RdPu;
+      exports3.interpolateRdYlBu = RdYlBu;
+      exports3.interpolateRdYlGn = RdYlGn;
+      exports3.interpolateReds = Reds;
+      exports3.interpolateSinebow = sinebow;
+      exports3.interpolateSpectral = Spectral;
+      exports3.interpolateTurbo = turbo;
+      exports3.interpolateViridis = viridis;
+      exports3.interpolateWarm = warm;
+      exports3.interpolateYlGn = YlGn;
+      exports3.interpolateYlGnBu = YlGnBu;
+      exports3.interpolateYlOrBr = YlOrBr;
+      exports3.interpolateYlOrRd = YlOrRd;
+      exports3.schemeAccent = Accent;
+      exports3.schemeBlues = scheme$l;
+      exports3.schemeBrBG = scheme;
+      exports3.schemeBuGn = scheme$9;
+      exports3.schemeBuPu = scheme$a;
+      exports3.schemeCategory10 = category10;
+      exports3.schemeDark2 = Dark2;
+      exports3.schemeGnBu = scheme$b;
+      exports3.schemeGreens = scheme$m;
+      exports3.schemeGreys = scheme$n;
+      exports3.schemeOrRd = scheme$c;
+      exports3.schemeOranges = scheme$q;
+      exports3.schemePRGn = scheme$1;
+      exports3.schemePaired = Paired;
+      exports3.schemePastel1 = Pastel1;
+      exports3.schemePastel2 = Pastel2;
+      exports3.schemePiYG = scheme$2;
+      exports3.schemePuBu = scheme$e;
+      exports3.schemePuBuGn = scheme$d;
+      exports3.schemePuOr = scheme$3;
+      exports3.schemePuRd = scheme$f;
+      exports3.schemePurples = scheme$o;
+      exports3.schemeRdBu = scheme$4;
+      exports3.schemeRdGy = scheme$5;
+      exports3.schemeRdPu = scheme$g;
+      exports3.schemeRdYlBu = scheme$6;
+      exports3.schemeRdYlGn = scheme$7;
+      exports3.schemeReds = scheme$p;
+      exports3.schemeSet1 = Set1;
+      exports3.schemeSet2 = Set2;
+      exports3.schemeSet3 = Set3;
+      exports3.schemeSpectral = scheme$8;
+      exports3.schemeTableau10 = Tableau10;
+      exports3.schemeYlGn = scheme$i;
+      exports3.schemeYlGnBu = scheme$h;
+      exports3.schemeYlOrBr = scheme$j;
+      exports3.schemeYlOrRd = scheme$k;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-shape@2.1.0/node_modules/d3-shape/dist/d3-shape.js
 var require_d3_shape = __commonJS({
-  "node_modules/.pnpm/d3-shape@2.1.0/node_modules/d3-shape/dist/d3-shape.js"(exports, module2) {
+  "node_modules/.pnpm/d3-shape@2.1.0/node_modules/d3-shape/dist/d3-shape.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_path()) : typeof define === "function" && define.amd ? define(["exports", "d3-path"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
-    })(exports, function(exports2, d3Path) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_path()) : typeof define === "function" && define.amd ? define(["exports", "d3-path"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
+    })(exports2, function(exports3, d3Path) {
       "use strict";
       function constant(x2) {
         return function constant2() {
@@ -14468,20 +14468,20 @@ var require_d3_shape = __commonJS({
         triangle,
         wye
       ];
-      function symbol(type, size) {
+      function symbol(type2, size) {
         var context = null;
-        type = typeof type === "function" ? type : constant(type || circle);
+        type2 = typeof type2 === "function" ? type2 : constant(type2 || circle);
         size = typeof size === "function" ? size : constant(size === void 0 ? 64 : +size);
         function symbol2() {
           var buffer;
           if (!context)
             context = buffer = d3Path.path();
-          type.apply(this, arguments).draw(context, +size.apply(this, arguments));
+          type2.apply(this, arguments).draw(context, +size.apply(this, arguments));
           if (buffer)
             return context = null, buffer + "" || null;
         }
         symbol2.type = function(_) {
-          return arguments.length ? (type = typeof _ === "function" ? _ : constant(_), symbol2) : type;
+          return arguments.length ? (type2 = typeof _ === "function" ? _ : constant(_), symbol2) : type2;
         };
         symbol2.size = function(_) {
           return arguments.length ? (size = typeof _ === "function" ? _ : constant(+_), symbol2) : size;
@@ -15503,80 +15503,80 @@ var require_d3_shape = __commonJS({
       function reverse(series) {
         return none(series).reverse();
       }
-      exports2.arc = arc;
-      exports2.area = area;
-      exports2.areaRadial = areaRadial;
-      exports2.curveBasis = basis;
-      exports2.curveBasisClosed = basisClosed;
-      exports2.curveBasisOpen = basisOpen;
-      exports2.curveBumpX = bumpX;
-      exports2.curveBumpY = bumpY;
-      exports2.curveBundle = bundle;
-      exports2.curveCardinal = cardinal;
-      exports2.curveCardinalClosed = cardinalClosed;
-      exports2.curveCardinalOpen = cardinalOpen;
-      exports2.curveCatmullRom = catmullRom;
-      exports2.curveCatmullRomClosed = catmullRomClosed;
-      exports2.curveCatmullRomOpen = catmullRomOpen;
-      exports2.curveLinear = curveLinear;
-      exports2.curveLinearClosed = linearClosed;
-      exports2.curveMonotoneX = monotoneX;
-      exports2.curveMonotoneY = monotoneY;
-      exports2.curveNatural = natural;
-      exports2.curveStep = step;
-      exports2.curveStepAfter = stepAfter;
-      exports2.curveStepBefore = stepBefore;
-      exports2.line = line;
-      exports2.lineRadial = lineRadial$1;
-      exports2.linkHorizontal = linkHorizontal;
-      exports2.linkRadial = linkRadial;
-      exports2.linkVertical = linkVertical;
-      exports2.pie = pie;
-      exports2.pointRadial = pointRadial;
-      exports2.radialArea = areaRadial;
-      exports2.radialLine = lineRadial$1;
-      exports2.stack = stack;
-      exports2.stackOffsetDiverging = diverging;
-      exports2.stackOffsetExpand = expand;
-      exports2.stackOffsetNone = none$1;
-      exports2.stackOffsetSilhouette = silhouette;
-      exports2.stackOffsetWiggle = wiggle;
-      exports2.stackOrderAppearance = appearance;
-      exports2.stackOrderAscending = ascending;
-      exports2.stackOrderDescending = descending;
-      exports2.stackOrderInsideOut = insideOut;
-      exports2.stackOrderNone = none;
-      exports2.stackOrderReverse = reverse;
-      exports2.symbol = symbol;
-      exports2.symbolCircle = circle;
-      exports2.symbolCross = cross;
-      exports2.symbolDiamond = diamond;
-      exports2.symbolSquare = square;
-      exports2.symbolStar = star;
-      exports2.symbolTriangle = triangle;
-      exports2.symbolWye = wye;
-      exports2.symbols = symbols;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.arc = arc;
+      exports3.area = area;
+      exports3.areaRadial = areaRadial;
+      exports3.curveBasis = basis;
+      exports3.curveBasisClosed = basisClosed;
+      exports3.curveBasisOpen = basisOpen;
+      exports3.curveBumpX = bumpX;
+      exports3.curveBumpY = bumpY;
+      exports3.curveBundle = bundle;
+      exports3.curveCardinal = cardinal;
+      exports3.curveCardinalClosed = cardinalClosed;
+      exports3.curveCardinalOpen = cardinalOpen;
+      exports3.curveCatmullRom = catmullRom;
+      exports3.curveCatmullRomClosed = catmullRomClosed;
+      exports3.curveCatmullRomOpen = catmullRomOpen;
+      exports3.curveLinear = curveLinear;
+      exports3.curveLinearClosed = linearClosed;
+      exports3.curveMonotoneX = monotoneX;
+      exports3.curveMonotoneY = monotoneY;
+      exports3.curveNatural = natural;
+      exports3.curveStep = step;
+      exports3.curveStepAfter = stepAfter;
+      exports3.curveStepBefore = stepBefore;
+      exports3.line = line;
+      exports3.lineRadial = lineRadial$1;
+      exports3.linkHorizontal = linkHorizontal;
+      exports3.linkRadial = linkRadial;
+      exports3.linkVertical = linkVertical;
+      exports3.pie = pie;
+      exports3.pointRadial = pointRadial;
+      exports3.radialArea = areaRadial;
+      exports3.radialLine = lineRadial$1;
+      exports3.stack = stack;
+      exports3.stackOffsetDiverging = diverging;
+      exports3.stackOffsetExpand = expand;
+      exports3.stackOffsetNone = none$1;
+      exports3.stackOffsetSilhouette = silhouette;
+      exports3.stackOffsetWiggle = wiggle;
+      exports3.stackOrderAppearance = appearance;
+      exports3.stackOrderAscending = ascending;
+      exports3.stackOrderDescending = descending;
+      exports3.stackOrderInsideOut = insideOut;
+      exports3.stackOrderNone = none;
+      exports3.stackOrderReverse = reverse;
+      exports3.symbol = symbol;
+      exports3.symbolCircle = circle;
+      exports3.symbolCross = cross;
+      exports3.symbolDiamond = diamond;
+      exports3.symbolSquare = square;
+      exports3.symbolStar = star;
+      exports3.symbolTriangle = triangle;
+      exports3.symbolWye = wye;
+      exports3.symbols = symbols;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3-zoom@2.0.0/node_modules/d3-zoom/dist/d3-zoom.js
 var require_d3_zoom = __commonJS({
-  "node_modules/.pnpm/d3-zoom@2.0.0/node_modules/d3-zoom/dist/d3-zoom.js"(exports, module2) {
+  "node_modules/.pnpm/d3-zoom@2.0.0/node_modules/d3-zoom/dist/d3-zoom.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_d3_dispatch(), require_d3_drag(), require_d3_interpolate(), require_d3_selection(), require_d3_transition()) : typeof define === "function" && define.amd ? define(["exports", "d3-dispatch", "d3-drag", "d3-interpolate", "d3-selection", "d3-transition"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
-    })(exports, function(exports2, d3Dispatch, d3Drag, d3Interpolate, d3Selection, d3Transition) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_d3_dispatch(), require_d3_drag(), require_d3_interpolate(), require_d3_selection(), require_d3_transition()) : typeof define === "function" && define.amd ? define(["exports", "d3-dispatch", "d3-drag", "d3-interpolate", "d3-selection", "d3-transition"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3, global2.d3, global2.d3, global2.d3, global2.d3));
+    })(exports2, function(exports3, d3Dispatch, d3Drag, d3Interpolate, d3Selection, d3Transition) {
       "use strict";
       var constant = (x) => () => x;
-      function ZoomEvent(type, {
+      function ZoomEvent(type2, {
         sourceEvent,
         target,
         transform: transform2,
         dispatch
       }) {
         Object.defineProperties(this, {
-          type: { value: type, enumerable: true, configurable: true },
+          type: { value: type2, enumerable: true, configurable: true },
           sourceEvent: { value: sourceEvent, enumerable: true, configurable: true },
           target: { value: target, enumerable: true, configurable: true },
           transform: { value: transform2, enumerable: true, configurable: true },
@@ -15777,12 +15777,12 @@ var require_d3_zoom = __commonJS({
             }
             return this;
           },
-          emit: function(type) {
+          emit: function(type2) {
             var d = d3Selection.select(this.that).datum();
-            listeners.call(type, this.that, new ZoomEvent(type, {
+            listeners.call(type2, this.that, new ZoomEvent(type2, {
               sourceEvent: this.sourceEvent,
               target: zoom2,
-              type,
+              type: type2,
               transform: this.that.__zoom,
               dispatch: listeners
             }), d);
@@ -15966,19 +15966,19 @@ var require_d3_zoom = __commonJS({
         };
         return zoom2;
       }
-      exports2.zoom = zoom;
-      exports2.zoomIdentity = identity;
-      exports2.zoomTransform = transform;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.zoom = zoom;
+      exports3.zoomIdentity = identity;
+      exports3.zoomTransform = transform;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/d3@6.7.0/node_modules/d3/dist/d3.node.js
 var require_d3_node = __commonJS({
-  "node_modules/.pnpm/d3@6.7.0/node_modules/d3/dist/d3.node.js"(exports) {
+  "node_modules/.pnpm/d3@6.7.0/node_modules/d3/dist/d3.node.js"(exports2) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    Object.defineProperty(exports2, "__esModule", { value: true });
     var d3Array = require_d3_array();
     var d3Axis = require_d3_axis();
     var d3Brush = require_d3_brush();
@@ -16010,10 +16010,10 @@ var require_d3_node = __commonJS({
     var d3Transition = require_d3_transition();
     var d3Zoom = require_d3_zoom();
     var version2 = "6.7.0";
-    exports.version = version2;
+    exports2.version = version2;
     Object.keys(d3Array).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Array[k];
@@ -16021,8 +16021,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Axis).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Axis[k];
@@ -16030,8 +16030,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Brush).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Brush[k];
@@ -16039,8 +16039,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Chord).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Chord[k];
@@ -16048,8 +16048,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Color).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Color[k];
@@ -16057,8 +16057,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Contour).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Contour[k];
@@ -16066,8 +16066,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Delaunay).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Delaunay[k];
@@ -16075,8 +16075,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Dispatch).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Dispatch[k];
@@ -16084,8 +16084,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Drag).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Drag[k];
@@ -16093,8 +16093,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Dsv).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Dsv[k];
@@ -16102,8 +16102,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Ease).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Ease[k];
@@ -16111,8 +16111,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Fetch).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Fetch[k];
@@ -16120,8 +16120,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Force).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Force[k];
@@ -16129,8 +16129,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Format).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Format[k];
@@ -16138,8 +16138,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Geo).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Geo[k];
@@ -16147,8 +16147,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Hierarchy).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Hierarchy[k];
@@ -16156,8 +16156,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Interpolate).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Interpolate[k];
@@ -16165,8 +16165,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Path).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Path[k];
@@ -16174,8 +16174,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Polygon).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Polygon[k];
@@ -16183,8 +16183,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Quadtree).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Quadtree[k];
@@ -16192,8 +16192,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Random).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Random[k];
@@ -16201,8 +16201,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Scale).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Scale[k];
@@ -16210,8 +16210,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3ScaleChromatic).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3ScaleChromatic[k];
@@ -16219,8 +16219,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Selection).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Selection[k];
@@ -16228,8 +16228,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Shape).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Shape[k];
@@ -16237,8 +16237,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Time).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Time[k];
@@ -16246,8 +16246,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3TimeFormat).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3TimeFormat[k];
@@ -16255,8 +16255,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Timer).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Timer[k];
@@ -16264,8 +16264,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Transition).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Transition[k];
@@ -16273,8 +16273,8 @@ var require_d3_node = __commonJS({
         });
     });
     Object.keys(d3Zoom).forEach(function(k) {
-      if (k !== "default" && !exports.hasOwnProperty(k))
-        Object.defineProperty(exports, k, {
+      if (k !== "default" && !exports2.hasOwnProperty(k))
+        Object.defineProperty(exports2, k, {
           enumerable: true,
           get: function() {
             return d3Zoom[k];
@@ -16286,7 +16286,7 @@ var require_d3_node = __commonJS({
 
 // node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js
 var require_main = __commonJS({
-  "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports, module2) {
+  "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports2, module3) {
     (function() {
       "use strict";
       const _atob = function(string) {
@@ -16538,8 +16538,8 @@ var require_main = __commonJS({
         },
         customInterpreter: null
       };
-      if (typeof module2 !== "undefined")
-        module2.exports = MidiParser;
+      if (typeof module3 !== "undefined")
+        module3.exports = MidiParser;
       else {
         let _global = typeof window === "object" && window.self === window && window || typeof self === "object" && self.self === self && self || typeof global === "object" && global.global === global && global;
         _global.MidiParser = MidiParser;
@@ -16550,10 +16550,10 @@ var require_main = __commonJS({
 
 // node_modules/.pnpm/@tonaljs+core@4.6.5/node_modules/@tonaljs/core/dist/index.js
 var require_dist = __commonJS({
-  "node_modules/.pnpm/@tonaljs+core@4.6.5/node_modules/@tonaljs/core/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+core@4.6.5/node_modules/@tonaljs/core/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Core = {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Core = {}));
+    })(exports2, function(exports3) {
       "use strict";
       var fillStr = function(s, n) {
         return Array(Math.abs(n) + 1).join(s);
@@ -16646,7 +16646,7 @@ var require_dist = __commonJS({
         var alt = accToAlt(acc);
         var oct = octStr.length ? +octStr : void 0;
         var coord = encode({ step, alt, oct });
-        var name = letter + acc + octStr;
+        var name2 = letter + acc + octStr;
         var pc = letter + acc;
         var chroma = (SEMI[step] + alt + 120) % 12;
         var height = oct === void 0 ? mod(SEMI[step] + alt, 12) - 12 * 99 : SEMI[step] + alt + 12 * (oct + 1);
@@ -16662,7 +16662,7 @@ var require_dist = __commonJS({
           height,
           letter,
           midi,
-          name,
+          name: name2,
           oct,
           pc,
           step
@@ -16706,24 +16706,24 @@ var require_dist = __commonJS({
         if (t === "M" && q === "P") {
           return NoInterval;
         }
-        var type = t === "M" ? "majorable" : "perfectable";
-        var name = "" + num + q;
+        var type2 = t === "M" ? "majorable" : "perfectable";
+        var name2 = "" + num + q;
         var dir = num < 0 ? -1 : 1;
         var simple = num === 8 || num === -8 ? num : dir * (step + 1);
-        var alt = qToAlt(type, q);
+        var alt = qToAlt(type2, q);
         var oct = Math.floor((Math.abs(num) - 1) / 7);
         var semitones = dir * (SIZES[step] + alt + 12 * oct);
         var chroma = (dir * (SIZES[step] + alt) % 12 + 12) % 12;
         var coord = encode({ step, alt, oct, dir });
         return {
           empty: false,
-          name,
+          name: name2,
           num,
           q,
           step,
           alt,
           dir,
-          type,
+          type: type2,
           simple,
           semitones,
           chroma,
@@ -16737,8 +16737,8 @@ var require_dist = __commonJS({
         var ivl = forceDescending || isDescending ? [-f, -o, -1] : [f, o, 1];
         return interval(decode(ivl));
       }
-      function qToAlt(type, q) {
-        return q === "M" && type === "majorable" || q === "P" && type === "perfectable" ? 0 : q === "m" && type === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type === "perfectable" ? q.length : q.length + 1) : 0;
+      function qToAlt(type2, q) {
+        return q === "M" && type2 === "majorable" || q === "P" && type2 === "perfectable" ? 0 : q === "m" && type2 === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type2 === "perfectable" ? q.length : q.length + 1) : 0;
       }
       function pitchName(props) {
         var step = props.step, alt = props.alt, _a = props.oct, oct = _a === void 0 ? 0 : _a, dir = props.dir;
@@ -16748,19 +16748,19 @@ var require_dist = __commonJS({
         var calcNum = step + 1 + 7 * oct;
         var num = calcNum === 0 ? step + 1 : calcNum;
         var d = dir < 0 ? "-" : "";
-        var type = TYPES[step] === "M" ? "majorable" : "perfectable";
-        var name = d + num + altToQ(type, alt);
-        return name;
+        var type2 = TYPES[step] === "M" ? "majorable" : "perfectable";
+        var name2 = d + num + altToQ(type2, alt);
+        return name2;
       }
-      function altToQ(type, alt) {
+      function altToQ(type2, alt) {
         if (alt === 0) {
-          return type === "majorable" ? "M" : "P";
-        } else if (alt === -1 && type === "majorable") {
+          return type2 === "majorable" ? "M" : "P";
+        } else if (alt === -1 && type2 === "majorable") {
           return "m";
         } else if (alt > 0) {
           return fillStr("A", alt);
         } else {
-          return fillStr("d", type === "perfectable" ? alt : alt + 1);
+          return fillStr("d", type2 === "perfectable" ? alt : alt + 1);
         }
       }
       function transpose(noteName, intervalName) {
@@ -16787,34 +16787,34 @@ var require_dist = __commonJS({
         var forceDescending = to.height === from.height && to.midi !== null && from.midi !== null && from.step > to.step;
         return coordToInterval([fifths, octs], forceDescending).name;
       }
-      exports2.accToAlt = accToAlt;
-      exports2.altToAcc = altToAcc;
-      exports2.coordToInterval = coordToInterval;
-      exports2.coordToNote = coordToNote;
-      exports2.decode = decode;
-      exports2.deprecate = deprecate;
-      exports2.distance = distance;
-      exports2.encode = encode;
-      exports2.fillStr = fillStr;
-      exports2.interval = interval;
-      exports2.isNamed = isNamed;
-      exports2.isPitch = isPitch;
-      exports2.note = note;
-      exports2.stepToLetter = stepToLetter;
-      exports2.tokenizeInterval = tokenizeInterval;
-      exports2.tokenizeNote = tokenizeNote;
-      exports2.transpose = transpose;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.accToAlt = accToAlt;
+      exports3.altToAcc = altToAcc;
+      exports3.coordToInterval = coordToInterval;
+      exports3.coordToNote = coordToNote;
+      exports3.decode = decode;
+      exports3.deprecate = deprecate;
+      exports3.distance = distance;
+      exports3.encode = encode;
+      exports3.fillStr = fillStr;
+      exports3.interval = interval;
+      exports3.isNamed = isNamed;
+      exports3.isPitch = isPitch;
+      exports3.note = note;
+      exports3.stepToLetter = stepToLetter;
+      exports3.tokenizeInterval = tokenizeInterval;
+      exports3.tokenizeNote = tokenizeNote;
+      exports3.transpose = transpose;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+abc-notation@4.6.5/node_modules/@tonaljs/abc-notation/dist/index.js
 var require_dist2 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+abc-notation@4.6.5/node_modules/@tonaljs/abc-notation/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+abc-notation@4.6.5/node_modules/@tonaljs/abc-notation/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.AbcNotation = {}, global2.core));
-    })(exports, function(exports2, core) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.AbcNotation = {}, global2.core));
+    })(exports2, function(exports3, core) {
       "use strict";
       var fillStr = function(character, times) {
         return Array(times + 1).join(character);
@@ -16863,23 +16863,23 @@ var require_dist2 = __commonJS({
         transpose,
         distance
       };
-      exports2.abcToScientificNotation = abcToScientificNotation;
-      exports2["default"] = index;
-      exports2.distance = distance;
-      exports2.scientificToAbcNotation = scientificToAbcNotation;
-      exports2.tokenize = tokenize;
-      exports2.transpose = transpose;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.abcToScientificNotation = abcToScientificNotation;
+      exports3["default"] = index;
+      exports3.distance = distance;
+      exports3.scientificToAbcNotation = scientificToAbcNotation;
+      exports3.tokenize = tokenize;
+      exports3.transpose = transpose;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+array@4.6.5/node_modules/@tonaljs/array/dist/index.js
 var require_dist3 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+array@4.6.5/node_modules/@tonaljs/array/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+array@4.6.5/node_modules/@tonaljs/array/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Array = {}, global2.core));
-    })(exports, function(exports2, core) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Array = {}, global2.core));
+    })(exports2, function(exports3, core) {
       "use strict";
       function ascR(b, n) {
         var a = [];
@@ -16950,24 +16950,24 @@ var require_dist3 = __commonJS({
           }));
         }, []);
       }
-      exports2.compact = compact;
-      exports2.permutations = permutations;
-      exports2.range = range;
-      exports2.rotate = rotate;
-      exports2.shuffle = shuffle;
-      exports2.sortedNoteNames = sortedNoteNames;
-      exports2.sortedUniqNoteNames = sortedUniqNoteNames;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.compact = compact;
+      exports3.permutations = permutations;
+      exports3.range = range;
+      exports3.rotate = rotate;
+      exports3.shuffle = shuffle;
+      exports3.sortedNoteNames = sortedNoteNames;
+      exports3.sortedUniqNoteNames = sortedUniqNoteNames;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+collection@4.6.2/node_modules/@tonaljs/collection/dist/index.js
 var require_dist4 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+collection@4.6.2/node_modules/@tonaljs/collection/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+collection@4.6.2/node_modules/@tonaljs/collection/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Collection = {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Collection = {}));
+    })(exports2, function(exports3) {
       "use strict";
       function ascR(b, n) {
         var a = [];
@@ -17028,23 +17028,23 @@ var require_dist4 = __commonJS({
         rotate,
         shuffle
       };
-      exports2.compact = compact;
-      exports2.default = index;
-      exports2.permutations = permutations;
-      exports2.range = range;
-      exports2.rotate = rotate;
-      exports2.shuffle = shuffle;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.compact = compact;
+      exports3.default = index;
+      exports3.permutations = permutations;
+      exports3.range = range;
+      exports3.rotate = rotate;
+      exports3.shuffle = shuffle;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+pcset@4.6.5/node_modules/@tonaljs/pcset/dist/index.js
 var require_dist5 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+pcset@4.6.5/node_modules/@tonaljs/pcset/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+pcset@4.6.5/node_modules/@tonaljs/pcset/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist4(), require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/collection", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Pcset = {}, global2.collection, global2.core));
-    })(exports, function(exports2, collection, core) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist4(), require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/collection", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Pcset = {}, global2.collection, global2.core));
+    })(exports2, function(exports3, collection, core) {
       "use strict";
       var _a;
       var EmptyPcset = {
@@ -17204,30 +17204,30 @@ var require_dist5 = __commonJS({
         }
         return binary.join("");
       }
-      exports2.EmptyPcset = EmptyPcset;
-      exports2.chromaToIntervals = chromaToIntervals;
-      exports2.chromas = chromas;
-      exports2["default"] = index;
-      exports2.filter = filter;
-      exports2.get = get;
-      exports2.includes = includes;
-      exports2.isEqual = isEqual;
-      exports2.isNoteIncludedIn = isNoteIncludedIn;
-      exports2.isSubsetOf = isSubsetOf;
-      exports2.isSupersetOf = isSupersetOf;
-      exports2.modes = modes;
-      exports2.pcset = pcset;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.EmptyPcset = EmptyPcset;
+      exports3.chromaToIntervals = chromaToIntervals;
+      exports3.chromas = chromas;
+      exports3["default"] = index;
+      exports3.filter = filter;
+      exports3.get = get;
+      exports3.includes = includes;
+      exports3.isEqual = isEqual;
+      exports3.isNoteIncludedIn = isNoteIncludedIn;
+      exports3.isSubsetOf = isSubsetOf;
+      exports3.isSupersetOf = isSupersetOf;
+      exports3.modes = modes;
+      exports3.pcset = pcset;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+chord-type@4.6.5/node_modules/@tonaljs/chord-type/dist/index.js
 var require_dist6 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+chord-type@4.6.5/node_modules/@tonaljs/chord-type/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+chord-type@4.6.5/node_modules/@tonaljs/chord-type/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist(), require_dist5()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/pcset"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.ChordType = {}, global2.core, global2.pcset));
-    })(exports, function(exports2, core, pcset) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist(), require_dist5()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/pcset"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.ChordType = {}, global2.core, global2.pcset));
+    })(exports2, function(exports3, core, pcset) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -17368,8 +17368,8 @@ var require_dist6 = __commonJS({
       var NoChordType = __assign(__assign({}, pcset.EmptyPcset), { name: "", quality: "Unknown", intervals: [], aliases: [] });
       var dictionary = [];
       var index = {};
-      function get(type) {
-        return index[type] || NoChordType;
+      function get(type2) {
+        return index[type2] || NoChordType;
       }
       var chordType = core.deprecate("ChordType.chordType", "ChordType.get", get);
       function names() {
@@ -17437,28 +17437,28 @@ var require_dist6 = __commonJS({
         entries,
         chordType
       };
-      exports2.add = add;
-      exports2.addAlias = addAlias;
-      exports2.all = all;
-      exports2.chordType = chordType;
-      exports2["default"] = index$1;
-      exports2.entries = entries;
-      exports2.get = get;
-      exports2.keys = keys;
-      exports2.names = names;
-      exports2.removeAll = removeAll;
-      exports2.symbols = symbols;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.add = add;
+      exports3.addAlias = addAlias;
+      exports3.all = all;
+      exports3.chordType = chordType;
+      exports3["default"] = index$1;
+      exports3.entries = entries;
+      exports3.get = get;
+      exports3.keys = keys;
+      exports3.names = names;
+      exports3.removeAll = removeAll;
+      exports3.symbols = symbols;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+chord-detect@4.6.5/node_modules/@tonaljs/chord-detect/dist/index.js
 var require_dist7 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+chord-detect@4.6.5/node_modules/@tonaljs/chord-detect/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+chord-detect@4.6.5/node_modules/@tonaljs/chord-detect/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist6(), require_dist(), require_dist5()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord-type", "@tonaljs/core", "@tonaljs/pcset"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.ChordDetect = {}, global2.chordType, global2.core, global2.pcset));
-    })(exports, function(exports2, chordType, core, pcset) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist6(), require_dist(), require_dist5()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord-type", "@tonaljs/core", "@tonaljs/pcset"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.ChordDetect = {}, global2.chordType, global2.core, global2.pcset));
+    })(exports2, function(exports3, chordType, core, pcset) {
       "use strict";
       var namedSet = function(notes) {
         var pcToName = notes.reduce(function(record, n) {
@@ -17517,19 +17517,19 @@ var require_dist7 = __commonJS({
         return found;
       }
       var index = { detect };
-      exports2["default"] = index;
-      exports2.detect = detect;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3["default"] = index;
+      exports3.detect = detect;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+scale-type@4.6.5/node_modules/@tonaljs/scale-type/dist/index.js
 var require_dist8 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+scale-type@4.6.5/node_modules/@tonaljs/scale-type/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+scale-type@4.6.5/node_modules/@tonaljs/scale-type/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist(), require_dist5()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/pcset"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.ScaleType = {}, global2.core, global2.pcset));
-    })(exports, function(exports2, core, pcset) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist(), require_dist5()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/pcset"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.ScaleType = {}, global2.core, global2.pcset));
+    })(exports2, function(exports3, core, pcset) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -17683,8 +17683,8 @@ var require_dist8 = __commonJS({
           return scale.name;
         });
       }
-      function get(type) {
-        return index[type] || NoScaleType;
+      function get(type2) {
+        return index[type2] || NoScaleType;
       }
       var scaleType = core.deprecate("ScaleDictionary.scaleType", "ScaleType.get", get);
       function all() {
@@ -17698,11 +17698,11 @@ var require_dist8 = __commonJS({
         dictionary = [];
         index = {};
       }
-      function add(intervals, name, aliases) {
+      function add(intervals, name2, aliases) {
         if (aliases === void 0) {
           aliases = [];
         }
-        var scale = __assign(__assign({}, pcset.get(intervals)), { name, intervals, aliases });
+        var scale = __assign(__assign({}, pcset.get(intervals)), { name: name2, intervals, aliases });
         dictionary.push(scale);
         index[scale.name] = scale;
         index[scale.setNum] = scale;
@@ -17716,8 +17716,8 @@ var require_dist8 = __commonJS({
         index[alias] = scale;
       }
       SCALES.forEach(function(_a) {
-        var ivls = _a[0], name = _a[1], aliases = _a.slice(2);
-        return add(ivls.split(" "), name, aliases);
+        var ivls = _a[0], name2 = _a[1], aliases = _a.slice(2);
+        return add(ivls.split(" "), name2, aliases);
       });
       var index$1 = {
         names,
@@ -17729,28 +17729,28 @@ var require_dist8 = __commonJS({
         entries,
         scaleType
       };
-      exports2.NoScaleType = NoScaleType;
-      exports2.add = add;
-      exports2.addAlias = addAlias;
-      exports2.all = all;
-      exports2["default"] = index$1;
-      exports2.entries = entries;
-      exports2.get = get;
-      exports2.keys = keys;
-      exports2.names = names;
-      exports2.removeAll = removeAll;
-      exports2.scaleType = scaleType;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.NoScaleType = NoScaleType;
+      exports3.add = add;
+      exports3.addAlias = addAlias;
+      exports3.all = all;
+      exports3["default"] = index$1;
+      exports3.entries = entries;
+      exports3.get = get;
+      exports3.keys = keys;
+      exports3.names = names;
+      exports3.removeAll = removeAll;
+      exports3.scaleType = scaleType;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+chord@4.6.5/node_modules/@tonaljs/chord/dist/index.js
 var require_dist9 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+chord@4.6.5/node_modules/@tonaljs/chord/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+chord@4.6.5/node_modules/@tonaljs/chord/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist7(), require_dist6(), require_dist(), require_dist5(), require_dist8()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord-detect", "@tonaljs/chord-type", "@tonaljs/core", "@tonaljs/pcset", "@tonaljs/scale-type"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Chord = {}, global2.chordDetect, global2.chordType, global2.core, global2.pcset, global2.scaleType));
-    })(exports, function(exports2, chordDetect, chordType, core, pcset, scaleType) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist7(), require_dist6(), require_dist(), require_dist5(), require_dist8()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord-detect", "@tonaljs/chord-type", "@tonaljs/core", "@tonaljs/pcset", "@tonaljs/scale-type"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Chord = {}, global2.chordDetect, global2.chordType, global2.core, global2.pcset, global2.scaleType));
+    })(exports2, function(exports3, chordDetect, chordType, core, pcset, scaleType) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -17781,21 +17781,21 @@ var require_dist9 = __commonJS({
         intervals: []
       };
       var NUM_TYPES = /^(6|64|7|9|11|13)$/;
-      function tokenize(name) {
-        var _a = core.tokenizeNote(name), letter = _a[0], acc = _a[1], oct = _a[2], type = _a[3];
+      function tokenize(name2) {
+        var _a = core.tokenizeNote(name2), letter = _a[0], acc = _a[1], oct = _a[2], type2 = _a[3];
         if (letter === "") {
-          return ["", name];
+          return ["", name2];
         }
-        if (letter === "A" && type === "ug") {
+        if (letter === "A" && type2 === "ug") {
           return ["", "aug"];
         }
-        if (!type && (oct === "4" || oct === "5")) {
+        if (!type2 && (oct === "4" || oct === "5")) {
           return [letter + acc, oct];
         }
         if (NUM_TYPES.test(oct)) {
-          return [letter + acc, oct + type];
+          return [letter + acc, oct + type2];
         } else {
-          return [letter + acc + oct, type];
+          return [letter + acc + oct, type2];
         }
       }
       function get(src) {
@@ -17805,24 +17805,24 @@ var require_dist9 = __commonJS({
         if (Array.isArray(src) && src.length === 2) {
           return getChord(src[1], src[0]);
         } else {
-          var _a = tokenize(src), tonic = _a[0], type = _a[1];
-          var chord_1 = getChord(type, tonic);
+          var _a = tokenize(src), tonic = _a[0], type2 = _a[1];
+          var chord_1 = getChord(type2, tonic);
           return chord_1.empty ? getChord(src) : chord_1;
         }
       }
       function getChord(typeName, optionalTonic, optionalRoot) {
-        var type = chordType.get(typeName);
+        var type2 = chordType.get(typeName);
         var tonic = core.note(optionalTonic || "");
         var root = core.note(optionalRoot || "");
-        if (type.empty || optionalTonic && tonic.empty || optionalRoot && root.empty) {
+        if (type2.empty || optionalTonic && tonic.empty || optionalRoot && root.empty) {
           return NoChord;
         }
         var rootInterval = core.distance(tonic.pc, root.pc);
-        var rootDegree = type.intervals.indexOf(rootInterval) + 1;
+        var rootDegree = type2.intervals.indexOf(rootInterval) + 1;
         if (!root.empty && !rootDegree) {
           return NoChord;
         }
-        var intervals = Array.from(type.intervals);
+        var intervals = Array.from(type2.intervals);
         for (var i = 1; i < rootDegree; i++) {
           var num = intervals[0][0];
           var quality = intervals[0][1];
@@ -17833,21 +17833,21 @@ var require_dist9 = __commonJS({
         var notes = tonic.empty ? [] : intervals.map(function(i2) {
           return core.transpose(tonic, i2);
         });
-        typeName = type.aliases.indexOf(typeName) !== -1 ? typeName : type.aliases[0];
+        typeName = type2.aliases.indexOf(typeName) !== -1 ? typeName : type2.aliases[0];
         var symbol = "" + (tonic.empty ? "" : tonic.pc) + typeName + (root.empty || rootDegree <= 1 ? "" : "/" + root.pc);
-        var name = (optionalTonic ? tonic.pc + " " : "") + type.name + (rootDegree > 1 && optionalRoot ? " over " + root.pc : "");
-        return __assign(__assign({}, type), { name, symbol, type: type.name, root: root.name, intervals, rootDegree, tonic: tonic.name, notes });
+        var name2 = (optionalTonic ? tonic.pc + " " : "") + type2.name + (rootDegree > 1 && optionalRoot ? " over " + root.pc : "");
+        return __assign(__assign({}, type2), { name: name2, symbol, type: type2.name, root: root.name, intervals, rootDegree, tonic: tonic.name, notes });
       }
       var chord = core.deprecate("Chord.chord", "Chord.get", get);
       function transpose(chordName, interval) {
-        var _a = tokenize(chordName), tonic = _a[0], type = _a[1];
+        var _a = tokenize(chordName), tonic = _a[0], type2 = _a[1];
         if (!tonic) {
           return chordName;
         }
-        return core.transpose(tonic, interval) + type;
+        return core.transpose(tonic, interval) + type2;
       }
-      function chordScales(name) {
-        var s = get(name);
+      function chordScales(name2) {
+        var s = get(name2);
         var isChordIncluded = pcset.isSupersetOf(s.chroma);
         return scaleType.all().filter(function(scale) {
           return isChordIncluded(scale.chroma);
@@ -17884,32 +17884,32 @@ var require_dist9 = __commonJS({
         transpose,
         chord
       };
-      Object.defineProperty(exports2, "detect", {
+      Object.defineProperty(exports3, "detect", {
         enumerable: true,
         get: function() {
           return chordDetect.detect;
         }
       });
-      exports2.chord = chord;
-      exports2.chordScales = chordScales;
-      exports2["default"] = index;
-      exports2.extended = extended;
-      exports2.get = get;
-      exports2.getChord = getChord;
-      exports2.reduced = reduced;
-      exports2.tokenize = tokenize;
-      exports2.transpose = transpose;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.chord = chord;
+      exports3.chordScales = chordScales;
+      exports3["default"] = index;
+      exports3.extended = extended;
+      exports3.get = get;
+      exports3.getChord = getChord;
+      exports3.reduced = reduced;
+      exports3.tokenize = tokenize;
+      exports3.transpose = transpose;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+duration-value@4.6.2/node_modules/@tonaljs/duration-value/dist/index.js
 var require_dist10 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+duration-value@4.6.2/node_modules/@tonaljs/duration-value/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+duration-value@4.6.2/node_modules/@tonaljs/duration-value/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.DurationValue = {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.DurationValue = {}));
+    })(exports2, function(exports3) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -17957,8 +17957,8 @@ var require_dist10 = __commonJS({
       };
       function names() {
         return VALUES.reduce(function(names2, duration) {
-          duration.names.forEach(function(name) {
-            return names2.push(name);
+          duration.names.forEach(function(name2) {
+            return names2.push(name2);
           });
           return names2;
         }, []);
@@ -17969,8 +17969,8 @@ var require_dist10 = __commonJS({
         });
       }
       var REGEX = /^([^.]+)(\.*)$/;
-      function get(name) {
-        var _a = REGEX.exec(name) || [];
+      function get(name2) {
+        var _a = REGEX.exec(name2) || [];
         _a[0];
         var simple = _a[1], dots = _a[2];
         var base = VALUES.find(function(dur) {
@@ -17981,13 +17981,13 @@ var require_dist10 = __commonJS({
         }
         var fraction2 = calcDots(base.fraction, dots.length);
         var value2 = fraction2[0] / fraction2[1];
-        return __assign(__assign({}, base), { name, dots, value: value2, fraction: fraction2 });
+        return __assign(__assign({}, base), { name: name2, dots, value: value2, fraction: fraction2 });
       }
-      var value = function(name) {
-        return get(name).value;
+      var value = function(name2) {
+        return get(name2).value;
       };
-      var fraction = function(name) {
-        return get(name).fraction;
+      var fraction = function(name2) {
+        return get(name2).fraction;
       };
       var index = { names, shorthands, get, value, fraction };
       function add(denominator, shorthand, names2) {
@@ -18015,46 +18015,46 @@ var require_dist10 = __commonJS({
         }
         return [numerator, denominator];
       }
-      exports2.default = index;
-      exports2.fraction = fraction;
-      exports2.get = get;
-      exports2.names = names;
-      exports2.shorthands = shorthands;
-      exports2.value = value;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.default = index;
+      exports3.fraction = fraction;
+      exports3.get = get;
+      exports3.names = names;
+      exports3.shorthands = shorthands;
+      exports3.value = value;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+interval@4.6.5/node_modules/@tonaljs/interval/dist/index.js
 var require_dist11 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+interval@4.6.5/node_modules/@tonaljs/interval/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+interval@4.6.5/node_modules/@tonaljs/interval/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Interval = {}, global2.core));
-    })(exports, function(exports2, core) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Interval = {}, global2.core));
+    })(exports2, function(exports3, core) {
       "use strict";
       function names() {
         return "1P 2M 3M 4P 5P 6m 7m".split(" ");
       }
       var get = core.interval;
-      var name = function(name2) {
-        return core.interval(name2).name;
+      var name2 = function(name3) {
+        return core.interval(name3).name;
       };
-      var semitones = function(name2) {
-        return core.interval(name2).semitones;
+      var semitones = function(name3) {
+        return core.interval(name3).semitones;
       };
-      var quality = function(name2) {
-        return core.interval(name2).q;
+      var quality = function(name3) {
+        return core.interval(name3).q;
       };
-      var num = function(name2) {
-        return core.interval(name2).num;
+      var num = function(name3) {
+        return core.interval(name3).num;
       };
-      function simplify(name2) {
-        var i = core.interval(name2);
+      function simplify(name3) {
+        var i = core.interval(name3);
         return i.empty ? "" : i.simple + i.q;
       }
-      function invert(name2) {
-        var i = core.interval(name2);
+      function invert(name3) {
+        var i = core.interval(name3);
         if (i.empty) {
           return "";
         }
@@ -18093,7 +18093,7 @@ var require_dist11 = __commonJS({
       var index = {
         names,
         get,
-        name,
+        name: name2,
         num,
         semitones,
         quality,
@@ -18116,32 +18116,32 @@ var require_dist11 = __commonJS({
           }
         };
       }
-      exports2.add = add;
-      exports2.addTo = addTo;
-      exports2["default"] = index;
-      exports2.distance = distance;
-      exports2.fromSemitones = fromSemitones;
-      exports2.get = get;
-      exports2.invert = invert;
-      exports2.name = name;
-      exports2.names = names;
-      exports2.num = num;
-      exports2.quality = quality;
-      exports2.semitones = semitones;
-      exports2.simplify = simplify;
-      exports2.substract = substract;
-      exports2.transposeFifths = transposeFifths;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.add = add;
+      exports3.addTo = addTo;
+      exports3["default"] = index;
+      exports3.distance = distance;
+      exports3.fromSemitones = fromSemitones;
+      exports3.get = get;
+      exports3.invert = invert;
+      exports3.name = name2;
+      exports3.names = names;
+      exports3.num = num;
+      exports3.quality = quality;
+      exports3.semitones = semitones;
+      exports3.simplify = simplify;
+      exports3.substract = substract;
+      exports3.transposeFifths = transposeFifths;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+midi@4.6.5/node_modules/@tonaljs/midi/dist/index.js
 var require_dist12 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+midi@4.6.5/node_modules/@tonaljs/midi/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+midi@4.6.5/node_modules/@tonaljs/midi/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Midi = {}, global2.core));
-    })(exports, function(exports2, core) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Midi = {}, global2.core));
+    })(exports2, function(exports3, core) {
       "use strict";
       function isMidi(arg) {
         return +arg >= 0 && +arg <= 127;
@@ -18183,23 +18183,23 @@ var require_dist12 = __commonJS({
         return pc + o;
       }
       var index = { isMidi, toMidi, midiToFreq, midiToNoteName, freqToMidi };
-      exports2["default"] = index;
-      exports2.freqToMidi = freqToMidi;
-      exports2.isMidi = isMidi;
-      exports2.midiToFreq = midiToFreq;
-      exports2.midiToNoteName = midiToNoteName;
-      exports2.toMidi = toMidi;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3["default"] = index;
+      exports3.freqToMidi = freqToMidi;
+      exports3.isMidi = isMidi;
+      exports3.midiToFreq = midiToFreq;
+      exports3.midiToNoteName = midiToNoteName;
+      exports3.toMidi = toMidi;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+note@4.6.5/node_modules/@tonaljs/note/dist/index.js
 var require_dist13 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+note@4.6.5/node_modules/@tonaljs/note/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+note@4.6.5/node_modules/@tonaljs/note/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist(), require_dist12()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/midi"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Note = {}, global2.core, global2.midi$1));
-    })(exports, function(exports2, core, midi$1) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist(), require_dist12()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/midi"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Note = {}, global2.core, global2.midi$1));
+    })(exports2, function(exports3, core, midi$1) {
       "use strict";
       var NAMES = ["C", "D", "E", "F", "G", "A", "B"];
       var toName = function(n) {
@@ -18220,7 +18220,7 @@ var require_dist13 = __commonJS({
         }
       }
       var get = core.note;
-      var name = function(note) {
+      var name2 = function(note) {
         return get(note).name;
       };
       var pitchClass = function(note) {
@@ -18326,7 +18326,7 @@ var require_dist13 = __commonJS({
       var index = {
         names,
         get,
-        name,
+        name: name2,
         pitchClass,
         accidentals,
         octave,
@@ -18352,45 +18352,45 @@ var require_dist13 = __commonJS({
         simplify,
         enharmonic
       };
-      exports2.accidentals = accidentals;
-      exports2.ascending = ascending;
-      exports2.chroma = chroma;
-      exports2["default"] = index;
-      exports2.descending = descending;
-      exports2.enharmonic = enharmonic;
-      exports2.freq = freq;
-      exports2.fromFreq = fromFreq;
-      exports2.fromFreqSharps = fromFreqSharps;
-      exports2.fromMidi = fromMidi;
-      exports2.fromMidiSharps = fromMidiSharps;
-      exports2.get = get;
-      exports2.midi = midi;
-      exports2.name = name;
-      exports2.names = names;
-      exports2.octave = octave;
-      exports2.pitchClass = pitchClass;
-      exports2.simplify = simplify;
-      exports2.sortedNames = sortedNames;
-      exports2.sortedUniqNames = sortedUniqNames;
-      exports2.tr = tr;
-      exports2.trBy = trBy;
-      exports2.trFifths = trFifths;
-      exports2.trFrom = trFrom;
-      exports2.transpose = transpose;
-      exports2.transposeBy = transposeBy;
-      exports2.transposeFifths = transposeFifths;
-      exports2.transposeFrom = transposeFrom;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.accidentals = accidentals;
+      exports3.ascending = ascending;
+      exports3.chroma = chroma;
+      exports3["default"] = index;
+      exports3.descending = descending;
+      exports3.enharmonic = enharmonic;
+      exports3.freq = freq;
+      exports3.fromFreq = fromFreq;
+      exports3.fromFreqSharps = fromFreqSharps;
+      exports3.fromMidi = fromMidi;
+      exports3.fromMidiSharps = fromMidiSharps;
+      exports3.get = get;
+      exports3.midi = midi;
+      exports3.name = name2;
+      exports3.names = names;
+      exports3.octave = octave;
+      exports3.pitchClass = pitchClass;
+      exports3.simplify = simplify;
+      exports3.sortedNames = sortedNames;
+      exports3.sortedUniqNames = sortedUniqNames;
+      exports3.tr = tr;
+      exports3.trBy = trBy;
+      exports3.trFifths = trFifths;
+      exports3.trFrom = trFrom;
+      exports3.transpose = transpose;
+      exports3.transposeBy = transposeBy;
+      exports3.transposeFifths = transposeFifths;
+      exports3.transposeFrom = transposeFrom;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+roman-numeral@4.6.5/node_modules/@tonaljs/roman-numeral/dist/index.js
 var require_dist14 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+roman-numeral@4.6.5/node_modules/@tonaljs/roman-numeral/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+roman-numeral@4.6.5/node_modules/@tonaljs/roman-numeral/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.RomanNumeral = {}, global2.core));
-    })(exports, function(exports2, core) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.RomanNumeral = {}, global2.core));
+    })(exports2, function(exports3, core) {
       "use strict";
       var NoRomanNumeral = { empty: true, name: "", chordType: "" };
       var cache = {};
@@ -18415,7 +18415,7 @@ var require_dist14 = __commonJS({
       var NAMES = ROMANS.split(" ");
       var NAMES_MINOR = ROMANS.toLowerCase().split(" ");
       function parse2(src) {
-        var _a = tokenize(src), name = _a[0], acc = _a[1], roman = _a[2], chordType = _a[3];
+        var _a = tokenize(src), name2 = _a[0], acc = _a[1], roman = _a[2], chordType = _a[3];
         if (!roman) {
           return NoRomanNumeral;
         }
@@ -18425,7 +18425,7 @@ var require_dist14 = __commonJS({
         var dir = 1;
         return {
           empty: false,
-          name,
+          name: name2,
           roman,
           interval: core.interval({ step, alt, dir }).name,
           acc,
@@ -18442,21 +18442,21 @@ var require_dist14 = __commonJS({
         get,
         romanNumeral
       };
-      exports2["default"] = index;
-      exports2.get = get;
-      exports2.names = names;
-      exports2.tokenize = tokenize;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3["default"] = index;
+      exports3.get = get;
+      exports3.names = names;
+      exports3.tokenize = tokenize;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+key@4.6.5/node_modules/@tonaljs/key/dist/index.js
 var require_dist15 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+key@4.6.5/node_modules/@tonaljs/key/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+key@4.6.5/node_modules/@tonaljs/key/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist(), require_dist13(), require_dist14()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/note", "@tonaljs/roman-numeral"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Key = {}, global2.core, global2.note, global2.romanNumeral));
-    })(exports, function(exports2, core, note, romanNumeral) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist(), require_dist13(), require_dist14()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/core", "@tonaljs/note", "@tonaljs/roman-numeral"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Key = {}, global2.core, global2.note, global2.romanNumeral));
+    })(exports2, function(exports3, core, note, romanNumeral) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -18492,8 +18492,8 @@ var require_dist15 = __commonJS({
         if (sep === void 0) {
           sep = "";
         }
-        return list.map(function(type, i) {
-          return "" + scale[i] + sep + type;
+        return list.map(function(type2, i) {
+          return "" + scale[i] + sep + type2;
         });
       };
       function keyScale(grades, chords, harmonicFunctions, chordScales) {
@@ -18563,21 +18563,21 @@ var require_dist15 = __commonJS({
         return null;
       }
       var index = { majorKey, majorTonicFromKeySignature, minorKey };
-      exports2["default"] = index;
-      exports2.majorKey = majorKey;
-      exports2.majorTonicFromKeySignature = majorTonicFromKeySignature;
-      exports2.minorKey = minorKey;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3["default"] = index;
+      exports3.majorKey = majorKey;
+      exports3.majorTonicFromKeySignature = majorTonicFromKeySignature;
+      exports3.minorKey = minorKey;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+mode@4.6.5/node_modules/@tonaljs/mode/dist/index.js
 var require_dist16 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+mode@4.6.5/node_modules/@tonaljs/mode/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+mode@4.6.5/node_modules/@tonaljs/mode/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist4(), require_dist(), require_dist11(), require_dist5(), require_dist8()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/collection", "@tonaljs/core", "@tonaljs/interval", "@tonaljs/pcset", "@tonaljs/scale-type"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Mode = {}, global2.collection, global2.core, global2.interval, global2.pcset, global2.scaleType));
-    })(exports, function(exports2, collection, core, interval, pcset, scaleType) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist4(), require_dist(), require_dist11(), require_dist5(), require_dist8()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/collection", "@tonaljs/core", "@tonaljs/interval", "@tonaljs/pcset", "@tonaljs/scale-type"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Mode = {}, global2.collection, global2.core, global2.interval, global2.pcset, global2.scaleType));
+    })(exports2, function(exports3, collection, core, interval, pcset, scaleType) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -18609,8 +18609,8 @@ var require_dist16 = __commonJS({
           index[alias] = mode2;
         });
       });
-      function get(name) {
-        return typeof name === "string" ? index[name.toLowerCase()] || NoMode : name && name.name ? get(name.name) : NoMode;
+      function get(name2) {
+        return typeof name2 === "string" ? index[name2.toLowerCase()] || NoMode : name2 && name2.name ? get(name2.name) : NoMode;
       }
       var mode = core.deprecate("Mode.mode", "Mode.get", get);
       function all() {
@@ -18623,17 +18623,17 @@ var require_dist16 = __commonJS({
         });
       }
       function toMode(mode2) {
-        var modeNum = mode2[0], setNum = mode2[1], alt = mode2[2], name = mode2[3], triad = mode2[4], seventh = mode2[5], alias = mode2[6];
+        var modeNum = mode2[0], setNum = mode2[1], alt = mode2[2], name2 = mode2[3], triad = mode2[4], seventh = mode2[5], alias = mode2[6];
         var aliases = alias ? [alias] : [];
         var chroma = Number(setNum).toString(2);
-        var intervals = scaleType.get(name).intervals;
+        var intervals = scaleType.get(name2).intervals;
         return {
           empty: false,
           intervals,
           modeNum,
           chroma,
           normalized: chroma,
-          name,
+          name: name2,
           setNum,
           alt,
           triad,
@@ -18688,28 +18688,28 @@ var require_dist16 = __commonJS({
         entries,
         mode
       };
-      exports2.all = all;
-      exports2["default"] = index$1;
-      exports2.distance = distance;
-      exports2.entries = entries;
-      exports2.get = get;
-      exports2.mode = mode;
-      exports2.names = names;
-      exports2.notes = notes;
-      exports2.relativeTonic = relativeTonic;
-      exports2.seventhChords = seventhChords;
-      exports2.triads = triads;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.all = all;
+      exports3["default"] = index$1;
+      exports3.distance = distance;
+      exports3.entries = entries;
+      exports3.get = get;
+      exports3.mode = mode;
+      exports3.names = names;
+      exports3.notes = notes;
+      exports3.relativeTonic = relativeTonic;
+      exports3.seventhChords = seventhChords;
+      exports3.triads = triads;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+progression@4.6.5/node_modules/@tonaljs/progression/dist/index.js
 var require_dist17 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+progression@4.6.5/node_modules/@tonaljs/progression/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+progression@4.6.5/node_modules/@tonaljs/progression/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist9(), require_dist(), require_dist14()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord", "@tonaljs/core", "@tonaljs/roman-numeral"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Progression = {}, global2.chord, global2.core, global2.romanNumeral));
-    })(exports, function(exports2, chord, core, romanNumeral) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist9(), require_dist(), require_dist14()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord", "@tonaljs/core", "@tonaljs/roman-numeral"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Progression = {}, global2.chord, global2.core, global2.romanNumeral));
+    })(exports2, function(exports3, chord, core, romanNumeral) {
       "use strict";
       function fromRomanNumerals(tonic, chords) {
         var romanNumerals = chords.map(romanNumeral.get);
@@ -18726,20 +18726,20 @@ var require_dist17 = __commonJS({
         });
       }
       var index = { fromRomanNumerals, toRomanNumerals };
-      exports2["default"] = index;
-      exports2.fromRomanNumerals = fromRomanNumerals;
-      exports2.toRomanNumerals = toRomanNumerals;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3["default"] = index;
+      exports3.fromRomanNumerals = fromRomanNumerals;
+      exports3.toRomanNumerals = toRomanNumerals;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+range@4.6.5/node_modules/@tonaljs/range/dist/index.js
 var require_dist18 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+range@4.6.5/node_modules/@tonaljs/range/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+range@4.6.5/node_modules/@tonaljs/range/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist4(), require_dist12()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/collection", "@tonaljs/midi"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Range = {}, global2.collection, global2.midi));
-    })(exports, function(exports2, collection, midi) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist4(), require_dist12()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/collection", "@tonaljs/midi"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Range = {}, global2.collection, global2.midi));
+    })(exports2, function(exports3, collection, midi) {
       "use strict";
       function numeric(notes) {
         var midi$1 = collection.compact(notes.map(midi.toMidi));
@@ -18757,20 +18757,20 @@ var require_dist18 = __commonJS({
         });
       }
       var index = { numeric, chromatic };
-      exports2.chromatic = chromatic;
-      exports2["default"] = index;
-      exports2.numeric = numeric;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.chromatic = chromatic;
+      exports3["default"] = index;
+      exports3.numeric = numeric;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+scale@4.6.5/node_modules/@tonaljs/scale/dist/index.js
 var require_dist19 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+scale@4.6.5/node_modules/@tonaljs/scale/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+scale@4.6.5/node_modules/@tonaljs/scale/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist6(), require_dist4(), require_dist(), require_dist13(), require_dist5(), require_dist8()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord-type", "@tonaljs/collection", "@tonaljs/core", "@tonaljs/note", "@tonaljs/pcset", "@tonaljs/scale-type"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Scale = {}, global2.chordType, global2.collection, global2.core, global2.note, global2.pcset, global2.scaleType));
-    })(exports, function(exports2, chordType, collection, core, note, pcset, scaleType) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist6(), require_dist4(), require_dist(), require_dist13(), require_dist5(), require_dist8()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/chord-type", "@tonaljs/collection", "@tonaljs/core", "@tonaljs/note", "@tonaljs/pcset", "@tonaljs/scale-type"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Scale = {}, global2.chordType, global2.collection, global2.core, global2.note, global2.pcset, global2.scaleType));
+    })(exports2, function(exports3, chordType, collection, core, note, pcset, scaleType) {
       "use strict";
       var __assign = function() {
         __assign = Object.assign || function __assign2(t) {
@@ -18796,18 +18796,18 @@ var require_dist19 = __commonJS({
         notes: [],
         intervals: []
       };
-      function tokenize(name) {
-        if (typeof name !== "string") {
+      function tokenize(name2) {
+        if (typeof name2 !== "string") {
           return ["", ""];
         }
-        var i = name.indexOf(" ");
-        var tonic = core.note(name.substring(0, i));
+        var i = name2.indexOf(" ");
+        var tonic = core.note(name2.substring(0, i));
         if (tonic.empty) {
-          var n = core.note(name);
-          return n.empty ? ["", name] : [n.name, ""];
+          var n = core.note(name2);
+          return n.empty ? ["", name2] : [n.name, ""];
         }
-        var type = name.substring(tonic.name.length + 1);
-        return [tonic.name, type.length ? type : ""];
+        var type2 = name2.substring(tonic.name.length + 1);
+        return [tonic.name, type2.length ? type2 : ""];
       }
       var names = scaleType.names;
       function get(src) {
@@ -18817,16 +18817,16 @@ var require_dist19 = __commonJS({
         if (st.empty) {
           return NoScale;
         }
-        var type = st.name;
+        var type2 = st.name;
         var notes = tonic ? st.intervals.map(function(i) {
           return core.transpose(tonic, i);
         }) : [];
-        var name = tonic ? tonic + " " + type : type;
-        return __assign(__assign({}, st), { name, type, tonic, notes });
+        var name2 = tonic ? tonic + " " + type2 : type2;
+        return __assign(__assign({}, st), { name: name2, type: type2, tonic, notes });
       }
       var scale = core.deprecate("Scale.scale", "Scale.get", get);
-      function scaleChords(name) {
-        var s = get(name);
+      function scaleChords(name2) {
+        var s = get(name2);
         var inScale = pcset.isSubsetOf(s.chroma);
         return chordType.all().filter(function(chord) {
           return inScale(chord.chroma);
@@ -18834,8 +18834,8 @@ var require_dist19 = __commonJS({
           return chord.aliases[0];
         });
       }
-      function extended(name) {
-        var s = get(name);
+      function extended(name2) {
+        var s = get(name2);
         var isSuperset = pcset.isSupersetOf(s.chroma);
         return scaleType.all().filter(function(scale2) {
           return isSuperset(scale2.chroma);
@@ -18843,8 +18843,8 @@ var require_dist19 = __commonJS({
           return scale2.name;
         });
       }
-      function reduced(name) {
-        var isSubset = pcset.isSubsetOf(get(name).chroma);
+      function reduced(name2) {
+        var isSubset = pcset.isSubsetOf(get(name2).chroma);
         return scaleType.all().filter(function(scale2) {
           return isSubset(scale2.chroma);
         }).map(function(scale2) {
@@ -18861,8 +18861,8 @@ var require_dist19 = __commonJS({
         var scale2 = note.sortedUniqNames(pcset2);
         return collection.rotate(scale2.indexOf(tonic), scale2);
       }
-      function modeNames(name) {
-        var s = get(name);
+      function modeNames(name2) {
+        var s = get(name2);
         if (s.empty) {
           return [];
         }
@@ -18876,8 +18876,8 @@ var require_dist19 = __commonJS({
       }
       function getNoteNameOf(scale2) {
         var names2 = Array.isArray(scale2) ? scaleNotes(scale2) : get(scale2).notes;
-        var chromas = names2.map(function(name) {
-          return core.note(name).chroma;
+        var chromas = names2.map(function(name2) {
+          return core.note(name2).chroma;
         });
         return function(noteOrMidi) {
           var currNote = typeof noteOrMidi === "number" ? core.note(note.fromMidi(noteOrMidi)) : core.note(noteOrMidi);
@@ -18915,28 +18915,28 @@ var require_dist19 = __commonJS({
         rangeOf,
         scale
       };
-      exports2["default"] = index;
-      exports2.extended = extended;
-      exports2.get = get;
-      exports2.modeNames = modeNames;
-      exports2.names = names;
-      exports2.rangeOf = rangeOf;
-      exports2.reduced = reduced;
-      exports2.scale = scale;
-      exports2.scaleChords = scaleChords;
-      exports2.scaleNotes = scaleNotes;
-      exports2.tokenize = tokenize;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3["default"] = index;
+      exports3.extended = extended;
+      exports3.get = get;
+      exports3.modeNames = modeNames;
+      exports3.names = names;
+      exports3.rangeOf = rangeOf;
+      exports3.reduced = reduced;
+      exports3.scale = scale;
+      exports3.scaleChords = scaleChords;
+      exports3.scaleNotes = scaleNotes;
+      exports3.tokenize = tokenize;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+time-signature@4.6.2/node_modules/@tonaljs/time-signature/dist/index.js
 var require_dist20 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+time-signature@4.6.2/node_modules/@tonaljs/time-signature/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+time-signature@4.6.2/node_modules/@tonaljs/time-signature/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.TimeSignature = {}));
-    })(exports, function(exports2) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.TimeSignature = {}));
+    })(exports2, function(exports3) {
       "use strict";
       var NONE = {
         empty: true,
@@ -18988,33 +18988,33 @@ var require_dist20 = __commonJS({
         if (upper === 0 || lower === 0) {
           return NONE;
         }
-        var name = Array.isArray(up) ? up.join("+") + "/" + down : up + "/" + down;
+        var name2 = Array.isArray(up) ? up.join("+") + "/" + down : up + "/" + down;
         var additive = Array.isArray(up) ? up : [];
-        var type = lower === 4 || lower === 2 ? "simple" : lower === 8 && upper % 3 === 0 ? "compound" : "irregular";
+        var type2 = lower === 4 || lower === 2 ? "simple" : lower === 8 && upper % 3 === 0 ? "compound" : "irregular";
         return {
           empty: false,
-          name,
-          type,
+          name: name2,
+          type: type2,
           upper,
           lower,
           additive
         };
       }
-      exports2.default = index;
-      exports2.get = get;
-      exports2.names = names;
-      exports2.parse = parse2;
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      exports3.default = index;
+      exports3.get = get;
+      exports3.names = names;
+      exports3.parse = parse2;
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
 
 // node_modules/.pnpm/@tonaljs+tonal@4.6.5/node_modules/@tonaljs/tonal/dist/index.js
 var require_dist21 = __commonJS({
-  "node_modules/.pnpm/@tonaljs+tonal@4.6.5/node_modules/@tonaljs/tonal/dist/index.js"(exports, module2) {
+  "node_modules/.pnpm/@tonaljs+tonal@4.6.5/node_modules/@tonaljs/tonal/dist/index.js"(exports2, module3) {
     (function(global2, factory) {
-      typeof exports === "object" && typeof module2 !== "undefined" ? factory(exports, require_dist2(), require_dist3(), require_dist9(), require_dist6(), require_dist4(), require_dist(), require_dist10(), require_dist11(), require_dist15(), require_dist12(), require_dist16(), require_dist13(), require_dist5(), require_dist17(), require_dist18(), require_dist14(), require_dist19(), require_dist8(), require_dist20()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/abc-notation", "@tonaljs/array", "@tonaljs/chord", "@tonaljs/chord-type", "@tonaljs/collection", "@tonaljs/core", "@tonaljs/duration-value", "@tonaljs/interval", "@tonaljs/key", "@tonaljs/midi", "@tonaljs/mode", "@tonaljs/note", "@tonaljs/pcset", "@tonaljs/progression", "@tonaljs/range", "@tonaljs/roman-numeral", "@tonaljs/scale", "@tonaljs/scale-type", "@tonaljs/time-signature"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Tonal = {}, global2.abcNotation, global2.array, global2.chord, global2.ChordType, global2.collection, global2.Core, global2.durationValue, global2.interval, global2.key, global2.midi, global2.mode, global2.note, global2.Pcset, global2.progression, global2.range, global2.romanNumeral, global2.scale, global2.ScaleType, global2.timeSignature));
-    })(exports, function(exports2, abcNotation, array, chord, ChordType, collection, Core, durationValue, interval, key, midi, mode, note, Pcset, progression, range, romanNumeral, scale, ScaleType, timeSignature) {
+      typeof exports2 === "object" && typeof module3 !== "undefined" ? factory(exports2, require_dist2(), require_dist3(), require_dist9(), require_dist6(), require_dist4(), require_dist(), require_dist10(), require_dist11(), require_dist15(), require_dist12(), require_dist16(), require_dist13(), require_dist5(), require_dist17(), require_dist18(), require_dist14(), require_dist19(), require_dist8(), require_dist20()) : typeof define === "function" && define.amd ? define(["exports", "@tonaljs/abc-notation", "@tonaljs/array", "@tonaljs/chord", "@tonaljs/chord-type", "@tonaljs/collection", "@tonaljs/core", "@tonaljs/duration-value", "@tonaljs/interval", "@tonaljs/key", "@tonaljs/midi", "@tonaljs/mode", "@tonaljs/note", "@tonaljs/pcset", "@tonaljs/progression", "@tonaljs/range", "@tonaljs/roman-numeral", "@tonaljs/scale", "@tonaljs/scale-type", "@tonaljs/time-signature"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.Tonal = {}, global2.abcNotation, global2.array, global2.chord, global2.ChordType, global2.collection, global2.Core, global2.durationValue, global2.interval, global2.key, global2.midi, global2.mode, global2.note, global2.Pcset, global2.progression, global2.range, global2.romanNumeral, global2.scale, global2.ScaleType, global2.timeSignature));
+    })(exports2, function(exports3, abcNotation, array, chord, ChordType, collection, Core, durationValue, interval, key, midi, mode, note, Pcset, progression, range, romanNumeral, scale, ScaleType, timeSignature) {
       "use strict";
       function _interopDefaultLegacy(e) {
         return e && typeof e === "object" && "default" in e ? e : { "default": e };
@@ -19062,124 +19062,124 @@ var require_dist21 = __commonJS({
       var PcSet = Pcset__default["default"];
       var ChordDictionary = ChordType__default["default"];
       var ScaleDictionary = ScaleType__default["default"];
-      Object.defineProperty(exports2, "AbcNotation", {
+      Object.defineProperty(exports3, "AbcNotation", {
         enumerable: true,
         get: function() {
           return abcNotation__default["default"];
         }
       });
-      exports2.Array = array__namespace;
-      Object.defineProperty(exports2, "Chord", {
+      exports3.Array = array__namespace;
+      Object.defineProperty(exports3, "Chord", {
         enumerable: true,
         get: function() {
           return chord__default["default"];
         }
       });
-      Object.defineProperty(exports2, "ChordType", {
+      Object.defineProperty(exports3, "ChordType", {
         enumerable: true,
         get: function() {
           return ChordType__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Collection", {
+      Object.defineProperty(exports3, "Collection", {
         enumerable: true,
         get: function() {
           return collection__default["default"];
         }
       });
-      exports2.Core = Core__namespace;
-      Object.defineProperty(exports2, "DurationValue", {
+      exports3.Core = Core__namespace;
+      Object.defineProperty(exports3, "DurationValue", {
         enumerable: true,
         get: function() {
           return durationValue__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Interval", {
+      Object.defineProperty(exports3, "Interval", {
         enumerable: true,
         get: function() {
           return interval__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Key", {
+      Object.defineProperty(exports3, "Key", {
         enumerable: true,
         get: function() {
           return key__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Midi", {
+      Object.defineProperty(exports3, "Midi", {
         enumerable: true,
         get: function() {
           return midi__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Mode", {
+      Object.defineProperty(exports3, "Mode", {
         enumerable: true,
         get: function() {
           return mode__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Note", {
+      Object.defineProperty(exports3, "Note", {
         enumerable: true,
         get: function() {
           return note__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Pcset", {
+      Object.defineProperty(exports3, "Pcset", {
         enumerable: true,
         get: function() {
           return Pcset__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Progression", {
+      Object.defineProperty(exports3, "Progression", {
         enumerable: true,
         get: function() {
           return progression__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Range", {
+      Object.defineProperty(exports3, "Range", {
         enumerable: true,
         get: function() {
           return range__default["default"];
         }
       });
-      Object.defineProperty(exports2, "RomanNumeral", {
+      Object.defineProperty(exports3, "RomanNumeral", {
         enumerable: true,
         get: function() {
           return romanNumeral__default["default"];
         }
       });
-      Object.defineProperty(exports2, "Scale", {
+      Object.defineProperty(exports3, "Scale", {
         enumerable: true,
         get: function() {
           return scale__default["default"];
         }
       });
-      Object.defineProperty(exports2, "ScaleType", {
+      Object.defineProperty(exports3, "ScaleType", {
         enumerable: true,
         get: function() {
           return ScaleType__default["default"];
         }
       });
-      Object.defineProperty(exports2, "TimeSignature", {
+      Object.defineProperty(exports3, "TimeSignature", {
         enumerable: true,
         get: function() {
           return timeSignature__default["default"];
         }
       });
-      exports2.ChordDictionary = ChordDictionary;
-      exports2.PcSet = PcSet;
-      exports2.ScaleDictionary = ScaleDictionary;
-      exports2.Tonal = Tonal;
+      exports3.ChordDictionary = ChordDictionary;
+      exports3.PcSet = PcSet;
+      exports3.ScaleDictionary = ScaleDictionary;
+      exports3.Tonal = Tonal;
       Object.keys(Core).forEach(function(k) {
-        if (k !== "default" && !exports2.hasOwnProperty(k))
-          Object.defineProperty(exports2, k, {
+        if (k !== "default" && !exports3.hasOwnProperty(k))
+          Object.defineProperty(exports3, k, {
             enumerable: true,
             get: function() {
               return Core[k];
             }
           });
       });
-      Object.defineProperty(exports2, "__esModule", { value: true });
+      Object.defineProperty(exports3, "__esModule", { value: true });
     });
   }
 });
@@ -19216,7 +19216,134 @@ __export(src_exports, {
 });
 
 // package.json
-var version = "0.54.1";
+var name = "musicvis-lib";
+var version = "0.54.2";
+var description = "Music analysis and visualization library";
+var author = "Frank Heyen";
+var license = "ISC";
+var homepage = "https://fheyen.github.io/musicvis-lib";
+var repository = {
+  url: "git+https://github.com/fheyen/musicvis-lib",
+  type: "git"
+};
+var bugs = {
+  url: "https://github.com/fheyen/musicvis-lib/issues"
+};
+var keywords = [
+  "visualization",
+  "music visualization",
+  "visual analytics",
+  "JavaScript",
+  "ECMAScript",
+  "web-based",
+  "MIDI",
+  "MusicXML",
+  "Web MIDI",
+  "music",
+  "string comparison"
+];
+var type = "module";
+var exports = "./src/index.js";
+var main = "dist/musicvislib.node.js";
+var module2 = "dist/musicvislib.esm.js";
+var unpkg = "dist/musicvislib.min.js";
+var browser = "dist/musicvislib.min.js";
+var scripts = {
+  upd: "npm-check-updates -u",
+  "upd:i": "npm-check-updates -u && npm i && npm audit fix",
+  "upd:i:t": "npm-check-updates -u && npm i && npm test",
+  build: "npm run build:bundle && npm run build:browser && npm run build:browser:min && npm run build:node",
+  "build:bundle": "esbuild src/index.js --bundle --format=esm --sourcemap --outfile=dist/musicvislib.esm.js",
+  "build:browser": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.js",
+  "build:browser:min": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --minify --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.min.js",
+  "build:node": "esbuild src/index.js --bundle --sourcemap --platform=node --target=node16.5 --outfile=dist/musicvislib.node.js",
+  test: "jest --coverage",
+  testch: "jest --coverage --changedFilesWithAncestor",
+  testfail: "jest --changedFilesWithAncestor --onlyFailures",
+  testclear: "jest --clearCache",
+  doc: "jsdoc -c jsdoc.conf.json",
+  lint: "standard --verbose",
+  "lint:fix": "standard --fix --verbose",
+  "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
+  "git:add": "git add .",
+  "git:commit": 'git commit -m "new version build"',
+  "git:push": "git push",
+  "git:pushtags": "git push origin --tags",
+  predeploy: "npm run lint:fix && npm run build && jest --silent && npm run doc",
+  deploy: "npm publish && npm run git:all",
+  prepare: "husky install"
+};
+var dependencies = {
+  "@tonaljs/tonal": "^4.6.5",
+  d3: "^6.7.0",
+  "midi-parser-js": "^4.0.4"
+};
+var devDependencies = {
+  "@types/d3": "^7.1.0",
+  "@types/jest": "^27.0.3",
+  "clean-jsdoc-theme": "^3.3.1",
+  esbuild: "^0.14.23",
+  glob: "^7.2.0",
+  husky: "^7.0.0",
+  jest: "^27.4.5",
+  "jest-canvas-mock": "^2.3.1",
+  "jest-extended": "^1.2.0",
+  jsdoc: "^3.6.7",
+  "npm-check-updates": "^12.0.5",
+  standard: "^16.0.4"
+};
+var jest = {
+  testEnvironment: "jsdom",
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/dist/"
+  ],
+  collectCoverageFrom: [
+    "src/**/*.js"
+  ],
+  setupFilesAfterEnv: [
+    "jest-extended/all"
+  ]
+};
+var standard = {
+  ignore: [
+    "/dist/",
+    "/docs/"
+  ],
+  globals: [
+    "MediaRecorder",
+    "Blob",
+    "DOMParser",
+    "CanvasRenderingContext2D",
+    "localStorage",
+    "FileReader"
+  ],
+  env: [
+    "jest"
+  ]
+};
+var package_default = {
+  name,
+  version,
+  description,
+  author,
+  license,
+  homepage,
+  repository,
+  bugs,
+  keywords,
+  type,
+  exports,
+  main,
+  module: module2,
+  unpkg,
+  browser,
+  scripts,
+  dependencies,
+  devDependencies,
+  jest,
+  standard
+};
 
 // src/fileFormats/Midi.js
 var Midi_exports = {};
@@ -19248,8 +19375,8 @@ function getMidiNoteByNr(nr) {
 function getMidiNoteByLabel(label) {
   return MidiNoteByLabel.get(label);
 }
-function getMidiNoteByNameAndOctave(name, octave) {
-  return MidiNoteByLabel.get(`${name}${octave}`);
+function getMidiNoteByNameAndOctave(name2, octave) {
+  return MidiNoteByLabel.get(`${name2}${octave}`);
 }
 function getMidiInstrumentByNr(nr) {
   return MidiInstrumentByNumber.get(nr);
@@ -20752,9 +20879,9 @@ function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
 
 // src/types/Recording.js
 var Recording = class extends NoteArray_default {
-  constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
+  constructor(name2, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
     super(notes);
-    this.name = name;
+    this.name = name2;
     this.date = date;
     this.dateString = date.toISOString().slice(0, 19).replace("T", " ");
     this.speed = +speed;
@@ -20817,8 +20944,8 @@ var Recording = class extends NoteArray_default {
     };
   }
   static from(object) {
-    let { name, date, notes } = object;
-    const values = [name, date, notes];
+    let { name: name2, date, notes } = object;
+    const values = [name2, date, notes];
     const names = ["name", "date", "notes"];
     for (const [index, value] of values.entries()) {
       if (value === void 0 || value === null) {
@@ -20829,7 +20956,7 @@ var Recording = class extends NoteArray_default {
       date = new Date(Date.parse(date));
     }
     const { speed, selectedTrack, timeSelection, comment } = object;
-    return new Recording(name, date, notes, speed, selectedTrack, timeSelection, comment);
+    return new Recording(name2, date, notes, speed, selectedTrack, timeSelection, comment);
   }
 };
 var Recording_default = Recording;
@@ -20982,18 +21109,18 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         try {
           let durationInSeconds;
           if (note.querySelectorAll("grace").length > 0) {
-            const type = note.querySelectorAll("type").textContent;
-            if (type === "64th") {
+            const type2 = note.querySelectorAll("type").textContent;
+            if (type2 === "64th") {
               durationInSeconds = secondsPerBeat / 16;
-            } else if (type === "32nd") {
+            } else if (type2 === "32nd") {
               durationInSeconds = secondsPerBeat / 8;
-            } else if (type === "16th") {
+            } else if (type2 === "16th") {
               durationInSeconds = secondsPerBeat / 4;
-            } else if (type === "eighth") {
+            } else if (type2 === "eighth") {
               durationInSeconds = secondsPerBeat / 2;
-            } else if (type === "quarter") {
+            } else if (type2 === "quarter") {
               durationInSeconds = secondsPerBeat;
-            } else if (type === "half") {
+            } else if (type2 === "half") {
               durationInSeconds = secondsPerBeat * 2;
             } else {
               durationInSeconds = 0.01;
@@ -21457,8 +21584,8 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
   let timeOfLastTempoChange = 0;
   const unfinishedNotes = /* @__PURE__ */ new Map();
   for (const event of track.event) {
-    const type = event.type;
-    if (type === EVENT_TYPES.meta) {
+    const type2 = event.type;
+    if (type2 === EVENT_TYPES.meta) {
       continue;
     }
     currentTick += event.deltaTime;
@@ -21495,13 +21622,13 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
       milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
     }
     currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
-    if (type !== EVENT_TYPES.noteOn && type !== EVENT_TYPES.noteOff) {
+    if (type2 !== EVENT_TYPES.noteOn && type2 !== EVENT_TYPES.noteOff) {
       continue;
     }
     const [pitch, velocity] = event.data;
     const channel = event.channel;
     const key = `${pitch} ${channel}`;
-    if (type === EVENT_TYPES.noteOff || type === EVENT_TYPES.noteOn && velocity === 0) {
+    if (type2 === EVENT_TYPES.noteOff || type2 === EVENT_TYPES.noteOn && velocity === 0) {
       if (unfinishedNotes.has(key)) {
         unfinishedNotes.get(key).end = roundToNDecimals(currentTime, ROUNDING_PRECISION2);
         unfinishedNotes.delete(key);
@@ -21511,7 +21638,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
           console.log(event);
         }
       }
-    } else if (type === EVENT_TYPES.noteOn) {
+    } else if (type2 === EVENT_TYPES.noteOn) {
       const newNote = new Note_default(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION2), velocity, channel);
       notes.push(newNote);
       unfinishedNotes.set(key, newNote);
@@ -21767,11 +21894,11 @@ var KEY_SIG_MAP = /* @__PURE__ */ new Map([
 
 // src/types/MusicPiece.js
 var MusicPiece = class {
-  constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
+  constructor(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
     if (!tracks || tracks.length === 0) {
       throw new Error("No or invalid tracks given! Use .fromMidi or .fromMusicXml?");
     }
-    this.name = name;
+    this.name = name2;
     this.measureTimes = measureTimes;
     this.tracks = tracks;
     this.duration = Math.max(...this.tracks.map((d) => d.duration));
@@ -21800,7 +21927,7 @@ var MusicPiece = class {
       }
     }
   }
-  static fromMidi(name, midiFile) {
+  static fromMidi(name2, midiFile) {
     if (!midiFile) {
       throw new Error("No MIDI file content given");
     }
@@ -21817,9 +21944,9 @@ var MusicPiece = class {
       measureTimes = parsed.measureLinePositions;
     }
     const tracks = parsed.tracks.map((track) => new Track(track.trackName, track.instrumentName, track.noteObjs, null, track.measureIndices, /* @__PURE__ */ new Map(), /* @__PURE__ */ new Map()));
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
   }
-  static fromMusicXml(name, xmlFile) {
+  static fromMusicXml(name2, xmlFile) {
     if (!xmlFile) {
       throw new Error("No MusicXML file content given");
     }
@@ -21847,17 +21974,17 @@ var MusicPiece = class {
       }
       return new Track(parsed.partNames[index], parsed.instruments[index], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap, track.xmlNoteIndices);
     });
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
   }
   static fromJson(json) {
     json = typeof json === "string" ? JSON.parse(json) : json;
-    const name = json.name;
+    const name2 = json.name;
     const tempos = json.tempos.map((d) => new TempoDefinition(d.time, d.bpm));
     const timeSignatures = json.timeSignatures.map((d) => new TimeSignature(d.time, d.signature));
     const keySignatures = json.keySignatures.map((d) => new KeySignature(d.time, d.key, d.scale));
     const measureTimes = json.measureTimes;
     const tracks = json.tracks.map((track) => Track.from(track));
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
   }
   toJson(pretty = false) {
     const _this = __spreadProps(__spreadValues({}, this), {
@@ -21902,9 +22029,9 @@ var MusicPiece = class {
   }
 };
 var Track = class {
-  constructor(name, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
-    name = !(name == null ? void 0 : name.length) ? "unnamed" : name.replace("\0", "");
-    this.name = name;
+  constructor(name2, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
+    name2 = !(name2 == null ? void 0 : name2.length) ? "unnamed" : name2.replace("\0", "");
+    this.name = name2;
     this.instrument = instrument;
     if (!notes || notes.length === void 0) {
       throw new Error("Notes are undefined or not an array");
@@ -22785,8 +22912,8 @@ __export(Guitar_exports, {
 });
 var import_d35 = __toESM(require_d3_node(), 1);
 var StringedTuning = class {
-  constructor(name, notes) {
-    this.name = name;
+  constructor(name2, notes) {
+    this.name = name2;
     this.notes = notes;
     this.short = notes.join(" ");
     this.pitches = notes.map((note) => getMidiNoteByLabel(note).pitch);
@@ -22921,13 +23048,13 @@ function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
   }
   return positions;
 }
-function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) {
+function getFretboardPositionsFromNoteName(name2, tuning, fretCount = 24) {
   const n = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  if (!n.includes(name)) {
+  if (!n.includes(name2)) {
     return null;
   }
   const positions = [];
-  const lowestPitch = n.indexOf(name);
+  const lowestPitch = n.indexOf(name2);
   const stringCount = tuning.stringCount;
   for (let string = 0; string < stringCount; string++) {
     const openPitch = tuning.pitches[string];
@@ -23189,8 +23316,8 @@ function getChordName(notes) {
 
 // src/instruments/Lamellophone.js
 var LamellophoneTuning = class {
-  constructor(name, notes) {
-    this.name = name;
+  constructor(name2, notes) {
+    this.name = name2;
     this.notes = notes;
     this.short = notes.join(" ");
     this.pitches = notes.map((note) => getMidiNoteByLabel(note).pitch);
@@ -25405,7 +25532,7 @@ var NeedlemanWunsch_default = NeedlemanWunsch;
 
 // src/index.js
 function getVersion() {
-  return version;
+  return package_default.version;
 }
 module.exports = __toCommonJS(src_exports);
 // Annotate the CommonJS export names for ESM import in node:

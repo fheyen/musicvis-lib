@@ -9,24 +9,24 @@ var __commonJS = (cb, mod2) => function __require() {
   return mod2 || (0, cb[__getOwnPropNames(cb)[0]])((mod2 = { exports: {} }).exports, mod2), mod2.exports;
 };
 var __export = (target, all4) => {
-  for (var name in all4)
-    __defProp(target, name, { get: all4[name], enumerable: true });
+  for (var name2 in all4)
+    __defProp(target, name2, { get: all4[name2], enumerable: true });
 };
-var __reExport = (target, module, copyDefault, desc) => {
-  if (module && typeof module === "object" || typeof module === "function") {
-    for (let key of __getOwnPropNames(module))
+var __reExport = (target, module2, copyDefault, desc) => {
+  if (module2 && typeof module2 === "object" || typeof module2 === "function") {
+    for (let key of __getOwnPropNames(module2))
       if (!__hasOwnProp.call(target, key) && (copyDefault || key !== "default"))
-        __defProp(target, key, { get: () => module[key], enumerable: !(desc = __getOwnPropDesc(module, key)) || desc.enumerable });
+        __defProp(target, key, { get: () => module2[key], enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable });
   }
   return target;
 };
-var __toESM = (module, isNodeMode) => {
-  return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", !isNodeMode && module && module.__esModule ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
+var __toESM = (module2, isNodeMode) => {
+  return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", !isNodeMode && module2 && module2.__esModule ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
 };
 
 // node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js
 var require_main = __commonJS({
-  "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports, module) {
+  "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports2, module2) {
     (function() {
       "use strict";
       const _atob = function(string) {
@@ -278,8 +278,8 @@ var require_main = __commonJS({
         },
         customInterpreter: null
       };
-      if (typeof module !== "undefined")
-        module.exports = MidiParser;
+      if (typeof module2 !== "undefined")
+        module2.exports = MidiParser;
       else {
         let _global = typeof window === "object" && window.self === window && window || typeof self === "object" && self.self === self && self || typeof global === "object" && global.global === global && global;
         _global.MidiParser = MidiParser;
@@ -289,7 +289,134 @@ var require_main = __commonJS({
 });
 
 // package.json
-var version = "0.54.1";
+var name = "musicvis-lib";
+var version = "0.54.2";
+var description = "Music analysis and visualization library";
+var author = "Frank Heyen";
+var license = "ISC";
+var homepage = "https://fheyen.github.io/musicvis-lib";
+var repository = {
+  url: "git+https://github.com/fheyen/musicvis-lib",
+  type: "git"
+};
+var bugs = {
+  url: "https://github.com/fheyen/musicvis-lib/issues"
+};
+var keywords = [
+  "visualization",
+  "music visualization",
+  "visual analytics",
+  "JavaScript",
+  "ECMAScript",
+  "web-based",
+  "MIDI",
+  "MusicXML",
+  "Web MIDI",
+  "music",
+  "string comparison"
+];
+var type = "module";
+var exports = "./src/index.js";
+var main = "dist/musicvislib.node.js";
+var module = "dist/musicvislib.esm.js";
+var unpkg = "dist/musicvislib.min.js";
+var browser = "dist/musicvislib.min.js";
+var scripts = {
+  upd: "npm-check-updates -u",
+  "upd:i": "npm-check-updates -u && npm i && npm audit fix",
+  "upd:i:t": "npm-check-updates -u && npm i && npm test",
+  build: "npm run build:bundle && npm run build:browser && npm run build:browser:min && npm run build:node",
+  "build:bundle": "esbuild src/index.js --bundle --format=esm --sourcemap --outfile=dist/musicvislib.esm.js",
+  "build:browser": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.js",
+  "build:browser:min": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --minify --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.min.js",
+  "build:node": "esbuild src/index.js --bundle --sourcemap --platform=node --target=node16.5 --outfile=dist/musicvislib.node.js",
+  test: "jest --coverage",
+  testch: "jest --coverage --changedFilesWithAncestor",
+  testfail: "jest --changedFilesWithAncestor --onlyFailures",
+  testclear: "jest --clearCache",
+  doc: "jsdoc -c jsdoc.conf.json",
+  lint: "standard --verbose",
+  "lint:fix": "standard --fix --verbose",
+  "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
+  "git:add": "git add .",
+  "git:commit": 'git commit -m "new version build"',
+  "git:push": "git push",
+  "git:pushtags": "git push origin --tags",
+  predeploy: "npm run lint:fix && npm run build && jest --silent && npm run doc",
+  deploy: "npm publish && npm run git:all",
+  prepare: "husky install"
+};
+var dependencies = {
+  "@tonaljs/tonal": "^4.6.5",
+  d3: "^6.7.0",
+  "midi-parser-js": "^4.0.4"
+};
+var devDependencies = {
+  "@types/d3": "^7.1.0",
+  "@types/jest": "^27.0.3",
+  "clean-jsdoc-theme": "^3.3.1",
+  esbuild: "^0.14.23",
+  glob: "^7.2.0",
+  husky: "^7.0.0",
+  jest: "^27.4.5",
+  "jest-canvas-mock": "^2.3.1",
+  "jest-extended": "^1.2.0",
+  jsdoc: "^3.6.7",
+  "npm-check-updates": "^12.0.5",
+  standard: "^16.0.4"
+};
+var jest = {
+  testEnvironment: "jsdom",
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/dist/"
+  ],
+  collectCoverageFrom: [
+    "src/**/*.js"
+  ],
+  setupFilesAfterEnv: [
+    "jest-extended/all"
+  ]
+};
+var standard = {
+  ignore: [
+    "/dist/",
+    "/docs/"
+  ],
+  globals: [
+    "MediaRecorder",
+    "Blob",
+    "DOMParser",
+    "CanvasRenderingContext2D",
+    "localStorage",
+    "FileReader"
+  ],
+  env: [
+    "jest"
+  ]
+};
+var package_default = {
+  name,
+  version,
+  description,
+  author,
+  license,
+  homepage,
+  repository,
+  bugs,
+  keywords,
+  type,
+  exports,
+  main,
+  module,
+  unpkg,
+  browser,
+  scripts,
+  dependencies,
+  devDependencies,
+  jest,
+  standard
+};
 
 // src/fileFormats/Midi.js
 var Midi_exports = {};
@@ -321,8 +448,8 @@ function getMidiNoteByNr(nr) {
 function getMidiNoteByLabel(label) {
   return MidiNoteByLabel.get(label);
 }
-function getMidiNoteByNameAndOctave(name, octave) {
-  return MidiNoteByLabel.get(`${name}${octave}`);
+function getMidiNoteByNameAndOctave(name2, octave) {
+  return MidiNoteByLabel.get(`${name2}${octave}`);
 }
 function getMidiInstrumentByNr(nr) {
   return MidiInstrumentByNumber.get(nr);
@@ -1780,12 +1907,12 @@ function Dispatch(_) {
 }
 function parseTypenames(typenames, types) {
   return typenames.trim().split(/^|\s+/).map(function(t) {
-    var name = "", i = t.indexOf(".");
+    var name2 = "", i = t.indexOf(".");
     if (i >= 0)
-      name = t.slice(i + 1), t = t.slice(0, i);
+      name2 = t.slice(i + 1), t = t.slice(0, i);
     if (t && !types.hasOwnProperty(t))
       throw new Error("unknown type: " + t);
-    return { type: t, name };
+    return { type: t, name: name2 };
   });
 }
 Dispatch.prototype = dispatch.prototype = {
@@ -1815,39 +1942,39 @@ Dispatch.prototype = dispatch.prototype = {
       copy2[t] = _[t].slice();
     return new Dispatch(copy2);
   },
-  call: function(type2, that) {
+  call: function(type3, that) {
     if ((n = arguments.length - 2) > 0)
       for (var args = new Array(n), i = 0, n, t; i < n; ++i)
         args[i] = arguments[i + 2];
-    if (!this._.hasOwnProperty(type2))
-      throw new Error("unknown type: " + type2);
-    for (t = this._[type2], i = 0, n = t.length; i < n; ++i)
+    if (!this._.hasOwnProperty(type3))
+      throw new Error("unknown type: " + type3);
+    for (t = this._[type3], i = 0, n = t.length; i < n; ++i)
       t[i].value.apply(that, args);
   },
-  apply: function(type2, that, args) {
-    if (!this._.hasOwnProperty(type2))
-      throw new Error("unknown type: " + type2);
-    for (var t = this._[type2], i = 0, n = t.length; i < n; ++i)
+  apply: function(type3, that, args) {
+    if (!this._.hasOwnProperty(type3))
+      throw new Error("unknown type: " + type3);
+    for (var t = this._[type3], i = 0, n = t.length; i < n; ++i)
       t[i].value.apply(that, args);
   }
 };
-function get(type2, name) {
-  for (var i = 0, n = type2.length, c2; i < n; ++i) {
-    if ((c2 = type2[i]).name === name) {
+function get(type3, name2) {
+  for (var i = 0, n = type3.length, c2; i < n; ++i) {
+    if ((c2 = type3[i]).name === name2) {
       return c2.value;
     }
   }
 }
-function set2(type2, name, callback) {
-  for (var i = 0, n = type2.length; i < n; ++i) {
-    if (type2[i].name === name) {
-      type2[i] = noop, type2 = type2.slice(0, i).concat(type2.slice(i + 1));
+function set2(type3, name2, callback) {
+  for (var i = 0, n = type3.length; i < n; ++i) {
+    if (type3[i].name === name2) {
+      type3[i] = noop, type3 = type3.slice(0, i).concat(type3.slice(i + 1));
       break;
     }
   }
   if (callback != null)
-    type2.push({ name, value: callback });
-  return type2;
+    type3.push({ name: name2, value: callback });
+  return type3;
 }
 var dispatch_default = dispatch;
 
@@ -1862,18 +1989,18 @@ var namespaces_default = {
 };
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/namespace.js
-function namespace_default(name) {
-  var prefix = name += "", i = prefix.indexOf(":");
-  if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns")
-    name = name.slice(i + 1);
-  return namespaces_default.hasOwnProperty(prefix) ? { space: namespaces_default[prefix], local: name } : name;
+function namespace_default(name2) {
+  var prefix = name2 += "", i = prefix.indexOf(":");
+  if (i >= 0 && (prefix = name2.slice(0, i)) !== "xmlns")
+    name2 = name2.slice(i + 1);
+  return namespaces_default.hasOwnProperty(prefix) ? { space: namespaces_default[prefix], local: name2 } : name2;
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/creator.js
-function creatorInherit(name) {
+function creatorInherit(name2) {
   return function() {
     var document2 = this.ownerDocument, uri = this.namespaceURI;
-    return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name) : document2.createElementNS(uri, name);
+    return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name2) : document2.createElementNS(uri, name2);
   };
 }
 function creatorFixed(fullname) {
@@ -1881,8 +2008,8 @@ function creatorFixed(fullname) {
     return this.ownerDocument.createElementNS(fullname.space, fullname.local);
   };
 }
-function creator_default(name) {
-  var fullname = namespace_default(name);
+function creator_default(name2) {
+  var fullname = namespace_default(name2);
   return (fullname.local ? creatorFixed : creatorInherit)(fullname);
 }
 
@@ -2235,9 +2362,9 @@ function each_default(callback) {
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/attr.js
-function attrRemove(name) {
+function attrRemove(name2) {
   return function() {
-    this.removeAttribute(name);
+    this.removeAttribute(name2);
   };
 }
 function attrRemoveNS(fullname) {
@@ -2245,9 +2372,9 @@ function attrRemoveNS(fullname) {
     this.removeAttributeNS(fullname.space, fullname.local);
   };
 }
-function attrConstant(name, value) {
+function attrConstant(name2, value) {
   return function() {
-    this.setAttribute(name, value);
+    this.setAttribute(name2, value);
   };
 }
 function attrConstantNS(fullname, value) {
@@ -2255,13 +2382,13 @@ function attrConstantNS(fullname, value) {
     this.setAttributeNS(fullname.space, fullname.local, value);
   };
 }
-function attrFunction(name, value) {
+function attrFunction(name2, value) {
   return function() {
     var v = value.apply(this, arguments);
     if (v == null)
-      this.removeAttribute(name);
+      this.removeAttribute(name2);
     else
-      this.setAttribute(name, v);
+      this.setAttribute(name2, v);
   };
 }
 function attrFunctionNS(fullname, value) {
@@ -2273,8 +2400,8 @@ function attrFunctionNS(fullname, value) {
       this.setAttributeNS(fullname.space, fullname.local, v);
   };
 }
-function attr_default(name, value) {
-  var fullname = namespace_default(name);
+function attr_default(name2, value) {
+  var fullname = namespace_default(name2);
   if (arguments.length < 2) {
     var node = this.node();
     return fullname.local ? node.getAttributeNS(fullname.space, fullname.local) : node.getAttribute(fullname);
@@ -2288,54 +2415,54 @@ function window_default(node) {
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/style.js
-function styleRemove(name) {
+function styleRemove(name2) {
   return function() {
-    this.style.removeProperty(name);
+    this.style.removeProperty(name2);
   };
 }
-function styleConstant(name, value, priority) {
+function styleConstant(name2, value, priority) {
   return function() {
-    this.style.setProperty(name, value, priority);
+    this.style.setProperty(name2, value, priority);
   };
 }
-function styleFunction(name, value, priority) {
+function styleFunction(name2, value, priority) {
   return function() {
     var v = value.apply(this, arguments);
     if (v == null)
-      this.style.removeProperty(name);
+      this.style.removeProperty(name2);
     else
-      this.style.setProperty(name, v, priority);
+      this.style.setProperty(name2, v, priority);
   };
 }
-function style_default(name, value, priority) {
-  return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name, value, priority == null ? "" : priority)) : styleValue(this.node(), name);
+function style_default(name2, value, priority) {
+  return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name2, value, priority == null ? "" : priority)) : styleValue(this.node(), name2);
 }
-function styleValue(node, name) {
-  return node.style.getPropertyValue(name) || window_default(node).getComputedStyle(node, null).getPropertyValue(name);
+function styleValue(node, name2) {
+  return node.style.getPropertyValue(name2) || window_default(node).getComputedStyle(node, null).getPropertyValue(name2);
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/property.js
-function propertyRemove(name) {
+function propertyRemove(name2) {
   return function() {
-    delete this[name];
+    delete this[name2];
   };
 }
-function propertyConstant(name, value) {
+function propertyConstant(name2, value) {
   return function() {
-    this[name] = value;
+    this[name2] = value;
   };
 }
-function propertyFunction(name, value) {
+function propertyFunction(name2, value) {
   return function() {
     var v = value.apply(this, arguments);
     if (v == null)
-      delete this[name];
+      delete this[name2];
     else
-      this[name] = v;
+      this[name2] = v;
   };
 }
-function property_default(name, value) {
-  return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name, value)) : this.node()[name];
+function property_default(name2, value) {
+  return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name2, value)) : this.node()[name2];
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/classed.js
@@ -2350,22 +2477,22 @@ function ClassList(node) {
   this._names = classArray(node.getAttribute("class") || "");
 }
 ClassList.prototype = {
-  add: function(name) {
-    var i = this._names.indexOf(name);
+  add: function(name2) {
+    var i = this._names.indexOf(name2);
     if (i < 0) {
-      this._names.push(name);
+      this._names.push(name2);
       this._node.setAttribute("class", this._names.join(" "));
     }
   },
-  remove: function(name) {
-    var i = this._names.indexOf(name);
+  remove: function(name2) {
+    var i = this._names.indexOf(name2);
     if (i >= 0) {
       this._names.splice(i, 1);
       this._node.setAttribute("class", this._names.join(" "));
     }
   },
-  contains: function(name) {
-    return this._names.indexOf(name) >= 0;
+  contains: function(name2) {
+    return this._names.indexOf(name2) >= 0;
   }
 };
 function classedAdd(node, names2) {
@@ -2393,8 +2520,8 @@ function classedFunction(names2, value) {
     (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names2);
   };
 }
-function classed_default(name, value) {
-  var names2 = classArray(name + "");
+function classed_default(name2, value) {
+  var names2 = classArray(name2 + "");
   if (arguments.length < 2) {
     var list = classList(this.node()), i = -1, n = names2.length;
     while (++i < n)
@@ -2462,8 +2589,8 @@ function lower_default() {
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/append.js
-function append_default(name) {
-  var create2 = typeof name === "function" ? name : creator_default(name);
+function append_default(name2) {
+  var create2 = typeof name2 === "function" ? name2 : creator_default(name2);
   return this.select(function() {
     return this.appendChild(create2.apply(this, arguments));
   });
@@ -2473,8 +2600,8 @@ function append_default(name) {
 function constantNull() {
   return null;
 }
-function insert_default(name, before) {
-  var create2 = typeof name === "function" ? name : creator_default(name), select = before == null ? constantNull : typeof before === "function" ? before : selector_default(before);
+function insert_default(name2, before) {
+  var create2 = typeof name2 === "function" ? name2 : creator_default(name2), select = before == null ? constantNull : typeof before === "function" ? before : selector_default(before);
   return this.select(function() {
     return this.insertBefore(create2.apply(this, arguments), select.apply(this, arguments) || null);
   });
@@ -2516,10 +2643,10 @@ function contextListener(listener) {
 }
 function parseTypenames2(typenames) {
   return typenames.trim().split(/^|\s+/).map(function(t) {
-    var name = "", i = t.indexOf(".");
+    var name2 = "", i = t.indexOf(".");
     if (i >= 0)
-      name = t.slice(i + 1), t = t.slice(0, i);
-    return { type: t, name };
+      name2 = t.slice(i + 1), t = t.slice(0, i);
+    return { type: t, name: name2 };
   });
 }
 function onRemove(typename) {
@@ -2581,31 +2708,31 @@ function on_default(typename, value, options) {
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/dispatch.js
-function dispatchEvent(node, type2, params) {
+function dispatchEvent(node, type3, params) {
   var window2 = window_default(node), event = window2.CustomEvent;
   if (typeof event === "function") {
-    event = new event(type2, params);
+    event = new event(type3, params);
   } else {
     event = window2.document.createEvent("Event");
     if (params)
-      event.initEvent(type2, params.bubbles, params.cancelable), event.detail = params.detail;
+      event.initEvent(type3, params.bubbles, params.cancelable), event.detail = params.detail;
     else
-      event.initEvent(type2, false, false);
+      event.initEvent(type3, false, false);
   }
   node.dispatchEvent(event);
 }
-function dispatchConstant(type2, params) {
+function dispatchConstant(type3, params) {
   return function() {
-    return dispatchEvent(this, type2, params);
+    return dispatchEvent(this, type3, params);
   };
 }
-function dispatchFunction(type2, params) {
+function dispatchFunction(type3, params) {
   return function() {
-    return dispatchEvent(this, type2, params.apply(this, arguments));
+    return dispatchEvent(this, type3, params.apply(this, arguments));
   };
 }
-function dispatch_default2(type2, params) {
-  return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type2, params));
+function dispatch_default2(type3, params) {
+  return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type3, params));
 }
 
 // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/iterator.js
@@ -3523,14 +3650,14 @@ var STARTED = 3;
 var RUNNING = 4;
 var ENDING = 5;
 var ENDED = 6;
-function schedule_default(node, name, id2, index16, group2, timing) {
+function schedule_default(node, name2, id2, index16, group2, timing) {
   var schedules = node.__transition;
   if (!schedules)
     node.__transition = {};
   else if (id2 in schedules)
     return;
   create(node, id2, {
-    name,
+    name: name2,
     index: index16,
     group: group2,
     on: emptyOn,
@@ -3634,13 +3761,13 @@ function create(node, id2, self2) {
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/interrupt.js
-function interrupt_default(node, name) {
+function interrupt_default(node, name2) {
   var schedules = node.__transition, schedule, active, empty2 = true, i;
   if (!schedules)
     return;
-  name = name == null ? null : name + "";
+  name2 = name2 == null ? null : name2 + "";
   for (i in schedules) {
-    if ((schedule = schedules[i]).name !== name) {
+    if ((schedule = schedules[i]).name !== name2) {
       empty2 = false;
       continue;
     }
@@ -3655,21 +3782,21 @@ function interrupt_default(node, name) {
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/interrupt.js
-function interrupt_default2(name) {
+function interrupt_default2(name2) {
   return this.each(function() {
-    interrupt_default(this, name);
+    interrupt_default(this, name2);
   });
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/tween.js
-function tweenRemove(id2, name) {
+function tweenRemove(id2, name2) {
   var tween0, tween1;
   return function() {
     var schedule = set3(this, id2), tween = schedule.tween;
     if (tween !== tween0) {
       tween1 = tween0 = tween;
       for (var i = 0, n = tween1.length; i < n; ++i) {
-        if (tween1[i].name === name) {
+        if (tween1[i].name === name2) {
           tween1 = tween1.slice();
           tween1.splice(i, 1);
           break;
@@ -3679,7 +3806,7 @@ function tweenRemove(id2, name) {
     schedule.tween = tween1;
   };
 }
-function tweenFunction(id2, name, value) {
+function tweenFunction(id2, name2, value) {
   var tween0, tween1;
   if (typeof value !== "function")
     throw new Error();
@@ -3687,8 +3814,8 @@ function tweenFunction(id2, name, value) {
     var schedule = set3(this, id2), tween = schedule.tween;
     if (tween !== tween0) {
       tween1 = (tween0 = tween).slice();
-      for (var t = { name, value }, i = 0, n = tween1.length; i < n; ++i) {
-        if (tween1[i].name === name) {
+      for (var t = { name: name2, value }, i = 0, n = tween1.length; i < n; ++i) {
+        if (tween1[i].name === name2) {
           tween1[i] = t;
           break;
         }
@@ -3699,28 +3826,28 @@ function tweenFunction(id2, name, value) {
     schedule.tween = tween1;
   };
 }
-function tween_default(name, value) {
+function tween_default(name2, value) {
   var id2 = this._id;
-  name += "";
+  name2 += "";
   if (arguments.length < 2) {
     var tween = get2(this.node(), id2).tween;
     for (var i = 0, n = tween.length, t; i < n; ++i) {
-      if ((t = tween[i]).name === name) {
+      if ((t = tween[i]).name === name2) {
         return t.value;
       }
     }
     return null;
   }
-  return this.each((value == null ? tweenRemove : tweenFunction)(id2, name, value));
+  return this.each((value == null ? tweenRemove : tweenFunction)(id2, name2, value));
 }
-function tweenValue(transition2, name, value) {
+function tweenValue(transition2, name2, value) {
   var id2 = transition2._id;
   transition2.each(function() {
     var schedule = set3(this, id2);
-    (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+    (schedule.value || (schedule.value = {}))[name2] = value.apply(this, arguments);
   });
   return function(node) {
-    return get2(node, id2).value[name];
+    return get2(node, id2).value[name2];
   };
 }
 
@@ -3731,9 +3858,9 @@ function interpolate_default(a, b) {
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/attr.js
-function attrRemove2(name) {
+function attrRemove2(name2) {
   return function() {
-    this.removeAttribute(name);
+    this.removeAttribute(name2);
   };
 }
 function attrRemoveNS2(fullname) {
@@ -3741,10 +3868,10 @@ function attrRemoveNS2(fullname) {
     this.removeAttributeNS(fullname.space, fullname.local);
   };
 }
-function attrConstant2(name, interpolate, value1) {
+function attrConstant2(name2, interpolate, value1) {
   var string00, string1 = value1 + "", interpolate0;
   return function() {
-    var string0 = this.getAttribute(name);
+    var string0 = this.getAttribute(name2);
     return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
   };
 }
@@ -3755,13 +3882,13 @@ function attrConstantNS2(fullname, interpolate, value1) {
     return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
   };
 }
-function attrFunction2(name, interpolate, value) {
+function attrFunction2(name2, interpolate, value) {
   var string00, string10, interpolate0;
   return function() {
     var string0, value1 = value(this), string1;
     if (value1 == null)
-      return void this.removeAttribute(name);
-    string0 = this.getAttribute(name);
+      return void this.removeAttribute(name2);
+    string0 = this.getAttribute(name2);
     string1 = value1 + "";
     return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
   };
@@ -3777,15 +3904,15 @@ function attrFunctionNS2(fullname, interpolate, value) {
     return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
   };
 }
-function attr_default2(name, value) {
-  var fullname = namespace_default(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate_default;
-  return this.attrTween(name, typeof value === "function" ? (fullname.local ? attrFunctionNS2 : attrFunction2)(fullname, i, tweenValue(this, "attr." + name, value)) : value == null ? (fullname.local ? attrRemoveNS2 : attrRemove2)(fullname) : (fullname.local ? attrConstantNS2 : attrConstant2)(fullname, i, value));
+function attr_default2(name2, value) {
+  var fullname = namespace_default(name2), i = fullname === "transform" ? interpolateTransformSvg : interpolate_default;
+  return this.attrTween(name2, typeof value === "function" ? (fullname.local ? attrFunctionNS2 : attrFunction2)(fullname, i, tweenValue(this, "attr." + name2, value)) : value == null ? (fullname.local ? attrRemoveNS2 : attrRemove2)(fullname) : (fullname.local ? attrConstantNS2 : attrConstant2)(fullname, i, value));
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/attrTween.js
-function attrInterpolate(name, i) {
+function attrInterpolate(name2, i) {
   return function(t) {
-    this.setAttribute(name, i.call(this, t));
+    this.setAttribute(name2, i.call(this, t));
   };
 }
 function attrInterpolateNS(fullname, i) {
@@ -3804,26 +3931,26 @@ function attrTweenNS(fullname, value) {
   tween._value = value;
   return tween;
 }
-function attrTween(name, value) {
+function attrTween(name2, value) {
   var t0, i0;
   function tween() {
     var i = value.apply(this, arguments);
     if (i !== i0)
-      t0 = (i0 = i) && attrInterpolate(name, i);
+      t0 = (i0 = i) && attrInterpolate(name2, i);
     return t0;
   }
   tween._value = value;
   return tween;
 }
-function attrTween_default(name, value) {
-  var key = "attr." + name;
+function attrTween_default(name2, value) {
+  var key = "attr." + name2;
   if (arguments.length < 2)
     return (key = this.tween(key)) && key._value;
   if (value == null)
     return this.tween(key, null);
   if (typeof value !== "function")
     throw new Error();
-  var fullname = namespace_default(name);
+  var fullname = namespace_default(name2);
   return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
 }
 
@@ -3919,26 +4046,26 @@ function merge_default2(transition2) {
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/on.js
-function start(name) {
-  return (name + "").trim().split(/^|\s+/).every(function(t) {
+function start(name2) {
+  return (name2 + "").trim().split(/^|\s+/).every(function(t) {
     var i = t.indexOf(".");
     if (i >= 0)
       t = t.slice(0, i);
     return !t || t === "start";
   });
 }
-function onFunction(id2, name, listener) {
-  var on0, on1, sit = start(name) ? init : set3;
+function onFunction(id2, name2, listener) {
+  var on0, on1, sit = start(name2) ? init : set3;
   return function() {
     var schedule = sit(this, id2), on = schedule.on;
     if (on !== on0)
-      (on1 = (on0 = on).copy()).on(name, listener);
+      (on1 = (on0 = on).copy()).on(name2, listener);
     schedule.on = on1;
   };
 }
-function on_default2(name, listener) {
+function on_default2(name2, listener) {
   var id2 = this._id;
-  return arguments.length < 2 ? get2(this.node(), id2).on.on(name) : this.each(onFunction(id2, name, listener));
+  return arguments.length < 2 ? get2(this.node(), id2).on.on(name2) : this.each(onFunction(id2, name2, listener));
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/remove.js
@@ -3958,7 +4085,7 @@ function remove_default2() {
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/select.js
 function select_default2(select) {
-  var name = this._name, id2 = this._id;
+  var name2 = this._name, id2 = this._id;
   if (typeof select !== "function")
     select = selector_default(select);
   for (var groups2 = this._groups, m = groups2.length, subgroups = new Array(m), j = 0; j < m; ++j) {
@@ -3967,16 +4094,16 @@ function select_default2(select) {
         if ("__data__" in node)
           subnode.__data__ = node.__data__;
         subgroup[i] = subnode;
-        schedule_default(subgroup[i], name, id2, i, subgroup, get2(node, id2));
+        schedule_default(subgroup[i], name2, id2, i, subgroup, get2(node, id2));
       }
     }
   }
-  return new Transition(subgroups, this._parents, name, id2);
+  return new Transition(subgroups, this._parents, name2, id2);
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/selectAll.js
 function selectAll_default2(select) {
-  var name = this._name, id2 = this._id;
+  var name2 = this._name, id2 = this._id;
   if (typeof select !== "function")
     select = selectorAll_default(select);
   for (var groups2 = this._groups, m = groups2.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
@@ -3984,7 +4111,7 @@ function selectAll_default2(select) {
       if (node = group2[i]) {
         for (var children2 = select.call(node, node.__data__, i, group2), child, inherit2 = get2(node, id2), k = 0, l = children2.length; k < l; ++k) {
           if (child = children2[k]) {
-            schedule_default(child, name, id2, k, children2, inherit2);
+            schedule_default(child, name2, id2, k, children2, inherit2);
           }
         }
         subgroups.push(children2);
@@ -3992,7 +4119,7 @@ function selectAll_default2(select) {
       }
     }
   }
-  return new Transition(subgroups, parents, name, id2);
+  return new Transition(subgroups, parents, name2, id2);
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/selection.js
@@ -4002,74 +4129,74 @@ function selection_default2() {
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/style.js
-function styleNull(name, interpolate) {
+function styleNull(name2, interpolate) {
   var string00, string10, interpolate0;
   return function() {
-    var string0 = styleValue(this, name), string1 = (this.style.removeProperty(name), styleValue(this, name));
+    var string0 = styleValue(this, name2), string1 = (this.style.removeProperty(name2), styleValue(this, name2));
     return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : interpolate0 = interpolate(string00 = string0, string10 = string1);
   };
 }
-function styleRemove2(name) {
+function styleRemove2(name2) {
   return function() {
-    this.style.removeProperty(name);
+    this.style.removeProperty(name2);
   };
 }
-function styleConstant2(name, interpolate, value1) {
+function styleConstant2(name2, interpolate, value1) {
   var string00, string1 = value1 + "", interpolate0;
   return function() {
-    var string0 = styleValue(this, name);
+    var string0 = styleValue(this, name2);
     return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
   };
 }
-function styleFunction2(name, interpolate, value) {
+function styleFunction2(name2, interpolate, value) {
   var string00, string10, interpolate0;
   return function() {
-    var string0 = styleValue(this, name), value1 = value(this), string1 = value1 + "";
+    var string0 = styleValue(this, name2), value1 = value(this), string1 = value1 + "";
     if (value1 == null)
-      string1 = value1 = (this.style.removeProperty(name), styleValue(this, name));
+      string1 = value1 = (this.style.removeProperty(name2), styleValue(this, name2));
     return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
   };
 }
-function styleMaybeRemove(id2, name) {
-  var on0, on1, listener0, key = "style." + name, event = "end." + key, remove2;
+function styleMaybeRemove(id2, name2) {
+  var on0, on1, listener0, key = "style." + name2, event = "end." + key, remove2;
   return function() {
-    var schedule = set3(this, id2), on = schedule.on, listener = schedule.value[key] == null ? remove2 || (remove2 = styleRemove2(name)) : void 0;
+    var schedule = set3(this, id2), on = schedule.on, listener = schedule.value[key] == null ? remove2 || (remove2 = styleRemove2(name2)) : void 0;
     if (on !== on0 || listener0 !== listener)
       (on1 = (on0 = on).copy()).on(event, listener0 = listener);
     schedule.on = on1;
   };
 }
-function style_default2(name, value, priority) {
-  var i = (name += "") === "transform" ? interpolateTransformCss : interpolate_default;
-  return value == null ? this.styleTween(name, styleNull(name, i)).on("end.style." + name, styleRemove2(name)) : typeof value === "function" ? this.styleTween(name, styleFunction2(name, i, tweenValue(this, "style." + name, value))).each(styleMaybeRemove(this._id, name)) : this.styleTween(name, styleConstant2(name, i, value), priority).on("end.style." + name, null);
+function style_default2(name2, value, priority) {
+  var i = (name2 += "") === "transform" ? interpolateTransformCss : interpolate_default;
+  return value == null ? this.styleTween(name2, styleNull(name2, i)).on("end.style." + name2, styleRemove2(name2)) : typeof value === "function" ? this.styleTween(name2, styleFunction2(name2, i, tweenValue(this, "style." + name2, value))).each(styleMaybeRemove(this._id, name2)) : this.styleTween(name2, styleConstant2(name2, i, value), priority).on("end.style." + name2, null);
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/styleTween.js
-function styleInterpolate(name, i, priority) {
+function styleInterpolate(name2, i, priority) {
   return function(t) {
-    this.style.setProperty(name, i.call(this, t), priority);
+    this.style.setProperty(name2, i.call(this, t), priority);
   };
 }
-function styleTween(name, value, priority) {
+function styleTween(name2, value, priority) {
   var t, i0;
   function tween() {
     var i = value.apply(this, arguments);
     if (i !== i0)
-      t = (i0 = i) && styleInterpolate(name, i, priority);
+      t = (i0 = i) && styleInterpolate(name2, i, priority);
     return t;
   }
   tween._value = value;
   return tween;
 }
-function styleTween_default(name, value, priority) {
-  var key = "style." + (name += "");
+function styleTween_default(name2, value, priority) {
+  var key = "style." + (name2 += "");
   if (arguments.length < 2)
     return (key = this.tween(key)) && key._value;
   if (value == null)
     return this.tween(key, null);
   if (typeof value !== "function")
     throw new Error();
-  return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+  return this.tween(key, styleTween(name2, value, priority == null ? "" : priority));
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/text.js
@@ -4118,12 +4245,12 @@ function textTween_default(value) {
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/transition.js
 function transition_default() {
-  var name = this._name, id0 = this._id, id1 = newId();
+  var name2 = this._name, id0 = this._id, id1 = newId();
   for (var groups2 = this._groups, m = groups2.length, j = 0; j < m; ++j) {
     for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
       if (node = group2[i]) {
         var inherit2 = get2(node, id0);
-        schedule_default(node, name, id1, i, group2, {
+        schedule_default(node, name2, id1, i, group2, {
           time: inherit2.time + inherit2.delay + inherit2.duration,
           delay: 0,
           duration: inherit2.duration,
@@ -4132,7 +4259,7 @@ function transition_default() {
       }
     }
   }
-  return new Transition(groups2, this._parents, name, id1);
+  return new Transition(groups2, this._parents, name2, id1);
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/end.js
@@ -4160,14 +4287,14 @@ function end_default() {
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/index.js
 var id = 0;
-function Transition(groups2, parents, name, id2) {
+function Transition(groups2, parents, name2, id2) {
   this._groups = groups2;
   this._parents = parents;
-  this._name = name;
+  this._name = name2;
   this._id = id2;
 }
-function transition(name) {
-  return selection_default().transition(name);
+function transition(name2) {
+  return selection_default().transition(name2);
 }
 function newId() {
   return ++id;
@@ -4225,21 +4352,21 @@ function inherit(node, id2) {
   }
   return timing;
 }
-function transition_default2(name) {
+function transition_default2(name2) {
   var id2, timing;
-  if (name instanceof Transition) {
-    id2 = name._id, name = name._name;
+  if (name2 instanceof Transition) {
+    id2 = name2._id, name2 = name2._name;
   } else {
-    id2 = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+    id2 = newId(), (timing = defaultTiming).time = now(), name2 = name2 == null ? null : name2 + "";
   }
   for (var groups2 = this._groups, m = groups2.length, j = 0; j < m; ++j) {
     for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
       if (node = group2[i]) {
-        schedule_default(node, name, id2, i, group2, timing || inherit(node, id2));
+        schedule_default(node, name2, id2, i, group2, timing || inherit(node, id2));
       }
     }
   }
-  return new Transition(groups2, this._parents, name, id2);
+  return new Transition(groups2, this._parents, name2, id2);
 }
 
 // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/index.js
@@ -4256,7 +4383,7 @@ function number2(e) {
 }
 var X = {
   name: "x",
-  handles: ["w", "e"].map(type),
+  handles: ["w", "e"].map(type2),
   input: function(x, e) {
     return x == null ? null : [[+x[0], e[0][1]], [+x[1], e[1][1]]];
   },
@@ -4266,7 +4393,7 @@ var X = {
 };
 var Y = {
   name: "y",
-  handles: ["n", "s"].map(type),
+  handles: ["n", "s"].map(type2),
   input: function(y, e) {
     return y == null ? null : [[e[0][0], +y[0]], [e[1][0], +y[1]]];
   },
@@ -4276,7 +4403,7 @@ var Y = {
 };
 var XY = {
   name: "xy",
-  handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type),
+  handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type2),
   input: function(xy) {
     return xy == null ? null : number2(xy);
   },
@@ -4284,7 +4411,7 @@ var XY = {
     return xy;
   }
 };
-function type(t) {
+function type2(t) {
   return { type: t };
 }
 
@@ -4440,19 +4567,19 @@ function locale_default(locale2) {
   var group2 = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity_default2 : formatGroup_default(map.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity_default2 : formatNumerals_default(map.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "\u2212" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
   function newFormat(specifier) {
     specifier = formatSpecifier(specifier);
-    var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero2 = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type2 = specifier.type;
-    if (type2 === "n")
-      comma = true, type2 = "g";
-    else if (!formatTypes_default[type2])
-      precision === void 0 && (precision = 12), trim = true, type2 = "g";
+    var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero2 = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type3 = specifier.type;
+    if (type3 === "n")
+      comma = true, type3 = "g";
+    else if (!formatTypes_default[type3])
+      precision === void 0 && (precision = 12), trim = true, type3 = "g";
     if (zero2 || fill === "0" && align === "=")
       zero2 = true, fill = "0", align = "=";
-    var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "";
-    var formatType = formatTypes_default[type2], maybeSuffix = /[defgprs%]/.test(type2);
-    precision = precision === void 0 ? 6 : /[gprs]/.test(type2) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+    var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type3) ? "0" + type3.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type3) ? percent : "";
+    var formatType = formatTypes_default[type3], maybeSuffix = /[defgprs%]/.test(type3);
+    precision = precision === void 0 ? 6 : /[gprs]/.test(type3) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
     function format2(value) {
       var valuePrefix = prefix, valueSuffix = suffix, i, n, c2;
-      if (type2 === "c") {
+      if (type3 === "c") {
         valueSuffix = formatType(value) + valueSuffix;
         value = "";
       } else {
@@ -4464,7 +4591,7 @@ function locale_default(locale2) {
         if (valueNegative && +value === 0 && sign !== "+")
           valueNegative = false;
         valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-        valueSuffix = (type2 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+        valueSuffix = (type3 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
         if (maybeSuffix) {
           i = -1, n = value.length;
           while (++i < n) {
@@ -5428,9 +5555,9 @@ function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
 
 // src/types/Recording.js
 var Recording = class extends NoteArray_default {
-  constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
+  constructor(name2, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
     super(notes);
-    this.name = name;
+    this.name = name2;
     this.date = date;
     this.dateString = date.toISOString().slice(0, 19).replace("T", " ");
     this.speed = +speed;
@@ -5493,8 +5620,8 @@ var Recording = class extends NoteArray_default {
     };
   }
   static from(object) {
-    let { name, date, notes } = object;
-    const values = [name, date, notes];
+    let { name: name2, date, notes } = object;
+    const values = [name2, date, notes];
     const names2 = ["name", "date", "notes"];
     for (const [index16, value] of values.entries()) {
       if (value === void 0 || value === null) {
@@ -5505,7 +5632,7 @@ var Recording = class extends NoteArray_default {
       date = new Date(Date.parse(date));
     }
     const { speed, selectedTrack, timeSelection, comment } = object;
-    return new Recording(name, date, notes, speed, selectedTrack, timeSelection, comment);
+    return new Recording(name2, date, notes, speed, selectedTrack, timeSelection, comment);
   }
 };
 var Recording_default = Recording;
@@ -5656,18 +5783,18 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
         try {
           let durationInSeconds;
           if (note2.querySelectorAll("grace").length > 0) {
-            const type2 = note2.querySelectorAll("type").textContent;
-            if (type2 === "64th") {
+            const type3 = note2.querySelectorAll("type").textContent;
+            if (type3 === "64th") {
               durationInSeconds = secondsPerBeat / 16;
-            } else if (type2 === "32nd") {
+            } else if (type3 === "32nd") {
               durationInSeconds = secondsPerBeat / 8;
-            } else if (type2 === "16th") {
+            } else if (type3 === "16th") {
               durationInSeconds = secondsPerBeat / 4;
-            } else if (type2 === "eighth") {
+            } else if (type3 === "eighth") {
               durationInSeconds = secondsPerBeat / 2;
-            } else if (type2 === "quarter") {
+            } else if (type3 === "quarter") {
               durationInSeconds = secondsPerBeat;
-            } else if (type2 === "half") {
+            } else if (type3 === "half") {
               durationInSeconds = secondsPerBeat * 2;
             } else {
               durationInSeconds = 0.01;
@@ -6125,8 +6252,8 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
   let timeOfLastTempoChange = 0;
   const unfinishedNotes = /* @__PURE__ */ new Map();
   for (const event of track.event) {
-    const type2 = event.type;
-    if (type2 === EVENT_TYPES.meta) {
+    const type3 = event.type;
+    if (type3 === EVENT_TYPES.meta) {
       continue;
     }
     currentTick += event.deltaTime;
@@ -6163,13 +6290,13 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
       milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
     }
     currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
-    if (type2 !== EVENT_TYPES.noteOn && type2 !== EVENT_TYPES.noteOff) {
+    if (type3 !== EVENT_TYPES.noteOn && type3 !== EVENT_TYPES.noteOff) {
       continue;
     }
     const [pitch, velocity] = event.data;
     const channel = event.channel;
     const key = `${pitch} ${channel}`;
-    if (type2 === EVENT_TYPES.noteOff || type2 === EVENT_TYPES.noteOn && velocity === 0) {
+    if (type3 === EVENT_TYPES.noteOff || type3 === EVENT_TYPES.noteOn && velocity === 0) {
       if (unfinishedNotes.has(key)) {
         unfinishedNotes.get(key).end = roundToNDecimals(currentTime, ROUNDING_PRECISION2);
         unfinishedNotes.delete(key);
@@ -6179,7 +6306,7 @@ function parseMidiTrack(track, timeDivision, tempoChanges, beatTypeChanges, keyS
           console.log(event);
         }
       }
-    } else if (type2 === EVENT_TYPES.noteOn) {
+    } else if (type3 === EVENT_TYPES.noteOn) {
       const newNote = new Note_default(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION2), velocity, channel);
       notes.push(newNote);
       unfinishedNotes.set(key, newNote);
@@ -6436,11 +6563,11 @@ var KEY_SIG_MAP = /* @__PURE__ */ new Map([
 
 // src/types/MusicPiece.js
 var MusicPiece = class {
-  constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
+  constructor(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
     if (!tracks || tracks.length === 0) {
       throw new Error("No or invalid tracks given! Use .fromMidi or .fromMusicXml?");
     }
-    this.name = name;
+    this.name = name2;
     this.measureTimes = measureTimes;
     this.tracks = tracks;
     this.duration = Math.max(...this.tracks.map((d) => d.duration));
@@ -6469,7 +6596,7 @@ var MusicPiece = class {
       }
     }
   }
-  static fromMidi(name, midiFile) {
+  static fromMidi(name2, midiFile) {
     if (!midiFile) {
       throw new Error("No MIDI file content given");
     }
@@ -6486,9 +6613,9 @@ var MusicPiece = class {
       measureTimes = parsed.measureLinePositions;
     }
     const tracks = parsed.tracks.map((track) => new Track(track.trackName, track.instrumentName, track.noteObjs, null, track.measureIndices, /* @__PURE__ */ new Map(), /* @__PURE__ */ new Map()));
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
   }
-  static fromMusicXml(name, xmlFile) {
+  static fromMusicXml(name2, xmlFile) {
     if (!xmlFile) {
       throw new Error("No MusicXML file content given");
     }
@@ -6516,17 +6643,17 @@ var MusicPiece = class {
       }
       return new Track(parsed.partNames[index16], parsed.instruments[index16], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap, track.xmlNoteIndices);
     });
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
   }
   static fromJson(json) {
     json = typeof json === "string" ? JSON.parse(json) : json;
-    const name = json.name;
+    const name2 = json.name;
     const tempos = json.tempos.map((d) => new TempoDefinition(d.time, d.bpm));
     const timeSignatures = json.timeSignatures.map((d) => new TimeSignature(d.time, d.signature));
     const keySignatures = json.keySignatures.map((d) => new KeySignature(d.time, d.key, d.scale));
     const measureTimes = json.measureTimes;
     const tracks = json.tracks.map((track) => Track.from(track));
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
   }
   toJson(pretty = false) {
     const _this = {
@@ -6572,9 +6699,9 @@ var MusicPiece = class {
   }
 };
 var Track = class {
-  constructor(name, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
-    name = !name?.length ? "unnamed" : name.replace("\0", "");
-    this.name = name;
+  constructor(name2, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
+    name2 = !name2?.length ? "unnamed" : name2.replace("\0", "");
+    this.name = name2;
     this.instrument = instrument;
     if (!notes || notes.length === void 0) {
       throw new Error("Notes are undefined or not an array");
@@ -7453,8 +7580,8 @@ __export(Guitar_exports, {
   stringedTunings: () => stringedTunings
 });
 var StringedTuning = class {
-  constructor(name, notes) {
-    this.name = name;
+  constructor(name2, notes) {
+    this.name = name2;
     this.notes = notes;
     this.short = notes.join(" ");
     this.pitches = notes.map((note2) => getMidiNoteByLabel(note2).pitch);
@@ -7589,13 +7716,13 @@ function getFretboardPositionsFromPitch(pitch, tuning, fretCount) {
   }
   return positions;
 }
-function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) {
+function getFretboardPositionsFromNoteName(name2, tuning, fretCount = 24) {
   const n = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  if (!n.includes(name)) {
+  if (!n.includes(name2)) {
     return null;
   }
   const positions = [];
-  const lowestPitch = n.indexOf(name);
+  const lowestPitch = n.indexOf(name2);
   const stringCount = tuning.stringCount;
   for (let string = 0; string < stringCount; string++) {
     const openPitch = tuning.pitches[string];
@@ -7771,7 +7898,7 @@ function parse$1(noteName) {
   const alt = accToAlt(acc);
   const oct = octStr.length ? +octStr : void 0;
   const coord = encode({ step, alt, oct });
-  const name = letter + acc + octStr;
+  const name2 = letter + acc + octStr;
   const pc = letter + acc;
   const chroma = (SEMI[step] + alt + 120) % 12;
   const height = oct === void 0 ? mod(SEMI[step] + alt, 12) - 12 * 99 : SEMI[step] + alt + 12 * (oct + 1);
@@ -7787,7 +7914,7 @@ function parse$1(noteName) {
     height,
     letter,
     midi,
-    name,
+    name: name2,
     oct,
     pc,
     step
@@ -7831,24 +7958,24 @@ function parse2(str) {
   if (t === "M" && q === "P") {
     return NoInterval;
   }
-  const type2 = t === "M" ? "majorable" : "perfectable";
-  const name = "" + num + q;
+  const type3 = t === "M" ? "majorable" : "perfectable";
+  const name2 = "" + num + q;
   const dir = num < 0 ? -1 : 1;
   const simple = num === 8 || num === -8 ? num : dir * (step + 1);
-  const alt = qToAlt(type2, q);
+  const alt = qToAlt(type3, q);
   const oct = Math.floor((Math.abs(num) - 1) / 7);
   const semitones = dir * (SIZES[step] + alt + 12 * oct);
   const chroma = (dir * (SIZES[step] + alt) % 12 + 12) % 12;
   const coord = encode({ step, alt, oct, dir });
   return {
     empty: false,
-    name,
+    name: name2,
     num,
     q,
     step,
     alt,
     dir,
-    type: type2,
+    type: type3,
     simple,
     semitones,
     chroma,
@@ -7862,8 +7989,8 @@ function coordToInterval(coord, forceDescending) {
   const ivl = forceDescending || isDescending ? [-f, -o, -1] : [f, o, 1];
   return interval2(decode(ivl));
 }
-function qToAlt(type2, q) {
-  return q === "M" && type2 === "majorable" || q === "P" && type2 === "perfectable" ? 0 : q === "m" && type2 === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type2 === "perfectable" ? q.length : q.length + 1) : 0;
+function qToAlt(type3, q) {
+  return q === "M" && type3 === "majorable" || q === "P" && type3 === "perfectable" ? 0 : q === "m" && type3 === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type3 === "perfectable" ? q.length : q.length + 1) : 0;
 }
 function pitchName(props) {
   const { step, alt, oct = 0, dir } = props;
@@ -7873,19 +8000,19 @@ function pitchName(props) {
   const calcNum = step + 1 + 7 * oct;
   const num = calcNum === 0 ? step + 1 : calcNum;
   const d = dir < 0 ? "-" : "";
-  const type2 = TYPES[step] === "M" ? "majorable" : "perfectable";
-  const name = d + num + altToQ(type2, alt);
-  return name;
+  const type3 = TYPES[step] === "M" ? "majorable" : "perfectable";
+  const name2 = d + num + altToQ(type3, alt);
+  return name2;
 }
-function altToQ(type2, alt) {
+function altToQ(type3, alt) {
   if (alt === 0) {
-    return type2 === "majorable" ? "M" : "P";
-  } else if (alt === -1 && type2 === "majorable") {
+    return type3 === "majorable" ? "M" : "P";
+  } else if (alt === -1 && type3 === "majorable") {
     return "m";
   } else if (alt > 0) {
     return fillStr("A", alt);
   } else {
-    return fillStr("d", type2 === "perfectable" ? alt : alt + 1);
+    return fillStr("d", type3 === "perfectable" ? alt : alt + 1);
   }
 }
 function transpose(noteName, intervalName) {
@@ -8158,8 +8285,8 @@ var NoChordType = {
 };
 var dictionary = [];
 var index2 = {};
-function get4(type2) {
-  return index2[type2] || NoChordType;
+function get4(type3) {
+  return index2[type3] || NoChordType;
 }
 var chordType = deprecate("ChordType.chordType", "ChordType.get", get4);
 function all() {
@@ -8377,16 +8504,16 @@ var NoScaleType = {
 };
 var dictionary2 = [];
 var index3 = {};
-function get5(type2) {
-  return index3[type2] || NoScaleType;
+function get5(type3) {
+  return index3[type3] || NoScaleType;
 }
 var scaleType = deprecate("ScaleDictionary.scaleType", "ScaleType.get", get5);
 function all2() {
   return dictionary2.slice();
 }
 var entries2 = deprecate("ScaleDictionary.entries", "ScaleType.all", all2);
-function add2(intervals, name, aliases = []) {
-  const scale2 = { ...get3(intervals), name, intervals, aliases };
+function add2(intervals, name2, aliases = []) {
+  const scale2 = { ...get3(intervals), name: name2, intervals, aliases };
   dictionary2.push(scale2);
   index3[scale2.name] = scale2;
   index3[scale2.setNum] = scale2;
@@ -8397,7 +8524,7 @@ function add2(intervals, name, aliases = []) {
 function addAlias2(scale2, alias) {
   index3[alias] = scale2;
 }
-SCALES.forEach(([ivls, name, ...aliases]) => add2(ivls.split(" "), name, aliases));
+SCALES.forEach(([ivls, name2, ...aliases]) => add2(ivls.split(" "), name2, aliases));
 
 // node_modules/.pnpm/@tonaljs+chord@4.6.5/node_modules/@tonaljs/chord/dist/index.es.js
 var NoChord = {
@@ -8417,21 +8544,21 @@ var NoChord = {
   intervals: []
 };
 var NUM_TYPES = /^(6|64|7|9|11|13)$/;
-function tokenize(name) {
-  const [letter, acc, oct, type2] = tokenizeNote(name);
+function tokenize(name2) {
+  const [letter, acc, oct, type3] = tokenizeNote(name2);
   if (letter === "") {
-    return ["", name];
+    return ["", name2];
   }
-  if (letter === "A" && type2 === "ug") {
+  if (letter === "A" && type3 === "ug") {
     return ["", "aug"];
   }
-  if (!type2 && (oct === "4" || oct === "5")) {
+  if (!type3 && (oct === "4" || oct === "5")) {
     return [letter + acc, oct];
   }
   if (NUM_TYPES.test(oct)) {
-    return [letter + acc, oct + type2];
+    return [letter + acc, oct + type3];
   } else {
-    return [letter + acc + oct, type2];
+    return [letter + acc + oct, type3];
   }
 }
 function get6(src) {
@@ -8441,24 +8568,24 @@ function get6(src) {
   if (Array.isArray(src) && src.length === 2) {
     return getChord(src[1], src[0]);
   } else {
-    const [tonic, type2] = tokenize(src);
-    const chord2 = getChord(type2, tonic);
+    const [tonic, type3] = tokenize(src);
+    const chord2 = getChord(type3, tonic);
     return chord2.empty ? getChord(src) : chord2;
   }
 }
 function getChord(typeName, optionalTonic, optionalRoot) {
-  const type2 = get4(typeName);
+  const type3 = get4(typeName);
   const tonic = note(optionalTonic || "");
   const root2 = note(optionalRoot || "");
-  if (type2.empty || optionalTonic && tonic.empty || optionalRoot && root2.empty) {
+  if (type3.empty || optionalTonic && tonic.empty || optionalRoot && root2.empty) {
     return NoChord;
   }
   const rootInterval = distance(tonic.pc, root2.pc);
-  const rootDegree = type2.intervals.indexOf(rootInterval) + 1;
+  const rootDegree = type3.intervals.indexOf(rootInterval) + 1;
   if (!root2.empty && !rootDegree) {
     return NoChord;
   }
-  const intervals = Array.from(type2.intervals);
+  const intervals = Array.from(type3.intervals);
   for (let i = 1; i < rootDegree; i++) {
     const num = intervals[0][0];
     const quality = intervals[0][1];
@@ -8467,14 +8594,14 @@ function getChord(typeName, optionalTonic, optionalRoot) {
     intervals.shift();
   }
   const notes = tonic.empty ? [] : intervals.map((i) => transpose(tonic, i));
-  typeName = type2.aliases.indexOf(typeName) !== -1 ? typeName : type2.aliases[0];
+  typeName = type3.aliases.indexOf(typeName) !== -1 ? typeName : type3.aliases[0];
   const symbol = `${tonic.empty ? "" : tonic.pc}${typeName}${root2.empty || rootDegree <= 1 ? "" : "/" + root2.pc}`;
-  const name = `${optionalTonic ? tonic.pc + " " : ""}${type2.name}${rootDegree > 1 && optionalRoot ? " over " + root2.pc : ""}`;
+  const name2 = `${optionalTonic ? tonic.pc + " " : ""}${type3.name}${rootDegree > 1 && optionalRoot ? " over " + root2.pc : ""}`;
   return {
-    ...type2,
-    name,
+    ...type3,
+    name: name2,
     symbol,
-    type: type2.name,
+    type: type3.name,
     root: root2.name,
     intervals,
     rootDegree,
@@ -8484,14 +8611,14 @@ function getChord(typeName, optionalTonic, optionalRoot) {
 }
 var chord = deprecate("Chord.chord", "Chord.get", get6);
 function transpose2(chordName, interval3) {
-  const [tonic, type2] = tokenize(chordName);
+  const [tonic, type3] = tokenize(chordName);
   if (!tonic) {
     return chordName;
   }
-  return transpose(tonic, interval3) + type2;
+  return transpose(tonic, interval3) + type3;
 }
-function chordScales(name) {
-  const s = get6(name);
+function chordScales(name2) {
+  const s = get6(name2);
   const isChordIncluded = isSupersetOf(s.chroma);
   return all2().filter((scale2) => isChordIncluded(scale2.chroma)).map((scale2) => scale2.name);
 }
@@ -8589,7 +8716,7 @@ var ROMANS = "I II III IV V VI VII";
 var NAMES = ROMANS.split(" ");
 var NAMES_MINOR = ROMANS.toLowerCase().split(" ");
 function parse3(src) {
-  const [name, acc, roman, chordType2] = tokenize2(src);
+  const [name2, acc, roman, chordType2] = tokenize2(src);
   if (!roman) {
     return NoRomanNumeral;
   }
@@ -8599,7 +8726,7 @@ function parse3(src) {
   const dir = 1;
   return {
     empty: false,
-    name,
+    name: name2,
     roman,
     interval: interval2({ step, alt, dir }).name,
     acc,
@@ -8648,7 +8775,7 @@ var NoMinorKey = {
   harmonic: NoKeyScale,
   melodic: NoKeyScale
 };
-var mapScaleToType = (scale2, list, sep = "") => list.map((type2, i) => `${scale2[i]}${sep}${type2}`);
+var mapScaleToType = (scale2, list, sep = "") => list.map((type3, i) => `${scale2[i]}${sep}${type3}`);
 function keyScale(grades, chords2, harmonicFunctions, chordScales2) {
   return (tonic) => {
     const intervals = grades.map((gr) => get7(gr).interval || "");
@@ -8696,8 +8823,8 @@ modes2.forEach((mode2) => {
     index5[alias] = mode2;
   });
 });
-function get8(name) {
-  return typeof name === "string" ? index5[name.toLowerCase()] || NoMode : name && name.name ? get8(name.name) : NoMode;
+function get8(name2) {
+  return typeof name2 === "string" ? index5[name2.toLowerCase()] || NoMode : name2 && name2.name ? get8(name2.name) : NoMode;
 }
 var mode = deprecate("Mode.mode", "Mode.get", get8);
 function all3() {
@@ -8705,17 +8832,17 @@ function all3() {
 }
 var entries3 = deprecate("Mode.mode", "Mode.all", all3);
 function toMode(mode2) {
-  const [modeNum, setNum, alt, name, triad, seventh, alias] = mode2;
+  const [modeNum, setNum, alt, name2, triad, seventh, alias] = mode2;
   const aliases = alias ? [alias] : [];
   const chroma = Number(setNum).toString(2);
-  const intervals = get5(name).intervals;
+  const intervals = get5(name2).intervals;
   return {
     empty: false,
     intervals,
     modeNum,
     chroma,
     normalized: chroma,
-    name,
+    name: name2,
     setNum,
     alt,
     triad,
@@ -8749,18 +8876,18 @@ var NoScale = {
   notes: [],
   intervals: []
 };
-function tokenize3(name) {
-  if (typeof name !== "string") {
+function tokenize3(name2) {
+  if (typeof name2 !== "string") {
     return ["", ""];
   }
-  const i = name.indexOf(" ");
-  const tonic = note(name.substring(0, i));
+  const i = name2.indexOf(" ");
+  const tonic = note(name2.substring(0, i));
   if (tonic.empty) {
-    const n = note(name);
-    return n.empty ? ["", name] : [n.name, ""];
+    const n = note(name2);
+    return n.empty ? ["", name2] : [n.name, ""];
   }
-  const type2 = name.substring(tonic.name.length + 1);
-  return [tonic.name, type2.length ? type2 : ""];
+  const type3 = name2.substring(tonic.name.length + 1);
+  return [tonic.name, type3.length ? type3 : ""];
 }
 function get9(src) {
   const tokens = Array.isArray(src) ? src : tokenize3(src);
@@ -8769,10 +8896,10 @@ function get9(src) {
   if (st.empty) {
     return NoScale;
   }
-  const type2 = st.name;
+  const type3 = st.name;
   const notes = tonic ? st.intervals.map((i) => transpose(tonic, i)) : [];
-  const name = tonic ? tonic + " " + type2 : type2;
-  return { ...st, name, type: type2, tonic, notes };
+  const name2 = tonic ? tonic + " " + type3 : type3;
+  return { ...st, name: name2, type: type3, tonic, notes };
 }
 var scale = deprecate("Scale.scale", "Scale.get", get9);
 
@@ -8937,8 +9064,8 @@ function getChordName(notes) {
 
 // src/instruments/Lamellophone.js
 var LamellophoneTuning = class {
-  constructor(name, notes) {
-    this.name = name;
+  constructor(name2, notes) {
+    this.name = name2;
     this.notes = notes;
     this.short = notes.join(" ");
     this.pitches = notes.map((note2) => getMidiNoteByLabel(note2).pitch);
@@ -11139,7 +11266,7 @@ var NeedlemanWunsch_default = NeedlemanWunsch;
 
 // src/index.js
 function getVersion() {
-  return version;
+  return package_default.version;
 }
 export {
   Alignment_exports as Alignment,
