@@ -1,5 +1,5 @@
 export * from './ArrayUtils.js'
-export * from './BlobUtils'
+export * from './BlobUtils.js'
 export * from './ColorUtils.js'
 export * from './FormattingUtils.js'
 export * from './LocalStorageUtils.js'

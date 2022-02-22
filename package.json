@@ -27,7 +27,7 @@
   ],
   "type": "module",
   "exports": "./src/index.js",
-  "main": "dist/musicvislib.js",
+  "main": "dist/musicvislib.node.js",
   "module": "dist/musicvislib.esm.js",
   "unpkg": "dist/musicvislib.min.js",
   "browser": "dist/musicvislib.min.js",

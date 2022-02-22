@@ -176,7 +176,7 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
             const rehearsals = child.querySelectorAll('rehearsal')
             const marks = []
             for (const r of rehearsals) {
-              if (r.textContent !== "") {
+              if (r.textContent !== '') {
                 marks.push(r.textContent)
               }
             }

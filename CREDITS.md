@@ -8,9 +8,9 @@ The following packages, repositories, and other resources have been used or help
 
 ## MIDI and Music Theory
 
-- [@tonejs/midi](https://github.com/Tonejs/Midi)
 - [midi-parser-js](https://github.com/colxi/midi-parser-js)
 - [@tonaljs/tonal](https://github.com/tonaljs/tonal)
+- [@tonejs/midi](https://github.com/Tonejs/Midi)
 
 ## String Algorithms
 

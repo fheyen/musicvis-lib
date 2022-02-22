@@ -1,4 +1,4 @@
-import { arraySlicesEqual } from '../utils/ArrayUtils'
+import { arraySlicesEqual } from '../utils/ArrayUtils.js'
 
 /**
  * Compresses a sequence by detecting immediately repeating subsequences
