@@ -44,7 +44,6 @@
     "testch": "jest --coverage --changedFilesWithAncestor",
     "testfail": "jest --changedFilesWithAncestor --onlyFailures",
     "testclear": "jest --clearCache",
-    "bench": "node ./benchmarks/benchmarks.js",
     "doc": "jsdoc -c jsdoc.conf.json",
     "lint": "standard --verbose",
     "lint:fix": "standard --fix --verbose",

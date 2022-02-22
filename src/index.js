@@ -1,11 +1,12 @@
-import { version } from '../package.json'
+import packageJson from '../package.json'
+
 /**
  * Returns the current version of the library
  *
  * @returns {string} version string
  */
 export function getVersion () {
-  return version
+  return packageJson.version
 }
 
 // Types
