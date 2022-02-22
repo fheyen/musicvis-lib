@@ -343,7 +343,7 @@ var musicvislib = (() => {
   });
 
   // package.json
-  var version = "0.54.0";
+  var version = "0.54.1";
 
   // src/fileFormats/Midi.js
   var Midi_exports = {};
