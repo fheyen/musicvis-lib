@@ -1,6 +1,10 @@
 import packageJson from '../package.json'
 
 /**
+ * @module musicvis-lib
+ */
+
+/**
  * Returns the current version of the library
  *
  * @returns {string} version string

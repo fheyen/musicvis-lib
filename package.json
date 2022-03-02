@@ -45,6 +45,7 @@
     "testfail": "jest --changedFilesWithAncestor --onlyFailures",
     "testclear": "jest --clearCache",
     "doc": "jsdoc -c jsdoc.conf.json",
+    "doc:md": "jsdoc2md src/**/*.js > api.md",
     "lint": "standard --verbose",
     "lint:fix": "standard --fix --verbose",
     "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
@@ -52,7 +53,7 @@
     "git:commit": "git commit -m \"new version build\"",
     "git:push": "git push",
     "git:pushtags": "git push origin --tags",
-    "predeploy": "npm run lint:fix && npm run build && jest --silent && npm run doc",
+    "predeploy": "npm run lint:fix && npm run build && jest --silent && npm run doc && npm run doc:md",
     "deploy": "npm publish && npm run git:all",
     "prepare": "husky install"
   },
@@ -62,6 +63,11 @@
     "midi-parser-js": "^4.0.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
     "@types/d3": "^7.1.0",
     "@types/jest": "^27.0.3",
     "clean-jsdoc-theme": "^3.3.1",
@@ -72,6 +78,7 @@
     "jest-canvas-mock": "^2.3.1",
     "jest-extended": "^1.2.0",
     "jsdoc": "^3.6.7",
+    "jsdoc-to-markdown": "^7.1.1",
     "npm-check-updates": "^12.0.5",
     "standard": "^16.0.4"
   },
