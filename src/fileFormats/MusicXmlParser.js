@@ -359,7 +359,6 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
   if (keySignatureChanges.length === 0 || keySignatureChanges[0].time > 0) {
     keySignatureChanges.unshift({ key: 'C', scale: 'major', time: 0 })
   }
-  // TODO: Remove duplicates from measureRehearsalMap
 
   const result = {
     noteObjs: noteObjs,
@@ -367,7 +366,7 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
     measureLinePositions,
     measureIndices,
     xmlMeasureIndices,
-    measureRehearsalMap,
+    measureRehearsalMap: removeRehearsalRepetitions(measureRehearsalMap),
     xmlNoteIndices,
     tempoChanges,
     beatTypeChanges,
@@ -377,6 +376,19 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
   }
   // console.log('[MusicXmlParser] Parsed part: ', result);
   return result
+}
+
+/**
+ * Removes duplicates from measureRehearsalMap, which occur when a measure was
+ * repeated
+ *
+ * @param {Map<number,string>} measureRehearsalMap map
+ * @returns {Map<number,string} cleaned map
+ */
+function removeRehearsalRepetitions (measureRehearsalMap) {
+  const entries = [...measureRehearsalMap]
+  const clean = entries.filter((d, i) => i === 0 || entries[i - 1][1] !== d[1])
+  return new Map(clean)
 }
 
 /**
@@ -415,6 +427,7 @@ function getDurationInSeconds (duration, divisions, secondsPerBeat) {
  * Handles volta lines (ending one, ending two).
  *
  * @todo handle 3x etc
+ * @todo fix alternative endings with more than one measure
  * @todo write tests
  * @see https://www.musicxml.com/tutorial/the-midi-compatible-part/repeats/
  * @private

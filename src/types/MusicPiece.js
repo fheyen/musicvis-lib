@@ -22,7 +22,7 @@ class MusicPiece {
    *   the corresponding XML measure (only for MusicXML)
    * @throws {'No or invalid tracks given!'} when invalid tracks are given
    */
-  constructor(
+  constructor (
     name,
     tempos,
     timeSignatures,
@@ -433,7 +433,7 @@ export class Track {
    *  the XML note elements that correspond to it
    * @throws {'Notes are undefined or not an array'} for invalid notes
    */
-  constructor(
+  constructor (
     name,
     instrument,
     notes,
@@ -516,7 +516,7 @@ export class TempoDefinition {
    * @param {number} time in seconds
    * @param {number} bpm tempo in seconds per beat
    */
-  constructor(time, bpm) {
+  constructor (time, bpm) {
     this.time = time
     this.bpm = bpm
     this.string = `${bpm} bpm`
@@ -531,7 +531,7 @@ export class TimeSignature {
    * @param {number} time in seconds
    * @param {number[]} signature time signature as [beats, beatType]
    */
-  constructor(time, signature) {
+  constructor (time, signature) {
     this.time = time
     this.signature = signature
     this.string = signature.join('/')
@@ -547,7 +547,7 @@ export class KeySignature {
    * @param {string} key key e.g. 'C'
    * @param {string} scale scale e.g. 'major'
    */
-  constructor(time, key, scale) {
+  constructor (time, key, scale) {
     this.time = time
     this.key = key
     this.scale = scale
