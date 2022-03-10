@@ -70,8 +70,7 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
   // Handle Guitar sheets with stave and tab (so dublicate notes)
   part = handleStaveAndTab(part)
   // Handle repetitions by duplicating measures
-  let measures = part.children
-  measures = duplicateRepeatedMeasures(measures)
+  const { resultMeasures: measures, xmlMeasureIndices } = duplicateRepeatedMeasures(part.children)
 
   // For each parsed note, store the corresponding XML notes
   const xmlNotes = part.querySelectorAll('note')
@@ -367,6 +366,7 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
     totalTime: currentTime,
     measureLinePositions,
     measureIndices,
+    xmlMeasureIndices,
     measureRehearsalMap,
     xmlNoteIndices,
     tempoChanges,
@@ -503,7 +503,10 @@ function duplicateRepeatedMeasures (measures) {
       }
     }
   }
-  return resultMeasures
+  // Compute mapping from duplicated to original
+  const measureIndexMap = new Map([...measures].map((d, i) => [d, i]))
+  const xmlMeasureIndices = resultMeasures.map(d => measureIndexMap.get(d))
+  return { resultMeasures, xmlMeasureIndices }
 }
 
 /**

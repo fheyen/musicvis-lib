@@ -10,23 +10,33 @@ import GuitarNote from './GuitarNote.js'
  */
 class MusicPiece {
   /**
-     * Do not use this constructor, but the static methods MusicPiece.fromMidi
-     * and MusicPiece.fromMusicXml instead.
-     *
-     * @param {string} name name (e.g. file name or piece name)
-     * @param {TempoDefinition[]} tempos tempos
-     * @param {TimeSignature[]} timeSignatures time signatures
-     * @param {KeySignature[]} keySignatures key signatures
-     * @param {number[]} measureTimes time in seconds for each measure line
-     * @param {Track[]} tracks tracks
-     * @throws {'No or invalid tracks given!'} when invalid tracks are given
-     */
-  constructor (name, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
+   * @deprecated Do not use this constructor, but the static methods MusicPiece.fromMidi
+   * and MusicPiece.fromMusicXml instead.
+   * @param {string} name name (e.g. file name or piece name)
+   * @param {TempoDefinition[]} tempos tempos
+   * @param {TimeSignature[]} timeSignatures time signatures
+   * @param {KeySignature[]} keySignatures key signatures
+   * @param {number[]} measureTimes time in seconds for each measure line
+   * @param {Track[]} tracks tracks
+   * @param {number[]} [xmlMeasureIndices] for each parsed measure, the index of
+   *   the corresponding XML measure (only for MusicXML)
+   * @throws {'No or invalid tracks given!'} when invalid tracks are given
+   */
+  constructor(
+    name,
+    tempos,
+    timeSignatures,
+    keySignatures,
+    measureTimes,
+    tracks,
+    xmlMeasureIndices
+  ) {
     if (!tracks || tracks.length === 0) {
       throw new Error('No or invalid tracks given! Use .fromMidi or .fromMusicXml?')
     }
     this.name = name
     this.measureTimes = measureTimes
+    this.xmlMeasureIndices = xmlMeasureIndices
     this.tracks = tracks
     this.duration = Math.max(...this.tracks.map(d => d.duration))
     // Filter multiple identical consecutive infos
@@ -57,20 +67,20 @@ class MusicPiece {
   }
 
   /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     * @example <caption>In Node.js</caption>
-     *      const file = path.join(directory, fileName);
-     *      const data = fs.readFileSync(file, 'base64');
-     *      const mp = MusicPiece.fromMidi(fileName, data);
-     * @example <caption>In the browser</caption>
-     *      const uintArray = new Uint8Array(midiBinary);
-     *      const MP = MusicPiece.fromMidi(filename, uintArray);
-     */
+   * Creates a MusicPiece object from a MIDI file binary
+   *
+   * @param {string} name name
+   * @param {ArrayBuffer} midiFile MIDI file
+   * @returns {MusicPiece} new MusicPiece
+   * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+   * @example <caption>In Node.js</caption>
+   *      const file = path.join(directory, fileName);
+   *      const data = fs.readFileSync(file, 'base64');
+   *      const mp = MusicPiece.fromMidi(fileName, data);
+   * @example <caption>In the browser</caption>
+   *      const uintArray = new Uint8Array(midiBinary);
+   *      const MP = MusicPiece.fromMidi(filename, uintArray);
+   */
   static fromMidi (name, midiFile) {
     if (!midiFile) {
       throw new Error('No MIDI file content given')
@@ -115,25 +125,25 @@ class MusicPiece {
   }
 
   /**
-     * Creates a MusicPiece object from a MIDI file binary
-     *
-     * @deprecated This is not fully implemented yet
-     * @todo on hold until @tonejs/midi adds time in seconds for meta events
-     * @todo use @tonejs/midi for parsing, but the same information as with
-     * MusicPiece.fromMidi()
-     * @see https://github.com/Tonejs/Midi
-     * @param {string} name name
-     * @param {ArrayBuffer} midiFile MIDI file
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MIDI file content given'} when MIDI file is undefined or null
-     * @example <caption>In Node.js</caption>
-     *      const file = path.join(directory, fileName);
-     *      const data = fs.readFileSync(file);
-     *      const mp = MusicPiece.fromMidi(fileName, data);
-     * @example <caption>In the browser</caption>
-     *      const uintArray = new Uint8Array(midiBinary);
-     *      const MP = MusicPiece.fromMidi(filename, uintArray);
-     */
+   * Creates a MusicPiece object from a MIDI file binary
+   *
+   * @deprecated This is not fully implemented yet
+   * @todo on hold until @tonejs/midi adds time in seconds for meta events
+   * @todo use @tonejs/midi for parsing, but the same information as with
+   * MusicPiece.fromMidi()
+   * @see https://github.com/Tonejs/Midi
+   * @param {string} name name
+   * @param {ArrayBuffer} midiFile MIDI file
+   * @returns {MusicPiece} new MusicPiece
+   * @throws {'No MIDI file content given'} when MIDI file is undefined or null
+   * @example <caption>In Node.js</caption>
+   *      const file = path.join(directory, fileName);
+   *      const data = fs.readFileSync(file);
+   *      const mp = MusicPiece.fromMidi(fileName, data);
+   * @example <caption>In the browser</caption>
+   *      const uintArray = new Uint8Array(midiBinary);
+   *      const MP = MusicPiece.fromMidi(filename, uintArray);
+   */
   // static fromMidi2 (name, midiFile) {
   //   if (!midiFile) {
   //     throw new Error('No MIDI file content given')
@@ -192,22 +202,22 @@ class MusicPiece {
   // }
 
   /**
-     * Creates a MusicPiece object from a MusicXML string
-     *
-     * @param {string} name name
-     * @param {string|object} xmlFile MusicXML file content as string or object
-     *      If it is an object, it must behave like a DOM, e.g. provide methods
-     *      such as .querySelectorAll()
-     * @returns {MusicPiece} new MusicPiece
-     * @throws {'No MusicXML file content given'} when MusicXML file is
-     *  undefined or null
-     * @example Parsing a MusicPiece in Node.js
-     *    const jsdom = require('jsdom');
-     *    const xmlFile = fs.readFileSync('My Song.musicxml');
-     *    const dom = new jsdom.JSDOM(xmlFile);
-     *    const xmlDocument = dom.window.document;
-     *    const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
-     */
+   * Creates a MusicPiece object from a MusicXML string
+   *
+   * @param {string} name name
+   * @param {string|object} xmlFile MusicXML file content as string or object
+   *      If it is an object, it must behave like a DOM, e.g. provide methods
+   *      such as .querySelectorAll()
+   * @returns {MusicPiece} new MusicPiece
+   * @throws {'No MusicXML file content given'} when MusicXML file is
+   *  undefined or null
+   * @example Parsing a MusicPiece in Node.js
+   *    const jsdom = require('jsdom');
+   *    const xmlFile = fs.readFileSync('My Song.musicxml');
+   *    const dom = new jsdom.JSDOM(xmlFile);
+   *    const xmlDocument = dom.window.document;
+   *    const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
+   */
   static fromMusicXml (name, xmlFile) {
     if (!xmlFile) {
       throw new Error('No MusicXML file content given')
@@ -234,8 +244,10 @@ class MusicPiece {
     }
     // Measure times
     let measureTimes = []
+    let xmlMeasureIndices = []
     if (parsed.parts.length > 0) {
       measureTimes = parsed.parts[0].measureLinePositions
+      xmlMeasureIndices = parsed.parts[0].xmlMeasureIndices
     }
     // Tracks
     const tracks = parsed.parts
@@ -260,39 +272,45 @@ class MusicPiece {
       timeSignatures,
       keySignatures,
       measureTimes,
-      tracks
+      tracks,
+      xmlMeasureIndices
     )
   }
 
   /**
-     * Allows to get a MusicPiece from JSON after doing JSON.stringify()
-     *
-     * @param {string|object} json JSON
-     * @returns {MusicPiece} new MusicPiece
-     * @example
-     *      const jsonString = mp.toJson();
-     *      const recovered = MusicPiece.fromJson(jsonString);
-     */
+   * Allows to get a MusicPiece from JSON after doing JSON.stringify()
+   *
+   * @param {string|object} json JSON
+   * @returns {MusicPiece} new MusicPiece
+   * @example
+   *      const jsonString = mp.toJson();
+   *      const recovered = MusicPiece.fromJson(jsonString);
+   */
   static fromJson (json) {
     json = (typeof json === 'string') ? JSON.parse(json) : json
-    const name = json.name
     const tempos = json.tempos.map(d => new TempoDefinition(d.time, d.bpm))
     const timeSignatures = json.timeSignatures.map(d => new TimeSignature(d.time, d.signature))
     const keySignatures = json.keySignatures.map(d => new KeySignature(d.time, d.key, d.scale))
-    const measureTimes = json.measureTimes
     const tracks = json.tracks.map(track => Track.from(track))
-    return new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks)
+    return new MusicPiece(
+      json.name,
+      tempos, timeSignatures,
+      keySignatures,
+      json.measureTimes,
+      tracks,
+      json.xmlMeasureIndices
+    )
   }
 
   /**
-     * Returns a JSON-serialized representation
-     *
-     * @param {boolean} pretty true for readable (prettified) JSON
-     * @returns {string} JSON as string
-     * @example
-     *      const jsonString = mp.toJson();
-     *      const recovered = MusicPiece.fromJson(jsonString);
-     */
+   * Returns a JSON-serialized representation
+   *
+   * @param {boolean} pretty true for readable (prettified) JSON
+   * @returns {string} JSON as string
+   * @example
+   *      const jsonString = mp.toJson();
+   *      const recovered = MusicPiece.fromJson(jsonString);
+   */
   toJson (pretty = false) {
     const _this = {
       ...this,
@@ -302,12 +320,12 @@ class MusicPiece {
   }
 
   /**
-     * Returns an array with all notes from all tracks.
-     *
-     * @deprecated use getNotesFromTracks('all') instead.
-     * @param {boolean} sortByTime true: sort notes by time
-     * @returns {Note[]} all notes of this piece
-     */
+   * Returns an array with all notes from all tracks.
+   *
+   * @deprecated use getNotesFromTracks('all') instead.
+   * @param {boolean} sortByTime true: sort notes by time
+   * @returns {Note[]} all notes of this piece
+   */
   getAllNotes (sortByTime = false) {
     const notes = this.tracks.flatMap(t => t.notes)
     if (sortByTime) {
@@ -317,14 +335,14 @@ class MusicPiece {
   }
 
   /**
-     * Returns an array with notes from the specified tracks.
-     *
-     * @param {'all'|number|number[]} indices either 'all', a number, or an
-     *      Array with numbers
-     * @param {boolean} sortByTime true: sort notes by time (not needed for a
-     *      single track)
-     * @returns {Note[]} Array with all notes from the specified tracks
-     */
+   * Returns an array with notes from the specified tracks.
+   *
+   * @param {'all'|number|number[]} indices either 'all', a number, or an
+   *      Array with numbers
+   * @param {boolean} sortByTime true: sort notes by time (not needed for a
+   *      single track)
+   * @returns {Note[]} Array with all notes from the specified tracks
+   */
   getNotesFromTracks (indices = 'all', sortByTime = false) {
     let notes = []
     if (indices === 'all') {
@@ -348,16 +366,16 @@ class MusicPiece {
   }
 
   /**
-     * Transposes all or only the specified tracks by the specified number of
-     * (semitone) steps.
-     * Will return a new MusicPiece instance.
-     * Note pitches will be clipped to [0, 127].
-     * Will not change playing instructions such as string and fret.
-     *
-     * @param {number} steps number of semitones to transpose (can be negative)
-     * @param {'all'|number|number[]} tracks tracks to transpose
-     * @returns {MusicPiece} a new, transposed MusicPiece
-     */
+   * Transposes all or only the specified tracks by the specified number of
+   * (semitone) steps.
+   * Will return a new MusicPiece instance.
+   * Note pitches will be clipped to [0, 127].
+   * Will not change playing instructions such as string and fret.
+   *
+   * @param {number} steps number of semitones to transpose (can be negative)
+   * @param {'all'|number|number[]} tracks tracks to transpose
+   * @returns {MusicPiece} a new, transposed MusicPiece
+   */
   transpose (steps = 0, tracks = 'all') {
     const newTracks = this.tracks.map((track, index) => {
       const change = (
@@ -396,26 +414,26 @@ class MusicPiece {
  */
 export class Track {
   /**
-     * Do not use this constructor, but the static methods Track.fromMidi
-     * and Track.fromMusicXml instead.
-     *
-     * Notes will be sorted by start time.
-     *
-     * @param {string} name name
-     * @param {string} instrument instrument name
-     * @param {Note[]} notes notes
-     * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
-     *  tuning
-     * @param {number[]} [measureIndices=null] note indices where new measures
-     *  start
-     * @param {Map<number,object>} measureRehearsalMap maps measure index to
-     *  rehearsal marks
-     * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
-     * @param {number[][]} xmlNoteIndices for each parsed note, the indices of
-     *  the XML note elements that correspond to it
-     * @throws {'Notes are undefined or not an array'} for invalid notes
-     */
-  constructor (
+   * Do not use this constructor, but the static methods Track.fromMidi
+   * and Track.fromMusicXml instead.
+   *
+   * Notes will be sorted by start time.
+   *
+   * @param {string} name name
+   * @param {string} instrument instrument name
+   * @param {Note[]} notes notes
+   * @param {number[]} [tuningPitches=null] MIDI note numbers of the track's
+   *  tuning
+   * @param {number[]} [measureIndices=null] note indices where new measures
+   *  start
+   * @param {Map<number,object>} measureRehearsalMap maps measure index to
+   *  rehearsal marks
+   * @param {Map<number,object>} noteLyricsMap maps note index to lyrics text
+   * @param {number[][]} xmlNoteIndices for each parsed note, the indices of
+   *  the XML note elements that correspond to it
+   * @throws {'Notes are undefined or not an array'} for invalid notes
+   */
+  constructor(
     name,
     instrument,
     notes,
@@ -449,11 +467,11 @@ export class Track {
   }
 
   /**
-     * Returns an object representation of this Track, turns Maps into Arrays
-     *  to work with JSON.stringify
-     *
-     * @returns {object} object represntation
-     */
+   * Returns an object representation of this Track, turns Maps into Arrays
+   *  to work with JSON.stringify
+   *
+   * @returns {object} object represntation
+   */
   toObject () {
     return {
       ...this,
@@ -463,12 +481,12 @@ export class Track {
   }
 
   /**
-     * Parses an object into a Track, must have same format as the result of
-     * Track.toObject().
-     *
-     * @param {object} object object represntation of a Track
-     * @returns {Track} track
-     */
+   * Parses an object into a Track, must have same format as the result of
+   * Track.toObject().
+   *
+   * @param {object} object object represntation of a Track
+   * @returns {Track} track
+   */
   static from (object) {
     const notes = object.notes.map(note => {
       return note.string !== undefined && note.fret !== undefined
@@ -495,10 +513,10 @@ export class Track {
  */
 export class TempoDefinition {
   /**
-     * @param {number} time in seconds
-     * @param {number} bpm tempo in seconds per beat
-     */
-  constructor (time, bpm) {
+   * @param {number} time in seconds
+   * @param {number} bpm tempo in seconds per beat
+   */
+  constructor(time, bpm) {
     this.time = time
     this.bpm = bpm
     this.string = `${bpm} bpm`
@@ -510,10 +528,10 @@ export class TempoDefinition {
  */
 export class TimeSignature {
   /**
-     * @param {number} time in seconds
-     * @param {number[]} signature time signature as [beats, beatType]
-     */
-  constructor (time, signature) {
+   * @param {number} time in seconds
+   * @param {number[]} signature time signature as [beats, beatType]
+   */
+  constructor(time, signature) {
     this.time = time
     this.signature = signature
     this.string = signature.join('/')
@@ -525,11 +543,11 @@ export class TimeSignature {
  */
 export class KeySignature {
   /**
-     * @param {number} time in seconds
-     * @param {string} key key e.g. 'C'
-     * @param {string} scale scale e.g. 'major'
-     */
-  constructor (time, key, scale) {
+   * @param {number} time in seconds
+   * @param {string} key key e.g. 'C'
+   * @param {string} scale scale e.g. 'major'
+   */
+  constructor(time, key, scale) {
     this.time = time
     this.key = key
     this.scale = scale

@@ -911,4 +911,26 @@ describe('MusicXmlParser', () => {
       ])
     })
   })
+
+  describe('XML measure indices', () => {
+    test('simple', () => {
+      const parsed = readXmlAndProcess('[Test] 3-4 meter.musicxml')
+      expect(
+        Array.from(parsed.parts[0].xmlMeasureIndices)
+      ).toStrictEqual([0, 1, 2])
+    })
+    test('repetition', () => {
+      const parsed = readXmlAndProcess('[Test] Repetition Test.musicxml')
+      expect(
+        Array.from(parsed.parts[0].xmlMeasureIndices)
+      ).toStrictEqual([0, 0, 1])
+    })
+    // TODO: fix handling of alternative endings..
+    test.skip('repetition, alternative endings', () => {
+      const parsed = readXmlAndProcess('[Test] Repetition with Alternate Endings.musicxml')
+      expect(
+        Array.from(parsed.parts[0].xmlMeasureIndices)
+      ).toStrictEqual([0, 1, 0, 2, 3, 4, 5, 3, 6, 7, 8])
+    })
+  })
 })

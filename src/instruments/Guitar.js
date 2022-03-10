@@ -32,6 +32,7 @@ export class StringedTuning {
  * Defaults are at the top.
  *
  * @todo add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
+ * @todo https://github.com/PirtleShell/string-tunings/blob/master/tunings.json
  * @todo replace arrays by maps? tuning name - tuning
  * @type {Map<string,Map<number,StringedTuning>>}
  * @example
@@ -347,11 +348,11 @@ export function fretboardPositionsFromMidi (notes, tuning, fretCount = 24) {
       advice += `Transpose by ${maxPitch - maxDataPitch} semitones`
     }
     console.warn(
-            `Cannot find a fretboard position for ${errorPitches.length} pitches, try another tuning instead:\n`,
-            errorPitches,
-            `\nCurrent tuning's pitch range is ${minPitch} - ${maxPitch}`,
-            `\ndata pitch range is ${minDataPitch} - ${maxDataPitch}\n`,
-            advice
+      `Cannot find a fretboard position for ${errorPitches.length} pitches, try another tuning instead:\n`,
+      errorPitches,
+      `\nCurrent tuning's pitch range is ${minPitch} - ${maxPitch}`,
+      `\ndata pitch range is ${minDataPitch} - ${maxDataPitch}\n`,
+      advice
     )
   }
   return result
