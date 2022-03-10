@@ -31,7 +31,7 @@
 
 
     <title>
-      stringBased/LongestCommonSubsequence.js
+      Svg
     </title>
 
     <!--[if lt IE 9]>
@@ -102,7 +102,7 @@
     <div id="main" class="main-content">
       
       <h1 id='page-title' class="page-title">
-        stringBased/LongestCommonSubsequence.js
+        Svg
       </h1>
       
 
@@ -110,132 +110,1442 @@
 
 
 
+
+<section>
+
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module stringBased/LongestCommonSubsequence
- */
+        
+    
+</header>
 
-/**
- * Calculates the longest common subsequence.
- *
- * @see https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
- * @example
- * const lcs = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
- * // world
- * @param {string|Array} a a string
- * @param {string|Array} b another string
- * @returns {string|Array} the longest common subsequence
- */
-export function lcs (a, b) {
-  // Make sure shorter string is the column string
-  const m = a.length
-  const n = b.length
-  // Return now if one (or both) empty
-  if (a.length === 0) { return a }
-  if (b.length === 0) { return b }
-  let i; let j; let row = []; let left; let diagonal; let latch
-  const lcs = []
-  const c = []
-  // Build the c-table
-  for (j = 0; j &lt; n; row[j++] = 0);
-  for (i = 0; i &lt; m; i++) {
-    c[i] = row = [...row]
-    for (diagonal = 0, j = 0; j &lt; n; j++, diagonal = latch) {
-      latch = row[j]
-      if (a[i] === b[j]) {
-        row[j] = diagonal + 1
-      } else {
-        left = row[j - 1] || 0
-        if (left > row[j]) {
-          row[j] = left
-        }
-      }
-    }
-  }
-  i--
-  j--
-  // row[j] now contains the length of the lcs
-  // Recover the lcs from the table
-  while (i > -1 &amp;&amp; j > -1) {
-    switch (c[i][j]) {
-      // eslint-disable-next-line
-      default:
-        j--
-        lcs.unshift(a[i])
-      case (i &amp;&amp; c[i - 1][j]): // eslint-disable-line no-fallthrough
-        i--
-        continue
-      case (j &amp;&amp; c[i][j - 1]):
-        j--
-    }
-  }
-  // Only join when x and y are strings
-  return (Array.isArray(a)) || (Array.isArray(b)) ? lcs : lcs.join('')
-}
 
-/**
- * Calculates the *length* of the longest common subsequence.
- * Also works with arrays.
- *
- * @see https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
- * @example
- * const lcsLength = StringBased.LongestCommonSubsequence.lcs('hello world!', 'world');
- * // 5
- * @param {string|Array} a a string
- * @param {string|Array} b another string
- * @returns {number} the length of longest common subsequence
- */
-export function lcsLength (a, b) {
-  // Make sure shorter string is the column string
-  const m = a.length
-  const n = b.length
-  // Return now if one (or both) empty
-  if (a.length === 0) { return 0 }
-  if (b.length === 0) { return 0 }
-  let i; let j; let row = []; let left; let diagonal; let latch
-  const c = []
-  // Build the c-table
-  for (j = 0; j &lt; n; row[j++] = 0);
-  for (i = 0; i &lt; m; i++) {
-    c[i] = row = [...row]
-    for (diagonal = 0, j = 0; j &lt; n; j++, diagonal = latch) {
-      latch = row[j]
-      if (a[i] === b[j]) {
-        row[j] = diagonal + 1
-      } else {
-        left = row[j - 1] || 0
-        if (left > row[j]) {
-          row[j] = left
-        }
-      }
-    }
-  }
-  i--
-  j--
-  // row[j] now contains the length of the lcs
-  return row[j]
-}
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * Normalizes the result of lcsLength() by dividing by the longer string's
- * length.
- *
- * @param {string|Array} a a string
- * @param {string|Array} b another string
- * @returns {number} normalized length of longest common subsequence
- */
-export function normalizedLcsLength (a, b) {
-  const longerLength = Math.max(a.length, b.length)
-  if (longerLength === 0) {
-    return 0
-  }
-  return lcsLength(a, b) / longerLength
-}
-</code></pre>
-        </article>
-    </section>
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSvgArrowTipPath">
+        <a href="#.getSvgArrowTipPath">#</a>
+        <span class="type-signature">(static) </span>getSvgArrowTipPath<span class="signature">(toX, toY, pointTo, tipSize)</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Draws an arrow tip with two straight lines.
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>toX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">x coordinate where the arrow is pointing</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">y coordinate where the arrow is pointing</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pointTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">top, right, bottom, left, top-right, top-left,
+     bottom-right, bottom-left</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tipSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">size of the arrow tip</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="graphics_Svg.js.html">graphics/Svg.js</a>, <a href="graphics_Svg.js.html#line17">line 17</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    arrow tip SVG path 'd' attribute
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSvgCArrowPath">
+        <a href="#.getSvgCArrowPath">#</a>
+        <span class="type-signature">(static) </span>getSvgCArrowPath<span class="signature">(fromX, fromY, toX, toY, pointTo, tipSize)</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Creates a roughly C-shaped arrow (quarter ellipse).
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fromX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fromY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pointTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">top, right, bottom, left, top-right, top-left,
+     bottom-right, bottom-left</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tipSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">size of the tip</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="graphics_Svg.js.html">graphics/Svg.js</a>, <a href="graphics_Svg.js.html#line76">line 76</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    SVG path 'd' attribute
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSvgCArrowPath2">
+        <a href="#.getSvgCArrowPath2">#</a>
+        <span class="type-signature">(static) </span>getSvgCArrowPath2<span class="signature">(fromX, fromY, toX, toY, width, pointTo, tipSize)</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Creates a C-shaped arrow (half elipse).
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fromX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fromY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">width</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pointTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">top, right, bottom, left, top-right, top-left,
+     bottom-right, bottom-left</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tipSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">size of the tip</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="graphics_Svg.js.html">graphics/Svg.js</a>, <a href="graphics_Svg.js.html#line101">line 101</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    SVG path 'd' attribute
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSvgHorizontalSArrowPath">
+        <a href="#.getSvgHorizontalSArrowPath">#</a>
+        <span class="type-signature">(static) </span>getSvgHorizontalSArrowPath<span class="signature">(fromX, fromY, toX, toY, tipSize, pointTo)</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Creates a roughly S-shaped arrow (horizontal).
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fromX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fromY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tipSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">size of the tip</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pointTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">top, right, bottom, left, top-right, top-left,
+     bottom-right, bottom-left</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="graphics_Svg.js.html">graphics/Svg.js</a>, <a href="graphics_Svg.js.html#line123">line 123</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    SVG path 'd' attribute
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSvgVerticalSArrowPath">
+        <a href="#.getSvgVerticalSArrowPath">#</a>
+        <span class="type-signature">(static) </span>getSvgVerticalSArrowPath<span class="signature">(fromX, fromY, toX, toY, tipSize, pointTo)</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+
+    
+
+
+
+    <div class="description">
+        Creates a roughly S-shaped arrow (vertical).
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container flex flex-col w-100 overflow-auto mt-20">
+        <strong>Parameters:</strong>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fromX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fromY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">starting y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target x</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">target y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tipSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">size of the tip</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pointTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">top, right, bottom, left, top-right, top-left,
+     bottom-right, bottom-left</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="graphics_Svg.js.html">graphics/Svg.js</a>, <a href="graphics_Svg.js.html#line148">line 148</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="method-member-container mt-20">
+    <strong>Returns:</strong>
+        
+            
+<div class="param-desc">
+    SVG path 'd' attribute
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+            
+    </div>
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

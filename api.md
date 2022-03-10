@@ -26,6 +26,8 @@
 <dd></dd>
 <dt><a href="#module_graphics/Canvas">graphics/Canvas</a></dt>
 <dd></dd>
+<dt><a href="#module_Svg">Svg</a></dt>
+<dd></dd>
 <dt><a href="#module_musicvis-lib">musicvis-lib</a></dt>
 <dd></dd>
 <dt><a href="#module_input/AudioRecorder">input/AudioRecorder</a> ⇒ <code>Promise</code></dt>
@@ -96,7 +98,7 @@ information on how to play it.</p>
 absolute start and end times in seconds and
 information on how to play it.</p>
 </dd>
-<dt><a href="#MusicPiece">MusicPiece</a></dt>
+<dt><del><a href="#MusicPiece">MusicPiece</a></del></dt>
 <dd><p>Represents a parsed MIDI or MusicXML file in a uniform format.</p>
 </dd>
 <dt><a href="#Track">Track</a></dt>
@@ -1473,6 +1475,7 @@ For the notes of one track, computes the notes' indices where new measuresstart
     * _inner_
         * [~keySignatureMap](#module_fileFormats/MusicXmlParser..keySignatureMap) : <code>Map.&lt;number, object&gt;</code>
         * [~dynamicsMap](#module_fileFormats/MusicXmlParser..dynamicsMap) : <code>Map.&lt;string, number&gt;</code>
+        * [~removeRehearsalRepetitions(measureRehearsalMap)](#module_fileFormats/MusicXmlParser..removeRehearsalRepetitions) ⇒ <code>Map.&lt;number, string&gt;</code>
         * [~getLyricsFromNote(note)](#module_fileFormats/MusicXmlParser..getLyricsFromNote) ⇒ <code>string</code>
         * [~getDrumInstrumentMap(xml)](#module_fileFormats/MusicXmlParser..getDrumInstrumentMap) ⇒ <code>Map</code>
 
@@ -1501,6 +1504,18 @@ Map from fiths to key signature
 Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
 
 **Kind**: inner constant of [<code>fileFormats/MusicXmlParser</code>](#module_fileFormats/MusicXmlParser)  
+<a name="module_fileFormats/MusicXmlParser..removeRehearsalRepetitions"></a>
+
+### fileFormats/MusicXmlParser~removeRehearsalRepetitions(measureRehearsalMap) ⇒ <code>Map.&lt;number, string&gt;</code>
+Removes duplicates from measureRehearsalMap, which occur when a measure wasrepeated
+
+**Kind**: inner method of [<code>fileFormats/MusicXmlParser</code>](#module_fileFormats/MusicXmlParser)  
+**Returns**: <code>Map.&lt;number, string&gt;</code> - cleaned map  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| measureRehearsalMap | <code>Map.&lt;number, string&gt;</code> | map |
+
 <a name="module_fileFormats/MusicXmlParser..getLyricsFromNote"></a>
 
 ### fileFormats/MusicXmlParser~getLyricsFromNote(note) ⇒ <code>string</code>
@@ -1941,6 +1956,106 @@ Draws a color ramp
 | context | <code>CanvasRenderingContext2D</code> | canvas rendering context |
 | colorMap | <code>function</code> | colormap from [min, max] to a color |
 
+<a name="module_Svg"></a>
+
+## Svg
+**Todo**
+
+- [ ] test
+- [ ] export
+
+
+* [Svg](#module_Svg)
+    * [.getSvgArrowTipPath(toX, toY, pointTo, tipSize)](#module_Svg.getSvgArrowTipPath) ⇒ <code>string</code>
+    * [.getSvgCArrowPath(fromX, fromY, toX, toY, pointTo, tipSize)](#module_Svg.getSvgCArrowPath) ⇒ <code>string</code>
+    * [.getSvgCArrowPath2(fromX, fromY, toX, toY, width, pointTo, tipSize)](#module_Svg.getSvgCArrowPath2) ⇒ <code>string</code>
+    * [.getSvgHorizontalSArrowPath(fromX, fromY, toX, toY, tipSize, pointTo)](#module_Svg.getSvgHorizontalSArrowPath) ⇒ <code>string</code>
+    * [.getSvgVerticalSArrowPath(fromX, fromY, toX, toY, tipSize, pointTo)](#module_Svg.getSvgVerticalSArrowPath) ⇒ <code>string</code>
+
+<a name="module_Svg.getSvgArrowTipPath"></a>
+
+### Svg.getSvgArrowTipPath(toX, toY, pointTo, tipSize) ⇒ <code>string</code>
+Draws an arrow tip with two straight lines.
+
+**Kind**: static method of [<code>Svg</code>](#module_Svg)  
+**Returns**: <code>string</code> - arrow tip SVG path 'd' attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| toX | <code>number</code> | x coordinate where the arrow is pointing |
+| toY | <code>number</code> | y coordinate where the arrow is pointing |
+| pointTo | <code>string</code> | top, right, bottom, left, top-right, top-left,      bottom-right, bottom-left |
+| tipSize | <code>number</code> | size of the arrow tip |
+
+<a name="module_Svg.getSvgCArrowPath"></a>
+
+### Svg.getSvgCArrowPath(fromX, fromY, toX, toY, pointTo, tipSize) ⇒ <code>string</code>
+Creates a roughly C-shaped arrow (quarter ellipse).
+
+**Kind**: static method of [<code>Svg</code>](#module_Svg)  
+**Returns**: <code>string</code> - SVG path 'd' attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fromX | <code>number</code> | starting x |
+| fromY | <code>number</code> | starting y |
+| toX | <code>number</code> | target x |
+| toY | <code>number</code> | target y |
+| pointTo | <code>string</code> | top, right, bottom, left, top-right, top-left,      bottom-right, bottom-left |
+| tipSize | <code>number</code> | size of the tip |
+
+<a name="module_Svg.getSvgCArrowPath2"></a>
+
+### Svg.getSvgCArrowPath2(fromX, fromY, toX, toY, width, pointTo, tipSize) ⇒ <code>string</code>
+Creates a C-shaped arrow (half elipse).
+
+**Kind**: static method of [<code>Svg</code>](#module_Svg)  
+**Returns**: <code>string</code> - SVG path 'd' attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fromX | <code>number</code> | starting x |
+| fromY | <code>number</code> | starting y |
+| toX | <code>number</code> | target x |
+| toY | <code>number</code> | target y |
+| width | <code>number</code> | width |
+| pointTo | <code>string</code> | top, right, bottom, left, top-right, top-left,      bottom-right, bottom-left |
+| tipSize | <code>number</code> | size of the tip |
+
+<a name="module_Svg.getSvgHorizontalSArrowPath"></a>
+
+### Svg.getSvgHorizontalSArrowPath(fromX, fromY, toX, toY, tipSize, pointTo) ⇒ <code>string</code>
+Creates a roughly S-shaped arrow (horizontal).
+
+**Kind**: static method of [<code>Svg</code>](#module_Svg)  
+**Returns**: <code>string</code> - SVG path 'd' attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fromX | <code>number</code> | starting x |
+| fromY | <code>number</code> | starting y |
+| toX | <code>number</code> | target x |
+| toY | <code>number</code> | target y |
+| tipSize | <code>number</code> | size of the tip |
+| pointTo | <code>string</code> | top, right, bottom, left, top-right, top-left,      bottom-right, bottom-left |
+
+<a name="module_Svg.getSvgVerticalSArrowPath"></a>
+
+### Svg.getSvgVerticalSArrowPath(fromX, fromY, toX, toY, tipSize, pointTo) ⇒ <code>string</code>
+Creates a roughly S-shaped arrow (vertical).
+
+**Kind**: static method of [<code>Svg</code>](#module_Svg)  
+**Returns**: <code>string</code> - SVG path 'd' attribute  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fromX | <code>number</code> | starting x |
+| fromY | <code>number</code> | starting y |
+| toX | <code>number</code> | target x |
+| toY | <code>number</code> | target y |
+| tipSize | <code>number</code> | size of the tip |
+| pointTo | <code>string</code> | top, right, bottom, left, top-right, top-left,      bottom-right, bottom-left |
+
 <a name="module_musicvis-lib"></a>
 
 ## musicvis-lib
@@ -2144,6 +2259,7 @@ Maps from instrument to string number to list of tunings.Defaults are at the to
 **Todo**
 
 - [ ] add more? https://en.wikipedia.org/wiki/List_of_guitar_tunings
+- [ ] https://github.com/PirtleShell/string-tunings/blob/master/tunings.json
 - [ ] replace arrays by maps? tuning name - tuning
 
 **Example**  
@@ -4270,13 +4386,15 @@ Converts a Note to a Harmonica
 
 <a name="MusicPiece"></a>
 
-## MusicPiece
+## ~~MusicPiece~~
+***Deprecated***
+
 Represents a parsed MIDI or MusicXML file in a uniform format.
 
 **Kind**: global class  
 
-* [MusicPiece](#MusicPiece)
-    * [new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks)](#new_MusicPiece_new)
+* ~~[MusicPiece](#MusicPiece)~~
+    * [new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks, [xmlMeasureIndices])](#new_MusicPiece_new)
     * _instance_
         * [.toJson(pretty)](#MusicPiece+toJson) ⇒ <code>string</code>
         * ~~[.getAllNotes(sortByTime)](#MusicPiece+getAllNotes) ⇒ [<code>Array.&lt;Note&gt;</code>](#Note)~~
@@ -4289,9 +4407,7 @@ Represents a parsed MIDI or MusicXML file in a uniform format.
 
 <a name="new_MusicPiece_new"></a>
 
-### new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks)
-Do not use this constructor, but the static methods MusicPiece.fromMidiand MusicPiece.fromMusicXml instead.
-
+### new MusicPiece(name, tempos, timeSignatures, keySignatures, measureTimes, tracks, [xmlMeasureIndices])
 **Throws**:
 
 - <code>&#x27;No or invalid tracks given!&#x27;</code> when invalid tracks are given
@@ -4305,6 +4421,7 @@ Do not use this constructor, but the static methods MusicPiece.fromMidiand Musi
 | keySignatures | [<code>Array.&lt;KeySignature&gt;</code>](#KeySignature) | key signatures |
 | measureTimes | <code>Array.&lt;number&gt;</code> | time in seconds for each measure line |
 | tracks | [<code>Array.&lt;Track&gt;</code>](#Track) | tracks |
+| [xmlMeasureIndices] | <code>Array.&lt;number&gt;</code> | for each parsed measure, the index of   the corresponding XML measure (only for MusicXML) |
 
 <a name="MusicPiece+toJson"></a>
 

@@ -383,7 +383,7 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
  * repeated
  *
  * @param {Map<number,string>} measureRehearsalMap map
- * @returns {Map<number,string} cleaned map
+ * @returns {Map<number,string>} cleaned map
  */
 function removeRehearsalRepetitions (measureRehearsalMap) {
   const entries = [...measureRehearsalMap]

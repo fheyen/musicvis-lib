@@ -290,7 +290,7 @@ var require_main = __commonJS({
 
 // package.json
 var name = "musicvis-lib";
-var version = "0.54.2";
+var version = "0.55.0";
 var description = "Music analysis and visualization library";
 var author = "Frank Heyen";
 var license = "ISC";
@@ -335,6 +335,7 @@ var scripts = {
   testfail: "jest --changedFilesWithAncestor --onlyFailures",
   testclear: "jest --clearCache",
   doc: "jsdoc -c jsdoc.conf.json",
+  "doc:md": "jsdoc2md src/**/*.js > api.md",
   lint: "standard --verbose",
   "lint:fix": "standard --fix --verbose",
   "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
@@ -342,7 +343,7 @@ var scripts = {
   "git:commit": 'git commit -m "new version build"',
   "git:push": "git push",
   "git:pushtags": "git push origin --tags",
-  predeploy: "npm run lint:fix && npm run build && jest --silent && npm run doc",
+  predeploy: "npm run lint:fix && npm run doc:md && npm run build && jest --silent",
   deploy: "npm publish && npm run git:all",
   prepare: "husky install"
 };
@@ -352,6 +353,11 @@ var dependencies = {
   "midi-parser-js": "^4.0.4"
 };
 var devDependencies = {
+  "@babel/core": "^7.17.5",
+  "@babel/plugin-proposal-class-properties": "^7.16.7",
+  "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
+  "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+  "@babel/preset-env": "^7.16.11",
   "@types/d3": "^7.1.0",
   "@types/jest": "^27.0.3",
   "clean-jsdoc-theme": "^3.3.1",
@@ -362,6 +368,7 @@ var devDependencies = {
   "jest-canvas-mock": "^2.3.1",
   "jest-extended": "^1.2.0",
   jsdoc: "^3.6.7",
+  "jsdoc-to-markdown": "^7.1.1",
   "npm-check-updates": "^12.0.5",
   standard: "^16.0.4"
 };
@@ -5677,8 +5684,7 @@ function preprocessMusicXmlData(xml, log = false) {
 }
 function preprocessMusicXmlPart(part, drumInstrumentMap) {
   part = handleStaveAndTab(part);
-  let measures = part.children;
-  measures = duplicateRepeatedMeasures(measures);
+  const { resultMeasures: measures, xmlMeasureIndices } = duplicateRepeatedMeasures(part.children);
   const xmlNotes = part.querySelectorAll("note");
   const xmlNoteIndexMap = new Map([...xmlNotes].map((d, i) => [d, i]));
   const xmlNoteIndices = [];
@@ -5890,7 +5896,8 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     totalTime: currentTime,
     measureLinePositions,
     measureIndices,
-    measureRehearsalMap,
+    xmlMeasureIndices,
+    measureRehearsalMap: removeRehearsalRepetitions(measureRehearsalMap),
     xmlNoteIndices,
     tempoChanges,
     beatTypeChanges,
@@ -5899,6 +5906,11 @@ function preprocessMusicXmlPart(part, drumInstrumentMap) {
     noteLyricsMap
   };
   return result;
+}
+function removeRehearsalRepetitions(measureRehearsalMap) {
+  const entries4 = [...measureRehearsalMap];
+  const clean = entries4.filter((d, i) => i === 0 || entries4[i - 1][1] !== d[1]);
+  return new Map(clean);
 }
 function getLyricsFromNote(note2) {
   const lyric = note2.querySelectorAll("lyric");
@@ -5976,7 +5988,9 @@ function duplicateRepeatedMeasures(measures) {
       }
     }
   }
-  return resultMeasures;
+  const measureIndexMap = new Map([...measures].map((d, i) => [d, i]));
+  const xmlMeasureIndices = resultMeasures.map((d) => measureIndexMap.get(d));
+  return { resultMeasures, xmlMeasureIndices };
 }
 function handleStaveAndTab(track) {
   const notes = track.querySelectorAll("note");
@@ -6563,12 +6577,13 @@ var KEY_SIG_MAP = /* @__PURE__ */ new Map([
 
 // src/types/MusicPiece.js
 var MusicPiece = class {
-  constructor(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks) {
+  constructor(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks, xmlMeasureIndices) {
     if (!tracks || tracks.length === 0) {
       throw new Error("No or invalid tracks given! Use .fromMidi or .fromMusicXml?");
     }
     this.name = name2;
     this.measureTimes = measureTimes;
+    this.xmlMeasureIndices = xmlMeasureIndices;
     this.tracks = tracks;
     this.duration = Math.max(...this.tracks.map((d) => d.duration));
     this.tempos = tempos.slice(0, 1);
@@ -6634,8 +6649,10 @@ var MusicPiece = class {
       keySignatures = parsed.parts[0].keySignatureChanges.map((d) => new KeySignature(d.time, d.key, d.scale));
     }
     let measureTimes = [];
+    let xmlMeasureIndices = [];
     if (parsed.parts.length > 0) {
       measureTimes = parsed.parts[0].measureLinePositions;
+      xmlMeasureIndices = parsed.parts[0].xmlMeasureIndices;
     }
     const tracks = parsed.parts.map((track, index16) => {
       for (const n of track.noteObjs) {
@@ -6643,17 +6660,15 @@ var MusicPiece = class {
       }
       return new Track(parsed.partNames[index16], parsed.instruments[index16], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap, track.xmlNoteIndices);
     });
-    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks, xmlMeasureIndices);
   }
   static fromJson(json) {
     json = typeof json === "string" ? JSON.parse(json) : json;
-    const name2 = json.name;
     const tempos = json.tempos.map((d) => new TempoDefinition(d.time, d.bpm));
     const timeSignatures = json.timeSignatures.map((d) => new TimeSignature(d.time, d.signature));
     const keySignatures = json.keySignatures.map((d) => new KeySignature(d.time, d.key, d.scale));
-    const measureTimes = json.measureTimes;
     const tracks = json.tracks.map((track) => Track.from(track));
-    return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
+    return new MusicPiece(json.name, tempos, timeSignatures, keySignatures, json.measureTimes, tracks, json.xmlMeasureIndices);
   }
   toJson(pretty = false) {
     const _this = {
