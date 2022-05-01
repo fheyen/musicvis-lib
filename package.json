@@ -80,7 +80,7 @@
     "jsdoc": "^3.6.7",
     "jsdoc-to-markdown": "^7.1.1",
     "npm-check-updates": "^12.0.5",
-    "standard": "^16.0.4"
+    "standard": "^17.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom",
