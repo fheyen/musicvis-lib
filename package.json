@@ -72,7 +72,7 @@
     "@types/jest": "^27.0.3",
     "clean-jsdoc-theme": "^3.3.1",
     "esbuild": "^0.14.23",
-    "glob": "^7.2.0",
+    "glob": "^8.0.1",
     "husky": "^7.0.0",
     "jest": "^27.4.5",
     "jest-canvas-mock": "^2.3.1",
