@@ -74,7 +74,7 @@
     "esbuild": "^0.14.23",
     "glob": "^7.2.0",
     "husky": "^7.0.0",
-    "jest": "^27.4.5",
+    "jest": "^28.1.0",
     "jest-canvas-mock": "^2.3.1",
     "jest-extended": "^1.2.0",
     "jsdoc": "^3.6.7",
