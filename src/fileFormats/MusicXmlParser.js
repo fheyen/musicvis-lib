@@ -361,7 +361,7 @@ function preprocessMusicXmlPart (part, drumInstrumentMap) {
   }
 
   const result = {
-    noteObjs: noteObjs,
+    noteObjs,
     totalTime: currentTime,
     measureLinePositions,
     measureIndices,

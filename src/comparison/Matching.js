@@ -44,7 +44,7 @@ export function matchGtAndRecordingNotes (recNotes, gtNotes) {
         gtRecMap: new Map(),
         additionalNotes: [],
         missingNotes: gtNotes,
-        gtNotes: gtNotes
+        gtNotes
       })
       continue
     }
@@ -79,7 +79,7 @@ export function matchGtAndRecordingNotes (recNotes, gtNotes) {
       gtRecMap,
       additionalNotes,
       missingNotes,
-      gtNotes: gtNotes
+      gtNotes
     })
   }
   // If a recording has a pitch that GT has not, all those notes are additional notes
@@ -265,7 +265,7 @@ export function getMatchingSection (matching, start, end) {
       gtRecMap: newGtRecMap,
       additionalNotes: additionalNotes.filter(d => d.start >= start && d.start < end),
       missingNotes: missingNotes.filter(d => d.start >= start && d.start < end),
-      gtNotes: gtNotes
+      gtNotes
     })
   }
   return result

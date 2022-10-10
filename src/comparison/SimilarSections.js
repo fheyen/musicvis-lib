@@ -54,7 +54,7 @@ export function findSimilarStringSections (dataString, searchString, threshold =
     const slice = dataString.slice(index, index + length)
     const distance = levenshtein(searchString, slice) / length
     if (distance < threshold) {
-      matches.push({ index: index, distance })
+      matches.push({ index, distance })
     }
   }
   // Filter overlapping matches by removing the ones with larger distances

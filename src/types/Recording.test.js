@@ -11,8 +11,8 @@ const date = new Date()
 const rec = new Recording('test', date, notes, 1, 0, null, 'test comment')
 const obj = {
   name: 'test',
-  date: date,
-  notes: notes,
+  date,
+  notes,
   speed: 1,
   selectedTrack: 0,
   timeSelection: null,

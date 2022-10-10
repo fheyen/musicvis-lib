@@ -47,7 +47,7 @@ export function compress (sequence) {
     pre,
     seq: repetition,
     rep,
-    post: post,
+    post,
     // Depth, leaves are 0, root is highest
     depth,
     // Compressed length
