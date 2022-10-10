@@ -684,7 +684,19 @@ Separates classified GT and rec notes
 <a name="module_comparison/Matching.matchGtAndRecordingNotes"></a>
 
 ### comparison/Matching.matchGtAndRecordingNotes(recNotes, gtNotes) ⇒ <code>Map</code>
-For one recording, separately for each pitch,matches each recorded note to its closest ground truth note.If there are multiple matches, the best (smallest time difference)will be kept and others will be regarded as additional notes.Ground truth notes without match will be regarded as missing notes.Result format (separated by pitch in a Map):Map:pitch->{   gtRecMap           matched rec. note for each GT note Map:gtNoteStart->recNote,   additionalNotes:   rec. notes without matched GT note   missingNotes:      GT notes without matched rec. note   gtNotes:           all GT notes}
+For one recording, separately for each pitch,
+matches each recorded note to its closest ground truth note.
+If there are multiple matches, the best (smallest time difference)
+will be kept and others will be regarded as additional notes.
+Ground truth notes without match will be regarded as missing notes.
+
+Result format (separated by pitch in a Map):
+Map:pitch->{
+   gtRecMap           matched rec. note for each GT note Map:gtNoteStart->recNote,
+   additionalNotes:   rec. notes without matched GT note
+   missingNotes:      GT notes without matched rec. note
+   gtNotes:           all GT notes
+}
 
 **Kind**: static method of [<code>comparison/Matching</code>](#module_comparison/Matching)  
 **Returns**: <code>Map</code> - result  
@@ -701,7 +713,14 @@ For one recording, separately for each pitch,matches each recorded note to its 
 <a name="module_comparison/Matching.matchGtAndMultipleRecordings"></a>
 
 ### comparison/Matching.matchGtAndMultipleRecordings(recordings, gtNotes) ⇒ <code>Map</code>
-Matches all recorded notes from multiple recordings to the nearestground truth (GT) note.Contrary to the matching created by matchGtAndRecordingNotes()missing and additional notes are not considered, so multiple notesfrom a single recording can be matched to the same GT note.Result format:Map:pitch->Map:gtStart->arrayOfMatchedRecNotes
+Matches all recorded notes from multiple recordings to the nearest
+ground truth (GT) note.
+Contrary to the matching created by matchGtAndRecordingNotes()
+missing and additional notes are not considered, so multiple notes
+from a single recording can be matched to the same GT note.
+
+Result format:
+Map:pitch->Map:gtStart->arrayOfMatchedRecNotes
 
 **Kind**: static method of [<code>comparison/Matching</code>](#module_comparison/Matching)  
 **Returns**: <code>Map</code> - matching  
@@ -714,10 +733,15 @@ Matches all recorded notes from multiple recordings to the nearestground truth 
 <a name="module_comparison/Matching.getMultiMatchingErrorPerNote"></a>
 
 ### comparison/Matching.getMultiMatchingErrorPerNote(multiMatching, errorThreshold) ⇒ <code>Map</code>
-Calculates (for each pitch) the average error for each GT note (averagedover all matched notes in the recordings),as well as the maximum of all those average errors.GT notes that have no matched recorded notes will have an error of 0.
+Calculates (for each pitch) the average error for each GT note (averaged
+over all matched notes in the recordings),
+as well as the maximum of all those average errors.
+GT notes that have no matched recorded notes will have an error of 0.
 
 **Kind**: static method of [<code>comparison/Matching</code>](#module_comparison/Matching)  
-**Returns**: <code>Map</code> - error summary Map:pitch->{gtErrorMap, maxError},     gtErrorMap is Map:gtStart->error (error is average over all time     differences between the GT note and matched recNotes)  
+**Returns**: <code>Map</code> - error summary Map:pitch->{gtErrorMap, maxError},
+     gtErrorMap is Map:gtStart->error (error is average over all time
+     differences between the GT note and matched recNotes)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -743,7 +767,8 @@ Calculates the error of a matching by applying penalties and summing up
 <a name="module_comparison/Matching.getMatchingSection"></a>
 
 ### comparison/Matching.getMatchingSection(matching, start, end) ⇒ <code>Map</code>
-Cuts a section from a matching by filtering on the start timesof ground truth, missing, and additonal notes
+Cuts a section from a matching by filtering on the start times
+of ground truth, missing, and additonal notes
 
 **Kind**: static method of [<code>comparison/Matching</code>](#module_comparison/Matching)  
 **Returns**: <code>Map</code> - section of matching  
@@ -757,7 +782,8 @@ Cuts a section from a matching by filtering on the start timesof ground truth, 
 <a name="module_comparison/Matching.getMatchingSliceError"></a>
 
 ### comparison/Matching.getMatchingSliceError(matching, start, end, addPenalty, missPenalty, timingPenalty) ⇒ <code>object</code>
-Shortcut for getMatchingSection and getMatchingError,see them for parameter details.
+Shortcut for getMatchingSection and getMatchingError,
+see them for parameter details.
 
 **Kind**: static method of [<code>comparison/Matching</code>](#module_comparison/Matching)  
 **Returns**: <code>object</code> - error by category  
@@ -1482,7 +1508,8 @@ For the notes of one track, computes the notes' indices where new measuresstart
 <a name="module_fileFormats/MusicXmlParser.preprocessMusicXmlData"></a>
 
 ### fileFormats/MusicXmlParser.preprocessMusicXmlData(xml, log) ⇒ <code>object</code>
-Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.Also calculates the position of measure lines and the total time in seconds.
+Converts a collection of MusicXML measures to JavaScript Objects with timing information in seconds.
+Also calculates the position of measure lines and the total time in seconds.
 
 **Kind**: static method of [<code>fileFormats/MusicXmlParser</code>](#module_fileFormats/MusicXmlParser)  
 **Returns**: <code>object</code> - parsed document  
@@ -1507,7 +1534,8 @@ Maps dynamics to MIDI velocity numbers, i.e. 'ff' to 102
 <a name="module_fileFormats/MusicXmlParser..removeRehearsalRepetitions"></a>
 
 ### fileFormats/MusicXmlParser~removeRehearsalRepetitions(measureRehearsalMap) ⇒ <code>Map.&lt;number, string&gt;</code>
-Removes duplicates from measureRehearsalMap, which occur when a measure wasrepeated
+Removes duplicates from measureRehearsalMap, which occur when a measure was
+repeated
 
 **Kind**: inner method of [<code>fileFormats/MusicXmlParser</code>](#module_fileFormats/MusicXmlParser)  
 **Returns**: <code>Map.&lt;number, string&gt;</code> - cleaned map  
@@ -1531,7 +1559,10 @@ Reads lyrics from a note element
 <a name="module_fileFormats/MusicXmlParser..getDrumInstrumentMap"></a>
 
 ### fileFormats/MusicXmlParser~getDrumInstrumentMap(xml) ⇒ <code>Map</code>
-Returns a map containing maps, such that result.get(partId).get(instrId)gives you the instrument with the ID instrId as defined in the part partId.This is needed to map drum notes to MIDI pitches.
+Returns a map containing maps, such that result.get(partId).get(instrId)
+gives you the instrument with the ID instrId as defined in the part partId.
+
+This is needed to map drum notes to MIDI pitches.
 
 **Kind**: inner method of [<code>fileFormats/MusicXmlParser</code>](#module_fileFormats/MusicXmlParser)  
 **Returns**: <code>Map</code> - map with structure result.get(partId).get(instrId)  

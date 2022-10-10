@@ -53,7 +53,8 @@
     "git:commit": "git commit -m \"new version build\"",
     "git:push": "git push",
     "git:pushtags": "git push origin --tags",
-    "predeploy": "npm run lint:fix && npm run doc:md && npm run doc && npm run build && jest --silent",
+    "predeploy": "npm run lint:fix && npm run doc:md && npm run build && jest --silent",
+    "predeploy_old": "npm run lint:fix && npm run doc:md && npm run doc && npm run build && jest --silent",
     "deploy": "npm publish && npm run git:all",
     "prepare": "husky install"
   },
