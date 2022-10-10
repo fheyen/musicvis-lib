@@ -52,6 +52,16 @@ describe('ImmediateRepetitionCompression', () => {
     })
   })
 
+  describe('depth', () => {
+    const depth3 = "1 2 1 2 3 1 2 1 2 3 4 1 2 1 2 3 1 2 1 2 3 4".split(" ")
+
+    test('null', () => {
+      expect(
+        compr.compress(depth3).depth
+      ).toBe(3)
+    })
+  })
+
   describe('summary', () => {
     test('null', () => {
       expect(

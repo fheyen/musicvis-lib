@@ -33,7 +33,7 @@ export function compress (sequence) {
   // Get current depth
   const depth = Math.max(
     pre?.depth ?? 0,
-    repetition?.depth ?? 0 + 1,
+    (repetition?.depth ?? 0) + 1,
     post?.depth ?? 0
   )
 
