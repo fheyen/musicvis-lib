@@ -134,6 +134,33 @@ describe('Note', () => {
     })
   })
 
+  describe('startPitchComparator', () => {
+    const notes = [
+      Note.from({ start: -1.0, pitch: 12 }),
+      Note.from({ start: 0, pitch: 12 }),
+      Note.from({ start: 2.0, pitch: 12 }),
+      Note.from({ start: 3.1, pitch: 0 }),
+      Note.from({ start: 3.1, pitch: 12 }),
+      Note.from({ start: 3.1, pitch: 12 }),
+      Note.from({ start: 4.5, pitch: 12 })
+    ]
+    test('already sorted', () => {
+      expect(notes.sort(Note.startPitchComparator)).toStrictEqual(notes)
+    })
+    test('not yet sorted', () => {
+      const notesUnsorted = [
+        Note.from({ start: 3.1, pitch: 12 }),
+        Note.from({ start: 4.5, pitch: 12 }),
+        Note.from({ start: 2.0, pitch: 12 }),
+        Note.from({ start: 0, pitch: 12 }),
+        Note.from({ start: 3.1, pitch: 12 }),
+        Note.from({ start: -1.0, pitch: 12 }),
+        Note.from({ start: 3.1, pitch: 0 })
+      ]
+      expect(notesUnsorted.sort(Note.startPitchComparator)).toStrictEqual(notes)
+    })
+  })
+
   describe('overlaps in time', () => {
     test('note overlaps itself', () => {
       expect(note1.overlapsInTime(note1)).toBe(true)

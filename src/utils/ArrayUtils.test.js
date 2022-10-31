@@ -1,4 +1,4 @@
-import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getArrayMax, formatMatrix, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, euclideanDistance, arrayIndexOf } from './ArrayUtils.js'
+import { arrayContainsArray, arrayShallowEquals, arrayHasSameElements, removeDuplicates, getArrayMax, formatMatrix, count, jaccardIndex, binarySearch, kendallTau, normalizeNdArray, normalizeNdArrayNegative, euclideanDistance, arrayIndexOf } from './ArrayUtils.js'
 import * as au from './ArrayUtils.js'
 
 describe('ArrayUtils', () => {
@@ -155,6 +155,36 @@ describe('ArrayUtils', () => {
     test('does equal same', () => {
       const arr = [1, 2, 3, 4, 5]
       expect(arrayShallowEquals(arr, arr)).toBe(true)
+    })
+  })
+
+  describe('count', () => {
+    test.skip('undefined', () => {
+      expect(() => count()).toThrowError('Undefined or invalid array')
+    })
+    test('empty', () => {
+      expect(count([])).toBe(0)
+    })
+    test('undefined', () => {
+      expect(count([undefined, 1, 2, 3, undefined, 5])).toBe(2)
+    })
+    test('not in array', () => {
+      expect(count([1, 2, 3], 4)).toBe(0)
+    })
+    test('once in array', () => {
+      expect(count([1, 2, 3, 4], 4)).toBe(1)
+    })
+    test('three times in array', () => {
+      expect(count([1, 2, 3, 4, 0, 5, 0, 6, 0], 0)).toBe(3)
+    })
+    test('mixed types', () => {
+      expect(count(['a', 2, 0.4, 'a', 4, true, 0, 5, 0, 6, 0], 'a')).toBe(2)
+    })
+    test('comparator', () => {
+      expect(count([1, 2, 3, 4], 2, (a, b) => a === b)).toBe(1)
+    })
+    test('comparator', () => {
+      expect(count(['aa', 'ab', 'bc', 'ad'], 'aa', (a, b) => a[0] === b[0])).toBe(3)
     })
   })
 
@@ -349,6 +379,47 @@ describe('ArrayUtils', () => {
         [0.25, 0.5, 1],
         [0.25, 0.5],
         [0.25]
+      ])
+    })
+  })
+
+  describe('normalizeNdArrayNegative', () => {
+    test('empty', () => {
+      expect(normalizeNdArrayNegative([])).toStrictEqual([])
+      expect(normalizeNdArrayNegative([[], []])).toStrictEqual([[], []])
+    })
+    test('simple', () => {
+      expect(normalizeNdArrayNegative([0, 1, 2, 4])).toStrictEqual([0, 0.25, 0.5, 1])
+    })
+    test('rectangular', () => {
+      expect(normalizeNdArrayNegative([
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3]
+      ])).toStrictEqual([
+        [0, 0.5, 1],
+        [0, 0.5, 1],
+        [0, 0.5, 1]
+      ])
+    })
+    test('irregular', () => {
+      expect(normalizeNdArrayNegative([
+        [1, 2, 3],
+        [1, 2],
+        [1]
+      ])).toStrictEqual([
+        [0, 0.5, 1],
+        [0, 0.5],
+        [0]
+      ])
+    })
+    test('negative', () => {
+      expect(normalizeNdArrayNegative([
+        [-2, 2],
+        [1, 2]
+      ])).toStrictEqual([
+        [0, 1],
+        [0.75, 1]
       ])
     })
   })

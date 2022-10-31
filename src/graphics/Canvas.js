@@ -12,7 +12,7 @@ import * as d3 from 'd3'
  * @param {HTMLCanvasElement} canvas canvas element
  * @returns {CanvasRenderingContext2D} canvas rendering context
  */
-export function setupCanvas (canvas) {
+export function setupCanvas(canvas) {
   // Fix issues when importing musicvis-lib in Node.js
   if (!window) { return }
   // Get the device pixel ratio, falling back to 1.
@@ -45,7 +45,7 @@ export function setupCanvas (canvas) {
  *      Canvas.drawLine(context, 0, 0, 50, 50);
  *      Canvas.drawLine(context, 0, 50, 50, 0);
  */
-export function drawLine (context, x1, y1, x2, y2) {
+export function drawLine(context, x1, y1, x2, y2) {
   context.beginPath()
   context.moveTo(x1, y1)
   context.lineTo(x2, y2)
@@ -62,7 +62,7 @@ export function drawLine (context, x1, y1, x2, y2) {
  * @param {number} x2 x coordinate of end
  * @returns {void}
  */
-export function drawHLine (context, x1, y, x2) {
+export function drawHLine(context, x1, y, x2) {
   context.beginPath()
   context.moveTo(x1, y)
   context.lineTo(x2, y)
@@ -79,7 +79,7 @@ export function drawHLine (context, x1, y, x2) {
  * @param {number} y2 y coordinate of end
  * @returns {void}
  */
-export function drawVLine (context, x, y1, y2) {
+export function drawVLine(context, x, y1, y2) {
   context.beginPath()
   context.moveTo(x, y1)
   context.lineTo(x, y2)
@@ -98,7 +98,7 @@ export function drawVLine (context, x, y1, y2) {
  * @param {number} [strength=0.5] how much the bow deviates from a straight line
  *      towards the right, negative values will make bows to the left
  */
-export function drawBowRight (context, x1, y1, x2, y2, strength = 0.5) {
+export function drawBowRight(context, x1, y1, x2, y2, strength = 0.5) {
   const middleX = (x1 + x2) / 2
   const middleY = (y1 + y2) / 2
   const dx = x2 - x1
@@ -122,7 +122,7 @@ export function drawBowRight (context, x1, y1, x2, y2, strength = 0.5) {
  * @param {number} radius radius
  * @returns {void}
  */
-export function drawCircle (context, x, y, radius) {
+export function drawCircle(context, x, y, radius) {
   context.beginPath()
   context.arc(x, y, radius, 0, 2 * Math.PI)
   context.stroke()
@@ -137,7 +137,7 @@ export function drawCircle (context, x, y, radius) {
  * @param {number} radius radius
  * @returns {void}
  */
-export function drawFilledCircle (context, x, y, radius) {
+export function drawFilledCircle(context, x, y, radius) {
   context.beginPath()
   context.arc(x, y, radius, 0, 2 * Math.PI)
   context.fill()
@@ -152,7 +152,7 @@ export function drawFilledCircle (context, x, y, radius) {
  * @param {number} halfSize half of the size
  * @returns {void}
  */
-export function drawTriangle (context, x, y, halfSize) {
+export function drawTriangle(context, x, y, halfSize) {
   context.beginPath()
   context.moveTo(x - halfSize, y + halfSize)
   context.lineTo(x + halfSize, y + halfSize)
@@ -170,7 +170,7 @@ export function drawTriangle (context, x, y, halfSize) {
  * @param {number} halfSize half of the size
  * @returns {void}
  */
-export function drawDiamond (context, x, y, halfSize) {
+export function drawDiamond(context, x, y, halfSize) {
   context.beginPath()
   context.moveTo(x - halfSize, y)
   context.lineTo(x, y - halfSize)
@@ -189,7 +189,7 @@ export function drawDiamond (context, x, y, halfSize) {
  * @param {number} halfSize half of the size
  * @returns {void}
  */
-export function drawX (context, x, y, halfSize) {
+export function drawX(context, x, y, halfSize) {
   context.save()
   context.lineWidth = 2
   context.beginPath()
@@ -213,7 +213,7 @@ export function drawX (context, x, y, halfSize) {
  * @param {number} height2 height (of right side)
  * @returns {void}
  */
-export function drawNoteTrapezoid (context, x, y, width, height, height2) {
+export function drawNoteTrapezoid(context, x, y, width, height, height2) {
   context.beginPath()
   context.moveTo(x, y)
   context.lineTo(x, y + height)
@@ -235,7 +235,7 @@ export function drawNoteTrapezoid (context, x, y, width, height, height2) {
  * @param {number} width2 width (of top side)
  * @returns {void}
  */
-export function drawNoteTrapezoidUpwards (context, x, y, width, height, width2) {
+export function drawNoteTrapezoidUpwards(context, x, y, width, height, width2) {
   context.beginPath()
   context.lineTo(x, y + height)
   context.lineTo(x + width, y + height)
@@ -256,7 +256,7 @@ export function drawNoteTrapezoidUpwards (context, x, y, width, height, width2) 
  * @param {number} radius rounding radius
  * @returns {void}
  */
-export function drawRoundedRect (context, x, y, width, height, radius) {
+export function drawRoundedRect(context, x, y, width, height, radius) {
   if (width < 0) { return }
   context.beginPath()
   context.moveTo(x + radius, y)
@@ -282,7 +282,7 @@ export function drawRoundedRect (context, x, y, width, height, radius) {
  * @param {number} y2 y coordinate of end
  * @param {boolean} [xFirst=true] controls whether to go first in x or y direction
  */
-export function drawCornerLine (context, x1, y1, x2, y2, xFirst = true) {
+export function drawCornerLine(context, x1, y1, x2, y2, xFirst = true) {
   context.beginPath()
   context.moveTo(x1, y1)
   xFirst
@@ -304,7 +304,7 @@ export function drawCornerLine (context, x1, y1, x2, y2, xFirst = true) {
  * @param {number} y2 y coordinate of end
  * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
  */
-export function drawRoundedCornerLine (context, x1, y1, x2, y2, maxRadius = 25) {
+export function drawRoundedCornerLine(context, x1, y1, x2, y2, maxRadius = 25) {
   const xDist = Math.abs(x2 - x1)
   const yDist = Math.abs(y2 - y1)
   const radius = Math.min(xDist, yDist, maxRadius)
@@ -332,7 +332,7 @@ export function drawRoundedCornerLine (context, x1, y1, x2, y2, maxRadius = 25) 
  * @param {number} y2 y coordinate of end
  * @param {number} [maxRadius=25] maximum radius, fixes possible overlaps
  */
-export function drawRoundedCornerLineRightLeft (
+export function drawRoundedCornerLineRightLeft(
   context,
   x1,
   y1,
@@ -364,7 +364,7 @@ export function drawRoundedCornerLineRightLeft (
  * @param {number} cy center y
  * @param {number} radius radius of the circle on which the points are placed
  */
-export function drawHexagon (context, cx, cy, radius) {
+export function drawHexagon(context, cx, cy, radius) {
   context.beginPath()
   for (let index = 0; index < 6; index++) {
     // Start at 30° TODO: allow to specify
@@ -389,7 +389,7 @@ export function drawHexagon (context, cx, cy, radius) {
  * @param {number} x2 x coordinate of the second point
  * @param {number} y2 y coordinate of the second point
  */
-export function drawBezierConnectorX (context, x1, y1, x2, y2) {
+export function drawBezierConnectorX(context, x1, y1, x2, y2) {
   const deltaX = (x2 - x1) / 2
   context.beginPath()
   context.moveTo(x1, y1)
@@ -406,12 +406,51 @@ export function drawBezierConnectorX (context, x1, y1, x2, y2) {
  * @param {number} x2 x coordinate of the second point
  * @param {number} y2 y coordinate of the second point
  */
-export function drawBezierConnectorY (context, x1, y1, x2, y2) {
+export function drawBezierConnectorY(context, x1, y1, x2, y2) {
   const deltaY = (y2 - y1) / 2
   context.beginPath()
   context.moveTo(x1, y1)
   context.bezierCurveTo(x1, y1 + deltaY, x2, y1 + deltaY, x2, y2)
   context.stroke()
+}
+
+/**
+ * Draws a funnel to indicate that horizontal span relates to another one below
+ * Will fill() the shape, call context.stroke() afterwards to also stroke.
+ *
+ * @todo add X version
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {number} y1 top y position
+ * @param {number} y2 bottom y position
+ * @param {number} x1left top left x position
+ * @param {number} x1right top right x position
+ * @param {number} x2left bottom left x position
+ * @param {number} x2right bottom right x position
+ */
+export function drawBezierFunnelY(
+  context,
+  y1,
+  y2,
+  x1left,
+  x1right,
+  x2left,
+  x2right
+) {
+  const deltaY = (y2 - y1) / 2
+  context.beginPath()
+  context.moveTo(x1left, y1)
+  context.bezierCurveTo(x1left, y1 + deltaY, x2left, y1 + deltaY, x2left, y2)
+  context.lineTo(x2right, y2)
+  context.bezierCurveTo(
+    x2right,
+    y1 + deltaY,
+    x1right,
+    y1 + deltaY,
+    x1right,
+    y1
+  )
+  context.closePath()
+  context.fill()
 }
 
 /**
@@ -426,7 +465,7 @@ export function drawBezierConnectorY (context, x1, y1, x2, y2) {
  * @param {boolean} turnLeft true for left turn, false for right turn
  * @param {number} roundness corner roundness between 0 (sharp) and 1 (round)
  */
-export function drawRoundedCorner (context, x1, y1, x2, y2, turnLeft = true, roundness = 1) {
+export function drawRoundedCorner(context, x1, y1, x2, y2, turnLeft = true, roundness = 1) {
   context.beginPath()
   context.moveTo(x1, y1)
   if (x1 === x2 || y1 === y2) {
@@ -488,7 +527,7 @@ export function drawRoundedCorner (context, x1, y1, x2, y2, turnLeft = true, rou
  * @param {number} length length in pixels of the parts
  * @param {number} yBottom bottom baseline y coordinate
  */
-export function drawArc (context, startX1, startX2, length, yBottom) {
+export function drawArc(context, startX1, startX2, length, yBottom) {
   // Get center and radius
   const radius = (startX2 - startX1) / 2
   const cx = startX1 + radius + length / 2
@@ -510,7 +549,7 @@ export function drawArc (context, startX1, startX2, length, yBottom) {
  * @param {number} endX2 x coordinate of the end of the second part
  * @param {number} yBottom bottom baseline y coordinate
  */
-export function drawAssymetricArc (context, startX1, endX1, startX2, endX2, yBottom) {
+export function drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBottom) {
   // Get center and radius
   const radiusTop = (endX2 - startX1) / 2
   if (radiusTop < 0) {
@@ -542,7 +581,7 @@ export function drawAssymetricArc (context, startX1, endX1, startX2, endX2, yBot
  * @param {number} w width of the bracket's horizontal lines
  * @param {number} h height of the bracket's vertical ticks
  */
-export function drawBracketH (context, x, y, w, h) {
+export function drawBracketH(context, x, y, w, h) {
   context.beginPath()
   context.moveTo(x, y + h)
   context.lineTo(x, y)
@@ -561,7 +600,7 @@ export function drawBracketH (context, x, y, w, h) {
  * @param {number} [size=400] width and height in pixel
  * @param {Function} colorMap colormap from [min, max] to a color
  */
-export function drawMatrix (
+export function drawMatrix(
   context,
   matrix,
   x = 0,
@@ -592,10 +631,41 @@ export function drawMatrix (
  * @param {CanvasRenderingContext2D} context canvas rendering context
  * @param {Function} colorMap colormap from [min, max] to a color
  */
-export function drawColorRamp (context, w = 100, h = 10, colorMap = d3.interpolateRainbow) {
+export function drawColorRamp(context, w = 100, h = 10, colorMap = d3.interpolateRainbow) {
   const scaleColor = d3.scaleLinear().domain([0, w])
   for (let x = 0; x < w; ++x) {
     context.fillStyle = colorMap(scaleColor(x))
     context.fillRect(x, 0, 1.1, h)
   }
+}
+
+/**
+ * Draws text horizontally rotated 90 degrees clock-wise
+ * @todo use the one from mvlib
+ * @param {*} context
+ * @param {number} x x position
+ * @param {number} y y position
+ * @param {string} text text
+ * @param {string} [color='black'] HTML color string
+ * @param {string} [font='12px sans-serif'] font string, e.g, '12px sans-serif'
+ * @param {boolean} [centered=false] center text?
+ */
+export function drawVerticalText(
+  context,
+  x,
+  y,
+  text,
+  color = 'black',
+  font = '12px sans-serif',
+  centered = false
+) {
+  context.save()
+  context.rotate((90 * Math.PI) / 180)
+  if (centered) {
+    context.textAlign = 'center'
+  }
+  context.fillStyle = color
+  context.font = font
+  context.fillText(text, y, -x)
+  context.restore()
 }

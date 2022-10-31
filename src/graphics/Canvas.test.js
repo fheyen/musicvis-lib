@@ -138,4 +138,13 @@ describe('Canvas', () => {
     expect(() => cv.drawColorRamp(ctx, 50, 10)).not.toThrow()
     expect(() => cv.drawColorRamp(ctx, 50, 10, (d) => `rgb(0, 0, ${Math.round(d * 255)})`)).not.toThrow()
   })
+
+  test('drawVerticalText', () => {
+    expect(() => cv.drawVerticalText(ctx)).not.toThrow()
+    expect(() => cv.drawVerticalText(ctx, 50, 10)).not.toThrow()
+    expect(() => cv.drawVerticalText(ctx, 50, 10, 'test')).not.toThrow()
+    expect(() => cv.drawVerticalText(ctx, 50, 10, 'test', 'red')).not.toThrow()
+    expect(() => cv.drawVerticalText(ctx, 50, 10, 'test', 'red', '10px sans-serif')).not.toThrow()
+    expect(() => cv.drawVerticalText(ctx, 50, 10, 'test', 'red', '10px sans-serif', true)).not.toThrow()
+  })
 })

@@ -11,7 +11,7 @@ import * as d3 from 'd3'
  * @param {Array} b another array
  * @returns {boolean} true iff equal
  */
-export function arrayShallowEquals (a, b) {
+export function arrayShallowEquals(a, b) {
   if (a.length !== b.length) {
     return false
   }
@@ -32,7 +32,7 @@ export function arrayShallowEquals (a, b) {
  * @param {boolean} checkLength also checks if arrays have the same length
  * @returns {boolean} true iff arrays contain same elements
  */
-export function arrayHasSameElements (a, b, checkLength = true) {
+export function arrayHasSameElements(a, b, checkLength = true) {
   if (checkLength && a.length !== b.length) {
     return false
   }
@@ -52,6 +52,38 @@ export function arrayHasSameElements (a, b, checkLength = true) {
 }
 
 /**
+ * Counts how often value appears in array
+ * @todo use the one from mvlib, already moved there
+ * @param {Array} array array
+ * @param {*} value value
+ * @param {function} [comparator] comparator function, can be undefined to just
+ * use ===. Comparator has to return true when values are regarded as equal
+ * @returns {number} count
+ */
+export function count(array, value, comparator) {
+  let count = 0
+  // if (!array || (Array.isArray(array))) {
+  //   throw new Error('Undefined or invalid array')
+  // }
+  if (!comparator) {
+    // Use ===
+    for (const v of array) {
+      if (v === value) {
+        count++
+      }
+    }
+  } else {
+    // Use comparator function
+    for (const v of array) {
+      if (comparator(v, value)) {
+        count++
+      }
+    }
+  }
+  return count
+}
+
+/**
  * Jaccard index calulates the similarity of the sets as the size of the set
  * interaction divided by the size of the set union:
  * jackard_index = |intersection| / |union|
@@ -61,7 +93,7 @@ export function arrayHasSameElements (a, b, checkLength = true) {
  * @param {number[]} set2 set 2
  * @returns {number} similarity in [0, 1]
  */
-export function jaccardIndex (set1, set2) {
+export function jaccardIndex(set1, set2) {
   if (set1.length === 0 && set2.length === 0) {
     return 1
   }
@@ -80,7 +112,7 @@ export function jaccardIndex (set1, set2) {
  * @returns {number} Kendall tau distance
  * @throws {'Ranking length must be equal'} if rankings don't have euqal length
  */
-export function kendallTau (ranking1, ranking2, normalize = true) {
+export function kendallTau(ranking1, ranking2, normalize = true) {
   if (ranking1.length !== ranking2.length) {
     throw new Error('Ranking length must be equal')
   }
@@ -110,7 +142,7 @@ export function kendallTau (ranking1, ranking2, normalize = true) {
  * @param {Array} array an array
  * @returns {Array} array without duplicates
  */
-export function removeDuplicates (array) {
+export function removeDuplicates(array) {
   return [...new Set(array)]
 }
 
@@ -123,7 +155,7 @@ export function removeDuplicates (array) {
  * @param {Array} b a shorter array
  * @returns {boolean} true iff a contains b
  */
-export function arrayContainsArray (a, b) {
+export function arrayContainsArray(a, b) {
   if (a.length < b.length) {
     return false
   }
@@ -148,7 +180,7 @@ export function arrayContainsArray (a, b) {
  * @throws {'undefined length'} length is undefined
  * @throws {'start < 0'} when start is negative
  */
-export function arraySlicesEqual (a, b, length, startA = 0, startB = 0) {
+export function arraySlicesEqual(a, b, length, startA = 0, startB = 0) {
   if (length === null || length === undefined) {
     throw new Error('undefined length')
   }
@@ -175,7 +207,7 @@ export function arraySlicesEqual (a, b, length, startA = 0, startB = 0) {
  * @param {number} [startIndex=0] index from which to start searching
  * @returns {number} index or -1 when not found
  */
-export function arrayIndexOf (haystack, needle, startIndex = 0) {
+export function arrayIndexOf(haystack, needle, startIndex = 0) {
   if (needle.length === 0) { return -1 }
   for (
     let index = startIndex;
@@ -205,24 +237,43 @@ export function arrayIndexOf (haystack, needle, startIndex = 0) {
  * @param {Array} array array
  * @returns {number} maximum value
  */
-export function getArrayMax (array) {
+export function getArrayMax(array) {
   return d3.max(array.flat(Number.POSITIVE_INFINITY))
 }
 
 /**
  * Normalizes by dividing all entries by the maximum.
- * Only for positive values!
+ *  Only for positive values! Assumes 0 to be the minimum.
+ * Use normalizeNdArrayNegative for arbitrary numbers.
  *
+ * @see normalizeNdArrayNegative
  * @param {Array} array nD array with arbitrary depth and structure
  * @returns {Array} normalized array
  */
-export function normalizeNdArray (array) {
+export function normalizeNdArray(array) {
   const max = d3.max(array.flat(Number.POSITIVE_INFINITY))
   const normalize = (array_, maxValue) =>
     array_.map((d) => {
       return d.length !== undefined ? normalize(d, maxValue) : d / maxValue
     })
   return normalize(array, max)
+}
+/**
+ * Normalizes by dividing scaling all values to [0, 1] linearly.
+ *
+ * @todo move to musicvis-lib and test
+ * @param {Array} array nD array with arbitrary depth and structure, containing
+ *  only numbers
+ * @returns {Array} normalized array
+ */
+export function normalizeNdArrayNegative(array) {
+  const extent = d3.extent(array.flat(Number.POSITIVE_INFINITY))
+  const scale = d3.scaleLinear().domain(extent)
+  const normalize = (array_) =>
+    array_.map((d) => {
+      return d.length !== undefined ? normalize(d) : scale(d)
+    })
+  return normalize(array)
 }
 
 /**
@@ -232,7 +283,7 @@ export function normalizeNdArray (array) {
  * @param {number[][]} matrixB a matrix
  * @returns {number} Euclidean distance of the two matrices
  */
-export function euclideanDistance (matrixA, matrixB) {
+export function euclideanDistance(matrixA, matrixB) {
   const valuesA = matrixA.flat()
   const valuesB = matrixB.flat()
   const diffs = valuesA.map((d, i) => d - valuesB[i])
@@ -248,7 +299,7 @@ export function euclideanDistance (matrixA, matrixB) {
  * @param {Function} formatter formatting for each element
  * @returns {string} stringified matrix
  */
-export function formatMatrix (matrix, colSeparator = ', ', rowSeparator = '\n', formatter) {
+export function formatMatrix(matrix, colSeparator = ', ', rowSeparator = '\n', formatter) {
   if (!matrix || matrix.length === 0) { return '' }
   if (formatter) {
     matrix = matrix.map(row => row.map(value => formatter(value)))
@@ -265,7 +316,7 @@ export function formatMatrix (matrix, colSeparator = ', ', rowSeparator = '\n', 
  * @param {Function} accessor accessor
  * @returns {*} value in array closest to value
  */
-export function binarySearch (array, value, accessor = d => d) {
+export function binarySearch(array, value, accessor = d => d) {
   // Handle short arrays
   if (array.length <= 3) {
     let closest = null
@@ -306,7 +357,7 @@ export function binarySearch (array, value, accessor = d => d) {
  *   const arr = [1, 1, 2, 3, 3, 3];
  *   const streaks = findStreaks(arr);
  */
-export function findStreaks (
+export function findStreaks(
   values,
   accessor = (d) => d,
   equality = (a, b) => a === b
@@ -345,7 +396,7 @@ export function findStreaks (
  * @param {Function} equals euqality function
  * @returns {number[]} result
  */
-export function findRepeatedIndices (sequence, equals = (a, b) => a === b) {
+export function findRepeatedIndices(sequence, equals = (a, b) => a === b) {
   return sequence.map((element) => {
     for (const [index2, element2] of sequence.entries()) {
       if (equals(element, element2)) {
