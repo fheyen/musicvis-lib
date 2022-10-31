@@ -1,16 +1,33 @@
 var musicvislib = (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   var __commonJS = (cb, mod2) => function __require() {
     return mod2 || (0, cb[__getOwnPropNames(cb)[0]])((mod2 = { exports: {} }).exports, mod2), mod2.exports;
   };
   var __export = (target, all4) => {
-    for (var name in all4)
-      __defProp(target, name, { get: all4[name], enumerable: true });
+    for (var name2 in all4)
+      __defProp(target, name2, { get: all4[name2], enumerable: true });
   };
   var __copyProps = (to, from, except, desc) => {
     if (from && typeof from === "object" || typeof from === "function") {
@@ -20,15 +37,12 @@ var musicvislib = (() => {
     }
     return to;
   };
-  var __toESM = (mod2, isNodeMode, target) => (target = mod2 != null ? __create(__getProtoOf(mod2)) : {}, __copyProps(
-    isNodeMode || !mod2 || !mod2.__esModule ? __defProp(target, "default", { value: mod2, enumerable: true }) : target,
-    mod2
-  ));
+  var __toESM = (mod2, isNodeMode, target) => (target = mod2 != null ? __create(__getProtoOf(mod2)) : {}, __copyProps(isNodeMode || !mod2 || !mod2.__esModule ? __defProp(target, "default", { value: mod2, enumerable: true }) : target, mod2));
   var __toCommonJS = (mod2) => __copyProps(__defProp({}, "__esModule", { value: true }), mod2);
 
   // node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js
   var require_main = __commonJS({
-    "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports, module) {
+    "node_modules/.pnpm/midi-parser-js@4.0.4/node_modules/midi-parser-js/src/main.js"(exports2, module2) {
       (function() {
         "use strict";
         const _atob = function(string) {
@@ -280,8 +294,8 @@ var musicvislib = (() => {
           },
           customInterpreter: null
         };
-        if (typeof module !== "undefined")
-          module.exports = MidiParser;
+        if (typeof module2 !== "undefined")
+          module2.exports = MidiParser;
         else {
           let _global = typeof window === "object" && window.self === window && window || typeof self === "object" && self.self === self && self || typeof global === "object" && global.global === global && global;
           _global.MidiParser = MidiParser;
@@ -322,122 +336,142 @@ var musicvislib = (() => {
   });
 
   // package.json
-  var package_default = {
-    name: "musicvis-lib",
-    version: "0.56.0",
-    description: "Music analysis and visualization library",
-    author: "Frank Heyen",
-    license: "ISC",
-    homepage: "https://fheyen.github.io/musicvis-lib",
-    repository: {
-      url: "git+https://github.com/fheyen/musicvis-lib",
-      type: "git"
-    },
-    bugs: {
-      url: "https://github.com/fheyen/musicvis-lib/issues"
-    },
-    keywords: [
-      "visualization",
-      "music visualization",
-      "visual analytics",
-      "JavaScript",
-      "ECMAScript",
-      "web-based",
-      "MIDI",
-      "MusicXML",
-      "Web MIDI",
-      "music",
-      "string comparison"
+  var name = "musicvis-lib";
+  var version = "0.57.0";
+  var description = "Music analysis and visualization library";
+  var author = "Frank Heyen";
+  var license = "ISC";
+  var homepage = "https://fheyen.github.io/musicvis-lib";
+  var repository = {
+    url: "git+https://github.com/fheyen/musicvis-lib",
+    type: "git"
+  };
+  var bugs = {
+    url: "https://github.com/fheyen/musicvis-lib/issues"
+  };
+  var keywords = [
+    "visualization",
+    "music visualization",
+    "visual analytics",
+    "JavaScript",
+    "ECMAScript",
+    "web-based",
+    "MIDI",
+    "MusicXML",
+    "Web MIDI",
+    "music",
+    "string comparison"
+  ];
+  var type = "module";
+  var exports = "./src/index.js";
+  var main = "dist/musicvislib.node.js";
+  var module = "dist/musicvislib.esm.js";
+  var unpkg = "dist/musicvislib.min.js";
+  var browser = "dist/musicvislib.min.js";
+  var scripts = {
+    upd: "npm-check-updates -u",
+    "upd:i": "npm-check-updates -u && npm i && npm audit fix",
+    "upd:i:t": "npm-check-updates -u && npm i && npm test",
+    build: "npm run build:bundle && npm run build:browser && npm run build:browser:min && npm run build:node",
+    "build:bundle": "esbuild src/index.js --bundle --format=esm --sourcemap --outfile=dist/musicvislib.esm.js",
+    "build:browser": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.js",
+    "build:browser:min": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --minify --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.min.js",
+    "build:node": "esbuild src/index.js --bundle --sourcemap --platform=node --target=node16.5 --outfile=dist/musicvislib.node.js",
+    test: "jest --coverage",
+    testch: "jest --coverage --changedFilesWithAncestor",
+    testfail: "jest --changedFilesWithAncestor --onlyFailures",
+    testclear: "jest --clearCache",
+    doc: "jsdoc -c jsdoc.conf.json",
+    "doc:md": "jsdoc2md src/**/*.js > api.md",
+    lint: "standard --verbose",
+    "lint:fix": "standard --fix --verbose",
+    "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
+    "git:add": "git add .",
+    "git:commit": 'git commit -m "new version build"',
+    "git:push": "git push",
+    "git:pushtags": "git push origin --tags",
+    predeploy: "npm run lint:fix && npm run doc:md && npm run build && jest --silent",
+    predeploy_old: "npm run lint:fix && npm run doc:md && npm run doc && npm run build && jest --silent",
+    deploy: "npm publish && npm run git:all",
+    prepare: "husky install"
+  };
+  var dependencies = {
+    "@tonaljs/tonal": "^4.6.5",
+    d3: "^6.7.0",
+    "jest-environment-jsdom": "^29.1.2",
+    "midi-parser-js": "^4.0.4"
+  };
+  var devDependencies = {
+    "@babel/core": "^7.19.3",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.18.9",
+    "@babel/preset-env": "^7.19.4",
+    "@types/d3": "^7.4.0",
+    "@types/jest": "^29.1.2",
+    "clean-jsdoc-theme": "^4.1.8",
+    esbuild: "^0.15.10",
+    glob: "^8.0.3",
+    husky: "^8.0.1",
+    jest: "^29.1.2",
+    "jest-canvas-mock": "^2.4.0",
+    "jest-extended": "^3.1.0",
+    jsdoc: "^3.6.11",
+    "jsdoc-to-markdown": "^7.1.1",
+    "npm-check-updates": "^16.3.11",
+    standard: "^17.0.0"
+  };
+  var jest = {
+    testEnvironment: "jsdom",
+    testPathIgnorePatterns: [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
     ],
-    type: "module",
-    exports: "./src/index.js",
-    main: "dist/musicvislib.node.js",
-    module: "dist/musicvislib.esm.js",
-    unpkg: "dist/musicvislib.min.js",
-    browser: "dist/musicvislib.min.js",
-    scripts: {
-      upd: "npm-check-updates -u",
-      "upd:i": "npm-check-updates -u && npm i && npm audit fix",
-      "upd:i:t": "npm-check-updates -u && npm i && npm test",
-      build: "npm run build:bundle && npm run build:browser && npm run build:browser:min && npm run build:node",
-      "build:bundle": "esbuild src/index.js --bundle --format=esm --sourcemap --outfile=dist/musicvislib.esm.js",
-      "build:browser": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.js",
-      "build:browser:min": "esbuild src/index.js --bundle --format=iife --global-name=musicvislib --sourcemap --minify --target=chrome90,firefox90,edge90 --outfile=dist/musicvislib.min.js",
-      "build:node": "esbuild src/index.js --bundle --sourcemap --platform=node --target=node16.5 --outfile=dist/musicvislib.node.js",
-      test: "jest --coverage",
-      testch: "jest --coverage --changedFilesWithAncestor",
-      testfail: "jest --changedFilesWithAncestor --onlyFailures",
-      testclear: "jest --clearCache",
-      doc: "jsdoc -c jsdoc.conf.json",
-      "doc:md": "jsdoc2md src/**/*.js > api.md",
-      lint: "standard --verbose",
-      "lint:fix": "standard --fix --verbose",
-      "git:all": "npm run git:add && npm run git:commit && npm run git:push && npm run git:pushtags",
-      "git:add": "git add .",
-      "git:commit": 'git commit -m "new version build"',
-      "git:push": "git push",
-      "git:pushtags": "git push origin --tags",
-      predeploy: "npm run lint:fix && npm run doc:md && npm run build && jest --silent",
-      predeploy_old: "npm run lint:fix && npm run doc:md && npm run doc && npm run build && jest --silent",
-      deploy: "npm publish && npm run git:all",
-      prepare: "husky install"
-    },
-    dependencies: {
-      "@tonaljs/tonal": "^4.6.5",
-      d3: "^6.7.0",
-      "jest-environment-jsdom": "^29.1.2",
-      "midi-parser-js": "^4.0.4"
-    },
-    devDependencies: {
-      "@babel/core": "^7.19.3",
-      "@babel/plugin-proposal-class-properties": "^7.18.6",
-      "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
-      "@babel/plugin-proposal-optional-chaining": "^7.18.9",
-      "@babel/preset-env": "^7.19.4",
-      "@types/d3": "^7.4.0",
-      "@types/jest": "^29.1.2",
-      "clean-jsdoc-theme": "^4.1.8",
-      esbuild: "^0.15.10",
-      glob: "^8.0.3",
-      husky: "^8.0.1",
-      jest: "^29.1.2",
-      "jest-canvas-mock": "^2.4.0",
-      "jest-extended": "^3.1.0",
-      jsdoc: "^3.6.11",
-      "jsdoc-to-markdown": "^7.1.1",
-      "npm-check-updates": "^16.3.11",
-      standard: "^17.0.0"
-    },
-    jest: {
-      testEnvironment: "jsdom",
-      testPathIgnorePatterns: [
-        "<rootDir>/node_modules/",
-        "<rootDir>/dist/"
-      ],
-      collectCoverageFrom: [
-        "src/**/*.js"
-      ],
-      setupFilesAfterEnv: [
-        "jest-extended/all"
-      ]
-    },
-    standard: {
-      ignore: [
-        "/dist/",
-        "/docs/"
-      ],
-      globals: [
-        "MediaRecorder",
-        "Blob",
-        "DOMParser",
-        "CanvasRenderingContext2D",
-        "localStorage",
-        "FileReader"
-      ],
-      env: [
-        "jest"
-      ]
-    }
+    collectCoverageFrom: [
+      "src/**/*.js"
+    ],
+    setupFilesAfterEnv: [
+      "jest-extended/all"
+    ]
+  };
+  var standard = {
+    ignore: [
+      "/dist/",
+      "/docs/"
+    ],
+    globals: [
+      "MediaRecorder",
+      "Blob",
+      "DOMParser",
+      "CanvasRenderingContext2D",
+      "localStorage",
+      "FileReader"
+    ],
+    env: [
+      "jest"
+    ]
+  };
+  var package_default = {
+    name,
+    version,
+    description,
+    author,
+    license,
+    homepage,
+    repository,
+    bugs,
+    keywords,
+    type,
+    exports,
+    main,
+    module,
+    unpkg,
+    browser,
+    scripts,
+    dependencies,
+    devDependencies,
+    jest,
+    standard
   };
 
   // src/fileFormats/Midi.js
@@ -470,8 +504,8 @@ var musicvislib = (() => {
   function getMidiNoteByLabel(label) {
     return MidiNoteByLabel.get(label);
   }
-  function getMidiNoteByNameAndOctave(name, octave) {
-    return MidiNoteByLabel.get(`${name}${octave}`);
+  function getMidiNoteByNameAndOctave(name2, octave) {
+    return MidiNoteByLabel.get(`${name2}${octave}`);
   }
   function getMidiInstrumentByNr(nr) {
     return MidiInstrumentByNumber.get(nr);
@@ -1287,14 +1321,11 @@ var musicvislib = (() => {
       }
       return new Note(pitch, start2, velocity, channel, end);
     }
+    static startPitchComparator(a, b) {
+      return a.start !== b.start ? a.start - b.start : a.pitch - b.pitch;
+    }
     clone() {
-      return new Note(
-        this.pitch,
-        this.start,
-        this.velocity,
-        this.channel,
-        this.end
-      );
+      return new Note(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     getDuration() {
       if (this.end === null) {
@@ -1373,46 +1404,16 @@ var musicvislib = (() => {
         }
         pitch = note2.pitch;
       }
-      return new GuitarNote(
-        pitch,
-        start2,
-        velocity,
-        channel,
-        end,
-        string,
-        fret
-      );
+      return new GuitarNote(pitch, start2, velocity, channel, end, string, fret);
     }
     static fromNote(note2, string, fret) {
-      return new GuitarNote(
-        note2.pitch,
-        note2.start,
-        note2.velocity,
-        note2.channel,
-        note2.end,
-        string,
-        fret
-      );
+      return new GuitarNote(note2.pitch, note2.start, note2.velocity, note2.channel, note2.end, string, fret);
     }
     toNote() {
-      return new Note_default(
-        this.pitch,
-        this.start,
-        this.velocity,
-        this.channel,
-        this.end
-      );
+      return new Note_default(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     clone() {
-      return new GuitarNote(
-        this.pitch,
-        this.start,
-        this.velocity,
-        this.channel,
-        this.end,
-        this.string,
-        this.fret
-      );
+      return new GuitarNote(this.pitch, this.start, this.velocity, this.channel, this.end, this.string, this.fret);
     }
     equals(otherNote) {
       if (!(otherNote instanceof GuitarNote)) {
@@ -1453,46 +1454,16 @@ var musicvislib = (() => {
         }
         pitch = note2.pitch;
       }
-      return new HarmonicaNote(
-        pitch,
-        start2,
-        velocity,
-        channel,
-        end,
-        hole,
-        instruction
-      );
+      return new HarmonicaNote(pitch, start2, velocity, channel, end, hole, instruction);
     }
     static fromNote(note2, hole, instruction) {
-      return new HarmonicaNote(
-        note2.pitch,
-        note2.start,
-        note2.velocity,
-        note2.channel,
-        note2.end,
-        hole,
-        instruction
-      );
+      return new HarmonicaNote(note2.pitch, note2.start, note2.velocity, note2.channel, note2.end, hole, instruction);
     }
     toNote() {
-      return new Note_default(
-        this.pitch,
-        this.start,
-        this.velocity,
-        this.channel,
-        this.end
-      );
+      return new Note_default(this.pitch, this.start, this.velocity, this.channel, this.end);
     }
     clone() {
-      return new HarmonicaNote(
-        this.pitch,
-        this.start,
-        this.velocity,
-        this.channel,
-        this.end,
-        this.hole,
-        this.instruction
-      );
+      return new HarmonicaNote(this.pitch, this.start, this.velocity, this.channel, this.end, this.hole, this.instruction);
     }
     equals(otherNote) {
       if (!(otherNote instanceof HarmonicaNote)) {
@@ -1594,7 +1565,7 @@ var musicvislib = (() => {
 
   // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/variance.js
   function variance(values, valueof) {
-    let count = 0;
+    let count2 = 0;
     let delta;
     let mean2 = 0;
     let sum = 0;
@@ -1602,7 +1573,7 @@ var musicvislib = (() => {
       for (let value of values) {
         if (value != null && (value = +value) >= value) {
           delta = value - mean2;
-          mean2 += delta / ++count;
+          mean2 += delta / ++count2;
           sum += delta * (value - mean2);
         }
       }
@@ -1611,13 +1582,13 @@ var musicvislib = (() => {
       for (let value of values) {
         if ((value = valueof(value, ++index16, values)) != null && (value = +value) >= value) {
           delta = value - mean2;
-          mean2 += delta / ++count;
+          mean2 += delta / ++count2;
           sum += delta * (value - mean2);
         }
       }
     }
-    if (count > 1)
-      return sum / (count - 1);
+    if (count2 > 1)
+      return sum / (count2 - 1);
   }
 
   // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/deviation.js
@@ -1743,14 +1714,14 @@ var musicvislib = (() => {
   var e10 = Math.sqrt(50);
   var e5 = Math.sqrt(10);
   var e2 = Math.sqrt(2);
-  function ticks_default(start2, stop, count) {
+  function ticks_default(start2, stop, count2) {
     var reverse, i = -1, n, ticks, step;
-    stop = +stop, start2 = +start2, count = +count;
-    if (start2 === stop && count > 0)
+    stop = +stop, start2 = +start2, count2 = +count2;
+    if (start2 === stop && count2 > 0)
       return [start2];
     if (reverse = stop < start2)
       n = start2, start2 = stop, stop = n;
-    if ((step = tickIncrement(start2, stop, count)) === 0 || !isFinite(step))
+    if ((step = tickIncrement(start2, stop, count2)) === 0 || !isFinite(step))
       return [];
     if (step > 0) {
       let r0 = Math.round(start2 / step), r1 = Math.round(stop / step);
@@ -1776,12 +1747,12 @@ var musicvislib = (() => {
       ticks.reverse();
     return ticks;
   }
-  function tickIncrement(start2, stop, count) {
-    var step = (stop - start2) / Math.max(0, count), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
+  function tickIncrement(start2, stop, count2) {
+    var step = (stop - start2) / Math.max(0, count2), power = Math.floor(Math.log(step) / Math.LN10), error = step / Math.pow(10, power);
     return power >= 0 ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power) : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
   }
-  function tickStep(start2, stop, count) {
-    var step0 = Math.abs(stop - start2) / Math.max(0, count), step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)), error = step0 / step1;
+  function tickStep(start2, stop, count2) {
+    var step0 = Math.abs(stop - start2) / Math.max(0, count2), step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)), error = step0 / step1;
     if (error >= e10)
       step1 *= 10;
     else if (error >= e5)
@@ -1889,24 +1860,24 @@ var musicvislib = (() => {
 
   // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/mean.js
   function mean(values, valueof) {
-    let count = 0;
+    let count2 = 0;
     let sum = 0;
     if (valueof === void 0) {
       for (let value of values) {
         if (value != null && (value = +value) >= value) {
-          ++count, sum += value;
+          ++count2, sum += value;
         }
       }
     } else {
       let index16 = -1;
       for (let value of values) {
         if ((value = valueof(value, ++index16, values)) != null && (value = +value) >= value) {
-          ++count, sum += value;
+          ++count2, sum += value;
         }
       }
     }
-    if (count)
-      return sum / count;
+    if (count2)
+      return sum / count2;
   }
 
   // node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/median.js
@@ -1995,12 +1966,12 @@ var musicvislib = (() => {
   }
   function parseTypenames(typenames, types) {
     return typenames.trim().split(/^|\s+/).map(function(t) {
-      var name = "", i = t.indexOf(".");
+      var name2 = "", i = t.indexOf(".");
       if (i >= 0)
-        name = t.slice(i + 1), t = t.slice(0, i);
+        name2 = t.slice(i + 1), t = t.slice(0, i);
       if (t && !types.hasOwnProperty(t))
         throw new Error("unknown type: " + t);
-      return { type: t, name };
+      return { type: t, name: name2 };
     });
   }
   Dispatch.prototype = dispatch.prototype = {
@@ -2030,39 +2001,39 @@ var musicvislib = (() => {
         copy2[t] = _[t].slice();
       return new Dispatch(copy2);
     },
-    call: function(type2, that) {
+    call: function(type3, that) {
       if ((n = arguments.length - 2) > 0)
         for (var args = new Array(n), i = 0, n, t; i < n; ++i)
           args[i] = arguments[i + 2];
-      if (!this._.hasOwnProperty(type2))
-        throw new Error("unknown type: " + type2);
-      for (t = this._[type2], i = 0, n = t.length; i < n; ++i)
+      if (!this._.hasOwnProperty(type3))
+        throw new Error("unknown type: " + type3);
+      for (t = this._[type3], i = 0, n = t.length; i < n; ++i)
         t[i].value.apply(that, args);
     },
-    apply: function(type2, that, args) {
-      if (!this._.hasOwnProperty(type2))
-        throw new Error("unknown type: " + type2);
-      for (var t = this._[type2], i = 0, n = t.length; i < n; ++i)
+    apply: function(type3, that, args) {
+      if (!this._.hasOwnProperty(type3))
+        throw new Error("unknown type: " + type3);
+      for (var t = this._[type3], i = 0, n = t.length; i < n; ++i)
         t[i].value.apply(that, args);
     }
   };
-  function get(type2, name) {
-    for (var i = 0, n = type2.length, c2; i < n; ++i) {
-      if ((c2 = type2[i]).name === name) {
+  function get(type3, name2) {
+    for (var i = 0, n = type3.length, c2; i < n; ++i) {
+      if ((c2 = type3[i]).name === name2) {
         return c2.value;
       }
     }
   }
-  function set2(type2, name, callback) {
-    for (var i = 0, n = type2.length; i < n; ++i) {
-      if (type2[i].name === name) {
-        type2[i] = noop, type2 = type2.slice(0, i).concat(type2.slice(i + 1));
+  function set2(type3, name2, callback) {
+    for (var i = 0, n = type3.length; i < n; ++i) {
+      if (type3[i].name === name2) {
+        type3[i] = noop, type3 = type3.slice(0, i).concat(type3.slice(i + 1));
         break;
       }
     }
     if (callback != null)
-      type2.push({ name, value: callback });
-    return type2;
+      type3.push({ name: name2, value: callback });
+    return type3;
   }
   var dispatch_default = dispatch;
 
@@ -2077,18 +2048,18 @@ var musicvislib = (() => {
   };
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/namespace.js
-  function namespace_default(name) {
-    var prefix = name += "", i = prefix.indexOf(":");
-    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns")
-      name = name.slice(i + 1);
-    return namespaces_default.hasOwnProperty(prefix) ? { space: namespaces_default[prefix], local: name } : name;
+  function namespace_default(name2) {
+    var prefix = name2 += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name2.slice(0, i)) !== "xmlns")
+      name2 = name2.slice(i + 1);
+    return namespaces_default.hasOwnProperty(prefix) ? { space: namespaces_default[prefix], local: name2 } : name2;
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/creator.js
-  function creatorInherit(name) {
+  function creatorInherit(name2) {
     return function() {
       var document2 = this.ownerDocument, uri = this.namespaceURI;
-      return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name) : document2.createElementNS(uri, name);
+      return uri === xhtml && document2.documentElement.namespaceURI === xhtml ? document2.createElement(name2) : document2.createElementNS(uri, name2);
     };
   }
   function creatorFixed(fullname) {
@@ -2096,8 +2067,8 @@ var musicvislib = (() => {
       return this.ownerDocument.createElementNS(fullname.space, fullname.local);
     };
   }
-  function creator_default(name) {
-    var fullname = namespace_default(name);
+  function creator_default(name2) {
+    var fullname = namespace_default(name2);
     return (fullname.local ? creatorFixed : creatorInherit)(fullname);
   }
 
@@ -2450,9 +2421,9 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/attr.js
-  function attrRemove(name) {
+  function attrRemove(name2) {
     return function() {
-      this.removeAttribute(name);
+      this.removeAttribute(name2);
     };
   }
   function attrRemoveNS(fullname) {
@@ -2460,9 +2431,9 @@ var musicvislib = (() => {
       this.removeAttributeNS(fullname.space, fullname.local);
     };
   }
-  function attrConstant(name, value) {
+  function attrConstant(name2, value) {
     return function() {
-      this.setAttribute(name, value);
+      this.setAttribute(name2, value);
     };
   }
   function attrConstantNS(fullname, value) {
@@ -2470,13 +2441,13 @@ var musicvislib = (() => {
       this.setAttributeNS(fullname.space, fullname.local, value);
     };
   }
-  function attrFunction(name, value) {
+  function attrFunction(name2, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null)
-        this.removeAttribute(name);
+        this.removeAttribute(name2);
       else
-        this.setAttribute(name, v);
+        this.setAttribute(name2, v);
     };
   }
   function attrFunctionNS(fullname, value) {
@@ -2488,8 +2459,8 @@ var musicvislib = (() => {
         this.setAttributeNS(fullname.space, fullname.local, v);
     };
   }
-  function attr_default(name, value) {
-    var fullname = namespace_default(name);
+  function attr_default(name2, value) {
+    var fullname = namespace_default(name2);
     if (arguments.length < 2) {
       var node = this.node();
       return fullname.local ? node.getAttributeNS(fullname.space, fullname.local) : node.getAttribute(fullname);
@@ -2503,54 +2474,54 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/style.js
-  function styleRemove(name) {
+  function styleRemove(name2) {
     return function() {
-      this.style.removeProperty(name);
+      this.style.removeProperty(name2);
     };
   }
-  function styleConstant(name, value, priority) {
+  function styleConstant(name2, value, priority) {
     return function() {
-      this.style.setProperty(name, value, priority);
+      this.style.setProperty(name2, value, priority);
     };
   }
-  function styleFunction(name, value, priority) {
+  function styleFunction(name2, value, priority) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null)
-        this.style.removeProperty(name);
+        this.style.removeProperty(name2);
       else
-        this.style.setProperty(name, v, priority);
+        this.style.setProperty(name2, v, priority);
     };
   }
-  function style_default(name, value, priority) {
-    return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name, value, priority == null ? "" : priority)) : styleValue(this.node(), name);
+  function style_default(name2, value, priority) {
+    return arguments.length > 1 ? this.each((value == null ? styleRemove : typeof value === "function" ? styleFunction : styleConstant)(name2, value, priority == null ? "" : priority)) : styleValue(this.node(), name2);
   }
-  function styleValue(node, name) {
-    return node.style.getPropertyValue(name) || window_default(node).getComputedStyle(node, null).getPropertyValue(name);
+  function styleValue(node, name2) {
+    return node.style.getPropertyValue(name2) || window_default(node).getComputedStyle(node, null).getPropertyValue(name2);
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/property.js
-  function propertyRemove(name) {
+  function propertyRemove(name2) {
     return function() {
-      delete this[name];
+      delete this[name2];
     };
   }
-  function propertyConstant(name, value) {
+  function propertyConstant(name2, value) {
     return function() {
-      this[name] = value;
+      this[name2] = value;
     };
   }
-  function propertyFunction(name, value) {
+  function propertyFunction(name2, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null)
-        delete this[name];
+        delete this[name2];
       else
-        this[name] = v;
+        this[name2] = v;
     };
   }
-  function property_default(name, value) {
-    return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name, value)) : this.node()[name];
+  function property_default(name2, value) {
+    return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name2, value)) : this.node()[name2];
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/classed.js
@@ -2565,22 +2536,22 @@ var musicvislib = (() => {
     this._names = classArray(node.getAttribute("class") || "");
   }
   ClassList.prototype = {
-    add: function(name) {
-      var i = this._names.indexOf(name);
+    add: function(name2) {
+      var i = this._names.indexOf(name2);
       if (i < 0) {
-        this._names.push(name);
+        this._names.push(name2);
         this._node.setAttribute("class", this._names.join(" "));
       }
     },
-    remove: function(name) {
-      var i = this._names.indexOf(name);
+    remove: function(name2) {
+      var i = this._names.indexOf(name2);
       if (i >= 0) {
         this._names.splice(i, 1);
         this._node.setAttribute("class", this._names.join(" "));
       }
     },
-    contains: function(name) {
-      return this._names.indexOf(name) >= 0;
+    contains: function(name2) {
+      return this._names.indexOf(name2) >= 0;
     }
   };
   function classedAdd(node, names2) {
@@ -2608,8 +2579,8 @@ var musicvislib = (() => {
       (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names2);
     };
   }
-  function classed_default(name, value) {
-    var names2 = classArray(name + "");
+  function classed_default(name2, value) {
+    var names2 = classArray(name2 + "");
     if (arguments.length < 2) {
       var list = classList(this.node()), i = -1, n = names2.length;
       while (++i < n)
@@ -2677,8 +2648,8 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/append.js
-  function append_default(name) {
-    var create2 = typeof name === "function" ? name : creator_default(name);
+  function append_default(name2) {
+    var create2 = typeof name2 === "function" ? name2 : creator_default(name2);
     return this.select(function() {
       return this.appendChild(create2.apply(this, arguments));
     });
@@ -2688,8 +2659,8 @@ var musicvislib = (() => {
   function constantNull() {
     return null;
   }
-  function insert_default(name, before) {
-    var create2 = typeof name === "function" ? name : creator_default(name), select = before == null ? constantNull : typeof before === "function" ? before : selector_default(before);
+  function insert_default(name2, before) {
+    var create2 = typeof name2 === "function" ? name2 : creator_default(name2), select = before == null ? constantNull : typeof before === "function" ? before : selector_default(before);
     return this.select(function() {
       return this.insertBefore(create2.apply(this, arguments), select.apply(this, arguments) || null);
     });
@@ -2731,10 +2702,10 @@ var musicvislib = (() => {
   }
   function parseTypenames2(typenames) {
     return typenames.trim().split(/^|\s+/).map(function(t) {
-      var name = "", i = t.indexOf(".");
+      var name2 = "", i = t.indexOf(".");
       if (i >= 0)
-        name = t.slice(i + 1), t = t.slice(0, i);
-      return { type: t, name };
+        name2 = t.slice(i + 1), t = t.slice(0, i);
+      return { type: t, name: name2 };
     });
   }
   function onRemove(typename) {
@@ -2796,31 +2767,31 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/dispatch.js
-  function dispatchEvent(node, type2, params) {
+  function dispatchEvent(node, type3, params) {
     var window2 = window_default(node), event = window2.CustomEvent;
     if (typeof event === "function") {
-      event = new event(type2, params);
+      event = new event(type3, params);
     } else {
       event = window2.document.createEvent("Event");
       if (params)
-        event.initEvent(type2, params.bubbles, params.cancelable), event.detail = params.detail;
+        event.initEvent(type3, params.bubbles, params.cancelable), event.detail = params.detail;
       else
-        event.initEvent(type2, false, false);
+        event.initEvent(type3, false, false);
     }
     node.dispatchEvent(event);
   }
-  function dispatchConstant(type2, params) {
+  function dispatchConstant(type3, params) {
     return function() {
-      return dispatchEvent(this, type2, params);
+      return dispatchEvent(this, type3, params);
     };
   }
-  function dispatchFunction(type2, params) {
+  function dispatchFunction(type3, params) {
     return function() {
-      return dispatchEvent(this, type2, params.apply(this, arguments));
+      return dispatchEvent(this, type3, params.apply(this, arguments));
     };
   }
-  function dispatch_default2(type2, params) {
-    return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type2, params));
+  function dispatch_default2(type3, params) {
+    return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type3, params));
   }
 
   // node_modules/.pnpm/d3-selection@2.0.0/node_modules/d3-selection/src/selection/iterator.js
@@ -3200,12 +3171,7 @@ var musicvislib = (() => {
     },
     rgb: function() {
       var h = this.h % 360 + (this.h < 0) * 360, s = isNaN(h) || isNaN(this.s) ? 0 : this.s, l = this.l, m2 = l + (l < 0.5 ? l : 1 - l) * s, m1 = 2 * l - m2;
-      return new Rgb(
-        hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb(h, m1, m2),
-        hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
-        this.opacity
-      );
+      return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
     displayable: function() {
       return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && (0 <= this.l && this.l <= 1) && (0 <= this.opacity && this.opacity <= 1);
@@ -3261,12 +3227,7 @@ var musicvislib = (() => {
     },
     rgb: function() {
       var h = isNaN(this.h) ? 0 : (this.h + 120) * radians, l = +this.l, a = isNaN(this.s) ? 0 : this.s * l * (1 - l), cosh = Math.cos(h), sinh = Math.sin(h);
-      return new Rgb(
-        255 * (l + a * (A * cosh + B * sinh)),
-        255 * (l + a * (C * cosh + D * sinh)),
-        255 * (l + a * (E * cosh)),
-        this.opacity
-      );
+      return new Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
     }
   }));
 
@@ -3748,14 +3709,14 @@ var musicvislib = (() => {
   var RUNNING = 4;
   var ENDING = 5;
   var ENDED = 6;
-  function schedule_default(node, name, id2, index16, group2, timing) {
+  function schedule_default(node, name2, id2, index16, group2, timing) {
     var schedules = node.__transition;
     if (!schedules)
       node.__transition = {};
     else if (id2 in schedules)
       return;
     create(node, id2, {
-      name,
+      name: name2,
       index: index16,
       group: group2,
       on: emptyOn,
@@ -3859,13 +3820,13 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/interrupt.js
-  function interrupt_default(node, name) {
+  function interrupt_default(node, name2) {
     var schedules = node.__transition, schedule, active, empty2 = true, i;
     if (!schedules)
       return;
-    name = name == null ? null : name + "";
+    name2 = name2 == null ? null : name2 + "";
     for (i in schedules) {
-      if ((schedule = schedules[i]).name !== name) {
+      if ((schedule = schedules[i]).name !== name2) {
         empty2 = false;
         continue;
       }
@@ -3880,21 +3841,21 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/interrupt.js
-  function interrupt_default2(name) {
+  function interrupt_default2(name2) {
     return this.each(function() {
-      interrupt_default(this, name);
+      interrupt_default(this, name2);
     });
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/tween.js
-  function tweenRemove(id2, name) {
+  function tweenRemove(id2, name2) {
     var tween0, tween1;
     return function() {
       var schedule = set3(this, id2), tween = schedule.tween;
       if (tween !== tween0) {
         tween1 = tween0 = tween;
         for (var i = 0, n = tween1.length; i < n; ++i) {
-          if (tween1[i].name === name) {
+          if (tween1[i].name === name2) {
             tween1 = tween1.slice();
             tween1.splice(i, 1);
             break;
@@ -3904,7 +3865,7 @@ var musicvislib = (() => {
       schedule.tween = tween1;
     };
   }
-  function tweenFunction(id2, name, value) {
+  function tweenFunction(id2, name2, value) {
     var tween0, tween1;
     if (typeof value !== "function")
       throw new Error();
@@ -3912,8 +3873,8 @@ var musicvislib = (() => {
       var schedule = set3(this, id2), tween = schedule.tween;
       if (tween !== tween0) {
         tween1 = (tween0 = tween).slice();
-        for (var t = { name, value }, i = 0, n = tween1.length; i < n; ++i) {
-          if (tween1[i].name === name) {
+        for (var t = { name: name2, value }, i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name2) {
             tween1[i] = t;
             break;
           }
@@ -3924,28 +3885,28 @@ var musicvislib = (() => {
       schedule.tween = tween1;
     };
   }
-  function tween_default(name, value) {
+  function tween_default(name2, value) {
     var id2 = this._id;
-    name += "";
+    name2 += "";
     if (arguments.length < 2) {
       var tween = get2(this.node(), id2).tween;
       for (var i = 0, n = tween.length, t; i < n; ++i) {
-        if ((t = tween[i]).name === name) {
+        if ((t = tween[i]).name === name2) {
           return t.value;
         }
       }
       return null;
     }
-    return this.each((value == null ? tweenRemove : tweenFunction)(id2, name, value));
+    return this.each((value == null ? tweenRemove : tweenFunction)(id2, name2, value));
   }
-  function tweenValue(transition2, name, value) {
+  function tweenValue(transition2, name2, value) {
     var id2 = transition2._id;
     transition2.each(function() {
       var schedule = set3(this, id2);
-      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+      (schedule.value || (schedule.value = {}))[name2] = value.apply(this, arguments);
     });
     return function(node) {
-      return get2(node, id2).value[name];
+      return get2(node, id2).value[name2];
     };
   }
 
@@ -3956,9 +3917,9 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/attr.js
-  function attrRemove2(name) {
+  function attrRemove2(name2) {
     return function() {
-      this.removeAttribute(name);
+      this.removeAttribute(name2);
     };
   }
   function attrRemoveNS2(fullname) {
@@ -3966,10 +3927,10 @@ var musicvislib = (() => {
       this.removeAttributeNS(fullname.space, fullname.local);
     };
   }
-  function attrConstant2(name, interpolate, value1) {
+  function attrConstant2(name2, interpolate, value1) {
     var string00, string1 = value1 + "", interpolate0;
     return function() {
-      var string0 = this.getAttribute(name);
+      var string0 = this.getAttribute(name2);
       return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
     };
   }
@@ -3980,13 +3941,13 @@ var musicvislib = (() => {
       return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
     };
   }
-  function attrFunction2(name, interpolate, value) {
+  function attrFunction2(name2, interpolate, value) {
     var string00, string10, interpolate0;
     return function() {
       var string0, value1 = value(this), string1;
       if (value1 == null)
-        return void this.removeAttribute(name);
-      string0 = this.getAttribute(name);
+        return void this.removeAttribute(name2);
+      string0 = this.getAttribute(name2);
       string1 = value1 + "";
       return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
     };
@@ -4002,15 +3963,15 @@ var musicvislib = (() => {
       return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
     };
   }
-  function attr_default2(name, value) {
-    var fullname = namespace_default(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate_default;
-    return this.attrTween(name, typeof value === "function" ? (fullname.local ? attrFunctionNS2 : attrFunction2)(fullname, i, tweenValue(this, "attr." + name, value)) : value == null ? (fullname.local ? attrRemoveNS2 : attrRemove2)(fullname) : (fullname.local ? attrConstantNS2 : attrConstant2)(fullname, i, value));
+  function attr_default2(name2, value) {
+    var fullname = namespace_default(name2), i = fullname === "transform" ? interpolateTransformSvg : interpolate_default;
+    return this.attrTween(name2, typeof value === "function" ? (fullname.local ? attrFunctionNS2 : attrFunction2)(fullname, i, tweenValue(this, "attr." + name2, value)) : value == null ? (fullname.local ? attrRemoveNS2 : attrRemove2)(fullname) : (fullname.local ? attrConstantNS2 : attrConstant2)(fullname, i, value));
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/attrTween.js
-  function attrInterpolate(name, i) {
+  function attrInterpolate(name2, i) {
     return function(t) {
-      this.setAttribute(name, i.call(this, t));
+      this.setAttribute(name2, i.call(this, t));
     };
   }
   function attrInterpolateNS(fullname, i) {
@@ -4029,26 +3990,26 @@ var musicvislib = (() => {
     tween._value = value;
     return tween;
   }
-  function attrTween(name, value) {
+  function attrTween(name2, value) {
     var t0, i0;
     function tween() {
       var i = value.apply(this, arguments);
       if (i !== i0)
-        t0 = (i0 = i) && attrInterpolate(name, i);
+        t0 = (i0 = i) && attrInterpolate(name2, i);
       return t0;
     }
     tween._value = value;
     return tween;
   }
-  function attrTween_default(name, value) {
-    var key = "attr." + name;
+  function attrTween_default(name2, value) {
+    var key = "attr." + name2;
     if (arguments.length < 2)
       return (key = this.tween(key)) && key._value;
     if (value == null)
       return this.tween(key, null);
     if (typeof value !== "function")
       throw new Error();
-    var fullname = namespace_default(name);
+    var fullname = namespace_default(name2);
     return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
   }
 
@@ -4144,26 +4105,26 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/on.js
-  function start(name) {
-    return (name + "").trim().split(/^|\s+/).every(function(t) {
+  function start(name2) {
+    return (name2 + "").trim().split(/^|\s+/).every(function(t) {
       var i = t.indexOf(".");
       if (i >= 0)
         t = t.slice(0, i);
       return !t || t === "start";
     });
   }
-  function onFunction(id2, name, listener) {
-    var on0, on1, sit = start(name) ? init : set3;
+  function onFunction(id2, name2, listener) {
+    var on0, on1, sit = start(name2) ? init : set3;
     return function() {
       var schedule = sit(this, id2), on = schedule.on;
       if (on !== on0)
-        (on1 = (on0 = on).copy()).on(name, listener);
+        (on1 = (on0 = on).copy()).on(name2, listener);
       schedule.on = on1;
     };
   }
-  function on_default2(name, listener) {
+  function on_default2(name2, listener) {
     var id2 = this._id;
-    return arguments.length < 2 ? get2(this.node(), id2).on.on(name) : this.each(onFunction(id2, name, listener));
+    return arguments.length < 2 ? get2(this.node(), id2).on.on(name2) : this.each(onFunction(id2, name2, listener));
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/remove.js
@@ -4183,7 +4144,7 @@ var musicvislib = (() => {
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/select.js
   function select_default2(select) {
-    var name = this._name, id2 = this._id;
+    var name2 = this._name, id2 = this._id;
     if (typeof select !== "function")
       select = selector_default(select);
     for (var groups2 = this._groups, m = groups2.length, subgroups = new Array(m), j = 0; j < m; ++j) {
@@ -4192,16 +4153,16 @@ var musicvislib = (() => {
           if ("__data__" in node)
             subnode.__data__ = node.__data__;
           subgroup[i] = subnode;
-          schedule_default(subgroup[i], name, id2, i, subgroup, get2(node, id2));
+          schedule_default(subgroup[i], name2, id2, i, subgroup, get2(node, id2));
         }
       }
     }
-    return new Transition(subgroups, this._parents, name, id2);
+    return new Transition(subgroups, this._parents, name2, id2);
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/selectAll.js
   function selectAll_default2(select) {
-    var name = this._name, id2 = this._id;
+    var name2 = this._name, id2 = this._id;
     if (typeof select !== "function")
       select = selectorAll_default(select);
     for (var groups2 = this._groups, m = groups2.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
@@ -4209,7 +4170,7 @@ var musicvislib = (() => {
         if (node = group2[i]) {
           for (var children2 = select.call(node, node.__data__, i, group2), child, inherit2 = get2(node, id2), k = 0, l = children2.length; k < l; ++k) {
             if (child = children2[k]) {
-              schedule_default(child, name, id2, k, children2, inherit2);
+              schedule_default(child, name2, id2, k, children2, inherit2);
             }
           }
           subgroups.push(children2);
@@ -4217,7 +4178,7 @@ var musicvislib = (() => {
         }
       }
     }
-    return new Transition(subgroups, parents, name, id2);
+    return new Transition(subgroups, parents, name2, id2);
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/selection.js
@@ -4227,74 +4188,74 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/style.js
-  function styleNull(name, interpolate) {
+  function styleNull(name2, interpolate) {
     var string00, string10, interpolate0;
     return function() {
-      var string0 = styleValue(this, name), string1 = (this.style.removeProperty(name), styleValue(this, name));
+      var string0 = styleValue(this, name2), string1 = (this.style.removeProperty(name2), styleValue(this, name2));
       return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : interpolate0 = interpolate(string00 = string0, string10 = string1);
     };
   }
-  function styleRemove2(name) {
+  function styleRemove2(name2) {
     return function() {
-      this.style.removeProperty(name);
+      this.style.removeProperty(name2);
     };
   }
-  function styleConstant2(name, interpolate, value1) {
+  function styleConstant2(name2, interpolate, value1) {
     var string00, string1 = value1 + "", interpolate0;
     return function() {
-      var string0 = styleValue(this, name);
+      var string0 = styleValue(this, name2);
       return string0 === string1 ? null : string0 === string00 ? interpolate0 : interpolate0 = interpolate(string00 = string0, value1);
     };
   }
-  function styleFunction2(name, interpolate, value) {
+  function styleFunction2(name2, interpolate, value) {
     var string00, string10, interpolate0;
     return function() {
-      var string0 = styleValue(this, name), value1 = value(this), string1 = value1 + "";
+      var string0 = styleValue(this, name2), value1 = value(this), string1 = value1 + "";
       if (value1 == null)
-        string1 = value1 = (this.style.removeProperty(name), styleValue(this, name));
+        string1 = value1 = (this.style.removeProperty(name2), styleValue(this, name2));
       return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
     };
   }
-  function styleMaybeRemove(id2, name) {
-    var on0, on1, listener0, key = "style." + name, event = "end." + key, remove2;
+  function styleMaybeRemove(id2, name2) {
+    var on0, on1, listener0, key = "style." + name2, event = "end." + key, remove2;
     return function() {
-      var schedule = set3(this, id2), on = schedule.on, listener = schedule.value[key] == null ? remove2 || (remove2 = styleRemove2(name)) : void 0;
+      var schedule = set3(this, id2), on = schedule.on, listener = schedule.value[key] == null ? remove2 || (remove2 = styleRemove2(name2)) : void 0;
       if (on !== on0 || listener0 !== listener)
         (on1 = (on0 = on).copy()).on(event, listener0 = listener);
       schedule.on = on1;
     };
   }
-  function style_default2(name, value, priority) {
-    var i = (name += "") === "transform" ? interpolateTransformCss : interpolate_default;
-    return value == null ? this.styleTween(name, styleNull(name, i)).on("end.style." + name, styleRemove2(name)) : typeof value === "function" ? this.styleTween(name, styleFunction2(name, i, tweenValue(this, "style." + name, value))).each(styleMaybeRemove(this._id, name)) : this.styleTween(name, styleConstant2(name, i, value), priority).on("end.style." + name, null);
+  function style_default2(name2, value, priority) {
+    var i = (name2 += "") === "transform" ? interpolateTransformCss : interpolate_default;
+    return value == null ? this.styleTween(name2, styleNull(name2, i)).on("end.style." + name2, styleRemove2(name2)) : typeof value === "function" ? this.styleTween(name2, styleFunction2(name2, i, tweenValue(this, "style." + name2, value))).each(styleMaybeRemove(this._id, name2)) : this.styleTween(name2, styleConstant2(name2, i, value), priority).on("end.style." + name2, null);
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/styleTween.js
-  function styleInterpolate(name, i, priority) {
+  function styleInterpolate(name2, i, priority) {
     return function(t) {
-      this.style.setProperty(name, i.call(this, t), priority);
+      this.style.setProperty(name2, i.call(this, t), priority);
     };
   }
-  function styleTween(name, value, priority) {
+  function styleTween(name2, value, priority) {
     var t, i0;
     function tween() {
       var i = value.apply(this, arguments);
       if (i !== i0)
-        t = (i0 = i) && styleInterpolate(name, i, priority);
+        t = (i0 = i) && styleInterpolate(name2, i, priority);
       return t;
     }
     tween._value = value;
     return tween;
   }
-  function styleTween_default(name, value, priority) {
-    var key = "style." + (name += "");
+  function styleTween_default(name2, value, priority) {
+    var key = "style." + (name2 += "");
     if (arguments.length < 2)
       return (key = this.tween(key)) && key._value;
     if (value == null)
       return this.tween(key, null);
     if (typeof value !== "function")
       throw new Error();
-    return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+    return this.tween(key, styleTween(name2, value, priority == null ? "" : priority));
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/text.js
@@ -4343,12 +4304,12 @@ var musicvislib = (() => {
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/transition.js
   function transition_default() {
-    var name = this._name, id0 = this._id, id1 = newId();
+    var name2 = this._name, id0 = this._id, id1 = newId();
     for (var groups2 = this._groups, m = groups2.length, j = 0; j < m; ++j) {
       for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
         if (node = group2[i]) {
           var inherit2 = get2(node, id0);
-          schedule_default(node, name, id1, i, group2, {
+          schedule_default(node, name2, id1, i, group2, {
             time: inherit2.time + inherit2.delay + inherit2.duration,
             delay: 0,
             duration: inherit2.duration,
@@ -4357,7 +4318,7 @@ var musicvislib = (() => {
         }
       }
     }
-    return new Transition(groups2, this._parents, name, id1);
+    return new Transition(groups2, this._parents, name2, id1);
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/end.js
@@ -4385,14 +4346,14 @@ var musicvislib = (() => {
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/transition/index.js
   var id = 0;
-  function Transition(groups2, parents, name, id2) {
+  function Transition(groups2, parents, name2, id2) {
     this._groups = groups2;
     this._parents = parents;
-    this._name = name;
+    this._name = name2;
     this._id = id2;
   }
-  function transition(name) {
-    return selection_default().transition(name);
+  function transition(name2) {
+    return selection_default().transition(name2);
   }
   function newId() {
     return ++id;
@@ -4450,21 +4411,21 @@ var musicvislib = (() => {
     }
     return timing;
   }
-  function transition_default2(name) {
+  function transition_default2(name2) {
     var id2, timing;
-    if (name instanceof Transition) {
-      id2 = name._id, name = name._name;
+    if (name2 instanceof Transition) {
+      id2 = name2._id, name2 = name2._name;
     } else {
-      id2 = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+      id2 = newId(), (timing = defaultTiming).time = now(), name2 = name2 == null ? null : name2 + "";
     }
     for (var groups2 = this._groups, m = groups2.length, j = 0; j < m; ++j) {
       for (var group2 = groups2[j], n = group2.length, node, i = 0; i < n; ++i) {
         if (node = group2[i]) {
-          schedule_default(node, name, id2, i, group2, timing || inherit(node, id2));
+          schedule_default(node, name2, id2, i, group2, timing || inherit(node, id2));
         }
       }
     }
-    return new Transition(groups2, this._parents, name, id2);
+    return new Transition(groups2, this._parents, name2, id2);
   }
 
   // node_modules/.pnpm/d3-transition@2.0.0_d3-selection@2.0.0/node_modules/d3-transition/src/selection/index.js
@@ -4481,7 +4442,7 @@ var musicvislib = (() => {
   }
   var X = {
     name: "x",
-    handles: ["w", "e"].map(type),
+    handles: ["w", "e"].map(type2),
     input: function(x, e) {
       return x == null ? null : [[+x[0], e[0][1]], [+x[1], e[1][1]]];
     },
@@ -4491,7 +4452,7 @@ var musicvislib = (() => {
   };
   var Y = {
     name: "y",
-    handles: ["n", "s"].map(type),
+    handles: ["n", "s"].map(type2),
     input: function(y, e) {
       return y == null ? null : [[e[0][0], +y[0]], [e[1][0], +y[1]]];
     },
@@ -4501,7 +4462,7 @@ var musicvislib = (() => {
   };
   var XY = {
     name: "xy",
-    handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type),
+    handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type2),
     input: function(xy) {
       return xy == null ? null : number2(xy);
     },
@@ -4509,7 +4470,7 @@ var musicvislib = (() => {
       return xy;
     }
   };
-  function type(t) {
+  function type2(t) {
     return { type: t };
   }
 
@@ -4665,19 +4626,19 @@ var musicvislib = (() => {
     var group2 = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity_default2 : formatGroup_default(map.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity_default2 : formatNumerals_default(map.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "\u2212" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
     function newFormat(specifier) {
       specifier = formatSpecifier(specifier);
-      var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero2 = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type2 = specifier.type;
-      if (type2 === "n")
-        comma = true, type2 = "g";
-      else if (!formatTypes_default[type2])
-        precision === void 0 && (precision = 12), trim = true, type2 = "g";
+      var fill = specifier.fill, align = specifier.align, sign = specifier.sign, symbol = specifier.symbol, zero2 = specifier.zero, width = specifier.width, comma = specifier.comma, precision = specifier.precision, trim = specifier.trim, type3 = specifier.type;
+      if (type3 === "n")
+        comma = true, type3 = "g";
+      else if (!formatTypes_default[type3])
+        precision === void 0 && (precision = 12), trim = true, type3 = "g";
       if (zero2 || fill === "0" && align === "=")
         zero2 = true, fill = "0", align = "=";
-      var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "";
-      var formatType = formatTypes_default[type2], maybeSuffix = /[defgprs%]/.test(type2);
-      precision = precision === void 0 ? 6 : /[gprs]/.test(type2) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
+      var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type3) ? "0" + type3.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type3) ? percent : "";
+      var formatType = formatTypes_default[type3], maybeSuffix = /[defgprs%]/.test(type3);
+      precision = precision === void 0 ? 6 : /[gprs]/.test(type3) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
       function format2(value) {
         var valuePrefix = prefix, valueSuffix = suffix, i, n, c2;
-        if (type2 === "c") {
+        if (type3 === "c") {
           valueSuffix = formatType(value) + valueSuffix;
           value = "";
         } else {
@@ -4689,7 +4650,7 @@ var musicvislib = (() => {
           if (valueNegative && +value === 0 && sign !== "+")
             valueNegative = false;
           valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-          valueSuffix = (type2 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+          valueSuffix = (type3 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
           if (maybeSuffix) {
             i = -1, n = value.length;
             while (++i < n) {
@@ -4955,8 +4916,8 @@ var musicvislib = (() => {
   }
 
   // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/tickFormat.js
-  function tickFormat(start2, stop, count, specifier) {
-    var step = tickStep(start2, stop, count), precision;
+  function tickFormat(start2, stop, count2, specifier) {
+    var step = tickStep(start2, stop, count2), precision;
     specifier = formatSpecifier(specifier == null ? ",f" : specifier);
     switch (specifier.type) {
       case "s": {
@@ -4987,17 +4948,17 @@ var musicvislib = (() => {
   // node_modules/.pnpm/d3-scale@3.3.0/node_modules/d3-scale/src/linear.js
   function linearish(scale2) {
     var domain = scale2.domain;
-    scale2.ticks = function(count) {
+    scale2.ticks = function(count2) {
       var d = domain();
-      return ticks_default(d[0], d[d.length - 1], count == null ? 10 : count);
+      return ticks_default(d[0], d[d.length - 1], count2 == null ? 10 : count2);
     };
-    scale2.tickFormat = function(count, specifier) {
+    scale2.tickFormat = function(count2, specifier) {
       var d = domain();
-      return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+      return tickFormat(d[0], d[d.length - 1], count2 == null ? 10 : count2, specifier);
     };
-    scale2.nice = function(count) {
-      if (count == null)
-        count = 10;
+    scale2.nice = function(count2) {
+      if (count2 == null)
+        count2 = 10;
       var d = domain();
       var i0 = 0;
       var i1 = d.length - 1;
@@ -5011,7 +4972,7 @@ var musicvislib = (() => {
         step = i0, i0 = i1, i1 = step;
       }
       while (maxIter-- > 0) {
-        step = tickIncrement(start2, stop, count);
+        step = tickIncrement(start2, stop, count2);
         if (step === prestep) {
           d[i0] = start2;
           d[i1] = stop;
@@ -5146,12 +5107,12 @@ var musicvislib = (() => {
     return [y, x];
   }
   function countOnesOfBinary(integer) {
-    let count = 0;
+    let count2 = 0;
     while (integer !== 0) {
       integer = integer & integer - 1;
-      count++;
+      count2++;
     }
-    return count;
+    return count2;
   }
   function findLocalMaxima(array) {
     if (array.length <= 1) {
@@ -5285,9 +5246,7 @@ var musicvislib = (() => {
       return this;
     }
     forEach(func) {
-      this._notes.forEach(
-        (element, index16, array) => func(element, index16, array)
-      );
+      this._notes.forEach((element, index16, array) => func(element, index16, array));
       return this;
     }
     sort(sortFunction) {
@@ -5299,9 +5258,7 @@ var musicvislib = (() => {
       return this;
     }
     map(mapFunction) {
-      this._notes = this._notes.map(
-        (element, index16, array) => mapFunction(element, index16, array)
-      );
+      this._notes = this._notes.map((element, index16, array) => mapFunction(element, index16, array));
       return this;
     }
     slice(start2, end) {
@@ -5339,9 +5296,7 @@ var musicvislib = (() => {
       const slices = [];
       let lastTime = 0;
       for (const time of times) {
-        slices.push(
-          new NoteArray(this._notes, reUseNotes).sliceTime(lastTime, time, mode2).getNotes()
-        );
+        slices.push(new NoteArray(this._notes, reUseNotes).sliceTime(lastTime, time, mode2).getNotes());
         lastTime = time;
       }
       return slices;
@@ -5414,17 +5369,15 @@ var musicvislib = (() => {
       return this;
     }
     transpose(steps) {
-      this._notes = this._notes.map((n) => Note_default.from({
-        ...n,
+      this._notes = this._notes.map((n) => Note_default.from(__spreadProps(__spreadValues({}, n), {
         pitch: clipValue(n.pitch + steps, 0, 127)
-      }));
+      })));
       return this;
     }
     removeOctaves() {
-      this._notes = this._notes.map((note2) => Note_default.from({
-        ...note2,
+      this._notes = this._notes.map((note2) => Note_default.from(__spreadProps(__spreadValues({}, note2), {
         pitch: note2.pitch % 12
-      }));
+      })));
       return this;
     }
     reverse() {
@@ -5488,6 +5441,23 @@ var musicvislib = (() => {
       }
     }
     return true;
+  }
+  function count(array, value, comparator) {
+    let count2 = 0;
+    if (!comparator) {
+      for (const v of array) {
+        if (v === value) {
+          count2++;
+        }
+      }
+    } else {
+      for (const v of array) {
+        if (comparator(v, value)) {
+          count2++;
+        }
+      }
+    }
+    return count2;
   }
   function jaccardIndex(set1, set22) {
     if (set1.length === 0 && set22.length === 0) {
@@ -5579,6 +5549,14 @@ var musicvislib = (() => {
     });
     return normalize2(array, max3);
   }
+  function normalizeNdArrayNegative(array) {
+    const extent = extent_default(array.flat(Number.POSITIVE_INFINITY));
+    const scale2 = linear2().domain(extent);
+    const normalize2 = (array_) => array_.map((d) => {
+      return d.length !== void 0 ? normalize2(d) : scale2(d);
+    });
+    return normalize2(array);
+  }
   function euclideanDistance(matrixA, matrixB) {
     const valuesA = matrixA.flat();
     const valuesB = matrixB.flat();
@@ -5659,9 +5637,9 @@ var musicvislib = (() => {
 
   // src/types/Recording.js
   var Recording = class extends NoteArray_default {
-    constructor(name, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
+    constructor(name2, date, notes, speed = 1, selectedTrack = 0, timeSelection = null, comment = "") {
       super(notes);
-      this.name = name;
+      this.name = name2;
       this.date = date;
       this.dateString = date.toISOString().slice(0, 19).replace("T", " ");
       this.speed = +speed;
@@ -5671,15 +5649,7 @@ var musicvislib = (() => {
       this.sortByTime();
     }
     clone() {
-      return new Recording(
-        this.name,
-        this.date,
-        this.getNotes().map((d) => d.clone()),
-        this.speed,
-        this.selectedTrack,
-        this.timeSelection === null ? null : [...this.timeSelection],
-        this.comment
-      );
+      return new Recording(this.name, this.date, this.getNotes().map((d) => d.clone()), this.speed, this.selectedTrack, this.timeSelection === null ? null : [...this.timeSelection], this.comment);
     }
     equals(otherRecording) {
       if (!(otherRecording instanceof Recording)) {
@@ -5732,8 +5702,8 @@ var musicvislib = (() => {
       };
     }
     static from(object) {
-      let { name, date, notes } = object;
-      const values = [name, date, notes];
+      let { name: name2, date, notes } = object;
+      const values = [name2, date, notes];
       const names2 = ["name", "date", "notes"];
       for (const [index16, value] of values.entries()) {
         if (value === void 0 || value === null) {
@@ -5744,15 +5714,7 @@ var musicvislib = (() => {
         date = new Date(Date.parse(date));
       }
       const { speed, selectedTrack, timeSelection, comment } = object;
-      return new Recording(
-        name,
-        date,
-        notes,
-        speed,
-        selectedTrack,
-        timeSelection,
-        comment
-      );
+      return new Recording(name2, date, notes, speed, selectedTrack, timeSelection, comment);
     }
   };
   var Recording_default = Recording;
@@ -5903,18 +5865,18 @@ var musicvislib = (() => {
           try {
             let durationInSeconds;
             if (note2.querySelectorAll("grace").length > 0) {
-              const type2 = note2.querySelectorAll("type").textContent;
-              if (type2 === "64th") {
+              const type3 = note2.querySelectorAll("type").textContent;
+              if (type3 === "64th") {
                 durationInSeconds = secondsPerBeat / 16;
-              } else if (type2 === "32nd") {
+              } else if (type3 === "32nd") {
                 durationInSeconds = secondsPerBeat / 8;
-              } else if (type2 === "16th") {
+              } else if (type3 === "16th") {
                 durationInSeconds = secondsPerBeat / 4;
-              } else if (type2 === "eighth") {
+              } else if (type3 === "eighth") {
                 durationInSeconds = secondsPerBeat / 2;
-              } else if (type2 === "quarter") {
+              } else if (type3 === "quarter") {
                 durationInSeconds = secondsPerBeat;
-              } else if (type2 === "half") {
+              } else if (type3 === "half") {
                 durationInSeconds = secondsPerBeat * 2;
               } else {
                 durationInSeconds = 0.01;
@@ -5977,23 +5939,9 @@ var musicvislib = (() => {
               } catch {
               }
               if (string !== null && fret !== null) {
-                noteObjs.push(new GuitarNote_default(
-                  pitch,
-                  startTime,
-                  velocity,
-                  string,
-                  endTime,
-                  string,
-                  fret
-                ));
+                noteObjs.push(new GuitarNote_default(pitch, startTime, velocity, string, endTime, string, fret));
               } else {
-                noteObjs.push(new Note_default(
-                  pitch,
-                  startTime,
-                  velocity,
-                  staff - 1,
-                  endTime
-                ));
+                noteObjs.push(new Note_default(pitch, startTime, velocity, staff - 1, endTime));
               }
               const lyrics = getLyricsFromNote(note2);
               if (lyrics.length > 0) {
@@ -6359,14 +6307,7 @@ var musicvislib = (() => {
     let parsedTracks = [];
     const { tempoChanges, beatTypeChanges, keySignatureChanges } = getSignatureChanges(data.track);
     for (const track of data.track) {
-      const t = parseMidiTrack(
-        track,
-        data.timeDivision,
-        tempoChanges,
-        beatTypeChanges,
-        keySignatureChanges,
-        log
-      );
+      const t = parseMidiTrack(track, data.timeDivision, tempoChanges, beatTypeChanges, keySignatureChanges, log);
       if (t !== null) {
         parsedTracks.push(t);
       }
@@ -6404,8 +6345,8 @@ var musicvislib = (() => {
     let timeOfLastTempoChange = 0;
     const unfinishedNotes = /* @__PURE__ */ new Map();
     for (const event of track.event) {
-      const type2 = event.type;
-      if (type2 === EVENT_TYPES.meta) {
+      const type3 = event.type;
+      if (type3 === EVENT_TYPES.meta) {
         continue;
       }
       currentTick += event.deltaTime;
@@ -6442,13 +6383,13 @@ var musicvislib = (() => {
         milliSecondsPerTick = getMillisecondsPerTick(tempo, timeDivision);
       }
       currentTime = (currentTick - tickOfLastTempoChange) * milliSecondsPerTick / 1e3 + timeOfLastTempoChange;
-      if (type2 !== EVENT_TYPES.noteOn && type2 !== EVENT_TYPES.noteOff) {
+      if (type3 !== EVENT_TYPES.noteOn && type3 !== EVENT_TYPES.noteOff) {
         continue;
       }
       const [pitch, velocity] = event.data;
       const channel = event.channel;
       const key = `${pitch} ${channel}`;
-      if (type2 === EVENT_TYPES.noteOff || type2 === EVENT_TYPES.noteOn && velocity === 0) {
+      if (type3 === EVENT_TYPES.noteOff || type3 === EVENT_TYPES.noteOn && velocity === 0) {
         if (unfinishedNotes.has(key)) {
           unfinishedNotes.get(key).end = roundToNDecimals(currentTime, ROUNDING_PRECISION2);
           unfinishedNotes.delete(key);
@@ -6458,13 +6399,8 @@ var musicvislib = (() => {
             console.log(event);
           }
         }
-      } else if (type2 === EVENT_TYPES.noteOn) {
-        const newNote = new Note_default(
-          pitch,
-          roundToNDecimals(currentTime, ROUNDING_PRECISION2),
-          velocity,
-          channel
-        );
+      } else if (type3 === EVENT_TYPES.noteOn) {
+        const newNote = new Note_default(pitch, roundToNDecimals(currentTime, ROUNDING_PRECISION2), velocity, channel);
         notes.push(newNote);
         unfinishedNotes.set(key, newNote);
       } else {
@@ -6573,10 +6509,9 @@ var musicvislib = (() => {
     const grouped = group(tracks[0].noteObjs, (d) => d.channel);
     const splittedTracks = [];
     for (const notes of grouped.values()) {
-      splittedTracks.push({
-        ...tracks[0],
+      splittedTracks.push(__spreadProps(__spreadValues({}, tracks[0]), {
         noteObjs: notes
-      });
+      }));
     }
     return splittedTracks;
   }
@@ -6720,11 +6655,11 @@ var musicvislib = (() => {
 
   // src/types/MusicPiece.js
   var MusicPiece = class {
-    constructor(name, tempos, timeSignatures, keySignatures, measureTimes, tracks, xmlMeasureIndices) {
+    constructor(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks, xmlMeasureIndices) {
       if (!tracks || tracks.length === 0) {
         throw new Error("No or invalid tracks given! Use .fromMidi or .fromMusicXml?");
       }
-      this.name = name;
+      this.name = name2;
       this.measureTimes = measureTimes;
       this.xmlMeasureIndices = xmlMeasureIndices;
       this.tracks = tracks;
@@ -6754,7 +6689,7 @@ var musicvislib = (() => {
         }
       }
     }
-    static fromMidi(name, midiFile) {
+    static fromMidi(name2, midiFile) {
       if (!midiFile) {
         throw new Error("No MIDI file content given");
       }
@@ -6770,25 +6705,10 @@ var musicvislib = (() => {
         keySignatures = parsed.keySignatureChanges.map((d) => new KeySignature(d.time, d.key, d.scale));
         measureTimes = parsed.measureLinePositions;
       }
-      const tracks = parsed.tracks.map((track) => new Track(
-        track.trackName,
-        track.instrumentName,
-        track.noteObjs,
-        null,
-        track.measureIndices,
-        /* @__PURE__ */ new Map(),
-        /* @__PURE__ */ new Map()
-      ));
-      return new MusicPiece(
-        name,
-        tempos,
-        timeSignatures,
-        keySignatures,
-        measureTimes,
-        tracks
-      );
+      const tracks = parsed.tracks.map((track) => new Track(track.trackName, track.instrumentName, track.noteObjs, null, track.measureIndices, /* @__PURE__ */ new Map(), /* @__PURE__ */ new Map()));
+      return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks);
     }
-    static fromMusicXml(name, xmlFile) {
+    static fromMusicXml(name2, xmlFile) {
       if (!xmlFile) {
         throw new Error("No MusicXML file content given");
       }
@@ -6816,26 +6736,9 @@ var musicvislib = (() => {
         for (const n of track.noteObjs) {
           n.channel = index16;
         }
-        return new Track(
-          parsed.partNames[index16],
-          parsed.instruments[index16],
-          track.noteObjs,
-          track.tuning,
-          track.measureIndices,
-          track.measureRehearsalMap,
-          track.noteLyricsMap,
-          track.xmlNoteIndices
-        );
+        return new Track(parsed.partNames[index16], parsed.instruments[index16], track.noteObjs, track.tuning, track.measureIndices, track.measureRehearsalMap, track.noteLyricsMap, track.xmlNoteIndices);
       });
-      return new MusicPiece(
-        name,
-        tempos,
-        timeSignatures,
-        keySignatures,
-        measureTimes,
-        tracks,
-        xmlMeasureIndices
-      );
+      return new MusicPiece(name2, tempos, timeSignatures, keySignatures, measureTimes, tracks, xmlMeasureIndices);
     }
     static fromJson(json) {
       json = typeof json === "string" ? JSON.parse(json) : json;
@@ -6843,21 +6746,12 @@ var musicvislib = (() => {
       const timeSignatures = json.timeSignatures.map((d) => new TimeSignature(d.time, d.signature));
       const keySignatures = json.keySignatures.map((d) => new KeySignature(d.time, d.key, d.scale));
       const tracks = json.tracks.map((track) => Track.from(track));
-      return new MusicPiece(
-        json.name,
-        tempos,
-        timeSignatures,
-        keySignatures,
-        json.measureTimes,
-        tracks,
-        json.xmlMeasureIndices
-      );
+      return new MusicPiece(json.name, tempos, timeSignatures, keySignatures, json.measureTimes, tracks, json.xmlMeasureIndices);
     }
     toJson(pretty = false) {
-      const _this = {
-        ...this,
+      const _this = __spreadProps(__spreadValues({}, this), {
         tracks: this.tracks.map((d) => d.toObject())
-      };
+      });
       return JSON.stringify(_this, void 0, pretty ? 2 : 0);
     }
     getAllNotes(sortByTime = false) {
@@ -6891,33 +6785,20 @@ var musicvislib = (() => {
           na.transpose(steps);
           tuning = track.tuningPitches.map((d) => d + steps);
         }
-        return new Track(
-          track.name,
-          track.instrument,
-          na.getNotes(),
-          tuning,
-          track.measureIndices
-        );
+        return new Track(track.name, track.instrument, na.getNotes(), tuning, track.measureIndices);
       });
-      return new MusicPiece(
-        this.name,
-        [...this.tempos],
-        [...this.timeSignatures],
-        [...this.keySignatures],
-        [...this.measureTimes],
-        newTracks
-      );
+      return new MusicPiece(this.name, [...this.tempos], [...this.timeSignatures], [...this.keySignatures], [...this.measureTimes], newTracks);
     }
   };
   var Track = class {
-    constructor(name, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
-      name = !(name == null ? void 0 : name.length) ? "unnamed" : name.replace("\0", "");
-      this.name = name;
+    constructor(name2, instrument, notes, tuningPitches = null, measureIndices = null, measureRehearsalMap, noteLyricsMap, xmlNoteIndices = null) {
+      name2 = !(name2 == null ? void 0 : name2.length) ? "unnamed" : name2.replace("\0", "");
+      this.name = name2;
       this.instrument = instrument;
       if (!notes || notes.length === void 0) {
         throw new Error("Notes are undefined or not an array");
       }
-      this.notes = notes.sort((a, b) => a.start - b.start);
+      this.notes = notes.sort(Note_default.startPitchComparator);
       this.tuningPitches = tuningPitches;
       this.measureIndices = measureIndices;
       this.measureRehearsalMap = measureRehearsalMap;
@@ -6933,11 +6814,10 @@ var musicvislib = (() => {
       }
     }
     toObject() {
-      return {
-        ...this,
+      return __spreadProps(__spreadValues({}, this), {
         measureRehearsalMap: [...this.measureRehearsalMap],
         noteLyricsMap: [...this.noteLyricsMap]
-      };
+      });
     }
     static from(object) {
       const notes = object.notes.map((note2) => {
@@ -6945,16 +6825,69 @@ var musicvislib = (() => {
       });
       const measureRehearsalMap = new Map(object.measureRehearsalMap);
       const noteLyricsMap = new Map(object.noteLyricsMap);
-      return new Track(
-        object.name,
-        object.instrument,
-        notes,
-        object.tuningPitches,
-        object.measureIndices,
-        measureRehearsalMap,
-        noteLyricsMap,
-        object.xmlNoteIndices
-      );
+      return new Track(object.name, object.instrument, notes, object.tuningPitches, object.measureIndices, measureRehearsalMap, noteLyricsMap, object.xmlNoteIndices);
+    }
+    getMeasures(sortComparator) {
+      const indices = [0, ...this.measureIndices];
+      const measures = [];
+      for (let index16 = 1; index16 < indices.length; ++index16) {
+        const notes = this.notes.slice(indices[index16 - 1], indices[index16]);
+        if (sortComparator) {
+          notes.sort(sortComparator);
+        }
+        measures.push(notes);
+      }
+      return measures;
+    }
+    getSectionInfo() {
+      const sections = [];
+      for (const [startMeasure, name2] of this.measureRehearsalMap.entries()) {
+        sections.push({ name: name2, startMeasure, endMeasure: null });
+      }
+      for (let index16 = 1; index16 < sections.length; ++index16) {
+        sections[index16 - 1].endMeasure = sections[index16].startMeasure - 1;
+      }
+      if (sections.length > 0) {
+        const last = sections[sections.length - 1];
+        last.endMeasure = this.measureIndices.length - 1;
+      }
+      if (sections.length > 0 && sections[0].startMeasure > 0) {
+        const first = {
+          name: "",
+          startMeasure: 0,
+          endMeasure: sections[0].startMeasure - 1
+        };
+        sections.unshift(first);
+      }
+      if (sections.length === 0) {
+        sections.push({
+          name: "<No sections>",
+          startMeasure: 0,
+          endMeasure: this.measureIndices.length - 1
+        });
+      }
+      for (const section of sections) {
+        section.length = section.endMeasure - section.startMeasure + 1;
+      }
+      return sections;
+    }
+    getSections(sectionInfo, measures, sortComparator) {
+      if (!sectionInfo) {
+        sectionInfo = this.getSectionInfo();
+      }
+      if (!measures) {
+        measures = this.getMeasures();
+      }
+      const indices = sectionInfo.map((d) => d.startMeasure);
+      const notesBySection = [];
+      for (let index16 = 1; index16 < indices.length + 1; ++index16) {
+        const notes = measures.slice(indices[index16 - 1], indices[index16]).flat();
+        if (sortComparator) {
+          notes.sort(sortComparator);
+        }
+        notesBySection.push(notes);
+      }
+      return notesBySection;
     }
   };
   var TempoDefinition = class {
@@ -7064,6 +6997,7 @@ var musicvislib = (() => {
     drawAssymetricArc: () => drawAssymetricArc,
     drawBezierConnectorX: () => drawBezierConnectorX,
     drawBezierConnectorY: () => drawBezierConnectorY,
+    drawBezierFunnelY: () => drawBezierFunnelY,
     drawBowRight: () => drawBowRight,
     drawBracketH: () => drawBracketH,
     drawCircle: () => drawCircle,
@@ -7083,6 +7017,7 @@ var musicvislib = (() => {
     drawRoundedRect: () => drawRoundedRect,
     drawTriangle: () => drawTriangle,
     drawVLine: () => drawVLine,
+    drawVerticalText: () => drawVerticalText,
     drawX: () => drawX,
     setupCanvas: () => setupCanvas
   });
@@ -7269,6 +7204,16 @@ var musicvislib = (() => {
     context.bezierCurveTo(x1, y1 + deltaY, x2, y1 + deltaY, x2, y2);
     context.stroke();
   }
+  function drawBezierFunnelY(context, y1, y2, x1left, x1right, x2left, x2right) {
+    const deltaY = (y2 - y1) / 2;
+    context.beginPath();
+    context.moveTo(x1left, y1);
+    context.bezierCurveTo(x1left, y1 + deltaY, x2left, y1 + deltaY, x2left, y2);
+    context.lineTo(x2right, y2);
+    context.bezierCurveTo(x2right, y1 + deltaY, x1right, y1 + deltaY, x1right, y1);
+    context.closePath();
+    context.fill();
+  }
   function drawRoundedCorner(context, x1, y1, x2, y2, turnLeft = true, roundness = 1) {
     context.beginPath();
     context.moveTo(x1, y1);
@@ -7374,6 +7319,17 @@ var musicvislib = (() => {
       context.fillStyle = colorMap(scaleColor(x));
       context.fillRect(x, 0, 1.1, h);
     }
+  }
+  function drawVerticalText(context, x, y, text, color2 = "black", font = "12px sans-serif", centered = false) {
+    context.save();
+    context.rotate(90 * Math.PI / 180);
+    if (centered) {
+      context.textAlign = "center";
+    }
+    context.fillStyle = color2;
+    context.font = font;
+    context.fillText(text, y, -x);
+    context.restore();
   }
 
   // src/input/AudioRecorder.js
@@ -7740,13 +7696,7 @@ var musicvislib = (() => {
         const end = start2 + randFloat(0, 1);
         const velocity = randVelocity();
         const pitch = choose(pitches);
-        variation.push(new Note_default(
-          pitch,
-          start2,
-          velocity,
-          0,
-          end
-        ));
+        variation.push(new Note_default(pitch, start2, velocity, 0, end));
       }
       if (randFloat(0, 1) < pRemove) {
       } else {
@@ -7774,7 +7724,7 @@ var musicvislib = (() => {
       } else {
         newPitch = replacementMap.get(oldPitch).repPitch;
       }
-      const newNote = Note_default.from({ ...note2, pitch: newPitch });
+      const newNote = Note_default.from(__spreadProps(__spreadValues({}, note2), { pitch: newPitch }));
       return newNote;
     });
     return simplified;
@@ -7806,8 +7756,8 @@ var musicvislib = (() => {
     stringedTunings: () => stringedTunings
   });
   var StringedTuning = class {
-    constructor(name, notes) {
-      this.name = name;
+    constructor(name2, notes) {
+      this.name = name2;
       this.notes = notes;
       this.short = notes.join(" ");
       this.pitches = notes.map((note2) => getMidiNoteByLabel(note2).pitch);
@@ -7942,13 +7892,13 @@ var musicvislib = (() => {
     }
     return positions;
   }
-  function getFretboardPositionsFromNoteName(name, tuning, fretCount = 24) {
+  function getFretboardPositionsFromNoteName(name2, tuning, fretCount = 24) {
     const n = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-    if (!n.includes(name)) {
+    if (!n.includes(name2)) {
       return null;
     }
     const positions = [];
-    const lowestPitch = n.indexOf(name);
+    const lowestPitch = n.indexOf(name2);
     const stringCount = tuning.stringCount;
     for (let string = 0; string < stringCount; string++) {
       const openPitch = tuning.pitches[string];
@@ -7966,24 +7916,16 @@ var musicvislib = (() => {
     }
     return positions;
   }
-  function generateExampleData(startTime = 0, count = 50, tuning) {
+  function generateExampleData(startTime = 0, count2 = 50, tuning) {
     let currentTime = startTime;
-    return Array.from({ length: count }).map(() => {
+    return Array.from({ length: count2 }).map(() => {
       const start2 = currentTime + randFloat(0, 1);
       currentTime = start2 + randFloat(0, 1);
       const string = int_default(1, 7)();
       const fret = int_default(0, 25)();
       const pitch = getPitchFromFretboardPos(string, fret, tuning);
       const velocity = int_default(15, 127)();
-      return new GuitarNote_default(
-        pitch,
-        start2,
-        velocity,
-        string,
-        currentTime,
-        string,
-        fret
-      );
+      return new GuitarNote_default(pitch, start2, velocity, string, currentTime, string, fret);
     });
   }
   function fretboardPositionsFromMidi(notes, tuning, fretCount = 24) {
@@ -8025,17 +7967,11 @@ var musicvislib = (() => {
       if (maxPitch < maxDataPitch) {
         advice += `Transpose by ${maxPitch - maxDataPitch} semitones`;
       }
-      console.warn(
-        `Cannot find a fretboard position for ${errorPitches.length} pitches, try another tuning instead:
-`,
-        errorPitches,
-        `
-Current tuning's pitch range is ${minPitch} - ${maxPitch}`,
-        `
+      console.warn(`Cannot find a fretboard position for ${errorPitches.length} pitches, try another tuning instead:
+`, errorPitches, `
+Current tuning's pitch range is ${minPitch} - ${maxPitch}`, `
 data pitch range is ${minDataPitch} - ${maxDataPitch}
-`,
-        advice
-      );
+`, advice);
     }
     return result;
   }
@@ -8138,7 +8074,7 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     const alt = accToAlt(acc);
     const oct = octStr.length ? +octStr : void 0;
     const coord = encode({ step, alt, oct });
-    const name = letter + acc + octStr;
+    const name2 = letter + acc + octStr;
     const pc = letter + acc;
     const chroma = (SEMI[step] + alt + 120) % 12;
     const height = oct === void 0 ? mod(SEMI[step] + alt, 12) - 12 * 99 : SEMI[step] + alt + 12 * (oct + 1);
@@ -8154,7 +8090,7 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
       height,
       letter,
       midi,
-      name,
+      name: name2,
       oct,
       pc,
       step
@@ -8198,24 +8134,24 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     if (t === "M" && q === "P") {
       return NoInterval;
     }
-    const type2 = t === "M" ? "majorable" : "perfectable";
-    const name = "" + num + q;
+    const type3 = t === "M" ? "majorable" : "perfectable";
+    const name2 = "" + num + q;
     const dir = num < 0 ? -1 : 1;
     const simple = num === 8 || num === -8 ? num : dir * (step + 1);
-    const alt = qToAlt(type2, q);
+    const alt = qToAlt(type3, q);
     const oct = Math.floor((Math.abs(num) - 1) / 7);
     const semitones = dir * (SIZES[step] + alt + 12 * oct);
     const chroma = (dir * (SIZES[step] + alt) % 12 + 12) % 12;
     const coord = encode({ step, alt, oct, dir });
     return {
       empty: false,
-      name,
+      name: name2,
       num,
       q,
       step,
       alt,
       dir,
-      type: type2,
+      type: type3,
       simple,
       semitones,
       chroma,
@@ -8229,8 +8165,8 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     const ivl = forceDescending || isDescending ? [-f, -o, -1] : [f, o, 1];
     return interval2(decode(ivl));
   }
-  function qToAlt(type2, q) {
-    return q === "M" && type2 === "majorable" || q === "P" && type2 === "perfectable" ? 0 : q === "m" && type2 === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type2 === "perfectable" ? q.length : q.length + 1) : 0;
+  function qToAlt(type3, q) {
+    return q === "M" && type3 === "majorable" || q === "P" && type3 === "perfectable" ? 0 : q === "m" && type3 === "majorable" ? -1 : /^A+$/.test(q) ? q.length : /^d+$/.test(q) ? -1 * (type3 === "perfectable" ? q.length : q.length + 1) : 0;
   }
   function pitchName(props) {
     const { step, alt, oct = 0, dir } = props;
@@ -8240,19 +8176,19 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     const calcNum = step + 1 + 7 * oct;
     const num = calcNum === 0 ? step + 1 : calcNum;
     const d = dir < 0 ? "-" : "";
-    const type2 = TYPES[step] === "M" ? "majorable" : "perfectable";
-    const name = d + num + altToQ(type2, alt);
-    return name;
+    const type3 = TYPES[step] === "M" ? "majorable" : "perfectable";
+    const name2 = d + num + altToQ(type3, alt);
+    return name2;
   }
-  function altToQ(type2, alt) {
+  function altToQ(type3, alt) {
     if (alt === 0) {
-      return type2 === "majorable" ? "M" : "P";
-    } else if (alt === -1 && type2 === "majorable") {
+      return type3 === "majorable" ? "M" : "P";
+    } else if (alt === -1 && type3 === "majorable") {
       return "m";
     } else if (alt > 0) {
       return fillStr("A", alt);
     } else {
-      return fillStr("d", type2 === "perfectable" ? alt : alt + 1);
+      return fillStr("d", type3 === "perfectable" ? alt : alt + 1);
     }
   }
   function transpose(noteName, intervalName) {
@@ -8516,17 +8452,16 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     ["1P 4P 7m 10m", "", "4 quartal"],
     ["1P 5P 7m 9m 11P", "", "11b9"]
   ];
-  var NoChordType = {
-    ...EmptyPcset,
+  var NoChordType = __spreadProps(__spreadValues({}, EmptyPcset), {
     name: "",
     quality: "Unknown",
     intervals: [],
     aliases: []
-  };
+  });
   var dictionary = [];
   var index2 = {};
-  function get4(type2) {
-    return index2[type2] || NoChordType;
+  function get4(type3) {
+    return index2[type3] || NoChordType;
   }
   var chordType = deprecate("ChordType.chordType", "ChordType.get", get4);
   function all() {
@@ -8535,13 +8470,12 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
   var entries = deprecate("ChordType.entries", "ChordType.all", all);
   function add(intervals, aliases, fullName) {
     const quality = getQuality(intervals);
-    const chord2 = {
-      ...get3(intervals),
+    const chord2 = __spreadProps(__spreadValues({}, get3(intervals)), {
       name: fullName || "",
       quality,
       intervals,
       aliases
-    };
+    });
     dictionary.push(chord2);
     if (chord2.name) {
       index2[chord2.name] = chord2;
@@ -8737,23 +8671,22 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     ["1P 2m 2M 3m 4P 4A 5P 6m 6M 7M", "messiaen's mode #7"],
     ["1P 2m 2M 3m 3M 4P 5d 5P 6m 6M 7m 7M", "chromatic"]
   ];
-  var NoScaleType = {
-    ...EmptyPcset,
+  var NoScaleType = __spreadProps(__spreadValues({}, EmptyPcset), {
     intervals: [],
     aliases: []
-  };
+  });
   var dictionary2 = [];
   var index3 = {};
-  function get5(type2) {
-    return index3[type2] || NoScaleType;
+  function get5(type3) {
+    return index3[type3] || NoScaleType;
   }
   var scaleType = deprecate("ScaleDictionary.scaleType", "ScaleType.get", get5);
   function all2() {
     return dictionary2.slice();
   }
   var entries2 = deprecate("ScaleDictionary.entries", "ScaleType.all", all2);
-  function add2(intervals, name, aliases = []) {
-    const scale2 = { ...get3(intervals), name, intervals, aliases };
+  function add2(intervals, name2, aliases = []) {
+    const scale2 = __spreadProps(__spreadValues({}, get3(intervals)), { name: name2, intervals, aliases });
     dictionary2.push(scale2);
     index3[scale2.name] = scale2;
     index3[scale2.setNum] = scale2;
@@ -8764,7 +8697,7 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
   function addAlias2(scale2, alias) {
     index3[alias] = scale2;
   }
-  SCALES.forEach(([ivls, name, ...aliases]) => add2(ivls.split(" "), name, aliases));
+  SCALES.forEach(([ivls, name2, ...aliases]) => add2(ivls.split(" "), name2, aliases));
 
   // node_modules/.pnpm/@tonaljs+chord@4.6.5/node_modules/@tonaljs/chord/dist/index.es.js
   var NoChord = {
@@ -8784,21 +8717,21 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     intervals: []
   };
   var NUM_TYPES = /^(6|64|7|9|11|13)$/;
-  function tokenize(name) {
-    const [letter, acc, oct, type2] = tokenizeNote(name);
+  function tokenize(name2) {
+    const [letter, acc, oct, type3] = tokenizeNote(name2);
     if (letter === "") {
-      return ["", name];
+      return ["", name2];
     }
-    if (letter === "A" && type2 === "ug") {
+    if (letter === "A" && type3 === "ug") {
       return ["", "aug"];
     }
-    if (!type2 && (oct === "4" || oct === "5")) {
+    if (!type3 && (oct === "4" || oct === "5")) {
       return [letter + acc, oct];
     }
     if (NUM_TYPES.test(oct)) {
-      return [letter + acc, oct + type2];
+      return [letter + acc, oct + type3];
     } else {
-      return [letter + acc + oct, type2];
+      return [letter + acc + oct, type3];
     }
   }
   function get6(src) {
@@ -8808,24 +8741,24 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     if (Array.isArray(src) && src.length === 2) {
       return getChord(src[1], src[0]);
     } else {
-      const [tonic, type2] = tokenize(src);
-      const chord2 = getChord(type2, tonic);
+      const [tonic, type3] = tokenize(src);
+      const chord2 = getChord(type3, tonic);
       return chord2.empty ? getChord(src) : chord2;
     }
   }
   function getChord(typeName, optionalTonic, optionalRoot) {
-    const type2 = get4(typeName);
+    const type3 = get4(typeName);
     const tonic = note(optionalTonic || "");
     const root2 = note(optionalRoot || "");
-    if (type2.empty || optionalTonic && tonic.empty || optionalRoot && root2.empty) {
+    if (type3.empty || optionalTonic && tonic.empty || optionalRoot && root2.empty) {
       return NoChord;
     }
     const rootInterval = distance(tonic.pc, root2.pc);
-    const rootDegree = type2.intervals.indexOf(rootInterval) + 1;
+    const rootDegree = type3.intervals.indexOf(rootInterval) + 1;
     if (!root2.empty && !rootDegree) {
       return NoChord;
     }
-    const intervals = Array.from(type2.intervals);
+    const intervals = Array.from(type3.intervals);
     for (let i = 1; i < rootDegree; i++) {
       const num = intervals[0][0];
       const quality = intervals[0][1];
@@ -8834,31 +8767,30 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
       intervals.shift();
     }
     const notes = tonic.empty ? [] : intervals.map((i) => transpose(tonic, i));
-    typeName = type2.aliases.indexOf(typeName) !== -1 ? typeName : type2.aliases[0];
+    typeName = type3.aliases.indexOf(typeName) !== -1 ? typeName : type3.aliases[0];
     const symbol = `${tonic.empty ? "" : tonic.pc}${typeName}${root2.empty || rootDegree <= 1 ? "" : "/" + root2.pc}`;
-    const name = `${optionalTonic ? tonic.pc + " " : ""}${type2.name}${rootDegree > 1 && optionalRoot ? " over " + root2.pc : ""}`;
-    return {
-      ...type2,
-      name,
+    const name2 = `${optionalTonic ? tonic.pc + " " : ""}${type3.name}${rootDegree > 1 && optionalRoot ? " over " + root2.pc : ""}`;
+    return __spreadProps(__spreadValues({}, type3), {
+      name: name2,
       symbol,
-      type: type2.name,
+      type: type3.name,
       root: root2.name,
       intervals,
       rootDegree,
       tonic: tonic.name,
       notes
-    };
+    });
   }
   var chord = deprecate("Chord.chord", "Chord.get", get6);
   function transpose2(chordName, interval3) {
-    const [tonic, type2] = tokenize(chordName);
+    const [tonic, type3] = tokenize(chordName);
     if (!tonic) {
       return chordName;
     }
-    return transpose(tonic, interval3) + type2;
+    return transpose(tonic, interval3) + type3;
   }
-  function chordScales(name) {
-    const s = get6(name);
+  function chordScales(name2) {
+    const s = get6(name2);
     const isChordIncluded = isSupersetOf(s.chroma);
     return all2().filter((scale2) => isChordIncluded(scale2.chroma)).map((scale2) => scale2.name);
   }
@@ -8956,7 +8888,7 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
   var NAMES = ROMANS.split(" ");
   var NAMES_MINOR = ROMANS.toLowerCase().split(" ");
   function parse3(src) {
-    const [name, acc, roman, chordType2] = tokenize2(src);
+    const [name2, acc, roman, chordType2] = tokenize2(src);
     if (!roman) {
       return NoRomanNumeral;
     }
@@ -8966,7 +8898,7 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     const dir = 1;
     return {
       empty: false,
-      name,
+      name: name2,
       roman,
       interval: interval2({ step, alt, dir }).name,
       acc,
@@ -8996,9 +8928,7 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     chordsHarmonicFunction: Empty,
     chordScales: Empty
   };
-  var NoMajorKey = {
-    ...NoKey,
-    ...NoKeyScale,
+  var NoMajorKey = __spreadProps(__spreadValues(__spreadValues({}, NoKey), NoKeyScale), {
     type: "major",
     minorRelative: "",
     scale: Empty,
@@ -9006,16 +8936,15 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     secondaryDominantsMinorRelative: Empty,
     substituteDominants: Empty,
     substituteDominantsMinorRelative: Empty
-  };
-  var NoMinorKey = {
-    ...NoKey,
+  });
+  var NoMinorKey = __spreadProps(__spreadValues({}, NoKey), {
     type: "minor",
     relativeMajor: "",
     natural: NoKeyScale,
     harmonic: NoKeyScale,
     melodic: NoKeyScale
-  };
-  var mapScaleToType = (scale2, list, sep = "") => list.map((type2, i) => `${scale2[i]}${sep}${type2}`);
+  });
+  var mapScaleToType = (scale2, list, sep = "") => list.map((type3, i) => `${scale2[i]}${sep}${type3}`);
   function keyScale(grades, chords2, harmonicFunctions, chordScales2) {
     return (tonic) => {
       const intervals = grades.map((gr) => get7(gr).interval || "");
@@ -9046,15 +8975,14 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     [5, 2906, 3, "aeolian", "m", "m7", "minor"],
     [6, 3434, 5, "locrian", "dim", "m7b5"]
   ];
-  var NoMode = {
-    ...EmptyPcset,
+  var NoMode = __spreadProps(__spreadValues({}, EmptyPcset), {
     name: "",
     alt: 0,
     modeNum: NaN,
     triad: "",
     seventh: "",
     aliases: []
-  };
+  });
   var modes2 = MODES.map(toMode);
   var index5 = {};
   modes2.forEach((mode2) => {
@@ -9063,8 +8991,8 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
       index5[alias] = mode2;
     });
   });
-  function get8(name) {
-    return typeof name === "string" ? index5[name.toLowerCase()] || NoMode : name && name.name ? get8(name.name) : NoMode;
+  function get8(name2) {
+    return typeof name2 === "string" ? index5[name2.toLowerCase()] || NoMode : name2 && name2.name ? get8(name2.name) : NoMode;
   }
   var mode = deprecate("Mode.mode", "Mode.get", get8);
   function all3() {
@@ -9072,17 +9000,17 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
   }
   var entries3 = deprecate("Mode.mode", "Mode.all", all3);
   function toMode(mode2) {
-    const [modeNum, setNum, alt, name, triad, seventh, alias] = mode2;
+    const [modeNum, setNum, alt, name2, triad, seventh, alias] = mode2;
     const aliases = alias ? [alias] : [];
     const chroma = Number(setNum).toString(2);
-    const intervals = get5(name).intervals;
+    const intervals = get5(name2).intervals;
     return {
       empty: false,
       intervals,
       modeNum,
       chroma,
       normalized: chroma,
-      name,
+      name: name2,
       setNum,
       alt,
       triad,
@@ -9116,18 +9044,18 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     notes: [],
     intervals: []
   };
-  function tokenize3(name) {
-    if (typeof name !== "string") {
+  function tokenize3(name2) {
+    if (typeof name2 !== "string") {
       return ["", ""];
     }
-    const i = name.indexOf(" ");
-    const tonic = note(name.substring(0, i));
+    const i = name2.indexOf(" ");
+    const tonic = note(name2.substring(0, i));
     if (tonic.empty) {
-      const n = note(name);
-      return n.empty ? ["", name] : [n.name, ""];
+      const n = note(name2);
+      return n.empty ? ["", name2] : [n.name, ""];
     }
-    const type2 = name.substring(tonic.name.length + 1);
-    return [tonic.name, type2.length ? type2 : ""];
+    const type3 = name2.substring(tonic.name.length + 1);
+    return [tonic.name, type3.length ? type3 : ""];
   }
   function get9(src) {
     const tokens = Array.isArray(src) ? src : tokenize3(src);
@@ -9136,10 +9064,10 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
     if (st.empty) {
       return NoScale;
     }
-    const type2 = st.name;
+    const type3 = st.name;
     const notes = tonic ? st.intervals.map((i) => transpose(tonic, i)) : [];
-    const name = tonic ? tonic + " " + type2 : type2;
-    return { ...st, name, type: type2, tonic, notes };
+    const name2 = tonic ? tonic + " " + type3 : type3;
+    return __spreadProps(__spreadValues({}, st), { name: name2, type: type3, tonic, notes });
   }
   var scale = deprecate("Scale.scale", "Scale.get", get9);
 
@@ -9304,8 +9232,8 @@ data pitch range is ${minDataPitch} - ${maxDataPitch}
 
   // src/instruments/Lamellophone.js
   var LamellophoneTuning = class {
-    constructor(name, notes) {
-      this.name = name;
+    constructor(name2, notes) {
+      this.name = name2;
       this.notes = notes;
       this.short = notes.join(" ");
       this.pitches = notes.map((note2) => getMidiNoteByLabel(note2).pitch);
@@ -9656,6 +9584,7 @@ ${chordString}` : `${tab} ${chordString}`;
     clipRecordingsPitchesToGtRange: () => clipRecordingsPitchesToGtRange,
     clipValue: () => clipValue,
     confidenceInterval: () => confidenceInterval,
+    count: () => count,
     countOnesOfBinary: () => countOnesOfBinary,
     deepCloneFlatObjectMap: () => deepCloneFlatObjectMap,
     delay: () => delay,
@@ -9686,6 +9615,7 @@ ${chordString}` : `${tab} ${chordString}`;
     metronomeTrackFromTempoAndMeter: () => metronomeTrackFromTempoAndMeter,
     midiToFrequency: () => midiToFrequency,
     normalizeNdArray: () => normalizeNdArray,
+    normalizeNdArrayNegative: () => normalizeNdArrayNegative,
     noteColorFromPitch: () => noteColorFromPitch,
     noteDurationToNoteType: () => noteDurationToNoteType,
     pearsonCorrelation: () => pearsonCorrelation,
@@ -9803,7 +9733,7 @@ ${chordString}` : `${tab} ${chordString}`;
   function deepCloneFlatObjectMap(map2) {
     const result = /* @__PURE__ */ new Map();
     for (const [key, value] of map2.entries()) {
-      result.set(key, { ...value });
+      result.set(key, __spreadValues({}, value));
     }
     return result;
   }
@@ -10178,35 +10108,32 @@ ${chordString}` : `${tab} ${chordString}`;
         const avg = totalTime / sentCount;
         console.log(`Received MIDI from ${deviceName} after ${ping} ms (avg: ${avg})`);
       };
-      navigator.requestMIDIAccess().then(
-        (midiAccess) => {
-          for (const input of midiAccess.inputs.values()) {
-            if (deviceName === input.name) {
-              input.onmidimessage = receiveFunction;
-            }
+      navigator.requestMIDIAccess().then((midiAccess) => {
+        for (const input of midiAccess.inputs.values()) {
+          if (deviceName === input.name) {
+            input.onmidimessage = receiveFunction;
           }
-          let outputDevice = null;
-          for (const output of midiAccess.outputs.values()) {
-            if (deviceName === output.name) {
-              outputDevice = output;
-            }
+        }
+        let outputDevice = null;
+        for (const output of midiAccess.outputs.values()) {
+          if (deviceName === output.name) {
+            outputDevice = output;
           }
-          if (!outputDevice) {
-            console.error(`Cannot ping output device ${deviceName} because it is not there`);
+        }
+        if (!outputDevice) {
+          console.error(`Cannot ping output device ${deviceName} because it is not there`);
+        }
+        const pingFunction = () => {
+          if (sentCount < howOften) {
+            sentCount++;
+            console.log(`Ping ${sentCount}/${howOften} Sending MIDI ping to ${deviceName}`);
+            sentTime = new Date();
+            outputDevice.send([144, 69, 127]);
+            setTimeout(pingFunction, 1e3);
           }
-          const pingFunction = () => {
-            if (sentCount < howOften) {
-              sentCount++;
-              console.log(`Ping ${sentCount}/${howOften} Sending MIDI ping to ${deviceName}`);
-              sentTime = new Date();
-              outputDevice.send([144, 69, 127]);
-              setTimeout(pingFunction, 1e3);
-            }
-          };
-          setTimeout(pingFunction, 1e3);
-        },
-        () => console.error("Cannot get MIDI access")
-      );
+        };
+        setTimeout(pingFunction, 1e3);
+      }, () => console.error("Cannot get MIDI access"));
     }
   }
 
@@ -10408,17 +10335,17 @@ ${chordString}` : `${tab} ${chordString}`;
     while (tries < 25) {
       const matching = matchGtAndRecordingNotes(rec.getNotes(), gt.getNotes());
       let timeDiff = 0;
-      let count = 0;
+      let count2 = 0;
       for (const m of matching.values()) {
         const { gtRecMap } = m;
         for (const [gtStart, matchedRecNote] of gtRecMap.entries()) {
           if (matchedRecNote !== null) {
-            count++;
+            count2++;
             timeDiff += gtStart - matchedRecNote.start;
           }
         }
       }
-      timeDiff /= count;
+      timeDiff /= count2;
       rec.shiftTime(timeDiff);
       timeDifference += timeDiff;
       if (Math.abs(timeDiff) < 5e-4) {
@@ -10460,7 +10387,7 @@ ${chordString}` : `${tab} ${chordString}`;
   }
   function alignmentForce(a, b) {
     let difference2 = 0;
-    let count = 0;
+    let count2 = 0;
     for (const noteA of a) {
       let distance2 = Number.POSITIVE_INFINITY;
       let diff = Number.POSITIVE_INFINITY;
@@ -10475,10 +10402,10 @@ ${chordString}` : `${tab} ${chordString}`;
       }
       if (distance2 < Number.POSITIVE_INFINITY) {
         difference2 += diff;
-        count++;
+        count2++;
       }
     }
-    return difference2 / count;
+    return difference2 / count2;
   }
   function testAlignment() {
     const test = (a2, b2, title) => {
@@ -10513,13 +10440,7 @@ ${chordString}` : `${tab} ${chordString}`;
     const randDuration = uniform_default.source(lcg(seed))(1 / 64, 2);
     const randomNotes = Array.from({ length: 200 }).fill(0).map(() => {
       const start2 = randTime();
-      return new Note_default(
-        rand127(),
-        start2,
-        127,
-        0,
-        start2 + randDuration()
-      );
+      return new Note_default(rand127(), start2, 127, 0, start2 + randDuration());
     });
     const notes = new NoteArray_default(randomNotes).sortByTime();
     console.log("true notes", notes.getNotes());
@@ -10651,9 +10572,7 @@ Error ${error.toFixed(3)}`);
     priorityMatching: () => priorityMatching
   });
   function priorityMatching(itemsA, itemsB, distanceFunction) {
-    const matrix = Array.from({ length: itemsA.length }).map(
-      () => Array.from({ length: itemsB.length })
-    );
+    const matrix = Array.from({ length: itemsA.length }).map(() => Array.from({ length: itemsB.length }));
     for (const [indexA, gtNote] of itemsA.entries()) {
       for (let indexB = indexA; indexB < itemsB.length; indexB++) {
         const dist = distanceFunction(gtNote, itemsB[indexB]);
@@ -10810,13 +10729,13 @@ Error ${error.toFixed(3)}`);
     return result;
   }
   function countActiveNoteBins(binArray) {
-    let count = 0;
+    let count2 = 0;
     for (const bin of binArray) {
       if (bin === 1) {
-        count++;
+        count2++;
       }
     }
-    return count;
+    return count2;
   }
   function sliceDiscretizedTrack(trackMap, startBin, endBin) {
     const slice = /* @__PURE__ */ new Map();
@@ -10901,13 +10820,7 @@ Error ${error.toFixed(3)}`);
     for (i = 1; i <= b.length; i++) {
       previous = i;
       for (j = 1; j <= a.length; j++) {
-        value = b[i - 1] === a[j - 1] ? row[j - 1] : Math.min(
-          row[j - 1] + 1,
-          Math.min(
-            previous + 1,
-            row[j] + 1
-          )
-        );
+        value = b[i - 1] === a[j - 1] ? row[j - 1] : Math.min(row[j - 1] + 1, Math.min(previous + 1, row[j] + 1));
         row[j - 1] = previous;
         previous = value;
       }
@@ -10937,11 +10850,7 @@ Error ${error.toFixed(3)}`);
     for (let i = 1; i <= a.length; i++) {
       for (let j = 1; j <= b.length; j++) {
         cost = a[i - 1] === b[j - 1] ? 0 : 1;
-        d[i][j] = Math.min(
-          d[i - 1][j] + 1,
-          d[i][j - 1] + 1,
-          d[i - 1][j - 1] + cost
-        );
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
         if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
           d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
         }
@@ -10965,11 +10874,10 @@ Error ${error.toFixed(3)}`);
       const { index: index16 } = m;
       const note1 = notes[index16];
       const note2 = notes[index16 + length];
-      return {
-        ...m,
+      return __spreadProps(__spreadValues({}, m), {
         startTime: note1.start,
         endTime: note2.end
-      };
+      });
     });
   }
   function findSimilarStringSections(dataString, searchString, threshold = 0.5) {
@@ -11148,28 +11056,12 @@ Error ${error.toFixed(3)}`);
     for (let i = 1; i <= lengthA; i++) {
       for (let j = 1; j <= lengthB; j++) {
         const sim = similarityFunction(seqA[i - 1], seqB[j - 1]);
-        a[i][j] = Math.max(
-          a[i - 1][j - 1],
-          b[i - 1][j - 1],
-          c2[i - 1][j - 1]
-        ) + sim;
-        b[i][j] = Math.max(
-          a[i - 1][j] + gapPenaltyStart,
-          b[i - 1][j] + gapPenaltyExtend,
-          c2[i - 1][j] + gapPenaltyStart
-        );
-        c2[i][j] = Math.max(
-          a[i][j - 1] + gapPenaltyStart,
-          b[i][j - 1] + gapPenaltyStart,
-          c2[i][j - 1] + gapPenaltyExtend
-        );
+        a[i][j] = Math.max(a[i - 1][j - 1], b[i - 1][j - 1], c2[i - 1][j - 1]) + sim;
+        b[i][j] = Math.max(a[i - 1][j] + gapPenaltyStart, b[i - 1][j] + gapPenaltyExtend, c2[i - 1][j] + gapPenaltyStart);
+        c2[i][j] = Math.max(a[i][j - 1] + gapPenaltyStart, b[i][j - 1] + gapPenaltyStart, c2[i][j - 1] + gapPenaltyExtend);
       }
     }
-    return Math.max(
-      a[lengthA][lengthB],
-      b[lengthA][lengthB],
-      c2[lengthA][lengthB]
-    );
+    return Math.max(a[lengthA][lengthB], b[lengthA][lengthB], c2[lengthA][lengthB]);
   }
   function normalizedGotoh(seqA, seqB, similarityFunction = matchMissmatchSimilarity, gapPenaltyStart = -1, gapPenaltyExtend = -0.1) {
     const similarity = gotoh(seqA, seqB, similarityFunction, gapPenaltyStart, gapPenaltyExtend);
@@ -11318,13 +11210,13 @@ ${ind}-L ${this.leaves[index16]}`;
     for (let index16 = 0; index16 < array.length - length + 1; index16++) {
       const subArray = array.slice(index16, index16 + length);
       const key = subArray.join(" ");
-      let count = 1;
+      let count2 = 1;
       if (nGrams.has(key)) {
-        count = nGrams.get(key).count + 1;
+        count2 = nGrams.get(key).count + 1;
       }
       nGrams.set(key, {
         value: subArray,
-        count
+        count: count2
       });
     }
     return nGrams;
@@ -11354,11 +11246,7 @@ ${ind}-L ${this.leaves[index16]}`;
     const repetition = compress(seq);
     const pre = compress(preSeq);
     const post = compress(postSeq);
-    const depth = Math.max(
-      (pre == null ? void 0 : pre.depth) ?? 0,
-      ((repetition == null ? void 0 : repetition.depth) ?? 0) + 1,
-      (post == null ? void 0 : post.depth) ?? 0
-    );
+    const depth = Math.max((pre == null ? void 0 : pre.depth) ?? 0, ((repetition == null ? void 0 : repetition.depth) ?? 0) + 1, (post == null ? void 0 : post.depth) ?? 0);
     const length = ((pre == null ? void 0 : pre.length) ?? 0) + ((repetition == null ? void 0 : repetition.length) ?? 0) + ((post == null ? void 0 : post.length) ?? 0);
     return {
       pre,
@@ -11377,13 +11265,7 @@ ${ind}-L ${this.leaves[index16]}`;
         let numberOfReps = 0;
         while (true) {
           const startPos = pos + (numberOfReps + 1) * length;
-          const found = arraySlicesEqual(
-            sequence,
-            sequence,
-            length,
-            pos,
-            startPos
-          );
+          const found = arraySlicesEqual(sequence, sequence, length, pos, startPos);
           if (!found) {
             break;
           } else {

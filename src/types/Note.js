@@ -14,7 +14,7 @@ class Note {
      * @param {number} channel MIDI channel
      * @param {number} end end time in seconds
      */
-  constructor(
+  constructor (
     pitch = 0,
     start = 0,
     velocity = 127,
@@ -68,7 +68,7 @@ class Note {
      * @returns {Note} new note
      * @throws {Error} when pitch is invalid
      */
-  static from(object) {
+  static from (object) {
     let {
       pitch = 0,
       start = 0,
@@ -104,7 +104,7 @@ class Note {
    * @param {Note} b a note to compare
    * @returns {number} negative for smaller, positive for greater, 0 for euqal
    */
-  static startPitchComparator(a, b) {
+  static startPitchComparator (a, b) {
     return a.start !== b.start ? a.start - b.start : a.pitch - b.pitch
   }
 
@@ -113,7 +113,7 @@ class Note {
      *
      * @returns {Note} new note
      */
-  clone() {
+  clone () {
     return new Note(
       this.pitch,
       this.start,
@@ -128,7 +128,7 @@ class Note {
      *
      * @returns {number} note duration
      */
-  getDuration() {
+  getDuration () {
     if (this.end === null) {
       return 0
     }
@@ -140,7 +140,7 @@ class Note {
      *
      * @returns {string} note name as string
      */
-  getName() {
+  getName () {
     return this.name
   }
 
@@ -149,7 +149,7 @@ class Note {
      *
      * @returns {string} note name as string
      */
-  getLetter() {
+  getLetter () {
     return getMidiNoteByNr(this.pitch).name
   }
 
@@ -158,7 +158,7 @@ class Note {
      *
      * @returns {number} the note's octave
      */
-  getOctave() {
+  getOctave () {
     return getMidiNoteByNr(this.pitch).octave
   }
 
@@ -168,7 +168,7 @@ class Note {
      * @param {number} addedSeconds seconds to be added to start and end
      * @returns {Note} new note
      */
-  shiftTime(addedSeconds) {
+  shiftTime (addedSeconds) {
     const n = this.clone()
     n.start += addedSeconds
     n.end = n.end === null ? null : n.end + addedSeconds
@@ -181,7 +181,7 @@ class Note {
      * @param {number} factor factor to scale start and end with
      * @returns {Note} new note
      */
-  scaleTime(factor) {
+  scaleTime (factor) {
     const n = this.clone()
     n.start *= factor
     n.end = n.end === null ? null : n.end * factor
@@ -194,7 +194,7 @@ class Note {
      * @param {Note} otherNote another Note
      * @returns {boolean} true if they overlap
      */
-  overlapsInTime(otherNote) {
+  overlapsInTime (otherNote) {
     return (this.start >= otherNote.start && this.start <= otherNote.end) ||
       (this.end >= otherNote.start && this.end <= otherNote.end)
   }
@@ -205,7 +205,7 @@ class Note {
      * @param {Note} otherNote another Note
      * @returns {number} seconds of overlap
      */
-  overlapInSeconds(otherNote) {
+  overlapInSeconds (otherNote) {
     if (!this.overlapsInTime(otherNote)) {
       return 0
     }
@@ -220,7 +220,7 @@ class Note {
      * @param {Note} otherNote another Note
      * @returns {boolean} true if equal
      */
-  equals(otherNote) {
+  equals (otherNote) {
     if (!(otherNote instanceof Note)) {
       return false
     }
@@ -239,7 +239,7 @@ class Note {
      * @param {boolean} short if true, attribute names will be shortened
      * @returns {string} string representation
      */
-  toString(short = false) {
+  toString (short = false) {
     if (short) {
       return `Note(n: ${this.name}, p: ${this.pitch}, s: ${this.start}, e: ${this.end}, v: ${this.velocity}, c: ${this.channel})`
     }

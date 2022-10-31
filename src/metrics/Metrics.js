@@ -32,7 +32,7 @@ import * as d3 from 'd3'
  * @param {Note[]} notes notes
  * @returns {number} number of notes
  */
-export function notesCount(notes) {
+export function notesCount (notes) {
   return notes.length
 }
 
@@ -42,7 +42,7 @@ export function notesCount(notes) {
  * @param {Note[]} notes notes
  * @returns {number} duration
  */
-export function duration(notes) {
+export function duration (notes) {
   return d3.max(notes, d => d.end)
 }
 
@@ -52,7 +52,7 @@ export function duration(notes) {
  * @param {Note[]} notes notes
  * @returns {number} number of notes per second
  */
-export function notesPerSecond(notes) {
+export function notesPerSecond (notes) {
   const duration = d3.max(notes, d => d.end)
   return notes.length / duration
 }
@@ -64,7 +64,7 @@ export function notesPerSecond(notes) {
  * @param {number} [bpm=120] tempo in bpm
  * @returns {number} number of notes per beat
  */
-export function notesPerBeat(notes, bpm = 120) {
+export function notesPerBeat (notes, bpm = 120) {
   const duration = d3.max(notes, d => d.end)
   const beatsPerSecond = bpm / 60
   const beats = beatsPerSecond * duration
@@ -81,7 +81,7 @@ export function notesPerBeat(notes, bpm = 120) {
  * @param {'pitch'|'chroma'|'fretboardPos'} mode mode
  * @returns {object[]} note and usage count
  */
-export function differentNotesUsed(notes, mode = 'pitch') {
+export function differentNotesUsed (notes, mode = 'pitch') {
   let groupAccessor
   if (mode === 'pitch') {
     groupAccessor = (d) => d.pitch
@@ -111,7 +111,7 @@ export function differentNotesUsed(notes, mode = 'pitch') {
  * const cMaj = new Set(...'CDEFGAB');
  * const ratio = ratioNotesInSet(notes, cMaj);
  */
-export function ratioNotesInSet(notes, set) {
+export function ratioNotesInSet (notes, set) {
   let count = 0
   for (const note of notes) {
     const chroma = note.name.slice(0, -1)
@@ -128,7 +128,7 @@ export function ratioNotesInSet(notes, set) {
  * @param {Note[]} notes notes
  * @returns {object} {mean, variance}
  */
-export function pitchMeanAndVariance(notes) {
+export function pitchMeanAndVariance (notes) {
   return {
     mean: d3.mean(notes, d => d.pitch),
     variance: d3.variance(notes, d => d.pitch)
@@ -141,7 +141,7 @@ export function pitchMeanAndVariance(notes) {
  * @param {Note[]} notes notes
  * @returns {number[]} min and max pitch
  */
-export function pitchExtent(notes) {
+export function pitchExtent (notes) {
   return d3.extent(notes, n => n.pitch)
 }
 
@@ -151,7 +151,7 @@ export function pitchExtent(notes) {
  * @param {Note[]} notes notes
  * @returns {object} {mean, variance}
  */
-export function intervalMeanAndVariance(notes) {
+export function intervalMeanAndVariance (notes) {
   const intervals = notesToIntervals(notes)
   return {
     mean: d3.mean(intervals),
@@ -165,7 +165,7 @@ export function intervalMeanAndVariance(notes) {
  * @param {Note[]} notes notes
  * @returns {object} {mean, variance}
  */
-export function dynamicsMeanAndVariance(notes) {
+export function dynamicsMeanAndVariance (notes) {
   return {
     mean: d3.mean(notes, d => d.velocity),
     variance: d3.variance(notes, d => d.velocity)
@@ -178,7 +178,7 @@ export function dynamicsMeanAndVariance(notes) {
  * @param {Note[]} notes notes
  * @returns {object} {mean, variance}
  */
-export function durationMeanAndVariance(notes) {
+export function durationMeanAndVariance (notes) {
   const durations = notes.map(d => d.getDuration())
   return {
     mean: d3.mean(durations),
@@ -193,7 +193,7 @@ export function durationMeanAndVariance(notes) {
  * @param {Note[]} notes notes
  * @returns {object} {mean, variance}
  */
-export function onsetDiffMeanAndVariance(notes) {
+export function onsetDiffMeanAndVariance (notes) {
   const differences = notesToOnsetDifferences(notes)
   return {
     mean: d3.mean(differences),
@@ -225,7 +225,7 @@ export function onsetDiffMeanAndVariance(notes) {
  * @param {number} [skipped=0] number of strings skipped between notes
  * @returns {number} ratio of notes where `skipped` string where skipped
  */
-export function guitarStringSkips(notes, skipped = 0) {
+export function guitarStringSkips (notes, skipped = 0) {
   let count = 0
   if (notes.length < 2) { return 0 }
   for (let index = 1; index < notes.length; index++) {
@@ -247,7 +247,7 @@ export function guitarStringSkips(notes, skipped = 0) {
  * @param {number} [skipped=0] number of fret skipped between notes
  * @returns {number} ratio of notes where `skipped` string where skipped
  */
-export function guitarFretSkips(notes, skipped = 0) {
+export function guitarFretSkips (notes, skipped = 0) {
   let count = 0
   if (notes.length < 2) { return 0 }
   for (let index = 1; index < notes.length; index++) {
@@ -284,7 +284,7 @@ export function guitarFretSkips(notes, skipped = 0) {
  *  const harmonies = Chords.detectChordsBySimilarStart(notes, theshold);
  *  const sizeDistr = harmonySizeDistribution(harmonies);
  */
-export function harmonySizeDistribution(harmonies) {
+export function harmonySizeDistribution (harmonies) {
   return d3.groups(harmonies, d => d.length)
     .map(([size, chords]) => { return { size, count: chords.length } })
     .sort((a, b) => b.size - a.size)
@@ -296,7 +296,7 @@ export function harmonySizeDistribution(harmonies) {
  * @param {Note[][]} harmonies groups of notes that belong to harmonies
  * @returns {number} ratio of single notes to multi-note harmonies
  */
-export function harmonySingleToMultiRatio(harmonies) {
+export function harmonySingleToMultiRatio (harmonies) {
   let single = 0
   for (const harmony of harmonies) {
     if (harmony.length === 1) { single++ }
@@ -312,7 +312,7 @@ export function harmonySingleToMultiRatio(harmonies) {
  * @param {Note[]} notes notes
  * @returns {number[]} pitch intervals
  */
-function notesToIntervals(notes) {
+function notesToIntervals (notes) {
   const intervals = []
   for (let i = 1; i < notes.length; i++) {
     intervals.push(notes[i].pitch - notes[i - 1].pitch)
@@ -326,7 +326,7 @@ function notesToIntervals(notes) {
  * @param {Note[]} notes notes
  * @returns {number[]} start time differences
  */
-function notesToOnsetDifferences(notes) {
+function notesToOnsetDifferences (notes) {
   const onsetDiffs = []
   for (let i = 1; i < notes.length; i++) {
     onsetDiffs.push(notes[i].start - notes[i - 1].start)

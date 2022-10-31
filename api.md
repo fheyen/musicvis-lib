@@ -101,7 +101,7 @@ information on how to play it.</p>
 <dt><del><a href="#MusicPiece">MusicPiece</a></del></dt>
 <dd><p>Represents a parsed MIDI or MusicXML file in a uniform format.</p>
 </dd>
-<dt><a href="#Track">Track</a></dt>
+<dt><del><a href="#Track">Track</a></del></dt>
 <dd><p>Used by MusicPiece, should not be used directly</p>
 </dd>
 <dt><a href="#TempoDefinition">TempoDefinition</a></dt>
@@ -239,6 +239,9 @@ musical scale, by passing the notes of this scale as set.</p>
 <dt><a href="#pitchMeanAndVariance">pitchMeanAndVariance(notes)</a> ⇒ <code>object</code></dt>
 <dd><p>Computes the mean and variance of played pitches</p>
 </dd>
+<dt><a href="#pitchExtent">pitchExtent(notes)</a> ⇒ <code>Array.&lt;number&gt;</code></dt>
+<dd><p>Computes the min and max pitch</p>
+</dd>
 <dt><a href="#intervalMeanAndVariance">intervalMeanAndVariance(notes)</a> ⇒ <code>object</code></dt>
 <dd><p>Computes the mean and variance of played intervals</p>
 </dd>
@@ -344,7 +347,8 @@ Given two NoteArrays, shift the second one in time such that they are aligned
 **Returns**: [<code>NoteArray</code>](#NoteArray) - an aligned copy of b  
 **Todo**
 
-- [ ] use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm     to find note alignment, then only use those for force calculation
+- [ ] use https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
+     to find note alignment, then only use those for force calculation
 
 
 | Param | Type | Description |
@@ -398,12 +402,14 @@ Test function
 **Kind**: static method of [<code>Alignment</code>](#module_Alignment)  
 **Todo**
 
-- [ ] Benchmark different aligment functions on a randomly generated test setThis allows to check the calculated alignment against a known ground truth
+- [ ] Benchmark different aligment functions on a randomly generated test set
+This allows to check the calculated alignment against a known ground truth
 
 <a name="module_Alignment..alignmentForce"></a>
 
 ### Alignment~alignmentForce(a, b) ⇒ <code>number</code>
-Calculates the mean difference between all notes in a and the nearest same-pitched notes in b
+Calculates the mean difference between all notes in a and the nearest same-
+pitched notes in b
 
 **Kind**: inner method of [<code>Alignment</code>](#module_Alignment)  
 **Returns**: <code>number</code> - mean time difference  
@@ -535,7 +541,9 @@ GT must be longer than rec
 <a name="module_Chords.detectChordsByExactStart"></a>
 
 ### Chords.detectChordsByExactStart(notes) ⇒ <code>Array.&lt;Array.&lt;Note&gt;&gt;</code>
-Detects chords as those notes that have the exact same start time, only worksfor ground truth (since recordings are not exact)Does only work if ground truth is aligned! TuxGuitar produces unaligned MIDI.
+Detects chords as those notes that have the exact same start time, only works
+for ground truth (since recordings are not exact)
+Does only work if ground truth is aligned! TuxGuitar produces unaligned MIDI.
 
 **Kind**: static method of [<code>Chords</code>](#module_Chords)  
 **Returns**: <code>Array.&lt;Array.&lt;Note&gt;&gt;</code> - array of chord arrays  
@@ -547,7 +555,9 @@ Detects chords as those notes that have the exact same start time, only worksfo
 <a name="module_Chords.detectChordsBySimilarStart"></a>
 
 ### Chords.detectChordsBySimilarStart(notes, threshold) ⇒ <code>Array.&lt;Array.&lt;Note&gt;&gt;</code>
-Detects chords by taking a note as new chord then adding all notes closeafter it to the chord, until the next note is farther away than the given`threshold`. Then, the next chord is started with this note.
+Detects chords by taking a note as new chord then adding all notes close
+after it to the chord, until the next note is farther away than the given
+`threshold`. Then, the next chord is started with this note.
 
 **Kind**: static method of [<code>Chords</code>](#module_Chords)  
 **Returns**: <code>Array.&lt;Array.&lt;Note&gt;&gt;</code> - chords  
@@ -560,7 +570,12 @@ Detects chords by taking a note as new chord then adding all notes closeafter i
 <a name="module_Chords.detectChordsByOverlap"></a>
 
 ### Chords.detectChordsByOverlap(notes, sortByPitch) ⇒ <code>Array.&lt;Array.&lt;Note&gt;&gt;</code>
-Detects chords, by simply looking for notes that overlap each other in time.Example:   =======      =========        ========Important: Notes must be sorted by start time for this to work correctly.
+Detects chords, by simply looking for notes that overlap each other in time.
+Example:
+   =======
+      =========
+        ========
+Important: Notes must be sorted by start time for this to work correctly.
 
 **Kind**: static method of [<code>Chords</code>](#module_Chords)  
 **Returns**: <code>Array.&lt;Array.&lt;Note&gt;&gt;</code> - array of chord arrays  
@@ -579,7 +594,8 @@ Detects chords, by simply looking for notes that overlap each other in time.Exa
 <a name="module_Chords.getChordType"></a>
 
 ### Chords.getChordType(notes) ⇒ <code>string</code>
-Returns chord type, e.g. 'Major', 'Diminished', ...Important: Notes must be sorted by pitch ascending
+Returns chord type, e.g. 'Major', 'Diminished', ...
+Important: Notes must be sorted by pitch ascending
 
 **Kind**: static method of [<code>Chords</code>](#module_Chords)  
 **Returns**: <code>string</code> - chord type  
@@ -595,7 +611,8 @@ Returns chord type, e.g. 'Major', 'Diminished', ...Important: Notes must be sor
 <a name="module_Chords.getChordName"></a>
 
 ### Chords.getChordName(notes) ⇒ <code>Array.&lt;string&gt;</code>
-https://github.com/tonaljs/tonal/tree/master/packages/chordDetected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
+https://github.com/tonaljs/tonal/tree/master/packages/chord
+Detected chords can be used with https://github.com/tonaljs/tonal/tree/master/packages/chord-type
 
 **Kind**: static method of [<code>Chords</code>](#module_Chords)  
 **Returns**: <code>Array.&lt;string&gt;</code> - possible chord types  
@@ -619,7 +636,8 @@ https://github.com/tonaljs/tonal/tree/master/packages/chordDetected chords can 
 <a name="module_comparison/ErrorClassifier.classifyErrors"></a>
 
 ### comparison/ErrorClassifier.classifyErrors(gtNotes, recNotes, groupBy, threshold) ⇒ <code>Array.&lt;NoteWithState&gt;</code>
-Compares a single recording to a ground truth and labels notes as missing,extra, early/late, or short/long
+Compares a single recording to a ground truth and labels notes as missing,
+extra, early/late, or short/long
 
 **Kind**: static method of [<code>comparison/ErrorClassifier</code>](#module_comparison/ErrorClassifier)  
 **Returns**: <code>Array.&lt;NoteWithState&gt;</code> - classified notes  
@@ -815,7 +833,11 @@ see them for parameter details.
 <a name="module_comparison/Similarity.getSimilarParts"></a>
 
 ### comparison/Similarity.getSimilarParts(track, selectedInterval, stride, threshold, secondsPerBin, distance) ⇒ <code>object</code>
-Given a track, a selected time interval and a threshold,this function searches for parts in the track that aresimilar to the selection.It uses a sliding window with the size of the selectionand a stride given as argument.
+Given a track, a selected time interval and a threshold,
+this function searches for parts in the track that are
+similar to the selection.
+It uses a sliding window with the size of the selection
+and a stride given as argument.
 
 **Kind**: static method of [<code>comparison/Similarity</code>](#module_comparison/Similarity)  
 **Returns**: <code>object</code> - similar parts  
@@ -832,7 +854,10 @@ Given a track, a selected time interval and a threshold,this function searches 
 <a name="module_comparison/Similarity.getTrackSimilarity"></a>
 
 ### comparison/Similarity.getTrackSimilarity(discrA, discrB, distance) ⇒ <code>number</code>
-Uses calculates the distance betweentwo discretized tracks, for each pitch separately.Pitch-wise distances are averaged and a penalty is added to the distancefor pitches that are not occuring in both tracks
+Uses calculates the distance between
+two discretized tracks, for each pitch separately.
+Pitch-wise distances are averaged and a penalty is added to the distance
+for pitches that are not occuring in both tracks
 
 **Kind**: static method of [<code>comparison/Similarity</code>](#module_comparison/Similarity)  
 **Returns**: <code>number</code> - distance  
@@ -847,7 +872,11 @@ Uses calculates the distance betweentwo discretized tracks, for each pitch sepa
 <a name="module_comparison/Similarity.discretizeTime"></a>
 
 ### comparison/Similarity.discretizeTime(track, secondsPerBin) ⇒ <code>Map</code>
-- Normalizes Note times to be between 0 and (maxTime - minTime),- discretizes the start and end time by using Math.round to getthe closest time bin (beat) and- Creates one array for each pitch, where each entry containseither a 0 (no note at that time bin) or a 1 (note at that time bin)
+- Normalizes Note times to be between 0 and (maxTime - minTime),
+- discretizes the start and end time by using Math.round to get
+the closest time bin (beat) and
+- Creates one array for each pitch, where each entry contains
+either a 0 (no note at that time bin) or a 1 (note at that time bin)
 
 **Kind**: static method of [<code>comparison/Similarity</code>](#module_comparison/Similarity)  
 **Returns**: <code>Map</code> - pitch to binArray  
@@ -872,7 +901,8 @@ Counts the occurence of 1 in an array
 <a name="module_comparison/Similarity..sliceDiscretizedTrack"></a>
 
 ### comparison/Similarity~sliceDiscretizedTrack(trackMap, startBin, endBin) ⇒ <code>Map</code>
-Slices bins out of a discretices track.This is done for each pitch separately
+Slices bins out of a discretices track.
+This is done for each pitch separately
 
 **Kind**: inner method of [<code>comparison/Similarity</code>](#module_comparison/Similarity)  
 **Returns**: <code>Map</code> - map with sliced arrays  
@@ -886,7 +916,8 @@ Slices bins out of a discretices track.This is done for each pitch separately
 <a name="module_comparison/Similarity..euclideanDistanceSquared"></a>
 
 ### comparison/Similarity~euclideanDistanceSquared(A, B) ⇒ <code>number</code>
-Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},i.e. Euclidean distance but without square root
+Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},
+i.e. Euclidean distance but without square root
 
 **Kind**: inner method of [<code>comparison/Similarity</code>](#module_comparison/Similarity)  
 **Returns**: <code>number</code> - Euclidean distance  
@@ -899,7 +930,11 @@ Returns sum_{i=0}^{N-1}{(a_i-b_i)^2},i.e. Euclidean distance but without square
 <a name="module_comparison/Similarity..neirestNeighborDistance"></a>
 
 ### comparison/Similarity~neirestNeighborDistance(A, B) ⇒ <code>number</code>
-Given two arrays containing 1s and 0s, this algorithmgoes through all bins and for each bin where one arrayhas a 1 and the other a 0, it searches for the closest 1next to the 0.The distance is then added to the global distance.
+Given two arrays containing 1s and 0s, this algorithm
+goes through all bins and for each bin where one array
+has a 1 and the other a 0, it searches for the closest 1
+next to the 0.
+The distance is then added to the global distance.
 
 **Kind**: inner method of [<code>comparison/Similarity</code>](#module_comparison/Similarity)  
 **Returns**: <code>number</code> - nearest neighbor distance  
@@ -1251,7 +1286,8 @@ Names of notes, indexed like MIDI numbers, i.e. C is 0
 <a name="module_fileFormats/Midi.NOTE_NAMES_FLAT"></a>
 
 ### fileFormats/Midi.NOTE\_NAMES\_FLAT : <code>Array.&lt;string&gt;</code>
-Names of notes, indexed like MIDI numbers, i.e. C is 0, with flats instead ofsharps.
+Names of notes, indexed like MIDI numbers, i.e. C is 0, with flats instead of
+sharps.
 
 **Kind**: static constant of [<code>fileFormats/Midi</code>](#module_fileFormats/Midi)  
 <a name="module_fileFormats/Midi.MIDI_NOTES"></a>
@@ -1275,7 +1311,9 @@ Set of all MIDI notes that are sharp/flat
 <a name="module_fileFormats/Midi.MIDI_COMMANDS"></a>
 
 ### fileFormats/Midi.MIDI\_COMMANDS : <code>Map.&lt;number, MidiCommand&gt;</code>
-MIDI commands with code, name, and parametersFrom: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.htmlhttps://www.midi.org/specifications/item/table-1-summary-of-midi-message
+MIDI commands with code, name, and parameters
+From: https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
+https://www.midi.org/specifications/item/table-1-summary-of-midi-message
 
 **Kind**: static constant of [<code>fileFormats/Midi</code>](#module_fileFormats/Midi)  
 <a name="module_fileFormats/Midi.MIDI_NOTE_RANGES"></a>
@@ -1330,7 +1368,8 @@ Returns information on the MIDI note with the specified name and octave.
 Returns information on the MIDI instrument with the specified number.
 
 **Kind**: static method of [<code>fileFormats/Midi</code>](#module_fileFormats/Midi)  
-**Returns**: <code>object</code> - note info, e.g.     { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }  
+**Returns**: <code>object</code> - note info, e.g.
+     { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1339,10 +1378,12 @@ Returns information on the MIDI instrument with the specified number.
 <a name="module_fileFormats/Midi.getMidiInstrumentByNrL2"></a>
 
 ### fileFormats/Midi.getMidiInstrumentByNrL2(nr, subNr) ⇒ <code>object</code>
-Returns information on the MIDI instrument (MIDI level 2) with thespecified number.
+Returns information on the MIDI instrument (MIDI level 2) with the
+specified number.
 
 **Kind**: static method of [<code>fileFormats/Midi</code>](#module_fileFormats/Midi)  
-**Returns**: <code>object</code> - note info, e.g.     { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }  
+**Returns**: <code>object</code> - note info, e.g.
+     { number: 0, group: 'Piano', label: 'Acoustic Grand Piano' }  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1376,7 +1417,8 @@ Returns true if a given MIDI pitch refers to a sharp note.
 <a name="module_fileFormats/Midi.getNoteNameFromNoteNr"></a>
 
 ### fileFormats/Midi.getNoteNameFromNoteNr(nr) ⇒ <code>string</code>
-Returns a note name such as 'C#' (without octave) for a given MIDInote number.
+Returns a note name such as 'C#' (without octave) for a given MIDI
+note number.
 
 **Kind**: static method of [<code>fileFormats/Midi</code>](#module_fileFormats/Midi)  
 **Returns**: <code>string</code> - note name such as 'C#'  
@@ -1433,7 +1475,8 @@ A MIDI command
 **Todo**
 
 - [ ] parse pitch bends
-- [ ] after tempo changes notes and measure time do not align,      see "[Test] Tempo change.mid"
+- [ ] after tempo changes notes and measure time do not align,
+      see "[Test] Tempo change.mid"
 
 
 * [fileFormats/MidiParser](#module_fileFormats/MidiParser)
@@ -1466,7 +1509,16 @@ Parses a MIDI JSON file to get Note objects with absolute time in seconds.
 MIDI event types and meta types and their codes
 
 **Kind**: inner constant of [<code>fileFormats/MidiParser</code>](#module_fileFormats/MidiParser)  
-**See**: https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-SpecificationsEvent Type         Value   Value decimal    Parameter 1         Parameter 2Note Off           0x8       8              note number         velocityNote On            0x9       9              note number         velocityNote Aftertouch    0xA      10              note number         aftertouch valueController         0xB      11              controller number   controller valueProgram Change     0xC      12              program number      not usedChannel Aftertouch 0xD      13              aftertouch value    not usedPitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)Meta               0xFF    255                 parameters depend on meta type  
+**See**: https://github.com/colxi/midi-parser-js/wiki/MIDI-File-Format-Specifications
+Event Type         Value   Value decimal    Parameter 1         Parameter 2
+Note Off           0x8       8              note number         velocity
+Note On            0x9       9              note number         velocity
+Note Aftertouch    0xA      10              note number         aftertouch value
+Controller         0xB      11              controller number   controller value
+Program Change     0xC      12              program number      not used
+Channel Aftertouch 0xD      13              aftertouch value    not used
+Pitch Bend         0xE      14              pitch value (LSB)   pitch value (MSB)
+Meta               0xFF    255                 parameters depend on meta type  
 <a name="module_fileFormats/MidiParser..META_TYPES"></a>
 
 ### fileFormats/MidiParser~META\_TYPES : <code>object</code>
@@ -1481,7 +1533,8 @@ Maps needed for key signature detection from number of sharps / flats
 <a name="module_fileFormats/MidiParser..getMeasureIndices"></a>
 
 ### fileFormats/MidiParser~getMeasureIndices(notes, measureTimes) ⇒ <code>Array.&lt;number&gt;</code>
-For the notes of one track, computes the notes' indices where new measuresstart.
+For the notes of one track, computes the notes' indices where new measures
+start.
 
 **Kind**: inner method of [<code>fileFormats/MidiParser</code>](#module_fileFormats/MidiParser)  
 **Returns**: <code>Array.&lt;number&gt;</code> - measure indices  
@@ -1600,12 +1653,14 @@ This is needed to map drum notes to MIDI pitches.
     * [.drawHexagon(context, cx, cy, radius)](#module_graphics/Canvas.drawHexagon)
     * [.drawBezierConnectorX(context, x1, y1, x2, y2)](#module_graphics/Canvas.drawBezierConnectorX)
     * [.drawBezierConnectorY(context, x1, y1, x2, y2)](#module_graphics/Canvas.drawBezierConnectorY)
+    * [.drawBezierFunnelY(context, y1, y2, x1left, x1right, x2left, x2right)](#module_graphics/Canvas.drawBezierFunnelY)
     * [.drawRoundedCorner(context, x1, y1, x2, y2, turnLeft, roundness)](#module_graphics/Canvas.drawRoundedCorner)
     * [.drawArc(context, startX1, startX2, length, yBottom)](#module_graphics/Canvas.drawArc)
     * [.drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBottom)](#module_graphics/Canvas.drawAssymetricArc)
     * [.drawBracketH(context, x, y, w, h)](#module_graphics/Canvas.drawBracketH)
     * [.drawMatrix(context, matrix, [x], [y], [size], colorMap)](#module_graphics/Canvas.drawMatrix)
     * [.drawColorRamp(context, colorMap)](#module_graphics/Canvas.drawColorRamp)
+    * [.drawVerticalText(context, x, y, text, [color], [font], [centered])](#module_graphics/Canvas.drawVerticalText)
 
 <a name="module_graphics/Canvas.setupCanvas"></a>
 
@@ -1636,7 +1691,11 @@ Draws a stroked straight line.
 
 **Example**  
 ```js
-// Set the strokeStyle first     context.strokeStyle = 'black';     // Let's draw an X     Canvas.drawLine(context, 0, 0, 50, 50);     Canvas.drawLine(context, 0, 50, 50, 0);
+// Set the strokeStyle first
+     context.strokeStyle = 'black';
+     // Let's draw an X
+     Canvas.drawLine(context, 0, 0, 50, 50);
+     Canvas.drawLine(context, 0, 50, 50, 0);
 ```
 <a name="module_graphics/Canvas.drawHLine"></a>
 
@@ -1673,7 +1732,8 @@ Draws a stroked straight vertical line.
 <a name="module_graphics/Canvas.drawBowRight"></a>
 
 ### graphics/Canvas.drawBowRight(context, x1, y1, x2, y2, [strength])
-Draws a line that bows to the right in the direction of travel (looks like aleft turn), thereby encoding direction. Useful for node-link graphs.
+Draws a line that bows to the right in the direction of travel (looks like a
+left turn), thereby encoding direction. Useful for node-link graphs.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1759,7 +1819,8 @@ Draws an X
 <a name="module_graphics/Canvas.drawNoteTrapezoid"></a>
 
 ### graphics/Canvas.drawNoteTrapezoid(context, x, y, width, height, height2) ⇒ <code>void</code>
-Draws a trapezoid that looks like a rectangle but gets narrower at the rightend, so better show where one ends and the next begins.
+Draws a trapezoid that looks like a rectangle but gets narrower at the right
+end, so better show where one ends and the next begins.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1775,7 +1836,8 @@ Draws a trapezoid that looks like a rectangle but gets narrower at the rightend
 <a name="module_graphics/Canvas.drawNoteTrapezoidUpwards"></a>
 
 ### graphics/Canvas.drawNoteTrapezoidUpwards(context, x, y, width, height, width2) ⇒ <code>void</code>
-Draws a trapezoid that looks like a rectangle but gets narrower at the topend, so better show where one ends and the next begins.
+Draws a trapezoid that looks like a rectangle but gets narrower at the top
+end, so better show where one ends and the next begins.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1807,7 +1869,8 @@ Draws a rectangle with rounded corners, does not fill or stroke by itself
 <a name="module_graphics/Canvas.drawCornerLine"></a>
 
 ### graphics/Canvas.drawCornerLine(context, x1, y1, x2, y2, [xFirst])
-Draws a horizontal, then vertical line to connect two points (or the otherway round when xFirst == false)
+Draws a horizontal, then vertical line to connect two points (or the other
+way round when xFirst == false)
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1823,7 +1886,9 @@ Draws a horizontal, then vertical line to connect two points (or the otherway r
 <a name="module_graphics/Canvas.drawRoundedCornerLine"></a>
 
 ### graphics/Canvas.drawRoundedCornerLine(context, x1, y1, x2, y2, [maxRadius])
-Draws a rounded version of drawCornerLine().Only works for dendrograms drawn from top-dowm, usedrawRoundedCornerLineRightLeft for right-to-left dendrograms.
+Draws a rounded version of drawCornerLine().
+Only works for dendrograms drawn from top-dowm, use
+drawRoundedCornerLineRightLeft for right-to-left dendrograms.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1839,7 +1904,8 @@ Draws a rounded version of drawCornerLine().Only works for dendrograms drawn fr
 <a name="module_graphics/Canvas.drawRoundedCornerLineRightLeft"></a>
 
 ### graphics/Canvas.drawRoundedCornerLineRightLeft(context, x1, y1, x2, y2, [maxRadius])
-Draws a rounded version of drawRoundedCornerLine for right-to-leftdendrograms.
+Draws a rounded version of drawRoundedCornerLine for right-to-left
+dendrograms.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1896,10 +1962,33 @@ Draws a Bezier curve to connect to points in Y direction.
 | x2 | <code>number</code> | x coordinate of the second point |
 | y2 | <code>number</code> | y coordinate of the second point |
 
+<a name="module_graphics/Canvas.drawBezierFunnelY"></a>
+
+### graphics/Canvas.drawBezierFunnelY(context, y1, y2, x1left, x1right, x2left, x2right)
+Draws a funnel to indicate that horizontal span relates to another one below
+Will fill() the shape, call context.stroke() afterwards to also stroke.
+
+**Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
+**Todo**
+
+- [ ] add X version
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| context | <code>CanvasRenderingContext2D</code> | canvas rendering context |
+| y1 | <code>number</code> | top y position |
+| y2 | <code>number</code> | bottom y position |
+| x1left | <code>number</code> | top left x position |
+| x1right | <code>number</code> | top right x position |
+| x2left | <code>number</code> | bottom left x position |
+| x2right | <code>number</code> | bottom right x position |
+
 <a name="module_graphics/Canvas.drawRoundedCorner"></a>
 
 ### graphics/Canvas.drawRoundedCorner(context, x1, y1, x2, y2, turnLeft, roundness)
-Draws a rounded corner, requires x and y distances between points to beequal.
+Draws a rounded corner, requires x and y distances between points to be
+equal.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1916,7 +2005,8 @@ Draws a rounded corner, requires x and y distances between points to beequal.
 <a name="module_graphics/Canvas.drawArc"></a>
 
 ### graphics/Canvas.drawArc(context, startX1, startX2, length, yBottom)
-Draws an arc that connects similar parts.Both parts must have the same width in pixels.
+Draws an arc that connects similar parts.
+Both parts must have the same width in pixels.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1931,7 +2021,9 @@ Draws an arc that connects similar parts.Both parts must have the same width in
 <a name="module_graphics/Canvas.drawAssymetricArc"></a>
 
 ### graphics/Canvas.drawAssymetricArc(context, startX1, endX1, startX2, endX2, yBottom)
-Draws a more complex path and fills it.Two arcs: One from startX1 to endX2 on the top, one from endX1 to startX2below it.
+Draws a more complex path and fills it.
+Two arcs: One from startX1 to endX2 on the top, one from endX1 to startX2
+below it.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1947,7 +2039,9 @@ Draws a more complex path and fills it.Two arcs: One from startX1 to endX2 on t
 <a name="module_graphics/Canvas.drawBracketH"></a>
 
 ### graphics/Canvas.drawBracketH(context, x, y, w, h)
-Draws a horizontal bracket like this |_____| (bottom)or this |""""""| (top).Use a positive h for bottom and a negative one for top.
+Draws a horizontal bracket like this |_____| (bottom)
+or this |""""""| (top).
+Use a positive h for bottom and a negative one for top.
 
 **Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
 
@@ -1986,6 +2080,27 @@ Draws a color ramp
 | --- | --- | --- |
 | context | <code>CanvasRenderingContext2D</code> | canvas rendering context |
 | colorMap | <code>function</code> | colormap from [min, max] to a color |
+
+<a name="module_graphics/Canvas.drawVerticalText"></a>
+
+### graphics/Canvas.drawVerticalText(context, x, y, text, [color], [font], [centered])
+Draws text horizontally rotated 90 degrees clock-wise
+
+**Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
+**Todo**
+
+- [ ] use the one from mvlib
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| context | <code>\*</code> |  |  |
+| x | <code>number</code> |  | x position |
+| y | <code>number</code> |  | y position |
+| text | <code>string</code> |  | text |
+| [color] | <code>string</code> | <code>&quot;&#x27;black&#x27;&quot;</code> | HTML color string |
+| [font] | <code>string</code> | <code>&quot;&#x27;12px sans-serif&#x27;&quot;</code> | font string, e.g, '12px sans-serif' |
+| [centered] | <code>boolean</code> | <code>false</code> | center text? |
 
 <a name="module_Svg"></a>
 
@@ -2198,7 +2313,23 @@ Drum parts and actions
 <a name="module_instruments/Drums.drumPitchReplacementMapMPS850"></a>
 
 ### instruments/Drums.drumPitchReplacementMapMPS850 : <code>Map.&lt;number, object&gt;</code>
-Pitches that are mapped onto themselves are included for other information.Millenium MPS-850 https://www.thomann.de/de/millenium_mps_850_e_drum_set.htmNotation info (line and shape of symbol) so drum notation can generate a lookup from thishttps://en.wikipedia.org/wiki/Percussion_notation#/media/File:Sibelius_drum_legend.pngLines start with 0 at the top above the top most horizontal notation line,using incremental integers for every possible position, i.e. for on and between linesLegend: Map key: The orignal pitch from the input data repPitch: Replacement pitch, used to simplify multiple zones into one zone: Zone of the instrument this pitch comes from order: visual order ranking of this intrumentin the UI (top-bottom or left-right) line: y position in the drum notation (using integers for every possible position) shape: Note shape in notation: triangle, <>, x, o, ostroke, xstroke label: Short label for this intrument name: Full name of this instrument
+Pitches that are mapped onto themselves are included for other information.
+Millenium MPS-850 https://www.thomann.de/de/millenium_mps_850_e_drum_set.htm
+
+Notation info (line and shape of symbol) so drum notation can generate a lookup from this
+https://en.wikipedia.org/wiki/Percussion_notation#/media/File:Sibelius_drum_legend.png
+Lines start with 0 at the top above the top most horizontal notation line,
+using incremental integers for every possible position, i.e. for on and between lines
+
+Legend:
+ Map key: The orignal pitch from the input data
+ repPitch: Replacement pitch, used to simplify multiple zones into one
+ zone: Zone of the instrument this pitch comes from
+ order: visual order ranking of this intrumentin the UI (top-bottom or left-right)
+ line: y position in the drum notation (using integers for every possible position)
+ shape: Note shape in notation: triangle, <>, x, o, ostroke, xstroke
+ label: Short label for this intrument
+ name: Full name of this instrument
 
 **Kind**: static constant of [<code>instruments/Drums</code>](#module_instruments/Drums)  
 <a name="module_instruments/Drums.generateDrumVariation"></a>
@@ -2236,7 +2367,8 @@ Replaces pitches based on replacementMap
 <a name="module_instruments/Drums.getPitch2PositionMap"></a>
 
 ### instruments/Drums.getPitch2PositionMap(replacementMap) ⇒ <code>Map</code>
-Returns a Map:pitch->yPosIndex for views to lookup which rowa pitch has to be drawn in
+Returns a Map:pitch->yPosIndex for views to lookup which row
+a pitch has to be drawn in
 
 **Kind**: static method of [<code>instruments/Drums</code>](#module_instruments/Drums)  
 **Returns**: <code>Map</code> - Map:pitch->yPosIndex  
@@ -2284,7 +2416,8 @@ Represents a tuning of a fretted string instrument.
 <a name="module_instruments/Guitar.stringedTunings"></a>
 
 ### instruments/Guitar.stringedTunings : <code>Map.&lt;string, Map.&lt;number, StringedTuning&gt;&gt;</code>
-Maps from instrument to string number to list of tunings.Defaults are at the top.
+Maps from instrument to string number to list of tunings.
+Defaults are at the top.
 
 **Kind**: static constant of [<code>instruments/Guitar</code>](#module_instruments/Guitar)  
 **Todo**
@@ -2300,13 +2433,15 @@ stringedTunings.get('Guitar').get(6) for 6-string guitar tunings
 <a name="module_instruments/Guitar.stringColors"></a>
 
 ### instruments/Guitar.stringColors : <code>Array.&lt;string&gt;</code>
-Colors for guitar strings, acces via stringColor[string]where string in [1, 8].
+Colors for guitar strings, acces via stringColor[string]
+where string in [1, 8].
 
 **Kind**: static constant of [<code>instruments/Guitar</code>](#module_instruments/Guitar)  
 <a name="module_instruments/Guitar.guitarNoteFromNote"></a>
 
 ### instruments/Guitar.guitarNoteFromNote(note, tuning) ⇒ [<code>GuitarNote</code>](#GuitarNote)
-For Notes that have a guitar string encoded in their channel, this functionallows to convert them to a GuitarNote.
+For Notes that have a guitar string encoded in their channel, this function
+allows to convert them to a GuitarNote.
 
 **Kind**: static method of [<code>instruments/Guitar</code>](#module_instruments/Guitar)  
 **Returns**: [<code>GuitarNote</code>](#GuitarNote) - a GuitarNote  
@@ -2471,21 +2606,26 @@ Represents a tuning of lamellophone.
 <a name="module_instruments/Lamellophone.LamellophoneTuning+getNumbers"></a>
 
 #### lamellophoneTuning.getNumbers() ⇒ <code>Array.&lt;string&gt;</code>
-Returns an array of the tuning's notes as number representation:Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
+Returns an array of the tuning's notes as number representation:
+Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+Number format: 1,  2,  ... 1°, 2°, ... 1°°, 2°°
 
 **Kind**: instance method of [<code>LamellophoneTuning</code>](#module_instruments/Lamellophone.LamellophoneTuning)  
 **Returns**: <code>Array.&lt;string&gt;</code> - array with tuning notes in number representation  
 <a name="module_instruments/Lamellophone.LamellophoneTuning+getLetters"></a>
 
 #### lamellophoneTuning.getLetters() ⇒ <code>Array.&lt;string&gt;</code>
-Returns an array of the tuning's notes as letter representation:Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6Number format: C,  D,  ... C°, D°, ... C°°, D°°
+Returns an array of the tuning's notes as letter representation:
+Tuning notes:  C4, D4, ... C5, D5, ... C6,  D6
+Number format: C,  D,  ... C°, D°, ... C°°, D°°
 
 **Kind**: instance method of [<code>LamellophoneTuning</code>](#module_instruments/Lamellophone.LamellophoneTuning)  
 **Returns**: <code>Array.&lt;string&gt;</code> - array with tuning notes in letter representation  
 <a name="module_instruments/Lamellophone.lamellophoneTunings"></a>
 
 ### instruments/Lamellophone.lamellophoneTunings : <code>Map.&lt;string, Map.&lt;string, LamellophoneTuning&gt;&gt;</code>
-Tunings.Notes are in the same order as on the instrument
+Tunings.
+Notes are in the same order as on the instrument
 
 **Kind**: static constant of [<code>instruments/Lamellophone</code>](#module_instruments/Lamellophone)  
 <a name="module_instruments/Lamellophone.convertTabToNotes"></a>
@@ -2549,7 +2689,9 @@ Converts a number-based tab to note letter format
 <a name="module_instruments/Lamellophone.bestTransposition"></a>
 
 ### instruments/Lamellophone.bestTransposition(notes, tuning) ⇒ <code>object</code>
-Tries to find a transposition s.t. the tuning is able to play all notes.If not not possible, return the transposition that requires the least keys tobe retuned.
+Tries to find a transposition s.t. the tuning is able to play all notes.
+If not not possible, return the transposition that requires the least keys to
+be retuned.
 
 **Kind**: static method of [<code>instruments/Lamellophone</code>](#module_instruments/Lamellophone)  
 **Returns**: <code>object</code> - {transpose: number, retune: Map}  
@@ -2963,6 +3105,7 @@ Readable string representation of this node and its children
 * [utils/ArrayUtils](#module_utils/ArrayUtils)
     * [.arrayShallowEquals(a, b)](#module_utils/ArrayUtils.arrayShallowEquals) ⇒ <code>boolean</code>
     * [.arrayHasSameElements(a, b, checkLength)](#module_utils/ArrayUtils.arrayHasSameElements) ⇒ <code>boolean</code>
+    * [.count(array, value, [comparator])](#module_utils/ArrayUtils.count) ⇒ <code>number</code>
     * [.jaccardIndex(set1, set2)](#module_utils/ArrayUtils.jaccardIndex) ⇒ <code>number</code>
     * [.kendallTau(ranking1, ranking2, [normalize])](#module_utils/ArrayUtils.kendallTau) ⇒ <code>number</code>
     * [.removeDuplicates(array)](#module_utils/ArrayUtils.removeDuplicates) ⇒ <code>Array</code>
@@ -2971,6 +3114,7 @@ Readable string representation of this node and its children
     * [.arrayIndexOf(haystack, needle, [startIndex])](#module_utils/ArrayUtils.arrayIndexOf) ⇒ <code>number</code>
     * [.getArrayMax(array)](#module_utils/ArrayUtils.getArrayMax) ⇒ <code>number</code>
     * [.normalizeNdArray(array)](#module_utils/ArrayUtils.normalizeNdArray) ⇒ <code>Array</code>
+    * [.normalizeNdArrayNegative(array)](#module_utils/ArrayUtils.normalizeNdArrayNegative) ⇒ <code>Array</code>
     * [.euclideanDistance(matrixA, matrixB)](#module_utils/ArrayUtils.euclideanDistance) ⇒ <code>number</code>
     * [.formatMatrix(matrix, colSeparator, rowSeparator, formatter)](#module_utils/ArrayUtils.formatMatrix) ⇒ <code>string</code>
     * [.binarySearch(array, value, accessor)](#module_utils/ArrayUtils.binarySearch) ⇒ <code>\*</code>
@@ -2993,7 +3137,8 @@ Shallow compares two arrays
 <a name="module_utils/ArrayUtils.arrayHasSameElements"></a>
 
 ### utils/ArrayUtils.arrayHasSameElements(a, b, checkLength) ⇒ <code>boolean</code>
-Checks if two arrays contain the same elements,ignoring their ordering in each array.
+Checks if two arrays contain the same elements,
+ignoring their ordering in each array.
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>boolean</code> - true iff arrays contain same elements  
@@ -3004,10 +3149,30 @@ Checks if two arrays contain the same elements,ignoring their ordering in each 
 | b | <code>Array</code> | another array |
 | checkLength | <code>boolean</code> | also checks if arrays have the same length |
 
+<a name="module_utils/ArrayUtils.count"></a>
+
+### utils/ArrayUtils.count(array, value, [comparator]) ⇒ <code>number</code>
+Counts how often value appears in array
+
+**Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
+**Returns**: <code>number</code> - count  
+**Todo**
+
+- [ ] use the one from mvlib, already moved there
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| array | <code>Array</code> | array |
+| value | <code>\*</code> | value |
+| [comparator] | <code>function</code> | comparator function, can be undefined to just use ===. Comparator has to return true when values are regarded as equal |
+
 <a name="module_utils/ArrayUtils.jaccardIndex"></a>
 
 ### utils/ArrayUtils.jaccardIndex(set1, set2) ⇒ <code>number</code>
-Jaccard index calulates the similarity of the sets as the size of the setinteraction divided by the size of the set union:jackard_index = |intersection| / |union|
+Jaccard index calulates the similarity of the sets as the size of the set
+interaction divided by the size of the set union:
+jackard_index = |intersection| / |union|
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>number</code> - similarity in [0, 1]  
@@ -3032,7 +3197,8 @@ Kendall Tau distance
 **See**: https://en.wikipedia.org/wiki/Kendall_tau_distance  
 **Todo**
 
-- [ ] naive implementation, can be sped up with hints on Wikipedia,   see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
+- [ ] naive implementation, can be sped up with hints on Wikipedia,
+   see also https://stackoverflow.com/questions/6523712/calculating-the-number-of-inversions-in-a-permutation/6523781#6523781
 
 
 | Param | Type | Default | Description |
@@ -3056,7 +3222,8 @@ Removes duplicates from an Array by converting to a Set and back
 <a name="module_utils/ArrayUtils.arrayContainsArray"></a>
 
 ### utils/ArrayUtils.arrayContainsArray(a, b) ⇒ <code>boolean</code>
-Checks whether the array a contains the array b, i.e. whether the firstb.length elements are the same.
+Checks whether the array a contains the array b, i.e. whether the first
+b.length elements are the same.
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>boolean</code> - true iff a contains b  
@@ -3073,7 +3240,8 @@ Checks whether the array a contains the array b, i.e. whether the firstb.length
 <a name="module_utils/ArrayUtils.arraySlicesEqual"></a>
 
 ### utils/ArrayUtils.arraySlicesEqual(a, b, length, [startA], [startB]) ⇒ <code>boolean</code>
-Compares a slice of a with a slice of b.Slices start at startA and startB and have the same length
+Compares a slice of a with a slice of b.
+Slices start at startA and startB and have the same length
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>boolean</code> - true if slices are equal  
@@ -3108,7 +3276,8 @@ Finds an array in another array, only shallow comparison
 <a name="module_utils/ArrayUtils.getArrayMax"></a>
 
 ### utils/ArrayUtils.getArrayMax(array) ⇒ <code>number</code>
-Returns the maximum numerical value from an array of arrays with arbitrarydepth and structure.
+Returns the maximum numerical value from an array of arrays with arbitrary
+depth and structure.
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>number</code> - maximum value  
@@ -3120,14 +3289,33 @@ Returns the maximum numerical value from an array of arrays with arbitrarydepth
 <a name="module_utils/ArrayUtils.normalizeNdArray"></a>
 
 ### utils/ArrayUtils.normalizeNdArray(array) ⇒ <code>Array</code>
-Normalizes by dividing all entries by the maximum.Only for positive values!
+Normalizes by dividing all entries by the maximum.
+ Only for positive values! Assumes 0 to be the minimum.
+Use normalizeNdArrayNegative for arbitrary numbers.
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>Array</code> - normalized array  
+**See**: normalizeNdArrayNegative  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | array | <code>Array</code> | nD array with arbitrary depth and structure |
+
+<a name="module_utils/ArrayUtils.normalizeNdArrayNegative"></a>
+
+### utils/ArrayUtils.normalizeNdArrayNegative(array) ⇒ <code>Array</code>
+Normalizes by dividing scaling all values to [0, 1] linearly.
+
+**Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
+**Returns**: <code>Array</code> - normalized array  
+**Todo**
+
+- [ ] move to musicvis-lib and test
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| array | <code>Array</code> | nD array with arbitrary depth and structure, containing  only numbers |
 
 <a name="module_utils/ArrayUtils.euclideanDistance"></a>
 
@@ -3160,7 +3348,8 @@ Stringifies a 2D array / matrix for logging onto the console.
 <a name="module_utils/ArrayUtils.binarySearch"></a>
 
 ### utils/ArrayUtils.binarySearch(array, value, accessor) ⇒ <code>\*</code>
-Returns the value in array that is closest to value.Array MUST be sorted ascending.
+Returns the value in array that is closest to value.
+Array MUST be sorted ascending.
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>\*</code> - value in array closest to value  
@@ -3187,12 +3376,14 @@ Finds streaks of values in an array.
 
 **Example**  
 ```js
-const arr = [1, 1, 2, 3, 3, 3];  const streaks = findStreaks(arr);
+const arr = [1, 1, 2, 3, 3, 3];
+  const streaks = findStreaks(arr);
 ```
 <a name="module_utils/ArrayUtils.findRepeatedIndices"></a>
 
 ### utils/ArrayUtils.findRepeatedIndices(sequence, equals) ⇒ <code>Array.&lt;number&gt;</code>
-For each element in a sequence, finds the lowest index where an equal elementoccurs.
+For each element in a sequence, finds the lowest index where an equal element
+occurs.
 
 **Kind**: static method of [<code>utils/ArrayUtils</code>](#module_utils/ArrayUtils)  
 **Returns**: <code>Array.&lt;number&gt;</code> - result  
@@ -3442,7 +3633,8 @@ IMPORTANT: does not find plateaus
 <a name="module_utils/MiscUtils.deepCloneFlatObjectMap"></a>
 
 ### utils/MiscUtils.deepCloneFlatObjectMap(map) ⇒ <code>Map</code>
-Clones a map where the values are flat objects,i.e. values do not contain objects themselfes.
+Clones a map where the values are flat objects,
+i.e. values do not contain objects themselfes.
 
 **Kind**: static method of [<code>utils/MiscUtils</code>](#module_utils/MiscUtils)  
 **Returns**: <code>Map</code> - a copy of the map with copies of the value objects  
@@ -3478,7 +3670,9 @@ Reverses a given string.
 <a name="module_utils/MiscUtils.findNearest"></a>
 
 ### utils/MiscUtils.findNearest(notes, targetNote) ⇒ [<code>Note</code>](#Note)
-Given some notes and a target note, findsthe note that has its start time closest tothe one of targetNote
+Given some notes and a target note, finds
+the note that has its start time closest to
+the one of targetNote
 
 **Kind**: static method of [<code>utils/MiscUtils</code>](#module_utils/MiscUtils)  
 **Returns**: [<code>Note</code>](#Note) - closest note to targetNote  
@@ -3495,10 +3689,12 @@ Given some notes and a target note, findsthe note that has its start time close
 <a name="module_utils/MiscUtils.delay"></a>
 
 ### utils/MiscUtils.delay(seconds) ⇒ <code>Promise</code>
-Allows to wait for a number of seconds with async/awaitIMPORTANT: This it not exact, it will at *least* wait for X seconds
+Allows to wait for a number of seconds with async/await
+IMPORTANT: This it not exact, it will at *least* wait for X seconds
 
 **Kind**: static method of [<code>utils/MiscUtils</code>](#module_utils/MiscUtils)  
-**Returns**: <code>Promise</code> - empty Promise that will resolve after the specified amount     of seconds  
+**Returns**: <code>Promise</code> - empty Promise that will resolve after the specified amount
+     of seconds  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -3523,14 +3719,19 @@ Allows to wait for a number of seconds with async/awaitIMPORTANT: This it not e
 <a name="module_utils/MusicUtils.CIRCLE_OF_5THS"></a>
 
 ### utils/MusicUtils.CIRCLE\_OF\_5THS : <code>Array.&lt;Array.&lt;any&gt;&gt;</code>
-Circle of 5ths as[midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
+Circle of 5ths as
+[midiNr, noteAsSharp, noteAsFlat, numberOfSharps, numberOfFlats]
 
 **Kind**: static constant of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
 **See**: https://en.wikipedia.org/wiki/Circle_of_fifths  
 <a name="module_utils/MusicUtils.INTERVALS"></a>
 
 ### utils/MusicUtils.INTERVALS : <code>Map.&lt;number, string&gt;</code>
-Maps number of semitones to interval namem - minorM - majorP - perfectaug - augmented
+Maps number of semitones to interval name
+m - minor
+M - major
+P - perfect
+aug - augmented
 
 **Kind**: static constant of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
 <a name="module_utils/MusicUtils.bpmToSecondsPerBeat"></a>
@@ -3548,7 +3749,9 @@ Converts beats per minute to seconds per beat
 <a name="module_utils/MusicUtils.freqToApproxMidiNr"></a>
 
 ### utils/MusicUtils.freqToApproxMidiNr(frequency) ⇒ <code>number</code>
-Maps any frequency (in Hz) to an approximate MIDI note number. Result can berounded to get to the closest MIDI note or used as is for a sound in betweentwo notes.
+Maps any frequency (in Hz) to an approximate MIDI note number. Result can be
+rounded to get to the closest MIDI note or used as is for a sound in between
+two notes.
 
 **Kind**: static method of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
 **Returns**: <code>number</code> - MIDI note number (not rounded)  
@@ -3560,7 +3763,8 @@ Maps any frequency (in Hz) to an approximate MIDI note number. Result can berou
 <a name="module_utils/MusicUtils.midiToFrequency"></a>
 
 ### utils/MusicUtils.midiToFrequency(midi) ⇒ <code>number</code>
-Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to itsfrequency.
+Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to its
+frequency.
 
 **Kind**: static method of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
 **Returns**: <code>number</code> - frequency in Hz  
@@ -3572,7 +3776,14 @@ Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to itsfre
 <a name="module_utils/MusicUtils.chordToInteger"></a>
 
 ### utils/MusicUtils.chordToInteger(notes) ⇒ <code>number</code>
-Turns a chord into an integer that uniquely describes the occuring chroma.If the same chroma occurs twice this will not make a difference(e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])How it works:Chord has C, E, and Gx = 000010010001        G  E   C
+Turns a chord into an integer that uniquely describes the occuring chroma.
+If the same chroma occurs twice this will not make a difference
+(e.g. [C4, E4, G4, C5] will equal [C4, E4, G4])
+
+How it works:
+Chord has C, E, and G
+x = 000010010001
+        G  E   C
 
 **Kind**: static method of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
 **Returns**: <code>number</code> - an integer that uniquely identifies this chord's chroma  
@@ -3584,7 +3795,8 @@ Turns a chord into an integer that uniquely describes the occuring chroma.If th
 <a name="module_utils/MusicUtils.chordIntegerJaccardIndex"></a>
 
 ### utils/MusicUtils.chordIntegerJaccardIndex(chord1, chord2) ⇒ <code>number</code>
-Takes two chord integer representations from chordToInteger() and computesthe Jaccard index
+Takes two chord integer representations from chordToInteger() and computes
+the Jaccard index
 
 **Kind**: static method of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
 **Returns**: <code>number</code> - Jackard index, from 0 for different to 1 for identical  
@@ -3597,10 +3809,13 @@ Takes two chord integer representations from chordToInteger() and computesthe J
 <a name="module_utils/MusicUtils.noteDurationToNoteType"></a>
 
 ### utils/MusicUtils.noteDurationToNoteType(duration, bpm) ⇒ <code>object</code>
-Estimates the note type (whole, quarter, ...) and number of dots for dottednotes
+Estimates the note type (whole, quarter, ...) and number of dots for dotted
+notes
 
 **Kind**: static method of [<code>utils/MusicUtils</code>](#module_utils/MusicUtils)  
-**Returns**: <code>object</code> - note type and number of dots     e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note     e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note  
+**Returns**: <code>object</code> - note type and number of dots
+     e.g. { "dots": 0, "duration": 1, "type": 1 } for a whole note
+     e.g. { "dots": 1, "duration": 1.5, "type": 1 } for a dotted whole note  
 **Todo**
 
 - [ ] test if corrrectly 'calibrated'
@@ -3723,7 +3938,10 @@ Filters notes of a recording to remove noise from the MIDI device or pickup
 <a name="module_utils/RecordingsUtils.clipRecordingsPitchesToGtRange"></a>
 
 ### utils/RecordingsUtils.clipRecordingsPitchesToGtRange(recordings, groundTruth) ⇒ [<code>Array.&lt;Recording&gt;</code>](#Recording)
-Removes notes from a recordings which are outside the range of the groundtruth and therefore likely noise.Looks up the pitch range from the track of the GT that the recording was madefor.
+Removes notes from a recordings which are outside the range of the ground
+truth and therefore likely noise.
+Looks up the pitch range from the track of the GT that the recording was made
+for.
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: [<code>Array.&lt;Recording&gt;</code>](#Recording) - filtered recordings  
@@ -3736,7 +3954,10 @@ Removes notes from a recordings which are outside the range of the groundtruth 
 <a name="module_utils/RecordingsUtils.clipRecordingsPitchesToGtFretboardRange"></a>
 
 ### utils/RecordingsUtils.clipRecordingsPitchesToGtFretboardRange(recordings, groundTruth, [mode]) ⇒ [<code>Array.&lt;Recording&gt;</code>](#Recording)
-Removes notes from a recordings which are outside the fretboard range of theground truth and therefore likely noise.Looks up the fretboard position range from the track of the GT that therecording was made for.
+Removes notes from a recordings which are outside the fretboard range of the
+ground truth and therefore likely noise.
+Looks up the fretboard position range from the track of the GT that the
+recording was made for.
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: [<code>Array.&lt;Recording&gt;</code>](#Recording) - filtered recordings  
@@ -3768,7 +3989,14 @@ Aligns notes to a rhythmic pattern
 <a name="module_utils/RecordingsUtils.recordingsHeatmap"></a>
 
 ### utils/RecordingsUtils.recordingsHeatmap(recNotes, nRecs, binSize, attribute) ⇒ <code>Map</code>
-Calculates a heatmap either pitch- or channel-wise.Pitch-time heatmap:Calculates a heatmap of multiple recordings, to see the note density in thepitch-time-space.Channel-time heatmap:Calculates a heatmap of multiple recordings, to see the note density in thechannel-time-space. Channel could be a guitar string or left and right handfor example.
+Calculates a heatmap either pitch- or channel-wise.
+Pitch-time heatmap:
+Calculates a heatmap of multiple recordings, to see the note density in the
+pitch-time-space.
+Channel-time heatmap:
+Calculates a heatmap of multiple recordings, to see the note density in the
+channel-time-space. Channel could be a guitar string or left and right hand
+for example.
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: <code>Map</code> - pitch->heatmap; heatmap is number[] for all time slices  
@@ -3783,7 +4011,8 @@ Calculates a heatmap either pitch- or channel-wise.Pitch-time heatmap:Calculat
 <a name="module_utils/RecordingsUtils.averageRecordings"></a>
 
 ### utils/RecordingsUtils.averageRecordings(heatmapByPitch, binSize, threshold) ⇒ [<code>Array.&lt;Note&gt;</code>](#Note)
-'Averages' multiple recordings of the same piece to get an approximation ofthe ground truth.
+'Averages' multiple recordings of the same piece to get an approximation of
+the ground truth.
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: [<code>Array.&lt;Note&gt;</code>](#Note) - approximated ground truth notes  
@@ -3801,7 +4030,9 @@ Calculates a heatmap either pitch- or channel-wise.Pitch-time heatmap:Calculat
 <a name="module_utils/RecordingsUtils.averageRecordings2"></a>
 
 ### utils/RecordingsUtils.averageRecordings2(recNotes, bandwidth, ticksPerSecond, threshold) ⇒ [<code>Array.&lt;Note&gt;</code>](#Note)
-Extracts a probable ground truth from multiple recordings. Uses one KDE foreach note starts and ends, detects maxima in the KDE and thresholds them.Then uses alternating start end end candidates to create notes.
+Extracts a probable ground truth from multiple recordings. Uses one KDE for
+each note starts and ends, detects maxima in the KDE and thresholds them.
+Then uses alternating start end end candidates to create notes.
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: [<code>Array.&lt;Note&gt;</code>](#Note) - new notes  
@@ -3816,7 +4047,12 @@ Extracts a probable ground truth from multiple recordings. Uses one KDE foreach
 <a name="module_utils/RecordingsUtils.differenceMap"></a>
 
 ### utils/RecordingsUtils.differenceMap(gtNotes, recNotes, binSize) ⇒ <code>Map</code>
-Returns a Map: pitch->differenceMap, differenceMap is an Array with time binsand each bin is either     0 (none, neither GT nor rec have a note here)     1 (missing, only GT has a note here)     2 (additional, only rec has a note here)     3 (both, both have a note here)
+Returns a Map: pitch->differenceMap, differenceMap is an Array with time bins
+and each bin is either
+     0 (none, neither GT nor rec have a note here)
+     1 (missing, only GT has a note here)
+     2 (additional, only rec has a note here)
+     3 (both, both have a note here)
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: <code>Map</code> - pitch->differenceMap; differenceMap is number[] for all time slices  
@@ -3838,7 +4074,9 @@ const diffMap = differenceMap(gtNotes, recNotes, 10);
 <a name="module_utils/RecordingsUtils.differenceMapErrorAreas"></a>
 
 ### utils/RecordingsUtils.differenceMapErrorAreas(differenceMap) ⇒ <code>object</code>
-Computes the 'area' of error from a differenceMap normalized by total area.The area is simply the number of bins with each value, total area is max.number of bins in all pitches * the number of pitches.
+Computes the 'area' of error from a differenceMap normalized by total area.
+The area is simply the number of bins with each value, total area is max.
+number of bins in all pitches * the number of pitches.
 
 **Kind**: static method of [<code>utils/RecordingsUtils</code>](#module_utils/RecordingsUtils)  
 **Returns**: <code>object</code> - {missing, additional, correct} area ratios  
@@ -3855,7 +4093,9 @@ Computes the 'area' of error from a differenceMap normalized by total area.The 
 
 **Example**  
 ```js
-const diffMap = differenceMap(gtNotes, recNotes, 10);     const diffMapErrors = differenceMapErrorAreas(diffMap);     const {missing, additional, correct} = diffMapErrors;
+const diffMap = differenceMap(gtNotes, recNotes, 10);
+     const diffMapErrors = differenceMapErrorAreas(diffMap);
+     const {missing, additional, correct} = diffMapErrors;
 ```
 <a name="module_utils/StatisticsUtils"></a>
 
@@ -3881,7 +4121,8 @@ Computes the Pearson correlation
 **Returns**: <code>number</code> - correlation  
 **Throws**:
 
-- <code>&#x27;Invalid data, must be two arrays with same length&#x27;</code> for invalid arguments
+- <code>&#x27;Invalid data, must be two arrays with same length&#x27;</code> for invalid
+ arguments
 - <code>&#x27;Invalid data, length must be &gt;&#x3D; 2&#x27;</code> for invalid arguments
 
 **See**: https://gist.github.com/matt-west/6500993#gistcomment-3718526  
@@ -3932,12 +4173,16 @@ Returns a kernel desity estimator function.
 
 **Example**  
 ```js
-// With x being a d3.scaleLinear() scaleconst kde = kernelDensityEstimator(kernelEpanechnikov(0.2), x.ticks(50));const estimate = kde(data);
+// With x being a d3.scaleLinear() scale
+const kde = kernelDensityEstimator(kernelEpanechnikov(0.2), x.ticks(50));
+const estimate = kde(data);
 ```
 <a name="module_utils/StatisticsUtils.kernelDensityEstimator..estimator"></a>
 
 #### kernelDensityEstimator~estimator(V) ⇒ <code>Array.&lt;Array.&lt;number&gt;&gt;</code>
-Kernel desity estimatorFor each value of X it computes the estimated density of the data valuesin V. The result has the form [ [x1, est1], [x2, est2], ... ]
+Kernel desity estimator
+For each value of X it computes the estimated density of the data values
+in V. The result has the form [ [x1, est1], [x2, est2], ... ]
 
 **Kind**: inner method of [<code>kernelDensityEstimator</code>](#module_utils/StatisticsUtils.kernelDensityEstimator)  
 **Returns**: <code>Array.&lt;Array.&lt;number&gt;&gt;</code> - estimates for points of X  
@@ -4468,7 +4713,8 @@ Returns a JSON-serialized representation
 
 **Example**  
 ```js
-const jsonString = mp.toJson();     const recovered = MusicPiece.fromJson(jsonString);
+const jsonString = mp.toJson();
+     const recovered = MusicPiece.fromJson(jsonString);
 ```
 <a name="MusicPiece+getAllNotes"></a>
 
@@ -4500,7 +4746,11 @@ Returns an array with notes from the specified tracks.
 <a name="MusicPiece+transpose"></a>
 
 ### musicPiece.transpose(steps, tracks) ⇒ [<code>MusicPiece</code>](#MusicPiece)
-Transposes all or only the specified tracks by the specified number of(semitone) steps.Will return a new MusicPiece instance.Note pitches will be clipped to [0, 127].Will not change playing instructions such as string and fret.
+Transposes all or only the specified tracks by the specified number of
+(semitone) steps.
+Will return a new MusicPiece instance.
+Note pitches will be clipped to [0, 127].
+Will not change playing instructions such as string and fret.
 
 **Kind**: instance method of [<code>MusicPiece</code>](#MusicPiece)  
 **Returns**: [<code>MusicPiece</code>](#MusicPiece) - a new, transposed MusicPiece  
@@ -4547,7 +4797,8 @@ Creates a MusicPiece object from a MusicXML string
 **Returns**: [<code>MusicPiece</code>](#MusicPiece) - new MusicPiece  
 **Throws**:
 
-- <code>&#x27;No MusicXML file content given&#x27;</code> when MusicXML file is undefined or null
+- <code>&#x27;No MusicXML file content given&#x27;</code> when MusicXML file is
+ undefined or null
 
 
 | Param | Type | Description |
@@ -4557,7 +4808,12 @@ Creates a MusicPiece object from a MusicXML string
 
 **Example**  
 ```js
-Parsing a MusicPiece in Node.js   const jsdom = require('jsdom');   const xmlFile = fs.readFileSync('My Song.musicxml');   const dom = new jsdom.JSDOM(xmlFile);   const xmlDocument = dom.window.document;   const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
+Parsing a MusicPiece in Node.js
+   const jsdom = require('jsdom');
+   const xmlFile = fs.readFileSync('My Song.musicxml');
+   const dom = new jsdom.JSDOM(xmlFile);
+   const xmlDocument = dom.window.document;
+   const mp = musicvislib.MusicPiece.fromMusicXml('My Song', xmlDocument);
 ```
 <a name="MusicPiece.fromJson"></a>
 
@@ -4573,12 +4829,14 @@ Allows to get a MusicPiece from JSON after doing JSON.stringify()
 
 **Example**  
 ```js
-const jsonString = mp.toJson();     const recovered = MusicPiece.fromJson(jsonString);
+const jsonString = mp.toJson();
+     const recovered = MusicPiece.fromJson(jsonString);
 ```
 <a name="Note"></a>
 
 ## Note
-Note class that reflects MIDI properties but hasabsolute start and end times in seconds.
+Note class that reflects MIDI properties but has
+absolute start and end times in seconds.
 
 **Kind**: global class  
 
@@ -4598,6 +4856,7 @@ Note class that reflects MIDI properties but hasabsolute start and end times in
         * [.toString(short)](#Note+toString) ⇒ <code>string</code>
     * _static_
         * [.from(object)](#Note.from) ⇒ [<code>Note</code>](#Note)
+        * [.startPitchComparator(a, b)](#Note.startPitchComparator) ⇒ <code>number</code>
 
 <a name="new_Note_new"></a>
 
@@ -4723,7 +4982,8 @@ Human-readable string representation of this Note
 <a name="Note.from"></a>
 
 ### Note.from(object) ⇒ [<code>Note</code>](#Note)
-Creates a Note object from an object via destructuring.Use either 'end' or 'duration', if both are specified, end will be used.
+Creates a Note object from an object via destructuring.
+Use either 'end' or 'duration', if both are specified, end will be used.
 
 **Kind**: static method of [<code>Note</code>](#Note)  
 **Returns**: [<code>Note</code>](#Note) - new note  
@@ -4760,10 +5020,25 @@ Creates a Note object from an object via destructuring.Use either 'end' or 'dur
      duration: 1.2,
  });
 ```
+<a name="Note.startPitchComparator"></a>
+
+### Note.startPitchComparator(a, b) ⇒ <code>number</code>
+Allows to sort notes by time ascending, notes with equal start time will
+be sorted by pitch ascending.
+
+**Kind**: static method of [<code>Note</code>](#Note)  
+**Returns**: <code>number</code> - negative for smaller, positive for greater, 0 for euqal  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| a | [<code>Note</code>](#Note) | a note to compare |
+| b | [<code>Note</code>](#Note) | a note to compare |
+
 <a name="NoteArray"></a>
 
 ## NoteArray
-This class represents an array of note objects.It can be used to simplify operations on a track.
+This class represents an array of note objects.
+It can be used to simplify operations on a track.
 
 **Kind**: global class  
 
@@ -4801,7 +5076,8 @@ This class represents an array of note objects.It can be used to simplify opera
 <a name="new_NoteArray_new"></a>
 
 ### new NoteArray([notes], [reUseNotes])
-Creates a new NoteArray,will make a copy of the passed array and cast all notes
+Creates a new NoteArray,
+will make a copy of the passed array and cast all notes
 
 
 | Param | Type | Default | Description |
@@ -4811,7 +5087,26 @@ Creates a new NoteArray,will make a copy of the passed array and cast all notes
 
 **Example**  
 ```js
-const notes = [      // Some Note objects  ];  const noteArr = new NoteArray(notes)      // Add more notes (all notes will be sorted by time by default after this)      .addNotes([])      // Scale all note's sart and end time to make a track slower or faster      .scaleTime(0.5)      // Do more ...      // This class also mirrors many functions from the Array class      .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)  // Get Note objects back in a simple Array  const transformedNotes = noteArr.getNotes();  // [Note, Note, Note, ...]  // Or use an iterator  for (const note of noteArr) {      console.log(note);  }
+const notes = [
+      // Some Note objects
+  ];
+  const noteArr = new NoteArray(notes)
+      // Add more notes (all notes will be sorted by time by default after this)
+      .addNotes([])
+      // Scale all note's sart and end time to make a track slower or faster
+      .scaleTime(0.5)
+      // Do more ...
+      // This class also mirrors many functions from the Array class
+      .sort(sortFunction).filter(filterFunction).map(mapFunction).slice(0, 20)
+
+  // Get Note objects back in a simple Array
+  const transformedNotes = noteArr.getNotes();
+  // [Note, Note, Note, ...]
+
+  // Or use an iterator
+  for (const note of noteArr) {
+      console.log(note);
+  }
 ```
 <a name="NoteArray+getNotes"></a>
 
@@ -4862,7 +5157,10 @@ Appends notes to this NoteArray
 <a name="NoteArray+concat"></a>
 
 ### noteArray.concat(noteArray) ⇒ [<code>NoteArray</code>](#NoteArray)
-Adds the notes from another NoteArray to this NoteArrayIMPORTANT: this does not change the notes or sort them!Take a look at NoteArray.append() if you want to extenda track at its end.
+Adds the notes from another NoteArray to this NoteArray
+IMPORTANT: this does not change the notes or sort them!
+Take a look at NoteArray.append() if you want to extend
+a track at its end.
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: [<code>NoteArray</code>](#NoteArray) - itself  
@@ -4874,7 +5172,8 @@ Adds the notes from another NoteArray to this NoteArrayIMPORTANT: this does not
 <a name="NoteArray+append"></a>
 
 ### noteArray.append(noteArray, gap) ⇒ [<code>NoteArray</code>](#NoteArray)
-Appends notes to the end of this NoteArray, after shifting them by itsduration. Set gap to something != 0 to create a gap or overlap.
+Appends notes to the end of this NoteArray, after shifting them by its
+duration. Set gap to something != 0 to create a gap or overlap.
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: [<code>NoteArray</code>](#NoteArray) - itself  
@@ -4913,7 +5212,8 @@ Returns the start time of the earliest note in this NoteArray
 <a name="NoteArray+getDuration"></a>
 
 ### noteArray.getDuration() ⇒ <code>number</code>
-Returns the duration of this note array in seconds from 0 to the end ofthe latest note.
+Returns the duration of this note array in seconds from 0 to the end of
+the latest note.
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: <code>number</code> - duration  
@@ -4944,7 +5244,8 @@ Adds the speicifed number of seconds to each note
 <a name="NoteArray+shiftToStartAt"></a>
 
 ### noteArray.shiftToStartAt(startTime) ⇒ [<code>NoteArray</code>](#NoteArray)
-Moves all notes s.t. the first starts at <start>Will sort the notes by start time.
+Moves all notes s.t. the first starts at <start>
+Will sort the notes by start time.
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: [<code>NoteArray</code>](#NoteArray) - itself  
@@ -5012,13 +5313,16 @@ Slices the notes by index, like Array.slice()
 <a name="NoteArray+sliceTime"></a>
 
 ### noteArray.sliceTime(startTime, endTime, [mode]) ⇒ [<code>NoteArray</code>](#NoteArray)
-Slices the notes by time.The modes 'end' and 'contained' will remove all notes with end === null!Notes will not be changed, e.g. start time will remain the same.
+Slices the notes by time.
+The modes 'end' and 'contained' will remove all notes with end === null!
+Notes will not be changed, e.g. start time will remain the same.
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: [<code>NoteArray</code>](#NoteArray) - itself  
 **Throws**:
 
-- <code>&#x27;Invalid slicing mode&#x27;</code> When slicing mode is not one of the     above values
+- <code>&#x27;Invalid slicing mode&#x27;</code> When slicing mode is not one of the
+     above values
 
 
 | Param | Type | Default | Description |
@@ -5030,7 +5334,11 @@ Slices the notes by time.The modes 'end' and 'contained' will remove all notes 
 <a name="NoteArray+sliceAtTimes"></a>
 
 ### noteArray.sliceAtTimes(times, mode, [reUseNotes]) ⇒ <code>Array.&lt;Array.&lt;Note&gt;&gt;</code>
-Slices this NoteArray into slices by the given times. Will not returnNoteArrays but simple Note[][], where each item contains all notes of onetime slice. Do not include 0, it will be assumed as first time to slice.To make sure notes are not contained twice in different slices use themode 'start'.
+Slices this NoteArray into slices by the given times. Will not return
+NoteArrays but simple Note[][], where each item contains all notes of one
+time slice. Do not include 0, it will be assumed as first time to slice.
+To make sure notes are not contained twice in different slices use the
+mode 'start'.
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: <code>Array.&lt;Array.&lt;Note&gt;&gt;</code> - time slices  
@@ -5043,12 +5351,16 @@ Slices this NoteArray into slices by the given times. Will not returnNoteArrays
 
 **Example**  
 ```js
-// Slice into 1 second slices     const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
+// Slice into 1 second slices
+     const slices = noteArray.sliceAtTimes([1, 2, 3], 'start)
 ```
 <a name="NoteArray+segmentAtGaps"></a>
 
 ### noteArray.segmentAtGaps(gapDuration, mode) ⇒ <code>Array.&lt;Array.&lt;Note&gt;&gt;</code>
-Segments the NoteArray into smaller ones at times where no note occursfor a specified amount of time.This method is useful for segmenting a recording session into separatesongs, riffs, licks, ...
+Segments the NoteArray into smaller ones at times where no note occurs
+for a specified amount of time.
+This method is useful for segmenting a recording session into separate
+songs, riffs, licks, ...
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: <code>Array.&lt;Array.&lt;Note&gt;&gt;</code> - segments  
@@ -5093,7 +5405,8 @@ Filters the NoteArray like you would filter via Array.filter().
 
 **Example**  
 ```js
-// Only keep notes longer than 1 second     const filtered = noteArray.filter(note=>note.getDuration()>1);
+// Only keep notes longer than 1 second
+     const filtered = noteArray.filter(note=>note.getDuration()>1);
 ```
 <a name="NoteArray+filterPitches"></a>
 
@@ -5122,7 +5435,8 @@ Transposes each note by <steps> semitones, will clip pitches to [0, 127]
 <a name="NoteArray+removeOctaves"></a>
 
 ### noteArray.removeOctaves() ⇒ [<code>NoteArray</code>](#NoteArray)
-Will set the octave of all notes to -1.This might cause two notes to exist at the same time and pitch!
+Will set the octave of all notes to -1.
+This might cause two notes to exist at the same time and pitch!
 
 **Kind**: instance method of [<code>NoteArray</code>](#NoteArray)  
 **Returns**: [<code>NoteArray</code>](#NoteArray) - itself  
@@ -5578,10 +5892,12 @@ Generates MusicXML text from a pattern
 <a name="getStartTimeErrorPerGtNote"></a>
 
 ## getStartTimeErrorPerGtNote(gtNotes, recNotes) ⇒ <code>Array.&lt;number&gt;</code>
-Takes the ground truth and a single recording.Both gtNotes and recNotes must be sorted by note start time ascending.
+Takes the ground truth and a single recording.
+Both gtNotes and recNotes must be sorted by note start time ascending.
 
 **Kind**: global function  
-**Returns**: <code>Array.&lt;number&gt;</code> - for each note the difference in start time to the closest     recorded note  
+**Returns**: <code>Array.&lt;number&gt;</code> - for each note the difference in start time to the closest
+     recorded note  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -5735,7 +6051,10 @@ Computes the number of notes played per relative time (beat)
 <a name="differentNotesUsed"></a>
 
 ## differentNotesUsed(notes, mode) ⇒ <code>Array.&lt;object&gt;</code>
-Computes the number of different notes used in different modi.- Pitch: note and octave are considered- Chroma: only note without octave considered, e.g., C4 == C5- Fretboard position: tuple (string, fret) will be compared
+Computes the number of different notes used in different modi.
+- Pitch: note and octave are considered
+- Chroma: only note without octave considered, e.g., C4 == C5
+- Fretboard position: tuple (string, fret) will be compared
 
 **Kind**: global function  
 **Returns**: <code>Array.&lt;object&gt;</code> - note and usage count  
@@ -5748,7 +6067,9 @@ Computes the number of different notes used in different modi.- Pitch: note and
 <a name="ratioNotesInSet"></a>
 
 ## ratioNotesInSet(notes, set) ⇒ <code>number</code>
-Computes the ratio of notes that are in the given set.Can be used for checking how many notes that were played are part of amusical scale, by passing the notes of this scale as set.
+Computes the ratio of notes that are in the given set.
+Can be used for checking how many notes that were played are part of a
+musical scale, by passing the notes of this scale as set.
 
 **Kind**: global function  
 **Returns**: <code>number</code> - ratio of notes inside set  
@@ -5760,7 +6081,8 @@ Computes the ratio of notes that are in the given set.Can be used for checking 
 
 **Example**  
 ```js
-const cMaj = new Set(...'CDEFGAB');const ratio = ratioNotesInSet(notes, cMaj);
+const cMaj = new Set(...'CDEFGAB');
+const ratio = ratioNotesInSet(notes, cMaj);
 ```
 <a name="pitchMeanAndVariance"></a>
 
@@ -5769,6 +6091,18 @@ Computes the mean and variance of played pitches
 
 **Kind**: global function  
 **Returns**: <code>object</code> - {mean, variance}  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| notes | [<code>Array.&lt;Note&gt;</code>](#Note) | notes |
+
+<a name="pitchExtent"></a>
+
+## pitchExtent(notes) ⇒ <code>Array.&lt;number&gt;</code>
+Computes the min and max pitch
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;number&gt;</code> - min and max pitch  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -5813,7 +6147,8 @@ Computes the mean and variance of played dynamics
 <a name="onsetDiffMeanAndVariance"></a>
 
 ## onsetDiffMeanAndVariance(notes) ⇒ <code>object</code>
-Computes the mean and variance of onset (start time) differences betweenconsecutive notes.
+Computes the mean and variance of onset (start time) differences between
+consecutive notes.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - {mean, variance}  
@@ -5825,7 +6160,10 @@ Computes the mean and variance of onset (start time) differences betweenconsecu
 <a name="guitarStringSkips"></a>
 
 ## guitarStringSkips(notes, [skipped]) ⇒ <code>number</code>
-Computs the ratio of notes for which one string (or more) where skippedbetween the one before and the current note.The `skipped` parameter set the minimum amount of strings between the twonotes, e.g., going from string 1 to 3 means that one (string 2) was skipped.
+Computs the ratio of notes for which one string (or more) where skipped
+between the one before and the current note.
+The `skipped` parameter set the minimum amount of strings between the two
+notes, e.g., going from string 1 to 3 means that one (string 2) was skipped.
 
 **Kind**: global function  
 **Returns**: <code>number</code> - ratio of notes where `skipped` string where skipped  
@@ -5838,7 +6176,10 @@ Computs the ratio of notes for which one string (or more) where skippedbetween 
 <a name="guitarFretSkips"></a>
 
 ## guitarFretSkips(notes, [skipped]) ⇒ <code>number</code>
-Computs the ratio of notes for which one fret (or more) where skipped betweenthe one before and the current note.The `skipped` parameter set the minimum amount of fret between the twonotes, e.g., going from fret 1 to 3 means that one (fret 2) was skipped.
+Computs the ratio of notes for which one fret (or more) where skipped between
+the one before and the current note.
+The `skipped` parameter set the minimum amount of fret between the two
+notes, e.g., going from fret 1 to 3 means that one (fret 2) was skipped.
 
 **Kind**: global function  
 **Returns**: <code>number</code> - ratio of notes where `skipped` string where skipped  
@@ -5862,7 +6203,9 @@ Counts how often harmonies of different sizes occur
 
 **Example**  
 ```js
-// You can use different grouping functions as well, see chords/Chords.js const harmonies = Chords.detectChordsBySimilarStart(notes, theshold); const sizeDistr = harmonySizeDistribution(harmonies);
+// You can use different grouping functions as well, see chords/Chords.js
+ const harmonies = Chords.detectChordsBySimilarStart(notes, theshold);
+ const sizeDistr = harmonySizeDistribution(harmonies);
 ```
 <a name="harmonySingleToMultiRatio"></a>
 
@@ -6039,7 +6382,8 @@ Simplifies each object in an array by copying only some keys and their values
 <a name="getMusicPiecesFromBothFormats"></a>
 
 ## getMusicPiecesFromBothFormats(fileBaseName) ⇒ <code>Object</code>
-Given a file name (without extension), this function will read a .mid and a.musicxml file and parse both to a MusicPiece before returning those.
+Given a file name (without extension), this function will read a .mid and a
+.musicxml file and parse both to a MusicPiece before returning those.
 
 **Kind**: global function  
 **Returns**: <code>Object</code> - two MusicPiece objects  
