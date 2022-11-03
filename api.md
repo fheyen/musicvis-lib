@@ -322,6 +322,10 @@ hierarchically. Optimal result but high performance complexity.</p>
 <dd><p>Sets a color&#39;s opacity.
 Does not support colors in rgba format.</p>
 </dd>
+<dt><a href="#setSaturation">setSaturation(color, [saturation])</a> ⇒ <code>string</code></dt>
+<dd><p>Sets a color&#39;s saturation.
+Does not support colors in rgba format.</p>
+</dd>
 </dl>
 
 <a name="module_Alignment"></a>
@@ -1660,6 +1664,7 @@ This is needed to map drum notes to MIDI pitches.
     * [.drawBracketH(context, x, y, w, h)](#module_graphics/Canvas.drawBracketH)
     * [.drawMatrix(context, matrix, [x], [y], [size], colorMap)](#module_graphics/Canvas.drawMatrix)
     * [.drawColorRamp(context, colorMap)](#module_graphics/Canvas.drawColorRamp)
+    * [.drawNoteColorMap(context, colors, w, h, [x], [y], [fontSize])](#module_graphics/Canvas.drawNoteColorMap)
     * [.drawVerticalText(context, x, y, text, [color], [font], [centered])](#module_graphics/Canvas.drawVerticalText)
 
 <a name="module_graphics/Canvas.setupCanvas"></a>
@@ -2080,6 +2085,27 @@ Draws a color ramp
 | --- | --- | --- |
 | context | <code>CanvasRenderingContext2D</code> | canvas rendering context |
 | colorMap | <code>function</code> | colormap from [min, max] to a color |
+
+<a name="module_graphics/Canvas.drawNoteColorMap"></a>
+
+### graphics/Canvas.drawNoteColorMap(context, colors, w, h, [x], [y], [fontSize])
+Draws a color map as small rectanlges below the notes C, C#, ...
+
+**Kind**: static method of [<code>graphics/Canvas</code>](#module_graphics/Canvas)  
+**Todo**
+
+- [ ] test
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| context | <code>CanvasRenderingContext2D</code> |  | canvas rendering context |
+| colors | <code>Array.&lt;string&gt;</code> |  | colors, e.g., from NoteColorUtils |
+| w | <code>number</code> |  |  |
+| h | <code>number</code> |  |  |
+| [x] | <code>number</code> | <code>0</code> |  |
+| [y] | <code>number</code> | <code>0</code> |  |
+| [fontSize] | <code>number</code> | <code>12</code> |  |
 
 <a name="module_graphics/Canvas.drawVerticalText"></a>
 
@@ -3858,13 +3884,161 @@ Creates a track of metronome ticks for a given music piece.
 ## utils/NoteColorUtils
 
 * [utils/NoteColorUtils](#module_utils/NoteColorUtils)
-    * _static_
-        * [.noteColorFromPitch(pitch, colormap)](#module_utils/NoteColorUtils.noteColorFromPitch) ⇒ <code>string</code>
-    * _inner_
-        * [~noteColormap](#module_utils/NoteColorUtils..noteColormap) : <code>Array.&lt;string&gt;</code>
-        * [~noteColormapAccessible](#module_utils/NoteColorUtils..noteColormapAccessible) : <code>Array.&lt;string&gt;</code>
-        * [~noteColormapGradientArray](#module_utils/NoteColorUtils..noteColormapGradientArray) : <code>Array.&lt;string&gt;</code>
+    * [.noteColormap](#module_utils/NoteColorUtils.noteColormap) : <code>Array.&lt;string&gt;</code>
+    * [.noteColormapAccessible](#module_utils/NoteColorUtils.noteColormapAccessible) : <code>Array.&lt;string&gt;</code>
+    * [.noteColormapAccessible2](#module_utils/NoteColorUtils.noteColormapAccessible2) : <code>Array.&lt;string&gt;</code>
+    * [.newton](#module_utils/NoteColorUtils.newton) : <code>Array.&lt;string&gt;</code>
+    * [.castel](#module_utils/NoteColorUtils.castel) : <code>Array.&lt;string&gt;</code>
+    * [.field](#module_utils/NoteColorUtils.field) : <code>Array.&lt;string&gt;</code>
+    * [.jameson](#module_utils/NoteColorUtils.jameson) : <code>Array.&lt;string&gt;</code>
+    * [.seemann](#module_utils/NoteColorUtils.seemann) : <code>Array.&lt;string&gt;</code>
+    * [.rimington](#module_utils/NoteColorUtils.rimington) : <code>Array.&lt;string&gt;</code>
+    * [.bishop](#module_utils/NoteColorUtils.bishop) : <code>Array.&lt;string&gt;</code>
+    * [.helmholtz](#module_utils/NoteColorUtils.helmholtz) : <code>Array.&lt;string&gt;</code>
+    * [.scriabin](#module_utils/NoteColorUtils.scriabin) : <code>Array.&lt;string&gt;</code>
+    * [.klein](#module_utils/NoteColorUtils.klein) : <code>Array.&lt;string&gt;</code>
+    * [.aeppli](#module_utils/NoteColorUtils.aeppli) : <code>Array.&lt;string&gt;</code>
+    * [.belmont](#module_utils/NoteColorUtils.belmont) : <code>Array.&lt;string&gt;</code>
+    * [.zieverink](#module_utils/NoteColorUtils.zieverink) : <code>Array.&lt;string&gt;</code>
+    * [.colorInterpolator](#module_utils/NoteColorUtils.colorInterpolator) : <code>function</code>
+    * [.noteColormapGradientArray](#module_utils/NoteColorUtils.noteColormapGradientArray) : <code>Array.&lt;string&gt;</code>
+    * [.noteColorFromPitch(pitch, colormap)](#module_utils/NoteColorUtils.noteColorFromPitch) ⇒ <code>string</code>
 
+<a name="module_utils/NoteColorUtils.noteColormap"></a>
+
+### utils/NoteColorUtils.noteColormap : <code>Array.&lt;string&gt;</code>
+Maps each note to a color
+Colors from https://www.svpwiki.com/music+note+or+sound+colors
+Order is C, C#, ... B
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.noteColormapAccessible"></a>
+
+### utils/NoteColorUtils.noteColormapAccessible : <code>Array.&lt;string&gt;</code>
+Colorblind save colors from
+Malandrino et al. - Visualization and Music Harmony: Design, Implementation,
+and Evaluation https://ieeexplore.ieee.org/abstract/document/8564210
+Order is C, C#, ... B
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.noteColormapAccessible2"></a>
+
+### utils/NoteColorUtils.noteColormapAccessible2 : <code>Array.&lt;string&gt;</code>
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.newton"></a>
+
+### utils/NoteColorUtils.newton : <code>Array.&lt;string&gt;</code>
+Note colors by Isaac Newton, 1704 (shaprs were not assiged a color)
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.castel"></a>
+
+### utils/NoteColorUtils.castel : <code>Array.&lt;string&gt;</code>
+Note colors by Louis Betrand Castel, 1734
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.field"></a>
+
+### utils/NoteColorUtils.field : <code>Array.&lt;string&gt;</code>
+Note colors by George Field, 1816 (shaprs were not assiged a color)
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.jameson"></a>
+
+### utils/NoteColorUtils.jameson : <code>Array.&lt;string&gt;</code>
+Note colors by D.D. Jameson, 1844
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.seemann"></a>
+
+### utils/NoteColorUtils.seemann : <code>Array.&lt;string&gt;</code>
+Note colors by Theodor Seemann, 1881
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.rimington"></a>
+
+### utils/NoteColorUtils.rimington : <code>Array.&lt;string&gt;</code>
+Note colors by A. Wallace Rimington, 1893
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.bishop"></a>
+
+### utils/NoteColorUtils.bishop : <code>Array.&lt;string&gt;</code>
+Note colors by Bainbridge Bishop, 1893
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.helmholtz"></a>
+
+### utils/NoteColorUtils.helmholtz : <code>Array.&lt;string&gt;</code>
+Note colors by H. von Helmholtz, 1910
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.scriabin"></a>
+
+### utils/NoteColorUtils.scriabin : <code>Array.&lt;string&gt;</code>
+Note colors by Alexander Scriabin, 1911
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.klein"></a>
+
+### utils/NoteColorUtils.klein : <code>Array.&lt;string&gt;</code>
+Note colors by Adrian Bernard Klein, 1930
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.aeppli"></a>
+
+### utils/NoteColorUtils.aeppli : <code>Array.&lt;string&gt;</code>
+Note colors by August Aeppli, 1940 (C#, D#, F, G# were not assigned a color)
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.belmont"></a>
+
+### utils/NoteColorUtils.belmont : <code>Array.&lt;string&gt;</code>
+Note colors by I.J. Belmont, 1944
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.zieverink"></a>
+
+### utils/NoteColorUtils.zieverink : <code>Array.&lt;string&gt;</code>
+Note colors by Steve Zieverink, 2004
+From Schmidt, Kathryn L. (2019): Meaningful Music Visualizations. Purdue University Graduate School. Thesis.https://doi.org/10.25394/PGS.7498700.v1 https://hammer.purdue.edu/articles/thesis/Meaningful_Music_Visualizations/7498700/1/files/13893941.pdf page 13
+Original: Collopy, F. (2004, October 19). Color scales? Retrieved from http://rhythmiclight.com/archives/ideas/colorscales.html
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.colorInterpolator"></a>
+
+### utils/NoteColorUtils.colorInterpolator : <code>function</code>
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
+<a name="module_utils/NoteColorUtils.noteColormapGradientArray"></a>
+
+### utils/NoteColorUtils.noteColormapGradientArray : <code>Array.&lt;string&gt;</code>
+Gradient color map from black to steelblue
+
+**Kind**: static constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
 <a name="module_utils/NoteColorUtils.noteColorFromPitch"></a>
 
 ### utils/NoteColorUtils.noteColorFromPitch(pitch, colormap) ⇒ <code>string</code>
@@ -3879,29 +4053,6 @@ Returns the note color depending on the given pitch.
 | pitch | <code>number</code> | MIDI pitch in [0, 127] |
 | colormap | <code>string</code> | one of 'default', 'accessible', 'gradient' |
 
-<a name="module_utils/NoteColorUtils..noteColormap"></a>
-
-### utils/NoteColorUtils~noteColormap : <code>Array.&lt;string&gt;</code>
-Maps each note to a color
-Colors from https://www.svpwiki.com/music+note+or+sound+colors
-Order is C, C#, ... B
-
-**Kind**: inner constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
-<a name="module_utils/NoteColorUtils..noteColormapAccessible"></a>
-
-### utils/NoteColorUtils~noteColormapAccessible : <code>Array.&lt;string&gt;</code>
-Colorblind save colors from
-Malandrino et al. - Visualization and Music Harmony: Design, Implementation,
-and Evaluation https://ieeexplore.ieee.org/abstract/document/8564210
-Order is C, C#, ... B
-
-**Kind**: inner constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
-<a name="module_utils/NoteColorUtils..noteColormapGradientArray"></a>
-
-### utils/NoteColorUtils~noteColormapGradientArray : <code>Array.&lt;string&gt;</code>
-Gradient color map from black to steelblue
-
-**Kind**: inner constant of [<code>utils/NoteColorUtils</code>](#module_utils/NoteColorUtils)  
 <a name="module_utils/RecordingsUtils"></a>
 
 ## utils/RecordingsUtils
@@ -6430,4 +6581,18 @@ Does not support colors in rgba format.
 | --- | --- | --- | --- |
 | color | <code>string</code> |  | valid HTML color identifier |
 | [opacity] | <code>number</code> | <code>1</code> | opacity from 0 to 1 |
+
+<a name="setSaturation"></a>
+
+## setSaturation(color, [saturation]) ⇒ <code>string</code>
+Sets a color's saturation.
+Does not support colors in rgba format.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - color as RGBA string  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| color | <code>string</code> |  | valid HTML color identifier |
+| [saturation] | <code>number</code> | <code>1</code> | saturation from 0 to 1 |
 

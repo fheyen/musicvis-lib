@@ -287,7 +287,7 @@ var require_main = __commonJS({
 
 // package.json
 var name = "musicvis-lib";
-var version = "0.57.0";
+var version = "0.57.1";
 var description = "Music analysis and visualization library";
 var author = "Frank Heyen";
 var license = "ISC";
@@ -348,7 +348,6 @@ var scripts = {
 var dependencies = {
   "@tonaljs/tonal": "^4.6.5",
   d3: "^6.7.0",
-  "jest-environment-jsdom": "^29.1.2",
   "midi-parser-js": "^4.0.4"
 };
 var devDependencies = {
@@ -365,6 +364,7 @@ var devDependencies = {
   husky: "^8.0.1",
   jest: "^29.1.2",
   "jest-canvas-mock": "^2.4.0",
+  "jest-environment-jsdom": "^29.1.2",
   "jest-extended": "^3.1.0",
   jsdoc: "^3.6.11",
   "jsdoc-to-markdown": "^7.1.1",
@@ -6822,7 +6822,7 @@ var Track = class {
     }
     return sections;
   }
-  getSections(sectionInfo, measures, sortComparator) {
+  getSections(sortComparator, sectionInfo, measures) {
     if (!sectionInfo) {
       sectionInfo = this.getSectionInfo();
     }
@@ -6960,6 +6960,7 @@ __export(Canvas_exports, {
   drawHexagon: () => drawHexagon,
   drawLine: () => drawLine,
   drawMatrix: () => drawMatrix,
+  drawNoteColorMap: () => drawNoteColorMap,
   drawNoteTrapezoid: () => drawNoteTrapezoid,
   drawNoteTrapezoidUpwards: () => drawNoteTrapezoidUpwards,
   drawRoundedCorner: () => drawRoundedCorner,
@@ -7270,6 +7271,27 @@ function drawColorRamp(context, w = 100, h = 10, colorMap = rainbow_default) {
     context.fillStyle = colorMap(scaleColor(x));
     context.fillRect(x, 0, 1.1, h);
   }
+}
+function drawNoteColorMap(context, colors, w, h, bgColor, textColor = "#222", fontSize = 12, x = 0, y = 0) {
+  const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  context.save();
+  if (bgColor) {
+    context.fillStyle = bgColor;
+    context.fillRect(0, 0, w, h);
+  }
+  const mWidth = w / 12;
+  const mWidthInner = mWidth * 0.5;
+  context.font = `${fontSize}px sans-serif`;
+  context.textAlign = "center";
+  for (const [index16, note2] of notes.entries()) {
+    const col = index16;
+    const nX = x + col * mWidth;
+    context.fillStyle = colors[index16];
+    context.fillRect(nX, y + fontSize, mWidthInner, h - fontSize);
+    context.fillStyle = textColor;
+    context.fillText(note2, nX + mWidthInner / 2, 0);
+  }
+  context.restore();
 }
 function drawVerticalText(context, x, y, text, color2 = "black", font = "12px sans-serif", centered = false) {
   context.save();
@@ -9521,6 +9543,7 @@ var utils_exports = {};
 __export(utils_exports, {
   CIRCLE_OF_5THS: () => CIRCLE_OF_5THS,
   INTERVALS: () => INTERVALS,
+  aeppli: () => aeppli,
   alignNotesToBpm: () => alignNotesToBpm,
   arrayContainsArray: () => arrayContainsArray,
   arrayHasSameElements: () => arrayHasSameElements,
@@ -9530,16 +9553,20 @@ __export(utils_exports, {
   averageColor: () => averageColor,
   averageRecordings: () => averageRecordings,
   averageRecordings2: () => averageRecordings2,
+  belmont: () => belmont,
   binarySearch: () => binarySearch,
+  bishop: () => bishop,
   blobToBase64: () => blobToBase64,
   blobToFileExtension: () => blobToFileExtension,
   bpmToSecondsPerBeat: () => bpmToSecondsPerBeat,
+  castel: () => castel,
   choose: () => choose,
   chordIntegerJaccardIndex: () => chordIntegerJaccardIndex,
   chordToInteger: () => chordToInteger,
   clipRecordingsPitchesToGtFretboardRange: () => clipRecordingsPitchesToGtFretboardRange,
   clipRecordingsPitchesToGtRange: () => clipRecordingsPitchesToGtRange,
   clipValue: () => clipValue,
+  colorInterpolator: () => colorInterpolator,
   confidenceInterval: () => confidenceInterval,
   count: () => count,
   countOnesOfBinary: () => countOnesOfBinary,
@@ -9548,6 +9575,7 @@ __export(utils_exports, {
   differenceMap: () => differenceMap,
   differenceMapErrorAreas: () => differenceMapErrorAreas,
   euclideanDistance: () => euclideanDistance,
+  field: () => field,
   filterRecordingNoise: () => filterRecordingNoise,
   findLocalMaxima: () => findLocalMaxima,
   findNearest: () => findNearest,
@@ -9563,17 +9591,25 @@ __export(utils_exports, {
   getColorLightness: () => getColorLightness,
   getObjectFromLocalStorage: () => getObjectFromLocalStorage,
   groupNotesByPitch: () => groupNotesByPitch,
+  helmholtz: () => helmholtz,
   jaccardIndex: () => jaccardIndex,
+  jameson: () => jameson,
   kendallTau: () => kendallTau,
   kernelDensityEstimator: () => kernelDensityEstimator,
   kernelEpanechnikov: () => kernelEpanechnikov,
   kernelGauss: () => kernelGauss,
+  klein: () => klein,
   metronomeTrackFromMusicPiece: () => metronomeTrackFromMusicPiece,
   metronomeTrackFromTempoAndMeter: () => metronomeTrackFromTempoAndMeter,
   midiToFrequency: () => midiToFrequency,
+  newton: () => newton,
   normalizeNdArray: () => normalizeNdArray,
   normalizeNdArrayNegative: () => normalizeNdArrayNegative,
   noteColorFromPitch: () => noteColorFromPitch,
+  noteColormap: () => noteColormap,
+  noteColormapAccessible: () => noteColormapAccessible,
+  noteColormapAccessible2: () => noteColormapAccessible2,
+  noteColormapGradientArray: () => noteColormapGradientArray,
   noteDurationToNoteType: () => noteDurationToNoteType,
   pearsonCorrelation: () => pearsonCorrelation,
   pingMidiDevice: () => pingMidiDevice,
@@ -9581,10 +9617,15 @@ __export(utils_exports, {
   recordingsHeatmap: () => recordingsHeatmap,
   removeDuplicates: () => removeDuplicates,
   reverseString: () => reverseString,
+  rimington: () => rimington,
   roundToNDecimals: () => roundToNDecimals,
+  scriabin: () => scriabin,
+  seemann: () => seemann,
   setOpacity: () => setOpacity,
+  setSaturation: () => setSaturation,
   storeObjectInLocalStorage: () => storeObjectInLocalStorage,
-  swapSoSmallerFirst: () => swapSoSmallerFirst
+  swapSoSmallerFirst: () => swapSoSmallerFirst,
+  zieverink: () => zieverink
 });
 
 // src/utils/BlobUtils.js
@@ -9623,6 +9664,11 @@ function averageColor(colors) {
 function setOpacity(color2, opacity = 1) {
   const { r, g, b } = color(color2).rgb();
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+function setSaturation(color2, saturation = 1) {
+  const c2 = hsl(color2);
+  c2.s = saturation;
+  return c2.toString();
 }
 
 // src/utils/FormattingUtils.js
@@ -9740,11 +9786,7 @@ var noteColormap = [
   "#3c00ff",
   "#a800ff",
   "#ff00fd"
-].map((d) => {
-  const c2 = hsl(d);
-  c2.s = 0.5;
-  return c2.toString();
-});
+].map((d) => setSaturation(d, 0.5));
 var noteColormapAccessible = [
   "#6699ff",
   "#66ffff",
@@ -9758,6 +9800,202 @@ var noteColormapAccessible = [
   "#009900",
   "#66ff99",
   "#0000cc"
+];
+var noteColormapAccessible2 = [
+  "#9aebff",
+  "#add5ff",
+  "#d6d6ff",
+  "#ebd5ff",
+  "#ffc2eb",
+  "#ffcbcc",
+  "#ffd5c2",
+  "#ffebc2",
+  "#ebffc2",
+  "#c2d599",
+  "#99ebbe",
+  "#adebeb"
+];
+var newton = [
+  "#FA0B0C",
+  "#FA0B0C",
+  "#F88010",
+  "#F88010",
+  "#F5F43C",
+  "#149033",
+  "#149033",
+  "#FA0B0C",
+  "#FA0B0C",
+  "#7F087C",
+  "#7F087C",
+  "#908791"
+];
+var castel = [
+  "#1C0D82",
+  "#F5F5F5",
+  "#149033",
+  "#709226",
+  "#F5F43C",
+  "#F5D23B",
+  "#F88010",
+  "#FA0B0C",
+  "#A00C09",
+  "#D71386",
+  "#4B0E7D",
+  "#7F087C"
+];
+var field = [
+  "#1C0D82",
+  "#1C0D82",
+  "#7F087C",
+  "#7F087C",
+  "#FA0B0C",
+  "#F88010",
+  "#F88010",
+  "#F5F43C",
+  "#F5F43C",
+  "#709226",
+  "#709226",
+  "#149033"
+];
+var jameson = [
+  "#FA0B0C",
+  "#F44712",
+  "#F88010",
+  "#F5D23B",
+  "#F5F43C",
+  "#149033",
+  "#1B9081",
+  "#1C0D82",
+  "#4B0E7D",
+  "#7F087C",
+  "#A61586",
+  "#D71386"
+];
+var seemann = [
+  "#6A1C1C",
+  "#FA0B0C",
+  "#F88010",
+  "#F5D23B",
+  "#F5F43C",
+  "#709226",
+  "#1B9081",
+  "#1C0D82",
+  "#7F087C",
+  "#D71386",
+  "#6A1C1C",
+  "#070707"
+];
+var rimington = [
+  "#FA0B0C",
+  "#A00C09",
+  "#F44712",
+  "#F88010",
+  "#F5F43C",
+  "#709226",
+  "#149033",
+  "#27A481",
+  "#1B9081",
+  "#7F087C",
+  "#1C0D82",
+  "#D71386"
+];
+var bishop = [
+  "#FA0B0C",
+  "#A00C09",
+  "#F88010",
+  "#F6D111",
+  "#F5F43C",
+  "#BCE039",
+  "#149033",
+  "#27A481",
+  "#7F087C",
+  "#D71386",
+  "#D91951",
+  "#FA0B0C"
+];
+var helmholtz = [
+  "#F5F43C",
+  "#149033",
+  "#1B9081",
+  "#1C5BA0",
+  "#7F087C",
+  "#D71386",
+  "#9D0E55",
+  "#FA0B0C",
+  "#D32C0A",
+  "#D32C0A",
+  "#F62E0D",
+  "#F17A0F"
+];
+var scriabin = [
+  "#FA0B0C",
+  "#D71386",
+  "#F5F43C",
+  "#5A5685",
+  "#1C5BA0",
+  "#A00C09",
+  "#1C0D82",
+  "#F88010",
+  "#7F087C",
+  "#149033",
+  "#5A5685",
+  "#1C5BA0"
+];
+var klein = [
+  "#C40A09",
+  "#FA0B0C",
+  "#F44712",
+  "#F88010",
+  "#F5F43C",
+  "#BCE039",
+  "#149033",
+  "#1B9081",
+  "#1C0D82",
+  "#781887",
+  "#D71386",
+  "#9D0E55"
+];
+var aeppli = [
+  "#FA0B0C",
+  "#FA0B0C",
+  "#F88010",
+  "#F88010",
+  "#F5F43C",
+  "#F5F43C",
+  "#149033",
+  "#1B9081",
+  "#1B9081",
+  "#1C5BA0",
+  "#4B0E7D",
+  "#7F087C"
+];
+var belmont = [
+  "#FA0B0C",
+  "#F44712",
+  "#F88010",
+  "#F6D111",
+  "#F5F43C",
+  "#BCE039",
+  "#149033",
+  "#1B9081",
+  "#1C0D82",
+  "#A61586",
+  "#D71386",
+  "#AD0E48"
+];
+var zieverink = [
+  "#BCE039",
+  "#149033",
+  "#1B9081",
+  "#1C0D82",
+  "#7F087C",
+  "#D71386",
+  "#6F0D45",
+  "#A00C09",
+  "#FA0B0C",
+  "#F88010",
+  "#EDF087",
+  "#F5F43C"
 ];
 var colorInterpolator = rgb_default("black", "steelblue");
 var noteColormapGradientArray = Array.from({ length: 12 }).map((d, index16) => colorInterpolator(index16 / 11));
