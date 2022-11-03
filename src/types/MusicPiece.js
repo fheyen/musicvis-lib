@@ -589,7 +589,7 @@ export class Track {
    * @param {Note[][]} [measures] see this.getMeasures
    * @returns {Note[][]} notes grouped by sections
    */
-  getSections (sectionInfo, measures, sortComparator) {
+  getSections (sortComparator, sectionInfo, measures) {
     if (!sectionInfo) {
       sectionInfo = this.getSectionInfo()
     }

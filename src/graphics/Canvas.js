@@ -640,6 +640,49 @@ export function drawColorRamp (context, w = 100, h = 10, colorMap = d3.interpola
 }
 
 /**
+ * Draws a color map as small rectanlges below the notes C, C#, ...
+ * @todo test
+ * @param {CanvasRenderingContext2D} context canvas rendering context
+ * @param {string[]} colors colors, e.g., from NoteColorUtils
+ * @param {number} w
+ * @param {number} h
+ * @param {number} [x=0]
+ * @param {number} [y=0]
+ * @param {number} [fontSize=12]
+ */
+export function drawNoteColorMap (
+  context,
+  colors,
+  w,
+  h,
+  bgColor,
+  textColor = '#222',
+  fontSize = 12,
+  x = 0,
+  y = 0
+) {
+  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+  context.save()
+  if (bgColor) {
+    context.fillStyle = bgColor
+    context.fillRect(0, 0, w, h)
+  }
+  const mWidth = w / 12
+  const mWidthInner = mWidth * 0.5
+  context.font = `${fontSize}px sans-serif`
+  context.textAlign = 'center'
+  for (const [index, note] of notes.entries()) {
+    const col = index
+    const nX = x + col * mWidth
+    context.fillStyle = colors[index]
+    context.fillRect(nX, y + fontSize, mWidthInner, h - fontSize)
+    context.fillStyle = textColor
+    context.fillText(note, nX + mWidthInner / 2, 0)
+  }
+  context.restore()
+}
+
+/**
  * Draws text horizontally rotated 90 degrees clock-wise
  * @todo use the one from mvlib
  * @param {*} context
