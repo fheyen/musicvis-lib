@@ -1,14 +1,15 @@
 import { countOnesOfBinary, roundToNDecimals } from './MathUtils.js'
 import { binarySearch } from './ArrayUtils.js'
+import * as d3 from "d3"
 
 /**
  * @module utils/MusicUtils
  */
 
 /**
- * Converts beats per minute to seconds per beat
+ * Converts beats per minute (BPM) to seconds per beat
  *
- * @param {number} bpm tempo in beats per minute
+ * @param {number} bpm tempo in beats per minute (BPM)
  * @returns {number} seconds per beat
  */
 export function bpmToSecondsPerBeat (bpm) {
@@ -16,9 +17,32 @@ export function bpmToSecondsPerBeat (bpm) {
 }
 
 /**
+ * Converts seconds per beat to beats per minute (BPM)
+ *
+ * @param {number} seconds seconds per beat
+ * @returns {number} beat per minute (BPM)
+ */
+export function secondsPerBeatToBpm (seconds) {
+  return 60 * 1 / seconds
+}
+
+/**
+ * Estimates the tempo in beats per minute (BPM) from an array of note onsets
+ * in seconds.
+ * Returns NaN when noteOnsets.length == 0
+ * @param {number[]} noteOnsets note onsets in seconds
+ * @returns {number} estimated BPM
+ */
+export function estimateBpmByMedian (noteOnsets) {
+  const deltas = noteOnsets.slice(1).map((d, i) => d - noteOnsets[i])
+  const median = d3.median(deltas)
+  return secondsPerBeatToBpm(median)
+}
+
+/**
  * Maps any frequency (in Hz) to an approximate MIDI note number. Result can be
  * rounded to get to the closest MIDI note or used as is for a sound in between
- * two notes.
+ * two notes
  *
  * @param {number} frequency a frequency in Hz
  * @returns {number} MIDI note number (not rounded)
@@ -29,7 +53,7 @@ export function freqToApproxMidiNr (frequency) {
 
 /**
  * Maps any MIDI number (can be in-between, like 69.5 for A4 + 50 cents) to its
- * frequency.
+ * frequency
  *
  * @param {number} midi MIDI note number
  * @returns {number} frequency in Hz

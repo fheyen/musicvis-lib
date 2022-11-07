@@ -2,7 +2,7 @@
 /* eslint-disable comma-dangle */
 import fs from 'fs'
 import path from 'path'
-import { bpmToSecondsPerBeat, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece, midiToFrequency } from './MusicUtils.js'
+import { bpmToSecondsPerBeat, secondsPerBeatToBpm, estimateBpmByMedian, freqToApproxMidiNr, chordToInteger, chordIntegerJaccardIndex, noteDurationToNoteType, metronomeTrackFromTempoAndMeter, metronomeTrackFromMusicPiece, midiToFrequency } from './MusicUtils.js'
 import Note from '../types/Note.js'
 import MusicPiece from '../types/MusicPiece.js'
 import { readXmlFile } from '../../test/testTools/readTestAssetFiles.js'
@@ -26,6 +26,28 @@ describe('MusicUtils', () => {
 
     test('120bpm', () => {
       expect(bpmToSecondsPerBeat(120)).toBe(0.5)
+    })
+  })
+
+  describe('secondsPerBeatToBpm', () => {
+    test('inverts bpmToSecondsPerBeat', () => {
+      expect(secondsPerBeatToBpm(bpmToSecondsPerBeat(30))).toBe(30)
+      expect(secondsPerBeatToBpm(bpmToSecondsPerBeat(60))).toBe(60)
+      expect(secondsPerBeatToBpm(bpmToSecondsPerBeat(15.3))).toBe(15.3)
+    })
+
+    test('gets inverted by bpmToSecondsPerBeat', () => {
+      expect(bpmToSecondsPerBeat(secondsPerBeatToBpm(1))).toBe(1)
+      expect(bpmToSecondsPerBeat(secondsPerBeatToBpm(0.5))).toBe(0.5)
+    })
+  })
+
+  describe('estimateBpmByMedian', () => {
+    test('60bpm', () => {
+      expect(estimateBpmByMedian([1, 2, 3, 4, 5])).toBe(60)
+    })
+    test('60bpm', () => {
+      expect(estimateBpmByMedian([0, 2, 3, 4, 4])).toBe(60)
     })
   })
 
